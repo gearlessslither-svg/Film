@@ -63,6 +63,7 @@ python scripts/create_aigc_project.py `
 - `00_admin/project_log.md`: 每次方向确认、阶段推进、模型切换、重要返工都记录在这里。
 - `assets_link_map.md`: 旧工程、大素材、LFS 归档和当前项目目录的映射关系。
 - `07_shots/shot_list.csv`: 镜头级生产表，后续可驱动 Blender、图片模型、视频模型和 QA 工具。
+- `10_qa/reports/project_audit_latest.md`: 一键项目分析报告，覆盖阶段资产、抽样结果、缺失项、审美风险和下一批建议。
 
 ## Stage Gates
 
@@ -91,5 +92,8 @@ python scripts/create_aigc_project.py `
 - 模型路由: 从 `00_admin/model_config.yaml` 读取本地/远程模型配置，记录 fallback 原因。
 - 镜头生产: 读取 `07_shots/shot_list.csv`，批量生成关键帧、提示词、视频任务和 QA 队列。
 - 项目健康检查: 检查缺失目录、缺失清单、未确认阶段、未入 LFS 的大文件和 `.rar` 风险。
+- 项目资产与审美体检: 调用 `scripts/analyze_aigc_project.py`，抽样检查当前项目和链接资源，输出缺失项与电影制作建议。
 
 当前可先调用 `scripts/validate_aigc_project.py` 完成最小结构检查，后续再扩展更细的镜头、模型和资产 QA。
+
+当前可调用 `scripts/analyze_aigc_project.py projects/<slug>` 输出 `10_qa/reports/project_audit_latest.md`，再由 `$aigc-film-project-auditor` Skill 进行导演级审美和工业流程建议。

@@ -30,6 +30,7 @@ python scripts/validate_pipeline_state.py <project-root>
 ## Tool Map
 
 - `scripts/validate_pipeline_state.py`: checks project readiness and writes/updates pipeline validation.
+- `scripts/analyze_aigc_project.py`: scans standardized `projects/<slug>/` folders, samples linked resources, and writes `10_qa/reports/project_audit_latest.md` for missing-work and aesthetic review.
 - `scripts/visual/qa_whitebox_images.py`: validates whitebox renders and repeated composition risk.
 - `scripts/visual/qa_whitebox_similarity.py`: compares near-duplicate whitebox images.
 - `scripts/visual/make_contact_sheet.py`: builds contact sheets for QA and review.
@@ -56,6 +57,8 @@ Load only the reference needed for the current task:
 - `references/micro-storyboard-rules.md`: micro-panel granularity and batching.
 - `references/dialogue-voice-sound-music-plan.md`: dialogue, voice, SFX, ambience, and music planning.
 - `references/runtime-resilience-and-keepawake.md`: long-run recovery and keep-awake rules.
+
+Use `$aigc-film-project-auditor` when the user asks for one-click analysis of all current project steps, missing assets, aesthetic risks, or director-facing recommendations before batch generation.
 
 ## Output Standard
 

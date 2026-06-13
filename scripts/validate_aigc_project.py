@@ -84,9 +84,9 @@ def validate_project(project_path: Path) -> list[dict[str, str]]:
         result,
         "project_manifest_contract",
         "pass"
-        if "gui_contract:" in manifest_text and "stage_order:" in manifest_text
+        if "gui_contract:" in manifest_text and "stage_order:" in manifest_text and "audit_report:" in manifest_text
         else "fail",
-        "requires gui_contract and stage_order",
+        "requires gui_contract, stage_order, and audit_report",
     )
 
     return result

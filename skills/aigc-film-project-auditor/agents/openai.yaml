@@ -1,0 +1,6 @@
+interface:
+  display_name: "AIGC Film Project Auditor"
+  short_description: "Audit AIGC film projects for missing assets and creative risks"
+  default_prompt: "Use $aigc-film-project-auditor to analyze an AIGC film project folder, sample its assets, and write a film-aware missing-work report."
+policy:
+  allow_implicit_invocation: true

@@ -44,3 +44,4 @@ gui_contract:
   shot_table: "07_shots/shot_list.csv"
   director_brief: "00_admin/director_brief.md"
   project_log: "00_admin/project_log.md"
+  audit_report: "10_qa/reports/project_audit_latest.md"

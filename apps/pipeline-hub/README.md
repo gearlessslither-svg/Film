@@ -11,6 +11,7 @@
 - 新建项目
 - 打开现有项目
 - 导入旧项目文件夹
+- 分析当前项目
 - 检查项目结构
 - 查看阶段进度
 - 进入镜头生产
@@ -25,6 +26,21 @@
 4. 打开每个阶段文件夹，并显示该阶段的必需文件是否存在。
 5. 读取 `07_shots/shot_list.csv`，显示镜头列表和状态。
 6. 调用 `scripts/validate_aigc_project.py` 运行结构检查，提示缺失目录、缺失清单、大文件 Git LFS 风险、`.rar` 风险。
+7. 调用 `scripts/analyze_aigc_project.py` 运行项目资产与审美体检，并打开 `10_qa/reports/project_audit_latest.md`。
+
+## Analyze Current Project Button
+
+按钮行为：
+
+```powershell
+python scripts/analyze_aigc_project.py projects/<project-slug> --sample-size 24 --print-json
+```
+
+输出：
+
+- 机器可读摘要: 命令行 JSON。
+- 人类可读报告: `projects/<project-slug>/10_qa/reports/project_audit_latest.md`。
+- AI 审片入口: 使用 `$aigc-film-project-auditor` 读取报告并结合电影审美 Rubric 生成导演建议。
 
 ## Later Modules
 
