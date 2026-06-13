@@ -1,0 +1,6 @@
+interface:
+  display_name: "AIGC Film Pipeline"
+  short_description: "Plan and QA staged AIGC film workflows"
+  default_prompt: "Use $aigc-film-pipeline to continue an AIGC film project from its logs, tables, and validation state."
+policy:
+  allow_implicit_invocation: true

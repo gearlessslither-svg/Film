@@ -1,0 +1,19 @@
+check,value,status,notes
+required_files,14,pass,
+micro_storyboard_rows,188,pass,
+micro_storyboard_duplicate_ids,0,pass,
+micro_storyboard_clip_coverage,20,pass,"{""01"": 8, ""02"": 10, ""03"": 10, ""04"": 9, ""05"": 12, ""06"": 8, ""07"": 8, ""08"": 10, ""09"": 10, ""10"": 12, ""11"": 10, ""12"": 12, ""13"": 9, ""14"": 10, ""15"": 8, ""16"": 8, ""17"": 7, ""18"": 8, ""19"": 8, ""20"": 11}"
+pure_prompt_rows,188,pass,
+pure_prompt_panel_coverage,188,pass,
+pure_prompt_question_marks,0,pass,
+pure_prompt_whitebox_refs,188,pass,
+real_image_queue_rows,188,pass,
+real_image_queue_status_counts,"{""blocked_generation_policy_retry_needed"": 5, ""generated_passed_qa"": 183}",pass,
+generated_real_image_files_exist,188,pass,
+next_queued_panel,none,warn,
+task_log_freshness,2026-06-03T23:41:46,pass,latest_generated_or_queue=2026-06-03T22:39:01
+final_delivery_validation,13,pass,
+final_video_exists,True,pass,
+clean_audio_exists,True,pass,
+review_package_exists,True,pass,
+final_delivery_freshness,2026-06-03T22:43:07,pass,latest_generated_or_queue=2026-06-03T22:39:01; rebuild final panels/video/package when warn

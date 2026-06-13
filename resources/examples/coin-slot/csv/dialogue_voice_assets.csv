@@ -1,0 +1,23 @@
+audio_id,visual_range,time_start,time_end,speaker,voice_type,line_text,subtext,delivery,pause_before,pause_after,mic_perspective,processing,wav_name,priority
+DIA_001,Clip 02 / MSB009-MSB012,00:18.0,00:20.0,阿磊,dialogue,跟紧点，别让人看见。,哥哥装成熟，也带一点偷偷摸摸的兴奋。,压低声音，快，像怕被大人听见；尾字吞掉。,0.2,0.3,medium / outdoor damp,"dry child voice, slight alley room",audio/voice_clean/DIA_001_alei_genjin.wav,A
+DIA_002,Clip 02 / MSB013-MSB016,00:24.0,00:25.6,小川,dialogue,里面真能玩吗？,主角好奇但不敢自己决定。,小声，圆眼睛看哥哥，句尾上扬。,0.1,0.4,close / outdoor damp,dry child voice,audio/voice_clean/DIA_002_xiaochuan_nengwan.wav,A
+DIA_003,Clip 02 / MSB017-MSB018,00:28.0,00:29.2,阿磊,dialogue,看我就行。,哥哥把自己放在带头位置。,短，故作轻松，带一点得意。,0.2,0.5,medium / doorway,dry child voice,audio/voice_clean/DIA_003_alei_kanwo.wav,A
+WLA_001,Clip 03 / MSB019-MSB028,00:40.0,00:48.0,游戏厅人群,walla,快快快……别站那儿……投一个……,旧游戏厅的社会质感，不提供剧情信息。,多人含混，远近混杂，不能听清完整句子。,0,0,wide / arcade room,"roomy, CRT noise, muffled crowd",audio/voice_processed/WLA_001_arcade_walla.wav,B
+DIA_004,Clip 04 / MSB034-MSB036,00:57.0,00:58.4,彬子,dialogue,会玩吗你？,第一次羞辱阿磊，建立对抗。,短促，鼻音重，下巴往前顶，像挑衅小孩。,0.1,0.3,close / arcade,dry with arcade bed separate,audio/voice_clean/DIA_004_binzi_huiwan.wav,A
+DIA_005,Clip 04 / MSB036-MSB037,01:00.0,01:01.0,阿磊,dialogue,试试呗。,阿磊嘴硬，想在弟弟面前撑住。,装轻松，句尾轻，实际有点紧。,0.2,0.5,medium / arcade,dry child voice,audio/voice_clean/DIA_005_alei_shishi.wav,A
+DIA_006,Clip 05 / MSB049,01:25.0,01:26.2,彬子,dialogue,你等着。,输掉后的羞辱转成报复。,低声，咬牙，不喊，几乎被街机声盖住。,0.6,0.7,close / arcade,"dry, can be lightly roomed later",audio/voice_clean/DIA_006_binzi_dengzhe.wav,A
+DIA_007,Clip 07 / MSB059-MSB061,01:44.0,01:45.2,阿磊,dialogue,看见没？,离开时的小胜利。,压着笑，肩膀一抖。,0.2,0.2,medium / arcade exit,dry child voice,audio/voice_clean/DIA_007_alei_kanjianmei.wav,B
+DIA_008,Clip 07 / MSB062-MSB064,01:48.0,01:49.8,小川,dialogue,哥，刚才那个黄头发……,小川已经注意到危险。,犹豫，话没说完，眼睛看哥哥。,0.3,0.1,close / alley entrance,dry child voice,audio/voice_clean/DIA_008_xiaochuan_huangtoufa.wav,A
+DIA_009,Clip 07 / MSB064-MSB065,01:50.0,01:51.0,阿磊,dialogue,别理他。,哥哥把危险轻描淡写。,快，装不在乎，打断小川。,0,0.5,medium / alley entrance,dry child voice,audio/voice_clean/DIA_009_alei_bielita.wav,A
+DIA_010,Clip 09 / MSB076-MSB078,02:15.0,02:16.4,彬子,dialogue,刚才挺能啊。,堵路开场，羞辱回收。,低、慢、短，带笑但不开心。,0.4,0.4,medium / alley,"dry, alley reflection later",audio/voice_clean/DIA_010_binzi_tingneng.wav,A
+DIA_011,Clip 09 / MSB081-MSB083,02:20.0,02:21.0,阿磊,dialogue,我们回家。,阿磊试图用普通话语结束冲突。,硬撑，声音不大，尾音有虚。,0.2,0.4,medium / alley,dry child voice,audio/voice_clean/DIA_011_alei_huijia.wav,A
+DIA_012,Clip 09 / MSB084-MSB085,02:23.0,02:24.3,彬子,dialogue,谁让你走了？,权力关系转向围堵。,下巴前顶，咬字硬，不要成年狠话。,0.1,0.5,medium close / alley,"dry, slight slapback later",audio/voice_clean/DIA_012_binzi_shuirang.wav,A
+DIA_013,Clip 10 / MSB094,02:42.0,02:42.8,小满,dialogue,哥……,小弟弟恐惧锚点。,很小，快哭但没哭，气不够。,0.6,0.3,close / alley edge,dry child voice,audio/voice_clean/DIA_013_xiaoman_ge.wav,A
+DIA_014,Clip 10 / MSB093-MSB097,02:49.0,02:50.0,小川,dialogue,别打了……,小川第一次试图介入，但没有力量。,发白的小声，像从喉咙里挤出来。,0.2,0.2,close / alley side,dry child voice,audio/voice_clean/DIA_014_xiaochuan_biedale.wav,A
+DIA_015,Clip 10 / MSB096-MSB097,02:51.0,02:52.2,彬子,dialogue,你再说一遍？,把压力从哥哥压向小川。,突然低下来，危险但仍是坏孩子，不是成年人。,0.1,0.4,medium close / alley,"dry, alley reflection later",audio/voice_clean/DIA_015_binzi_zaishuo.wav,B
+SIL_001,Clip 11 / MSB105-MSB107,03:07.0,03:11.0,全体,silence,,石块失手后声音抽空。,没有台词；只留高频耳鸣和远处很轻的电流。,0,0,scene wide / alley,"designed silence, no generated voice",audio/sfx/SIL_001_stone_after_drop.wav,A
+DIA_016,Clip 12 / MSB108-MSB110,03:16.5,03:17.2,小川,dialogue,哥……,失手后逃跑前的断裂反应。,气息破，几乎听不见，不要哭腔表演。,0.2,0.2,close / moving,dry child voice,audio/voice_clean/DIA_016_xiaochuan_ge_after.wav,A
+WLA_002,Clip 12 / MSB112-MSB119,03:19.0,03:26.0,后方追兵,offscreen,站住！……他跑了……,追逐压力，不能盖过小川呼吸。,远处、乱、含混，分不清具体是谁。,0,0,distant / alley behind,"muffled, moving, alley reflections",audio/voice_processed/WLA_002_pursuers_offscreen.wav,B
+DIA_017,Clip 16 / MSB151-MSB154,04:32.0,04:33.0,小川,dialogue,喂？,小川对电话亭的第一声试探。,很轻，问空气，声音被走廊吃掉。,0.5,0.6,close / corridor phonebooth,"dry child voice, reverb later",audio/voice_clean/DIA_017_xiaochuan_wei.wav,A
+DIA_018,Clip 17 / MSB159-MSB161,04:45.0,04:46.0,小川,dialogue,谁啊？,接起电话后的本能反应。,低声，害怕，不要像恐怖片喊叫。,0.3,0.5,close / receiver,dry child voice,audio/voice_clean/DIA_018_xiaochuan_shuia.wav,A
+SYS_001,Clip 17 / MSB161,04:47.0,04:49.0,电话线路,system,READY,电话把现实接到游戏规则。,极轻、断续、像旧电话线里混进街机音，不要清晰机器人女声。,0.4,0.6,phone / receiver,"phone bandpass, CRT flutter, low bit depth",audio/voice_processed/SYS_001_phone_ready.wav,A

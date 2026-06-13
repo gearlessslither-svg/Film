@@ -1,0 +1,14 @@
+check,value,status,notes
+stage_rows,188,pass,
+prompt_rows,188,pass,
+queue_rows,188,pass,
+max_prompt_question_marks,0,pass,
+missing_whitebox,0,pass,
+final_panel_manifest_rows,188,pass,"{'REAL': 183, 'WHITEBOX_QA_PASS': 5}"
+final_panel_qa_pass,188,pass,
+final_panel_dimensions_bad,0,pass,expected 1280x720
+contact_sheets,6,pass,
+audio_duration_sec,351.000,pass,clean v002
+video_duration_sec,351.000,pass,frames=4212 fps=12.000
+timing_rows,188,pass,
+timing_total_sec,351.000,pass,

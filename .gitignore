@@ -1,0 +1,31 @@
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+.env
+
+# Generated or heavyweight production media should be added intentionally.
+*.rar
+*.zip
+*.7z
+*.mp4
+*.mov
+*.avi
+*.wav
+*.aif
+*.aiff
+*.flac
+*.png
+*.jpg
+*.jpeg
+*.webp
+*.blend1
+*.bak*
+
+# Local runtime logs/state
+.codex-resume/
+*.log

@@ -1,0 +1,22 @@
+{
+  "name": "coin-slot-aigc-toolkit",
+  "version": "0.1.0",
+  "description": "Reusable AIGC short-film production pipeline tools, skill, and resources extracted from the Coin Slot project.",
+  "author": {
+    "name": "Coin Slot production workflow"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Coin Slot AIGC Toolkit",
+    "shortDescription": "AIGC film pipeline tools and QA.",
+    "longDescription": "A reusable Codex toolkit for staged AIGC short-film production: story-stage continuity, character similarity QA, whitebox references, pure/annotated image passes, audio cue sheets, animatic builds, and final delivery validation.",
+    "developerName": "Coin Slot production workflow",
+    "category": "Productivity",
+    "capabilities": [
+      "AIGC short-film workflow planning",
+      "Storyboard and whitebox QA",
+      "Audio, animatic, and delivery validation"
+    ],
+    "defaultPrompt": "Use $aigc-film-pipeline to continue or QA an AIGC short-film project from its logs, tables, and current assets."
+  }
+}

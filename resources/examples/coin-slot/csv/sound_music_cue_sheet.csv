@@ -1,0 +1,28 @@
+cue_id,visual_range,time_start,time_end,category,cue_name,story_function,sonic_description,sync_point,intensity,processing,loopable,wav_name,priority
+AMB_001,Clip 01 / MSB001-MSB008,00:00.0,00:16.0,ambience,潮湿老小区夜底,让空间先进入观众身体。,低风、远处住户声、潮湿水面、很远的街机漏音。,free,2,"lowpass, subtle VHS noise",yes,audio/ambience/AMB_001_compound_night_loop.wav,A
+SFX_001,Clip 01 / MSB003-MSB008,00:08.0,00:16.0,hard_sfx,门内 CRT 漏电声,引出游戏机房。,很轻的 CRT 嗡鸣和蓝绿光感，不要现代电子声。,object,2,CRT hum,yes,audio/sfx/SFX_001_crt_leak_hum.wav,A
+FOLEY_001,Clip 02 / MSB009-MSB018,00:16.0,00:34.0,foley,三兄弟湿地脚步,建立年龄差和跟随节奏。,阿磊步子大，小川轻而紧，小满慢半拍。,action,2,room/outdoor natural,no,audio/sfx/FOLEY_001_three_brothers_steps.wav,A
+SFX_002,Clip 03 / MSB019-MSB028,00:34.0,00:50.0,transition_sfx,脏门帘擦镜,从小区进入游戏厅。,塑料门帘贴镜擦过，街机声突然变大。,cut/transition,3,close foley,no,audio/sfx/SFX_002_plastic_curtain_wipe.wav,A
+AMB_002,Clip 03-06 / MSB019-MSB057,00:34.0,01:42.0,ambience,旧游戏厅底噪,让游戏厅成为活空间。,多台 CRT、按钮、硬币、少年含混声、低天花混响。,free,4,"roomy, smoky, VHS",yes,audio/ambience/AMB_002_old_arcade_loop.wav,A
+SFX_003,Clip 04 / MSB029-MSB037,00:58.0,01:02.0,hard_sfx,硬币入槽,对战仪式开始。,旧硬币叮、滑入金属槽、按钮轻响。,object,4,"close, metallic",no,audio/sfx/SFX_003_coin_insert.wav,A
+SFX_004,Clip 05 / MSB038-MSB049,01:06.0,01:25.0,hard_sfx,街机按键对战,把冲突先限制在游戏里。,摇杆撞击、彩色按钮快速敲击、CRT 闪白。,action,4,arcade cabinet perspective,no,audio/sfx/SFX_004_arcade_duel_buttons.wav,A
+SFX_005,Clip 05 / MSB045-MSB049,01:22.0,01:27.0,hard_sfx,胜利红光失真,哥哥赢和彬子受辱。,胜利音效不要用版权旋律，使用原创短促 8-bit 上扬后失真。,UI/object,4,"8-bit, distorted tail",no,audio/sfx/SFX_005_victory_glitch.wav,A
+MUS_001,Clip 06 / MSB050-MSB057,01:28.0,01:42.0,music,报复低频第一次出现,让游戏厅热闹被彬子情绪压住。,很低的单音 drone，几乎像机器故障，不像配乐煽情。,free,2,"low drone, sidechain under arcade",yes,audio/music/MUS_001_revenge_low_drone.wav,B
+TRANS_001,Clip 07 / MSB058-MSB065,01:42.0,01:56.0,transition_sfx,街机声远去到路灯声,兴奋转向不安。,门内街机声被卷帘门和夜路吞掉，路灯电流上来。,transition,3,"crossfade, lowpass",no,audio/sfx/TRANS_001_arcade_to_alley.wav,A
+AMB_003,Clip 08-12 / MSB066-MSB119,01:56.0,03:36.0,ambience,偏僻小路夜底,建立小路偏僻和危险。,旧路灯电流、远窗声、夜虫、湿地反光空间。,free,3,outdoor narrow alley,yes,audio/ambience/AMB_003_secluded_alley_loop.wav,A
+SFX_006,Clip 08 / MSB070-MSB071,02:04.0,02:08.0,foley,路边碎石预埋,让石块先作为环境存在。,鞋边蹭过碎砖，石头轻轻滚半圈。,object,2,close ground foley,no,audio/sfx/SFX_006_roadside_stone_preset.wav,A
+MUS_002,Clip 09-10 / MSB076-MSB097,02:14.0,02:56.0,music,堵路心跳低脉冲,压缩空间，不抢对白。,低频脉冲很慢，像远处机器，不像动作片鼓点。,free,3,"low pulse, sparse",yes,audio/music/MUS_002_alley_pressure_pulse.wav,B
+FOLEY_002,Clip 10 / MSB086-MSB097,02:32.0,02:56.0,foley,围住和推搡,让暴力真实但不爽片化。,衣料摩擦、鞋底湿地滑、身体碰墙，避免清脆拳脚。,action,4,"close, handheld feel",no,audio/sfx/FOLEY_002_shove_scuffle.wav,A
+SIL_001,Clip 11 / MSB105-MSB107,03:07.0,03:11.0,silence,石块后声音抽空,让事件不可撤回。,环境突然掉下去，只剩耳鸣和极轻电流。,action/result,5,"hard drop, tinnitus high tone",no,audio/sfx/SIL_001_stone_after_drop.wav,A
+SFX_007,Clip 11 / MSB104-MSB106,03:05.0,03:07.0,hard_sfx,被遮挡的闷响,表达失手但避免血腥。,前景遮挡下的一声短闷响，低频多，高频少。,action,4,"muffled, no gore detail",no,audio/sfx/SFX_007_hidden_stone_impact.wav,A
+FOLEY_003,Clip 12 / MSB108-MSB119,03:16.0,03:36.0,foley,小川逃跑脚步和书包,把恐惧变成身体节奏。,乱脚步、白鞋打滑、浅绿书包肩带拍背。,action,5,"moving close, breath separate",no,audio/sfx/FOLEY_003_xiaochuan_escape_run.wav,A
+TRANS_002,Clip 12-13 / MSB118-MSB122,03:32.0,03:40.0,transition_sfx,黑暗入口吞声,现实小路进入废楼。,后方喊声被门洞吞掉，脚步变成长走廊回声。,transition,4,reverb tail morph,no,audio/sfx/TRANS_002_alley_to_corridor.wav,A
+AMB_004,Clip 13-14 / MSB120-MSB138,03:36.0,04:10.0,ambience,废楼走廊冷绿底噪,建立梦核空间。,冷绿荧光灯、远处水滴、空楼混响、电线轻响。,free,3,long corridor reverb,yes,audio/ambience/AMB_004_abandoned_corridor_loop.wav,A
+SFX_008,Clip 14 / MSB133-MSB138,04:00.0,04:10.0,transition_sfx,灯管闪成电话铃节奏,把空间声音导向电话亭。,荧光灯闪烁节奏逐渐变成旧电话铃前奏。,transition,3,rhythmic flicker morph,no,audio/sfx/SFX_008_fluorescent_to_ring.wav,A
+SFX_009,Clip 15-17 / MSB139-MSB161,04:10.0,04:50.0,hard_sfx,旧电话铃,召唤小川。,老式电话铃，干、近、稳定，带走廊混响。,object,4,"old phone bell, corridor reverb",yes,audio/sfx/SFX_009_old_phone_ring_loop.wav,A
+FOLEY_004,Clip 17 / MSB155-MSB160,04:40.0,04:47.0,foley,听筒拿起和电话线,电话动作变成转场源头。,旧塑料摩擦、听筒离座、弹簧线轻晃。,object/action,4,close foley,no,audio/sfx/FOLEY_004_receiver_lift_cord.wav,A
+TRANS_003,Clip 18 / MSB162-MSB169,04:50.0,05:08.0,transition_sfx,电话线扫描线扩散,现实电子化。,电话线噪声变 CRT 扫描线，低分辨率色块闪动。,transition,5,"CRT flutter, bitcrush ramp",no,audio/sfx/TRANS_003_phone_scanline_morph.wav,A
+MUS_003,Clip 19-20 / MSB170-MSB188,05:08.0,05:50.0,source_music,8-bit 横版关卡循环,游戏规则接管现实。,90年代低分辨率清版街机 loop，有限声部，带不安小调。,UI/source,4,"8-bit, mono-ish arcade speaker",yes,audio/music/MUS_003_8bit_stage_loop.wav,A
+SFX_010,Clip 20 / MSB178-MSB184,05:24.0,05:36.0,hard_sfx,书包旋风和硬币冲击波,技能来自小学生物件。,短促像素旋风、硬币弹射、敌人低分辨率后退，不复杂连招。,action/UI,4,8-bit SFX,no,audio/sfx/SFX_010_bag_coin_attacks.wav,A
+SFX_011,Clip 20 / MSB186-MSB187,05:38.0,05:44.0,hard_sfx,WIN 出现后的静止,爽点后压住庆祝。,WIN 弹出一声，随后一秒空白，只留街机底噪。,UI,3,8-bit UI then silence,no,audio/sfx/SFX_011_win_stillness.wav,A
+SFX_012,Clip 20 / MSB188,05:45.0,05:50.0,hard_sfx,INSERT COIN 闪烁尾针,把胜利变成循环。,角落文字闪烁哔声，旧街机待机音回到最初的电话/投币感。,UI/end,5,"8-bit blink, CRT hum tail",yes,audio/sfx/SFX_012_insert_coin_blink.wav,A

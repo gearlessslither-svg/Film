@@ -1,0 +1,7 @@
+pillow
+numpy
+scipy
+soundfile
+opencv-python
+imageio-ffmpeg
+pyyaml

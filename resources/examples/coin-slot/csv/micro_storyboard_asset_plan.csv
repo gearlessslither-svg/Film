@@ -1,0 +1,189 @@
+asset_id,batch,asset_type,planned_path,source_panel,clip,clip_title,priority,source_camera,prompt_focus,status
+MSB001_STORYBOARD,B01,storyboard,micro_storyboard_panels/B01/MSB001_01_空镜压低视线.png,MSB001,01,老小区建立,A,CAM_COMPOUND_01_ESTABLISH,潮湿地面和破自行车占前景，居民楼底层角落被压在画面右后方,planned
+MSB002_STORYBOARD,B01,storyboard,micro_storyboard_panels/B01/MSB002_01_居民楼像迷宫.png,MSB002,01,老小区建立,A,CAM_COMPOUND_01_ESTABLISH,发黄楼体、铁栏杆、晾衣绳形成遮挡，游戏机房入口几乎被墙角吞掉,planned
+MSB003_KEYFRAME,B01,keyframe,micro_storyboard_panels/B01/MSB003_01_门缝_CRT_光.png,MSB003,01,老小区建立,A,CAM_COMPOUND_01_ESTABLISH,一扇不起眼的门里漏出蓝绿 CRT 光，门口杂草和水渍清楚,planned
+MSB004_STORYBOARD,B01,storyboard,micro_storyboard_panels/B01/MSB004_01_旧招牌细节.png,MSB004,01,老小区建立,B,CAM_COMPOUND_01_ESTABLISH,旧门头、卷帘门边缘、贴坏的游戏贴纸和墙皮脱落,planned
+MSB005_STORYBOARD,B01,storyboard,micro_storyboard_panels/B01/MSB005_01_楼道暗处.png,MSB005,01,老小区建立,B,CAM_COMPOUND_01_ESTABLISH,楼道黑洞和游戏机房门口形成两个入口，观众不确定哪个更危险,planned
+MSB006_STORYBOARD,B01,storyboard,micro_storyboard_panels/B01/MSB006_01_CRT_反光到水面.png,MSB006,01,老小区建立,B,CAM_COMPOUND_01_ESTABLISH,潮湿地面水洼反射出微弱 CRT 色块，旁边有碎石和烟头,planned
+MSB007_START_FRAME,B01,start_frame,micro_storyboard_panels/B01/MSB007_01_空间方向确认.png,MSB007,01,老小区建立,A,CAM_COMPOUND_01_ESTABLISH,从院子深处看向游戏机房角落，给出三兄弟稍后进入的路线,planned
+MSB008_END_FRAME,B01,end_frame,micro_storyboard_panels/B01/MSB008_01_等待人物进入.png,MSB008,01,老小区建立,A,CAM_COMPOUND_01_ESTABLISH,画面左后方留出空位，门口 CRT 光稳定，像在等待孩子靠近,planned
+MSB009_STORYBOARD,B01,storyboard,micro_storyboard_panels/B01/MSB009_02_阿磊先进画.png,MSB009,02,三兄弟靠近,A,CAM_COMPOUND_02_BROTHERS_APPROACH,阿磊从画面左后方先出现，双手插兜，装作熟门熟路,planned
+MSB010_STORYBOARD,B01,storyboard,micro_storyboard_panels/B01/MSB010_02_小川跟半步.png,MSB010,02,三兄弟靠近,A,CAM_COMPOUND_02_BROTHERS_APPROACH,小川背浅绿色塌书包跟在半步后，两手攥书包带,planned
+MSB011_STORYBOARD,B01,storyboard,micro_storyboard_panels/B01/MSB011_02_小满贴最后.png,MSB011,02,三兄弟靠近,A,CAM_COMPOUND_02_BROTHERS_APPROACH,小满更小，浅色大衬衫，抓衣角，脚尖内扣地跟上,planned
+MSB012_KEYFRAME,B01,keyframe,micro_storyboard_panels/B01/MSB012_02_三人身高差.png,MSB012,02,三兄弟靠近,A,CAM_COMPOUND_02_BROTHERS_APPROACH,三兄弟同框，阿磊高一头，小川中间，小满明显更小,planned
+MSB013_STORYBOARD,B01,storyboard,micro_storyboard_panels/B01/MSB013_02_阿磊回头催.png,MSB013,02,三兄弟靠近,B,CAM_COMPOUND_02_BROTHERS_APPROACH,阿磊半回头催弟弟，手背蹭鼻尖，小川抬眼看他,planned
+MSB014_STORYBOARD,B01,storyboard,micro_storyboard_panels/B01/MSB014_02_门口吸引小川.png,MSB014,02,三兄弟靠近,A,CAM_COMPOUND_02_BROTHERS_APPROACH,CRT 光照到小川眼睛和红领巾，小川嘴微张,planned
+MSB015_STORYBOARD,B01,storyboard,micro_storyboard_panels/B01/MSB015_02_小满被光吓到.png,MSB015,02,三兄弟靠近,B,CAM_COMPOUND_02_BROTHERS_APPROACH,小满在后面眨眼，抓衣角更紧，身体往小川背后缩,planned
+MSB016_END_FRAME,B01,end_frame,micro_storyboard_panels/B01/MSB016_02_三人到门前.png,MSB016,02,三兄弟靠近,A,CAM_COMPOUND_02_BROTHERS_APPROACH,三兄弟停在门口，门缝光打到鞋尖，阿磊站最前,planned
+MSB017_STORYBOARD,B01,storyboard,micro_storyboard_panels/B01/MSB017_02_阿磊伸手.png,MSB017,02,三兄弟靠近,B,CAM_COMPOUND_02_BROTHERS_APPROACH,阿磊的手伸向脏门帘或门边，袖口磨毛清楚,planned
+MSB018_KEYFRAME,B01,keyframe,micro_storyboard_panels/B01/MSB018_02_门帘前停顿.png,MSB018,02,三兄弟靠近,A,CAM_COMPOUND_02_BROTHERS_APPROACH,门帘在三兄弟面前轻晃，三张不同年龄的脸被 CRT 光分层照亮,planned
+MSB019_STORYBOARD,B01,storyboard,micro_storyboard_panels/B01/MSB019_03_门帘擦镜.png,MSB019,03,游戏厅入口,A,CAM_ARCADE_01_ENTRANCE_WIDE,脏塑料门帘贴着镜头擦过，后面露出旧街机彩光,planned
+MSB020_START_FRAME,B01,start_frame,micro_storyboard_panels/B01/MSB020_03_三兄弟入口剪影.png,MSB020,03,游戏厅入口,A,CAM_ARCADE_01_ENTRANCE_WIDE,三兄弟站在入口下方，室内低天花和两侧街机压住他们,planned
+MSB021_STORYBOARD,B01,storyboard,micro_storyboard_panels/B01/MSB021_03_阿磊先迈入.png,MSB021,03,游戏厅入口,A,CAM_ARCADE_01_ENTRANCE_WIDE,阿磊向前迈一步，肩膀故意撑开，小川和小满还在门口,planned
+MSB022_STORYBOARD,B01,storyboard,micro_storyboard_panels/B01/MSB022_03_小川看屏幕.png,MSB022,03,游戏厅入口,A,CAM_ARCADE_01_ENTRANCE_WIDE,小川侧脸被蓝绿屏幕光照亮，红领巾和书包边缘清楚,planned
+MSB023_STORYBOARD,B01,storyboard,micro_storyboard_panels/B01/MSB023_03_小满贴近.png,MSB023,03,游戏厅入口,B,CAM_ARCADE_01_ENTRANCE_WIDE,小满靠近小川身后，只露半个身体，看向发光屏幕,planned
+MSB024_KEYFRAME,B01,keyframe,micro_storyboard_panels/B01/MSB024_03_街机排布.png,MSB024,03,游戏厅入口,A,CAM_ARCADE_01_ENTRANCE_WIDE,两排旧街机形成狭窄通道，远处有人影但不抢主体,planned
+MSB025_STORYBOARD,B01,storyboard,micro_storyboard_panels/B01/MSB025_03_摇杆按钮前景.png,MSB025,03,游戏厅入口,B,CAM_ARCADE_01_ENTRANCE_WIDE,磨损摇杆、彩色按钮、硬币槽，孩子的手和旧机器比例对比,planned
+MSB026_STORYBOARD,B01,storyboard,micro_storyboard_panels/B01/MSB026_03_烟雾和顶灯.png,MSB026,03,游戏厅入口,C,CAM_ARCADE_01_ENTRANCE_WIDE,昏暗顶灯、烟雾、墙上海报和老旧天花板形成密闭感,planned
+MSB027_STORYBOARD,B01,storyboard,micro_storyboard_panels/B01/MSB027_03_三兄弟深入.png,MSB027,03,游戏厅入口,A,CAM_ARCADE_01_ENTRANCE_WIDE,三人沿街机通道向里走，阿磊被机器吸引，小川跟着看，小满被拉着走,planned
+MSB028_END_FRAME,B01,end_frame,micro_storyboard_panels/B01/MSB028_03_街霸机远处出现.png,MSB028,03,游戏厅入口,A,CAM_ARCADE_01_ENTRANCE_WIDE,远处一台街头霸王机器的屏幕更亮，像目标点,planned
+MSB029_KEYFRAME,B02,keyframe,micro_storyboard_panels/B02/MSB029_04_街霸机正面.png,MSB029,04,找到街霸,A,CAM_ARCADE_02_STREET_FIGHTER_CABINET,街头霸王街机占画面中心，屏幕和操作台磨损清楚,planned
+MSB030_STORYBOARD,B02,storyboard,micro_storyboard_panels/B02/MSB030_04_阿磊抢到操作位.png,MSB030,04,找到街霸,A,CAM_ARCADE_02_STREET_FIGHTER_CABINET,阿磊站到操作位，手放在摇杆旁，下巴微扬,planned
+MSB031_STORYBOARD,B02,storyboard,micro_storyboard_panels/B02/MSB031_04_小川靠旁边看.png,MSB031,04,找到街霸,A,CAM_ARCADE_02_STREET_FIGHTER_CABINET,小川站在阿磊侧后，红领巾被屏幕光照亮，手还抓书包带,planned
+MSB032_STORYBOARD,B02,storyboard,micro_storyboard_panels/B02/MSB032_04_小满躲机器后.png,MSB032,04,找到街霸,B,CAM_ARCADE_02_STREET_FIGHTER_CABINET,小满只露出半张脸和浅色衬衫，躲在小川身后看屏幕,planned
+MSB033_STORYBOARD,B02,storyboard,micro_storyboard_panels/B02/MSB033_04_按钮手部.png,MSB033,04,找到街霸,B,CAM_ARCADE_02_STREET_FIGHTER_CABINET,阿磊的儿童手指放到彩色按钮上，袖口磨毛和按钮划痕同框,planned
+MSB034_STORYBOARD,B02,storyboard,micro_storyboard_panels/B02/MSB034_04_彬子进入边缘.png,MSB034,04,找到街霸,A,CAM_ARCADE_02_STREET_FIGHTER_CABINET,彬子从机器另一侧进入画面，黄发梢和黑夹克先被看见,planned
+MSB035_START_FRAME,B02,start_frame,micro_storyboard_panels/B02/MSB035_04_两侧对位.png,MSB035,04,找到街霸,A,CAM_ARCADE_02_STREET_FIGHTER_CABINET,阿磊和彬子分别站在机器两侧，屏幕在中间，身高差和气势差清楚,planned
+MSB036_STORYBOARD,B02,storyboard,micro_storyboard_panels/B02/MSB036_04_小川反应.png,MSB036,04,找到街霸,B,CAM_ARCADE_02_STREET_FIGHTER_CABINET,小川看见彬子，笑意收住，眼睛从屏幕移到彬子脸上,planned
+MSB037_END_FRAME,B02,end_frame,micro_storyboard_panels/B02/MSB037_04_硬币入槽.png,MSB037,04,找到街霸,B,CAM_ARCADE_02_STREET_FIGHTER_CABINET,硬币投入街机槽，金属声和 CRT 光形成对战开始点,planned
+MSB038_START_FRAME,B02,start_frame,micro_storyboard_panels/B02/MSB038_05_对战开局肩背.png,MSB038,05,哥哥打赢老大,A,CAM_ARCADE_03_DUEL_OVER_SHOULDER,阿磊左前景肩背、彬子右侧，街霸屏幕夹在中间,planned
+MSB039_STORYBOARD,B02,storyboard,micro_storyboard_panels/B02/MSB039_05_阿磊快速按键.png,MSB039,05,哥哥打赢老大,B,CAM_ARCADE_03_DUEL_OVER_SHOULDER,阿磊手指在彩色按钮上快速动作，袖口磨毛明显,planned
+MSB040_STORYBOARD,B02,storyboard,micro_storyboard_panels/B02/MSB040_05_彬子挑衅侧脸.png,MSB040,05,哥哥打赢老大,A,CAM_ARCADE_03_DUEL_OVER_SHOULDER,彬子侧脸被 CRT 光照亮，嘴角歪，眼睛从下往上瞪,planned
+MSB041_STORYBOARD,B02,storyboard,micro_storyboard_panels/B02/MSB041_05_小川看哥哥.png,MSB041,05,哥哥打赢老大,B,CAM_ARCADE_03_DUEL_OVER_SHOULDER,小川不看屏幕，先看阿磊脸色，试图判断能不能高兴,planned
+MSB042_STORYBOARD,B02,storyboard,micro_storyboard_panels/B02/MSB042_05_屏幕战斗闪白.png,MSB042,05,哥哥打赢老大,B,CAM_ARCADE_03_DUEL_OVER_SHOULDER,街霸屏幕出现强烈攻击闪光，不需要真实游戏版权细节,planned
+MSB043_STORYBOARD,B02,storyboard,micro_storyboard_panels/B02/MSB043_05_阿磊嘴角压不住.png,MSB043,05,哥哥打赢老大,A,CAM_ARCADE_03_DUEL_OVER_SHOULDER,阿磊嘴角轻微上扬但不敢太明显，肩膀一抖,planned
+MSB044_STORYBOARD,B02,storyboard,micro_storyboard_panels/B02/MSB044_05_彬子表情变僵.png,MSB044,05,哥哥打赢老大,A,CAM_ARCADE_03_DUEL_OVER_SHOULDER,彬子笑意消失，眨眼变少，鼻翼绷紧,planned
+MSB045_KEYFRAME,B02,keyframe,micro_storyboard_panels/B02/MSB045_05_胜利画面亮起.png,MSB045,05,哥哥打赢老大,A,CAM_ARCADE_03_DUEL_OVER_SHOULDER,CRT 胜利画面红光爆亮，屏幕边缘反射在机身上,planned
+MSB046_KEYFRAME,B02,keyframe,micro_storyboard_panels/B02/MSB046_05_红光照彬子.png,MSB046,05,哥哥打赢老大,A,CAM_ARCADE_03_DUEL_OVER_SHOULDER,胜利红光照到彬子脸，黄发梢和嘴角小痣清楚,planned
+MSB047_STORYBOARD,B02,storyboard,micro_storyboard_panels/B02/MSB047_05_阿磊装不在乎.png,MSB047,05,哥哥打赢老大,A,CAM_ARCADE_03_DUEL_OVER_SHOULDER,阿磊想笑又忍住，手从按钮上离开，下巴更高,planned
+MSB048_STORYBOARD,B02,storyboard,micro_storyboard_panels/B02/MSB048_05_小川半笑.png,MSB048,05,哥哥打赢老大,B,CAM_ARCADE_03_DUEL_OVER_SHOULDER,小川看到哥哥赢，嘴角刚要笑，眼睛还看彬子反应,planned
+MSB049_END_FRAME,B02,end_frame,micro_storyboard_panels/B02/MSB049_05_彬子视线钉住阿磊.png,MSB049,05,哥哥打赢老大,A,CAM_ARCADE_03_DUEL_OVER_SHOULDER,彬子越过街机盯住阿磊，背景三同伙模糊出现,planned
+MSB050_KEYFRAME,B02,keyframe,micro_storyboard_panels/B02/MSB050_06_彬子脸色沉下.png,MSB050,06,老大记仇,A,CAM_ARCADE_04_BOSS_LOSES_REACTION,彬子脸在红光里僵住，嘴角歪笑消失，下颌咬紧,planned
+MSB051_STORYBOARD,B02,storyboard,micro_storyboard_panels/B02/MSB051_06_高杆入背景.png,MSB051,06,老大记仇,A,CAM_ARCADE_04_BOSS_LOSES_REACTION,高杆从背景一侧靠近，灰白夹克和长手臂先形成剪影,planned
+MSB052_STORYBOARD,B02,storyboard,micro_storyboard_panels/B02/MSB052_06_大海堵住后方.png,MSB052,06,老大记仇,B,CAM_ARCADE_04_BOSS_LOSES_REACTION,大海宽身体进入背景，褪色 T 恤和宽站姿把空间堵住,planned
+MSB053_STORYBOARD,B02,storyboard,micro_storyboard_panels/B02/MSB053_06_小齐起哄收声.png,MSB053,06,老大记仇,B,CAM_ARCADE_04_BOSS_LOSES_REACTION,小齐本来想笑，看到彬子脸色后笑收住，手抠袖口,planned
+MSB054_KEYFRAME,B02,keyframe,micro_storyboard_panels/B02/MSB054_06_四人轮廓成组.png,MSB054,06,老大记仇,A,CAM_ARCADE_04_BOSS_LOSES_REACTION,彬子矮在前，高杆高瘦、大海宽、小齐飘在边缘，轮廓差异清楚,planned
+MSB055_STORYBOARD,B02,storyboard,micro_storyboard_panels/B02/MSB055_06_阿磊没察觉后果.png,MSB055,06,老大记仇,A,CAM_ARCADE_04_BOSS_LOSES_REACTION,阿磊带着弟弟准备离开，还在压住笑意,planned
+MSB056_STORYBOARD,B02,storyboard,micro_storyboard_panels/B02/MSB056_06_彬子看背影.png,MSB056,06,老大记仇,A,CAM_ARCADE_04_BOSS_LOSES_REACTION,彬子盯着阿磊背影，手把腰包往上一拽,planned
+MSB057_END_FRAME,B02,end_frame,micro_storyboard_panels/B02/MSB057_06_街机声变闷.png,MSB057,06,老大记仇,B,CAM_ARCADE_04_BOSS_LOSES_REACTION,游戏厅仍热闹，但四人组所在区域像被声音抽空,planned
+MSB058_START_FRAME,B03,start_frame,micro_storyboard_panels/B03/MSB058_07_门内到门外.png,MSB058,07,志得意满离开,A,CAM_ARCADE_EXIT_01_LEAVING,三兄弟从门内 CRT 彩光走进门外黄路灯，色温切换清楚,planned
+MSB059_STORYBOARD,B03,storyboard,micro_storyboard_panels/B03/MSB059_07_阿磊比划胜利.png,MSB059,07,志得意满离开,A,CAM_ARCADE_EXIT_01_LEAVING,阿磊边走边用手模仿刚才的操作，肩膀抖一下,planned
+MSB060_STORYBOARD,B03,storyboard,micro_storyboard_panels/B03/MSB060_07_小川学了一下.png,MSB060,07,志得意满离开,B,CAM_ARCADE_EXIT_01_LEAVING,小川偷偷学阿磊按键动作，马上又攥回书包带,planned
+MSB061_STORYBOARD,B03,storyboard,micro_storyboard_panels/B03/MSB061_07_小满跟着笑.png,MSB061,07,志得意满离开,B,CAM_ARCADE_EXIT_01_LEAVING,小满看小川笑才跟着笑，衣角还攥在手里,planned
+MSB062_KEYFRAME,B03,keyframe,micro_storyboard_panels/B03/MSB062_07_门口空间回看.png,MSB062,07,志得意满离开,A,CAM_ARCADE_EXIT_01_LEAVING,游戏机房门口缩在老楼角落里，三兄弟走向小路方向,planned
+MSB063_STORYBOARD,B03,storyboard,micro_storyboard_panels/B03/MSB063_07_CRT_声远去.png,MSB063,07,志得意满离开,C,CAM_ARCADE_EXIT_01_LEAVING,门口旧招牌和漏出的彩光逐渐留在后景，街机声远去,planned
+MSB064_STORYBOARD,B03,storyboard,micro_storyboard_panels/B03/MSB064_07_阿磊走在最前.png,MSB064,07,志得意满离开,A,CAM_ARCADE_EXIT_01_LEAVING,阿磊保持前方，小川半步后，小满最后，队形回到初始但更放松,planned
+MSB065_END_FRAME,B03,end_frame,micro_storyboard_panels/B03/MSB065_07_暗巷入口.png,MSB065,07,志得意满离开,A,CAM_ARCADE_EXIT_01_LEAVING,三兄弟走进老小区背后的暗巷入口，黄路灯把影子拉长,planned
+MSB066_KEYFRAME,B03,keyframe,micro_storyboard_panels/B03/MSB066_08_小路全貌.png,MSB066,08,偏僻小路,A,CAM_ALLEY_01_WALK_HOME,狭窄小路两侧围墙和杂草，远处旧路灯，路面湿而空,planned
+MSB067_START_FRAME,B03,start_frame,micro_storyboard_panels/B03/MSB067_08_三兄弟进入小路.png,MSB067,08,偏僻小路,A,CAM_ALLEY_01_WALK_HOME,三兄弟从画面左侧进入，小路深处留出危险空间,planned
+MSB068_STORYBOARD,B03,storyboard,micro_storyboard_panels/B03/MSB068_08_阿磊继续讲赢法.png,MSB068,08,偏僻小路,B,CAM_ALLEY_01_WALK_HOME,阿磊边走边比划摇杆，小川抬头认真听,planned
+MSB069_STORYBOARD,B03,storyboard,micro_storyboard_panels/B03/MSB069_08_小满跟不上.png,MSB069,08,偏僻小路,C,CAM_ALLEY_01_WALK_HOME,小满落后半步，脚尖内扣，努力跟上哥哥节奏,planned
+MSB070_PROP,B03,prop,micro_storyboard_panels/B03/MSB070_08_路边碎石第一次出现.png,MSB070,08,偏僻小路,A,CAM_ALLEY_01_WALK_HOME,路边碎砖石和一块普通石块在画面角落出现，不被强调成武器,planned
+MSB071_STORYBOARD,B03,storyboard,micro_storyboard_panels/B03/MSB071_08_小川经过石块.png,MSB071,08,偏僻小路,A,CAM_ALLEY_01_WALK_HOME,小川从石块旁走过，完全没注意，书包甩过前景,planned
+MSB072_STORYBOARD,B03,storyboard,micro_storyboard_panels/B03/MSB072_08_远处阴影.png,MSB072,08,偏僻小路,A,CAM_ALLEY_01_WALK_HOME,小路前方灯下出现几个人影，三兄弟还未完全意识到,planned
+MSB073_STORYBOARD,B03,storyboard,micro_storyboard_panels/B03/MSB073_08_阿磊脚步变慢.png,MSB073,08,偏僻小路,A,CAM_ALLEY_01_WALK_HOME,阿磊的比划停住，身体略挡到小川前面,planned
+MSB074_STORYBOARD,B03,storyboard,micro_storyboard_panels/B03/MSB074_08_小川看哥哥表情.png,MSB074,08,偏僻小路,B,CAM_ALLEY_01_WALK_HOME,小川不看前方，先看阿磊脸色，笑收住,planned
+MSB075_END_FRAME,B03,end_frame,micro_storyboard_panels/B03/MSB075_08_三人停在小路中段.png,MSB075,08,偏僻小路,A,CAM_ALLEY_01_WALK_HOME,三兄弟停住，前方阴影更清楚，后方路变暗,planned
+MSB076_KEYFRAME,B03,keyframe,micro_storyboard_panels/B03/MSB076_09_混混四人亮相.png,MSB076,09,四人堵路,A,CAM_ALLEY_02_BLOCKED,彬子带三人从小路前方堵住去路，四人剪影差异明显,planned
+MSB077_STORYBOARD,B03,storyboard,micro_storyboard_panels/B03/MSB077_09_彬子向前半步.png,MSB077,09,四人堵路,A,CAM_ALLEY_02_BLOCKED,彬子短小身形向前压，下巴顶出，手拽腰包,planned
+MSB078_STORYBOARD,B03,storyboard,micro_storyboard_panels/B03/MSB078_09_高杆封侧路.png,MSB078,09,四人堵路,A,CAM_ALLEY_02_BLOCKED,高杆站在路边，长手臂横住墙边空隙,planned
+MSB079_STORYBOARD,B03,storyboard,micro_storyboard_panels/B03/MSB079_09_大海堵中线.png,MSB079,09,四人堵路,B,CAM_ALLEY_02_BLOCKED,大海宽脚站在路中，褪色 T 恤汗湿领口，身体像墙,planned
+MSB080_STORYBOARD,B03,storyboard,micro_storyboard_panels/B03/MSB080_09_小齐起哄.png,MSB080,09,四人堵路,B,CAM_ALLEY_02_BLOCKED,小齐在边缘前探，嘴角快笑，手还抠袖口,planned
+MSB081_KEYFRAME,B03,keyframe,micro_storyboard_panels/B03/MSB081_09_阿磊挡弟弟.png,MSB081,09,四人堵路,A,CAM_ALLEY_02_BLOCKED,阿磊迈到小川和小满前面，三兄弟左侧队形收紧,planned
+MSB082_STORYBOARD,B03,storyboard,micro_storyboard_panels/B03/MSB082_09_小川被遮住半个.png,MSB082,09,四人堵路,A,CAM_ALLEY_02_BLOCKED,小川站在阿磊背后半个身位，眼睛越过哥哥看彬子,planned
+MSB083_STORYBOARD,B03,storyboard,micro_storyboard_panels/B03/MSB083_09_小满靠墙.png,MSB083,09,四人堵路,B,CAM_ALLEY_02_BLOCKED,小满退到墙边，抓衣角，脚尖内扣，不知道该跑还是站,planned
+MSB084_STORYBOARD,B03,storyboard,micro_storyboard_panels/B03/MSB084_09_双方空间关系.png,MSB084,09,四人堵路,A,CAM_ALLEY_02_BLOCKED,小路像被两组人堵成死巷，三兄弟后方也变暗,planned
+MSB085_END_FRAME,B03,end_frame,micro_storyboard_panels/B03/MSB085_09_彬子盯阿磊.png,MSB085,09,四人堵路,A,CAM_ALLEY_02_BLOCKED,彬子越过小路盯住阿磊，旧街机红光记忆从脸上隐约回响,planned
+MSB086_START_FRAME,B04,start_frame,micro_storyboard_panels/B04/MSB086_10_四人收拢.png,MSB086,10,围殴哥哥,A,CAM_ALLEY_03_BROTHER_BEATEN,混混四人从半圆收拢，阿磊被挤到画面中心,planned
+MSB087_STORYBOARD,B04,storyboard,micro_storyboard_panels/B04/MSB087_10_阿磊还嘴.png,MSB087,10,围殴哥哥,B,CAM_ALLEY_03_BROTHER_BEATEN,阿磊下巴抬着说话，手却从口袋里抽出来挡在身前,planned
+MSB088_STORYBOARD,B04,storyboard,micro_storyboard_panels/B04/MSB088_10_高杆封退路.png,MSB088,10,围殴哥哥,A,CAM_ALLEY_03_BROTHER_BEATEN,高杆长手臂挡住阿磊侧后，灰白袖子像横杠,planned
+MSB089_STORYBOARD,B04,storyboard,micro_storyboard_panels/B04/MSB089_10_大海肩膀顶近.png,MSB089,10,围殴哥哥,A,CAM_ALLEY_03_BROTHER_BEATEN,大海用肩膀和身体把空间压小，不做漂亮拳脚,planned
+MSB090_STORYBOARD,B04,storyboard,micro_storyboard_panels/B04/MSB090_10_小齐起哄边退.png,MSB090,10,围殴哥哥,B,CAM_ALLEY_03_BROTHER_BEATEN,小齐在边上起哄，身体前探但脚随时想退,planned
+MSB091_STORYBOARD,B04,storyboard,micro_storyboard_panels/B04/MSB091_10_彬子靠近阿磊.png,MSB091,10,围殴哥哥,A,CAM_ALLEY_03_BROTHER_BEATEN,彬子站到阿磊面前，短脖子前压，嘴角歪,planned
+MSB092_STORYBOARD,B04,storyboard,micro_storyboard_panels/B04/MSB092_10_第一次推搡.png,MSB092,10,围殴哥哥,A,CAM_ALLEY_03_BROTHER_BEATEN,阿磊被推得肩膀一歪，仍想站稳,planned
+MSB093_KEYFRAME,B04,keyframe,micro_storyboard_panels/B04/MSB093_10_小川侧面僵住.png,MSB093,10,围殴哥哥,A,CAM_ALLEY_03_BROTHER_BEATEN,小川站在侧面，双手攥书包带，眼睛在哥哥和彬子之间跳,planned
+MSB094_STORYBOARD,B04,storyboard,micro_storyboard_panels/B04/MSB094_10_小满完全不动.png,MSB094,10,围殴哥哥,B,CAM_ALLEY_03_BROTHER_BEATEN,小满靠墙，嘴角下压，抓衣角，不哭也不喊,planned
+MSB095_KEYFRAME,B04,keyframe,micro_storyboard_panels/B04/MSB095_10_哥哥失衡低位.png,MSB095,10,围殴哥哥,A,CAM_ALLEY_03_BROTHER_BEATEN,阿磊被推到更低位置，混混身体变成画面边框,planned
+MSB096_END_FRAME,B04,end_frame,micro_storyboard_panels/B04/MSB096_10_彬子准备下狠手.png,MSB096,10,围殴哥哥,A,CAM_ALLEY_03_BROTHER_BEATEN,彬子表情变空，手臂或身体准备进一步动作，但不展示暴力细节,planned
+MSB097_STORYBOARD,B04,storyboard,micro_storyboard_panels/B04/MSB097_10_小川视线下坠前.png,MSB097,10,围殴哥哥,A,CAM_ALLEY_03_BROTHER_BEATEN,小川看到彬子的准备动作，脸僵住，眼神即将落向地面,planned
+MSB098_PROP,B04,prop,micro_storyboard_panels/B04/MSB098_11_石块再出现.png,MSB098,11,石块失手,A,CAM_ALLEY_04_STONE_HIT,路边普通石块在湿地边缘，旁边碎砖和杂草说明它属于环境,planned
+MSB099_STORYBOARD,B04,storyboard,micro_storyboard_panels/B04/MSB099_11_小川眼神落下.png,MSB099,11,石块失手,A,CAM_ALLEY_04_STONE_HIT,小川眼神从哥哥和彬子之间突然落到地面石块,planned
+MSB100_STORYBOARD,B04,storyboard,micro_storyboard_panels/B04/MSB100_11_手松开书包带.png,MSB100,11,石块失手,B,CAM_ALLEY_04_STONE_HIT,小川一只手从书包带上松开，指节发白,planned
+MSB101_STORYBOARD,B04,storyboard,micro_storyboard_panels/B04/MSB101_11_弯身动作开始.png,MSB101,11,石块失手,A,CAM_ALLEY_04_STONE_HIT,小川身体歪斜向下，不是漂亮下蹲，书包失去平衡,planned
+MSB102_KEYFRAME,B04,keyframe,micro_storyboard_panels/B04/MSB102_11_手碰到石块.png,MSB102,11,石块失手,A,CAM_ALLEY_04_STONE_HIT,小川的手碰到湿石块，泥水和小手比例清楚,planned
+MSB103_STORYBOARD,B04,storyboard,micro_storyboard_panels/B04/MSB103_11_彬子动作逼近.png,MSB103,11,石块失手,A,CAM_ALLEY_04_STONE_HIT,彬子准备动作继续靠近阿磊，画面边缘小川弯身,planned
+MSB104_STORYBOARD,B04,storyboard,micro_storyboard_panels/B04/MSB104_11_小川起身甩动.png,MSB104,11,石块失手,A,CAM_ALLEY_04_STONE_HIT,小川抓着石块猛地起身，身体歪，动作短促混乱,planned
+MSB105_END_FRAME,B04,end_frame,micro_storyboard_panels/B04/MSB105_11_遮挡冲击瞬间.png,MSB105,11,石块失手,A,CAM_ALLEY_04_STONE_HIT,前景人影或路灯柱遮住冲击瞬间，只看到众人身体突然停住,planned
+MSB106_KEYFRAME,B04,keyframe,micro_storyboard_panels/B04/MSB106_11_彬子不可置信.png,MSB106,11,石块失手,A,CAM_ALLEY_04_STONE_HIT,彬子不做血腥表现，只拍脸上不可置信和失去凶相的空白,planned
+MSB107_KEYFRAME,B04,keyframe,micro_storyboard_panels/B04/MSB107_11_小川失声.png,MSB107,11,石块失手,A,CAM_ALLEY_04_STONE_HIT,小川手还悬着，嘴张开但发不出声，浅绿书包歪到一边,planned
+MSB108_START_FRAME,B04,start_frame,micro_storyboard_panels/B04/MSB108_12_冻结后的第一步.png,MSB108,12,主角逃跑,A,CAM_ALLEY_05_ESCAPE_VECTOR,小川从冻结中突然歪出去，脚步不是标准起跑,planned
+MSB109_STORYBOARD,B04,storyboard,micro_storyboard_panels/B04/MSB109_12_书包猛甩.png,MSB109,12,主角逃跑,A,CAM_ALLEY_05_ESCAPE_VECTOR,浅绿色书包斜甩，红领巾被带起，证明是同一个主角,planned
+MSB110_STORYBOARD,B04,storyboard,micro_storyboard_panels/B04/MSB110_12_哥哥留后方.png,MSB110,12,主角逃跑,A,CAM_ALLEY_05_ESCAPE_VECTOR,阿磊和小满留在混乱后方，阿磊半起身想喊，小满仍僵,planned
+MSB111_STORYBOARD,B04,storyboard,micro_storyboard_panels/B04/MSB111_12_混混反应慢半拍.png,MSB111,12,主角逃跑,B,CAM_ALLEY_05_ESCAPE_VECTOR,高杆和大海先愣住，小齐收声，彬子状态不清,planned
+MSB112_STORYBOARD,B04,storyboard,micro_storyboard_panels/B04/MSB112_12_小川冲过石块点.png,MSB112,12,主角逃跑,A,CAM_ALLEY_05_ESCAPE_VECTOR,小川跑过刚才石块所在位置，湿地反光拉长,planned
+MSB113_STORYBOARD,B04,storyboard,micro_storyboard_panels/B04/MSB113_12_追兵启动.png,MSB113,12,主角逃跑,A,CAM_ALLEY_05_ESCAPE_VECTOR,后方混混开始反应追，但与小川保持距离,planned
+MSB114_STORYBOARD,B04,storyboard,micro_storyboard_panels/B04/MSB114_12_墙面擦镜.png,MSB114,12,主角逃跑,B,CAM_ALLEY_05_ESCAPE_VECTOR,黑暗墙面快速擦过镜头，作为逃跑隐藏剪辑,planned
+MSB115_KEYFRAME,B04,keyframe,micro_storyboard_panels/B04/MSB115_12_路灯拖影.png,MSB115,12,主角逃跑,A,CAM_ALLEY_05_ESCAPE_VECTOR,旧路灯在小川头顶拉成长条，像 CRT 扫描线预兆,planned
+MSB116_STORYBOARD,B04,storyboard,micro_storyboard_panels/B04/MSB116_12_小川回头.png,MSB116,12,主角逃跑,A,CAM_ALLEY_05_ESCAPE_VECTOR,小川边跑边短促回头，圆眼睛睁大，嘴还张着,planned
+MSB117_STORYBOARD,B04,storyboard,micro_storyboard_panels/B04/MSB117_12_废楼轮廓出现.png,MSB117,12,主角逃跑,A,CAM_ALLEY_05_ESCAPE_VECTOR,小路尽头出现废楼暗入口，像唯一可逃方向,planned
+MSB118_END_FRAME,B04,end_frame,micro_storyboard_panels/B04/MSB118_12_小川冲向废楼.png,MSB118,12,主角逃跑,A,CAM_ALLEY_05_ESCAPE_VECTOR,小川朝废楼入口跑去，追兵声音留在后方,planned
+MSB119_KEYFRAME,B04,keyframe,micro_storyboard_panels/B04/MSB119_12_黑暗吞没.png,MSB119,12,主角逃跑,A,CAM_ALLEY_05_ESCAPE_VECTOR,小川身影被废楼入口暗处吞进去，路灯黄留在外面,planned
+MSB120_START_FRAME,B05,start_frame,micro_storyboard_panels/B05/MSB120_13_入口内反打.png,MSB120,13,进入废楼,A,CAM_CORRIDOR_01_ENTRY_LONG,从废楼内部看小川冲进来，外面小路黄光在身后变小,planned
+MSB121_STORYBOARD,B05,storyboard,micro_storyboard_panels/B05/MSB121_13_第一次冷绿光.png,MSB121,13,进入废楼,A,CAM_CORRIDOR_01_ENTRY_LONG,冷绿灯管照到小川脸和红领巾，颜色从黄路灯切换,planned
+MSB122_KEYFRAME,B05,keyframe,micro_storyboard_panels/B05/MSB122_13_走廊中轴.png,MSB122,13,进入废楼,A,CAM_CORRIDOR_01_ENTRY_LONG,长走廊重复门洞和消防箱清楚，小川站在近处很小,planned
+MSB123_STORYBOARD,B05,storyboard,micro_storyboard_panels/B05/MSB123_13_小川继续跑.png,MSB123,13,进入废楼,A,CAM_CORRIDOR_01_ENTRY_LONG,小川沿走廊深处跑，书包晃动变小,planned
+MSB124_STORYBOARD,B05,storyboard,micro_storyboard_panels/B05/MSB124_13_脚步回声.png,MSB124,13,进入废楼,B,CAM_CORRIDOR_01_ENTRY_LONG,白鞋踩过湿冷地面，回声拉长,planned
+MSB125_STORYBOARD,B05,storyboard,micro_storyboard_panels/B05/MSB125_13_回头看入口.png,MSB125,13,进入废楼,A,CAM_CORRIDOR_01_ENTRY_LONG,小川回头看入口，追兵声像被门口吞掉,planned
+MSB126_STORYBOARD,B05,storyboard,micro_storyboard_panels/B05/MSB126_13_墙面剥落细节.png,MSB126,13,进入废楼,C,CAM_CORRIDOR_01_ENTRY_LONG,发霉墙、旧标语残片、消防箱红色块，建立废楼质感,planned
+MSB127_END_FRAME,B05,end_frame,micro_storyboard_panels/B05/MSB127_13_小川变小.png,MSB127,13,进入废楼,A,CAM_CORRIDOR_01_ENTRY_LONG,小川跑向深处，身影被重复门洞切碎,planned
+MSB128_STORYBOARD,B05,storyboard,micro_storyboard_panels/B05/MSB128_13_走廊空一拍.png,MSB128,13,进入废楼,B,CAM_CORRIDOR_01_ENTRY_LONG,小川刚跑出画面，走廊空着，只剩冷绿灯闪,planned
+MSB129_START_FRAME,B05,start_frame,micro_storyboard_panels/B05/MSB129_14_贴墙低位跟拍.png,MSB129,14,无限走廊,A,CAM_CORRIDOR_02_LOW_TRACK,镜头贴着墙面跟小川跑，墙皮近到压迫画面,planned
+MSB130_STORYBOARD,B05,storyboard,micro_storyboard_panels/B05/MSB130_14_小川手扶墙.png,MSB130,14,无限走廊,A,CAM_CORRIDOR_02_LOW_TRACK,小川一只手扶墙，另一只手抓书包带，呼吸乱,planned
+MSB131_STORYBOARD,B05,storyboard,micro_storyboard_panels/B05/MSB131_14_回头无追兵.png,MSB131,14,无限走廊,A,CAM_CORRIDOR_02_LOW_TRACK,小川猛回头，远处没有清晰追兵，只有灯管闪,planned
+MSB132_KEYFRAME,B05,keyframe,micro_storyboard_panels/B05/MSB132_14_门洞重复.png,MSB132,14,无限走廊,A,CAM_CORRIDOR_02_LOW_TRACK,重复门洞看起来比上一镜更多，但结构仍真实,planned
+MSB133_STORYBOARD,B05,storyboard,micro_storyboard_panels/B05/MSB133_14_灯管节奏.png,MSB133,14,无限走廊,B,CAM_CORRIDOR_02_LOW_TRACK,冷绿灯管闪烁，节奏慢慢接近电话铃,planned
+MSB134_STORYBOARD,B05,storyboard,micro_storyboard_panels/B05/MSB134_14_小川停一下.png,MSB134,14,无限走廊,A,CAM_CORRIDOR_02_LOW_TRACK,小川停在走廊边，嘴张开，试图听声音,planned
+MSB135_STORYBOARD,B05,storyboard,micro_storyboard_panels/B05/MSB135_14_远处暗门.png,MSB135,14,无限走廊,B,CAM_CORRIDOR_02_LOW_TRACK,走廊尽头仍是暗门，没有出口，空间像循环,planned
+MSB136_STORYBOARD,B05,storyboard,micro_storyboard_panels/B05/MSB136_14_小川继续走.png,MSB136,14,无限走廊,A,CAM_CORRIDOR_02_LOW_TRACK,小川从跑变成慢走，书包歪着，脚步变轻,planned
+MSB137_END_FRAME,B05,end_frame,micro_storyboard_panels/B05/MSB137_14_铃声第一次进入.png,MSB137,14,无限走廊,A,CAM_CORRIDOR_02_LOW_TRACK,小川听到远处铃声，眼睛抬起但不知来源,planned
+MSB138_STORYBOARD,B05,storyboard,micro_storyboard_panels/B05/MSB138_14_走廊深处微光未明.png,MSB138,14,无限走廊,A,CAM_CORRIDOR_02_LOW_TRACK,走廊深处出现极弱暖点，还不像电话亭,planned
+MSB139_KEYFRAME,B05,keyframe,micro_storyboard_panels/B05/MSB139_15_暖光明确.png,MSB139,15,远处电话亭,A,CAM_PHONE_01_DISTANT_GLOW,走廊尽头暖白光变清楚，电话亭轮廓第一次可辨,planned
+MSB140_START_FRAME,B05,start_frame,micro_storyboard_panels/B05/MSB140_15_小川远处停住.png,MSB140,15,远处电话亭,A,CAM_PHONE_01_DISTANT_GLOW,小川在走廊中段停下，面对远处电话亭，比例很小,planned
+MSB141_STORYBOARD,B05,storyboard,micro_storyboard_panels/B05/MSB141_15_铃声来源.png,MSB141,15,远处电话亭,A,CAM_PHONE_01_DISTANT_GLOW,小川侧脸听铃声，眼睛看向暖光，红领巾微亮,planned
+MSB142_STORYBOARD,B05,storyboard,micro_storyboard_panels/B05/MSB142_15_电话亭像错误物.png,MSB142,15,远处电话亭,A,CAM_PHONE_01_DISTANT_GLOW,电话亭不合理地嵌在废楼深处，但材质是旧玻璃和金属,planned
+MSB143_KEYFRAME,B05,keyframe,micro_storyboard_panels/B05/MSB143_15_冷暖对比.png,MSB143,15,远处电话亭,A,CAM_PHONE_01_DISTANT_GLOW,冷绿走廊和暖白电话亭形成明确色块，小川夹在中间,planned
+MSB144_STORYBOARD,B05,storyboard,micro_storyboard_panels/B05/MSB144_15_小川迈出第一步.png,MSB144,15,远处电话亭,B,CAM_PHONE_01_DISTANT_GLOW,小川很慢地向电话亭方向迈一步，不是逃跑,planned
+MSB145_STORYBOARD,B05,storyboard,micro_storyboard_panels/B05/MSB145_15_电话线细节远现.png,MSB145,15,远处电话亭,B,CAM_PHONE_01_DISTANT_GLOW,电话亭内旧电话和垂下电话线隐约可见,planned
+MSB146_END_FRAME,B05,end_frame,micro_storyboard_panels/B05/MSB146_15_靠近前停顿.png,MSB146,15,远处电话亭,A,CAM_PHONE_01_DISTANT_GLOW,小川在电话亭前方一段距离停下，暖光照到鞋尖,planned
+MSB147_START_FRAME,B05,start_frame,micro_storyboard_panels/B05/MSB147_16_电话亭门框前景.png,MSB147,16,靠近电话亭,A,CAM_PHONE_02_APPROACH_CLOSE,电话亭门框占前景，小川从左侧黑暗靠近,planned
+MSB148_STORYBOARD,B05,storyboard,micro_storyboard_panels/B05/MSB148_16_暖光照红领巾.png,MSB148,16,靠近电话亭,A,CAM_PHONE_02_APPROACH_CLOSE,暖白光先照到小川红领巾和脸下半部，眼睛仍在阴影里,planned
+MSB149_STORYBOARD,B05,storyboard,micro_storyboard_panels/B05/MSB149_16_书包边缘亮起.png,MSB149,16,靠近电话亭,B,CAM_PHONE_02_APPROACH_CLOSE,浅绿色书包边缘被电话亭光勾出来，肩带一松一紧,planned
+MSB150_STORYBOARD,B05,storyboard,micro_storyboard_panels/B05/MSB150_16_小川看听筒.png,MSB150,16,靠近电话亭,A,CAM_PHONE_02_APPROACH_CLOSE,小川眼睛看向旧听筒，不看镜头，嘴唇半张,planned
+MSB151_STORYBOARD,B05,storyboard,micro_storyboard_panels/B05/MSB151_16_伸手又缩.png,MSB151,16,靠近电话亭,A,CAM_PHONE_02_APPROACH_CLOSE,小川手伸向电话亭边缘又缩回一点，指尖颤,planned
+MSB152_KEYFRAME,B05,keyframe,micro_storyboard_panels/B05/MSB152_16_站到电话亭前.png,MSB152,16,靠近电话亭,A,CAM_PHONE_02_APPROACH_CLOSE,小川站在电话亭前，小身体被暖光包住，背后仍是冷绿走廊,planned
+MSB153_STORYBOARD,B05,storyboard,micro_storyboard_panels/B05/MSB153_16_铃声压迫.png,MSB153,16,靠近电话亭,B,CAM_PHONE_02_APPROACH_CLOSE,旧电话听筒轻微震动或铃声源头被强调，塑料旧化清楚,planned
+MSB154_END_FRAME,B05,end_frame,micro_storyboard_panels/B05/MSB154_16_手准备拿起.png,MSB154,16,靠近电话亭,A,CAM_PHONE_02_APPROACH_CLOSE,小川手悬在听筒旁，眼泪没落，呼吸压住,planned
+MSB155_START_FRAME,B06,start_frame,micro_storyboard_panels/B06/MSB155_17_听筒静止.png,MSB155,17,接起电话,A,CAM_PHONE_03_RECEIVER_INSERT,旧电话听筒安静挂着，暖白光照出塑料划痕,planned
+MSB156_STORYBOARD,B06,storyboard,micro_storyboard_panels/B06/MSB156_17_手进入画面.png,MSB156,17,接起电话,A,CAM_PHONE_03_RECEIVER_INSERT,小川的小手从下方进入画面，指尖犹豫,planned
+MSB157_STORYBOARD,B06,storyboard,micro_storyboard_panels/B06/MSB157_17_指尖碰到听筒.png,MSB157,17,接起电话,A,CAM_PHONE_03_RECEIVER_INSERT,指尖刚碰到旧听筒，手指发僵,planned
+MSB158_KEYFRAME,B06,keyframe,micro_storyboard_panels/B06/MSB158_17_听筒离座.png,MSB158,17,接起电话,A,CAM_PHONE_03_RECEIVER_INSERT,听筒被轻轻拿起，底座弹起，电话线开始晃,planned
+MSB159_STORYBOARD,B06,storyboard,micro_storyboard_panels/B06/MSB159_17_电话线晃动.png,MSB159,17,接起电话,B,CAM_PHONE_03_RECEIVER_INSERT,旧电话线轻轻晃，形状像之后的像素线条,planned
+MSB160_END_FRAME,B06,end_frame,micro_storyboard_panels/B06/MSB160_17_听筒贴耳.png,MSB160,17,接起电话,A,CAM_PHONE_03_RECEIVER_INSERT,小川把听筒贴近耳边，眼睛看向空处,planned
+MSB161_KEYFRAME,B06,keyframe,micro_storyboard_panels/B06/MSB161_17_声音进入身体.png,MSB161,17,接起电话,A,CAM_PHONE_03_RECEIVER_INSERT,小川脸部微微僵住，暖光与冷绿在脸上分裂,planned
+MSB162_START_FRAME,B06,start_frame,micro_storyboard_panels/B06/MSB162_18_电话线起扫描.png,MSB162,18,电子化,A,CAM_PHONE_02_APPROACH_CLOSE,电话线表面出现细微 CRT 扫描线，不是科幻电流,planned
+MSB163_STORYBOARD,B06,storyboard,micro_storyboard_panels/B06/MSB163_18_扫描到手腕.png,MSB163,18,电子化,A,CAM_PHONE_02_APPROACH_CLOSE,扫描线从听筒沿电话线到小川手腕，手仍颤,planned
+MSB164_STORYBOARD,B06,storyboard,micro_storyboard_panels/B06/MSB164_18_红领巾色块化.png,MSB164,18,电子化,A,CAM_PHONE_02_APPROACH_CLOSE,小川红领巾边缘出现低分辨率色块，但脸仍真实,planned
+MSB165_STORYBOARD,B06,storyboard,micro_storyboard_panels/B06/MSB165_18_书包变色块.png,MSB165,18,电子化,B,CAM_PHONE_02_APPROACH_CLOSE,浅绿色书包边缘被像素块切开，身份锚点保留,planned
+MSB166_KEYFRAME,B06,keyframe,micro_storyboard_panels/B06/MSB166_18_走廊边缘分裂.png,MSB166,18,电子化,A,CAM_PHONE_02_APPROACH_CLOSE,电话亭后方走廊墙砖和灯管边缘开始色彩错位,planned
+MSB167_STORYBOARD,B06,storyboard,micro_storyboard_panels/B06/MSB167_18_脸部半电子化.png,MSB167,18,电子化,A,CAM_PHONE_02_APPROACH_CLOSE,小川半张脸仍真实，半张脸被扫描线切割,planned
+MSB168_END_FRAME,B06,end_frame,micro_storyboard_panels/B06/MSB168_18_纵深展平前.png,MSB168,18,电子化,A,CAM_PHONE_02_APPROACH_CLOSE,走廊纵深像纸片一样被压平，电话亭位置仍在深处,planned
+MSB169_KEYFRAME,B06,keyframe,micro_storyboard_panels/B06/MSB169_18_像素闪白.png,MSB169,18,电子化,A,CAM_PHONE_02_APPROACH_CLOSE,CRT 扫描线和像素块闪白，作为进入 8-bit 的隐藏剪辑,planned
+MSB170_KEYFRAME,B06,keyframe,micro_storyboard_panels/B06/MSB170_19_横版舞台建立.png,MSB170,19,进入8-bit关卡,A,CAM_8BIT_01_STAGE_WIDE,废楼走廊变成像素横版舞台，电话亭在背景中右,planned
+MSB171_START_FRAME,B06,start_frame,micro_storyboard_panels/B06/MSB171_19_像素小川待机.png,MSB171,19,进入8-bit关卡,A,CAM_8BIT_01_STAGE_WIDE,像素小川站在左侧，蓝白外套、红领巾、浅绿书包色块清楚,planned
+MSB172_STORYBOARD,B06,storyboard,micro_storyboard_panels/B06/MSB172_19_UI_初现.png,MSB172,19,进入8-bit关卡,B,CAM_8BIT_01_STAGE_WIDE,老街机 UI 边缘出现，血条/分数有限色盘，不遮挡角色,planned
+MSB173_STORYBOARD,B06,storyboard,micro_storyboard_panels/B06/MSB173_19_敌人影子右侧.png,MSB173,19,进入8-bit关卡,A,CAM_8BIT_01_STAGE_WIDE,四个像素敌人的影子从右侧进入，轮廓差异先出现,planned
+MSB174_KEYFRAME,B06,keyframe,micro_storyboard_panels/B06/MSB174_19_彬子_mini-boss.png,MSB174,19,进入8-bit关卡,A,CAM_8BIT_01_STAGE_WIDE,短小黑夹克黄发像素敌人站在前方，腰包小色块可读,planned
+MSB175_STORYBOARD,B06,storyboard,micro_storyboard_panels/B06/MSB175_19_高杆长条敌人.png,MSB175,19,进入8-bit关卡,B,CAM_8BIT_01_STAGE_WIDE,高杆像素敌人长条身形，横臂封路动作保留,planned
+MSB176_STORYBOARD,B06,storyboard,micro_storyboard_panels/B06/MSB176_19_大海小齐入位.png,MSB176,19,进入8-bit关卡,A,CAM_8BIT_01_STAGE_WIDE,宽体块大海和抖动小齐进入队形，四人功能清楚,planned
+MSB177_END_FRAME,B06,end_frame,micro_storyboard_panels/B06/MSB177_19_战斗开始前静止.png,MSB177,19,进入8-bit关卡,A,CAM_8BIT_01_STAGE_WIDE,像素小川左侧，四个敌人右侧，电话亭仍在背景，开战前停一拍,planned
+MSB178_STORYBOARD,B06,storyboard,micro_storyboard_panels/B06/MSB178_20_第一下书包旋风.png,MSB178,20,WIN / INSERT COIN,A,CAM_8BIT_02_WIN_SCREEN,像素小川用浅绿书包色块形成短促旋风，击退最近敌人,planned
+MSB179_STORYBOARD,B06,storyboard,micro_storyboard_panels/B06/MSB179_20_硬币冲击波.png,MSB179,20,WIN / INSERT COIN,A,CAM_8BIT_02_WIN_SCREEN,一枚像素硬币从小川方向弹出，形成低分辨率冲击波,planned
+MSB180_STORYBOARD,B06,storyboard,micro_storyboard_panels/B06/MSB180_20_高杆被击退.png,MSB180,20,WIN / INSERT COIN,B,CAM_8BIT_02_WIN_SCREEN,高杆长条像素敌人向后滑，横臂封路姿态瓦解,planned
+MSB181_STORYBOARD,B06,storyboard,micro_storyboard_panels/B06/MSB181_20_大海倒退.png,MSB181,20,WIN / INSERT COIN,B,CAM_8BIT_02_WIN_SCREEN,大海宽体块敌人被推回，挡路墙感消失,planned
+MSB182_STORYBOARD,B06,storyboard,micro_storyboard_panels/B06/MSB182_20_小齐闪退.png,MSB182,20,WIN / INSERT COIN,B,CAM_8BIT_02_WIN_SCREEN,小齐小像素敌人第一个慌张后跳，条纹色块抖动,planned
+MSB183_KEYFRAME,B06,keyframe,micro_storyboard_panels/B06/MSB183_20_彬子_mini-boss_停住.png,MSB183,20,WIN / INSERT COIN,A,CAM_8BIT_02_WIN_SCREEN,彬子像素敌人最后停住，黄发黑夹克色块仍清楚,planned
+MSB184_END_FRAME,B06,end_frame,micro_storyboard_panels/B06/MSB184_20_清场瞬间.png,MSB184,20,WIN / INSERT COIN,A,CAM_8BIT_02_WIN_SCREEN,敌人全部消失或倒地成低分辨率闪烁，不做血腥表现,planned
+MSB185_STORYBOARD,B06,storyboard,micro_storyboard_panels/B06/MSB185_20_小川不庆祝.png,MSB185,20,WIN / INSERT COIN,A,CAM_8BIT_02_WIN_SCREEN,像素小川站在左中，仍是紧张待机动作，没有胜利姿势,planned
+MSB186_KEYFRAME,B06,keyframe,micro_storyboard_panels/B06/MSB186_20_WIN_居中.png,MSB186,20,WIN / INSERT COIN,A,CAM_8BIT_02_WIN_SCREEN,巨大黄色像素字 WIN 出现在画面中央，背景仍是废楼像素走廊,planned
+MSB187_STORYBOARD,B06,storyboard,micro_storyboard_panels/B06/MSB187_20_一秒安静.png,MSB187,20,WIN / INSERT COIN,A,CAM_8BIT_02_WIN_SCREEN,WIN 保持不动，像街机卡住一样安静，电话亭轮廓仍在背景,planned
+MSB188_KEYFRAME,B06,keyframe,micro_storyboard_panels/B06/MSB188_20_INSERT_COIN_尾针.png,MSB188,20,WIN / INSERT COIN,A,CAM_8BIT_02_WIN_SCREEN,画面角落闪出 INSERT COIN，WIN 仍在，街机待机感吞掉结局,planned

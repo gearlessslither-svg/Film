@@ -1,0 +1,49 @@
+track,event_id,start_time,end_time,wav_name,gain_db,pan,processing,notes
+ambience,AMB_001,00:00.0,00:16.0,audio/ambience/AMB_001_compound_night_loop.wav,-18,center,"lowpass, subtle VHS noise",Clip 01 / MSB001-MSB008
+sfx,SFX_001,00:08.0,00:16.0,audio/sfx/SFX_001_crt_leak_hum.wav,-6,center,CRT hum,Clip 01 / MSB003-MSB008
+sfx,FOLEY_001,00:16.0,00:34.0,audio/sfx/FOLEY_001_three_brothers_steps.wav,-6,center,room/outdoor natural,Clip 02 / MSB009-MSB018
+voice_dialogue,DIA_001,00:18.0,00:20.0,audio/voice_clean/DIA_001_alei_genjin.wav,-3,center,"dry child voice, slight alley room",Clip 02 / MSB009-MSB012
+voice_dialogue,DIA_002,00:24.0,00:25.6,audio/voice_clean/DIA_002_xiaochuan_nengwan.wav,-3,center,dry child voice,Clip 02 / MSB013-MSB016
+voice_dialogue,DIA_003,00:28.0,00:29.2,audio/voice_clean/DIA_003_alei_kanwo.wav,-3,center,dry child voice,Clip 02 / MSB017-MSB018
+ambience,AMB_002,00:34.0,01:42.0,audio/ambience/AMB_002_old_arcade_loop.wav,-18,center,"roomy, smoky, VHS",Clip 03-06 / MSB019-MSB057
+sfx,SFX_002,00:34.0,00:50.0,audio/sfx/SFX_002_plastic_curtain_wipe.wav,-6,center,close foley,Clip 03 / MSB019-MSB028
+voice_walla,WLA_001,00:40.0,00:48.0,audio/voice_processed/WLA_001_arcade_walla.wav,-10,center,"roomy, CRT noise, muffled crowd",Clip 03 / MSB019-MSB028
+voice_dialogue,DIA_004,00:57.0,00:58.4,audio/voice_clean/DIA_004_binzi_huiwan.wav,-3,center,dry with arcade bed separate,Clip 04 / MSB034-MSB036
+sfx,SFX_003,00:58.0,01:02.0,audio/sfx/SFX_003_coin_insert.wav,-6,center,"close, metallic",Clip 04 / MSB029-MSB037
+voice_dialogue,DIA_005,01:00.0,01:01.0,audio/voice_clean/DIA_005_alei_shishi.wav,-3,center,dry child voice,Clip 04 / MSB036-MSB037
+sfx,SFX_004,01:06.0,01:25.0,audio/sfx/SFX_004_arcade_duel_buttons.wav,-6,center,arcade cabinet perspective,Clip 05 / MSB038-MSB049
+sfx,SFX_005,01:22.0,01:27.0,audio/sfx/SFX_005_victory_glitch.wav,-6,center,"8-bit, distorted tail",Clip 05 / MSB045-MSB049
+voice_dialogue,DIA_006,01:25.0,01:26.2,audio/voice_clean/DIA_006_binzi_dengzhe.wav,-3,center,"dry, can be lightly roomed later",Clip 05 / MSB049
+music,MUS_001,01:28.0,01:42.0,audio/music/MUS_001_revenge_low_drone.wav,-12,center,"low drone, sidechain under arcade",Clip 06 / MSB050-MSB057
+sfx,TRANS_001,01:42.0,01:56.0,audio/sfx/TRANS_001_arcade_to_alley.wav,-6,center,"crossfade, lowpass",Clip 07 / MSB058-MSB065
+voice_dialogue,DIA_007,01:44.0,01:45.2,audio/voice_clean/DIA_007_alei_kanjianmei.wav,-3,center,dry child voice,Clip 07 / MSB059-MSB061
+voice_dialogue,DIA_008,01:48.0,01:49.8,audio/voice_clean/DIA_008_xiaochuan_huangtoufa.wav,-3,center,dry child voice,Clip 07 / MSB062-MSB064
+voice_dialogue,DIA_009,01:50.0,01:51.0,audio/voice_clean/DIA_009_alei_bielita.wav,-3,center,dry child voice,Clip 07 / MSB064-MSB065
+ambience,AMB_003,01:56.0,03:36.0,audio/ambience/AMB_003_secluded_alley_loop.wav,-18,center,outdoor narrow alley,Clip 08-12 / MSB066-MSB119
+sfx,SFX_006,02:04.0,02:08.0,audio/sfx/SFX_006_roadside_stone_preset.wav,-6,center,close ground foley,Clip 08 / MSB070-MSB071
+music,MUS_002,02:14.0,02:56.0,audio/music/MUS_002_alley_pressure_pulse.wav,-12,center,"low pulse, sparse",Clip 09-10 / MSB076-MSB097
+voice_dialogue,DIA_010,02:15.0,02:16.4,audio/voice_clean/DIA_010_binzi_tingneng.wav,-3,center,"dry, alley reflection later",Clip 09 / MSB076-MSB078
+voice_dialogue,DIA_011,02:20.0,02:21.0,audio/voice_clean/DIA_011_alei_huijia.wav,-3,center,dry child voice,Clip 09 / MSB081-MSB083
+voice_dialogue,DIA_012,02:23.0,02:24.3,audio/voice_clean/DIA_012_binzi_shuirang.wav,-3,center,"dry, slight slapback later",Clip 09 / MSB084-MSB085
+sfx,FOLEY_002,02:32.0,02:56.0,audio/sfx/FOLEY_002_shove_scuffle.wav,-6,center,"close, handheld feel",Clip 10 / MSB086-MSB097
+voice_dialogue,DIA_013,02:42.0,02:42.8,audio/voice_clean/DIA_013_xiaoman_ge.wav,-3,center,dry child voice,Clip 10 / MSB094
+voice_dialogue,DIA_014,02:49.0,02:50.0,audio/voice_clean/DIA_014_xiaochuan_biedale.wav,-3,center,dry child voice,Clip 10 / MSB093-MSB097
+voice_dialogue,DIA_015,02:51.0,02:52.2,audio/voice_clean/DIA_015_binzi_zaishuo.wav,-3,center,"dry, alley reflection later",Clip 10 / MSB096-MSB097
+sfx,SFX_007,03:05.0,03:07.0,audio/sfx/SFX_007_hidden_stone_impact.wav,-6,center,"muffled, no gore detail",Clip 11 / MSB104-MSB106
+silence_design,SIL_001,03:07.0,03:11.0,audio/sfx/SIL_001_stone_after_drop.wav,-inf dip target,center,"hard drop, tinnitus high tone",Clip 11 / MSB105-MSB107
+sfx,FOLEY_003,03:16.0,03:36.0,audio/sfx/FOLEY_003_xiaochuan_escape_run.wav,-6,center,"moving close, breath separate",Clip 12 / MSB108-MSB119
+voice_dialogue,DIA_016,03:16.5,03:17.2,audio/voice_clean/DIA_016_xiaochuan_ge_after.wav,-3,center,dry child voice,Clip 12 / MSB108-MSB110
+voice_walla,WLA_002,03:19.0,03:26.0,audio/voice_processed/WLA_002_pursuers_offscreen.wav,-10,center,"muffled, moving, alley reflections",Clip 12 / MSB112-MSB119
+sfx,TRANS_002,03:32.0,03:40.0,audio/sfx/TRANS_002_alley_to_corridor.wav,-6,center,reverb tail morph,Clip 12-13 / MSB118-MSB122
+ambience,AMB_004,03:36.0,04:10.0,audio/ambience/AMB_004_abandoned_corridor_loop.wav,-18,center,long corridor reverb,Clip 13-14 / MSB120-MSB138
+sfx,SFX_008,04:00.0,04:10.0,audio/sfx/SFX_008_fluorescent_to_ring.wav,-6,center,rhythmic flicker morph,Clip 14 / MSB133-MSB138
+sfx,SFX_009,04:10.0,04:50.0,audio/sfx/SFX_009_old_phone_ring_loop.wav,-6,center,"old phone bell, corridor reverb",Clip 15-17 / MSB139-MSB161
+voice_dialogue,DIA_017,04:32.0,04:33.0,audio/voice_clean/DIA_017_xiaochuan_wei.wav,-3,center,"dry child voice, reverb later",Clip 16 / MSB151-MSB154
+sfx,FOLEY_004,04:40.0,04:47.0,audio/sfx/FOLEY_004_receiver_lift_cord.wav,-6,center,close foley,Clip 17 / MSB155-MSB160
+voice_dialogue,DIA_018,04:45.0,04:46.0,audio/voice_clean/DIA_018_xiaochuan_shuia.wav,-3,center,dry child voice,Clip 17 / MSB159-MSB161
+voice_system,SYS_001,04:47.0,04:49.0,audio/voice_processed/SYS_001_phone_ready.wav,-8,center,"phone bandpass, CRT flutter, low bit depth",Clip 17 / MSB161
+sfx,TRANS_003,04:50.0,05:08.0,audio/sfx/TRANS_003_phone_scanline_morph.wav,-6,center,"CRT flutter, bitcrush ramp",Clip 18 / MSB162-MSB169
+music,MUS_003,05:08.0,05:50.0,audio/music/MUS_003_8bit_stage_loop.wav,-12,center,"8-bit, mono-ish arcade speaker",Clip 19-20 / MSB170-MSB188
+sfx,SFX_010,05:24.0,05:36.0,audio/sfx/SFX_010_bag_coin_attacks.wav,-6,center,8-bit SFX,Clip 20 / MSB178-MSB184
+sfx,SFX_011,05:38.0,05:44.0,audio/sfx/SFX_011_win_stillness.wav,-6,center,8-bit UI then silence,Clip 20 / MSB186-MSB187
+sfx,SFX_012,05:45.0,05:50.0,audio/sfx/SFX_012_insert_coin_blink.wav,-6,center,"8-bit blink, CRT hum tail",Clip 20 / MSB188

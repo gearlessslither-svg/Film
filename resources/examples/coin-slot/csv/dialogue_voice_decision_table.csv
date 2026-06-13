@@ -1,0 +1,21 @@
+decision_id,visual_range,time_range,needs_speech,type,reason,text_strategy
+AUD_DEC_001,Clip 01 / MSB001-MSB008,00:00-00:16,no,silence/ambience,开场要让空间先说话，不用旁白解释。,只保留潮湿小区、远处街机漏声和很低的电流感。
+AUD_DEC_002,Clip 02 / MSB009-MSB018,00:16-00:34,yes,dialogue,三兄弟关系需要通过小声催促和好奇建立。,短句，儿童口语，不能文学化。
+AUD_DEC_003,Clip 03 / MSB019-MSB028,00:34-00:50,mostly no,walla/source sound,进入游戏厅由环境声吞掉人物。,街机、人群、按钮声盖住零散话，不写清楚台词。
+AUD_DEC_004,Clip 04 / MSB029-MSB037,00:50-01:06,yes,dialogue,阿磊和彬子第一次建立对抗。,挑衅短句，像小城坏孩子，不像成年人狠话。
+AUD_DEC_005,Clip 05 / MSB038-MSB049,01:06-01:28,minimal,walla/dialogue,对战主要靠按钮、屏幕和呼吸推进。,胜利前不多说，赢后用停顿和彬子一句话埋报复。
+AUD_DEC_006,Clip 06 / MSB050-MSB057,01:28-01:42,yes,dialogue/silence,老大记仇要听见声音变闷和一句压住的威胁。,台词少，重点是声音从热闹中抽离。
+AUD_DEC_007,Clip 07 / MSB058-MSB065,01:42-01:56,yes,dialogue,离开时用轻松短句做反差。,阿磊装酷，小川不安，小满跟着笑。
+AUD_DEC_008,Clip 08 / MSB066-MSB075,01:56-02:14,minimal,dialogue/ambience,回家路从轻松转危险，台词逐渐断掉。,先有一句担心，随后被环境声取代。
+AUD_DEC_009,Clip 09 / MSB076-MSB085,02:14-02:32,yes,dialogue,堵路需要建立权力关系。,彬子说短句，阿磊试图结束冲突。
+AUD_DEC_010,Clip 10 / MSB086-MSB097,02:32-02:56,yes,dialogue/foley,围殴段不靠长台词，靠推搡、呼吸、孩子断句。,小满只叫一声哥，小川说别打了。
+AUD_DEC_011,Clip 11 / MSB098-MSB107,02:56-03:16,mostly no,silence/sfx,石块段必须声音抽空，不能用台词解释。,冲击不血腥，声音用闷响和停顿。
+AUD_DEC_012,Clip 12 / MSB108-MSB119,03:16-03:36,minimal,breath/offscreen,逃跑段台词失效，只剩呼吸和后方喊声。,小川只可能挤出一个“哥”。
+AUD_DEC_013,Clip 13 / MSB120-MSB128,03:36-03:52,no,ambience/foley,进入废楼要让现实人声被空间吞掉。,脚步回声、冷绿灯管、电流。
+AUD_DEC_014,Clip 14 / MSB129-MSB138,03:52-04:10,no,ambience/silence,无限走廊靠追声消失和空间回声。,不旁白，不解释。
+AUD_DEC_015,Clip 15 / MSB139-MSB146,04:10-04:24,no,system/sfx,电话亭出现时先让铃声成为召唤。,电话铃有节奏，不像现代铃声。
+AUD_DEC_016,Clip 16 / MSB147-MSB154,04:24-04:40,yes,whisper/dialogue,靠近电话亭可以有小川对未知对象的低声。,小声、短、像问空气。
+AUD_DEC_017,Clip 17 / MSB155-MSB161,04:40-04:50,yes,dialogue/system,接电话后可出现一句极轻的“谁啊”，然后让线路回答。,线路声不要说清完整解释。
+AUD_DEC_018,Clip 18 / MSB162-MSB169,04:50-05:08,no,transition_sfx,电子化用电话线、扫描线、像素块完成。,不说台词，避免解释。
+AUD_DEC_019,Clip 19 / MSB170-MSB177,05:08-05:24,no,music/sfx,进入 8-bit 后语言转成系统音和游戏节奏。,不使用现代手游音色。
+AUD_DEC_020,Clip 20 / MSB178-MSB188,05:24-05:50,no,music/system/silence,WIN 和 INSERT COIN 用 UI、停顿和待机声完成尾针。,不庆祝，不旁白解释。
