@@ -23,6 +23,7 @@ http://127.0.0.1:8787
 - 新建项目
 - 打开现有项目
 - 导入旧项目文件夹
+- 预览剧本、故事文档、图片、视频、音频和 3D/Blender 资源
 - 分析当前项目
 - 检查项目结构
 - 查看阶段进度
@@ -39,12 +40,14 @@ http://127.0.0.1:8787
 5. 读取 `07_shots/shot_list.csv`，显示镜头列表和状态。
 6. 调用 `scripts/validate_aigc_project.py` 运行结构检查，提示缺失目录、缺失清单、大文件 Git LFS 风险、`.rar` 风险。
 7. 调用 `scripts/analyze_aigc_project.py` 运行项目资产与审美体检，并打开 `10_qa/reports/project_audit_latest.md`。
+8. 读取 `projects/<slug>/` 和 `resource_root`，显示文档阅读器、视觉画廊、视频/音频预览和资源清单。
 
 ## API Contract
 
 - `GET /api/projects`: 列出项目。
 - `POST /api/projects`: 创建项目。
 - `GET /api/projects/<slug>`: 读取项目详情、阶段状态、镜头表、验证结果和分析报告。
+- `GET /api/projects/<slug>/asset?origin=<project|resource>&path=<path>`: 在安全根目录内读取预览资源。
 - `POST /api/projects/<slug>/validate`: 运行结构检查。
 - `POST /api/projects/<slug>/analyze`: 运行项目资产与审美体检。
 - `POST /api/projects/<slug>/autofill`: 运行受控自治补全，补齐安全本地产物，并按配置排队或执行 Codex/image2/Blender/plugin 适配器任务。

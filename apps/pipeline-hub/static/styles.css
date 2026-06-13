@@ -343,6 +343,18 @@ input:focus {
   gap: 16px;
 }
 
+.director-board {
+  display: grid;
+  grid-template-columns: minmax(360px, 1.15fr) minmax(320px, 0.85fr);
+  gap: 16px;
+}
+
+.media-board {
+  display: grid;
+  grid-template-columns: minmax(320px, 0.9fr) minmax(320px, 1.1fr);
+  gap: 16px;
+}
+
 .panel {
   padding: 14px;
   min-width: 0;
@@ -359,6 +371,185 @@ input:focus {
 
 .panel h3 {
   font-size: 16px;
+}
+
+.visual-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(132px, 1fr));
+  gap: 10px;
+  max-height: 520px;
+  overflow: auto;
+}
+
+.preview-tile {
+  display: grid;
+  grid-template-rows: 112px auto auto;
+  gap: 5px;
+  text-decoration: none;
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #f8faf9;
+  overflow: hidden;
+}
+
+.preview-tile img {
+  width: 100%;
+  height: 112px;
+  object-fit: cover;
+  background: #dce4e0;
+}
+
+.preview-tile span,
+.preview-tile small,
+.asset-row strong,
+.asset-row small,
+.audio-item small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.preview-tile span {
+  padding: 0 8px;
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.preview-tile small {
+  padding: 0 8px 8px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.doc-tabs {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+}
+
+.doc-tab {
+  flex: 0 0 150px;
+  display: grid;
+  gap: 3px;
+  text-align: left;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #f8faf9;
+  padding: 8px;
+  cursor: pointer;
+}
+
+.doc-tab.active {
+  border-color: var(--accent);
+  box-shadow: inset 0 -3px 0 var(--accent);
+}
+
+.doc-tab span {
+  color: var(--muted);
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.doc-tab strong {
+  font-size: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.doc-preview {
+  margin: 0;
+  height: 392px;
+  overflow: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-family: "Segoe UI", "Microsoft YaHei", system-ui, sans-serif;
+  font-size: 13px;
+  line-height: 1.65;
+  color: #22302c;
+  background: #f8faf9;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.media-preview {
+  display: grid;
+  gap: 10px;
+  max-height: 440px;
+  overflow: auto;
+}
+
+.media-item {
+  margin: 0;
+  display: grid;
+  gap: 6px;
+}
+
+.media-item video {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #1f2926;
+  border-radius: 8px;
+}
+
+.media-item figcaption,
+.audio-item {
+  display: grid;
+  gap: 5px;
+  font-size: 12px;
+}
+
+.media-item small,
+.audio-item small {
+  color: var(--muted);
+}
+
+.audio-item {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #f8faf9;
+  padding: 10px;
+}
+
+.audio-item audio {
+  width: 100%;
+}
+
+.asset-list {
+  display: grid;
+  gap: 7px;
+  max-height: 440px;
+  overflow: auto;
+}
+
+.asset-row {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr) 90px;
+  gap: 8px;
+  align-items: center;
+  color: var(--text);
+  text-decoration: none;
+  border-bottom: 1px solid var(--line);
+  padding: 8px 0;
+}
+
+.asset-row span {
+  color: var(--accent);
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.asset-row strong {
+  font-size: 12px;
+}
+
+.asset-row small {
+  color: var(--muted);
+  font-size: 11px;
+  text-align: right;
 }
 
 .stage-list {
@@ -513,6 +704,8 @@ th {
   }
 
   .operation-band,
+  .director-board,
+  .media-board,
   .content-grid,
   .summary-grid,
   .inline-form {

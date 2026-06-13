@@ -3,6 +3,7 @@ const state = {
   selectedSlug: null,
   detail: null,
   busy: false,
+  selectedDocIndex: 0,
 };
 
 const STAGE_LABELS = {
@@ -197,6 +198,118 @@ function renderReport() {
   $("reportView").textContent = report.text || "还没有分析报告。点击“分析”生成。";
 }
 
+function assetSummary(item) {
+  return `${item.origin || "project"} · ${item.size_kb ?? 0} KB`;
+}
+
+function renderVisualGallery() {
+  const previews = state.detail?.previews || {};
+  const images = (previews.images || []).filter((item) => item.previewable).slice(0, 24);
+  $("visualHint").textContent = `${images.length} images`;
+  if (!images.length) {
+    $("visualGallery").innerHTML = `<div class="empty-state">No previewable images found.</div>`;
+    return;
+  }
+  $("visualGallery").innerHTML = images
+    .map(
+      (item) => `
+        <a class="preview-tile" href="${escapeHtml(item.url)}" target="_blank" title="${escapeHtml(item.path)}">
+          <img src="${escapeHtml(item.url)}" alt="${escapeHtml(item.name)}" loading="lazy" />
+          <span>${escapeHtml(item.name)}</span>
+          <small>${escapeHtml(assetSummary(item))}</small>
+        </a>
+      `,
+    )
+    .join("");
+}
+
+function renderDocs() {
+  const previews = state.detail?.previews || {};
+  const docs = previews.docs || [];
+  $("docHint").textContent = `${docs.length} docs`;
+  if (!docs.length) {
+    $("docTabs").innerHTML = "";
+    $("docPreview").textContent = "No story or production documents found.";
+    return;
+  }
+  if (state.selectedDocIndex >= docs.length) state.selectedDocIndex = 0;
+  $("docTabs").innerHTML = docs
+    .map(
+      (doc, index) => `
+        <button class="doc-tab ${index === state.selectedDocIndex ? "active" : ""}" data-index="${index}" type="button">
+          <span>${escapeHtml(doc.kind || "doc")}</span>
+          <strong>${escapeHtml(doc.name)}</strong>
+        </button>
+      `,
+    )
+    .join("");
+  $("docTabs").querySelectorAll(".doc-tab").forEach((button) => {
+    button.addEventListener("click", () => {
+      state.selectedDocIndex = Number(button.dataset.index || 0);
+      renderDocs();
+    });
+  });
+  const doc = docs[state.selectedDocIndex] || docs[0];
+  $("docPreview").textContent = doc.text || "";
+}
+
+function renderMediaPreview() {
+  const previews = state.detail?.previews || {};
+  const videos = (previews.videos || []).filter((item) => item.previewable).slice(0, 4);
+  const audio = (previews.audio || []).filter((item) => item.previewable).slice(0, 6);
+  $("mediaHint").textContent = `${videos.length} video / ${audio.length} audio`;
+  const videoHtml = videos
+    .map(
+      (item) => `
+        <figure class="media-item">
+          <video controls preload="metadata" src="${escapeHtml(item.url)}"></video>
+          <figcaption>${escapeHtml(item.name)}<small>${escapeHtml(assetSummary(item))}</small></figcaption>
+        </figure>
+      `,
+    )
+    .join("");
+  const audioHtml = audio
+    .map(
+      (item) => `
+        <div class="audio-item">
+          <strong>${escapeHtml(item.name)}</strong>
+          <audio controls preload="metadata" src="${escapeHtml(item.url)}"></audio>
+          <small>${escapeHtml(assetSummary(item))}</small>
+        </div>
+      `,
+    )
+    .join("");
+  $("mediaPreview").innerHTML = videoHtml || audioHtml ? videoHtml + audioHtml : `<div class="empty-state">No previewable video or audio found.</div>`;
+}
+
+function renderAssetList() {
+  const previews = state.detail?.previews || {};
+  const images = previews.images || [];
+  const videos = previews.videos || [];
+  const audio = previews.audio || [];
+  const threeD = previews.three_d || [];
+  const assets = [...images.slice(0, 12), ...videos, ...audio, ...threeD].slice(0, 48);
+  const counts = previews.counts || {};
+  $("assetHint").textContent = Object.entries(counts)
+    .map(([key, value]) => `${key} ${value}`)
+    .join(" · ");
+  if (!assets.length) {
+    $("assetList").innerHTML = `<div class="empty-state">No assets found.</div>`;
+    return;
+  }
+  $("assetList").innerHTML = assets
+    .map(
+      (item) => `
+        <a class="asset-row" href="${escapeHtml(item.url)}" target="_blank" title="${escapeHtml(item.path)}">
+          <span>${escapeHtml(item.category)}</span>
+          <strong>${escapeHtml(item.name)}</strong>
+          <small>${escapeHtml(assetSummary(item))}</small>
+        </a>
+      `,
+    )
+    .join("");
+}
+
 function renderAutofill() {
   const autofill = state.detail?.autofill || {};
   $("autofillHint").textContent = autofill.generated_at || "";
@@ -208,6 +321,10 @@ function renderAll() {
   renderHeader();
   renderMetrics();
   renderLinks();
+  renderVisualGallery();
+  renderDocs();
+  renderMediaPreview();
+  renderAssetList();
   renderStages();
   renderShots();
   renderReport();
@@ -231,6 +348,7 @@ async function loadProjects() {
 
 async function loadDetail(slug) {
   state.selectedSlug = slug;
+  state.selectedDocIndex = 0;
   state.detail = await requestJson(`/api/projects/${encodeURIComponent(slug)}`);
   renderAll();
 }
