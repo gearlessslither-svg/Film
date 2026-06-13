@@ -1,0 +1,21 @@
+deliverable_id,category,status,path,purpose,notes
+LTK_ARCADE_OPEN_REF_LOCK,reference_lock,active,01_AIGC/long_take_design/SCN_ARCADE_OPENING_15S_REFERENCE_LOCK_v001.md,Locks required visual references and reject rules,Use before any formal video or extra keyframe generation.
+LTK_ARCADE_OPEN_FORMAL_VIDEO_PROMPT,prompt,active,01_AIGC/long_take_design/SCN_ARCADE_OPENING_15S_FORMAL_VIDEO_PROMPT_v002.csv,Formal 15s video prompt with first/mid/end anchor paths,Use with actual loaded visual references.
+LTK_ARCADE_OPEN_FORMAL_KEYFRAME_PROMPTS,prompt,active,01_AIGC/long_take_design/SCN_ARCADE_OPENING_15S_FORMAL_KEYFRAME_PROMPTS_v002.csv,Formal per-keyframe prompts for KF01-KF04,Use if regenerating or polishing still anchors.
+LTK_ARCADE_OPEN_VIDEO_RUNBOOK,execution,active,01_AIGC/long_take_design/SCN_ARCADE_OPENING_15S_VIDEO_RUNBOOK_v001.md,Video generation execution checklist,Covers multi-keyframe first-last-frame and one-frame fallback routes.
+LTK_ARCADE_OPEN_VIDEO_QA,qa,active,01_AIGC/long_take_design/SCN_ARCADE_OPENING_15S_VIDEO_QA_CHECKLIST_v001.csv,Machine-readable 13-item video QA checklist,Use to judge any video output before promotion.
+LTK_ARCADE_OPEN_KF_TEST_MANIFEST,qa,active,01_AIGC/long_take_design/SCN_ARCADE_OPENING_15S_KEYFRAME_TESTS_v001.csv,Manifest of generated still tests and QA notes,Records why KF03_v002 is active and KF03_v001 is superseded.
+LTK_ARCADE_OPEN_CONTACT_SHEET,review,active,01_AIGC/long_take_design/test_generations/SCN_ARCADE_OPENING_15S_KEYFRAME_TEST_CONTACT_SHEET_v001.jpg,Four-anchor visual review sheet,Shows KF01 KF02 KF03_v002 KF04 sequence.
+LTK_ARCADE_OPEN_KF01,visual_anchor,active,01_AIGC/long_take_design/test_generations/LTK_ARCADE_OPEN_KF01_test_v001.png,Start anchor empty wet factory-side street,No people no visible entrance.
+LTK_ARCADE_OPEN_KF02,visual_anchor,active,01_AIGC/long_take_design/test_generations/LTK_ARCADE_OPEN_KF02_test_v001.png,Entrance reveal anchor,No children curtain not mysteriously open.
+LTK_ARCADE_OPEN_KF03,visual_anchor,active,01_AIGC/long_take_design/test_generations/LTK_ARCADE_OPEN_KF03_test_v002.png,Brothers entering from right anchor,Official KF03 blocking anchor.
+LTK_ARCADE_OPEN_KF04,visual_anchor,active,01_AIGC/long_take_design/test_generations/LTK_ARCADE_OPEN_KF04_test_v001.png,Curtain wipe into arcade anchor,A Lei visibly causes curtain movement.
+LTK_ARCADE_OPEN_KF03_OLD,visual_anchor,superseded,01_AIGC/long_take_design/test_generations/LTK_ARCADE_OPEN_KF03_test_v001.png,Earlier KF03 test,Do not use as active blocking anchor; boys feel too gathered at doorway.
+LTK_ARCADE_OPEN_BOARD,blocking,active,01_AIGC/long_take_design/SCN_ARCADE_OPENING_15S_KEYFRAME_BOARD_v003.png,Clean four-keyframe blocking board,Use v003 for review.
+LTK_ARCADE_OPEN_DESIGN,design,active,01_AIGC/long_take_design/SCN_ARCADE_OPENING_15S_LONG_TAKE_v001.md,Original 15s long-take design document,Creative source of timing and staging.
+LTK_ARCADE_OPEN_KEYFRAMES,design,active,01_AIGC/long_take_design/SCN_ARCADE_OPENING_15S_KEYFRAMES_v001.md,Four-anchor keyframe split,Defines KF01-KF04 role and timing.
+LTK_ARCADE_OPEN_ENV_MOTHER,dependency,active,01_AIGC/environment_lookdev/SCN_ARCADE/SCN_ARCADE_lookdev_A_entrance_wide_v002_game_screens.png,SCN_ARCADE mother style image,Load as style/material/lighting reference.
+LTK_ARCADE_OPEN_WHITEBOX,dependency,active,01_AIGC/environment_lookdev/SCN_ARCADE/camera_whiteboxes_v001/CAM_ARCADE_01_ENTRANCE_WIDE_constraint_whitebox_v001.png,Entrance-wide spatial whitebox,Load as spatial reference.
+LTK_ARCADE_OPEN_CHAR_A,dependency,active,01_AIGC/character_design_v2/CHR_BRO_A_older_brother_turnaround_expression_v001_glasses.png,A Lei active character reference,Required when A Lei appears.
+LTK_ARCADE_OPEN_CHAR_B,dependency,active,01_AIGC/character_design_v2/CHR_BRO_B_protagonist_turnaround_expression_v001_distinct.png,Xiao Chuan active character reference,Required when Xiao Chuan appears.
+LTK_ARCADE_OPEN_CHAR_C,dependency,active,01_AIGC/character_design_v2/CHR_BRO_C_younger_brother_turnaround_expression_v001_chubby.png,Xiao Man active character reference,Required when Xiao Man appears.

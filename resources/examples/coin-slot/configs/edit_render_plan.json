@@ -1,0 +1,74 @@
+{
+  "version": 1,
+  "type": "edit_render_plan",
+  "project": "project_name",
+  "seed": 12345,
+  "audio": "audio/song.wav",
+  "audio_start": 0.0,
+  "duration": 30.0,
+  "fps": 24,
+  "output": "exports/project_preview.mp4",
+  "output_width": 1920,
+  "output_height": 1080,
+  "image_dirs": [
+    "video_frames"
+  ],
+  "asset_mode": "story_order",
+  "arrange_mode": "story_order",
+  "story_section_map": "configs/story_section_map.json",
+  "frame_continuity_manifest": "configs/frame_continuity_manifest.json",
+  "asset_integrity_report": "configs/asset_integrity_report.json",
+  "frame_profile": "configs/frame_profile.json",
+  "effect_catalog": "configs/effect_catalog.json",
+  "section_config": "configs/section_config.json",
+  "sequencer_config": "configs/sequencer_config.json",
+  "manual_overrides": {
+    "enabled": false,
+    "notes": "Manual editor writes here or to sequencer_config."
+  },
+  "asset_gate": {
+    "exclude_placeholder_from_reference": true,
+    "exclude_unapproved_duplicate_story_frames": true,
+    "exclude_rejected_camera_ids": true,
+    "allow_intentional_reuse_only_when_manifest_approved": true,
+    "notes": "Renderers must not treat renamed fallback/reference files as completed story frames."
+  },
+  "motion_ranges": {
+    "zoom_min": 0.004,
+    "zoom_max": 0.07,
+    "pan_min": 0.01,
+    "pan_max": 0.22,
+    "rotate_min": 0.0,
+    "rotate_max": 1.2,
+    "pulse_zoom_min": 0.0,
+    "pulse_zoom_max": 0.05,
+    "pulse_flash_min": 0.0,
+    "pulse_flash_max": 0.07,
+    "pulse_rgb_min": 0.0,
+    "pulse_rgb_max": 7.0,
+    "pulse_shake_min": 0.0,
+    "pulse_shake_max": 6.0
+  },
+  "sections": [
+    {
+      "name": "intro",
+      "start": 0.0,
+      "end": 12.0,
+      "density": 0.75,
+      "style": "narrative_clean",
+      "motion_strength": 0.4,
+      "transition_keywords": "soft,crossfade,luma_wipe",
+      "frame_range": [
+        1,
+        8
+      ]
+    }
+  ],
+  "segments": [],
+  "transitions": [],
+  "verification": {
+    "decode_check": false,
+    "contact_sheet": "",
+    "notes": ""
+  }
+}

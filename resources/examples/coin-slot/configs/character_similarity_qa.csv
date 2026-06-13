@@ -1,0 +1,2 @@
+qa_id,asset_id,pair_or_character,checked_path,status,problem,required_fix,decision
+CQA_001,CHAR_A_FRONT,CHAR_A_vs_CHAR_B,visual_assets/pure/character_design/CHAR_A_FRONT_v001.png,pending,"Check face DNA, head shape, hair, body proportion, habitual gesture, posture, expression mechanism, and silhouette with costume color ignored.","If too similar, rewrite pairwise contrast and regenerate; do not approve by seed luck.","generated_needs_review"

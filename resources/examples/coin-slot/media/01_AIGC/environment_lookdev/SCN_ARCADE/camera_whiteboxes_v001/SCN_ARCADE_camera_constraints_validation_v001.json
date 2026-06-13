@@ -1,0 +1,10 @@
+{
+  "image_count": 7,
+  "expected_resolution": [
+    1672,
+    941
+  ],
+  "all_resolution_ok": true,
+  "all_nonblank": true,
+  "minimum_visible_faces": 110
+}

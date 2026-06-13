@@ -1,0 +1,66 @@
+{
+  "version": 1,
+  "purpose": "Plan image-to-video start/end frames without confusing them with master storyboard frames.",
+  "rules": {
+    "handles_are_motion_controls_not_new_story_beats": true,
+    "handles_do_not_replace_master_story_frames": true,
+    "handles_are_counted_separately_from_story_completion": true,
+    "final_handle_images_must_be_single_full_frame_high_res": true,
+    "whitebox_reference_sheet_contact_sheet_or_ui_marks_forbidden": true,
+    "automatic_metrics_are_warnings_only_visual_review_required": true
+  },
+  "asset_classes": {
+    "clip_start_frame": "Image-to-video opening control frame for a clip.",
+    "clip_end_frame": "Image-to-video landing frame for a clip.",
+    "bridge_frame": "Optional non-story connector between two approved story beats.",
+    "master_story_frame": "The primary storyboard frame that expresses the shot beat."
+  },
+  "chain_policy": {
+    "may_chain_when": [
+      "same location or clearly continuous path",
+      "same screen direction",
+      "same primary subject identity",
+      "compatible camera axis",
+      "the end pose of clip A naturally motivates the start of clip B"
+    ],
+    "must_break_when": [
+      "location change",
+      "time jump",
+      "subject change",
+      "intentional hard cut or reveal",
+      "axis flip or unclear geography",
+      "character or prop continuity cannot be guaranteed"
+    ]
+  },
+  "clips": [
+    {
+      "clip_id": "seg_001",
+      "section": "example_section",
+      "master_story_frame": "video_frames/story_full/example.png",
+      "aigc_video_mode": "start_only | start_end | chained_from_previous | bridge_required | not_required",
+      "start_frame": {
+        "path": "video_frames/story_full/example.png",
+        "asset_class": "master_story_frame",
+        "generation_status": "approved"
+      },
+      "end_frame": {
+        "path": "video_frames/continuity_handles/seg_001_end.png",
+        "asset_class": "clip_end_frame",
+        "generation_status": "pending_generation",
+        "prompt_intent": "Same shot intent, same character and space, later pose/action landing only."
+      },
+      "connection_to_next": {
+        "next_clip_id": "seg_002",
+        "policy": "chain | hard_cut | match_cut | bridge | section_reset",
+        "reason": "Explain why continuity should or should not carry across."
+      },
+      "qa": {
+        "visual_status": "pending | approved | needs_fix | rejected",
+        "blocking_issues": [],
+        "approved_for": [
+          "aigc_video_start_end_control"
+        ]
+      }
+    }
+  ]
+}

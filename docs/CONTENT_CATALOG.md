@@ -17,6 +17,7 @@
   - 项目状态和生产门禁校验。
 - `scripts/visual/`
   - 白模 QA、相似度检测、联系表、pure 图结果标记、annotated 版本生成、最终分镜表重建、音频 guide、animatic、最终视频和交付校验。
+  - Arcade 场景专用工具：mother OBJ 白模、camera whiteboxes、formal prompt pack、crowd/camera-subject 修正脚本。
 - `scripts/blender/`
   - Blender 白模生成与渲染工具。
 - `scripts/keep-codex-awake.ps1`
@@ -32,17 +33,24 @@
   - 原项目总览和任务日志。
 - `resources/examples/coin-slot/docs/aigc/`
   - 《投币口》AIGC 全流程文档，从规则、视觉圣经、分镜、提示词、白模、音频、QA 到交付。
+  - 已补入镜头-主体逻辑规则 `34_camera_subject_logic_rules.md`。
 - `resources/examples/coin-slot/docs/normal-shooting/`
   - 同一故事的常规拍摄版翻译文档。
+- `resources/examples/coin-slot/docs/new-project-copy-pack/`
+  - 从本地 `NEW_PROJECT_COPY_PACK_v1/docs/` 合入的跨项目启动手册、camera-subject 连续性规则和 skill 迭代治理文件。
 
 ## Resources
 
 - `resources/examples/coin-slot/csv/`
   - 生产表样例：188 panel 表、stage map、pure image queue、音频 cue、白模 QA、视觉 QA、交付校验等。
+- `resources/examples/coin-slot/configs/`
+  - 从本地 copy pack 合入的跨项目配置模板：manifest、continuity、section map、edit plan、asset integrity、audio/animatic、whitebox 和 QA 表。
 - `resources/examples/coin-slot/blender/`
   - 小型白模工程和 camera manifest 示例。
 - `resources/examples/coin-slot/media/`
   - Git LFS 管理的图片、音频、视频、Blender 和项目内 `.zip` 交付包，保留原项目相对路径。
+- `resources/examples/coin-slot/local-story-20260613/`
+  - 本地 Story 与远端主线发生语义冲突的 CSV 快照；用于追溯本地 v002/v003 计划，不覆盖当前主线。
 - `resources/RESOURCE_MAP.md`
   - 资源说明和大型媒体排除规则。
 

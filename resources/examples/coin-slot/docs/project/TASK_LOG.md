@@ -513,3 +513,10 @@ On any restart or wakeup:
 4. Update this file after every meaningful phase and before any expected interruption.
 5. `continue-production-pipeline` is obsolete after the final package/validation pass because pure photoreal micro-storyboard image production has reached a terminal state.
 6. When all known final delivery requirements are complete and validated, keep obsolete heartbeat automation paused/deleted.
+
+## Repository Merge Note
+
+- 2026-06-13 22:25:55 +0800: Merged local `Story/投币口` and `NEW_PROJECT_COPY_PACK_v1` deltas into the standardized `Film` repository layout.
+- Added local arcade lookdev, mother OBJ/camera whiteboxes, opening 15s long-take design, camera-subject logic, three-brother reference locks, copy-pack configs/docs, and local conflict snapshots.
+- Kept this remote task log as the mainline production record because it contains the later 183-real-panel finalization state.
+- Preserved the local Story task log as `resources/examples/coin-slot/docs/project/local_TASK_LOG_story_20260613.md`.

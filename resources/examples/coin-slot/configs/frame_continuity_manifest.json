@@ -1,0 +1,57 @@
+{
+  "version": 1,
+  "project": "project_name",
+  "summary": {
+    "story_frame_count": 0,
+    "primary_story_usable_now": 0,
+    "real_story_frame_count": 0,
+    "placeholder_from_reference_count": 0,
+    "whitebox_proxy_only_count": 0,
+    "duplicate_story_frame_count": 0,
+    "notes": "Classify every image before editing."
+  },
+  "frames": [
+    {
+      "id": "frame_001",
+      "file": "frame_001.png",
+      "asset_class": "story",
+      "asset_origin": "generated_for_story_beat",
+      "asset_status": "generated_final_story_frame",
+      "content_hash": "sha256:...",
+      "hash_status": "unique",
+      "duplicate_of": null,
+      "matches_reference": false,
+      "matches_whitebox": false,
+      "reference_match_file": null,
+      "whitebox_match_file": null,
+      "visible_proxy_artifacts": [],
+      "intentional_reuse": false,
+      "location": "loc_01",
+      "story_beat": "beat_01",
+      "continuity": "high",
+      "camera_id": "CAM_LOC_01_WIDE",
+      "camera_qa_status": "approved",
+      "character_anchors": [
+        "protagonist"
+      ],
+      "environment_anchors": [
+        "loc_01"
+      ],
+      "use": "How this frame should be used in the edit.",
+      "use_rule": "Primary story frames must cite approved camera IDs when the location depends on spatial continuity. Frames tied to needs_fix or rejected cameras must become story_insert, discard_candidate, or pending_regeneration. Whitebox renders, visual anchors, and proxy previews must not be marked story.",
+      "do_not_use_for": [
+        "Cases where this frame is unsafe."
+      ],
+      "effect_keywords": [
+        "soft"
+      ],
+      "transition_keywords": [
+        "crossfade"
+      ]
+    }
+  ],
+  "story_order": [
+    "frame_001"
+  ],
+  "discard_or_insert_only": []
+}

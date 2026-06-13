@@ -1,0 +1,85 @@
+{
+  "scene_id": "SCN_ARCADE",
+  "mother_image": "environment_lookdev/SCN_ARCADE/SCN_ARCADE_lookdev_A_entrance_wide_v002_game_screens.png",
+  "geometry_source": "environment_lookdev/SCN_ARCADE/whitebox_obj/SCN_ARCADE_mother_visual_constraint_whitebox_v001.obj",
+  "style_reference": "environment_lookdev/SCN_ARCADE/SCN_ARCADE_lookdev_A_entrance_wide_v002_game_screens.png",
+  "camera_constraints": [
+    {
+      "camera_id": "CAM_ARCADE_01_ENTRANCE_WIDE",
+      "coverage": "MSB019-MSB028",
+      "whitebox_path": "environment_lookdev/SCN_ARCADE/camera_whiteboxes_v001/CAM_ARCADE_01_ENTRANCE_WIDE_constraint_whitebox_v001.png",
+      "location_xyz": "[0.0, -5.18, 1.32]",
+      "target_xyz": "[0.0, 0.1, 1.12]",
+      "focal_mm": "20.0",
+      "visible_faces": "1052",
+      "screen_faces": "474",
+      "note": "Mother-image entrance axis: plastic curtain foreground, narrow cabinet aisle, low ceiling."
+    },
+    {
+      "camera_id": "CAM_ARCADE_01_CHILD_POV_CENTER",
+      "coverage": "alternate for MSB020-MSB024",
+      "whitebox_path": "environment_lookdev/SCN_ARCADE/camera_whiteboxes_v001/CAM_ARCADE_01_CHILD_POV_CENTER_constraint_whitebox_v001.png",
+      "location_xyz": "[0.04, -3.45, 0.96]",
+      "target_xyz": "[0.0, 1.65, 1.08]",
+      "focal_mm": "24.0",
+      "visible_faces": "923",
+      "screen_faces": "395",
+      "note": "Child-height view inside the aisle; keeps cabinet rows and rear fighting cabinet aligned."
+    },
+    {
+      "camera_id": "CAM_ARCADE_02_STREET_FIGHTER_CABINET",
+      "coverage": "MSB029-MSB037",
+      "whitebox_path": "environment_lookdev/SCN_ARCADE/camera_whiteboxes_v001/CAM_ARCADE_02_STREET_FIGHTER_CABINET_constraint_whitebox_v001.png",
+      "location_xyz": "[-0.7, -3.45, 1.1]",
+      "target_xyz": "[-1.72, -2.78, 1.08]",
+      "focal_mm": "26.0",
+      "visible_faces": "551",
+      "screen_faces": "245",
+      "note": "Left-front hero cabinet zone for the first duel setup; fictional screens only."
+    },
+    {
+      "camera_id": "CAM_ARCADE_03_DUEL_OVER_SHOULDER",
+      "coverage": "MSB038-MSB049",
+      "whitebox_path": "environment_lookdev/SCN_ARCADE/camera_whiteboxes_v001/CAM_ARCADE_03_DUEL_OVER_SHOULDER_constraint_whitebox_v001.png",
+      "location_xyz": "[-0.86, -2.08, 1.28]",
+      "target_xyz": "[0.0, 3.28, 1.24]",
+      "focal_mm": "38.0",
+      "visible_faces": "680",
+      "screen_faces": "306",
+      "note": "Compressed aisle view toward the rear two-player machine, useful for duel coverage."
+    },
+    {
+      "camera_id": "CAM_ARCADE_04_BOSS_LOSES_REACTION",
+      "coverage": "MSB050-MSB057",
+      "whitebox_path": "environment_lookdev/SCN_ARCADE/camera_whiteboxes_v001/CAM_ARCADE_04_BOSS_LOSES_REACTION_constraint_whitebox_v001.png",
+      "location_xyz": "[1.42, -2.18, 1.16]",
+      "target_xyz": "[0.32, 2.15, 1.18]",
+      "focal_mm": "42.0",
+      "visible_faces": "712",
+      "screen_faces": "309",
+      "note": "Right-side reaction angle; preserves cabinet-row geography while turning away from the entrance."
+    },
+    {
+      "camera_id": "CAM_ARCADE_DETAIL_CONTROL_PANEL",
+      "coverage": "detail inserts including MSB025/MSB033/MSB037/MSB039",
+      "whitebox_path": "environment_lookdev/SCN_ARCADE/camera_whiteboxes_v001/CAM_ARCADE_DETAIL_CONTROL_PANEL_constraint_whitebox_v001.png",
+      "location_xyz": "[-1.12, -3.2, 0.95]",
+      "target_xyz": "[-1.88, -3.03, 0.92]",
+      "focal_mm": "44.0",
+      "visible_faces": "110",
+      "screen_faces": "57",
+      "note": "Close spatial lock for joystick, buttons, coin slot, and child-hand scale inserts."
+    },
+    {
+      "camera_id": "CAM_ARCADE_CEILING_PRESSURE",
+      "coverage": "atmosphere inserts including MSB026",
+      "whitebox_path": "environment_lookdev/SCN_ARCADE/camera_whiteboxes_v001/CAM_ARCADE_CEILING_PRESSURE_constraint_whitebox_v001.png",
+      "location_xyz": "[0.0, -2.52, 1.78]",
+      "target_xyz": "[0.0, 0.3, 2.02]",
+      "focal_mm": "30.0",
+      "visible_faces": "700",
+      "screen_faces": "314",
+      "note": "Low ceiling, dirty bulb, fan, wires, smoke-pressure layout."
+    }
+  ]
+}

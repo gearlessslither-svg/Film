@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "project": "project_name",
+  "characters": [
+    {
+      "id": "protagonist",
+      "screen_role": "Primary story anchor.",
+      "locked_silhouette": "Height, build, hair, costume shape, and signature outline.",
+      "costume_locks": [
+        "Main garment",
+        "Shoes",
+        "Accessories"
+      ],
+      "prop_locks": [
+        "Signature object"
+      ],
+      "allowed_variation": [
+        "Distance",
+        "Crop",
+        "Lighting",
+        "Expression",
+        "Damage or weathering if story-motivated"
+      ],
+      "forbidden_variation": [
+        "Different age",
+        "Different costume silhouette",
+        "Different signature prop"
+      ],
+      "reference_images": [
+        "reference_images/generated_bible_refs/char_ref_001.png"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,82 @@
+{
+  "version": 1,
+  "project": "project_name",
+  "audit_date": "YYYY-MM-DD",
+  "purpose": "Verify that story frames are real assets, not duplicated files or renamed reference/fallback placeholders.",
+  "rules": {
+    "story_frame_must_not_match_reference_hash": true,
+    "story_frame_must_not_match_whitebox_hash": true,
+    "different_story_names_must_not_share_hash_unless_intentional": true,
+    "fallback_path_is_preview_only": true,
+    "placeholder_from_reference_excluded_from_completion_count": true,
+    "whitebox_proxy_only_excluded_from_completion_count": true,
+    "final_contact_sheet_must_exclude_references_and_whitebox": true
+  },
+  "summary": {
+    "story_frame_files": 0,
+    "unique_story_hashes": 0,
+    "duplicate_story_groups": 0,
+    "story_files_matching_reference": 0,
+    "story_files_matching_whitebox": 0,
+    "placeholder_from_reference": 0,
+    "whitebox_proxy_only": 0,
+    "intentional_reuse": 0,
+    "ready_real_story_frames": 0
+  },
+  "duplicate_story_groups": [
+    {
+      "hash": "sha256:...",
+      "status": "unapproved_duplicate",
+      "files": [
+        "video_frames/story_full/frame_a.png",
+        "video_frames/story_full/frame_b.png"
+      ],
+      "action": "Mark duplicates as placeholder_from_reference or regenerate."
+    }
+  ],
+  "reference_hash_matches": [
+    {
+      "story_file": "video_frames/story_full/frame_a.png",
+      "reference_file": "reference_images/generated_bible_refs/env_ref_001.png",
+      "hash": "sha256:...",
+      "status": "placeholder_from_reference",
+      "action": "Regenerate as a real story frame before final render."
+    }
+  ],
+  "whitebox_hash_matches": [
+    {
+      "story_file": "video_frames/story_full/frame_a.png",
+      "whitebox_file": "whitebox_renders/CAM_LOC_01_WIDE.png",
+      "hash": "sha256:...",
+      "status": "whitebox_proxy_only",
+      "action": "Regenerate as final art; keep this file only for blocking preview."
+    }
+  ],
+  "visible_proxy_artifacts": [
+    {
+      "story_file": "video_frames/story_full/frame_a.png",
+      "status": "whitebox_proxy_only",
+      "artifacts": [
+        "grey box geometry",
+        "camera label",
+        "layout overlay"
+      ],
+      "action": "Exclude from final contact sheet and regenerate from approved visual anchors."
+    }
+  ],
+  "allowed_intentional_reuse": [
+    {
+      "hash": "sha256:...",
+      "files": [
+        "video_frames/frame_001.png",
+        "video_frames/frame_001_hold.png"
+      ],
+      "reason": "Intentional hold/reprise approved in the edit plan."
+    }
+  ],
+  "next_actions": [
+    "Regenerate placeholder_from_reference story frames from approved visual anchors.",
+    "Update frame_continuity_manifest.json with asset_origin and hash_status.",
+    "Rebuild contact sheets separating whitebox, visual anchors, real story frames, and placeholders."
+  ]
+}

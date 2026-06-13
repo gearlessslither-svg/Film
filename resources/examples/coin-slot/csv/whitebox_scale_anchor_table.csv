@@ -1,0 +1,14 @@
+type,anchor_id,height_or_z,width_or_x,depth_or_y,role
+character,alei,1.35,0.42,0.28,older brother; always taller than xiaochuan; front protector
+character,xiaochuan,1.08,0.32,0.22,protagonist; green schoolbag and red scarf; small body
+character,xiaoman,0.95,0.28,0.20,youngest; behind/near wall
+character,binzi,1.25,0.46,0.34,short boss; yellow hair; black jacket
+character,gaogan,1.75,0.38,0.30,tallest bully; long-arm silhouette
+character,dahai,1.45,0.68,0.42,widest bully; blocks path
+character,xiaoqi,1.25,0.36,0.25,thin errand runner; edge position
+environment,arcade_cabinet,1.75,0.75,0.72,old arcade machine scale
+environment,street_fighter_cabinet,1.80,1.40,0.85,central conflict anchor
+environment,phone_booth,2.20,1.00,0.95,old phone booth; warm light
+environment,corridor_width,3.10,3.20,,abandoned corridor clear width
+environment,alley_width,3.60,5.00,,secluded alley wall height and path width
+environment,compound_door,2.05,1.25,,hidden arcade entrance size

@@ -1,0 +1,8 @@
+﻿asset_id,category,description,role,lock_note
+ROOM_SHELL,architecture,low rectangular residential storage-room shell,global space lock,floor/ceiling/walls define the arcade room volume
+FG_PLASTIC_CURTAIN,foreground,dirty hanging plastic entrance strips,mother camera framing,"must remain at entrance, framing both sides of the shot"
+CABINET_ROWS,architecture/props,two rows of bulky CRT arcade cabinets forming a narrow aisle,spatial DNA,left/right cabinet banks must stay parallel and cramped
+BACK_DOUBLE_FIGHTING_CAB,hero prop,rear two-player fictional fighting-game cabinet,visual destination,"screen content stays fictional, no real titles/logos/characters"
+STOOL_SET,props,old wooden stools scattered along cabinet rows,scale and blockage reference,use as child-height/standing-space anchors
+CEILING_FIXTURES,lighting/props,"single dirty warm bulb, fan, sagging wires",lighting and ceiling-height lock,must preserve low ceiling pressure and central bulb
+WALL_SCARS,surface detail,peeling patches and non-readable poster masses,visual texture lock,no readable text or real game IP

@@ -1,0 +1,2 @@
+panel_id,macro_clip_id,start,end,duration,source_kind,source_path,audio_cue_ids,qa_status
+MSB001,clip_001,0.00,2.00,2.00,WHITEBOX,whitebox_renders/panel_level/WB_MSB001.png,CUE_001,pending

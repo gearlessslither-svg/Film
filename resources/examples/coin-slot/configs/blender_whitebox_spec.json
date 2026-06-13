@@ -1,0 +1,88 @@
+{
+  "version": 1,
+  "project": "project_name",
+  "purpose": "Lock recurring space, camera IDs, character paths, object anchors, and lighting direction before final AI image/video generation.",
+  "blender_file": "blender/project_whitebox.blend",
+  "generator_script": "blender/whitebox_generator.py",
+  "camera_manifest": "blender/camera_manifest.csv",
+  "render_folder": "whitebox_renders",
+  "qa_report": "configs/whitebox_camera_qa_report.json",
+  "qa_rule": "Camera renders must pass spatial readability QA before they can be used for scene design, storyboard prompts, video prompts, shot maps, or render plans. Brightness metrics are warnings only; human readability is the approval gate.",
+  "allowed_qa_status": [
+    "pending",
+    "approved",
+    "needs_fix",
+    "rejected"
+  ],
+  "allowed_approved_for": [
+    "scene_design",
+    "storyboard_prompt",
+    "video_prompt",
+    "spatial_map"
+  ],
+  "locations": [
+    {
+      "id": "loc_01",
+      "name": "Location name",
+      "scale_note": "Realistic or stylized scale guidance.",
+      "geometry": [
+        {
+          "id": "floor",
+          "type": "box",
+          "location": [
+            0,
+            0,
+            0
+          ],
+          "dimensions": [
+            10,
+            8,
+            0.1
+          ],
+          "material": "floor"
+        }
+      ],
+      "character_paths": [
+        {
+          "id": "path_01",
+          "character": "protagonist",
+          "from": "entry",
+          "to": "exit",
+          "screen_direction": "left_to_right"
+        }
+      ],
+      "object_anchors": [
+        {
+          "id": "hero_prop",
+          "description": "A key prop that must keep position."
+        }
+      ],
+      "cameras": [
+        {
+          "id": "CAM_LOC_01_WIDE",
+          "story_use": "Establishing shot.",
+          "location": [
+            0,
+            -6,
+            1.5
+          ],
+          "target": [
+            0,
+            0,
+            1.2
+          ],
+          "lens": 28,
+          "render": "whitebox_renders/CAM_LOC_01_WIDE.png",
+          "qa_status": "pending",
+          "visible_spatial_anchors": [
+            "floor plane",
+            "hero prop"
+          ],
+          "blocking_issues": [],
+          "approved_for": [],
+          "replacement_camera_id": null
+        }
+      ]
+    }
+  ]
+}

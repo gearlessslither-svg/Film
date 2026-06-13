@@ -1,0 +1,28 @@
+{
+  "camera_id": "CAM_SCN_ARCADE_MOTHER_MATCH",
+  "source_mother_image": "environment_lookdev/SCN_ARCADE/SCN_ARCADE_lookdev_A_entrance_wide_v002_game_screens.png",
+  "intent": "match the selected arcade mother image A v002 as closely as possible with proxy geometry",
+  "coordinate_notes": "Y axis runs down the arcade aisle; camera looks from y=-5.18 toward y=0.10; floor is z=0.",
+  "suggested_camera": {
+    "location_xyz": [
+      0.0,
+      -5.18,
+      1.32
+    ],
+    "look_at_xyz": [
+      0.0,
+      0.1,
+      1.12
+    ],
+    "focal_length_mm": 20,
+    "resolution": [
+      1672,
+      941
+    ]
+  },
+  "known_limits": [
+    "OBJ has proxy geometry and material colors, not final projection textures.",
+    "Blender 5.1.2 macOS CLI is currently crashing before Python execution on this machine.",
+    "Import OBJ through Blender GUI until a stable CLI path is available."
+  ]
+}

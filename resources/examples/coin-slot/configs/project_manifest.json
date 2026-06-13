@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "name": "project_name",
+  "description": "One sentence project description.",
+  "format": {
+    "target_duration_seconds": 120,
+    "width": 1920,
+    "height": 1080,
+    "fps": 24,
+    "primary_aspect": "16:9"
+  },
+  "folders": {
+    "audio": "audio",
+    "configs": "configs",
+    "prompts": "prompts",
+    "reference_images": "reference_images",
+    "character_refs": "character_refs",
+    "environment_refs": "environment_refs",
+    "blender": "blender",
+    "whitebox_renders": "whitebox_renders",
+    "video_frames": "video_frames",
+    "modules": "modules",
+    "remotion": "remotion",
+    "scripts": "scripts",
+    "exports": "exports"
+  },
+  "rules": {
+    "audio_scope": "Only audio files inside audio/ are used by default.",
+    "video_scope": "Only video_frames/ and explicitly declared module folders are scanned for video generation.",
+    "reference_scope": "reference_images/, character_refs/, environment_refs/, and whitebox_renders/ are reference-only unless promoted in a manifest.",
+    "story_frames": "Numbered frame_### assets are narrative timeline assets.",
+    "whitebox_scope": "Blender whitebox renders are spatial references only. They may lock composition and camera IDs, but they must not be final story frames.",
+    "final_art_gate": "A completed story frame must be generated for its story beat, pass hash QA, cite approved anchors, and not match any reference or whitebox render hash.",
+    "contact_sheet_layers": "Keep separate contact sheets for whitebox cameras, visual anchors, final story frames, and placeholder/rejected assets.",
+    "asset_integrity": "Numbered story files must pass hash QA before they count as completed frames. Reference/fallback copies are placeholder_from_reference. Whitebox/proxy outputs are whitebox_proxy_only.",
+    "modules": "module_NAME_### assets play in order within the module.",
+    "aesthetic_pool": "Unnumbered images may be selected by color, content, composition, and section intent."
+  },
+  "source_of_truth_files": {
+    "director_bible": "configs/director_bible.json",
+    "character_bible": "configs/character_bible.json",
+    "environment_spatial_bible": "configs/environment_spatial_bible.json",
+    "frame_continuity_manifest": "configs/frame_continuity_manifest.json",
+    "asset_integrity_report": "configs/asset_integrity_report.json",
+    "story_section_map": "configs/story_section_map.json",
+    "effect_catalog": "configs/effect_catalog.json",
+    "edit_render_plan": "configs/edit_render_plan.json",
+    "audio_analysis": "configs/audio_analysis.json",
+    "blender_whitebox_spec": "configs/blender_whitebox_spec.json",
+    "whitebox_workflow_policy": "configs/whitebox_workflow_policy.md",
+    "shot_asset_map": "configs/shot_asset_map.csv"
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "notes": "Map music sections to story frame ranges so short renders use the intended slice.",
+  "sections": {
+    "intro": {
+      "time": [
+        0.0,
+        12.0
+      ],
+      "frames": [
+        1,
+        8
+      ],
+      "intent": "Establish world, protagonist, and first visual question.",
+      "asset_mode": "story_order",
+      "density": 0.75,
+      "motion_strength": 0.45,
+      "transition_keywords": "soft,crossfade,luma_wipe"
+    },
+    "chorus_or_drop": {
+      "time": [
+        45.0,
+        75.0
+      ],
+      "frames": [
+        18,
+        30
+      ],
+      "intent": "Release, collision, spectacle, or plot turn.",
+      "asset_mode": "story_plus_inserts",
+      "density": 1.25,
+      "motion_strength": 0.85,
+      "transition_keywords": "prism_burst,slice_glitch,whip,film_burn"
+    },
+    "final": {
+      "time": [
+        100.0,
+        120.0
+      ],
+      "frames": [
+        31,
+        40
+      ],
+      "intent": "Resolution or afterimage.",
+      "asset_mode": "story_order",
+      "density": 0.65,
+      "motion_strength": 0.35,
+      "transition_keywords": "soft,dip_black,film_burn"
+    }
+  }
+}

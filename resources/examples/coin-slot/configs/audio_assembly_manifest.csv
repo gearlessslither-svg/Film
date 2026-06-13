@@ -1,0 +1,2 @@
+cue_id,cue_type,section,panel_id,start,end,duration,source_path,voice_or_sound_role,processing,priority,qa_status,notes
+CUE_001,ambience,opening,MSB001,0.00,2.00,2.00,audio/ambience/AMB_001_location_loop.wav,location_bed,loop_and_level,A,pending,"Guide audio may be rough, but timing must match the storyboard panel."

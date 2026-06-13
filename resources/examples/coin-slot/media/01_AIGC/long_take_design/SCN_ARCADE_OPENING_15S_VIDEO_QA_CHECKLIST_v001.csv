@@ -1,0 +1,14 @@
+check_id,category,required_result,fail_condition,severity,status
+LTK_QA_001,camera_continuity,One continuous child-height left-to-right pan/truck from empty street into arcade,Any cut montage sudden zoom or unrelated angle,critical,pending_video_output
+LTK_QA_002,kf01_state,KF01 opening has no people and no visible arcade entrance,Any child adult silhouette or revealed doorway appears at the start,critical,pending_video_output
+LTK_QA_003,kf02_reveal,KF02 beat reveals hidden entrance at frame right while left/center remain empty wall,Entrance is centered too early missing or unrelated to KF02 anchor,high,pending_video_output
+LTK_QA_004,prop_causality_kf02,KF02 plastic curtain remains still or mostly closed with no invisible cause,Curtain is already held open or moving before any visible character cause,critical,pending_video_output
+LTK_QA_005,kf03_blocking,KF03 beat keeps empty left/center and places three brothers near right-side entrance,Boys are centered posed or appear from wrong side,critical,pending_video_output
+LTK_QA_006,a_lei_identity,A Lei keeps old thin-frame glasses and navy track jacket with red-white diagonal stripe,A Lei loses glasses or costume becomes unrecognizable in readable views,high,pending_video_output
+LTK_QA_007,xiao_chuan_identity,Xiao Chuan stays skinny with blue-white jacket red scarf and pale green backpack,Xiao Chuan loses backpack/scarf or becomes visually confused with Xiao Man,high,pending_video_output
+LTK_QA_008,xiao_man_identity,Xiao Man remains a small chubby boy in warm padded vest and loose patched trousers,Xiao Man becomes skinny tall or dressed like Xiao Chuan,critical,pending_video_output
+LTK_QA_009,kf04_prop_cause,A Lei visibly lifts or pushes one plastic strip before the curtain wipes the frame,Curtain wipe happens without visible cause,critical,pending_video_output
+LTK_QA_010,arcade_consistency,Interior keeps low stained ceiling bulky CRT cabinets stools wet floor and dirty bulb,Interior becomes modern clean mall arcade or LCD screen room,critical,pending_video_output
+LTK_QA_011,ip_safety,Arcade screens remain fictional unreadable 1990s pixel-art color,Any real game title logo or recognizable copyrighted character appears,critical,pending_video_output
+LTK_QA_012,no_extra_cast,No extra adults crowds girls or adult gangsters appear in this opening shot,Unexpected extra cast appears and changes scene meaning,high,pending_video_output
+LTK_QA_013,mood,Action remains cautious secretive childhood tension not comedy,Exaggerated thief acting slapstick or heroic posing,medium,pending_video_output

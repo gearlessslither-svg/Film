@@ -1,0 +1,21 @@
+clip,title,duration,whitebox,keyframe,video_prompt_anchor
+01,老旧小区建立,6s,CAM_COMPOUND_01_ESTABLISH,KF01,04_video_prompts.md#clip-01--老旧小区建立
+02,三兄弟靠近,7s,CAM_COMPOUND_02_BROTHERS_APPROACH,KF02,04_video_prompts.md#clip-02--三兄弟靠近
+03,游戏厅入口,5s,CAM_ARCADE_01_ENTRANCE_WIDE,KF03,04_video_prompts.md#clip-03--游戏厅入口
+04,找到街霸,6s,CAM_ARCADE_02_STREET_FIGHTER_CABINET,KF04,04_video_prompts.md#clip-04--找到街霸
+05,哥哥打赢老大,7s,CAM_ARCADE_03_DUEL_OVER_SHOULDER,KF04,04_video_prompts.md#clip-05--哥哥打赢老大
+06,老大记仇,5s,CAM_ARCADE_04_BOSS_LOSES_REACTION,CS_B,04_video_prompts.md#clip-06--老大记仇
+07,志得意满离开,6s,CAM_ARCADE_EXIT_01_LEAVING,CS_A,04_video_prompts.md#clip-07--志得意满离开
+08,偏僻小路,7s,CAM_ALLEY_01_WALK_HOME,KF05,04_video_prompts.md#clip-08--偏僻小路
+09,四人堵路,6s,CAM_ALLEY_02_BLOCKED,KF05,04_video_prompts.md#clip-09--四人堵路
+10,围殴哥哥,7s,CAM_ALLEY_03_BROTHER_BEATEN,KF06,04_video_prompts.md#clip-10--围殴哥哥
+11,石块失手,6s,CAM_ALLEY_04_STONE_HIT,KF07,04_video_prompts.md#clip-11--石块失手
+12,主角逃跑,7s,CAM_ALLEY_05_ESCAPE_VECTOR,KF07,04_video_prompts.md#clip-12--主角逃跑
+13,进入废楼,6s,CAM_CORRIDOR_01_ENTRY_LONG,KF08,04_video_prompts.md#clip-13--进入废楼
+14,无限走廊,7s,CAM_CORRIDOR_02_LOW_TRACK,KF08,04_video_prompts.md#clip-14--无限走廊
+15,远处电话亭,6s,CAM_PHONE_01_DISTANT_GLOW,KF09,04_video_prompts.md#clip-15--远处电话亭
+16,靠近电话亭,7s,CAM_PHONE_02_APPROACH_CLOSE,KF09,04_video_prompts.md#clip-16--靠近电话亭
+17,接起电话,5s,CAM_PHONE_03_RECEIVER_INSERT,KF10,04_video_prompts.md#clip-17--接起电话
+18,电子化,6s,CAM_PHONE_02_APPROACH_CLOSE,KF10,04_video_prompts.md#clip-18--电子化
+19,进入8-bit关卡,7s,CAM_8BIT_01_STAGE_WIDE,KF11,04_video_prompts.md#clip-19--进入8-bit关卡
+20,WIN与INSERT COIN,8s,CAM_8BIT_02_WIN_SCREEN,KF12,04_video_prompts.md#clip-20--win-与-insert-coin

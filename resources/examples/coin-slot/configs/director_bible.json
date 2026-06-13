@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "project": "project_name",
+  "logline": "A concise one-sentence story premise.",
+  "director_intent": {
+    "emotion": "What the audience should feel.",
+    "rhythm": "How the piece breathes across time.",
+    "camera_language": "Lens, camera distance, motion, and shot grammar.",
+    "editing_language": "Cut density, transitions, repetition, silence, and release.",
+    "music_relationship": "How image choices respond to the song."
+  },
+  "story_structure": [
+    {
+      "beat_id": "beat_01",
+      "time_range": "0:00-0:15",
+      "story_function": "Setup",
+      "visual_function": "Establish world, protagonist, and spatial direction.",
+      "music_function": "Intro or first build."
+    }
+  ],
+  "continuity_policy": {
+    "story_assets": "Use story frames in sequence unless a render variant explicitly says otherwise.",
+    "reference_policy": "References guide generation but are not scanned as video assets.",
+    "effect_policy": "Base motion stays restrained; strong effects live inside beat or transition envelopes.",
+    "generation_policy": "Final frames cite character reference, environment reference, story beat, and optional camera id."
+  },
+  "forbidden_drift": [
+    "Do not redesign the protagonist.",
+    "Do not invent new recurring locations without updating the spatial bible.",
+    "Do not let visual effects destroy story readability in narrative sections."
+  ]
+}

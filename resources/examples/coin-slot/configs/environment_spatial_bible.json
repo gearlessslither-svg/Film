@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "project": "project_name",
+  "global_visual_locks": {
+    "format": "16:9 cinematic frame",
+    "palette": "Project palette and lighting logic.",
+    "camera_language": "Shared camera grammar.",
+    "do_not_introduce": [
+      "Locations, time periods, materials, or objects that break the world."
+    ]
+  },
+  "locations": [
+    {
+      "id": "loc_01",
+      "name": "Location name",
+      "story_role": "Why this location exists.",
+      "anchor": "One-line spatial identity.",
+      "foreground": "Allowed foreground anchors.",
+      "midground": "Allowed midground anchors.",
+      "background": "Allowed background anchors.",
+      "entry_exit_points": [
+        "Where characters enter or leave."
+      ],
+      "screen_direction": "Movement direction and geography rule.",
+      "camera_rule": "How shots should preserve spatial clarity.",
+      "whitebox_camera_ids": [
+        "CAM_LOC_01_WIDE"
+      ],
+      "reference_images": [
+        "environment_refs/loc_01_master.png"
+      ]
+    }
+  ]
+}

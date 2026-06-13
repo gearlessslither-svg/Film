@@ -18,6 +18,10 @@
 | `06_previs/blender/` | resources/examples/coin-slot/blender | 白模、Blender 脚本、空间关系验证。 |
 | `07_shots/` | resources/examples/coin-slot/csv | 镜头表、生成表、QA 表。 |
 | `08_generation/outputs/` | resources/examples/coin-slot/media | 已归档的图片、视频、音频样例素材。 |
+| `04_lookdev/` / `06_previs/scene_locks/` | resources/examples/coin-slot/media/01_AIGC/environment_lookdev | 本地 Story 补入的 SCN_ARCADE / SCN_COMPOUND lookdev、mother OBJ 和 camera whiteboxes。 |
+| `07_shots/video_prompts/` | resources/examples/coin-slot/media/01_AIGC/long_take_design | 本地 Story 补入的 SCN_ARCADE opening 15s 长镜头设计、prompt pack、keyframe board 和测试图。 |
+| cross-project templates | resources/examples/coin-slot/configs and resources/examples/coin-slot/docs/new-project-copy-pack | 本地 `NEW_PROJECT_COPY_PACK_v1` 的新项目模板、camera-subject 连续性和 skill 迭代治理。 |
+| conflict snapshots | resources/examples/coin-slot/local-story-20260613 | 本地 CSV 与远端主线语义不同，保留为追溯快照，不覆盖主线。 |
 
 ## Large asset rule
 
