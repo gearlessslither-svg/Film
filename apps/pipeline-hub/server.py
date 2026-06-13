@@ -35,6 +35,10 @@ except Exception:  # pragma: no cover - server can still run read-only without Y
 
 SLUG_RE = re.compile(r"^[a-z0-9][a-z0-9-]{0,63}$")
 TEXT_PREVIEW_EXTENSIONS = {".md", ".txt", ".csv", ".json", ".yaml", ".yml", ".srt"}
+IMAGE_PREVIEW_EXTENSIONS = {".png", ".jpg", ".jpeg", ".webp", ".gif"}
+MEDIA_PREVIEW_EXTENSIONS = IMAGE_PREVIEW_EXTENSIONS | {".mp4", ".webm", ".mp3", ".wav", ".ogg"}
+LFS_POINTER_PREFIX = b"version https://git-lfs.github.com/spec/v1\n"
+LEGACY_COIN_SLOT_AIGC_ROOT = REPO_ROOT.parent / "投币口" / "01_AIGC"
 PREVIEW_DOC_LIMIT = 16
 PREVIEW_IMAGE_LIMIT = 24
 PREVIEW_VIDEO_LIMIT = 12
@@ -127,9 +131,33 @@ def load_manifest(path: Path) -> dict[str, object]:
         return {}
     text = manifest.read_text(encoding="utf-8")
     if yaml is None:
-        return {"raw": text}
+        return parse_manifest_fallback(text)
     data = yaml.safe_load(text)
     return data if isinstance(data, dict) else {}
+
+
+def parse_manifest_fallback(text: str) -> dict[str, object]:
+    data: dict[str, object] = {"raw": text}
+    current_section = ""
+    for raw_line in text.splitlines():
+        if not raw_line.strip() or raw_line.lstrip().startswith("#"):
+            continue
+        if not raw_line.startswith((" ", "\t")) and raw_line.rstrip().endswith(":"):
+            current_section = raw_line.strip()[:-1]
+            data.setdefault(current_section, {})
+            continue
+        if current_section != "project" or not raw_line.startswith("  "):
+            continue
+        key, sep, value = raw_line.strip().partition(":")
+        if not sep:
+            continue
+        scalar = value.strip()
+        if len(scalar) >= 2 and scalar[0] == scalar[-1] and scalar[0] in {"'", '"'}:
+            scalar = scalar[1:-1]
+        project = data.setdefault("project", {})
+        if isinstance(project, dict):
+            project[key] = scalar
+    return data
 
 
 def write_manifest(path: Path, manifest: dict[str, object]) -> None:
@@ -186,6 +214,48 @@ def safe_asset_path(slug: str, origin: str, rel_path: str) -> Path:
 
 def asset_url(slug: str, origin: str, rel_path: str) -> str:
     return f"/api/projects/{slug}/asset?origin={quote(origin)}&path={quote(rel_path)}"
+
+
+def is_lfs_pointer(path: Path) -> bool:
+    try:
+        with path.open("rb") as handle:
+            return handle.read(len(LFS_POINTER_PREFIX)) == LFS_POINTER_PREFIX
+    except OSError:
+        return False
+
+
+def legacy_coin_slot_asset_path(origin: str, rel_path: str) -> Path | None:
+    if origin != "resource" or not rel_path.startswith("media/01_AIGC/"):
+        return None
+    if not LEGACY_COIN_SLOT_AIGC_ROOT.exists():
+        return None
+    suffix = rel_path.removeprefix("media/01_AIGC/")
+    root = LEGACY_COIN_SLOT_AIGC_ROOT.resolve()
+    candidate = (root / suffix).resolve()
+    if root not in candidate.parents and candidate != root:
+        return None
+    if candidate.exists() and candidate.is_file() and not is_lfs_pointer(candidate):
+        return candidate
+    return None
+
+
+def asset_item(slug: str, origin: str, rel_path: str, file_path: Path, category: str | None = None) -> dict[str, object]:
+    extension = file_path.suffix.lower()
+    lfs_pointer = is_lfs_pointer(file_path)
+    fallback = legacy_coin_slot_asset_path(origin, rel_path)
+    return {
+        "origin": origin,
+        "path": rel_path,
+        "name": file_path.name,
+        "category": category or category_for(file_path),
+        "size_kb": round(file_path.stat().st_size / 1024, 1),
+        "extension": extension,
+        "previewable": extension in MEDIA_PREVIEW_EXTENSIONS and (not lfs_pointer or fallback is not None),
+        "url": asset_url(slug, origin, rel_path),
+        "lfs_pointer": lfs_pointer,
+        "lfs_missing": lfs_pointer and fallback is None,
+        "fallback": "legacy_local" if fallback else "",
+    }
 
 
 def asset_priority(path: Path) -> tuple[int, str]:
@@ -270,16 +340,7 @@ def collect_preview_assets(slug: str, path: Path, manifest: dict[str, object]) -
             category = category_for(file_path)
             counts[category] = counts.get(category, 0) + 1
             rel_path = str(file_path.relative_to(root)).replace("\\", "/")
-            item = {
-                "origin": origin,
-                "path": rel_path,
-                "name": file_path.name,
-                "category": category,
-                "size_kb": round(file_path.stat().st_size / 1024, 1),
-                "extension": file_path.suffix.lower(),
-                "previewable": file_path.suffix.lower() in {".png", ".jpg", ".jpeg", ".webp", ".gif", ".mp4", ".webm", ".mp3", ".wav", ".ogg"},
-                "url": asset_url(slug, origin, rel_path),
-            }
+            item = asset_item(slug, origin, rel_path, file_path, category=category)
             if category == "image":
                 images.append(item)
             elif category == "video":
@@ -325,16 +386,24 @@ def url_from_asset_ref(slug: str, ref: str) -> str:
 
 def image_item_from_project_path(slug: str, root: Path, path: Path) -> dict[str, object]:
     rel_path = str(path.relative_to(root)).replace("\\", "/")
-    return {
-        "origin": "project",
-        "path": rel_path,
-        "name": path.name,
-        "category": category_for(path),
-        "size_kb": round(path.stat().st_size / 1024, 1),
-        "extension": path.suffix.lower(),
-        "previewable": path.suffix.lower() in {".png", ".jpg", ".jpeg", ".webp", ".gif"},
-        "url": asset_url(slug, "project", rel_path),
-    }
+    return asset_item(slug, "project", rel_path, path)
+
+
+def asset_item_from_ref(slug: str, ref: str) -> dict[str, object]:
+    origin, sep, rel_path = ref.partition(":")
+    if not sep or origin not in {"project", "resource"} or not rel_path:
+        return {}
+    try:
+        target = safe_asset_path(slug, origin, rel_path)
+    except (ValueError, FileNotFoundError):
+        return {
+            "origin": origin,
+            "path": rel_path,
+            "url": asset_url(slug, origin, rel_path),
+            "previewable": False,
+            "missing": True,
+        }
+    return asset_item(slug, origin, rel_path, target)
 
 
 def collect_scene_locks(slug: str, path: Path) -> dict[str, object]:
@@ -366,13 +435,15 @@ def collect_scene_locks(slug: str, path: Path) -> dict[str, object]:
             loaded = yaml.safe_load(lock_yaml.read_text(encoding="utf-8", errors="ignore"))
             data = loaded if isinstance(loaded, dict) else {}
         preview = next(iter(sorted(scene_dir.glob("*_preview.*"))), None)
+        master_asset = asset_item_from_ref(slug, str(data.get("master_reference", "")))
         item = {
             "scene_id": str(data.get("scene_id", scene_dir.name)),
             "folder": str(scene_dir.relative_to(root)).replace("\\", "/"),
             "shot_count": data.get("shot_count", 0),
             "batch": data.get("batch", ""),
             "master_reference": data.get("master_reference", ""),
-            "master_url": url_from_asset_ref(slug, str(data.get("master_reference", ""))),
+            "master_url": master_asset.get("url", ""),
+            "master_asset": master_asset,
             "preview": image_item_from_project_path(slug, path, preview) if preview and preview.exists() else {},
             "lock_path": str(lock_yaml.relative_to(path)).replace("\\", "/") if lock_yaml.exists() else "",
             "doc_path": str(lock_md.relative_to(path)).replace("\\", "/") if lock_md.exists() else "",
@@ -587,6 +658,12 @@ def send_asset(handler: BaseHTTPRequestHandler, slug: str, query: str) -> None:
     origin = params.get("origin", [""])[0]
     rel_path = params.get("path", [""])[0]
     target = safe_asset_path(slug, origin, rel_path)
+    if is_lfs_pointer(target):
+        fallback = legacy_coin_slot_asset_path(origin, rel_path)
+        if fallback is None:
+            send_text(handler, "Git LFS object is not downloaded for this asset.", status=409)
+            return
+        target = fallback
     content_type = mimetypes.guess_type(str(target))[0] or "application/octet-stream"
     body = target.read_bytes()
     handler.send_response(200)
@@ -606,12 +683,16 @@ class PipelineHubHandler(BaseHTTPRequestHandler):
     def do_GET(self) -> None:  # noqa: N802
         try:
             self.route_get()
+        except (BrokenPipeError, ConnectionResetError):
+            return
         except Exception as exc:  # noqa: BLE001
             send_json(self, {"error": str(exc)}, status=500)
 
     def do_POST(self) -> None:  # noqa: N802
         try:
             self.route_post()
+        except (BrokenPipeError, ConnectionResetError):
+            return
         except Exception as exc:  # noqa: BLE001
             send_json(self, {"error": str(exc)}, status=500)
 

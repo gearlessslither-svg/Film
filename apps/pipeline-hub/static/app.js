@@ -201,28 +201,67 @@ function renderReport() {
 }
 
 function assetSummary(item) {
-  return `${item.origin || "project"} · ${item.size_kb ?? 0} KB`;
+  const parts = [`${item.origin || "project"}`, `${item.size_kb ?? 0} KB`];
+  if (item.fallback === "legacy_local") parts.push("local fallback");
+  if (item.lfs_missing) parts.push("LFS missing");
+  else if (item.lfs_pointer) parts.push("LFS pointer");
+  return parts.join(" · ");
+}
+
+function previewSort(a, b) {
+  return Number(Boolean(a.lfs_missing)) - Number(Boolean(b.lfs_missing));
+}
+
+function renderLfsPlaceholder(label = "LFS 未下载") {
+  return `
+    <div class="lfs-placeholder">
+      <strong>LFS</strong>
+      <em>${escapeHtml(label)}</em>
+    </div>
+  `;
+}
+
+function renderPreviewTile(item) {
+  const title = escapeHtml(item.path);
+  if (item.lfs_missing || !item.previewable) {
+    return `
+      <div class="preview-tile preview-tile-missing" title="${title}">
+        ${renderLfsPlaceholder(item.lfs_missing ? "未下载" : "不可预览")}
+        <span>${escapeHtml(item.name)}</span>
+        <small>${escapeHtml(assetSummary(item))}</small>
+      </div>
+    `;
+  }
+  return `
+    <a class="preview-tile" href="${escapeHtml(item.url)}" target="_blank" title="${title}">
+      <img src="${escapeHtml(item.url)}" alt="${escapeHtml(item.name)}" loading="lazy" />
+      <span>${escapeHtml(item.name)}</span>
+      <small>${escapeHtml(assetSummary(item))}</small>
+    </a>
+  `;
+}
+
+function renderSceneLockThumb(item, label = "Scene") {
+  if (item?.url && item.previewable && !item.lfs_missing) {
+    return `<img src="${escapeHtml(item.url)}" alt="${escapeHtml(label)}" loading="lazy" />`;
+  }
+  return `<span class="scene-lock-placeholder ${item?.lfs_missing ? "warning" : ""}">${escapeHtml(item?.lfs_missing ? "LFS" : label)}</span>`;
 }
 
 function renderVisualGallery() {
   const previews = state.detail?.previews || {};
-  const images = (previews.images || []).filter((item) => item.previewable).slice(0, 24);
-  $("visualHint").textContent = `${images.length} images`;
+  const allImages = previews.images || [];
+  const images = [...allImages].sort(previewSort).slice(0, 24);
+  const missingCount = allImages.filter((item) => item.lfs_missing).length;
+  const previewCount = allImages.filter((item) => item.previewable && !item.lfs_missing).length;
+  $("visualHint").textContent = missingCount
+    ? `${previewCount}/${allImages.length} preview · ${missingCount} LFS missing`
+    : `${images.length} images`;
   if (!images.length) {
     $("visualGallery").innerHTML = `<div class="empty-state">No previewable images found.</div>`;
     return;
   }
-  $("visualGallery").innerHTML = images
-    .map(
-      (item) => `
-        <a class="preview-tile" href="${escapeHtml(item.url)}" target="_blank" title="${escapeHtml(item.path)}">
-          <img src="${escapeHtml(item.url)}" alt="${escapeHtml(item.name)}" loading="lazy" />
-          <span>${escapeHtml(item.name)}</span>
-          <small>${escapeHtml(assetSummary(item))}</small>
-        </a>
-      `,
-    )
-    .join("");
+  $("visualGallery").innerHTML = images.map(renderPreviewTile).join("");
 }
 
 function renderSceneLocks() {
@@ -231,12 +270,14 @@ function renderSceneLocks() {
   const overview = (sceneLocks.overview_images || [])[0];
   $("sceneLockHint").textContent = `${items.length} scenes`;
 
-  if (overview?.url) {
+  if (overview?.url && overview.previewable && !overview.lfs_missing) {
     $("sceneLockOverview").innerHTML = `
       <a class="scene-overview-link" href="${escapeHtml(overview.url)}" target="_blank" title="${escapeHtml(overview.path)}">
         <img src="${escapeHtml(overview.url)}" alt="${escapeHtml(overview.name)}" loading="lazy" />
       </a>
     `;
+  } else if (overview?.lfs_missing) {
+    $("sceneLockOverview").innerHTML = `<div class="scene-overview-link scene-overview-placeholder">${renderLfsPlaceholder("场景锁图未下载")}</div>`;
   } else {
     $("sceneLockOverview").innerHTML = `<div class="empty-state">还没有场景锁预览。点击 Scene Lock 生成 B01。</div>`;
   }
@@ -249,10 +290,10 @@ function renderSceneLocks() {
   if (state.selectedSceneLockIndex >= items.length) state.selectedSceneLockIndex = 0;
   $("sceneLockList").innerHTML = items
     .map((item, index) => {
-      const preview = item.preview?.url || item.master_url || "";
+      const preview = item.preview?.previewable ? item.preview : item.master_asset?.previewable ? item.master_asset : item.preview || item.master_asset || {};
       return `
         <button class="scene-lock-card ${index === state.selectedSceneLockIndex ? "active" : ""}" data-index="${index}" type="button">
-          ${preview ? `<img src="${escapeHtml(preview)}" alt="${escapeHtml(item.scene_id)}" loading="lazy" />` : `<span class="scene-lock-placeholder">Scene</span>`}
+          ${renderSceneLockThumb(preview, item.scene_id)}
           <span>
             <strong>${escapeHtml(item.scene_id)}</strong>
             <small>${escapeHtml(item.batch || "batch")} · ${escapeHtml(item.shot_count || 0)} shots</small>
