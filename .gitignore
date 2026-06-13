@@ -30,6 +30,13 @@ venv/
 !resources/examples/coin-slot/media/
 !resources/examples/coin-slot/media/**
 
+# Managed AIGC project folders. Production media here is handled by Git LFS.
+!projects/
+!projects/**
+projects/**/*.rar
+projects/**/*.blend1
+projects/**/*.bak*
+
 # Local runtime logs/state
 .codex-resume/
 *.log

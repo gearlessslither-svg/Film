@@ -8,3 +8,5 @@
 - `media/`: Git LFS archive of Coin Slot image, audio, video, Blender, and in-project zip deliverables, preserving source-relative paths.
 
 RAR backup packages are intentionally excluded. Keep future bulky generated media in `media/` only when it is meant to be part of the LFS archive.
+
+`projects/coin-slot/` is the standardized project-folder version of this same case study. It keeps the reusable production structure, while `assets_link_map.md` points back to this resource archive instead of duplicating the large LFS media.
