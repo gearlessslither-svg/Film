@@ -9,6 +9,7 @@
 | 投币口样板种子 | CLI / sample setup | `scripts/seed_coin_slot_sample_project.py` | `$aigc-film-pipeline` | 12-shot sample batch |
 | 结构检查 | Pipeline Hub 验证按钮 | `scripts/validate_aigc_project.py` | `$aigc-film-pipeline` | API validation JSON |
 | 全流程资产分析 | Pipeline Hub 分析按钮 | `scripts/analyze_aigc_project.py` | `$aigc-film-project-auditor` | `10_qa/reports/project_audit_latest.md` |
+| 自治补全缺失资产 | Pipeline Hub Autofill 按钮 | `scripts/autofill_aigc_project.py` | `$aigc-film-pipeline` + `$aigc-film-project-auditor` | `10_qa/autofill_runs/autofill_latest.md` |
 | 导演级审美建议 | 报告面板 + Skill | 人工/AI 读取分析报告和抽样资产 | `$aigc-film-project-auditor` | `10_qa/reports/director_aesthetic_review_latest.md` |
 | 阶段状态 | Pipeline Hub 阶段面板 | `analyze_stages()` | `$aigc-film-pipeline` | stage weak/missing lists |
 | 镜头生产准备 | Pipeline Hub 镜头表 | `07_shots/shot_list.csv` | `$aigc-film-pipeline` | shot-level task table |
@@ -22,6 +23,7 @@
 - 可链接旧项目和 LFS 资源目录: done
 - 可验证标准项目结构: done
 - 可分析项目资产、抽样大资源、输出缺失项和审美风险: done
+- 可按分析缺口自动补齐安全资产，并生成 Codex/image2/Blender/plugin 适配器任务: done
 - 可读取投币口样板并展示阶段/镜头/报告: done
 - 投币口 12 镜头标准样板批次: done
 

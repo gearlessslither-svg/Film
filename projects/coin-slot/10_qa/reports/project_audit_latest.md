@@ -1,6 +1,6 @@
 # AIGC Project Audit Report
 
-Generated at: 2026-06-13T16:12:02+08:00
+Generated at: 2026-06-13T16:27:01+08:00
 
 ## Executive Summary
 
@@ -9,7 +9,7 @@ Generated at: 2026-06-13T16:12:02+08:00
 - Audit status: **pass**
 - Readiness score: **100%**
 - Stage status: 12 pass, 0 warn, 0 fail
-- Project files scanned: 68 (text: 68)
+- Project files scanned: 70 (text: 70)
 - Linked resource files scanned: 1073 (3d: 2, archive: 2, audio: 98, image: 899, text: 68, video: 4)
 - Shot list rows: 12
 
@@ -27,7 +27,7 @@ This is a deterministic asset and workflow scan. It identifies structural gaps, 
 
 | Stage | Status | Files | Missing | Weak / Template |
 | --- | --- | --- | --- | --- |
-| 00_admin | pass | 3 | - | - |
+| 00_admin | pass | 4 | - | - |
 | 01_intake | pass | 3 | - | - |
 | 02_direction | pass | 3 | - | - |
 | 03_story | pass | 3 | - | - |
@@ -37,7 +37,7 @@ This is a deterministic asset and workflow scan. It identifies structural gaps, 
 | 07_shots | pass | 26 | - | - |
 | 08_generation | pass | 4 | - | - |
 | 09_edit | pass | 4 | - | - |
-| 10_qa | pass | 2 | - | - |
+| 10_qa | pass | 3 | - | - |
 | 11_delivery | pass | 3 | - | - |
 
 ## Priority Recommendations

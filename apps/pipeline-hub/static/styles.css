@@ -95,7 +95,7 @@ input {
 
 .toolbar {
   display: grid;
-  grid-template-columns: 42px 1fr 1fr;
+  grid-template-columns: 42px repeat(3, minmax(0, 1fr));
   gap: 8px;
 }
 
@@ -317,6 +317,7 @@ input:focus {
 
 .analysis-controls {
   display: flex;
+  flex-wrap: wrap;
   gap: 12px;
   align-items: end;
 }

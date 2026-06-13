@@ -165,6 +165,24 @@ def report_info(path: Path) -> dict[str, object]:
     }
 
 
+def autofill_info(path: Path) -> dict[str, object]:
+    report = path / "10_qa" / "autofill_runs" / "autofill_latest.md"
+    if not report.exists():
+        return {"exists": False, "path": str(report)}
+    text = report.read_text(encoding="utf-8", errors="ignore")
+    status_match = re.search(r"Completion status:\s+\*\*([^*]+)\*\*", text)
+    generated_match = re.search(r"Generated at:\s+(.+)", text)
+    pending_match = re.search(r"Pending external tasks:\s+(\d+)", text)
+    return {
+        "exists": True,
+        "path": str(report),
+        "status": status_match.group(1).strip() if status_match else "",
+        "generated_at": generated_match.group(1).strip() if generated_match else "",
+        "pending_external": int(pending_match.group(1)) if pending_match else None,
+        "text": text,
+    }
+
+
 def stage_summary(path: Path) -> list[dict[str, object]]:
     rows = analyze_stages(path)
     by_id = {row["stage"]: row for row in rows}
@@ -219,6 +237,7 @@ def project_detail(slug: str, include_report_text: bool = True) -> dict[str, obj
         "shots": read_shots(path),
         "validation": validation,
         "report": report,
+        "autofill": autofill_info(path),
     }
 
 
@@ -374,6 +393,30 @@ class PipelineHubHandler(BaseHTTPRequestHandler):
                 args = ["scripts/analyze_aigc_project.py", f"projects/{slug}", "--sample-size", str(sample_size), "--print-json"]
                 if payload.get("include_source_root"):
                     args.append("--include-source-root")
+                result = run_repo_script(args)
+                result["project"] = project_detail(slug)
+                send_json(self, result)
+                return
+            if action == "autofill":
+                sample_size = int(payload.get("sample_size", 24) or 24)
+                max_rounds = int(payload.get("max_rounds", 3) or 3)
+                args = [
+                    "scripts/autofill_aigc_project.py",
+                    f"projects/{slug}",
+                    "--max-rounds",
+                    str(max_rounds),
+                    "--sample-size",
+                    str(sample_size),
+                    "--print-json",
+                ]
+                if payload.get("include_source_root"):
+                    args.append("--include-source-root")
+                if payload.get("allow_external"):
+                    args.append("--allow-external")
+                if payload.get("allow_plugin_install"):
+                    args.append("--allow-plugin-install")
+                if payload.get("require_external_complete"):
+                    args.append("--require-external-complete")
                 result = run_repo_script(args)
                 result["project"] = project_detail(slug)
                 send_json(self, result)

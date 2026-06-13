@@ -21,6 +21,7 @@
           <button id="refreshBtn" class="icon-button" type="button" title="刷新项目">↻</button>
           <button id="validateBtn" class="command-button" type="button">✓ 验证</button>
           <button id="analyzeBtn" class="command-button primary" type="button">◎ 分析</button>
+          <button id="autofillBtn" class="command-button" type="button">Autofill</button>
         </div>
 
         <div id="projectList" class="project-list"></div>
@@ -93,9 +94,21 @@
               抽样数
               <input id="sampleSize" type="number" min="1" max="200" value="24" />
             </label>
+            <label>
+              Rounds
+              <input id="maxRounds" type="number" min="1" max="8" value="3" />
+            </label>
             <label class="checkbox-label">
               <input id="includeSourceRoot" type="checkbox" />
               扫描旧项目目录
+            </label>
+            <label class="checkbox-label">
+              <input id="allowExternalTools" type="checkbox" />
+              External tools
+            </label>
+            <label class="checkbox-label">
+              <input id="allowPluginInstall" type="checkbox" />
+              Plugin install
             </label>
           </div>
         </section>
@@ -124,6 +137,14 @@
             <span id="reportHint"></span>
           </div>
           <pre id="reportView" class="report-view"></pre>
+        </section>
+
+        <section class="panel report-panel">
+          <div class="panel-header">
+            <h3>Latest Autofill Run</h3>
+            <span id="autofillHint"></span>
+          </div>
+          <pre id="autofillView" class="report-view"></pre>
         </section>
       </main>
     </div>

@@ -71,3 +71,11 @@ python scripts/analyze_aigc_project.py projects/<project-slug> --sample-size 24 
 ```
 
 The button should open `10_qa/reports/project_audit_latest.md` after the command completes. The command returns process success even when the project has missing work; missing work is reported inside the audit status.
+
+When the user asks to automatically fill missing work, the GUI "Autofill" button should call:
+
+```powershell
+python scripts/autofill_aigc_project.py projects/<project-slug> --max-rounds 3 --sample-size 24 --print-json
+```
+
+This agent may write safe local drafts and queue Codex/image2/Blender/plugin adapter tasks. External commands run only when explicitly enabled in `00_admin/autofill_config.yaml` and allowed by the current invocation.

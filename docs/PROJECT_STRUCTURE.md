@@ -93,10 +93,13 @@ python scripts/create_aigc_project.py `
 - 镜头生产: 读取 `07_shots/shot_list.csv`，批量生成关键帧、提示词、视频任务和 QA 队列。
 - 项目健康检查: 检查缺失目录、缺失清单、未确认阶段、未入 LFS 的大文件和 `.rar` 风险。
 - 项目资产与审美体检: 调用 `scripts/analyze_aigc_project.py`，抽样检查当前项目和链接资源，输出缺失项与电影制作建议。
+- 自治补全: 调用 `scripts/autofill_aigc_project.py`，循环分析并补齐缺失的安全本地产物；Codex、image2、Blender 和插件安装通过 `00_admin/autofill_config.yaml` 作为显式适配器接入。
 
 当前可先调用 `scripts/validate_aigc_project.py` 完成最小结构检查，后续再扩展更细的镜头、模型和资产 QA。
 
 当前可调用 `scripts/analyze_aigc_project.py projects/<slug>` 输出 `10_qa/reports/project_audit_latest.md`，再由 `$aigc-film-project-auditor` Skill 进行导演级审美和工业流程建议。
+
+当前也可调用 `scripts/autofill_aigc_project.py projects/<slug> --max-rounds 3` 输出 `10_qa/autofill_runs/autofill_latest.md`。默认模式只写可审计的文档、CSV、索引和任务队列；外部生成、Blender 执行和插件安装必须在项目配置中启用并由运行参数允许。
 
 ## Run The Local Hub
 

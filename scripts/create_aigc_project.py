@@ -130,6 +130,7 @@ gui_contract:
   director_brief: "00_admin/director_brief.md"
   project_log: "00_admin/project_log.md"
   audit_report: "10_qa/reports/project_audit_latest.md"
+  autofill_report: "10_qa/autofill_runs/autofill_latest.md"
 """,
     "00_admin/director_brief.md": """# Director Brief
 
@@ -182,6 +183,34 @@ remote_models:
 fallback:
   when_local_unavailable: "Use remote model after recording the reason in 00_admin/project_log.md."
   when_remote_unavailable: "Continue with local draft outputs and mark outputs as provisional."
+""",
+    "00_admin/autofill_config.yaml": """schema_version: 1
+autofill:
+  max_rounds: 3
+  stop_when_audit_status: "pass"
+  allow_external_tools: false
+  allow_plugin_install: false
+  require_external_completion: false
+  timeout_seconds: 1800
+  adapters:
+    codex:
+      enabled: false
+      command: []
+    image2:
+      enabled: false
+      command: []
+    blender:
+      enabled: false
+      command: []
+    plugin_installer:
+      enabled: false
+      command: []
+
+# Adapter command placeholders:
+# - {prompt_path}: task prompt file
+# - {output_dir}: target output directory
+# - {project_path}: project root
+# - {run_dir}: current autofill run directory
 """,
     "00_admin/project_log.md": """# Project Log
 

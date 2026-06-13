@@ -32,6 +32,7 @@ python scripts/validate_pipeline_state.py <project-root>
 - `scripts/validate_pipeline_state.py`: checks project readiness and writes/updates pipeline validation.
 - `apps/pipeline-hub/server.py`: local GUI hub for creating, linking, validating, analyzing, and reviewing standardized project folders.
 - `scripts/analyze_aigc_project.py`: scans standardized `projects/<slug>/` folders, samples linked resources, and writes `10_qa/reports/project_audit_latest.md` for missing-work and aesthetic review.
+- `scripts/autofill_aigc_project.py`: controlled autonomous repair agent that loops analyze -> fill -> analyze, writes safe missing artifacts, and queues or runs enabled Codex/image2/Blender/plugin adapter tasks.
 - `scripts/seed_coin_slot_sample_project.py`: rebuilds the standardized 12-shot Coin Slot sample batch from archived CSV/prompt/stage-map resources.
 - `scripts/visual/qa_whitebox_images.py`: validates whitebox renders and repeated composition risk.
 - `scripts/visual/qa_whitebox_similarity.py`: compares near-duplicate whitebox images.

@@ -96,6 +96,7 @@ function renderHeader() {
     return;
   }
   const report = detail.report || {};
+  const autofill = detail.autofill || {};
   $("projectTitle").textContent = detail.name || detail.slug;
   $("projectPath").textContent = detail.path || "";
   const p0 = report.p0_count || 0;
@@ -104,6 +105,7 @@ function renderHeader() {
     pill(report.status || "unscanned", report.status === "needs_work" ? "danger" : report.status === "warn" ? "warn" : "ok"),
     pill(`P0 ${p0}`, p0 > 0 ? "danger" : "ok"),
     pill(report.exists ? "有分析报告" : "未分析", report.exists ? "ok" : "warn"),
+    pill(autofill.exists ? `Autofill ${autofill.status || "done"}` : "Autofill idle", autofill.status === "ready_for_director_review" ? "ok" : autofill.exists ? "warn" : ""),
   ].join("");
 }
 
@@ -195,6 +197,12 @@ function renderReport() {
   $("reportView").textContent = report.text || "还没有分析报告。点击“分析”生成。";
 }
 
+function renderAutofill() {
+  const autofill = state.detail?.autofill || {};
+  $("autofillHint").textContent = autofill.generated_at || "";
+  $("autofillView").textContent = autofill.text || "No autofill run yet.";
+}
+
 function renderAll() {
   renderProjects();
   renderHeader();
@@ -203,6 +211,7 @@ function renderAll() {
   renderStages();
   renderShots();
   renderReport();
+  renderAutofill();
 }
 
 async function loadProjects() {
@@ -275,6 +284,31 @@ async function analyzeCurrentProject() {
   });
 }
 
+async function autofillCurrentProject() {
+  if (!state.selectedSlug) return;
+  const sampleSize = Number($("sampleSize").value || 24);
+  const maxRounds = Number($("maxRounds").value || 3);
+  const includeSourceRoot = $("includeSourceRoot").checked;
+  const allowExternal = $("allowExternalTools").checked;
+  const allowPluginInstall = $("allowPluginInstall").checked;
+  await runAction("Autofill", async () => {
+    const result = await requestJson(`/api/projects/${state.selectedSlug}/autofill`, {
+      method: "POST",
+      body: JSON.stringify({
+        sample_size: sampleSize,
+        max_rounds: maxRounds,
+        include_source_root: includeSourceRoot,
+        allow_external: allowExternal,
+        allow_plugin_install: allowPluginInstall,
+      }),
+    });
+    if (result.json?.status) {
+      toast(`Autofill: ${result.json.status}`);
+    }
+    await loadProjects();
+  });
+}
+
 async function createProject(event) {
   event.preventDefault();
   const form = event.currentTarget;
@@ -305,6 +339,7 @@ function bindEvents() {
   $("refreshBtn").addEventListener("click", () => runAction("刷新", loadProjects));
   $("validateBtn").addEventListener("click", validateCurrentProject);
   $("analyzeBtn").addEventListener("click", analyzeCurrentProject);
+  $("autofillBtn").addEventListener("click", autofillCurrentProject);
   $("createForm").addEventListener("submit", createProject);
   $("linkForm").addEventListener("submit", updateLinks);
 }

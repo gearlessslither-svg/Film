@@ -47,6 +47,7 @@ http://127.0.0.1:8787
 - `GET /api/projects/<slug>`: 读取项目详情、阶段状态、镜头表、验证结果和分析报告。
 - `POST /api/projects/<slug>/validate`: 运行结构检查。
 - `POST /api/projects/<slug>/analyze`: 运行项目资产与审美体检。
+- `POST /api/projects/<slug>/autofill`: 运行受控自治补全，补齐安全本地产物，并按配置排队或执行 Codex/image2/Blender/plugin 适配器任务。
 - `POST /api/projects/<slug>/links`: 更新旧项目目录和资源目录映射。
 
 ## Analyze Current Project Button
@@ -62,6 +63,23 @@ python scripts/analyze_aigc_project.py projects/<project-slug> --sample-size 24 
 - 机器可读摘要: 命令行 JSON。
 - 人类可读报告: `projects/<project-slug>/10_qa/reports/project_audit_latest.md`。
 - AI 审片入口: 使用 `$aigc-film-project-auditor` 读取报告并结合电影审美 Rubric 生成导演建议。
+
+## Autofill Button
+
+按钮行为：
+
+```powershell
+python scripts/autofill_aigc_project.py projects/<project-slug> --max-rounds 3 --sample-size 24 --print-json
+```
+
+自治补全会循环执行 analyze -> fill -> analyze，直到确定性审计达到 `pass` 或达到轮次预算。默认只写安全本地产物：缺失文档、CSV、索引、提示词草稿、任务队列、配置、QA 记录和运行报告。Codex、image2、Blender 或 plugin install 只有在 `00_admin/autofill_config.yaml` 里启用，并且 GUI/API 请求允许时才会执行。
+
+输出：
+
+- 机器摘要: 命令行 JSON。
+- 运行报告: `projects/<project-slug>/10_qa/autofill_runs/autofill_latest.md`。
+- 适配器任务提示词: `projects/<project-slug>/10_qa/autofill_runs/<run-id>/tasks/`。
+- 项目日志记录: `00_admin/project_log.md`。
 
 ## Coin Slot Sample Seed
 
