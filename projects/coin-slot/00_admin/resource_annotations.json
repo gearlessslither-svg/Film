@@ -1,5 +1,15 @@
 {
   "assets": {
+    "resource:media/01_AIGC/character_design_v2/CHR_BRO_A_older_brother_front_design_v001.png": {
+      "note": "",
+      "status": "use",
+      "updated_at": "2026-06-14T00:20:57+08:00"
+    },
+    "resource:media/01_AIGC/character_design_v2/CHR_BRO_C_younger_brother_turnaround_expression_v001_chubby.png": {
+      "note": "",
+      "status": "use",
+      "updated_at": "2026-06-14T00:20:17+08:00"
+    },
     "resource:media/01_AIGC/character_design_v2/THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg": {
       "note": "",
       "status": "use",
@@ -14,9 +24,19 @@
       "note": "",
       "status": "reject",
       "updated_at": "2026-06-14T00:19:35+08:00"
+    },
+    "resource:media/01_AIGC/character_refs/CS_A_three_brothers_v001.png": {
+      "note": "",
+      "status": "reject",
+      "updated_at": "2026-06-14T00:20:23+08:00"
+    },
+    "resource:media/01_AIGC/character_refs/CS_B_bully_group_v001.png": {
+      "note": "",
+      "status": "reject",
+      "updated_at": "2026-06-14T00:20:37+08:00"
     }
   },
   "project_slug": "coin-slot",
   "schema_version": 1,
-  "updated_at": "2026-06-14T00:19:35+08:00"
+  "updated_at": "2026-06-14T00:20:57+08:00"
 }
