@@ -372,6 +372,207 @@ def write_prompt_files(project_path: Path, project_name: str, *, dry_run: bool) 
     return changes
 
 
+def location_summary(project_path: Path) -> str:
+    rows = read_shot_rows(project_path)
+    counts: dict[str, int] = {}
+    for row in rows:
+        location = (row.get("location") or "TBD").strip() or "TBD"
+        counts[location] = counts.get(location, 0) + 1
+    if not counts:
+        return "- TBD production space"
+    return "\n".join(f"- {location}: {count} shots" for location, count in sorted(counts.items()))
+
+
+def beat_summary(project_path: Path) -> str:
+    rows = read_shot_rows(project_path)
+    if not rows:
+        return "- Opening pressure\n- Complication\n- Payoff"
+    lines = []
+    for row in rows[:12]:
+        lines.append(f"- {row.get('shot_id', 'S000')}: {row.get('story_beat', 'TBD')} | {row.get('action', 'TBD')}")
+    return "\n".join(lines)
+
+
+def write_if_missing(path: Path, text: str, note: str, project_path: Path, *, dry_run: bool) -> list[Change]:
+    if path.exists() and path.stat().st_size > 160:
+        return []
+    if not dry_run:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(text, encoding="utf-8", newline="\n")
+    return [Change("write", relative(path, project_path), note)]
+
+
+def recommendation_asset_texts(project_path: Path, project_name: str) -> list[tuple[Path, str, str]]:
+    manifest = read_manifest(project_path)
+    resource_root = get_manifest_project_value(manifest, "resource_root") or "(not linked)"
+    source_root = get_manifest_project_value(manifest, "source_root") or "(not linked)"
+    generated = now_iso()
+    locations = location_summary(project_path)
+    beats = beat_summary(project_path)
+    return [
+        (
+            project_path / "01_intake/analysis/coin_slot_resource_evidence_map.md",
+            f"""# Resource Evidence Map
+
+Project: {project_name}
+Generated at: {generated}
+Status: autofill recommendation asset
+
+## Linked Roots
+
+- Source root: `{source_root}`
+- Resource root: `{resource_root}`
+
+## Stage Evidence Map
+
+| Stage | Evidence Source | Production Use | Keep As Link Or Copy |
+| --- | --- | --- | --- |
+| `01_intake/source_inputs` | Director notes, screenshots, rough media, original folders | Raw intent and provenance | Link unless final source is small text |
+| `01_intake/references` | External visual references and sample material | Mood, era, texture, composition checks | Link or copy curated thumbnails |
+| `03_story` | Beat sheets, scripts, micro-storyboard tables | Story state and continuity decisions | Copy final text tables |
+| `04_lookdev` | Character references, contact sheets, style tests | Look bible and palette rules | Copy final approved stills via LFS |
+| `06_previs` | Blender files, whitebox renders, camera manifests | Spatial lock, camera lock, control layers | Copy approved manifests; LFS for media |
+| `07_shots` | Shot CSV, prompts, keyframe indexes | Batch image/video task driver | Copy current production tables |
+| `08_generation` | Image/video outputs and reject logs | QA loop and rerun evidence | LFS for approved media, text logs in Git |
+
+## Current Shot Locations
+
+{locations}
+
+## Rule
+
+If a file is used as an input for generation, record where it came from, whether it is authoritative, and which shot or story stage depends on it.
+""",
+            "Filled P1 linked-resource evidence mapping.",
+        ),
+        (
+            project_path / "04_lookdev/references/coin_slot_look_bible_v001.md",
+            f"""# Coin Slot Look Bible V001
+
+Project: {project_name}
+Generated at: {generated}
+Status: autofill recommendation asset
+
+## Visual Thesis
+
+The film should feel like a pressured childhood memory colliding with arcade machinery: CRT glow, coin-slot metal, damp exterior air, shallow pockets of safety, and sudden pockets of threat.
+
+## Color Script
+
+| Story Zone | Dominant Color Logic | Contrast Role |
+| --- | --- | --- |
+| Compound / threshold | cold gray-green, dirty cyan, weak practicals | establishes pressure and surveillance |
+| Arcade interior | CRT cyan, cabinet red, sodium spill, black recesses | seduction, confusion, fractured attention |
+| Alley / exit | desaturated blue-green, concrete gray, small warm practicals | danger, isolation, aftermath |
+
+## Lighting Rules
+
+- Use motivated practical light: CRT screens, arcade signs, doorway spill, phone glow, street lamps.
+- Keep faces readable but never glossy; use soft falloff and dirty ambient bounce.
+- Silhouette should carry story pressure: protectors wider, younger brother smaller, threat group more angular.
+- Avoid beauty lighting unless it is deliberately ironic or memory-like.
+
+## Material And Texture
+
+- Metal: worn coin-slot edges, scratched chrome, oily fingerprints.
+- Plastic: aged arcade buttons, cloudy cabinet plexi, chipped colored surfaces.
+- Fabric: school-age layers, washed cotton, dust, scuffs, sweat at late-stage stress points.
+- Ground: concrete, damp patches, flattened trash, fluorescent reflection.
+
+## Forbidden Looks
+
+- Clean cyberpunk neon, glossy music-video contrast, generic streetwear catalog poses.
+- Characters changing age, face shape, wardrobe state, dirt state, or relative height across adjacent shots.
+- Unmotivated rim light, empty bokeh backgrounds, wide shots without readable blocking.
+
+## Shot Beat Reference
+
+{beats}
+""",
+            "Filled P1 reusable look bible.",
+        ),
+        (
+            project_path / "06_previs/qa/coin_slot_blocking_readability_upgrade_plan.md",
+            f"""# Blocking Readability Upgrade Plan
+
+Project: {project_name}
+Generated at: {generated}
+Status: autofill recommendation asset
+
+## Goal
+
+Raise whitebox/previs usefulness from rough spatial reminder to image-generation control source. The next Blender pass should make scale, eyeline, occlusion, camera height, and foreground/midground/background readable at thumbnail size.
+
+## Required Checks
+
+| Check | Acceptance Criteria |
+| --- | --- |
+| Scale | child/adult height relation is clear in every shared frame |
+| Screen direction | exits, threats, and movement preserve left/right continuity |
+| Camera height | low, child-height, eye-level, and high-angle shots are explicitly labeled |
+| Lens logic | wide, normal, and compressed views are not mixed accidentally |
+| Occlusion | doorframes, cabinets, bodies, and foreground objects support story pressure |
+| Depth | each key shot has clear foreground, midground, and background planes |
+| Action readability | preparation, action, result, and reaction frames are separated |
+
+## Current Location Coverage
+
+{locations}
+
+## Next Blender Tasks
+
+- Add simple human-scale stand-ins with distinct silhouettes for each character group.
+- Add camera markers named by `shot_id`.
+- Export one clean whitebox render and one annotated review render per key shot.
+- Export depth, line, normal, or segmentation layers only after camera and blocking are approved.
+- Add a QA contact sheet before using the renders in image generation.
+""",
+            "Filled P1 whitebox/blocking upgrade plan.",
+        ),
+        (
+            project_path / "09_edit/audio/coin_slot_sound_edit_intent_map.md",
+            f"""# Sound And Edit Intent Map
+
+Project: {project_name}
+Generated at: {generated}
+Status: autofill recommendation asset
+
+## Principle
+
+Sound is part of visual continuity. Each story beat needs an intended sound perspective before final image/video generation, so prompts can preserve distance, tension, silence, and motion rhythm.
+
+## Beat-Level Sound Intent
+
+| Beat Type | Sound Perspective | Edit Rhythm |
+| --- | --- | --- |
+| Threshold / approach | muffled arcade walla, distant cabinet tones, shoe scuff | hold slightly too long before entry |
+| Discovery / coin-slot focus | close mechanical click, finger scrape, CRT hum | cut on attention shift rather than action completion |
+| Threat arrival | offscreen voices first, then body presence | shorten shot duration, preserve reaction frames |
+| Escape / alley | breathing, concrete footsteps, reduced music | alternate motion with stillness |
+| Afterimage | sparse room tone, one unresolved machine tone | allow silence to carry the final image |
+
+## Shot Beat Reference
+
+{beats}
+
+## QA Notes
+
+- Dialogue, Foley, ambience, and music should be tracked by shot or story stage.
+- Silence is a design asset and should be marked in the rough cut plan.
+- If a generated video changes motion speed, update sound intent before regenerating the next batch.
+""",
+            "Filled P2 sound/edit intent map.",
+        ),
+    ]
+
+
+def fill_recommendation_assets(project_path: Path, project_name: str, *, dry_run: bool) -> list[Change]:
+    changes: list[Change] = []
+    for path, text, note in recommendation_asset_texts(project_path, project_name):
+        changes.extend(write_if_missing(path, text, note, project_path, dry_run=dry_run))
+    return changes
+
+
 def directory_index_text(project_name: str, gap: Gap) -> str:
     return f"""# Autofill Index - {gap.stage}/{gap.check_id}
 
@@ -758,6 +959,7 @@ def autofill_project(args: argparse.Namespace) -> dict[str, Any]:
         if int(shot_list_stats(project_path).get("rows", 0) or 0) == 0:
             round_result.changes.extend(write_shot_list(project_path, project_name, dry_run=args.dry_run))
         if not gaps:
+            round_result.changes.extend(fill_recommendation_assets(project_path, project_name, dry_run=args.dry_run))
             rounds.append(round_result)
             break
 
