@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+from datetime import datetime, timezone
 import json
 import mimetypes
 import os
@@ -39,6 +40,25 @@ IMAGE_PREVIEW_EXTENSIONS = {".png", ".jpg", ".jpeg", ".webp", ".gif"}
 MEDIA_PREVIEW_EXTENSIONS = IMAGE_PREVIEW_EXTENSIONS | {".mp4", ".webm", ".mp3", ".wav", ".ogg"}
 LFS_POINTER_PREFIX = b"version https://git-lfs.github.com/spec/v1\n"
 LEGACY_COIN_SLOT_AIGC_ROOT = REPO_ROOT.parent / "投币口" / "01_AIGC"
+STAGE_IDS = tuple(stage_id for stage_id, _description in STAGES)
+ANNOTATION_STATUSES = {"", "use", "reject"}
+RESOURCE_KIND_LABELS = {
+    "script": "剧本/文档",
+    "shot_prompt": "分镜提示词",
+    "video_prompt": "视频提示词",
+    "whitebox": "白模/预演",
+    "storyboard_keyframe": "分镜关键帧",
+    "scene_lock": "场景锁",
+    "character_ref": "角色参考",
+    "scene_ref": "场景参考",
+    "lookdev": "风格/Lookdev",
+    "audio": "音频",
+    "video": "视频",
+    "three_d": "3D",
+    "image": "图片",
+    "document": "文档",
+    "other": "其他",
+}
 PREVIEW_DOC_LIMIT = 16
 PREVIEW_IMAGE_LIMIT = 24
 PREVIEW_VIDEO_LIMIT = 12
@@ -123,6 +143,52 @@ def project_path(slug: str) -> Path:
     if PROJECTS_ROOT.resolve() not in path.parents and path != PROJECTS_ROOT.resolve():
         raise ValueError("Project path escaped projects root.")
     return path
+
+
+def now_iso() -> str:
+    return datetime.now(timezone.utc).astimezone().isoformat(timespec="seconds")
+
+
+def annotation_path(path: Path) -> Path:
+    return path / "00_admin" / "resource_annotations.json"
+
+
+def empty_annotations(slug: str) -> dict[str, object]:
+    return {
+        "schema_version": 1,
+        "project_slug": slug,
+        "updated_at": "",
+        "assets": {},
+    }
+
+
+def load_resource_annotations(path: Path) -> dict[str, object]:
+    data = empty_annotations(path.name)
+    target = annotation_path(path)
+    if not target.exists():
+        return data
+    try:
+        loaded = json.loads(target.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return data
+    if isinstance(loaded, dict):
+        assets = loaded.get("assets", {})
+        data.update({key: value for key, value in loaded.items() if key != "assets"})
+        data["assets"] = assets if isinstance(assets, dict) else {}
+    return data
+
+
+def write_resource_annotations(path: Path, data: dict[str, object]) -> None:
+    target = annotation_path(path)
+    assets = data.get("assets", {})
+    if not assets and target.exists():
+        target.unlink()
+        return
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text(
+        json.dumps(data, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
 
 
 def load_manifest(path: Path) -> dict[str, object]:
@@ -216,6 +282,67 @@ def asset_url(slug: str, origin: str, rel_path: str) -> str:
     return f"/api/projects/{slug}/asset?origin={quote(origin)}&path={quote(rel_path)}"
 
 
+def asset_ref(origin: str, rel_path: str) -> str:
+    return f"{origin}:{rel_path}"
+
+
+def asset_stage(origin: str, rel_path: str) -> str:
+    first = rel_path.split("/", 1)[0]
+    if first in STAGE_IDS:
+        return first
+    text = rel_path.lower()
+    if "prompt" in text or "storyboard" in text or "keyframe" in text or "micro_storyboard" in text:
+        return "07_shots"
+    if "whitebox" in text or "previs" in text or "blender" in text or "camera_" in text:
+        return "06_previs"
+    if "character" in text or "scene_ref" in text or "continuity" in text or "asset" in text:
+        return "05_asset_bible"
+    if "lookdev" in text or "style" in text or "reference" in text:
+        return "04_lookdev"
+    if "script" in text or "beat" in text or "outline" in text or "/story" in text:
+        return "03_story"
+    if "audio" in text or "edit" in text or "animatic" in text or "subtitle" in text:
+        return "09_edit"
+    if "qa" in text or "reject" in text or "report" in text:
+        return "10_qa"
+    if "delivery" in text or "export" in text:
+        return "11_delivery"
+    return "resources" if origin == "resource" else "other"
+
+
+def resource_kind(rel_path: str, category: str) -> str:
+    text = rel_path.lower()
+    if "video_prompts" in text or "video_prompt" in text:
+        return "video_prompt"
+    if "prompt" in text:
+        return "shot_prompt"
+    if "scene_lock" in text:
+        return "scene_lock"
+    if "whitebox" in text or "previs" in text or "blender" in text or "camera_whitebox" in text:
+        return "whitebox"
+    if "final_storyboard" in text or "storyboard_panel" in text or "storyboard_panels" in text or "keyframe" in text or "micro_storyboard" in text:
+        return "storyboard_keyframe"
+    if "script" in text or "beat" in text or "outline" in text or rel_path.startswith("03_story/"):
+        return "script"
+    if "character" in text:
+        return "character_ref"
+    if "scene_ref" in text or "location" in text or "environment" in text:
+        return "scene_ref"
+    if "lookdev" in text or "style" in text or "palette" in text:
+        return "lookdev"
+    if category == "audio":
+        return "audio"
+    if category == "video":
+        return "video"
+    if category == "3d":
+        return "three_d"
+    if category == "text":
+        return "document"
+    if category == "image":
+        return "image"
+    return "other"
+
+
 def is_lfs_pointer(path: Path) -> bool:
     try:
         with path.open("rb") as handle:
@@ -243,11 +370,17 @@ def asset_item(slug: str, origin: str, rel_path: str, file_path: Path, category:
     extension = file_path.suffix.lower()
     lfs_pointer = is_lfs_pointer(file_path)
     fallback = legacy_coin_slot_asset_path(origin, rel_path)
+    asset_category = category or category_for(file_path)
+    kind = resource_kind(rel_path, asset_category)
     return {
+        "ref": asset_ref(origin, rel_path),
         "origin": origin,
         "path": rel_path,
         "name": file_path.name,
-        "category": category or category_for(file_path),
+        "category": asset_category,
+        "stage": asset_stage(origin, rel_path),
+        "kind": kind,
+        "kind_label": RESOURCE_KIND_LABELS.get(kind, kind),
         "size_kb": round(file_path.stat().st_size / 1024, 1),
         "extension": extension,
         "previewable": extension in MEDIA_PREVIEW_EXTENSIONS and (not lfs_pointer or fallback is not None),
@@ -313,6 +446,7 @@ def read_preview_text(path: Path, limit: int = 12000) -> str:
 
 
 def collect_preview_assets(slug: str, path: Path, manifest: dict[str, object]) -> dict[str, object]:
+    assets: list[dict[str, object]] = []
     docs: list[dict[str, object]] = []
     images: list[dict[str, object]] = []
     videos: list[dict[str, object]] = []
@@ -337,10 +471,13 @@ def collect_preview_assets(slug: str, path: Path, manifest: dict[str, object]) -
     for origin, root in preview_roots(path, manifest):
         files = list_files(root)
         for file_path in files:
+            rel_path = str(file_path.relative_to(root)).replace("\\", "/")
+            if origin == "project" and rel_path == "00_admin/resource_annotations.json":
+                continue
             category = category_for(file_path)
             counts[category] = counts.get(category, 0) + 1
-            rel_path = str(file_path.relative_to(root)).replace("\\", "/")
             item = asset_item(slug, origin, rel_path, file_path, category=category)
+            assets.append(item)
             if category == "image":
                 images.append(item)
             elif category == "video":
@@ -362,6 +499,7 @@ def collect_preview_assets(slug: str, path: Path, manifest: dict[str, object]) -
                     }
                 )
 
+    assets = sorted(assets, key=lambda item: (str(item["stage"]), str(item["kind"]), asset_priority(Path(str(item["path"])))))
     docs = sorted(docs, key=lambda item: asset_priority(Path(str(item["path"]))))[:PREVIEW_DOC_LIMIT]
     images = sorted(images, key=lambda item: asset_priority(Path(str(item["path"]))))[:PREVIEW_IMAGE_LIMIT]
     videos = sorted(videos, key=lambda item: asset_priority(Path(str(item["path"]))))[:PREVIEW_VIDEO_LIMIT]
@@ -369,6 +507,7 @@ def collect_preview_assets(slug: str, path: Path, manifest: dict[str, object]) -
     three_d = sorted(three_d, key=lambda item: asset_priority(Path(str(item["path"]))))[:PREVIEW_THREE_D_LIMIT]
     return {
         "counts": counts,
+        "assets": assets,
         "docs": docs,
         "images": images,
         "videos": videos,
@@ -533,6 +672,80 @@ def read_shots(path: Path, limit: int = 100) -> dict[str, object]:
     return {"exists": True, "columns": reader.fieldnames or [], "rows": rows[:limit], "row_count": len(rows)}
 
 
+def apply_annotations_to_item(item: dict[str, object], annotations: dict[str, object]) -> None:
+    assets = annotations.get("assets", {})
+    if not isinstance(assets, dict):
+        item["annotation"] = {}
+        return
+    ref = str(item.get("ref", ""))
+    annotation = assets.get(ref, {})
+    item["annotation"] = annotation if isinstance(annotation, dict) else {}
+
+
+def apply_annotations_to_previews(previews: dict[str, object], annotations: dict[str, object]) -> None:
+    for key in ("assets", "docs", "images", "videos", "audio", "three_d"):
+        items = previews.get(key, [])
+        if isinstance(items, list):
+            for item in items:
+                if isinstance(item, dict):
+                    apply_annotations_to_item(item, annotations)
+
+
+def apply_annotations_to_scene_locks(scene_locks: dict[str, object], annotations: dict[str, object]) -> None:
+    for item in scene_locks.get("overview_images", []):
+        if isinstance(item, dict):
+            apply_annotations_to_item(item, annotations)
+    for lock in scene_locks.get("items", []):
+        if not isinstance(lock, dict):
+            continue
+        for key in ("preview", "master_asset"):
+            item = lock.get(key, {})
+            if isinstance(item, dict):
+                apply_annotations_to_item(item, annotations)
+
+
+def split_asset_ref(value: str) -> tuple[str, str]:
+    origin, sep, rel_path = value.partition(":")
+    if not sep or origin not in {"project", "resource"} or not rel_path:
+        raise ValueError("Invalid asset reference.")
+    return origin, rel_path
+
+
+def update_resource_annotation(slug: str, payload: dict[str, object]) -> dict[str, object]:
+    path = project_path(slug)
+    raw_ref = str(payload.get("asset_ref", "")).strip()
+    origin, rel_path = split_asset_ref(raw_ref)
+    safe_asset_path(slug, origin, rel_path)
+
+    status = str(payload.get("status", "")).strip()
+    if status not in ANNOTATION_STATUSES:
+        raise ValueError("Invalid annotation status.")
+    note = str(payload.get("note", "")).replace("\r\n", "\n").replace("\r", "\n").strip()
+    if len(note) > 5000:
+        note = note[:5000]
+
+    annotations = load_resource_annotations(path)
+    assets = annotations.setdefault("assets", {})
+    if not isinstance(assets, dict):
+        assets = {}
+        annotations["assets"] = assets
+
+    ref = asset_ref(origin, rel_path)
+    if status or note:
+        assets[ref] = {
+            "status": status,
+            "note": note,
+            "updated_at": now_iso(),
+        }
+    else:
+        assets.pop(ref, None)
+    annotations["schema_version"] = 1
+    annotations["project_slug"] = slug
+    annotations["updated_at"] = now_iso()
+    write_resource_annotations(path, annotations)
+    return {"ok": True, "annotations": load_resource_annotations(path)}
+
+
 def project_detail(slug: str, include_report_text: bool = True, include_previews: bool = True) -> dict[str, object]:
     path = project_path(slug)
     manifest = load_manifest(path)
@@ -540,6 +753,12 @@ def project_detail(slug: str, include_report_text: bool = True, include_previews
     if not include_report_text:
         report.pop("text", None)
     validation = validate_project(path)
+    annotations = load_resource_annotations(path)
+    previews = collect_preview_assets(slug, path, manifest) if include_previews else {}
+    scene_locks = collect_scene_locks(slug, path) if include_previews else {}
+    if include_previews:
+        apply_annotations_to_previews(previews, annotations)
+        apply_annotations_to_scene_locks(scene_locks, annotations)
     return {
         "slug": slug,
         "path": str(path),
@@ -554,8 +773,9 @@ def project_detail(slug: str, include_report_text: bool = True, include_previews
         "validation": validation,
         "report": report,
         "autofill": autofill_info(path),
-        "previews": collect_preview_assets(slug, path, manifest) if include_previews else {},
-        "scene_locks": collect_scene_locks(slug, path) if include_previews else {},
+        "annotations": annotations,
+        "previews": previews,
+        "scene_locks": scene_locks,
     }
 
 
@@ -788,6 +1008,9 @@ class PipelineHubHandler(BaseHTTPRequestHandler):
                 return
             if action == "links":
                 send_json(self, update_project_links(slug, payload))
+                return
+            if action == "annotations":
+                send_json(self, update_resource_annotation(slug, payload))
                 return
         send_text(self, "Not found", status=404)
 

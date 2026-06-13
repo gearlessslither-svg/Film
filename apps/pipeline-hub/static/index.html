@@ -118,6 +118,44 @@
           </div>
         </section>
 
+        <section class="panel resource-browser-panel">
+          <div class="panel-header">
+            <h3>资源浏览器</h3>
+            <span id="resourceBrowserHint"></span>
+          </div>
+          <div class="resource-filter-bar">
+            <label>
+              步骤
+              <select id="stageFilter"></select>
+            </label>
+            <label>
+              类别
+              <select id="kindFilter"></select>
+            </label>
+            <label>
+              标注
+              <select id="decisionFilter">
+                <option value="all">全部</option>
+                <option value="use">✅ 参考</option>
+                <option value="reject">× 不用</option>
+                <option value="unset">未标注</option>
+              </select>
+            </label>
+            <label class="resource-search-label">
+              搜索
+              <input id="assetSearch" placeholder="名称 / 路径 / 备注" />
+            </label>
+            <button id="clearResourceFilters" class="icon-button" type="button" title="清除筛选">×</button>
+          </div>
+          <div class="quick-filter-row">
+            <button class="quick-filter" data-kind-preset="script" type="button">剧本</button>
+            <button class="quick-filter" data-kind-preset="shot_prompt" type="button">分镜提示词</button>
+            <button class="quick-filter" data-kind-preset="whitebox" type="button">白模</button>
+            <button class="quick-filter" data-kind-preset="storyboard_keyframe" type="button">分镜关键帧</button>
+          </div>
+          <div id="resourceBrowser" class="resource-browser"></div>
+        </section>
+
         <section class="scene-lock-board">
           <div class="panel scene-lock-preview-panel">
             <div class="panel-header">

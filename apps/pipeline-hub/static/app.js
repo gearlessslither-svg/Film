@@ -5,6 +5,12 @@ const state = {
   busy: false,
   selectedDocIndex: 0,
   selectedSceneLockIndex: 0,
+  filters: {
+    stage: "all",
+    kind: "all",
+    decision: "all",
+    query: "",
+  },
 };
 
 const STAGE_LABELS = {
@@ -21,6 +27,31 @@ const STAGE_LABELS = {
   "10_qa": "QA 报告、修复队列、审片记录",
   "11_delivery": "最终导出、交付包、交付清单",
 };
+
+const EXTRA_STAGE_LABELS = {
+  resources: "外部资源",
+  other: "其他",
+};
+
+const KIND_LABELS = {
+  script: "剧本/文档",
+  shot_prompt: "分镜提示词",
+  video_prompt: "视频提示词",
+  whitebox: "白模/预演",
+  storyboard_keyframe: "分镜关键帧",
+  scene_lock: "场景锁",
+  character_ref: "角色参考",
+  scene_ref: "场景参考",
+  lookdev: "风格/Lookdev",
+  audio: "音频",
+  video: "视频",
+  three_d: "3D",
+  image: "图片",
+  document: "文档",
+  other: "其他",
+};
+
+const RESOURCE_RENDER_LIMIT = 80;
 
 const $ = (id) => document.getElementById(id);
 
@@ -200,8 +231,51 @@ function renderReport() {
   $("reportView").textContent = report.text || "还没有分析报告。点击“分析”生成。";
 }
 
+function stageLabel(stage) {
+  return STAGE_LABELS[stage] || EXTRA_STAGE_LABELS[stage] || stage || "其他";
+}
+
+function kindLabel(kind) {
+  return KIND_LABELS[kind] || kind || "其他";
+}
+
+function annotationAssets() {
+  return state.detail?.annotations?.assets || {};
+}
+
+function annotationForRef(ref) {
+  const annotation = annotationAssets()[ref] || {};
+  return typeof annotation === "object" && annotation ? annotation : {};
+}
+
+function annotationFor(item) {
+  const latest = annotationForRef(item.ref);
+  if (Object.keys(latest).length) return latest;
+  return item.annotation || {};
+}
+
+function decisionLabel(status) {
+  if (status === "use") return "✅ 参考";
+  if (status === "reject") return "× 不用";
+  return "";
+}
+
+function decisionClass(status) {
+  if (status === "use") return "marked-use";
+  if (status === "reject") return "marked-reject";
+  return "";
+}
+
+function annotationBadge(item) {
+  const status = annotationFor(item).status || "";
+  const label = decisionLabel(status);
+  return label ? `<span class="annotation-badge ${escapeHtml(decisionClass(status))}">${escapeHtml(label)}</span>` : "";
+}
+
 function assetSummary(item) {
   const parts = [`${item.origin || "project"}`, `${item.size_kb ?? 0} KB`];
+  const decision = decisionLabel(annotationFor(item).status || "");
+  if (decision) parts.push(decision);
   if (item.fallback === "legacy_local") parts.push("local fallback");
   if (item.lfs_missing) parts.push("LFS missing");
   else if (item.lfs_pointer) parts.push("LFS pointer");
@@ -229,6 +303,7 @@ function renderPreviewTile(item) {
         ${renderLfsPlaceholder(item.lfs_missing ? "未下载" : "不可预览")}
         <span>${escapeHtml(item.name)}</span>
         <small>${escapeHtml(assetSummary(item))}</small>
+        ${annotationBadge(item)}
       </div>
     `;
   }
@@ -237,6 +312,7 @@ function renderPreviewTile(item) {
       <img src="${escapeHtml(item.url)}" alt="${escapeHtml(item.name)}" loading="lazy" />
       <span>${escapeHtml(item.name)}</span>
       <small>${escapeHtml(assetSummary(item))}</small>
+      ${annotationBadge(item)}
     </a>
   `;
 }
@@ -371,6 +447,153 @@ function renderMediaPreview() {
   $("mediaPreview").innerHTML = videoHtml || audioHtml ? videoHtml + audioHtml : `<div class="empty-state">No previewable video or audio found.</div>`;
 }
 
+function allAssets() {
+  const previews = state.detail?.previews || {};
+  if (Array.isArray(previews.assets)) return previews.assets;
+  const seen = new Set();
+  return [...(previews.docs || []), ...(previews.images || []), ...(previews.videos || []), ...(previews.audio || []), ...(previews.three_d || [])].filter((item) => {
+    if (!item.ref || seen.has(item.ref)) return false;
+    seen.add(item.ref);
+    return true;
+  });
+}
+
+function renderSelectOptions(select, options, value) {
+  const values = new Set(options.map((option) => option.value));
+  const selected = values.has(value) ? value : "all";
+  select.innerHTML = options.map((option) => `<option value="${escapeHtml(option.value)}">${escapeHtml(option.label)}</option>`).join("");
+  select.value = selected;
+  return selected;
+}
+
+function renderResourceFilterOptions(assets) {
+  const stageCounts = new Map();
+  const kindCounts = new Map();
+  assets.forEach((item) => {
+    stageCounts.set(item.stage || "other", (stageCounts.get(item.stage || "other") || 0) + 1);
+    kindCounts.set(item.kind || "other", (kindCounts.get(item.kind || "other") || 0) + 1);
+  });
+  const stageOptions = [
+    { value: "all", label: `全部步骤 (${assets.length})` },
+    ...Object.entries(STAGE_LABELS)
+      .filter(([stage]) => stageCounts.has(stage))
+      .map(([stage, label]) => ({ value: stage, label: `${label} (${stageCounts.get(stage)})` })),
+    ...Object.entries(EXTRA_STAGE_LABELS)
+      .filter(([stage]) => stageCounts.has(stage))
+      .map(([stage, label]) => ({ value: stage, label: `${label} (${stageCounts.get(stage)})` })),
+  ];
+  const kindOptions = [
+    { value: "all", label: `全部类别 (${assets.length})` },
+    ...Object.entries(KIND_LABELS)
+      .filter(([kind]) => kindCounts.has(kind))
+      .map(([kind, label]) => ({ value: kind, label: `${label} (${kindCounts.get(kind)})` })),
+  ];
+  state.filters.stage = renderSelectOptions($("stageFilter"), stageOptions, state.filters.stage);
+  state.filters.kind = renderSelectOptions($("kindFilter"), kindOptions, state.filters.kind);
+  $("decisionFilter").value = state.filters.decision;
+  $("assetSearch").value = state.filters.query;
+}
+
+function filteredAssets() {
+  const query = state.filters.query.trim().toLowerCase();
+  return allAssets().filter((item) => {
+    const annotation = annotationFor(item);
+    const status = annotation.status || "";
+    if (state.filters.stage !== "all" && item.stage !== state.filters.stage) return false;
+    if (state.filters.kind !== "all" && item.kind !== state.filters.kind) return false;
+    if (state.filters.decision === "use" && status !== "use") return false;
+    if (state.filters.decision === "reject" && status !== "reject") return false;
+    if (state.filters.decision === "unset" && status) return false;
+    if (!query) return true;
+    return [item.name, item.path, item.origin, item.category, stageLabel(item.stage), kindLabel(item.kind), annotation.note]
+      .join(" ")
+      .toLowerCase()
+      .includes(query);
+  });
+}
+
+function renderResourceThumb(item) {
+  if (item.category === "image") {
+    if (item.previewable && !item.lfs_missing) {
+      return `<a class="resource-thumb" href="${escapeHtml(item.url)}" target="_blank"><img src="${escapeHtml(item.url)}" alt="${escapeHtml(item.name)}" loading="lazy" /></a>`;
+    }
+    return `<div class="resource-thumb">${renderLfsPlaceholder(item.lfs_missing ? "未下载" : "不可预览")}</div>`;
+  }
+  const label = item.category === "video" ? "VID" : item.category === "audio" ? "AUD" : item.category === "3d" ? "3D" : item.category === "text" ? "TXT" : "FILE";
+  return `<a class="resource-thumb resource-thumb-file" href="${escapeHtml(item.url)}" target="_blank"><strong>${escapeHtml(label)}</strong><span>${escapeHtml(item.extension || "")}</span></a>`;
+}
+
+function renderResourceCard(item) {
+  const annotation = annotationFor(item);
+  const status = annotation.status || "";
+  const note = annotation.note || "";
+  return `
+    <article class="resource-card ${escapeHtml(decisionClass(status))}" data-ref="${escapeHtml(item.ref)}">
+      ${renderResourceThumb(item)}
+      <div class="resource-card-body">
+        <div class="resource-card-title">
+          <strong>${escapeHtml(item.name)}</strong>
+          ${annotationBadge(item)}
+        </div>
+        <small class="resource-card-meta">${escapeHtml(stageLabel(item.stage))} · ${escapeHtml(kindLabel(item.kind))} · ${escapeHtml(assetSummary(item))}</small>
+        <small class="resource-card-path">${escapeHtml(item.path)}</small>
+        <div class="resource-card-actions">
+          <button class="decision-button use ${status === "use" ? "active" : ""}" data-status="use" type="button" title="标为后续参考">✓</button>
+          <button class="decision-button reject ${status === "reject" ? "active" : ""}" data-status="reject" type="button" title="标为不使用">×</button>
+          <a class="open-resource-link" href="${escapeHtml(item.url)}" target="_blank">打开</a>
+        </div>
+        <textarea class="resource-note" data-ref="${escapeHtml(item.ref)}" rows="2" placeholder="备注：哪里好 / 哪里不好">${escapeHtml(note)}</textarea>
+      </div>
+    </article>
+  `;
+}
+
+function bindResourceCardEvents() {
+  const root = $("resourceBrowser");
+  root.querySelectorAll(".decision-button").forEach((button) => {
+    button.addEventListener("click", async () => {
+      const card = button.closest(".resource-card");
+      const ref = card?.dataset.ref || "";
+      const current = annotationForRef(ref);
+      const nextStatus = current.status === button.dataset.status ? "" : button.dataset.status;
+      const note = card?.querySelector(".resource-note")?.value || current.note || "";
+      await saveResourceAnnotation(ref, { status: nextStatus, note });
+    });
+  });
+  root.querySelectorAll(".resource-note").forEach((textarea) => {
+    const saveNote = async (showToast = false) => {
+      const ref = textarea.dataset.ref || "";
+      const current = annotationForRef(ref);
+      await saveResourceAnnotation(ref, { status: current.status || "", note: textarea.value }, { rerender: false, toast: false });
+      if (showToast) toast("备注已保存");
+    };
+    textarea.addEventListener("input", () => {
+      clearTimeout(textarea._saveTimer);
+      textarea._saveTimer = setTimeout(() => saveNote(false).catch((error) => toast(`备注保存失败：${error.message}`)), 650);
+    });
+    textarea.addEventListener("blur", async () => {
+      clearTimeout(textarea._saveTimer);
+      await saveNote(true);
+    });
+  });
+}
+
+function renderResourceBrowser() {
+  const assets = allAssets();
+  renderResourceFilterOptions(assets);
+  const matches = filteredAssets();
+  const visible = matches.slice(0, RESOURCE_RENDER_LIMIT);
+  const markedUse = assets.filter((item) => annotationFor(item).status === "use").length;
+  const markedReject = assets.filter((item) => annotationFor(item).status === "reject").length;
+  $("resourceBrowserHint").textContent = `${visible.length}/${matches.length} shown · ✅ ${markedUse} · × ${markedReject}`;
+  if (!visible.length) {
+    $("resourceBrowser").innerHTML = `<div class="empty-state">没有匹配资源。</div>`;
+    return;
+  }
+  $("resourceBrowser").innerHTML = visible.map(renderResourceCard).join("");
+  bindResourceCardEvents();
+}
+
 function renderAssetList() {
   const previews = state.detail?.previews || {};
   const images = previews.images || [];
@@ -391,7 +614,7 @@ function renderAssetList() {
       (item) => `
         <a class="asset-row" href="${escapeHtml(item.url)}" target="_blank" title="${escapeHtml(item.path)}">
           <span>${escapeHtml(item.category)}</span>
-          <strong>${escapeHtml(item.name)}</strong>
+          <strong>${escapeHtml(item.name)} ${annotationBadge(item)}</strong>
           <small>${escapeHtml(assetSummary(item))}</small>
         </a>
       `,
@@ -410,6 +633,7 @@ function renderAll() {
   renderHeader();
   renderMetrics();
   renderLinks();
+  renderResourceBrowser();
   renderSceneLocks();
   renderVisualGallery();
   renderDocs();
@@ -559,6 +783,56 @@ async function updateLinks(event) {
   });
 }
 
+async function saveResourceAnnotation(ref, patch, options = {}) {
+  if (!state.selectedSlug || !ref) return;
+  const current = annotationForRef(ref);
+  const status = patch.status ?? current.status ?? "";
+  const note = patch.note ?? current.note ?? "";
+  const payload = await requestJson(`/api/projects/${state.selectedSlug}/annotations`, {
+    method: "POST",
+    body: JSON.stringify({ asset_ref: ref, status, note }),
+  });
+  state.detail.annotations = payload.annotations || state.detail.annotations || { assets: {} };
+  if (options.rerender !== false) {
+    renderResourceBrowser();
+    renderVisualGallery();
+    renderAssetList();
+  }
+  if (options.toast !== false) toast("标注已保存");
+}
+
+function bindResourceFilters() {
+  $("stageFilter").addEventListener("change", (event) => {
+    state.filters.stage = event.target.value;
+    renderResourceBrowser();
+  });
+  $("kindFilter").addEventListener("change", (event) => {
+    state.filters.kind = event.target.value;
+    renderResourceBrowser();
+  });
+  $("decisionFilter").addEventListener("change", (event) => {
+    state.filters.decision = event.target.value;
+    renderResourceBrowser();
+  });
+  $("assetSearch").addEventListener("input", (event) => {
+    state.filters.query = event.target.value;
+    renderResourceBrowser();
+  });
+  $("clearResourceFilters").addEventListener("click", () => {
+    state.filters = { stage: "all", kind: "all", decision: "all", query: "" };
+    renderResourceBrowser();
+  });
+  document.querySelectorAll(".quick-filter").forEach((button) => {
+    button.addEventListener("click", () => {
+      state.filters.kind = button.dataset.kindPreset || "all";
+      state.filters.stage = "all";
+      state.filters.decision = "all";
+      state.filters.query = "";
+      renderResourceBrowser();
+    });
+  });
+}
+
 function bindEvents() {
   $("refreshBtn").addEventListener("click", () => runAction("刷新", loadProjects));
   $("validateBtn").addEventListener("click", validateCurrentProject);
@@ -567,6 +841,7 @@ function bindEvents() {
   $("sceneLockBtn").addEventListener("click", buildSceneLocksCurrentProject);
   $("createForm").addEventListener("submit", createProject);
   $("linkForm").addEventListener("submit", updateLinks);
+  bindResourceFilters();
 }
 
 bindEvents();
