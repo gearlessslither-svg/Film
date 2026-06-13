@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AIGC Pipeline Hub</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-mark">AI</div>
+          <div>
+            <h1>AIGC Pipeline Hub</h1>
+            <p>项目总控台</p>
+          </div>
+        </div>
+
+        <div class="toolbar">
+          <button id="refreshBtn" class="icon-button" type="button" title="刷新项目">↻</button>
+          <button id="validateBtn" class="command-button" type="button">✓ 验证</button>
+          <button id="analyzeBtn" class="command-button primary" type="button">◎ 分析</button>
+        </div>
+
+        <div id="projectList" class="project-list"></div>
+
+        <form id="createForm" class="form-block">
+          <h2>新建项目</h2>
+          <label>
+            项目名
+            <input name="name" placeholder="例如：新短片" required />
+          </label>
+          <label>
+            Slug
+            <input name="slug" placeholder="new-film" pattern="[a-z0-9][a-z0-9-]{0,63}" />
+          </label>
+          <label>
+            旧项目目录
+            <input name="source_root" placeholder="可选，例如 E:\视觉\投币口" />
+          </label>
+          <label>
+            资源目录
+            <input name="resource_root" placeholder="可选，例如 resources/examples/coin-slot" />
+          </label>
+          <button class="command-button full" type="submit">＋ 创建</button>
+        </form>
+      </aside>
+
+      <main class="workspace">
+        <header class="workspace-header">
+          <div>
+            <p class="eyebrow">Current Project</p>
+            <h2 id="projectTitle">读取中</h2>
+            <p id="projectPath" class="path-line"></p>
+          </div>
+          <div id="statusPills" class="status-pills"></div>
+        </header>
+
+        <section class="summary-grid" aria-label="项目摘要">
+          <div class="metric">
+            <span>Readiness</span>
+            <strong id="readinessMetric">-</strong>
+          </div>
+          <div class="metric">
+            <span>P0 阻塞</span>
+            <strong id="p0Metric">-</strong>
+          </div>
+          <div class="metric">
+            <span>镜头行</span>
+            <strong id="shotMetric">-</strong>
+          </div>
+          <div class="metric">
+            <span>阶段状态</span>
+            <strong id="stageMetric">-</strong>
+          </div>
+        </section>
+
+        <section class="operation-band">
+          <form id="linkForm" class="inline-form">
+            <label>
+              旧项目目录
+              <input name="source_root" />
+            </label>
+            <label>
+              资源目录
+              <input name="resource_root" />
+            </label>
+            <button class="command-button" type="submit">链接资源</button>
+          </form>
+          <div class="analysis-controls">
+            <label>
+              抽样数
+              <input id="sampleSize" type="number" min="1" max="200" value="24" />
+            </label>
+            <label class="checkbox-label">
+              <input id="includeSourceRoot" type="checkbox" />
+              扫描旧项目目录
+            </label>
+          </div>
+        </section>
+
+        <section class="content-grid">
+          <div class="panel">
+            <div class="panel-header">
+              <h3>阶段面板</h3>
+              <span id="stageHint"></span>
+            </div>
+            <div id="stageList" class="stage-list"></div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-header">
+              <h3>镜头表</h3>
+              <span id="shotHint"></span>
+            </div>
+            <div id="shotTable" class="table-wrap"></div>
+          </div>
+        </section>
+
+        <section class="panel report-panel">
+          <div class="panel-header">
+            <h3>最新分析报告</h3>
+            <span id="reportHint"></span>
+          </div>
+          <pre id="reportView" class="report-view"></pre>
+        </section>
+      </main>
+    </div>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <script src="/static/app.js"></script>
+  </body>
+</html>

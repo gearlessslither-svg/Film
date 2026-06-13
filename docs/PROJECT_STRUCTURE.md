@@ -97,3 +97,11 @@ python scripts/create_aigc_project.py `
 当前可先调用 `scripts/validate_aigc_project.py` 完成最小结构检查，后续再扩展更细的镜头、模型和资产 QA。
 
 当前可调用 `scripts/analyze_aigc_project.py projects/<slug>` 输出 `10_qa/reports/project_audit_latest.md`，再由 `$aigc-film-project-auditor` Skill 进行导演级审美和工业流程建议。
+
+## Run The Local Hub
+
+```powershell
+python apps/pipeline-hub/server.py --host 127.0.0.1 --port 8787
+```
+
+本地打开 `http://127.0.0.1:8787` 后，可以直接对 `projects/coin-slot/` 执行验证、分析、资源链接和报告查看。

@@ -1,6 +1,18 @@
 # Pipeline Hub GUI Scope
 
-`pipeline-hub` 是未来总控台的预留应用目录。当前版本先把 GUI 需要依赖的项目结构、脚手架脚本和数据契约落地，避免先做界面后反复改底层格式。
+`pipeline-hub` 是本地 AIGC 影视流程总控台。当前版本已经提供最小可用 GUI 和后端 API，用同一套项目结构、脚手架脚本、验证脚本和分析脚本驱动项目。
+
+## Run
+
+```powershell
+python apps/pipeline-hub/server.py --host 127.0.0.1 --port 8787
+```
+
+打开：
+
+```text
+http://127.0.0.1:8787
+```
 
 ## First Screen
 
@@ -18,7 +30,7 @@
 
 ## Minimum Useful Version
 
-第一版 GUI 不需要一次做完所有 AIGC 能力，但必须稳定完成这些事：
+第一版 GUI 已覆盖这些事：
 
 1. 调用 `scripts/create_aigc_project.py` 创建新项目。
 2. 读取 `projects/<slug>/project.yaml` 显示阶段进度。
@@ -27,6 +39,15 @@
 5. 读取 `07_shots/shot_list.csv`，显示镜头列表和状态。
 6. 调用 `scripts/validate_aigc_project.py` 运行结构检查，提示缺失目录、缺失清单、大文件 Git LFS 风险、`.rar` 风险。
 7. 调用 `scripts/analyze_aigc_project.py` 运行项目资产与审美体检，并打开 `10_qa/reports/project_audit_latest.md`。
+
+## API Contract
+
+- `GET /api/projects`: 列出项目。
+- `POST /api/projects`: 创建项目。
+- `GET /api/projects/<slug>`: 读取项目详情、阶段状态、镜头表、验证结果和分析报告。
+- `POST /api/projects/<slug>/validate`: 运行结构检查。
+- `POST /api/projects/<slug>/analyze`: 运行项目资产与审美体检。
+- `POST /api/projects/<slug>/links`: 更新旧项目目录和资源目录映射。
 
 ## Analyze Current Project Button
 
@@ -41,6 +62,17 @@ python scripts/analyze_aigc_project.py projects/<project-slug> --sample-size 24 
 - 机器可读摘要: 命令行 JSON。
 - 人类可读报告: `projects/<project-slug>/10_qa/reports/project_audit_latest.md`。
 - AI 审片入口: 使用 `$aigc-film-project-auditor` 读取报告并结合电影审美 Rubric 生成导演建议。
+
+## Coin Slot Sample Seed
+
+投币口样板可通过脚本重建 12 镜头标准批次：
+
+```powershell
+python scripts/seed_coin_slot_sample_project.py --force
+python scripts/analyze_aigc_project.py projects/coin-slot --sample-size 24
+```
+
+脚本会把链接资源库中的代表性 panels/prompts/stage maps 转成标准项目内的 story、lookdev、asset bible、previs、shots、generation、edit、QA 和 delivery 索引。
 
 ## Later Modules
 

@@ -30,7 +30,9 @@ python scripts/validate_pipeline_state.py <project-root>
 ## Tool Map
 
 - `scripts/validate_pipeline_state.py`: checks project readiness and writes/updates pipeline validation.
+- `apps/pipeline-hub/server.py`: local GUI hub for creating, linking, validating, analyzing, and reviewing standardized project folders.
 - `scripts/analyze_aigc_project.py`: scans standardized `projects/<slug>/` folders, samples linked resources, and writes `10_qa/reports/project_audit_latest.md` for missing-work and aesthetic review.
+- `scripts/seed_coin_slot_sample_project.py`: rebuilds the standardized 12-shot Coin Slot sample batch from archived CSV/prompt/stage-map resources.
 - `scripts/visual/qa_whitebox_images.py`: validates whitebox renders and repeated composition risk.
 - `scripts/visual/qa_whitebox_similarity.py`: compares near-duplicate whitebox images.
 - `scripts/visual/make_contact_sheet.py`: builds contact sheets for QA and review.

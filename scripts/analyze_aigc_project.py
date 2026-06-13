@@ -272,11 +272,55 @@ def choose_samples(
 
     def score(item: tuple[str, Path, Path]) -> tuple[int, str]:
         _, path, root = item
-        name_score = 0 if path.name in HIGH_VALUE_FILENAMES else 1
-        category_score = {"text": 0, "image": 1, "video": 2, "audio": 3, "3d": 4}.get(category_for(path), 5)
-        return (name_score + category_score, relative(path, root))
+        relative_path = relative(path, root).lower()
+        keyword_score = 0
+        for keyword in (
+            "final",
+            "storyboard",
+            "contact",
+            "whitebox",
+            "character",
+            "stage",
+            "prompt",
+            "audio",
+            "animatic",
+            "manifest",
+        ):
+            if keyword in relative_path:
+                keyword_score -= 1
+        name_score = -10 if path.name in HIGH_VALUE_FILENAMES else 0
+        origin_score = -2 if item[0] == "project" else 0
+        return (name_score + origin_score + keyword_score, relative_path)
 
-    selected = sorted(all_candidates, key=score)[:limit]
+    by_category: dict[str, list[tuple[str, Path, Path]]] = {}
+    for item in sorted(all_candidates, key=score):
+        by_category.setdefault(category_for(item[1]), []).append(item)
+
+    selected: list[tuple[str, Path, Path]] = []
+    seen: set[Path] = set()
+
+    for item in by_category.get("text", []):
+        if item[1].name in HIGH_VALUE_FILENAMES and item[1] not in seen:
+            selected.append(item)
+            seen.add(item[1])
+        if len(selected) >= min(limit, 8):
+            break
+
+    category_order = ["image", "video", "audio", "3d", "text", "archive", "other"]
+    while len(selected) < limit:
+        grew = False
+        for category in category_order:
+            for item in by_category.get(category, []):
+                if item[1] not in seen:
+                    selected.append(item)
+                    seen.add(item[1])
+                    grew = True
+                    break
+            if len(selected) >= limit:
+                break
+        if not grew:
+            break
+
     rows = []
     for origin, path, root in selected:
         item = {
@@ -409,6 +453,12 @@ def build_report(
     warned = sum(1 for row in stage_rows if row["status"] == "warn")
     passed = sum(1 for row in stage_rows if row["status"] == "pass")
     readiness = round((passed + warned * 0.5) / max(len(stage_rows), 1) * 100)
+    if any(item["priority"] == "P0" for item in recommendations) or failed:
+        audit_status = "needs_work"
+    elif warned:
+        audit_status = "warn"
+    else:
+        audit_status = "pass"
 
     project_name = get_manifest_project_value(manifest, "name") or project_path.name
     project_slug = get_manifest_project_value(manifest, "slug") or project_path.name
@@ -460,6 +510,7 @@ Generated at: {generated_at}
 
 - Project: {project_name} (`{project_slug}`)
 - Project path: `{project_path}`
+- Audit status: **{audit_status}**
 - Readiness score: **{readiness}%**
 - Stage status: {passed} pass, {warned} warn, {failed} fail
 - Project files scanned: {len(project_files)} ({format_counts(project_counts)})
