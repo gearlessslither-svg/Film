@@ -1,54 +1,64 @@
-schema_version: 1
-project: 投币口
-scene_id: SCN_ARCADE
-batch: B01
-generated_at: '2026-06-13T18:44:17+08:00'
-master_reference: resource:media/01_AIGC/scene_refs/SC_02_arcade_interior_v001.png
-preview_image: project:06_previs/scene_locks/scn-arcade/scn-arcade_preview.png
-shot_count: 3
-shots:
-- shot_id: MSB019
-  sequence: '03'
-  story_beat: 门帘擦镜
-  camera: CAM_ARCADE_01_ENTRANCE_WIDE
-  action: 门帘晃动作为隐藏剪辑
-  lighting: 1990s damp night, CRT blue-green practicals, warm street spill, low-key
-    realism
-  start_frame: whitebox_renders_v2/B01/WB2_ARCADE_MSB019.png
-  end_frame: visual_assets/pure/micro_storyboard/B01/MSB019_v001.png
-  prompt_path: 07_shots/prompts/MSB019.md
-- shot_id: MSB020
-  sequence: '03'
-  story_beat: 三兄弟入口剪影
-  camera: CAM_ARCADE_01_ENTRANCE_WIDE
-  action: 站位保持阿磊前、小川中、小满后
-  lighting: 1990s damp night, CRT blue-green practicals, warm street spill, low-key
-    realism
-  start_frame: whitebox_renders_v2/B01/WB2_ARCADE_MSB020.png
-  end_frame: visual_assets/pure/micro_storyboard/B01/MSB020_v001.png
-  prompt_path: 07_shots/prompts/MSB020.md
-- shot_id: MSB025
-  sequence: '03'
-  story_beat: 摇杆按钮前景
-  camera: CAM_ARCADE_01_ENTRANCE_WIDE
-  action: 固定近景
-  lighting: 1990s damp night, CRT blue-green practicals, warm street spill, low-key
-    realism
-  start_frame: whitebox_renders_v2/B01/WB2_ARCADE_MSB025.png
-  end_frame: visual_assets/pure/micro_storyboard/B01/MSB025_v001.png
-  prompt_path: 07_shots/prompts/MSB025.md
-continuity_anchors:
-- 'S1_ARCADE_PLAY: 低天花旧游戏机房、两侧街机、CRT 红蓝绿光、烟雾、脏塑料门帘'
-lighting_rules:
-- 1990s damp night, CRT blue-green practicals, warm street spill, low-key realism
-allowed_variation:
-- minor lens framing shift
-- CRT flicker and haze density
-- child expression and body micro-blocking
-- small practical-light intensity changes
-forbidden_drift:
-- modern era props or signage
-- changed room/building geography
-- unmotivated neon or glossy ad lighting
-- later story-stage injury or dirt unless shot-listed
-- text, captions, labels, watermarks, or storyboard borders
+{
+  "schema_version": 1,
+  "project": "coin-slot",
+  "scene_id": "SCN_ARCADE",
+  "batch": "B01",
+  "generated_at": "2026-06-14T00:22:28+08:00",
+  "master_reference": "",
+  "preview_image": "project:06_previs/scene_locks/scn-arcade/scn-arcade_preview.png",
+  "shot_count": 3,
+  "shots": [
+    {
+      "shot_id": "MSB019",
+      "sequence": "03",
+      "story_beat": "门帘擦镜",
+      "camera": "CAM_ARCADE_01_ENTRANCE_WIDE",
+      "action": "门帘晃动作为隐藏剪辑",
+      "lighting": "1990s damp night, CRT blue-green practicals, warm street spill, low-key realism",
+      "start_frame": "whitebox_renders_v2/B01/WB2_ARCADE_MSB019.png",
+      "end_frame": "visual_assets/pure/micro_storyboard/B01/MSB019_v001.png",
+      "prompt_path": "07_shots/prompts/MSB019.md"
+    },
+    {
+      "shot_id": "MSB020",
+      "sequence": "03",
+      "story_beat": "三兄弟入口剪影",
+      "camera": "CAM_ARCADE_01_ENTRANCE_WIDE",
+      "action": "站位保持阿磊前、小川中、小满后",
+      "lighting": "1990s damp night, CRT blue-green practicals, warm street spill, low-key realism",
+      "start_frame": "whitebox_renders_v2/B01/WB2_ARCADE_MSB020.png",
+      "end_frame": "visual_assets/pure/micro_storyboard/B01/MSB020_v001.png",
+      "prompt_path": "07_shots/prompts/MSB020.md"
+    },
+    {
+      "shot_id": "MSB025",
+      "sequence": "03",
+      "story_beat": "摇杆按钮前景",
+      "camera": "CAM_ARCADE_01_ENTRANCE_WIDE",
+      "action": "固定近景",
+      "lighting": "1990s damp night, CRT blue-green practicals, warm street spill, low-key realism",
+      "start_frame": "whitebox_renders_v2/B01/WB2_ARCADE_MSB025.png",
+      "end_frame": "visual_assets/pure/micro_storyboard/B01/MSB025_v001.png",
+      "prompt_path": "07_shots/prompts/MSB025.md"
+    }
+  ],
+  "continuity_anchors": [
+    "S1_ARCADE_PLAY: 低天花旧游戏机房、两侧街机、CRT 红蓝绿光、烟雾、脏塑料门帘"
+  ],
+  "lighting_rules": [
+    "1990s damp night, CRT blue-green practicals, warm street spill, low-key realism"
+  ],
+  "allowed_variation": [
+    "minor lens framing shift",
+    "CRT flicker and haze density",
+    "child expression and body micro-blocking",
+    "small practical-light intensity changes"
+  ],
+  "forbidden_drift": [
+    "modern era props or signage",
+    "changed room/building geography",
+    "unmotivated neon or glossy ad lighting",
+    "later story-stage injury or dirt unless shot-listed",
+    "text, captions, labels, watermarks, or storyboard borders"
+  ]
+}

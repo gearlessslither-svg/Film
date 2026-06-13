@@ -1,14 +1,14 @@
 # Scene Lock Pack - SCN_ARCADE
 
-Generated at: 2026-06-13T18:44:17+08:00
+Generated at: 2026-06-14T00:22:28+08:00
 
 ## 中文
 
-- 项目: 投币口
+- 项目: coin-slot
 - 场景: 隐藏游戏厅 (`SCN_ARCADE`)
 - 批次: B01
-- 主参考: `resource:media/01_AIGC/scene_refs/SC_02_arcade_interior_v001.png`
-- 预览图: `project:06_previs/scene_locks/scn-arcade/scn-arcade_preview.png`
+- 主参考: `pending`
+- 预览图: `pending`
 
 这个锁包用于减少同一场景跨镜头生成时的漂移。进入批量生图/视频前，导演应确认主参考、空间轴线、机位、光源、色彩、角色状态和禁错项。
 
@@ -20,11 +20,11 @@ Generated at: 2026-06-13T18:44:17+08:00
 
 ## English
 
-- Project: 投币口
+- Project: coin-slot
 - Scene: Hidden Arcade Room (`SCN_ARCADE`)
 - Batch: B01
-- Master reference: `resource:media/01_AIGC/scene_refs/SC_02_arcade_interior_v001.png`
-- Preview: `project:06_previs/scene_locks/scn-arcade/scn-arcade_preview.png`
+- Master reference: `pending`
+- Preview: `pending`
 
 This pack is the scene continuity contract for image and video generation. It locks the approved reference, spatial axis, camera family, lighting logic, color behavior, control evidence, and reject rules before batch production.
 

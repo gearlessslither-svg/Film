@@ -8,14 +8,14 @@
 
 The master reference is the scene identity anchor. Exact shot composition should be constrained by whitebox, camera manifest, and shot prompts.
 
-- Master reference: `resource:media/01_AIGC/scene_refs/SC_02_arcade_interior_v001.png`
+- Master reference: `pending`
 - Shot count: 3
 
 | Kind | Shot | Asset |
 | --- | --- | --- |
-| whitebox | MSB019 | resource:media/01_AIGC/whitebox_renders_v2/B01/WB2_ARCADE_MSB019.png |
-| keyframe | MSB019 | resource:media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB019_v001.png |
-| whitebox | MSB020 | resource:media/01_AIGC/whitebox_renders_v2/B01/WB2_ARCADE_MSB020.png |
-| keyframe | MSB020 | resource:media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB020_v001.png |
-| whitebox | MSB025 | resource:media/01_AIGC/whitebox_renders_v2/B01/WB2_ARCADE_MSB025.png |
-| keyframe | MSB025 | resource:media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB025_v001.png |
+| whitebox | MSB019 | whitebox_renders_v2/B01/WB2_ARCADE_MSB019.png |
+| keyframe | MSB019 | visual_assets/pure/micro_storyboard/B01/MSB019_v001.png |
+| whitebox | MSB020 | whitebox_renders_v2/B01/WB2_ARCADE_MSB020.png |
+| keyframe | MSB020 | visual_assets/pure/micro_storyboard/B01/MSB020_v001.png |
+| whitebox | MSB025 | whitebox_renders_v2/B01/WB2_ARCADE_MSB025.png |
+| keyframe | MSB025 | visual_assets/pure/micro_storyboard/B01/MSB025_v001.png |
