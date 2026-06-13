@@ -1,0 +1,22 @@
+{
+  "assets": {
+    "resource:media/01_AIGC/character_design_v2/THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg": {
+      "note": "",
+      "status": "use",
+      "updated_at": "2026-06-14T00:19:26+08:00"
+    },
+    "resource:media/01_AIGC/character_design_v2/stage_variants/CHR_BRO_A_late_scuffed_reference_v001.png": {
+      "note": "",
+      "status": "use",
+      "updated_at": "2026-06-14T00:18:58+08:00"
+    },
+    "resource:media/01_AIGC/character_design_v2/stage_variants/CHR_BRO_B_late_dirty_reference_v001.png": {
+      "note": "",
+      "status": "reject",
+      "updated_at": "2026-06-14T00:19:35+08:00"
+    }
+  },
+  "project_slug": "coin-slot",
+  "schema_version": 1,
+  "updated_at": "2026-06-14T00:19:35+08:00"
+}

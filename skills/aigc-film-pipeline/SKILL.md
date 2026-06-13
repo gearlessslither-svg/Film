@@ -3,6 +3,8 @@ name: aigc-film-pipeline
 description: Use when planning, continuing, QAing, or packaging an AIGC-first short-film production pipeline with story-stage locks, character continuity, Blender or whitebox spatial references, pure versus annotated image passes, audio cue sheets, animatics, final storyboard video, and validation scripts.
 ---
 
+> 双语说明 / Bilingual note: 本文件保留英文原文，以避免破坏提示词、文件名、路径、字段名和脚本读取。中文使用时请把它视为生产记录、规则、索引或提示词资产；英文正文为可执行/可追溯原文。 / The English source text is preserved to keep prompts, filenames, paths, field names, and script parsing stable. Treat this as a production record, rule, index, or prompt asset; the English body is the executable and traceable source text.
+
 # AIGC Film Pipeline
 
 This skill turns a film idea or existing AIGC project folder into a staged production system. It is based on the Coin Slot workflow: lock story state first, lock space with whitebox, generate pure images, create annotated review versions, align sound to the same timeline, then rebuild and validate the animatic or storyboard video.

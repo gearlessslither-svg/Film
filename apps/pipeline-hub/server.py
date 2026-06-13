@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Local Pipeline Hub for standardized AIGC film projects."""
+"""Local Pipeline Hub / 本地 AIGC 电影项目总控台."""
 
 from __future__ import annotations
 
@@ -68,7 +68,23 @@ PREVIEW_SCENE_LOCK_LIMIT = 12
 
 
 def read_text(path: Path) -> str:
-    return path.read_text(encoding="utf-8") if path.exists() else ""
+    return read_text_fallback(path) if path.exists() else ""
+
+
+def read_text_fallback(path: Path) -> str:
+    raw = path.read_bytes()
+    for encoding in ("utf-8-sig", "utf-8", "gb18030", "big5"):
+        try:
+            return raw.decode(encoding)
+        except UnicodeDecodeError:
+            continue
+    return raw.decode("utf-8", errors="replace")
+
+
+def sanitize_text_for_display(text: str) -> str:
+    text = text.replace("\ufffd", "【编码损坏 / Encoding damaged】")
+    text = re.sub(r"\?{3,}", "【原文损坏，需从源文件重建 / Original text corrupted; rebuild from source】", text)
+    return text
 
 
 def read_json_body(handler: BaseHTTPRequestHandler) -> dict[str, object]:
@@ -134,14 +150,14 @@ def run_repo_script(args: list[str]) -> dict[str, object]:
 
 def validate_slug(slug: str) -> None:
     if not SLUG_RE.fullmatch(slug):
-        raise ValueError("Invalid project slug.")
+        raise ValueError("项目 slug 无效 / Invalid project slug.")
 
 
 def project_path(slug: str) -> Path:
     validate_slug(slug)
     path = (PROJECTS_ROOT / slug).resolve()
     if PROJECTS_ROOT.resolve() not in path.parents and path != PROJECTS_ROOT.resolve():
-        raise ValueError("Project path escaped projects root.")
+        raise ValueError("项目路径越界 / Project path escaped projects root.")
     return path
 
 
@@ -195,7 +211,7 @@ def load_manifest(path: Path) -> dict[str, object]:
     manifest = path / "project.yaml"
     if not manifest.exists():
         return {}
-    text = manifest.read_text(encoding="utf-8")
+    text = read_text_fallback(manifest)
     if yaml is None:
         return parse_manifest_fallback(text)
     data = yaml.safe_load(text)
@@ -228,7 +244,7 @@ def parse_manifest_fallback(text: str) -> dict[str, object]:
 
 def write_manifest(path: Path, manifest: dict[str, object]) -> None:
     if yaml is None:
-        raise RuntimeError("PyYAML is required to update project links.")
+        raise RuntimeError("更新项目链接需要 PyYAML / PyYAML is required to update project links.")
     (path / "project.yaml").write_text(
         yaml.safe_dump(manifest, allow_unicode=True, sort_keys=False),
         encoding="utf-8",
@@ -269,12 +285,12 @@ def safe_asset_path(slug: str, origin: str, rel_path: str) -> Path:
     roots = dict(preview_roots(path, manifest))
     root = roots.get(origin)
     if root is None:
-        raise ValueError("Unknown asset origin.")
+        raise ValueError("未知资源来源 / Unknown asset origin.")
     target = (root / rel_path).resolve()
     if root not in target.parents and target != root:
-        raise ValueError("Asset path escaped its root.")
+        raise ValueError("资源路径越界 / Asset path escaped its root.")
     if not target.exists() or not target.is_file():
-        raise FileNotFoundError("Asset not found.")
+        raise FileNotFoundError("资源不存在 / Asset not found.")
     return target
 
 
@@ -439,10 +455,10 @@ def doc_kind(rel_path: str) -> str:
 
 
 def read_preview_text(path: Path, limit: int = 12000) -> str:
-    text = path.read_text(encoding="utf-8-sig", errors="ignore")
+    text = sanitize_text_for_display(read_text_fallback(path))
     if len(text) <= limit:
         return text
-    return text[:limit].rstrip() + "\n\n[preview truncated]"
+    return text[:limit].rstrip() + "\n\n[预览已截断 / preview truncated]"
 
 
 def collect_preview_assets(slug: str, path: Path, manifest: dict[str, object]) -> dict[str, object]:
@@ -571,7 +587,7 @@ def collect_scene_locks(slug: str, path: Path) -> dict[str, object]:
         lock_md = scene_dir / "scene_lock.md"
         data: dict[str, object] = {}
         if lock_yaml.exists() and yaml is not None:
-            loaded = yaml.safe_load(lock_yaml.read_text(encoding="utf-8", errors="ignore"))
+            loaded = yaml.safe_load(read_text_fallback(lock_yaml))
             data = loaded if isinstance(loaded, dict) else {}
         preview = next(iter(sorted(scene_dir.glob("*_preview.*"))), None)
         master_asset = asset_item_from_ref(slug, str(data.get("master_reference", "")))
@@ -602,7 +618,7 @@ def report_info(path: Path) -> dict[str, object]:
     report = path / "10_qa" / "reports" / "project_audit_latest.md"
     if not report.exists():
         return {"exists": False, "path": str(report)}
-    text = report.read_text(encoding="utf-8", errors="ignore")
+    text = sanitize_text_for_display(read_text_fallback(report))
     readiness_match = re.search(r"Readiness score:\s+\*\*(\d+)%\*\*", text)
     status_match = re.search(r"Audit status:\s+\*\*([^*]+)\*\*", text)
     generated_match = re.search(r"Generated at:\s+(.+)", text)
@@ -624,7 +640,7 @@ def autofill_info(path: Path) -> dict[str, object]:
     report = path / "10_qa" / "autofill_runs" / "autofill_latest.md"
     if not report.exists():
         return {"exists": False, "path": str(report)}
-    text = report.read_text(encoding="utf-8", errors="ignore")
+    text = sanitize_text_for_display(read_text_fallback(report))
     status_match = re.search(r"Completion status:\s+\*\*([^*]+)\*\*", text)
     generated_match = re.search(r"Generated at:\s+(.+)", text)
     pending_match = re.search(r"Pending external tasks:\s+(\d+)", text)
@@ -707,7 +723,7 @@ def apply_annotations_to_scene_locks(scene_locks: dict[str, object], annotations
 def split_asset_ref(value: str) -> tuple[str, str]:
     origin, sep, rel_path = value.partition(":")
     if not sep or origin not in {"project", "resource"} or not rel_path:
-        raise ValueError("Invalid asset reference.")
+        raise ValueError("资源引用无效 / Invalid asset reference.")
     return origin, rel_path
 
 
@@ -719,7 +735,7 @@ def update_resource_annotation(slug: str, payload: dict[str, object]) -> dict[st
 
     status = str(payload.get("status", "")).strip()
     if status not in ANNOTATION_STATUSES:
-        raise ValueError("Invalid annotation status.")
+        raise ValueError("标注状态无效 / Invalid annotation status.")
     note = str(payload.get("note", "")).replace("\r\n", "\n").replace("\r", "\n").strip()
     if len(note) > 5000:
         note = note[:5000]
@@ -813,7 +829,7 @@ def create_project(payload: dict[str, object]) -> dict[str, object]:
     source_root = str(payload.get("source_root", "")).strip()
     resource_root = str(payload.get("resource_root", "")).strip()
     if not name:
-        raise ValueError("Project name is required.")
+        raise ValueError("项目名必填 / Project name is required.")
     args = ["scripts/create_aigc_project.py", "--name", name, "--root", "projects", "--print-json"]
     if slug:
         validate_slug(slug)
@@ -831,7 +847,7 @@ def update_project_links(slug: str, payload: dict[str, object]) -> dict[str, obj
     manifest = load_manifest(path)
     project = manifest.setdefault("project", {})
     if not isinstance(project, dict):
-        raise ValueError("project.yaml does not contain a project object.")
+        raise ValueError("project.yaml 缺少 project 对象 / project.yaml does not contain a project object.")
 
     source_root = str(payload.get("source_root", "")).strip()
     resource_root = str(payload.get("resource_root", "")).strip()
@@ -842,8 +858,8 @@ def update_project_links(slug: str, payload: dict[str, object]) -> dict[str, obj
     values = {
         "PROJECT_NAME": str(project.get("name", slug)),
         "PROJECT_SLUG": str(project.get("slug", slug)),
-        "SOURCE_ROOT_TEXT": source_root if source_root else "(not linked yet)",
-        "RESOURCE_ROOT_TEXT": resource_root if resource_root else "(not linked yet)",
+        "SOURCE_ROOT_TEXT": source_root if source_root else "(尚未链接 / not linked yet)",
+        "RESOURCE_ROOT_TEXT": resource_root if resource_root else "(尚未链接 / not linked yet)",
     }
     (path / "assets_link_map.md").write_text(
         render_template(TEXT_TEMPLATES["assets_link_map.md"], values),
@@ -859,10 +875,10 @@ def send_static(handler: BaseHTTPRequestHandler, path: str) -> None:
     else:
         target = (STATIC_ROOT / unquote(path.lstrip("/"))).resolve()
         if STATIC_ROOT.resolve() not in target.parents and target != STATIC_ROOT.resolve():
-            send_text(handler, "Forbidden", status=403)
+            send_text(handler, "禁止访问 / Forbidden", status=403)
             return
     if not target.exists() or not target.is_file():
-        send_text(handler, "Not found", status=404)
+        send_text(handler, "未找到 / Not found", status=404)
         return
     content_type = mimetypes.guess_type(str(target))[0] or "application/octet-stream"
     body = target.read_bytes()
@@ -881,7 +897,7 @@ def send_asset(handler: BaseHTTPRequestHandler, slug: str, query: str) -> None:
     if is_lfs_pointer(target):
         fallback = legacy_coin_slot_asset_path(origin, rel_path)
         if fallback is None:
-            send_text(handler, "Git LFS object is not downloaded for this asset.", status=409)
+            send_text(handler, "这个资源的 Git LFS 原始文件尚未下载 / Git LFS object is not downloaded for this asset.", status=409)
             return
         target = fallback
     content_type = mimetypes.guess_type(str(target))[0] or "application/octet-stream"
@@ -938,7 +954,7 @@ class PipelineHubHandler(BaseHTTPRequestHandler):
             detail = project_detail(parts[2])
             send_text(self, detail["report"].get("text", ""))
             return
-        send_text(self, "Not found", status=404)
+        send_text(self, "未找到 / Not found", status=404)
 
     def route_post(self) -> None:
         parsed = urlparse(self.path)
@@ -1012,7 +1028,7 @@ class PipelineHubHandler(BaseHTTPRequestHandler):
             if action == "annotations":
                 send_json(self, update_resource_annotation(slug, payload))
                 return
-        send_text(self, "Not found", status=404)
+        send_text(self, "未找到 / Not found", status=404)
 
 
 def main(argv: list[str] | None = None) -> int:

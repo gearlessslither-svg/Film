@@ -1,2 +1,2 @@
 asset_id,asset_class,story_stage,pure_path,annotated_path,model_input_allowed,annotation_allowed,pure_qa_status,annotated_qa_status,notes
-MSB001,storyboard,S0_OPENING_CLEAN,visual_assets/pure/micro_storyboard/B01/MSB001_v001.png,visual_assets/annotated/micro_storyboard/B01/MSB001_v001_annotated.png,true,true,pending,pending,"Pure image feeds AIGC; annotated copy is for review only."
+MSB001,storyboard,S0_OPENING_CLEAN,visual_assets/pure/micro_storyboard/B01/MSB001_v001.png,visual_assets/annotated/micro_storyboard/B01/MSB001_v001_annotated.png,true,true,pending,pending,纯图进入 AIGC；带标注版本仅供审阅 / Pure image feeds AIGC; annotated copy is for review only.
