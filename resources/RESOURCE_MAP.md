@@ -5,5 +5,6 @@
 - `case-study-readme.md`: original project index.
 - `csv/`: production table examples for panels, stage state, pure image queues, audio cues, whitebox QA, visual QA, and delivery validation.
 - `blender/`: small whitebox example files and camera manifests.
+- `media/`: Git LFS archive of Coin Slot image, audio, video, Blender, and in-project zip deliverables, preserving source-relative paths.
 
-Large generated media is intentionally excluded from this toolkit. Keep image, audio, video, and review package outputs in project repositories or Git LFS-backed storage.
+RAR backup packages are intentionally excluded. Keep future bulky generated media in `media/` only when it is meant to be part of the LFS archive.

@@ -26,6 +26,10 @@ venv/
 *.blend1
 *.bak*
 
+# Curated LFS media archive for the Coin Slot case study.
+!resources/examples/coin-slot/media/
+!resources/examples/coin-slot/media/**
+
 # Local runtime logs/state
 .codex-resume/
 *.log

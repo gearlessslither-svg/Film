@@ -41,7 +41,9 @@
   - 生产表样例：188 panel 表、stage map、pure image queue、音频 cue、白模 QA、视觉 QA、交付校验等。
 - `resources/examples/coin-slot/blender/`
   - 小型白模工程和 camera manifest 示例。
+- `resources/examples/coin-slot/media/`
+  - Git LFS 管理的图片、音频、视频、Blender 和项目内 `.zip` 交付包，保留原项目相对路径。
 - `resources/RESOURCE_MAP.md`
   - 资源说明和大型媒体排除规则。
 
-大型图片、音频、视频、压缩包不放在普通 git 中；需要版本管理时应另建 Git LFS 或对象存储流程。
+大型图片、音频、视频、`.zip` 交付包通过 Git LFS 管理；`.rar` 备份包不推送。

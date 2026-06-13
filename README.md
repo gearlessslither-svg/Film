@@ -5,7 +5,7 @@
 - `skills/aigc-film-pipeline/`：Codex skill，用来指导 AIGC 短片从故事阶段、白模、pure 图、音频、animatic 到最终校验的生产流程。
 - `scripts/`：可执行工具，包括流水线校验、白模 QA、联系表、分镜面板、音频 guide、animatic、最终交付校验和 Windows keep-awake。
 - `docs/`：面向人和 AI agent 的分类索引，说明每类产出放在哪里、怎么使用。
-- `resources/examples/coin-slot/`：来自《投币口》的案例资源，包含项目文档、CSV 表格、流程索引和一个小型 Blender 白模示例；大型图片、音频、视频、压缩包没有纳入普通 git。
+- `resources/examples/coin-slot/`：来自《投币口》的案例资源，包含项目文档、CSV 表格、流程索引、小型 Blender 白模示例，以及通过 Git LFS 管理的图片、音频、视频和项目内 `.zip` 交付包；`.rar` 备份包不纳入仓库。
 
 ## Repository Layout
 
@@ -22,6 +22,7 @@ resources/examples/coin-slot/
   docs/
   csv/
   blender/
+  media/
   case-study-readme.md
 ```
 
@@ -63,3 +64,21 @@ python scripts/visual/validate_final_delivery.py --project-root <project-root>\0
 [gearlessslither-svg/Film](https://github.com/gearlessslither-svg/Film.git)
 
 如果要把最终分镜图、音频、视频也纳入版本管理，建议单独启用 Git LFS，并先确认远端仓库的容量限制。
+
+## Git LFS Media
+
+媒体归档位于 `resources/examples/coin-slot/media/`，按原项目相对路径保存。
+
+当前 LFS 追踪类型：
+
+```text
+*.blend
+*.zip
+*.png
+*.jpg
+*.jpeg
+*.wav
+*.mp4
+```
+
+`.rar` 不追踪、不推送。
