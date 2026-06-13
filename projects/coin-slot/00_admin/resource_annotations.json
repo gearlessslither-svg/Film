@@ -5,6 +5,11 @@
       "status": "use",
       "updated_at": "2026-06-14T00:20:57+08:00"
     },
+    "resource:media/01_AIGC/character_design_v2/CHR_BRO_A_older_brother_turnaround_expression_v001_glasses.png": {
+      "note": "",
+      "status": "use",
+      "updated_at": "2026-06-14T00:21:08+08:00"
+    },
     "resource:media/01_AIGC/character_design_v2/CHR_BRO_C_younger_brother_turnaround_expression_v001_chubby.png": {
       "note": "",
       "status": "use",
@@ -38,5 +43,5 @@
   },
   "project_slug": "coin-slot",
   "schema_version": 1,
-  "updated_at": "2026-06-14T00:20:57+08:00"
+  "updated_at": "2026-06-14T00:21:08+08:00"
 }
