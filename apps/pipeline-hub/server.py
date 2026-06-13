@@ -40,6 +40,7 @@ PREVIEW_IMAGE_LIMIT = 24
 PREVIEW_VIDEO_LIMIT = 12
 PREVIEW_AUDIO_LIMIT = 12
 PREVIEW_THREE_D_LIMIT = 18
+PREVIEW_SCENE_LOCK_LIMIT = 12
 
 
 def read_text(path: Path) -> str:
@@ -192,6 +193,9 @@ def asset_priority(path: Path) -> tuple[int, str]:
     score = 50
     for keyword in (
         "contact",
+        "scene_lock",
+        "first-act",
+        "first_act",
         "styleframe",
         "keyframe",
         "storyboard",
@@ -221,6 +225,8 @@ def doc_kind(rel_path: str) -> str:
     if rel_path.startswith("05_asset_bible/"):
         return "asset bible"
     if rel_path.startswith("06_previs/"):
+        if rel_path.startswith("06_previs/scene_locks/"):
+            return "scene lock"
         return "previs"
     if rel_path.startswith("09_edit/"):
         return "edit/audio"
@@ -250,6 +256,7 @@ def collect_preview_assets(slug: str, path: Path, manifest: dict[str, object]) -
         "03_story/",
         "04_lookdev/",
         "05_asset_bible/",
+        "06_previs/scene_locks/",
         "06_previs/qa/",
         "07_shots/prompts/",
         "07_shots/video_prompts/",
@@ -306,6 +313,78 @@ def collect_preview_assets(slug: str, path: Path, manifest: dict[str, object]) -
         "videos": videos,
         "audio": audio,
         "three_d": three_d,
+    }
+
+
+def url_from_asset_ref(slug: str, ref: str) -> str:
+    origin, sep, rel_path = ref.partition(":")
+    if sep and origin in {"project", "resource"} and rel_path:
+        return asset_url(slug, origin, rel_path)
+    return ""
+
+
+def image_item_from_project_path(slug: str, root: Path, path: Path) -> dict[str, object]:
+    rel_path = str(path.relative_to(root)).replace("\\", "/")
+    return {
+        "origin": "project",
+        "path": rel_path,
+        "name": path.name,
+        "category": category_for(path),
+        "size_kb": round(path.stat().st_size / 1024, 1),
+        "extension": path.suffix.lower(),
+        "previewable": path.suffix.lower() in {".png", ".jpg", ".jpeg", ".webp", ".gif"},
+        "url": asset_url(slug, "project", rel_path),
+    }
+
+
+def collect_scene_locks(slug: str, path: Path) -> dict[str, object]:
+    root = path / "06_previs" / "scene_locks"
+    if not root.exists():
+        return {"exists": False, "items": [], "overview_images": [], "index": {}}
+
+    overview_images = [
+        image_item_from_project_path(slug, path, image)
+        for image in sorted(root.glob("*scene_lock_overview.*"), key=lambda item: item.stat().st_mtime, reverse=True)
+        if image.is_file() and category_for(image) == "image"
+    ][:PREVIEW_SCENE_LOCK_LIMIT]
+
+    index_path = root / "index.md"
+    index = {}
+    if index_path.exists():
+        index = {
+            "path": "06_previs/scene_locks/index.md",
+            "url": asset_url(slug, "project", "06_previs/scene_locks/index.md"),
+            "text": read_preview_text(index_path, limit=10000),
+        }
+
+    items: list[dict[str, object]] = []
+    for scene_dir in sorted([item for item in root.iterdir() if item.is_dir()]):
+        lock_yaml = scene_dir / "scene_lock.yaml"
+        lock_md = scene_dir / "scene_lock.md"
+        data: dict[str, object] = {}
+        if lock_yaml.exists() and yaml is not None:
+            loaded = yaml.safe_load(lock_yaml.read_text(encoding="utf-8", errors="ignore"))
+            data = loaded if isinstance(loaded, dict) else {}
+        preview = next(iter(sorted(scene_dir.glob("*_preview.*"))), None)
+        item = {
+            "scene_id": str(data.get("scene_id", scene_dir.name)),
+            "folder": str(scene_dir.relative_to(root)).replace("\\", "/"),
+            "shot_count": data.get("shot_count", 0),
+            "batch": data.get("batch", ""),
+            "master_reference": data.get("master_reference", ""),
+            "master_url": url_from_asset_ref(slug, str(data.get("master_reference", ""))),
+            "preview": image_item_from_project_path(slug, path, preview) if preview and preview.exists() else {},
+            "lock_path": str(lock_yaml.relative_to(path)).replace("\\", "/") if lock_yaml.exists() else "",
+            "doc_path": str(lock_md.relative_to(path)).replace("\\", "/") if lock_md.exists() else "",
+            "doc_text": read_preview_text(lock_md, limit=9000) if lock_md.exists() else "",
+        }
+        items.append(item)
+
+    return {
+        "exists": bool(items or overview_images or index),
+        "items": items,
+        "overview_images": overview_images,
+        "index": index,
     }
 
 
@@ -405,6 +484,7 @@ def project_detail(slug: str, include_report_text: bool = True, include_previews
         "report": report,
         "autofill": autofill_info(path),
         "previews": collect_preview_assets(slug, path, manifest) if include_previews else {},
+        "scene_locks": collect_scene_locks(slug, path) if include_previews else {},
     }
 
 
@@ -602,6 +682,25 @@ class PipelineHubHandler(BaseHTTPRequestHandler):
                     args.append("--allow-plugin-install")
                 if payload.get("require_external_complete"):
                     args.append("--require-external-complete")
+                result = run_repo_script(args)
+                result["project"] = project_detail(slug)
+                send_json(self, result)
+                return
+            if action == "scene-locks":
+                batch = str(payload.get("batch", "B01") or "B01").strip()
+                sequence = str(payload.get("sequence", "") or "").strip()
+                label = str(payload.get("label", "first_act") or "first_act").strip()
+                args = [
+                    "scripts/build_scene_lock_pack.py",
+                    f"projects/{slug}",
+                    "--batch",
+                    batch,
+                    "--label",
+                    label,
+                    "--print-json",
+                ]
+                if sequence:
+                    args.extend(["--sequence", sequence])
                 result = run_repo_script(args)
                 result["project"] = project_detail(slug)
                 send_json(self, result)

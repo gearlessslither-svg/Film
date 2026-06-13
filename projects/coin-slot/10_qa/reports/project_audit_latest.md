@@ -1,6 +1,6 @@
 # AIGC Project Audit Report
 
-Generated at: 2026-06-13T16:32:57+08:00
+Generated at: 2026-06-13T18:44:17+08:00
 
 ## Executive Summary
 
@@ -9,7 +9,7 @@ Generated at: 2026-06-13T16:32:57+08:00
 - Audit status: **pass**
 - Readiness score: **100%**
 - Stage status: 12 pass, 0 warn, 0 fail
-- Project files scanned: 78 (text: 78)
+- Project files scanned: 93 (image: 3, text: 90)
 - Linked resource files scanned: 1073 (3d: 2, archive: 2, audio: 98, image: 899, text: 68, video: 4)
 - Shot list rows: 12
 
@@ -33,11 +33,11 @@ This is a deterministic asset and workflow scan. It identifies structural gaps, 
 | 03_story | pass | 3 | - | - |
 | 04_lookdev | pass | 5 | - | - |
 | 05_asset_bible | pass | 5 | - | - |
-| 06_previs | pass | 6 | - | - |
+| 06_previs | pass | 22 | - | - |
 | 07_shots | pass | 26 | - | - |
 | 08_generation | pass | 4 | - | - |
 | 09_edit | pass | 5 | - | - |
-| 10_qa | pass | 7 | - | - |
+| 10_qa | pass | 6 | - | - |
 | 11_delivery | pass | 3 | - | - |
 
 ## Priority Recommendations
@@ -46,6 +46,7 @@ This is a deterministic asset and workflow scan. It identifies structural gaps, 
 | --- | --- | --- | --- |
 | P1 | 01_intake | 已有外部/样例资源被链接，但尚未完全归拢到标准阶段目录。 | 按 assets_link_map.md 把旧资源分配到 intake、story、previs、shots、generation 的对应阶段，或保留链接并写清证据来源。 |
 | P1 | 04_lookdev | 需要建立审美基准，不能只靠单张参考图推进。 | 补一组风格帧、色彩脚本、光照逻辑、材质参考和禁止项，形成可复用 look bible。 |
+| P1 | 06_previs | 同一场景跨镜头生成容易漂移。 | 为每个核心场景建立 Scene Lock Pack：approved master、白模/机位、参考图、控制层、负面约束、允许变化范围和 QA 标准。 |
 | P1 | 06_previs | 白模精度会直接决定 AIGC 的空间稳定性。 | 把关键场景做成更可读的 blocking：比例、站位、镜头高度、焦段、遮挡、前中后景都要可视化。 |
 | P2 | 09_edit | 声音和剪辑节奏应尽早进入审美判断。 | 为每个故事节拍建立声音意图、静默点、环境声、音效和音乐推进，而不是等画面完成后补。 |
 
@@ -54,28 +55,28 @@ This is a deterministic asset and workflow scan. It identifies structural gaps, 
 | Origin | Category | Size KB | Path |
 | --- | --- | --- | --- |
 | project | text | 0.5 | 00_admin/director_brief.md |
-| project | text | 0.9 | 00_admin/project_log.md |
+| project | text | 0.7 | 00_admin/project_log.md |
 | project | text | 0.9 | 02_direction/creative_brief.md |
 | project | text | 6.5 | 07_shots/shot_list.csv |
 | project | text | 1.2 | assets_link_map.md |
-| project | text | 1.9 | project.yaml |
-| linked | image | 518.6 | media/01_AIGC/final_storyboard_contact_sheets/B01_final_storyboard_contact_sheet_v002.jpg |
+| project | text | 2.1 | project.yaml |
+| project | image | 1480.2 | 06_previs/scene_locks/first-act_b01_scene_lock_overview.png |
 | linked | video | 17837.5 | media/01_AIGC/exports/animatic/coin_slot_storyboard_animatic_v001.mp4 |
 | linked | audio | 3937.5 | media/01_AIGC/audio/music/MUS_003_8bit_stage_loop.wav |
 | linked | 3d | 183.3 | blender/coin_slot_whitebox.blend |
 | project | text | 0.6 | 05_asset_bible/character_stage_locks/coin_slot_character_stage_locks.md |
 | linked | archive | 129570.4 | media/01_AIGC/exports/coin_slot_final_storyboard_audio_video_v002_review_package.zip |
-| linked | image | 500.7 | media/01_AIGC/final_storyboard_contact_sheets/B02_final_storyboard_contact_sheet_v002.jpg |
+| project | image | 797.3 | 06_previs/scene_locks/scn-arcade/scn-arcade_preview.png |
 | linked | video | 12425.2 | media/01_AIGC/exports/animatic/coin_slot_storyboard_animatic_v001_silent.mp4 |
 | linked | audio | 7875.0 | media/01_AIGC/audio_clean/music/MUS_003_8bit_stage_loop.wav |
 | linked | 3d | 183.3 | media/01_AIGC/blender/coin_slot_whitebox.blend |
-| project | text | 0.4 | 05_asset_bible/characters/coin_slot_character_bible.md |
+| project | text | 1.1 | 06_previs/scene_locks/scn-arcade/camera_manifest.csv |
 | linked | archive | 63545.8 | media/01_AIGC/exports/coin_slot_aigc_overnight_package.zip |
-| linked | image | 547.1 | media/01_AIGC/final_storyboard_contact_sheets/B03_final_storyboard_contact_sheet_v002.jpg |
+| project | image | 1299.3 | 06_previs/scene_locks/scn-compound/scn-compound_preview.png |
 | linked | video | 45896.8 | media/01_AIGC/exports/final_video/coin_slot_final_storyboard_video_v002.mp4 |
 | linked | audio | 1500.0 | media/01_AIGC/audio/ambience/AMB_001_compound_night_loop.wav |
-| project | text | 3.8 | 06_previs/camera_manifests/coin_slot_sample_camera_manifest.csv |
-| linked | image | 639.8 | media/01_AIGC/final_storyboard_contact_sheets/B04_final_storyboard_contact_sheet_v002.jpg |
+| project | text | 1.7 | 06_previs/scene_locks/scn-compound/camera_manifest.csv |
+| linked | image | 518.6 | media/01_AIGC/final_storyboard_contact_sheets/B01_final_storyboard_contact_sheet_v002.jpg |
 | linked | video | 37815.3 | media/01_AIGC/exports/final_video/coin_slot_final_storyboard_video_v002_silent.mp4 |
 
 ## Film And Aesthetic Review Checklist

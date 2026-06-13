@@ -4,6 +4,7 @@ const state = {
   detail: null,
   busy: false,
   selectedDocIndex: 0,
+  selectedSceneLockIndex: 0,
 };
 
 const STAGE_LABELS = {
@@ -107,6 +108,7 @@ function renderHeader() {
     pill(`P0 ${p0}`, p0 > 0 ? "danger" : "ok"),
     pill(report.exists ? "有分析报告" : "未分析", report.exists ? "ok" : "warn"),
     pill(autofill.exists ? `Autofill ${autofill.status || "done"}` : "Autofill idle", autofill.status === "ready_for_director_review" ? "ok" : autofill.exists ? "warn" : ""),
+    pill(`Scene locks ${(detail.scene_locks?.items || []).length}`, (detail.scene_locks?.items || []).length ? "ok" : "warn"),
   ].join("");
 }
 
@@ -223,6 +225,52 @@ function renderVisualGallery() {
     .join("");
 }
 
+function renderSceneLocks() {
+  const sceneLocks = state.detail?.scene_locks || {};
+  const items = sceneLocks.items || [];
+  const overview = (sceneLocks.overview_images || [])[0];
+  $("sceneLockHint").textContent = `${items.length} scenes`;
+
+  if (overview?.url) {
+    $("sceneLockOverview").innerHTML = `
+      <a class="scene-overview-link" href="${escapeHtml(overview.url)}" target="_blank" title="${escapeHtml(overview.path)}">
+        <img src="${escapeHtml(overview.url)}" alt="${escapeHtml(overview.name)}" loading="lazy" />
+      </a>
+    `;
+  } else {
+    $("sceneLockOverview").innerHTML = `<div class="empty-state">还没有场景锁预览。点击 Scene Lock 生成 B01。</div>`;
+  }
+
+  if (!items.length) {
+    $("sceneLockList").innerHTML = `<div class="empty-state">No scene lock packs found.</div>`;
+    $("sceneLockDoc").textContent = sceneLocks.index?.text || "";
+    return;
+  }
+  if (state.selectedSceneLockIndex >= items.length) state.selectedSceneLockIndex = 0;
+  $("sceneLockList").innerHTML = items
+    .map((item, index) => {
+      const preview = item.preview?.url || item.master_url || "";
+      return `
+        <button class="scene-lock-card ${index === state.selectedSceneLockIndex ? "active" : ""}" data-index="${index}" type="button">
+          ${preview ? `<img src="${escapeHtml(preview)}" alt="${escapeHtml(item.scene_id)}" loading="lazy" />` : `<span class="scene-lock-placeholder">Scene</span>`}
+          <span>
+            <strong>${escapeHtml(item.scene_id)}</strong>
+            <small>${escapeHtml(item.batch || "batch")} · ${escapeHtml(item.shot_count || 0)} shots</small>
+          </span>
+        </button>
+      `;
+    })
+    .join("");
+  $("sceneLockList").querySelectorAll(".scene-lock-card").forEach((button) => {
+    button.addEventListener("click", () => {
+      state.selectedSceneLockIndex = Number(button.dataset.index || 0);
+      renderSceneLocks();
+    });
+  });
+  const selected = items[state.selectedSceneLockIndex] || items[0];
+  $("sceneLockDoc").textContent = selected.doc_text || sceneLocks.index?.text || "";
+}
+
 function renderDocs() {
   const previews = state.detail?.previews || {};
   const docs = previews.docs || [];
@@ -321,6 +369,7 @@ function renderAll() {
   renderHeader();
   renderMetrics();
   renderLinks();
+  renderSceneLocks();
   renderVisualGallery();
   renderDocs();
   renderMediaPreview();
@@ -349,6 +398,7 @@ async function loadProjects() {
 async function loadDetail(slug) {
   state.selectedSlug = slug;
   state.selectedDocIndex = 0;
+  state.selectedSceneLockIndex = 0;
   state.detail = await requestJson(`/api/projects/${encodeURIComponent(slug)}`);
   renderAll();
 }
@@ -427,6 +477,21 @@ async function autofillCurrentProject() {
   });
 }
 
+async function buildSceneLocksCurrentProject() {
+  if (!state.selectedSlug) return;
+  const batch = ($("sceneBatch").value || "B01").trim() || "B01";
+  await runAction("Scene Lock", async () => {
+    const result = await requestJson(`/api/projects/${state.selectedSlug}/scene-locks`, {
+      method: "POST",
+      body: JSON.stringify({ batch, label: "first_act" }),
+    });
+    if (result.json?.scene_count != null) {
+      toast(`Scene Lock: ${result.json.scene_count} scenes / ${result.json.shot_rows} shots`);
+    }
+    await loadProjects();
+  });
+}
+
 async function createProject(event) {
   event.preventDefault();
   const form = event.currentTarget;
@@ -458,6 +523,7 @@ function bindEvents() {
   $("validateBtn").addEventListener("click", validateCurrentProject);
   $("analyzeBtn").addEventListener("click", analyzeCurrentProject);
   $("autofillBtn").addEventListener("click", autofillCurrentProject);
+  $("sceneLockBtn").addEventListener("click", buildSceneLocksCurrentProject);
   $("createForm").addEventListener("submit", createProject);
   $("linkForm").addEventListener("submit", updateLinks);
 }

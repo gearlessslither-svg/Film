@@ -98,6 +98,10 @@
               Rounds
               <input id="maxRounds" type="number" min="1" max="8" value="3" />
             </label>
+            <label>
+              Scene
+              <input id="sceneBatch" value="B01" />
+            </label>
             <label class="checkbox-label">
               <input id="includeSourceRoot" type="checkbox" />
               扫描旧项目目录
@@ -110,6 +114,22 @@
               <input id="allowPluginInstall" type="checkbox" />
               Plugin install
             </label>
+            <button id="sceneLockBtn" class="command-button" type="button">Scene Lock</button>
+          </div>
+        </section>
+
+        <section class="scene-lock-board">
+          <div class="panel scene-lock-preview-panel">
+            <div class="panel-header">
+              <h3>场景锁包 / Scene Lock</h3>
+              <span id="sceneLockHint"></span>
+            </div>
+            <div id="sceneLockOverview" class="scene-lock-overview"></div>
+          </div>
+
+          <div class="panel scene-lock-detail-panel">
+            <div id="sceneLockList" class="scene-lock-list"></div>
+            <pre id="sceneLockDoc" class="scene-lock-doc"></pre>
           </div>
         </section>
 

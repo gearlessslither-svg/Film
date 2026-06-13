@@ -54,6 +54,7 @@ DIRECTORIES = [
     "06_previs/blender",
     "06_previs/camera_manifests",
     "06_previs/renders",
+    "06_previs/scene_locks",
     "06_previs/control_layers/depth",
     "06_previs/control_layers/line",
     "06_previs/control_layers/normal",
@@ -131,6 +132,7 @@ gui_contract:
   project_log: "00_admin/project_log.md"
   audit_report: "10_qa/reports/project_audit_latest.md"
   autofill_report: "10_qa/autofill_runs/autofill_latest.md"
+  scene_lock_index: "06_previs/scene_locks/index.md"
 """,
     "00_admin/director_brief.md": """# Director Brief
 

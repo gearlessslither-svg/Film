@@ -1,0 +1,75 @@
+schema_version: 1
+project: 投币口
+scene_id: SCN_COMPOUND
+batch: B01
+generated_at: '2026-06-13T18:44:17+08:00'
+master_reference: resource:media/01_AIGC/scene_refs/SC_01_compound_corner_v001.png
+preview_image: project:06_previs/scene_locks/scn-compound/scn-compound_preview.png
+shot_count: 5
+shots:
+- shot_id: MSB001
+  sequence: '01'
+  story_beat: 空镜压低视线
+  camera: CAM_COMPOUND_01_ESTABLISH
+  action: locked-off，低机位，轻微前推
+  lighting: 1990s damp night, CRT blue-green practicals, warm street spill, low-key
+    realism
+  start_frame: whitebox_renders_v2/B01/WB2_COMPOUND_MSB001.png
+  end_frame: visual_assets/pure/micro_storyboard/B01/MSB001_v001.png
+  prompt_path: 07_shots/prompts/MSB001.md
+- shot_id: MSB003
+  sequence: '01'
+  story_beat: 门缝 CRT 光
+  camera: CAM_COMPOUND_01_ESTABLISH
+  action: 只允许光轻闪
+  lighting: 1990s damp night, CRT blue-green practicals, warm street spill, low-key
+    realism
+  start_frame: whitebox_renders_v2/B01/WB2_COMPOUND_MSB003.png
+  end_frame: visual_assets/pure/micro_storyboard/B01/MSB003_v001.png
+  prompt_path: 07_shots/prompts/MSB003.md
+- shot_id: MSB006
+  sequence: '01'
+  story_beat: CRT 反光到水面
+  camera: CAM_COMPOUND_01_ESTABLISH
+  action: 低角度近景
+  lighting: 1990s damp night, CRT blue-green practicals, warm street spill, low-key
+    realism
+  start_frame: whitebox_renders_v2/B01/WB2_COMPOUND_MSB006.png
+  end_frame: visual_assets/pure/micro_storyboard/B01/MSB006_v001.png
+  prompt_path: 07_shots/prompts/MSB006.md
+- shot_id: MSB009
+  sequence: '02'
+  story_beat: 阿磊先进画
+  camera: CAM_COMPOUND_02_BROTHERS_APPROACH
+  action: 步子比弟弟大半拍
+  lighting: 1990s damp night, CRT blue-green practicals, warm street spill, low-key
+    realism
+  start_frame: whitebox_renders_v2/B01/WB2_COMPOUND_MSB009.png
+  end_frame: visual_assets/pure/micro_storyboard/B01/MSB009_v001.png
+  prompt_path: 07_shots/prompts/MSB009.md
+- shot_id: MSB012
+  sequence: '02'
+  story_beat: 三人身高差
+  camera: CAM_COMPOUND_02_BROTHERS_APPROACH
+  action: 三角形站位建立
+  lighting: 1990s damp night, CRT blue-green practicals, warm street spill, low-key
+    realism
+  start_frame: whitebox_renders_v2/B01/WB2_COMPOUND_MSB012.png
+  end_frame: visual_assets/pure/micro_storyboard/B01/MSB012_v001.png
+  prompt_path: 07_shots/prompts/MSB012.md
+continuity_anchors:
+- 'S0_START_CLEAN: 老旧居民楼一楼偏僻角落、发黄水泥墙、晾衣绳、破自行车、潮湿地面、门内微弱 CRT 蓝绿光'
+- 'S0_START_CLEAN: 阿磊海军蓝外套红白斜条，小川蓝白外套红领巾浅绿书包，小满浅色大衬衫，三人从院内走向角落'
+lighting_rules:
+- 1990s damp night, CRT blue-green practicals, warm street spill, low-key realism
+allowed_variation:
+- minor lens framing shift
+- CRT flicker and haze density
+- child expression and body micro-blocking
+- small practical-light intensity changes
+forbidden_drift:
+- modern era props or signage
+- changed room/building geography
+- unmotivated neon or glossy ad lighting
+- later story-stage injury or dirt unless shot-listed
+- text, captions, labels, watermarks, or storyboard borders

@@ -82,6 +82,7 @@ STAGE_EXPECTATIONS = {
         ("blender", "06_previs/blender", "需要白模、场景几何、角色站位和镜头约束。"),
         ("camera_manifests", "06_previs/camera_manifests", "需要镜头机位、焦段、运动和构图说明。"),
         ("renders", "06_previs/renders", "需要白模预览图，便于空间关系审核。"),
+        ("scene_locks", "06_previs/scene_locks", "需要按场景建立稳定生成锁包：主参考图、白模、机位、控制层、禁错项和允许变化范围。"),
         ("control_layers", "06_previs/control_layers", "需要深度、线稿、法线、分割等生成控制层。"),
         ("qa", "06_previs/qa", "需要白模相似度、构图和空间还原 QA。"),
     ],
@@ -279,6 +280,8 @@ def choose_samples(
             "storyboard",
             "contact",
             "whitebox",
+            "scene_lock",
+            "first_act",
             "character",
             "stage",
             "prompt",
@@ -413,6 +416,7 @@ def build_recommendations(stage_rows: list[dict[str, object]], shot_stats: dict[
         add("P1", "01_intake", "已有外部/样例资源被链接，但尚未完全归拢到标准阶段目录。", "按 assets_link_map.md 把旧资源分配到 intake、story、previs、shots、generation 的对应阶段，或保留链接并写清证据来源。")
 
     add("P1", "04_lookdev", "需要建立审美基准，不能只靠单张参考图推进。", "补一组风格帧、色彩脚本、光照逻辑、材质参考和禁止项，形成可复用 look bible。")
+    add("P1", "06_previs", "同一场景跨镜头生成容易漂移。", "为每个核心场景建立 Scene Lock Pack：approved master、白模/机位、参考图、控制层、负面约束、允许变化范围和 QA 标准。")
     add("P1", "06_previs", "白模精度会直接决定 AIGC 的空间稳定性。", "把关键场景做成更可读的 blocking：比例、站位、镜头高度、焦段、遮挡、前中后景都要可视化。")
     add("P2", "09_edit", "声音和剪辑节奏应尽早进入审美判断。", "为每个故事节拍建立声音意图、静默点、环境声、音效和音乐推进，而不是等画面完成后补。")
 
