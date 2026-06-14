@@ -12,6 +12,7 @@ const state = {
   boardOpen: false,
   boardNodes: [],
   boardEdges: [],
+  boardHandoffs: [],
   boardLinkSourceId: "",
   boardFilters: {
     scene: "all",
@@ -1094,16 +1095,21 @@ function loadBoardState() {
     const parsed = raw ? JSON.parse(raw) : {};
     state.boardNodes = Array.isArray(parsed.nodes) ? parsed.nodes : [];
     state.boardEdges = Array.isArray(parsed.edges) ? parsed.edges : [];
+    state.boardHandoffs = Array.isArray(parsed.handoffs) ? parsed.handoffs : [];
   } catch {
     state.boardNodes = [];
     state.boardEdges = [];
+    state.boardHandoffs = [];
   }
 }
 
 function saveBoardState() {
   if (!state.selectedSlug) return;
   try {
-    window.localStorage.setItem(boardStorageKey(), JSON.stringify({ nodes: state.boardNodes, edges: state.boardEdges }));
+    window.localStorage.setItem(
+      boardStorageKey(),
+      JSON.stringify({ nodes: state.boardNodes, edges: state.boardEdges, handoffs: state.boardHandoffs }),
+    );
   } catch {
     // Local persistence is a convenience; generation packets remain project-backed.
   }
@@ -1390,6 +1396,98 @@ function boardPromptForNode(node) {
   ].join("\n");
 }
 
+function projectAbsolutePath(path = "") {
+  const root = String(state.detail?.path || "").replace(/\/+$/, "");
+  return root && path ? `${root}/${path}` : path;
+}
+
+function boardReferenceLines(node) {
+  return boardNodeOutgoingEdges(node.id)
+    .map((edge, index) => {
+      const refNode = state.boardNodes.find((item) => item.id === edge.targetId);
+      const refAsset = boardNodeAsset(refNode);
+      if (!refNode || !refAsset) return "";
+      return [
+        `### Reference ${index + 1} / 关联图 ${index + 1}`,
+        `- Asset: ${refAsset.asset_id || refAsset.path}`,
+        `- Scene: ${refAsset.scene_id || "PROJECT"} ${refAsset.scene_title || ""}`,
+        `- Project relative path: ${refAsset.path || ""}`,
+        `- Absolute path: ${projectAbsolutePath(refAsset.path || "")}`,
+        `- Browser URL: ${location.origin}${refAsset.url || ""}`,
+        `- Reference note: ${refNode.note || ""}`,
+        `- Relation note: ${edge.note || ""}`,
+      ].join("\n");
+    })
+    .filter(Boolean)
+    .join("\n\n");
+}
+
+function buildBoardHandoffText(node, result) {
+  const asset = boardNodeAsset(node);
+  const scene = asset?.scene_id ? (state.detail?.scene_workbench?.scenes || []).find((item) => item.scene_id === asset.scene_id) : selectedScene();
+  const packetPath = result.outputPath || "";
+  const suggestedOutput = packetPath
+    ? packetPath.replace(/\/outputs\/(.+?)\.md$/i, "/outputs/$1.png")
+    : `08_generation/outputs/${asset?.asset_id || "board_image"}_${Date.now()}.png`;
+  return [
+    "# Codex Image Generation Handoff / Codex 生图交接包",
+    "",
+    "请解析这个资料包，调用当前聊天里的真实生图能力生成新图。生成完成后，将图片写回本地项目，并优先保存到 Suggested output path；如果我要替换原图，再替换 Target asset path 并更新相关记录。",
+    "",
+    "## Project / 项目",
+    `- Project slug: ${state.selectedSlug || ""}`,
+    `- Project root: ${state.detail?.path || ""}`,
+    `- Scene: ${scene?.scene_id || asset?.scene_id || ""} ${scene?.title || asset?.scene_title || ""}`,
+    `- Created at: ${new Date().toLocaleString()}`,
+    `- Adapter result: ${result.message || ""}`,
+    "",
+    "## Main Image / 主图",
+    `- Asset: ${asset?.asset_id || asset?.path || ""}`,
+    `- Stage: ${asset?.stage || ""}`,
+    `- Kind: ${kindLabel(asset?.kind)}`,
+    `- Target asset path: ${asset?.path || ""}`,
+    `- Target absolute path: ${projectAbsolutePath(asset?.path || "")}`,
+    `- Browser URL: ${location.origin}${asset?.url || ""}`,
+    `- Main note: ${node.note || ""}`,
+    "",
+    "## References / 关联图",
+    boardReferenceLines(node) || "- No linked references.",
+    "",
+    "## Generation Prompt / 生成提示词",
+    "```text",
+    boardPromptForNode(node),
+    "```",
+    "",
+    "## Existing Task Packet / 现有任务包",
+    `- Packet path: ${packetPath}`,
+    `- Packet absolute path: ${projectAbsolutePath(packetPath)}`,
+    `- Suggested output path: ${suggestedOutput}`,
+    `- Suggested output absolute path: ${projectAbsolutePath(suggestedOutput)}`,
+    "",
+    "## Replacement Instruction / 回填说明",
+    "- Generate one clean high-quality image first.",
+    "- Save the generated file into Suggested output path.",
+    "- Then update the project version/change-request record so the new image is visible in the pipeline.",
+    "- Do not overwrite Target asset path unless I explicitly say replace original.",
+  ].join("\n");
+}
+
+function addBoardHandoff(node, result) {
+  const asset = boardNodeAsset(node);
+  if (!node || !asset) return;
+  const id = `handoff_${Date.now()}_${Math.random().toString(16).slice(2, 8)}`;
+  const handoff = {
+    id,
+    title: `${asset.asset_id || asset.path || "Board image"} → Codex`,
+    scene: asset.scene_id || selectedScene()?.scene_id || "PROJECT",
+    status: result.status || "packet",
+    outputPath: result.outputPath || "",
+    createdAt: new Date().toLocaleString(),
+    text: buildBoardHandoffText(node, result),
+  };
+  state.boardHandoffs = [handoff, ...state.boardHandoffs.filter((item) => item.outputPath !== handoff.outputPath)].slice(0, 12);
+}
+
 function boardGenerationMessageFromRun(runResult, adapter) {
   const queue = runResult.generation_queue || [];
   const finalItem = queue.find((item) => item.final_output_path) || null;
@@ -1505,6 +1603,7 @@ async function createBoardGenerationPacket(nodeId) {
       adapterId,
       completedAt: new Date().toLocaleString(),
     };
+    addBoardHandoff(node, result);
     saveBoardState();
     setBoardGeneration(nodeId, 100, result.message);
     renderAll();
@@ -1650,6 +1749,46 @@ function renderBoardFilters(assets) {
   search.value = state.boardFilters.query || "";
 }
 
+function renderBoardHandoffDock() {
+  const root = $("boardHandoffDock");
+  if (!root) return;
+  if (!state.boardHandoffs.length) {
+    root.innerHTML = `
+      <div class="board-handoff-empty">
+        <strong>Codex 交接区 / Codex handoff</strong>
+        <span>点击节点 Generate 后，这里会出现可拖进聊天框的生图资料包。</span>
+      </div>
+    `;
+    return;
+  }
+  root.innerHTML = `
+    <div class="board-handoff-header">
+      <strong>Codex 交接区 / Codex handoff</strong>
+      <span>拖拽卡片到聊天框，或复制完整资料包 / Drag to chat or copy packet</span>
+    </div>
+    <div class="board-handoff-list">
+      ${state.boardHandoffs
+        .map(
+          (handoff) => `
+            <article class="board-handoff-card ${escapeHtml(handoff.status || "")}" draggable="true" data-handoff-id="${escapeHtml(handoff.id)}">
+              <div>
+                <strong>${escapeHtml(handoff.title)}</strong>
+                <small>${escapeHtml(handoff.scene || "PROJECT")} · ${escapeHtml(handoff.createdAt || "")}</small>
+                ${handoff.outputPath ? `<small>${escapeHtml(handoff.outputPath)}</small>` : ""}
+              </div>
+              <button class="mini-command board-copy-handoff" data-handoff-id="${escapeHtml(handoff.id)}" type="button">复制 / Copy</button>
+              <details class="board-handoff-detail">
+                <summary>展开完整资料包 / Show packet text</summary>
+                <textarea readonly rows="6">${escapeHtml(handoff.text || "")}</textarea>
+              </details>
+            </article>
+          `,
+        )
+        .join("")}
+    </div>
+  `;
+}
+
 function renderBoardAssetTray() {
   const tray = $("boardAssetTray");
   if (!tray) return;
@@ -1752,7 +1891,37 @@ function bindBoardAssetTrayEvents() {
   });
 }
 
+function bindBoardHandoffEvents() {
+  $("boardHandoffDock")?.querySelectorAll(".board-handoff-card").forEach((card) => {
+    card.addEventListener("dragstart", (event) => {
+      const handoff = state.boardHandoffs.find((item) => item.id === card.dataset.handoffId);
+      if (!handoff) return;
+      event.dataTransfer?.setData("text/plain", handoff.text || "");
+      event.dataTransfer?.setData("text/markdown", handoff.text || "");
+      event.dataTransfer?.setData("text/codex-handoff-id", handoff.id);
+      event.dataTransfer.effectAllowed = "copy";
+    });
+  });
+  $("boardHandoffDock")?.querySelectorAll(".board-copy-handoff").forEach((button) => {
+    button.addEventListener("click", async (event) => {
+      event.stopPropagation();
+      const handoff = state.boardHandoffs.find((item) => item.id === button.dataset.handoffId);
+      if (!handoff) return;
+      try {
+        await navigator.clipboard.writeText(handoff.text || "");
+        toast("已复制 Codex 资料包 / Handoff copied");
+      } catch {
+        const textarea = button.closest(".board-handoff-card")?.querySelector("textarea");
+        textarea?.select?.();
+        const copied = document.execCommand?.("copy");
+        toast(copied ? "已复制 Codex 资料包 / Handoff copied" : "复制失败，可展开文本手动复制 / Copy failed; expand text and copy manually");
+      }
+    });
+  });
+}
+
 function bindReferenceBoardEvents() {
+  bindBoardHandoffEvents();
   bindBoardAssetTrayEvents();
   const sceneFilter = $("boardSceneFilter");
   if (sceneFilter) sceneFilter.onchange = (event) => {
@@ -1837,6 +2006,7 @@ function renderReferenceBoard() {
   document.body.classList.toggle("board-open", state.boardOpen);
   if (!state.boardOpen) return;
   renderBoardCanvas();
+  renderBoardHandoffDock();
   renderBoardAssetTray();
   bindReferenceBoardEvents();
 }
@@ -1860,6 +2030,7 @@ function closeReferenceBoard() {
 function clearReferenceBoard() {
   state.boardNodes = [];
   state.boardEdges = [];
+  state.boardHandoffs = [];
   state.boardLinkSourceId = "";
   saveBoardState();
   renderReferenceBoard();
