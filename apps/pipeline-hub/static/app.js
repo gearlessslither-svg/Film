@@ -18,6 +18,11 @@ const state = {
     tag: "all",
     query: "",
   },
+  boardGeneration: {
+    nodeId: "",
+    progress: 0,
+    message: "",
+  },
   sceneFilters: {
     step: "all",
     kind: "all",
@@ -132,6 +137,7 @@ const BOARD_TAG_OPTIONS = [
 ];
 
 const $ = (id) => document.getElementById(id);
+const NATURAL_COLLATOR = new Intl.Collator(["zh-Hans-CN", "en"], { numeric: true, sensitivity: "base" });
 
 function escapeHtml(value) {
   return String(value ?? "")
@@ -140,6 +146,10 @@ function escapeHtml(value) {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
+}
+
+function naturalCompare(a, b) {
+  return NATURAL_COLLATOR.compare(String(a ?? ""), String(b ?? ""));
 }
 
 function toast(message) {
@@ -895,6 +905,15 @@ function generationAdapters() {
   ];
 }
 
+function preferredGenerationAdapter() {
+  const adapters = generationAdapters();
+  return (
+    adapters.find((adapter) => adapter.type === "command" && adapter.enabled && !adapter.requires_confirmation) ||
+    adapters.find((adapter) => adapter.adapter_id === "manual_packet") ||
+    adapters[0]
+  );
+}
+
 function stageShortLabel(stage) {
   const label = stageLabel(stage);
   return label.split(" / ")[0] || stage || "其他";
@@ -1108,10 +1127,10 @@ function boardAssetTags(asset) {
 function allBoardImageAssets() {
   const byRef = new Map();
   const scenes = state.detail?.scene_workbench?.scenes || [];
-  scenes.forEach((scene) => {
+  scenes.forEach((scene, sceneIndex) => {
     flattenSceneAssets(scene)
       .filter((asset) => isImagePath(asset.path || "") && asset.url)
-      .forEach((asset) => {
+      .forEach((asset, assetIndex) => {
         const boardAsset = {
           ...asset,
           scene_id: scene.scene_id || "",
@@ -1119,13 +1138,16 @@ function allBoardImageAssets() {
           scene_slug: scene.scene_slug || "",
           act_id: scene.act_id || "",
           act_title: scene.act_title || "",
+          scene_order: sceneIndex,
+          asset_order: assetIndex,
+          sort_text: [asset.shot_id, asset.asset_id, asset.role, asset.path].filter(Boolean).join(" "),
         };
         boardAsset.tags = boardAssetTags(boardAsset);
         byRef.set(boardAsset.ref, boardAsset);
       });
   });
   const previewImages = state.detail?.previews?.images || [];
-  previewImages.forEach((item) => {
+  previewImages.forEach((item, itemIndex) => {
     if (!item?.path || !item?.url || !isImagePath(item.path)) return;
     const origin = item.origin === "resource" ? "resource" : "project";
     const ref = `${origin}:${item.path}`;
@@ -1146,16 +1168,23 @@ function allBoardImageAssets() {
       act_id: "",
       act_title: "全项目 / Project",
       shot_id: shotIdFromText(item.path),
+      scene_order: 9999,
+      asset_order: itemIndex,
+      sort_text: [shotIdFromText(item.path), item.name, item.path].filter(Boolean).join(" "),
     };
     boardAsset.tags = boardAssetTags(boardAsset);
     byRef.set(ref, boardAsset);
   });
   return [...byRef.values()].sort((a, b) => {
-    const scene = String(a.scene_id || "ZZZ").localeCompare(String(b.scene_id || "ZZZ"));
+    const sceneOrder = Number(a.scene_order ?? 9999) - Number(b.scene_order ?? 9999);
+    if (sceneOrder) return sceneOrder;
+    const scene = naturalCompare(a.scene_id || "ZZZ", b.scene_id || "ZZZ");
     if (scene) return scene;
-    const shot = String(a.shot_id || "ZZZ").localeCompare(String(b.shot_id || "ZZZ"));
+    const shot = naturalCompare(a.shot_id || a.sort_text || "ZZZ", b.shot_id || b.sort_text || "ZZZ");
     if (shot) return shot;
-    return String(a.asset_id || a.path).localeCompare(String(b.asset_id || b.path));
+    const asset = naturalCompare(a.asset_id || a.path, b.asset_id || b.path);
+    if (asset) return asset;
+    return Number(a.asset_order ?? 9999) - Number(b.asset_order ?? 9999);
   });
 }
 
@@ -1165,6 +1194,28 @@ function boardAssetByRef(ref) {
 
 function boardNodeAsset(node) {
   return boardAssetByRef(node?.assetRef || "");
+}
+
+function openBoardImageLightbox(nodeId) {
+  const node = state.boardNodes.find((item) => item.id === nodeId);
+  const asset = boardNodeAsset(node);
+  const modal = $("boardImageLightbox");
+  const img = $("boardImageLightboxImg");
+  if (!asset?.url || !modal || !img) return;
+  img.src = asset.url;
+  img.alt = asset.asset_id || asset.path || "Board image";
+  modal.hidden = false;
+  document.body.classList.add("modal-open");
+}
+
+function closeBoardImageLightbox() {
+  const modal = $("boardImageLightbox");
+  const img = $("boardImageLightboxImg");
+  if (!modal || !img) return;
+  modal.hidden = true;
+  img.removeAttribute("src");
+  img.alt = "";
+  document.body.classList.remove("modal-open");
 }
 
 function boardSceneFilterOptions(assets) {
@@ -1339,6 +1390,45 @@ function boardPromptForNode(node) {
   ].join("\n");
 }
 
+function boardGenerationMessageFromRun(runResult, adapter) {
+  const queue = runResult.generation_queue || [];
+  const finalItem = queue.find((item) => item.final_output_path) || null;
+  const packetItem = queue.find((item) => item.packet_path || item.result_path) || null;
+  const run = runResult.change_request?.generation_run || {};
+  const adapterType = run.adapter_type || adapter?.type || "manual_packet";
+  if (adapterType === "manual_packet") {
+    return {
+      status: "packet",
+      outputPath: packetItem?.packet_path || packetItem?.result_path || "",
+      message: "已生成任务包，当前未启用直接出图适配器 / Packet ready; no direct image adapter is enabled.",
+    };
+  }
+  if (finalItem?.final_output_path) {
+    return {
+      status: "image",
+      outputPath: finalItem.final_output_path,
+      message: `图片已生成 / Image generated: ${finalItem.final_output_path}`,
+    };
+  }
+  return {
+    status: run.status === "generation_failed" ? "failed" : "packet",
+    outputPath: packetItem?.packet_path || packetItem?.result_path || "",
+    message: "生成器已运行，但没有回填图片路径 / Adapter ran, but no image output path was attached.",
+  };
+}
+
+function setBoardGeneration(nodeId, progress, message) {
+  state.boardGeneration = { nodeId, progress, message };
+  renderBoardCanvas();
+  bindReferenceBoardEvents();
+}
+
+function clearBoardGeneration() {
+  state.boardGeneration = { nodeId: "", progress: 0, message: "" };
+  renderBoardCanvas();
+  bindReferenceBoardEvents();
+}
+
 async function createBoardGenerationPacket(nodeId) {
   const node = state.boardNodes.find((item) => item.id === nodeId);
   const asset = boardNodeAsset(node);
@@ -1347,8 +1437,22 @@ async function createBoardGenerationPacket(nodeId) {
     toast("画布节点缺少场戏信息 / Board node is missing scene context");
     return;
   }
+  if (state.busy) {
+    toast("已有任务正在执行 / Another task is running");
+    return;
+  }
+  const adapter = preferredGenerationAdapter();
   const creativeDirection = boardPromptForNode(node);
-  await runAction("画布任务包 / Board packet", async () => {
+  state.busy = true;
+  node.lastGeneration = {
+    status: "running",
+    message: "正在分析画布关系 / Reading board graph...",
+    outputPath: "",
+  };
+  setBoardGeneration(nodeId, 8, node.lastGeneration.message);
+  toast("画布生成开始 / Board generation started");
+  try {
+    setBoardGeneration(nodeId, 18, "正在创建变更请求 / Creating change request...");
     const changeResult = await requestJson(`/api/projects/${state.selectedSlug}/scene-change-request`, {
       method: "POST",
       body: JSON.stringify({
@@ -1358,6 +1462,7 @@ async function createBoardGenerationPacket(nodeId) {
         creative_direction: creativeDirection,
       }),
     });
+    setBoardGeneration(nodeId, 42, "正在计算影响资产 / Selecting impacted assets...");
     const request = changeResult.change_request || {};
     const selectedImpacts = selectedQueueableImpacts(request);
     if (!selectedImpacts.length) {
@@ -1368,6 +1473,7 @@ async function createBoardGenerationPacket(nodeId) {
     }
     const selectedImpactIds = selectedImpacts.map((impact) => impact.impact_id);
     const actionOverrides = Object.fromEntries(selectedImpacts.map((impact) => [impact.impact_id, impact.action]));
+    setBoardGeneration(nodeId, 62, "正在写入生成队列 / Writing generation queue...");
     const queueResult = await requestJson(`/api/projects/${state.selectedSlug}/scene-generate`, {
       method: "POST",
       body: JSON.stringify({
@@ -1377,19 +1483,47 @@ async function createBoardGenerationPacket(nodeId) {
         notes: `Reference board packet for ${boardNodeTitle(node)}`,
       }),
     });
+    const adapterId = adapter?.adapter_id || "manual_packet";
+    const runningMessage =
+      adapter?.type === "command"
+        ? `正在调用生成适配器 / Running adapter: ${adapterId}`
+        : "正在生成任务包 / Writing manual packet...";
+    setBoardGeneration(nodeId, 82, runningMessage);
     const runResult = await requestJson(`/api/projects/${state.selectedSlug}/scene-run-generation`, {
       method: "POST",
       body: JSON.stringify({
         change_request_id: request.change_request_id,
-        adapter_id: "manual_packet",
+        adapter_id: adapterId,
       }),
     });
     state.detail = runResult.project || queueResult.project || changeResult.project || state.detail;
     state.activeChangeRequest = runResult.change_request || queueResult.change_request || request;
+    const result = boardGenerationMessageFromRun(runResult, adapter);
+    node.lastGeneration = {
+      ...result,
+      changeRequestId: request.change_request_id || "",
+      adapterId,
+      completedAt: new Date().toLocaleString(),
+    };
     saveBoardState();
+    setBoardGeneration(nodeId, 100, result.message);
     renderAll();
     renderReferenceBoard();
-  });
+    toast(result.message);
+  } catch (error) {
+    node.lastGeneration = {
+      status: "failed",
+      message: error.message,
+      outputPath: "",
+      completedAt: new Date().toLocaleString(),
+    };
+    saveBoardState();
+    setBoardGeneration(nodeId, 100, `生成失败 / Failed: ${error.message}`);
+    toast(`画布生成失败 / Board generation failed: ${error.message}`);
+  } finally {
+    state.busy = false;
+    window.setTimeout(clearBoardGeneration, 1600);
+  }
 }
 
 function renderBoardEdges() {
@@ -1423,8 +1557,14 @@ function renderBoardNode(node) {
   const outgoingCount = boardNodeOutgoingEdges(node.id).length;
   const incoming = boardNodeIncomingEdges(node.id);
   const activeLink = state.boardLinkSourceId === node.id;
+  const activeGeneration = state.boardGeneration.nodeId === node.id;
+  const progress = clamp(Number(state.boardGeneration.progress || 0), 0, 100);
+  const lastGeneration = node.lastGeneration || {};
+  const generationMessage = activeGeneration ? state.boardGeneration.message : lastGeneration.message || "";
+  const generationOutput = !activeGeneration && lastGeneration.outputPath ? lastGeneration.outputPath : "";
+  const generationClass = activeGeneration ? "running" : lastGeneration.status || "";
   return `
-    <article class="board-node-card ${escapeHtml(node.role || "reference")} ${activeLink ? "linking" : ""}" data-node-id="${escapeHtml(node.id)}" style="left:${Number(node.x || 0)}px; top:${Number(node.y || 0)}px;">
+    <article class="board-node-card ${escapeHtml(node.role || "reference")} ${activeLink ? "linking" : ""} ${activeGeneration ? "generating" : ""}" data-node-id="${escapeHtml(node.id)}" style="left:${Number(node.x || 0)}px; top:${Number(node.y || 0)}px;">
       <header>
         <select class="board-node-role" data-node-id="${escapeHtml(node.id)}">
           <option value="main" ${node.role === "main" ? "selected" : ""}>主图 / Main</option>
@@ -1434,7 +1574,7 @@ function renderBoardNode(node) {
         <button class="mini-command board-link-target" data-node-id="${escapeHtml(node.id)}" type="button">连为关联图 / Link to</button>
         <button class="icon-button board-node-remove" data-node-id="${escapeHtml(node.id)}" type="button" title="移除 / Remove">×</button>
       </header>
-      <img src="${escapeHtml(asset.url)}" alt="${escapeHtml(asset.asset_id || asset.path)}" draggable="false" />
+      <img class="board-node-image" data-node-id="${escapeHtml(node.id)}" src="${escapeHtml(asset.url)}" alt="${escapeHtml(asset.asset_id || asset.path)}" draggable="false" title="双击预览大图 / Double-click to preview" />
       <div class="board-node-meta">
         <strong>${escapeHtml(asset.asset_id || asset.role || asset.path)}</strong>
         <small>${escapeHtml(asset.scene_id || "PROJECT")} · ${escapeHtml(kindLabel(asset.kind))} · ${escapeHtml(asset.path || "")}</small>
@@ -1459,8 +1599,24 @@ function renderBoardNode(node) {
       }
       <footer>
         <span>${outgoingCount} 关联 / refs</span>
-        <button class="command-button primary board-generate-node" data-node-id="${escapeHtml(node.id)}" type="button">生成 / Generate</button>
+        <button class="command-button primary board-generate-node" data-node-id="${escapeHtml(node.id)}" type="button" ${state.busy ? "disabled" : ""}>${activeGeneration ? `生成中 ${progress}%` : "生成 / Generate"}</button>
       </footer>
+      ${
+        generationMessage
+          ? `<div class="board-generation-status ${escapeHtml(generationClass)}">
+              <div class="board-generation-line">
+                <span>${escapeHtml(generationMessage)}</span>
+                ${activeGeneration ? `<strong>${progress}%</strong>` : ""}
+              </div>
+              <div class="board-generation-bar"><span style="width:${activeGeneration ? progress : 100}%"></span></div>
+              ${
+                generationOutput
+                  ? `<small>${lastGeneration.status === "image" ? "图片路径 / Image" : "任务包 / Packet"}: ${escapeHtml(generationOutput)}</small>`
+                  : ""
+              }
+            </div>`
+          : ""
+      }
     </article>
   `;
 }
@@ -1504,8 +1660,8 @@ function renderBoardAssetTray() {
     ? visible
         .map(
           (asset) => `
-            <article class="board-asset-card" draggable="true" data-ref="${escapeHtml(asset.ref)}" title="${escapeHtml(asset.path || "")}">
-              <img src="${escapeHtml(asset.url)}" alt="${escapeHtml(asset.asset_id || asset.path)}" />
+            <article class="board-asset-card" data-ref="${escapeHtml(asset.ref)}" title="${escapeHtml(asset.path || "")}">
+              <img src="${escapeHtml(asset.url)}" alt="${escapeHtml(asset.asset_id || asset.path)}" draggable="false" />
               <strong>${escapeHtml(asset.asset_id || asset.role || asset.path)}</strong>
               <small>${escapeHtml(asset.scene_id || "PROJECT")} · ${escapeHtml(kindLabel(asset.kind))}</small>
             </article>
@@ -1518,7 +1674,7 @@ function renderBoardAssetTray() {
 function bindBoardNodeDrag() {
   $("referenceBoardCanvas")?.querySelectorAll(".board-node-card").forEach((card) => {
     card.addEventListener("pointerdown", (event) => {
-      if (event.target?.closest?.("button, input, select, textarea, a")) return;
+      if (event.target?.closest?.("button, input, select, textarea, a, .board-node-image")) return;
       const nodeId = card.dataset.nodeId || "";
       const node = state.boardNodes.find((item) => item.id === nodeId);
       const stage = $("referenceBoardCanvas")?.querySelector(".board-canvas-stage");
@@ -1551,10 +1707,6 @@ function bindBoardNodeDrag() {
 
 function bindBoardAssetTrayEvents() {
   $("boardAssetTray")?.querySelectorAll(".board-asset-card").forEach((card) => {
-    card.addEventListener("dragstart", (event) => {
-      event.dataTransfer?.setData("text/board-asset-ref", card.dataset.ref || "");
-      event.dataTransfer?.setData("text/plain", card.dataset.ref || "");
-    });
     card.addEventListener("pointerdown", (event) => {
       if (event.button !== 0) return;
       const ref = card.dataset.ref || "";
@@ -1601,15 +1753,6 @@ function bindBoardAssetTrayEvents() {
 }
 
 function bindReferenceBoardEvents() {
-  const stage = $("referenceBoardCanvas")?.querySelector(".board-canvas-stage");
-  if (stage) {
-    stage.addEventListener("dragover", (event) => event.preventDefault());
-    stage.addEventListener("drop", (event) => {
-      event.preventDefault();
-      const ref = event.dataTransfer?.getData("text/board-asset-ref") || event.dataTransfer?.getData("text/plain") || "";
-      addBoardNode(ref, boardCanvasPoint(event));
-    });
-  }
   bindBoardAssetTrayEvents();
   const sceneFilter = $("boardSceneFilter");
   if (sceneFilter) sceneFilter.onchange = (event) => {
@@ -1651,6 +1794,12 @@ function bindReferenceBoardEvents() {
   });
   const canvas = $("referenceBoardCanvas");
   if (canvas) {
+    canvas.ondblclick = (event) => {
+      const image = event.target?.closest?.(".board-node-image");
+      if (!image) return;
+      event.preventDefault();
+      openBoardImageLightbox(image.dataset.nodeId || "");
+    };
     canvas.onclick = (event) => {
       const sourceButton = event.target?.closest?.(".board-link-source");
       if (sourceButton) {
@@ -3151,6 +3300,10 @@ function keyShouldStayInEditor(target) {
 
 function bindKeyboardShortcuts() {
   document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && !$("boardImageLightbox")?.hidden) {
+      closeBoardImageLightbox();
+      return;
+    }
     if (event.key === "Escape" && state.boardOpen) {
       closeReferenceBoard();
       return;
@@ -3172,6 +3325,10 @@ function bindEvents() {
   $("openBoardBtn")?.addEventListener("click", openReferenceBoard);
   $("closeBoardBtn")?.addEventListener("click", closeReferenceBoard);
   $("clearBoardBtn")?.addEventListener("click", clearReferenceBoard);
+  $("boardImageLightboxClose")?.addEventListener("click", closeBoardImageLightbox);
+  $("boardImageLightbox")?.addEventListener("click", (event) => {
+    if (event.target?.id === "boardImageLightbox") closeBoardImageLightbox();
+  });
   $("validateBtn").addEventListener("click", validateCurrentProject);
   $("analyzeBtn").addEventListener("click", analyzeCurrentProject);
   $("autofillBtn").addEventListener("click", autofillCurrentProject);

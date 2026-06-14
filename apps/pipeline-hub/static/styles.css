@@ -2298,6 +2298,11 @@ th {
   outline: 3px solid rgba(15, 118, 110, 0.22);
 }
 
+.board-node-card.generating {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.14), var(--shadow);
+}
+
 .board-node-card header,
 .board-node-card footer {
   display: flex;
@@ -2339,6 +2344,7 @@ th {
   border: 1px solid var(--line);
   border-radius: 8px;
   background: #edf2ef;
+  cursor: zoom-in;
 }
 
 .board-node-meta {
@@ -2388,6 +2394,63 @@ th {
   min-height: 32px;
   padding: 0 10px;
   font-size: 12px;
+}
+
+.board-generation-status {
+  border-top: 1px solid var(--line);
+  display: grid;
+  gap: 6px;
+  padding-top: 8px;
+}
+
+.board-generation-line {
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.board-generation-line span {
+  min-width: 0;
+}
+
+.board-generation-line strong {
+  flex: 0 0 auto;
+  color: #2563eb;
+}
+
+.board-generation-bar {
+  height: 6px;
+  border-radius: 999px;
+  background: #d8e2de;
+  overflow: hidden;
+}
+
+.board-generation-bar span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: #2563eb;
+  transition: width 180ms ease;
+}
+
+.board-generation-status.image .board-generation-bar span,
+.board-generation-status.packet .board-generation-bar span {
+  background: var(--ok);
+}
+
+.board-generation-status.failed .board-generation-bar span {
+  background: var(--danger);
+}
+
+.board-generation-status small {
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.35;
+  word-break: break-all;
 }
 
 .board-help-panel {
@@ -2487,6 +2550,35 @@ th {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.board-image-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(9, 13, 12, 0.88);
+}
+
+.board-image-lightbox[hidden] {
+  display: none;
+}
+
+.board-image-lightbox .icon-button {
+  position: fixed;
+  right: 18px;
+  top: 18px;
+  background: rgba(255, 255, 255, 0.92);
+}
+
+.board-image-lightbox img {
+  max-width: calc(100vw - 48px);
+  max-height: calc(100vh - 48px);
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: var(--shadow);
 }
 
 @media (max-width: 980px) {
