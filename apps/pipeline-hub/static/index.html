@@ -25,6 +25,7 @@
         </div>
 
         <div id="projectList" class="project-list"></div>
+        <div id="sidebarSceneNavigator" class="sidebar-scene-navigator"></div>
 
         <form id="createForm" class="form-block">
           <h2>新建项目 / New Project</h2>
@@ -55,7 +56,10 @@
             <h2 id="projectTitle">读取中 / Loading</h2>
             <p id="projectPath" class="path-line"></p>
           </div>
-          <div id="statusPills" class="status-pills"></div>
+          <div class="workspace-actions">
+            <button id="openBoardBtn" class="command-button primary" type="button">画布 / Board</button>
+            <div id="statusPills" class="status-pills"></div>
+          </div>
         </header>
 
         <section id="storyboardStudio" class="storyboard-studio" aria-label="Storyboard Studio"></section>
@@ -268,6 +272,50 @@
     </div>
 
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <div id="assetPreviewModal" class="asset-preview-modal" hidden>
+      <div class="asset-preview-window" role="dialog" aria-modal="true" aria-labelledby="assetPreviewTitle">
+        <header>
+          <div>
+            <p class="eyebrow">资源预览 / Asset Preview</p>
+            <h3 id="assetPreviewTitle">Preview</h3>
+            <p id="assetPreviewMeta"></p>
+          </div>
+          <button id="assetPreviewClose" class="icon-button" type="button" title="关闭 / Close">×</button>
+        </header>
+        <div id="assetPreviewBody" class="asset-preview-body"></div>
+      </div>
+    </div>
+    <div id="referenceBoardModal" class="reference-board-modal" hidden>
+      <section class="reference-board-window" aria-label="图片关系画布 / Image Reference Board">
+        <header class="board-header">
+          <div>
+            <p class="eyebrow">Image Reference Board</p>
+            <h3>图片关系画布 / Image Reference Board</h3>
+            <p>主图、关联图、白模、人设、场景和道具参考 / Main image, references, whiteboxes, characters, scenes, and props</p>
+          </div>
+          <div class="board-header-actions">
+            <button id="clearBoardBtn" class="command-button" type="button">清空画布 / Clear</button>
+            <button id="closeBoardBtn" class="icon-button" type="button" title="关闭 / Close">×</button>
+          </div>
+        </header>
+        <main class="board-main">
+          <div id="referenceBoardCanvas" class="reference-board-canvas"></div>
+          <aside class="board-help-panel">
+            <strong>关系 / Relations</strong>
+            <p>先在一个节点点击“设为主图”，再在另一个节点点击“连为关联图”。主图备注写完整生成目标，关联图备注写要借用的元素。</p>
+            <p>生成按钮会汇总主图、连线、关联图和备注，写入标准任务包。</p>
+          </aside>
+        </main>
+        <footer class="board-asset-dock">
+          <div class="board-filters">
+            <label>幕/场戏 / Act or scene <select id="boardSceneFilter"></select></label>
+            <label>标签 / Tag <select id="boardTagFilter"></select></label>
+            <label>搜索 / Search <input id="boardSearchInput" placeholder="人物、场景、白模、镜头、路径 / character, scene, whitebox, shot, path" /></label>
+          </div>
+          <div id="boardAssetTray" class="board-asset-tray"></div>
+        </footer>
+      </section>
+    </div>
     <script src="/static/app.js"></script>
   </body>
 </html>

@@ -9,6 +9,15 @@ const state = {
   selectedFrameRef: "",
   storyboardStage: "all",
   referenceSelection: {},
+  boardOpen: false,
+  boardNodes: [],
+  boardEdges: [],
+  boardLinkSourceId: "",
+  boardFilters: {
+    scene: "all",
+    tag: "all",
+    query: "",
+  },
   sceneFilters: {
     step: "all",
     kind: "all",
@@ -81,6 +90,46 @@ const KIND_LABELS = {
 };
 
 const RESOURCE_RENDER_LIMIT = 80;
+const TEXT_PREVIEW_EXTENSIONS = /\.(md|txt|csv|json|ya?ml|srt)$/i;
+const VIDEO_PREVIEW_EXTENSIONS = /\.(mp4|webm)$/i;
+const AUDIO_PREVIEW_EXTENSIONS = /\.(mp3|wav|ogg)$/i;
+const QA_REPAIR_INTENTS = {
+  denoise: {
+    label: "降噪 / Denoise",
+    directive: "Repair target: remove visible grain, sensor noise, speckles, dirty texture, and compression artifacts. Keep clean surfaces and stable material detail.",
+  },
+  sharpen: {
+    label: "提高清晰 / Sharpen",
+    directive: "Repair target: increase edge clarity, crisp subject silhouette, facial/detail readability, and high-resolution focal sharpness without oversharpen halos.",
+  },
+  relight: {
+    label: "提亮暗部 / Relight",
+    directive: "Repair target: brighten muddy shadows with controlled soft lighting, preserve mood, and keep the scene readable without flattening the image.",
+  },
+  highlights: {
+    label: "压高光 / Highlights",
+    directive: "Repair target: recover blown highlights, balance bright areas, and keep luminous objects controlled without clipping.",
+  },
+  contrast: {
+    label: "增强对比 / Contrast",
+    directive: "Repair target: improve clean value separation, readable silhouette, foreground/background layering, and cinematic depth.",
+  },
+  palette: {
+    label: "收敛色彩 / Palette",
+    directive: "Repair target: reduce oversaturation, keep natural material colors, and maintain a restrained cinematic palette.",
+  },
+};
+const BOARD_TAG_OPTIONS = [
+  { value: "all", label: "全部图片 / All images" },
+  { value: "character", label: "人物 / Character" },
+  { value: "scene", label: "场景 / Scene" },
+  { value: "whitebox", label: "白模 / Whitebox" },
+  { value: "keyframe", label: "关键帧 / Keyframe" },
+  { value: "lookdev", label: "风格 / Lookdev" },
+  { value: "marked_use", label: "✅ 已选 / Marked use" },
+  { value: "marked_reject", label: "× 不用 / Rejected" },
+  { value: "unmarked", label: "未标注 / Unmarked" },
+];
 
 const $ = (id) => document.getElementById(id);
 
@@ -142,6 +191,60 @@ function renderProjects() {
     .join("");
   root.querySelectorAll(".project-item").forEach((button) => {
     button.addEventListener("click", () => selectProject(button.dataset.slug));
+  });
+}
+
+function renderSidebarSceneNavigator() {
+  const root = $("sidebarSceneNavigator");
+  if (!root) return;
+  const scenes = state.detail?.scene_workbench?.scenes || [];
+  if (!state.detail || !scenes.length) {
+    root.innerHTML = "";
+    return;
+  }
+  const scene = selectedScene();
+  const grouped = new Map();
+  scenes.forEach((item) => {
+    const key = `${item.act_id || "ACT"}|${item.act_title || "未分幕 / No act"}`;
+    if (!grouped.has(key)) grouped.set(key, []);
+    grouped.get(key).push(item);
+  });
+  root.innerHTML = `
+    <section class="sidebar-scene-panel">
+      <div class="sidebar-scene-header">
+        <span>场戏 / Scenes</span>
+        <small>${scenes.length}</small>
+      </div>
+      ${[...grouped.entries()]
+        .map(([key, actScenes]) => {
+          const [, actTitle] = key.split("|");
+          return `
+            <section class="sidebar-act">
+              <strong>${escapeHtml(actTitle)}</strong>
+              ${actScenes
+                .map(
+                  (item) => `
+                    <button class="sidebar-scene-button ${item.scene_id === scene?.scene_id ? "active" : ""}" data-scene-id="${escapeHtml(item.scene_id)}" type="button">
+                      <span>${escapeHtml(item.title || item.scene_id)}</span>
+                      <small>${escapeHtml(item.scene_id)} · ${(item.shot_ids || []).length} 镜头 · ${escapeHtml(sceneStatusLabel(item.status))}</small>
+                    </button>
+                  `,
+                )
+                .join("")}
+            </section>
+          `;
+        })
+        .join("")}
+    </section>
+  `;
+  root.querySelectorAll(".sidebar-scene-button").forEach((button) => {
+    button.addEventListener("click", () => {
+      state.selectedSceneId = button.dataset.sceneId || "";
+      state.selectedFrameRef = "";
+      state.activeChangeRequest = null;
+      state.recreate = null;
+      renderAll();
+    });
   });
 }
 
@@ -726,6 +829,59 @@ function sceneAssetLink(asset, label = "打开 / Open") {
   return url ? `<a href="${escapeHtml(url)}" target="_blank">${escapeHtml(label)}</a>` : "";
 }
 
+function closeAssetPreview() {
+  const modal = $("assetPreviewModal");
+  if (!modal) return;
+  modal.hidden = true;
+  document.body.classList.remove("modal-open");
+  $("assetPreviewTitle").textContent = "Preview";
+  $("assetPreviewMeta").textContent = "";
+  $("assetPreviewBody").innerHTML = "";
+}
+
+async function openAssetPreview(asset) {
+  const modal = $("assetPreviewModal");
+  const title = $("assetPreviewTitle");
+  const meta = $("assetPreviewMeta");
+  const body = $("assetPreviewBody");
+  if (!modal || !title || !meta || !body || !asset?.url) return;
+  const path = asset.path || "";
+  title.textContent = asset.asset_id || asset.role || path || "Asset";
+  meta.textContent = `${asset.stage || ""} · ${kindLabel(asset.kind)} · ${path}`;
+  body.innerHTML = `<div class="qa-loading">读取中 / Loading...</div>`;
+  modal.hidden = false;
+  document.body.classList.add("modal-open");
+  if (isImagePath(path)) {
+    body.innerHTML = `<img class="asset-preview-image" src="${escapeHtml(asset.url)}" alt="${escapeHtml(title.textContent)}" />`;
+    return;
+  }
+  if (VIDEO_PREVIEW_EXTENSIONS.test(path)) {
+    body.innerHTML = `<video class="asset-preview-media" src="${escapeHtml(asset.url)}" controls></video>`;
+    return;
+  }
+  if (AUDIO_PREVIEW_EXTENSIONS.test(path)) {
+    body.innerHTML = `<audio class="asset-preview-audio" src="${escapeHtml(asset.url)}" controls></audio>`;
+    return;
+  }
+  if (!TEXT_PREVIEW_EXTENSIONS.test(path)) {
+    body.innerHTML = `
+      <div class="empty-state">
+        当前资源不是可内嵌预览格式 / This asset cannot be previewed inline.
+        ${sceneAssetLink(asset, "打开文件 / Open file")}
+      </div>
+    `;
+    return;
+  }
+  try {
+    const response = await fetch(asset.url);
+    if (!response.ok) throw new Error(response.statusText);
+    const text = await response.text();
+    body.innerHTML = `<pre class="asset-preview-text">${escapeHtml(text)}</pre>`;
+  } catch (error) {
+    body.innerHTML = `<div class="empty-state">预览失败 / Preview failed: ${escapeHtml(error.message)}</div>`;
+  }
+}
+
 function generationAdapters() {
   const adapters = state.detail?.generation_adapters?.adapters || [];
   if (adapters.length) return adapters;
@@ -823,6 +979,23 @@ function selectedStoryboardFrame(scene) {
   return { frame, frames };
 }
 
+function moveStoryboardFrame(delta) {
+  if (!state.detail || document.body.classList.contains("modal-open")) return false;
+  const scene = selectedScene();
+  const { frame, frames } = selectedStoryboardFrame(scene);
+  if (!frame || !frames.length) return false;
+  const currentIndex = frames.findIndex((item) => item.ref === frame.ref);
+  const nextIndex = clamp(currentIndex + delta, 0, frames.length - 1);
+  if (nextIndex === currentIndex) {
+    toast(delta > 0 ? "已经是最后一张 / Last frame" : "已经是第一张 / First frame");
+    return true;
+  }
+  state.selectedFrameRef = frames[nextIndex].ref;
+  renderStoryboardStudio();
+  window.setTimeout(() => document.querySelector(".frame-thumb.active")?.scrollIntoView({ block: "nearest", inline: "center" }), 40);
+  return true;
+}
+
 function storyboardStageOptions(scene) {
   const counts = new Map();
   flattenSceneAssets(scene)
@@ -890,6 +1063,657 @@ function selectedQueueableImpacts(request) {
   const direct = impacts.filter((impact) => impact?.impact_scope === "direct" && ["create", "modify"].includes(impact?.action));
   if (direct.length) return direct;
   return impacts.filter((impact) => impact?.selected && ["create", "modify"].includes(impact?.action));
+}
+
+function boardStorageKey() {
+  return state.selectedSlug ? `pipeline-board:${state.selectedSlug}` : "pipeline-board";
+}
+
+function loadBoardState() {
+  try {
+    const raw = window.localStorage.getItem(boardStorageKey());
+    const parsed = raw ? JSON.parse(raw) : {};
+    state.boardNodes = Array.isArray(parsed.nodes) ? parsed.nodes : [];
+    state.boardEdges = Array.isArray(parsed.edges) ? parsed.edges : [];
+  } catch {
+    state.boardNodes = [];
+    state.boardEdges = [];
+  }
+}
+
+function saveBoardState() {
+  if (!state.selectedSlug) return;
+  try {
+    window.localStorage.setItem(boardStorageKey(), JSON.stringify({ nodes: state.boardNodes, edges: state.boardEdges }));
+  } catch {
+    // Local persistence is a convenience; generation packets remain project-backed.
+  }
+}
+
+function boardAssetTags(asset) {
+  const tags = new Set();
+  const haystack = [asset.asset_id, asset.role, asset.path, asset.kind, asset.stage].join(" ").toLowerCase();
+  if (asset.kind === "character_ref" || haystack.includes("character") || haystack.includes("person") || haystack.includes("三视图")) tags.add("character");
+  if (asset.kind === "scene_ref" || haystack.includes("location") || haystack.includes("scene") || haystack.includes("environment")) tags.add("scene");
+  if (asset.kind === "whitebox" || haystack.includes("whitebox") || haystack.includes("previs")) tags.add("whitebox");
+  if (asset.kind === "storyboard_keyframe" || haystack.includes("keyframe") || haystack.includes("storyboard")) tags.add("keyframe");
+  if (asset.kind === "lookdev" || haystack.includes("lookdev") || haystack.includes("style") || haystack.includes("palette")) tags.add("lookdev");
+  const annotation = annotationForRef(asset.ref);
+  if (annotation.status === "use") tags.add("marked_use");
+  if (annotation.status === "reject") tags.add("marked_reject");
+  if (!annotation.status) tags.add("unmarked");
+  return [...tags];
+}
+
+function allBoardImageAssets() {
+  const byRef = new Map();
+  const scenes = state.detail?.scene_workbench?.scenes || [];
+  scenes.forEach((scene) => {
+    flattenSceneAssets(scene)
+      .filter((asset) => isImagePath(asset.path || "") && asset.url)
+      .forEach((asset) => {
+        const boardAsset = {
+          ...asset,
+          scene_id: scene.scene_id || "",
+          scene_title: scene.title || "",
+          scene_slug: scene.scene_slug || "",
+          act_id: scene.act_id || "",
+          act_title: scene.act_title || "",
+        };
+        boardAsset.tags = boardAssetTags(boardAsset);
+        byRef.set(boardAsset.ref, boardAsset);
+      });
+  });
+  const previewImages = state.detail?.previews?.images || [];
+  previewImages.forEach((item) => {
+    if (!item?.path || !item?.url || !isImagePath(item.path)) return;
+    const origin = item.origin === "resource" ? "resource" : "project";
+    const ref = `${origin}:${item.path}`;
+    if (byRef.has(ref)) return;
+    const kind = item.category || sceneAssetKind(item, "08_generation");
+    const boardAsset = {
+      asset_id: item.name || item.path.split("/").pop() || "image",
+      role: item.category || "project_image",
+      path: item.path,
+      origin,
+      url: item.url,
+      ref,
+      kind: KIND_LABELS[kind] ? kind : "image",
+      stage: "08_generation",
+      scene_id: "",
+      scene_title: "未绑定场戏 / Unbound",
+      scene_slug: "",
+      act_id: "",
+      act_title: "全项目 / Project",
+      shot_id: shotIdFromText(item.path),
+    };
+    boardAsset.tags = boardAssetTags(boardAsset);
+    byRef.set(ref, boardAsset);
+  });
+  return [...byRef.values()].sort((a, b) => {
+    const scene = String(a.scene_id || "ZZZ").localeCompare(String(b.scene_id || "ZZZ"));
+    if (scene) return scene;
+    const shot = String(a.shot_id || "ZZZ").localeCompare(String(b.shot_id || "ZZZ"));
+    if (shot) return shot;
+    return String(a.asset_id || a.path).localeCompare(String(b.asset_id || b.path));
+  });
+}
+
+function boardAssetByRef(ref) {
+  return allBoardImageAssets().find((asset) => asset.ref === ref) || null;
+}
+
+function boardNodeAsset(node) {
+  return boardAssetByRef(node?.assetRef || "");
+}
+
+function boardSceneFilterOptions(assets) {
+  const options = [{ value: "all", label: `全部幕/场戏 / All (${assets.length})` }];
+  const acts = new Map();
+  assets.forEach((asset) => {
+    if (asset.act_id) acts.set(asset.act_id, asset.act_title || asset.act_id);
+  });
+  acts.forEach((label, actId) => options.push({ value: `act:${actId}`, label: `${label}` }));
+  const scenes = new Map();
+  assets.forEach((asset) => {
+    if (asset.scene_id) scenes.set(asset.scene_id, `${asset.scene_id} · ${asset.scene_title || ""}`);
+  });
+  scenes.forEach((label, sceneId) => options.push({ value: `scene:${sceneId}`, label }));
+  return options;
+}
+
+function boardAssetMatches(asset) {
+  const sceneFilter = state.boardFilters.scene;
+  if (sceneFilter?.startsWith("act:") && asset.act_id !== sceneFilter.slice(4)) return false;
+  if (sceneFilter?.startsWith("scene:") && asset.scene_id !== sceneFilter.slice(6)) return false;
+  if (state.boardFilters.tag !== "all" && !(asset.tags || []).includes(state.boardFilters.tag)) return false;
+  const query = state.boardFilters.query.trim().toLowerCase();
+  if (!query) return true;
+  return [
+    asset.asset_id,
+    asset.role,
+    asset.path,
+    asset.scene_id,
+    asset.scene_title,
+    asset.act_title,
+    asset.shot_id,
+    kindLabel(asset.kind),
+  ]
+    .join(" ")
+    .toLowerCase()
+    .includes(query);
+}
+
+function boardNodeTitle(node) {
+  const asset = boardNodeAsset(node);
+  return asset?.asset_id || asset?.role || asset?.path || "Image";
+}
+
+function boardNodeNoteLabel(node) {
+  return node.role === "main" ? "主图备注 / Full generation brief" : "关联备注 / Reference element note";
+}
+
+function boardNodeIncomingEdges(nodeId) {
+  return state.boardEdges.filter((edge) => edge.targetId === nodeId);
+}
+
+function boardNodeOutgoingEdges(nodeId) {
+  return state.boardEdges.filter((edge) => edge.sourceId === nodeId);
+}
+
+function boardNodeCenter(node) {
+  return { x: Number(node.x || 0) + 140, y: Number(node.y || 0) + 126 };
+}
+
+function boardCanvasPoint(event) {
+  const stage = $("referenceBoardCanvas")?.querySelector(".board-canvas-stage");
+  const rect = stage?.getBoundingClientRect();
+  if (!rect) return { x: 40, y: 40 };
+  return {
+    x: clamp(event.clientX - rect.left + stage.scrollLeft - 140, 12, Math.max(12, stage.scrollWidth - 300)),
+    y: clamp(event.clientY - rect.top + stage.scrollTop - 80, 12, Math.max(12, stage.scrollHeight - 260)),
+  };
+}
+
+function boardDefaultNodePoint() {
+  const lastNode = state.boardNodes[state.boardNodes.length - 1];
+  if (lastNode) {
+    const nextX = Number(lastNode.x || 0) + 340;
+    if (nextX <= 1600) return { x: nextX, y: Number(lastNode.y || 0) };
+    return { x: 40, y: Number(lastNode.y || 0) + 380 };
+  }
+  return {
+    x: 40,
+    y: 40,
+  };
+}
+
+function addBoardNode(assetRef, point) {
+  if (!assetRef || !boardAssetByRef(assetRef)) return;
+  const id = `node_${Date.now()}_${Math.random().toString(16).slice(2, 8)}`;
+  const role = state.boardNodes.some((node) => node.role === "main") ? "reference" : "main";
+  state.boardNodes.push({
+    id,
+    assetRef,
+    role,
+    note: "",
+    x: Math.round(point.x),
+    y: Math.round(point.y),
+  });
+  saveBoardState();
+  renderReferenceBoard();
+}
+
+function removeBoardNode(nodeId) {
+  state.boardNodes = state.boardNodes.filter((node) => node.id !== nodeId);
+  state.boardEdges = state.boardEdges.filter((edge) => edge.sourceId !== nodeId && edge.targetId !== nodeId);
+  if (state.boardLinkSourceId === nodeId) state.boardLinkSourceId = "";
+  saveBoardState();
+  renderReferenceBoard();
+}
+
+function createBoardEdge(sourceId, targetId) {
+  if (!sourceId) {
+    toast("请先点击“设为主图” / Choose Link from first");
+    return;
+  }
+  if (!targetId || sourceId === targetId) {
+    toast("请选择另一张图片作为关联图 / Choose another image as reference");
+    return;
+  }
+  const existing = state.boardEdges.find((edge) => edge.sourceId === sourceId && edge.targetId === targetId);
+  if (existing) {
+    toast("这条关联已经存在 / Relation already exists");
+    return;
+  }
+  const source = state.boardNodes.find((node) => node.id === sourceId);
+  const target = state.boardNodes.find((node) => node.id === targetId);
+  if (source) source.role = "main";
+  if (target) target.role = "reference";
+  state.boardEdges.push({
+    id: `edge_${Date.now()}_${Math.random().toString(16).slice(2, 8)}`,
+    sourceId,
+    targetId,
+    note: "",
+  });
+  state.boardLinkSourceId = "";
+  saveBoardState();
+  renderReferenceBoard();
+}
+
+function boardPromptForNode(node) {
+  const asset = boardNodeAsset(node);
+  const outgoing = boardNodeOutgoingEdges(node.id);
+  const references = outgoing
+    .map((edge) => {
+      const refNode = state.boardNodes.find((item) => item.id === edge.targetId);
+      const refAsset = boardNodeAsset(refNode);
+      if (!refNode || !refAsset) return "";
+      return [
+        `- Reference / 关联图: ${refAsset.asset_id || refAsset.path}`,
+        `  Path: ${refAsset.path}`,
+        `  Relation note / 连线说明: ${edge.note || "Use selected visual element from this reference."}`,
+        `  Reference note / 关联图备注: ${refNode.note || "Borrow identity, layout, style, prop, pose, or spatial logic as applicable."}`,
+      ].join("\n");
+    })
+    .filter(Boolean)
+    .join("\n");
+  return [
+    `Board generation request / 画布生成请求`,
+    "",
+    `Scene / 场戏: ${asset?.scene_id || selectedScene()?.scene_id || ""} ${asset?.scene_title || selectedScene()?.title || ""}`,
+    `Main image / 主图: ${asset?.asset_id || asset?.path || ""}`,
+    `Main path / 主图路径: ${asset?.path || ""}`,
+    "",
+    "Main brief / 主图备注:",
+    node.note || "- Describe the complete new image to generate from this main image.",
+    "",
+    "Reference stack / 关联素材:",
+    references || "- No linked references. Use only the main image and note.",
+    "",
+    "Output goal / 输出目标:",
+    "- Generate a clean, stable, high-quality key image suitable for downstream video AIGC.",
+    "- Preserve the main composition unless the note explicitly changes it.",
+    "- Integrate reference elements only according to relation notes.",
+    "- Avoid noise, distorted anatomy, inconsistent character identity, unreadable composition, watermarks, random text, and unwanted new props.",
+  ].join("\n");
+}
+
+async function createBoardGenerationPacket(nodeId) {
+  const node = state.boardNodes.find((item) => item.id === nodeId);
+  const asset = boardNodeAsset(node);
+  const scene = asset?.scene_id ? (state.detail?.scene_workbench?.scenes || []).find((item) => item.scene_id === asset.scene_id) : selectedScene();
+  if (!node || !asset || !scene) {
+    toast("画布节点缺少场戏信息 / Board node is missing scene context");
+    return;
+  }
+  const creativeDirection = boardPromptForNode(node);
+  await runAction("画布任务包 / Board packet", async () => {
+    const changeResult = await requestJson(`/api/projects/${state.selectedSlug}/scene-change-request`, {
+      method: "POST",
+      body: JSON.stringify({
+        scene_id: scene.scene_id,
+        trigger_step: asset.stage || "08_generation",
+        trigger_asset_id: asset.asset_id || "",
+        creative_direction: creativeDirection,
+      }),
+    });
+    const request = changeResult.change_request || {};
+    const selectedImpacts = selectedQueueableImpacts(request);
+    if (!selectedImpacts.length) {
+      state.detail = changeResult.project || state.detail;
+      state.activeChangeRequest = request;
+      renderAll();
+      throw new Error("已写入影响表，但没有可入队资产 / Impact table created, but no queueable asset.");
+    }
+    const selectedImpactIds = selectedImpacts.map((impact) => impact.impact_id);
+    const actionOverrides = Object.fromEntries(selectedImpacts.map((impact) => [impact.impact_id, impact.action]));
+    const queueResult = await requestJson(`/api/projects/${state.selectedSlug}/scene-generate`, {
+      method: "POST",
+      body: JSON.stringify({
+        change_request_id: request.change_request_id,
+        selected_impact_ids: selectedImpactIds,
+        action_overrides: actionOverrides,
+        notes: `Reference board packet for ${boardNodeTitle(node)}`,
+      }),
+    });
+    const runResult = await requestJson(`/api/projects/${state.selectedSlug}/scene-run-generation`, {
+      method: "POST",
+      body: JSON.stringify({
+        change_request_id: request.change_request_id,
+        adapter_id: "manual_packet",
+      }),
+    });
+    state.detail = runResult.project || queueResult.project || changeResult.project || state.detail;
+    state.activeChangeRequest = runResult.change_request || queueResult.change_request || request;
+    saveBoardState();
+    renderAll();
+    renderReferenceBoard();
+  });
+}
+
+function renderBoardEdges() {
+  if (!state.boardEdges.length) return "";
+  const nodesById = new Map(state.boardNodes.map((node) => [node.id, node]));
+  return `
+    <svg class="board-edge-layer" aria-hidden="true">
+      <defs>
+        <marker id="boardArrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+          <path d="M0,0 L0,6 L9,3 z"></path>
+        </marker>
+      </defs>
+      ${state.boardEdges
+        .map((edge) => {
+          const source = nodesById.get(edge.sourceId);
+          const target = nodesById.get(edge.targetId);
+          if (!source || !target) return "";
+          const a = boardNodeCenter(source);
+          const b = boardNodeCenter(target);
+          const midX = (a.x + b.x) / 2;
+          return `<path d="M ${a.x} ${a.y} C ${midX} ${a.y}, ${midX} ${b.y}, ${b.x} ${b.y}" marker-end="url(#boardArrow)"></path>`;
+        })
+        .join("")}
+    </svg>
+  `;
+}
+
+function renderBoardNode(node) {
+  const asset = boardNodeAsset(node);
+  if (!asset) return "";
+  const outgoingCount = boardNodeOutgoingEdges(node.id).length;
+  const incoming = boardNodeIncomingEdges(node.id);
+  const activeLink = state.boardLinkSourceId === node.id;
+  return `
+    <article class="board-node-card ${escapeHtml(node.role || "reference")} ${activeLink ? "linking" : ""}" data-node-id="${escapeHtml(node.id)}" style="left:${Number(node.x || 0)}px; top:${Number(node.y || 0)}px;">
+      <header>
+        <select class="board-node-role" data-node-id="${escapeHtml(node.id)}">
+          <option value="main" ${node.role === "main" ? "selected" : ""}>主图 / Main</option>
+          <option value="reference" ${node.role !== "main" ? "selected" : ""}>关联图 / Reference</option>
+        </select>
+        <button class="mini-command board-link-source" data-node-id="${escapeHtml(node.id)}" type="button">${activeLink ? "等待连接 / Linking" : "设为主图 / Link from"}</button>
+        <button class="mini-command board-link-target" data-node-id="${escapeHtml(node.id)}" type="button">连为关联图 / Link to</button>
+        <button class="icon-button board-node-remove" data-node-id="${escapeHtml(node.id)}" type="button" title="移除 / Remove">×</button>
+      </header>
+      <img src="${escapeHtml(asset.url)}" alt="${escapeHtml(asset.asset_id || asset.path)}" draggable="false" />
+      <div class="board-node-meta">
+        <strong>${escapeHtml(asset.asset_id || asset.role || asset.path)}</strong>
+        <small>${escapeHtml(asset.scene_id || "PROJECT")} · ${escapeHtml(kindLabel(asset.kind))} · ${escapeHtml(asset.path || "")}</small>
+      </div>
+      <label>${escapeHtml(boardNodeNoteLabel(node))}
+        <textarea class="board-node-note" data-node-id="${escapeHtml(node.id)}" rows="4" placeholder="${node.role === "main" ? "完整描述要生成的新图 / Describe the full new image" : "说明要借用什么元素 / Describe what to borrow"}">${escapeHtml(node.note || "")}</textarea>
+      </label>
+      ${
+        incoming.length
+          ? `<div class="board-edge-notes">
+              ${incoming
+                .map(
+                  (edge) => `
+                    <label>连线说明 / Relation note
+                      <textarea class="board-edge-note" data-edge-id="${escapeHtml(edge.id)}" rows="2" placeholder="例如：沿用白模机位，把人物放进主图 / Use whitebox camera, place character into main image">${escapeHtml(edge.note || "")}</textarea>
+                    </label>
+                  `,
+                )
+                .join("")}
+            </div>`
+          : ""
+      }
+      <footer>
+        <span>${outgoingCount} 关联 / refs</span>
+        <button class="command-button primary board-generate-node" data-node-id="${escapeHtml(node.id)}" type="button">生成 / Generate</button>
+      </footer>
+    </article>
+  `;
+}
+
+function renderBoardCanvas() {
+  const root = $("referenceBoardCanvas");
+  if (!root) return;
+  root.innerHTML = `
+    <div class="board-canvas-stage">
+      ${renderBoardEdges()}
+      ${
+        state.boardNodes.length
+          ? state.boardNodes.map(renderBoardNode).join("")
+          : `<div class="board-empty-state">从下方素材栏拖入图片 / Drag images from the dock below</div>`
+      }
+    </div>
+  `;
+}
+
+function renderBoardFilters(assets) {
+  const sceneFilter = $("boardSceneFilter");
+  const tagFilter = $("boardTagFilter");
+  const search = $("boardSearchInput");
+  if (!sceneFilter || !tagFilter || !search) return;
+  sceneFilter.innerHTML = boardSceneFilterOptions(assets)
+    .map((option) => `<option value="${escapeHtml(option.value)}" ${state.boardFilters.scene === option.value ? "selected" : ""}>${escapeHtml(option.label)}</option>`)
+    .join("");
+  tagFilter.innerHTML = BOARD_TAG_OPTIONS.map(
+    (option) => `<option value="${escapeHtml(option.value)}" ${state.boardFilters.tag === option.value ? "selected" : ""}>${escapeHtml(option.label)}</option>`,
+  ).join("");
+  search.value = state.boardFilters.query || "";
+}
+
+function renderBoardAssetTray() {
+  const tray = $("boardAssetTray");
+  if (!tray) return;
+  const assets = allBoardImageAssets();
+  renderBoardFilters(assets);
+  const visible = assets.filter(boardAssetMatches).slice(0, 160);
+  tray.innerHTML = visible.length
+    ? visible
+        .map(
+          (asset) => `
+            <article class="board-asset-card" draggable="true" data-ref="${escapeHtml(asset.ref)}" title="${escapeHtml(asset.path || "")}">
+              <img src="${escapeHtml(asset.url)}" alt="${escapeHtml(asset.asset_id || asset.path)}" />
+              <strong>${escapeHtml(asset.asset_id || asset.role || asset.path)}</strong>
+              <small>${escapeHtml(asset.scene_id || "PROJECT")} · ${escapeHtml(kindLabel(asset.kind))}</small>
+            </article>
+          `,
+        )
+        .join("")
+    : `<div class="empty-state">没有匹配图片 / No matching images.</div>`;
+}
+
+function bindBoardNodeDrag() {
+  $("referenceBoardCanvas")?.querySelectorAll(".board-node-card").forEach((card) => {
+    card.addEventListener("pointerdown", (event) => {
+      if (event.target?.closest?.("button, input, select, textarea, a")) return;
+      const nodeId = card.dataset.nodeId || "";
+      const node = state.boardNodes.find((item) => item.id === nodeId);
+      const stage = $("referenceBoardCanvas")?.querySelector(".board-canvas-stage");
+      if (!node || !stage) return;
+      event.preventDefault();
+      card.setPointerCapture?.(event.pointerId);
+      const startX = event.clientX;
+      const startY = event.clientY;
+      const originalX = Number(node.x || 0);
+      const originalY = Number(node.y || 0);
+      const maxX = Math.max(12, stage.scrollWidth - 300);
+      const maxY = Math.max(12, stage.scrollHeight - 320);
+      const onMove = (moveEvent) => {
+        node.x = Math.round(clamp(originalX + moveEvent.clientX - startX, 12, maxX));
+        node.y = Math.round(clamp(originalY + moveEvent.clientY - startY, 12, maxY));
+        card.style.left = `${node.x}px`;
+        card.style.top = `${node.y}px`;
+      };
+      const onUp = () => {
+        document.removeEventListener("pointermove", onMove);
+        document.removeEventListener("pointerup", onUp);
+        saveBoardState();
+        renderReferenceBoard();
+      };
+      document.addEventListener("pointermove", onMove);
+      document.addEventListener("pointerup", onUp);
+    });
+  });
+}
+
+function bindBoardAssetTrayEvents() {
+  $("boardAssetTray")?.querySelectorAll(".board-asset-card").forEach((card) => {
+    card.addEventListener("dragstart", (event) => {
+      event.dataTransfer?.setData("text/board-asset-ref", card.dataset.ref || "");
+      event.dataTransfer?.setData("text/plain", card.dataset.ref || "");
+    });
+    card.addEventListener("pointerdown", (event) => {
+      if (event.button !== 0) return;
+      const ref = card.dataset.ref || "";
+      const startX = event.clientX;
+      const startY = event.clientY;
+      let dragging = false;
+      let ghost = null;
+      const onMove = (moveEvent) => {
+        const moved = Math.hypot(moveEvent.clientX - startX, moveEvent.clientY - startY);
+        if (!dragging && moved < 8) return;
+        if (!dragging) {
+          dragging = true;
+          ghost = card.cloneNode(true);
+          ghost.classList.add("board-drag-ghost");
+          document.body.appendChild(ghost);
+          document.body.classList.add("board-dragging");
+        }
+        if (ghost) {
+          ghost.style.left = `${moveEvent.clientX}px`;
+          ghost.style.top = `${moveEvent.clientY}px`;
+        }
+      };
+      const onUp = (upEvent) => {
+        document.removeEventListener("pointermove", onMove);
+        document.removeEventListener("pointerup", onUp);
+        ghost?.remove();
+        document.body.classList.remove("board-dragging");
+        if (!dragging) return;
+        const canvas = $("referenceBoardCanvas");
+        const rect = canvas?.getBoundingClientRect();
+        const insideCanvas =
+          rect &&
+          upEvent.clientX >= rect.left &&
+          upEvent.clientX <= rect.right &&
+          upEvent.clientY >= rect.top &&
+          upEvent.clientY <= rect.bottom;
+        if (insideCanvas) addBoardNode(ref, boardCanvasPoint(upEvent));
+      };
+      document.addEventListener("pointermove", onMove);
+      document.addEventListener("pointerup", onUp);
+    });
+    card.addEventListener("dblclick", () => addBoardNode(card.dataset.ref || "", boardDefaultNodePoint()));
+  });
+}
+
+function bindReferenceBoardEvents() {
+  const stage = $("referenceBoardCanvas")?.querySelector(".board-canvas-stage");
+  if (stage) {
+    stage.addEventListener("dragover", (event) => event.preventDefault());
+    stage.addEventListener("drop", (event) => {
+      event.preventDefault();
+      const ref = event.dataTransfer?.getData("text/board-asset-ref") || event.dataTransfer?.getData("text/plain") || "";
+      addBoardNode(ref, boardCanvasPoint(event));
+    });
+  }
+  bindBoardAssetTrayEvents();
+  const sceneFilter = $("boardSceneFilter");
+  if (sceneFilter) sceneFilter.onchange = (event) => {
+    state.boardFilters.scene = event.target.value;
+    renderReferenceBoard();
+  };
+  const tagFilter = $("boardTagFilter");
+  if (tagFilter) tagFilter.onchange = (event) => {
+    state.boardFilters.tag = event.target.value;
+    renderReferenceBoard();
+  };
+  const searchInput = $("boardSearchInput");
+  if (searchInput) searchInput.oninput = (event) => {
+    state.boardFilters.query = event.target.value;
+    renderBoardAssetTray();
+    bindBoardAssetTrayEvents();
+  };
+  $("referenceBoardCanvas")?.querySelectorAll(".board-node-role").forEach((select) => {
+    select.addEventListener("change", () => {
+      const node = state.boardNodes.find((item) => item.id === select.dataset.nodeId);
+      if (node) node.role = select.value === "main" ? "main" : "reference";
+      saveBoardState();
+      renderReferenceBoard();
+    });
+  });
+  $("referenceBoardCanvas")?.querySelectorAll(".board-node-note").forEach((textarea) => {
+    textarea.addEventListener("input", () => {
+      const node = state.boardNodes.find((item) => item.id === textarea.dataset.nodeId);
+      if (node) node.note = textarea.value;
+      saveBoardState();
+    });
+  });
+  $("referenceBoardCanvas")?.querySelectorAll(".board-edge-note").forEach((textarea) => {
+    textarea.addEventListener("input", () => {
+      const edge = state.boardEdges.find((item) => item.id === textarea.dataset.edgeId);
+      if (edge) edge.note = textarea.value;
+      saveBoardState();
+    });
+  });
+  const canvas = $("referenceBoardCanvas");
+  if (canvas) {
+    canvas.onclick = (event) => {
+      const sourceButton = event.target?.closest?.(".board-link-source");
+      if (sourceButton) {
+        event.preventDefault();
+        state.boardLinkSourceId = state.boardLinkSourceId === sourceButton.dataset.nodeId ? "" : sourceButton.dataset.nodeId || "";
+        renderReferenceBoard();
+        return;
+      }
+      const targetButton = event.target?.closest?.(".board-link-target");
+      if (targetButton) {
+        event.preventDefault();
+        createBoardEdge(state.boardLinkSourceId, targetButton.dataset.nodeId || "");
+        return;
+      }
+      const removeButton = event.target?.closest?.(".board-node-remove");
+      if (removeButton) {
+        event.preventDefault();
+        removeBoardNode(removeButton.dataset.nodeId || "");
+        return;
+      }
+      const generateButton = event.target?.closest?.(".board-generate-node");
+      if (generateButton) {
+        event.preventDefault();
+        createBoardGenerationPacket(generateButton.dataset.nodeId || "");
+      }
+    };
+  }
+  bindBoardNodeDrag();
+}
+
+function renderReferenceBoard() {
+  const modal = $("referenceBoardModal");
+  if (!modal) return;
+  modal.hidden = !state.boardOpen;
+  document.body.classList.toggle("board-open", state.boardOpen);
+  if (!state.boardOpen) return;
+  renderBoardCanvas();
+  renderBoardAssetTray();
+  bindReferenceBoardEvents();
+}
+
+function openReferenceBoard() {
+  if (!state.detail) {
+    toast("请先选择项目 / Select a project first");
+    return;
+  }
+  state.boardOpen = true;
+  loadBoardState();
+  renderReferenceBoard();
+}
+
+function closeReferenceBoard() {
+  state.boardOpen = false;
+  state.boardLinkSourceId = "";
+  renderReferenceBoard();
+}
+
+function clearReferenceBoard() {
+  state.boardNodes = [];
+  state.boardEdges = [];
+  state.boardLinkSourceId = "";
+  saveBoardState();
+  renderReferenceBoard();
 }
 
 function baseFixPrompt(scene, frame, qa = null) {
@@ -999,8 +1823,50 @@ function analyzeImageElement(img) {
     noiseScore: Math.round(noiseScore),
     mean: Math.round(mean),
     contrast: Math.round(contrast),
+    darkRatio: Math.round(darkRatio * 100),
+    brightRatio: Math.round(brightRatio * 100),
+    saturation: Math.round(saturation * 100),
+    edge: Math.round(edge),
+    highFrequency: Math.round(highFreq),
+    formula: "总分 = 曝光 25% + 对比 20% + 清晰 25% + 噪点 30%",
+    sample: "浏览器端 128x128 采样估算 / browser-side 128x128 sampled estimate",
     suggestions,
   };
+}
+
+function currentQaResult() {
+  try {
+    return JSON.parse($("imageQaPanel")?.dataset.qa || "null");
+  } catch {
+    return null;
+  }
+}
+
+function repairDirectiveFor(key, result = null) {
+  const intent = QA_REPAIR_INTENTS[key] || QA_REPAIR_INTENTS.denoise;
+  const qa = result
+    ? `Current QA: score ${result.score}/100, sharpness ${result.sharpnessScore}, noise ${result.noiseScore}, exposure ${result.exposureScore}, contrast ${result.contrastScore}.`
+    : "";
+  return `${intent.directive}\n${qa}`.trim();
+}
+
+function qaRepairButtons(result) {
+  const recommended = new Set();
+  if ((result?.noiseScore ?? 100) < 72) recommended.add("denoise");
+  if ((result?.sharpnessScore ?? 100) < 66) recommended.add("sharpen");
+  if ((result?.mean ?? 118) < 70 || (result?.darkRatio ?? 0) > 42) recommended.add("relight");
+  if ((result?.brightRatio ?? 0) > 12) recommended.add("highlights");
+  if ((result?.contrastScore ?? 100) < 70) recommended.add("contrast");
+  if ((result?.saturation ?? 0) > 48) recommended.add("palette");
+  return Object.entries(QA_REPAIR_INTENTS)
+    .map(
+      ([key, intent]) => `
+        <button class="qa-repair-button ${recommended.has(key) ? "recommended" : ""}" data-repair-key="${escapeHtml(key)}" type="button">
+          ${escapeHtml(intent.label)}
+        </button>
+      `,
+    )
+    .join("");
 }
 
 function renderQaResult(result) {
@@ -1019,6 +1885,23 @@ function renderQaResult(result) {
       <span>对比 ${result.contrastScore}</span>
     </div>
     <ul>${result.suggestions.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+    <details class="qa-basis">
+      <summary>技术分依据 / Scoring basis</summary>
+      <p>${escapeHtml(result.formula)}</p>
+      <p>${escapeHtml(result.sample)}</p>
+      <dl>
+        <div><dt>平均亮度 / Mean luminance</dt><dd>${result.mean}</dd></div>
+        <div><dt>暗部比例 / Dark area</dt><dd>${result.darkRatio}%</dd></div>
+        <div><dt>高光比例 / Bright area</dt><dd>${result.brightRatio}%</dd></div>
+        <div><dt>饱和度 / Saturation</dt><dd>${result.saturation}%</dd></div>
+        <div><dt>边缘强度 / Edge</dt><dd>${result.edge}</dd></div>
+        <div><dt>高频纹理 / High frequency</dt><dd>${result.highFrequency}</dd></div>
+      </dl>
+    </details>
+    <div class="qa-repair-actions">
+      <strong>快捷修复 / Quick repair</strong>
+      <div>${qaRepairButtons(result)}</div>
+    </div>
   `;
   node.dataset.qa = JSON.stringify(result);
 }
@@ -1070,12 +1953,6 @@ function renderStoryboardStudio() {
   const versions = frameVersions(scene, frame);
   const frameRequests = storyboardRequestsForFrame(scene, frame);
   const frameIndex = frame ? frames.findIndex((item) => item.ref === frame.ref) : -1;
-  const grouped = new Map();
-  scenes.forEach((item) => {
-    const key = `${item.act_id || "ACT"}|${item.act_title || "未分幕 / No act"}`;
-    if (!grouped.has(key)) grouped.set(key, []);
-    grouped.get(key).push(item);
-  });
   root.innerHTML = `
     <div class="studio-header">
       <div>
@@ -1089,28 +1966,6 @@ function renderStoryboardStudio() {
       </div>
     </div>
     <div class="studio-layout">
-      <nav class="studio-rail">
-        ${[...grouped.entries()]
-          .map(([key, actScenes]) => {
-            const [, actTitle] = key.split("|");
-            return `
-              <section class="studio-act">
-                <strong>${escapeHtml(actTitle)}</strong>
-                ${actScenes
-                  .map(
-                    (item) => `
-                      <button class="studio-scene-button ${item.scene_id === scene?.scene_id ? "active" : ""}" data-scene-id="${escapeHtml(item.scene_id)}" type="button">
-                        <span>${escapeHtml(item.title || item.scene_id)}</span>
-                        <small>${escapeHtml(item.scene_id)} · ${(item.shot_ids || []).length} 镜头 · ${escapeHtml(sceneStatusLabel(item.status))}</small>
-                      </button>
-                    `,
-                  )
-                  .join("")}
-              </section>
-            `;
-          })
-          .join("")}
-      </nav>
       <section class="studio-stage">
         <div class="studio-filter-tabs">
           ${stageOptions
@@ -1186,6 +2041,7 @@ function renderStoryboardStudio() {
                                   <span>${escapeHtml(asset.asset_id || asset.role || asset.path)}</span>
                                 </label>
                                 <small>${escapeHtml(asset.stage)} · ${escapeHtml(kindLabel(asset.kind))}</small>
+                                <small class="reference-open-hint">双击预览 / Double-click to preview</small>
                                 <input class="reference-note-input" value="${escapeHtml(refState.note || "")}" placeholder="怎么参考它 / how to use this reference" />
                               </div>
                             `;
@@ -1250,11 +2106,11 @@ function renderStoryboardStudio() {
       </aside>
     </div>
   `;
-  bindStoryboardStudioEvents(scene, frame);
+  bindStoryboardStudioEvents(scene, frame, related);
   analyzeCurrentStoryboardImage();
 }
 
-function bindStoryboardStudioEvents(scene, frame) {
+function bindStoryboardStudioEvents(scene, frame, related = []) {
   const root = $("storyboardStudio");
   root.querySelectorAll(".studio-scene-button").forEach((button) => {
     button.addEventListener("click", () => {
@@ -1307,18 +2163,26 @@ function bindStoryboardStudioEvents(scene, frame) {
     const ref = item.dataset.ref || "";
     const checkbox = item.querySelector(".reference-checkbox");
     const input = item.querySelector(".reference-note-input");
+    const asset = related.find((candidate) => candidate.ref === ref);
+    item.addEventListener("dblclick", (event) => {
+      if (event.target?.closest?.("input, textarea, button, a")) return;
+      if (asset) openAssetPreview(asset);
+    });
     checkbox?.addEventListener("change", () => setReferenceSelection(frame?.ref || "", ref, { selected: checkbox.checked }));
     input?.addEventListener("input", () => setReferenceSelection(frame?.ref || "", ref, { note: input.value }));
   });
+  if (root._qaRepairHandler) root.removeEventListener("click", root._qaRepairHandler);
+  root._qaRepairHandler = async (event) => {
+    const button = event.target?.closest?.(".qa-repair-button");
+    if (!button || !frame) return;
+    const key = button.dataset.repairKey || "denoise";
+    const intent = QA_REPAIR_INTENTS[key] || QA_REPAIR_INTENTS.denoise;
+    await createStoryboardGenerationPacket(scene, frame, `Quick repair / 快捷修复: ${intent.label}\n${repairDirectiveFor(key, currentQaResult())}`);
+  };
+  root.addEventListener("click", root._qaRepairHandler);
   $("buildFixPromptBtn")?.addEventListener("click", () => {
     if (!frame) return;
-    let qa = null;
-    try {
-      qa = JSON.parse($("imageQaPanel")?.dataset.qa || "null");
-    } catch {
-      qa = null;
-    }
-    $("fixPromptOutput").value = baseFixPrompt(scene, frame, qa);
+    $("fixPromptOutput").value = baseFixPrompt(scene, frame, currentQaResult());
   });
   $("createFramePacketBtn")?.addEventListener("click", async () => {
     if (!scene || !frame) return;
@@ -1345,10 +2209,11 @@ function bindStoryboardStudioEvents(scene, frame) {
   });
 }
 
-async function createStoryboardGenerationPacket(scene, frame) {
+async function createStoryboardGenerationPacket(scene, frame, repairIntent = "") {
   const promptOutput = $("fixPromptOutput");
-  const creativeDirection = promptOutput?.value.trim() || baseFixPrompt(scene, frame);
-  if (promptOutput && !promptOutput.value.trim()) promptOutput.value = creativeDirection;
+  const baseDirection = promptOutput?.value.trim() || baseFixPrompt(scene, frame, currentQaResult());
+  const creativeDirection = repairIntent ? `${baseDirection}\n\n${repairIntent}` : baseDirection;
+  if (promptOutput) promptOutput.value = creativeDirection;
   await runAction("当前图片任务包 / Frame packet", async () => {
     const changeResult = await requestJson(`/api/projects/${state.selectedSlug}/scene-change-request`, {
       method: "POST",
@@ -1375,7 +2240,7 @@ async function createStoryboardGenerationPacket(scene, frame) {
         change_request_id: request.change_request_id,
         selected_impact_ids: selectedImpactIds,
         action_overrides: actionOverrides,
-        notes: `Storyboard Studio packet for ${frameTitle(frame)}`,
+        notes: repairIntent ? `Storyboard Studio quick repair for ${frameTitle(frame)}` : `Storyboard Studio packet for ${frameTitle(frame)}`,
       }),
     });
     const runResult = await requestJson(`/api/projects/${state.selectedSlug}/scene-run-generation`, {
@@ -1430,9 +2295,10 @@ function renderSceneTree(scenes) {
   $("sceneTree").querySelectorAll(".scene-tree-item").forEach((button) => {
     button.addEventListener("click", () => {
       state.selectedSceneId = button.dataset.sceneId || "";
+      state.selectedFrameRef = "";
       state.activeChangeRequest = null;
       state.recreate = null;
-      renderSceneWorkbench();
+      renderAll();
     });
   });
 }
@@ -2065,8 +2931,10 @@ function renderAutofill() {
 
 function renderAll() {
   renderProjects();
+  renderSidebarSceneNavigator();
   renderHeader();
   renderStoryboardStudio();
+  renderReferenceBoard();
   renderMetrics();
   renderLinks();
   renderSceneWorkbench();
@@ -2106,6 +2974,7 @@ async function loadDetail(slug) {
   state.storyboardStage = "all";
   state.referenceSelection = {};
   state.detail = await requestJson(`/api/projects/${encodeURIComponent(slug)}`);
+  loadBoardState();
   renderAll();
 }
 
@@ -2276,15 +3145,45 @@ function bindResourceFilters() {
   });
 }
 
+function keyShouldStayInEditor(target) {
+  return Boolean(target?.closest?.("input, textarea, select, [contenteditable='true']"));
+}
+
+function bindKeyboardShortcuts() {
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && state.boardOpen) {
+      closeReferenceBoard();
+      return;
+    }
+    if (event.key === "Escape" && document.body.classList.contains("modal-open")) {
+      closeAssetPreview();
+      return;
+    }
+    if (keyShouldStayInEditor(event.target)) return;
+    if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+      const handled = moveStoryboardFrame(event.key === "ArrowRight" ? 1 : -1);
+      if (handled) event.preventDefault();
+    }
+  });
+}
+
 function bindEvents() {
   $("refreshBtn").addEventListener("click", () => runAction("刷新 / Refresh", loadProjects));
+  $("openBoardBtn")?.addEventListener("click", openReferenceBoard);
+  $("closeBoardBtn")?.addEventListener("click", closeReferenceBoard);
+  $("clearBoardBtn")?.addEventListener("click", clearReferenceBoard);
   $("validateBtn").addEventListener("click", validateCurrentProject);
   $("analyzeBtn").addEventListener("click", analyzeCurrentProject);
   $("autofillBtn").addEventListener("click", autofillCurrentProject);
   $("sceneLockBtn").addEventListener("click", buildSceneLocksCurrentProject);
   $("createForm").addEventListener("submit", createProject);
   $("linkForm").addEventListener("submit", updateLinks);
+  $("assetPreviewClose")?.addEventListener("click", closeAssetPreview);
+  $("assetPreviewModal")?.addEventListener("click", (event) => {
+    if (event.target?.id === "assetPreviewModal") closeAssetPreview();
+  });
   bindResourceFilters();
+  bindKeyboardShortcuts();
 }
 
 bindEvents();
