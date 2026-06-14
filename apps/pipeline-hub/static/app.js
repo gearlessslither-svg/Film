@@ -9,6 +9,7 @@ const state = {
   selectedFrameRef: "",
   storyboardStage: "all",
   referenceSelection: {},
+  ideaHandoffs: [],
   boardOpen: false,
   boardNodes: [],
   boardEdges: [],
@@ -2109,6 +2110,410 @@ function clearReferenceBoard() {
   renderReferenceBoard();
 }
 
+function ideaHandoffStorageKey() {
+  return state.selectedSlug ? `pipeline-idea-handoffs:${state.selectedSlug}` : "pipeline-idea-handoffs";
+}
+
+function loadIdeaHandoffs() {
+  try {
+    const raw = window.localStorage.getItem(ideaHandoffStorageKey());
+    const parsed = raw ? JSON.parse(raw) : [];
+    state.ideaHandoffs = Array.isArray(parsed) ? parsed : [];
+  } catch {
+    state.ideaHandoffs = [];
+  }
+}
+
+function saveIdeaHandoffs() {
+  if (!state.selectedSlug) return;
+  try {
+    window.localStorage.setItem(ideaHandoffStorageKey(), JSON.stringify(state.ideaHandoffs.slice(0, 12)));
+  } catch {
+    // Handoff cards are convenience UI; the saved idea board is project-backed.
+  }
+}
+
+function currentIdeaBoard() {
+  const board = state.detail?.idea_board || {};
+  return {
+    schema_version: 1,
+    project_slug: state.selectedSlug || "",
+    idea: board.idea || "",
+    story_title: board.story_title || "",
+    logline: board.logline || "",
+    story_outline: board.story_outline || "",
+    style_notes: board.style_notes || "",
+    rows: Array.isArray(board.rows) ? board.rows : [],
+  };
+}
+
+function nextIdeaItemId(rows) {
+  const count = (rows || []).length + 1;
+  return `IDEA_SHOT_${String(count).padStart(3, "0")}`;
+}
+
+function compactProjectSceneContext() {
+  const scenes = state.detail?.scene_workbench?.scenes || [];
+  if (!Array.isArray(scenes) || !scenes.length) return "- No existing scene map yet.";
+  return scenes
+    .slice(0, 24)
+    .map((scene) => `- ${scene.scene_id || ""}: ${scene.title || ""} (${scene.act_title || scene.act_id || ""})`)
+    .join("\n");
+}
+
+function collectIdeaBoardFromDom() {
+  const rows = Array.from(document.querySelectorAll(".idea-shot-row")).map((row, index) => {
+    const value = (field) => row.querySelector(`[data-idea-field="${field}"]`)?.value || "";
+    return {
+      item_id: value("item_id") || `IDEA_SHOT_${String(index + 1).padStart(3, "0")}`,
+      scene_id: value("scene_id"),
+      beat: value("beat"),
+      shot_type: value("shot_type"),
+      frame_description: value("frame_description"),
+      image_prompt: value("image_prompt"),
+      video_prompt: value("video_prompt"),
+      notes: value("notes"),
+      selected: row.querySelector('[data-idea-field="selected"]')?.checked ?? true,
+      status: value("status") || "draft",
+      output_path: value("output_path"),
+      output_notes: value("output_notes"),
+    };
+  });
+  return {
+    idea: $("ideaSeedInput")?.value || "",
+    story_title: $("ideaStoryTitle")?.value || "",
+    logline: $("ideaLogline")?.value || "",
+    story_outline: $("ideaOutline")?.value || "",
+    style_notes: $("ideaStyleNotes")?.value || "",
+    rows,
+  };
+}
+
+function setIdeaBoardLocal(board) {
+  state.detail.idea_board = {
+    ...currentIdeaBoard(),
+    ...board,
+    rows: Array.isArray(board.rows) ? board.rows : [],
+  };
+}
+
+function buildIdeaAnalysisHandoff(board) {
+  const idea = board.idea || "";
+  const apiUrl = `${location.origin}/api/projects/${state.selectedSlug}/idea-board`;
+  const schema = {
+    idea,
+    story_title: "短片片名",
+    logline: "一句话故事",
+    story_outline: "三幕或多场戏剧本大纲，中文为主，可附英文关键词",
+    style_notes: "影像风格、镜头语言、角色/场景连续性、负面约束",
+    rows: [
+      {
+        item_id: "IDEA_SHOT_001",
+        scene_id: "SCN_EXAMPLE",
+        beat: "剧情点",
+        shot_type: "远景/中景/近景/特写/运动镜头等",
+        frame_description: "这一帧看到什么，谁在哪里，情绪和动作是什么",
+        image_prompt: "可直接用于生成高质量分镜关键帧的图片提示词",
+        video_prompt: "后续视频生成提示词，可选",
+        notes: "导演备注、连续性、参考资产需求",
+        selected: true,
+        status: "draft",
+      },
+    ],
+  };
+  return [
+    "# Codex Idea Development Handoff / Codex 创意开发交接包",
+    "",
+    "请解析这个创意，调用当前聊天里的远程推理能力，产出剧本大纲、关键分镜、图片提示词和视频提示词。完成后调用回填接口，把 JSON 写回网页的 Idea 模块。",
+    "",
+    "## Codex Run Mode / 执行模式",
+    "- 先分析故事结构，再输出可执行的分镜文本，不要只写概念。",
+    "- 以电影制作角度优化：人物动机、场景递进、镜头节奏、可生成性、角色/场景连续性。",
+    "- 输出条目要能直接变成图片生成任务；每条必须有清晰 image_prompt。",
+    "- 回填成功后，只汇报条目数量和关键建议，不要长篇复述全部 JSON。",
+    "",
+    "## Project / 项目",
+    `- Project slug: ${state.selectedSlug || ""}`,
+    `- Project root: ${state.detail?.path || ""}`,
+    `- Callback: POST ${apiUrl}`,
+    "",
+    "## Existing Scene Context / 现有场戏上下文",
+    compactProjectSceneContext(),
+    "",
+    "## User Idea / 用户创意",
+    idea || "- 在这里填入故事 idea",
+    "",
+    "## Required JSON Schema / 必须回填的 JSON 结构",
+    "```json",
+    JSON.stringify(schema, null, 2),
+    "```",
+    "",
+    "## Callback Instruction / 回填说明",
+    `POST ${apiUrl}`,
+    "Content-Type: application/json",
+    "Body must match the schema above. Keep Chinese text readable, with optional English prompt terms where useful.",
+  ].join("\n");
+}
+
+function addIdeaHandoff(handoff) {
+  state.ideaHandoffs = [
+    {
+      id: `idea_handoff_${Date.now()}_${Math.random().toString(16).slice(2, 8)}`,
+      createdAt: new Date().toLocaleString(),
+      ...handoff,
+    },
+    ...state.ideaHandoffs,
+  ].slice(0, 12);
+  saveIdeaHandoffs();
+}
+
+function renderIdeaHandoffs() {
+  if (!state.ideaHandoffs.length) {
+    return `<div class="idea-handoff-empty">生成的 Codex 交接卡会出现在这里，可以拖进聊天框。</div>`;
+  }
+  return `
+    <div class="idea-handoff-list">
+      ${state.ideaHandoffs
+        .map(
+          (handoff) => `
+            <article class="idea-handoff-card" draggable="true" data-idea-handoff-id="${escapeHtml(handoff.id)}">
+              <div>
+                <strong>${escapeHtml(handoff.title || "Codex handoff")}</strong>
+                <small>${escapeHtml(handoff.kind || "")} · ${escapeHtml(handoff.createdAt || "")}</small>
+                ${handoff.path ? `<small>${escapeHtml(handoff.path)}</small>` : ""}
+              </div>
+              <div class="idea-handoff-actions">
+                <button class="mini-command idea-copy-handoff" data-idea-handoff-id="${escapeHtml(handoff.id)}" type="button">复制 / Copy</button>
+                <button class="icon-button idea-delete-handoff" data-idea-handoff-id="${escapeHtml(handoff.id)}" type="button" title="删除 / Delete">×</button>
+              </div>
+              <details>
+                <summary>展开文本 / Show text</summary>
+                <textarea readonly rows="7">${escapeHtml(handoff.text || "")}</textarea>
+              </details>
+            </article>
+          `,
+        )
+        .join("")}
+    </div>
+  `;
+}
+
+function renderIdeaRows(rows) {
+  if (!rows.length) {
+    return `<div class="empty-state">还没有分镜文本。先输入 idea 生成交接卡，拖给 Codex 回填，或手动新增一条。</div>`;
+  }
+  return rows
+    .map(
+      (row, index) => `
+        <article class="idea-shot-row" data-idea-index="${index}">
+          <header>
+            <label>编号 / ID <input data-idea-field="item_id" value="${escapeHtml(row.item_id || nextIdeaItemId(rows))}" /></label>
+            <label>场戏 / Scene <input data-idea-field="scene_id" value="${escapeHtml(row.scene_id || "")}" /></label>
+            <label>镜头 / Shot <input data-idea-field="shot_type" value="${escapeHtml(row.shot_type || "")}" /></label>
+            <label class="checkbox-label"><input data-idea-field="selected" type="checkbox" ${row.selected === false ? "" : "checked"} /> 入图包 / Selected</label>
+            <button class="icon-button idea-delete-row" data-idea-index="${index}" type="button" title="删除条目 / Delete row">×</button>
+          </header>
+          <label>剧情点 / Beat
+            <textarea data-idea-field="beat" rows="2">${escapeHtml(row.beat || "")}</textarea>
+          </label>
+          <label>画面描述 / Frame description
+            <textarea data-idea-field="frame_description" rows="3">${escapeHtml(row.frame_description || "")}</textarea>
+          </label>
+          <label>图片提示词 / Image prompt
+            <textarea data-idea-field="image_prompt" rows="4">${escapeHtml(row.image_prompt || "")}</textarea>
+          </label>
+          <label>视频提示词 / Video prompt
+            <textarea data-idea-field="video_prompt" rows="2">${escapeHtml(row.video_prompt || "")}</textarea>
+          </label>
+          <label>备注 / Notes
+            <textarea data-idea-field="notes" rows="2">${escapeHtml(row.notes || "")}</textarea>
+          </label>
+          <footer>
+            <label>状态 / Status <input data-idea-field="status" value="${escapeHtml(row.status || "draft")}" /></label>
+            <label>图片路径 / Output <input data-idea-field="output_path" value="${escapeHtml(row.output_path || "")}" /></label>
+            <input data-idea-field="output_notes" value="${escapeHtml(row.output_notes || "")}" hidden />
+            ${
+              row.output_path
+                ? `<a class="mini-command" href="/api/projects/${escapeHtml(state.selectedSlug || "")}/asset?origin=project&path=${encodeURIComponent(row.output_path)}" target="_blank">预览 / Preview</a>`
+                : ""
+            }
+          </footer>
+        </article>
+      `,
+    )
+    .join("");
+}
+
+function renderIdeaLab() {
+  const root = $("ideaLab");
+  if (!root) return;
+  if (!state.detail) {
+    root.innerHTML = "";
+    return;
+  }
+  const board = currentIdeaBoard();
+  root.innerHTML = `
+    <div class="idea-header">
+      <div>
+        <p class="eyebrow">Idea Lab</p>
+        <h3>创意到分镜 / Idea to Storyboard</h3>
+        <p>输入故事 idea，生成 Codex 分析卡；回填后编辑分镜提示词，再生成批量图片包。</p>
+      </div>
+      <div class="idea-actions">
+        <button id="ideaBuildHandoffBtn" class="command-button primary" type="button">生成分析卡 / Analysis Card</button>
+        <button id="ideaSaveBtn" class="command-button" type="button">保存文字 / Save</button>
+        <button id="ideaAddRowBtn" class="command-button" type="button">新增条目 / Add Row</button>
+        <button id="ideaBuildImagePacketBtn" class="command-button" type="button">生成图片包 / Image Packet</button>
+      </div>
+    </div>
+    <div class="idea-layout">
+      <section class="idea-seed-panel">
+        <label>故事 idea / Story idea
+          <textarea id="ideaSeedInput" rows="5" placeholder="例如：投币口，一个关于三个孩子、旧游戏厅和一次危险好奇心的短片">${escapeHtml(board.idea || "")}</textarea>
+        </label>
+        <div class="idea-meta-grid">
+          <label>片名 / Title <input id="ideaStoryTitle" value="${escapeHtml(board.story_title || "")}" /></label>
+          <label>一句话 / Logline <input id="ideaLogline" value="${escapeHtml(board.logline || "")}" /></label>
+        </div>
+        <label>剧本大纲 / Story outline
+          <textarea id="ideaOutline" rows="5">${escapeHtml(board.story_outline || "")}</textarea>
+        </label>
+        <label>风格与连续性 / Style and continuity
+          <textarea id="ideaStyleNotes" rows="4">${escapeHtml(board.style_notes || "")}</textarea>
+        </label>
+        <div id="ideaHandoffDock" class="idea-handoff-dock">${renderIdeaHandoffs()}</div>
+      </section>
+      <section class="idea-rows-panel">
+        <div class="idea-rows-header">
+          <strong>${board.rows.length} 条分镜文本 / storyboard prompt rows</strong>
+          <span>可直接编辑、增删、勾选入图包</span>
+        </div>
+        <div id="ideaRows" class="idea-rows">${renderIdeaRows(board.rows)}</div>
+      </section>
+    </div>
+  `;
+  bindIdeaLabEvents();
+}
+
+async function saveIdeaBoard(options = {}) {
+  if (!state.selectedSlug || !state.detail) return null;
+  const board = collectIdeaBoardFromDom();
+  const result = await requestJson(`/api/projects/${state.selectedSlug}/idea-board`, {
+    method: "POST",
+    body: JSON.stringify(board),
+  });
+  state.detail = result.project || state.detail;
+  if (options.toast !== false) toast("Idea Board 已保存 / Idea Board saved");
+  renderIdeaLab();
+  return result;
+}
+
+function createIdeaAnalysisHandoff() {
+  if (!state.detail) return;
+  const board = collectIdeaBoardFromDom();
+  setIdeaBoardLocal(board);
+  addIdeaHandoff({
+    kind: "idea_analysis",
+    title: `${board.story_title || "Story idea"} → Codex 分析`,
+    text: buildIdeaAnalysisHandoff(board),
+  });
+  renderIdeaLab();
+  toast("已生成 Codex 分析卡 / Analysis handoff ready");
+}
+
+async function createIdeaImagePacket() {
+  if (!state.selectedSlug || !state.detail) return;
+  await runAction("生成图片包 / Image packet", async () => {
+    const board = collectIdeaBoardFromDom();
+    const result = await requestJson(`/api/projects/${state.selectedSlug}/idea-image-packet`, {
+      method: "POST",
+      body: JSON.stringify(board),
+    });
+    state.detail = result.project || state.detail;
+    addIdeaHandoff({
+      kind: "image_batch",
+      title: `${result.task_count || 0} 张分镜图 → Codex 生图`,
+      path: result.packet_path || "",
+      text: result.handoff_text || "",
+    });
+    renderAll();
+  });
+}
+
+function addIdeaRow() {
+  const board = collectIdeaBoardFromDom();
+  board.rows.push({
+    item_id: nextIdeaItemId(board.rows),
+    scene_id: "",
+    beat: "",
+    shot_type: "",
+    frame_description: "",
+    image_prompt: "",
+    video_prompt: "",
+    notes: "",
+    selected: true,
+    status: "draft",
+    output_path: "",
+  });
+  setIdeaBoardLocal(board);
+  renderIdeaLab();
+}
+
+function deleteIdeaRow(index) {
+  const board = collectIdeaBoardFromDom();
+  board.rows.splice(index, 1);
+  setIdeaBoardLocal(board);
+  renderIdeaLab();
+}
+
+function bindIdeaHandoffEvents() {
+  $("ideaHandoffDock")?.querySelectorAll(".idea-handoff-card").forEach((card) => {
+    card.addEventListener("dragstart", (event) => {
+      const handoff = state.ideaHandoffs.find((item) => item.id === card.dataset.ideaHandoffId);
+      if (!handoff) return;
+      event.dataTransfer?.setData("text/plain", handoff.text || "");
+      event.dataTransfer?.setData("text/markdown", handoff.text || "");
+      event.dataTransfer.effectAllowed = "copy";
+    });
+  });
+  $("ideaHandoffDock")?.querySelectorAll(".idea-copy-handoff").forEach((button) => {
+    button.addEventListener("click", async (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      const handoff = state.ideaHandoffs.find((item) => item.id === button.dataset.ideaHandoffId);
+      if (!handoff) return;
+      try {
+        await navigator.clipboard.writeText(handoff.text || "");
+        toast("已复制交接卡 / Handoff copied");
+      } catch {
+        const textarea = button.closest(".idea-handoff-card")?.querySelector("textarea");
+        textarea?.select?.();
+        document.execCommand?.("copy");
+      }
+    });
+  });
+  $("ideaHandoffDock")?.querySelectorAll(".idea-delete-handoff").forEach((button) => {
+    button.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      state.ideaHandoffs = state.ideaHandoffs.filter((item) => item.id !== button.dataset.ideaHandoffId);
+      saveIdeaHandoffs();
+      renderIdeaLab();
+    });
+  });
+}
+
+function bindIdeaLabEvents() {
+  $("ideaBuildHandoffBtn")?.addEventListener("click", createIdeaAnalysisHandoff);
+  $("ideaSaveBtn")?.addEventListener("click", () => saveIdeaBoard());
+  $("ideaAddRowBtn")?.addEventListener("click", addIdeaRow);
+  $("ideaBuildImagePacketBtn")?.addEventListener("click", createIdeaImagePacket);
+  $("ideaRows")?.querySelectorAll(".idea-delete-row").forEach((button) => {
+    button.addEventListener("click", () => deleteIdeaRow(Number(button.dataset.ideaIndex || 0)));
+  });
+  bindIdeaHandoffEvents();
+}
+
 function baseFixPrompt(scene, frame, qa = null) {
   const note = $("storyboardDirectorNote")?.value.trim() || annotationForRef(frame?.ref || "").note || "";
   const selectedRefs = relatedFrameAssets(scene, frame).filter((asset) => referenceSelectionFor(frame.ref, asset.ref).selected);
@@ -3326,6 +3731,7 @@ function renderAll() {
   renderProjects();
   renderSidebarSceneNavigator();
   renderHeader();
+  renderIdeaLab();
   renderStoryboardStudio();
   renderReferenceBoard();
   renderMetrics();
@@ -3368,6 +3774,7 @@ async function loadDetail(slug) {
   state.referenceSelection = {};
   state.detail = await requestJson(`/api/projects/${encodeURIComponent(slug)}`);
   loadBoardState();
+  loadIdeaHandoffs();
   renderAll();
 }
 
@@ -3566,6 +3973,7 @@ function bindKeyboardShortcuts() {
 
 function bindEvents() {
   $("refreshBtn").addEventListener("click", () => runAction("刷新 / Refresh", loadProjects));
+  $("openIdeaLabBtn")?.addEventListener("click", () => $("ideaLab")?.scrollIntoView({ behavior: "smooth", block: "start" }));
   $("openBoardBtn")?.addEventListener("click", openReferenceBoard);
   $("closeBoardBtn")?.addEventListener("click", closeReferenceBoard);
   $("clearBoardBtn")?.addEventListener("click", clearReferenceBoard);

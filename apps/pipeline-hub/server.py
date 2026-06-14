@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import csv
 from datetime import datetime, timezone
 import gzip
 import json
@@ -1887,6 +1888,7 @@ def project_detail(slug: str, include_report_text: bool = True, include_previews
         "validation": validation,
         "report": report,
         "autofill": autofill_info(path),
+        "idea_board": load_idea_board(path, slug),
         "annotations": annotations,
         "previews": previews,
         "scene_locks": scene_locks,
@@ -1967,6 +1969,304 @@ def update_project_links(slug: str, payload: dict[str, object]) -> dict[str, obj
         newline="\n",
     )
     return project_detail(slug)
+
+
+def idea_board_path(path: Path) -> Path:
+    return path / "03_story" / "idea_board" / "idea_board.json"
+
+
+def idea_board_markdown_path(path: Path) -> Path:
+    return path / "03_story" / "idea_board" / "idea_board.md"
+
+
+def idea_board_csv_path(path: Path) -> Path:
+    return path / "07_shots" / "idea_board_prompts.csv"
+
+
+def bool_from_payload(value: object, default: bool = True) -> bool:
+    if isinstance(value, bool):
+        return value
+    if value is None:
+        return default
+    text = str(value).strip().lower()
+    if text in {"false", "0", "no", "off", "不用", "否"}:
+        return False
+    if text in {"true", "1", "yes", "on", "用", "是"}:
+        return True
+    return default
+
+
+def normalize_idea_row(row: dict[str, object], index: int) -> dict[str, object]:
+    raw_id = str(row.get("item_id") or row.get("shot_id") or "").strip()
+    item_id = safe_file_stem(raw_id) if raw_id else f"IDEA_SHOT_{index:03d}"
+    return {
+        "item_id": item_id,
+        "scene_id": str(row.get("scene_id", "") or "").strip(),
+        "beat": str(row.get("beat", "") or "").strip(),
+        "shot_type": str(row.get("shot_type", "") or "").strip(),
+        "frame_description": str(row.get("frame_description", "") or "").strip(),
+        "image_prompt": str(row.get("image_prompt", "") or "").strip(),
+        "video_prompt": str(row.get("video_prompt", "") or "").strip(),
+        "notes": str(row.get("notes", "") or "").strip(),
+        "selected": bool_from_payload(row.get("selected"), True),
+        "status": str(row.get("status", "draft") or "draft").strip(),
+        "output_path": str(row.get("output_path", "") or "").strip(),
+        "output_notes": str(row.get("output_notes", "") or "").strip(),
+        "output_attached_at": str(row.get("output_attached_at", "") or "").strip(),
+    }
+
+
+def normalize_idea_board(slug: str, payload: dict[str, object]) -> dict[str, object]:
+    rows_payload = payload.get("rows", [])
+    rows = []
+    if isinstance(rows_payload, list):
+        for index, row in enumerate(rows_payload, start=1):
+            if isinstance(row, dict):
+                rows.append(normalize_idea_row(row, index))
+    return {
+        "schema_version": 1,
+        "project_slug": slug,
+        "updated_at": now_iso(),
+        "idea": str(payload.get("idea", "") or "").strip(),
+        "story_title": str(payload.get("story_title", "") or "").strip(),
+        "logline": str(payload.get("logline", "") or "").strip(),
+        "story_outline": str(payload.get("story_outline", "") or "").strip(),
+        "style_notes": str(payload.get("style_notes", "") or "").strip(),
+        "rows": rows,
+    }
+
+
+def idea_board_to_markdown(board: dict[str, object]) -> str:
+    lines = [
+        "# Idea Board / 创意分镜板",
+        "",
+        f"- Project / 项目: {board.get('project_slug', '')}",
+        f"- Updated / 更新时间: {board.get('updated_at', '')}",
+        f"- Story title / 片名: {board.get('story_title', '')}",
+        f"- Logline / 一句话: {board.get('logline', '')}",
+        "",
+        "## Idea / 创意",
+        str(board.get("idea", "") or ""),
+        "",
+        "## Story Outline / 剧本大纲",
+        str(board.get("story_outline", "") or ""),
+        "",
+        "## Style Notes / 风格备注",
+        str(board.get("style_notes", "") or ""),
+        "",
+        "## Keyframes / 关键分镜",
+    ]
+    rows = board.get("rows", [])
+    if isinstance(rows, list) and rows:
+        for index, row in enumerate(rows, start=1):
+            if not isinstance(row, dict):
+                continue
+            lines.extend(
+                [
+                    "",
+                    f"### {index:03d}. {row.get('item_id', '')}",
+                    f"- Scene / 场戏: {row.get('scene_id', '')}",
+                    f"- Beat / 剧情点: {row.get('beat', '')}",
+                    f"- Shot type / 镜头: {row.get('shot_type', '')}",
+                    f"- Selected / 选中: {row.get('selected', True)}",
+                    f"- Status / 状态: {row.get('status', '')}",
+                    "",
+                    "Frame description / 画面描述:",
+                    str(row.get("frame_description", "") or ""),
+                    "",
+                    "Image prompt / 图片提示词:",
+                    str(row.get("image_prompt", "") or ""),
+                    "",
+                    "Video prompt / 视频提示词:",
+                    str(row.get("video_prompt", "") or ""),
+                    "",
+                    "Notes / 备注:",
+                    str(row.get("notes", "") or ""),
+                ]
+            )
+    else:
+        lines.append("\n暂无分镜条目 / No storyboard rows yet.")
+    return "\n".join(lines).rstrip() + "\n"
+
+
+def write_idea_board_files(path: Path, board: dict[str, object]) -> None:
+    write_yaml_file(idea_board_path(path), board)
+    md_path = idea_board_markdown_path(path)
+    md_path.parent.mkdir(parents=True, exist_ok=True)
+    md_path.write_text(idea_board_to_markdown(board), encoding="utf-8", newline="\n")
+    csv_path = idea_board_csv_path(path)
+    csv_path.parent.mkdir(parents=True, exist_ok=True)
+    fieldnames = [
+        "item_id",
+        "scene_id",
+        "beat",
+        "shot_type",
+        "frame_description",
+        "image_prompt",
+        "video_prompt",
+        "notes",
+        "selected",
+        "status",
+        "output_path",
+    ]
+    rows = board.get("rows", [])
+    with csv_path.open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=fieldnames)
+        writer.writeheader()
+        if isinstance(rows, list):
+            for row in rows:
+                if isinstance(row, dict):
+                    writer.writerow({key: row.get(key, "") for key in fieldnames})
+
+
+def load_idea_board(path: Path, slug: str) -> dict[str, object]:
+    data = load_yaml_file(idea_board_path(path))
+    if not data:
+        return {
+            "schema_version": 1,
+            "project_slug": slug,
+            "updated_at": "",
+            "idea": "",
+            "story_title": "",
+            "logline": "",
+            "story_outline": "",
+            "style_notes": "",
+            "rows": [],
+        }
+    board = normalize_idea_board(slug, data)
+    board["updated_at"] = str(data.get("updated_at", board.get("updated_at", "")) or "")
+    return board
+
+
+def update_idea_board(slug: str, payload: dict[str, object]) -> dict[str, object]:
+    path = project_path(slug)
+    board = normalize_idea_board(slug, payload)
+    write_idea_board_files(path, board)
+    return {"ok": True, "idea_board": load_idea_board(path, slug), "project": project_detail(slug)}
+
+
+def build_idea_image_packet_text(
+    slug: str,
+    path: Path,
+    board: dict[str, object],
+    packet_id: str,
+    packet_rel_path: str,
+    tasks: list[dict[str, object]],
+) -> str:
+    return "\n".join(
+        [
+            "# Codex Storyboard Image Batch Handoff / Codex 分镜图片批量生图包",
+            "",
+            "请解析这个资料包，调用当前聊天里的真实生图能力批量生成分镜图。生成完成后，将每张图片保存到 Suggested output path，并调用回填接口更新网页列表。",
+            "",
+            "## Codex Run Mode / Codex 执行模式",
+            "- 快速出图：不要逐步汇报读取、复制、写入等执行细节；除非缺文件或路径错误，直接生成图片并展示结果。",
+            "- 生成前优化：每条提示词先做电影级优化，强化构图、光影、角色连续性、负面约束，再生成图片。",
+            "- 输出保持短：给关键优化原则、图片预览、保存路径、回填状态。",
+            "",
+            "## Project / 项目",
+            f"- Project slug: {slug}",
+            f"- Project root: {path}",
+            f"- Packet id: {packet_id}",
+            f"- Packet path: {packet_rel_path}",
+            "",
+            "## Story / 故事",
+            f"- Title: {board.get('story_title', '')}",
+            f"- Logline: {board.get('logline', '')}",
+            "",
+            "## Callback / 回填接口",
+            f"- POST: http://127.0.0.1:8787/api/projects/{slug}/idea-image-output",
+            "- Body: {\"outputs\":[{\"item_id\":\"...\",\"output_path\":\"...\",\"notes\":\"...\"}]}",
+            "",
+            "## Tasks / 任务",
+            "```json",
+            json.dumps({"packet_id": packet_id, "tasks": tasks}, ensure_ascii=False, indent=2),
+            "```",
+        ]
+    )
+
+
+def create_idea_image_packet(slug: str, payload: dict[str, object]) -> dict[str, object]:
+    path = project_path(slug)
+    board = normalize_idea_board(slug, payload) if payload.get("rows") is not None else load_idea_board(path, slug)
+    if payload.get("rows") is not None:
+        write_idea_board_files(path, board)
+    rows = [row for row in board.get("rows", []) if isinstance(row, dict) and row.get("selected", True)]
+    if not rows:
+        raise ValueError("没有选中的分镜条目 / No selected storyboard rows.")
+    packet_id = f"IDEA_IMG_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+    job_dir = path / "08_generation" / "jobs" / packet_id
+    outputs_dir = job_dir / "outputs"
+    tasks_dir = job_dir / "tasks"
+    outputs_dir.mkdir(parents=True, exist_ok=True)
+    tasks_dir.mkdir(parents=True, exist_ok=True)
+    tasks: list[dict[str, object]] = []
+    for index, row in enumerate(rows, start=1):
+        item_id = safe_file_stem(row.get("item_id") or f"IDEA_SHOT_{index:03d}")
+        output_rel_path = str(Path("08_generation") / "jobs" / packet_id / "outputs" / f"{index:03d}_{item_id}.png")
+        task = {
+            "task_id": f"{packet_id}_{index:03d}",
+            "item_id": item_id,
+            "scene_id": row.get("scene_id", ""),
+            "beat": row.get("beat", ""),
+            "shot_type": row.get("shot_type", ""),
+            "frame_description": row.get("frame_description", ""),
+            "image_prompt": row.get("image_prompt", ""),
+            "video_prompt": row.get("video_prompt", ""),
+            "notes": row.get("notes", ""),
+            "suggested_output_path": output_rel_path,
+            "suggested_output_absolute_path": str(path / output_rel_path),
+        }
+        tasks.append(task)
+        (tasks_dir / f"{index:03d}_{item_id}.json").write_text(json.dumps(task, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    packet_rel_path = str(Path("08_generation") / "jobs" / packet_id / "outputs" / f"{packet_id}_handoff.md")
+    packet_text = build_idea_image_packet_text(slug, path, board, packet_id, packet_rel_path, tasks)
+    (path / packet_rel_path).write_text(packet_text, encoding="utf-8", newline="\n")
+    write_yaml_file(job_dir / "storyboard_image_tasks.json", {"packet_id": packet_id, "tasks": tasks})
+    return {
+        "ok": True,
+        "packet_id": packet_id,
+        "packet_path": packet_rel_path,
+        "packet_absolute_path": str(path / packet_rel_path),
+        "task_count": len(tasks),
+        "tasks": tasks,
+        "handoff_text": packet_text,
+        "project": project_detail(slug),
+    }
+
+
+def update_idea_image_output(slug: str, payload: dict[str, object]) -> dict[str, object]:
+    path = project_path(slug)
+    board = load_idea_board(path, slug)
+    outputs = payload.get("outputs", [])
+    if not isinstance(outputs, list):
+        outputs = []
+    by_id: dict[str, dict[str, object]] = {}
+    for item in outputs:
+        if not isinstance(item, dict):
+            continue
+        item_id = safe_file_stem(item.get("item_id", ""))
+        if item_id:
+            by_id[item_id] = item
+    rows = board.get("rows", [])
+    updated = 0
+    if isinstance(rows, list):
+        for row in rows:
+            if not isinstance(row, dict):
+                continue
+            item_id = safe_file_stem(row.get("item_id", ""))
+            output = by_id.get(item_id)
+            if not output:
+                continue
+            output_path = normalize_project_rel_path(str(output.get("output_path", "") or ""))
+            row["output_path"] = output_path
+            row["output_notes"] = str(output.get("notes", "") or "")
+            row["output_attached_at"] = now_iso()
+            row["status"] = "image_ready"
+            updated += 1
+    board["updated_at"] = now_iso()
+    write_idea_board_files(path, board)
+    return {"ok": True, "updated": updated, "idea_board": load_idea_board(path, slug), "project": project_detail(slug)}
 
 
 def send_static(handler: BaseHTTPRequestHandler, path: str) -> None:
@@ -2135,6 +2435,15 @@ class PipelineHubHandler(BaseHTTPRequestHandler):
                 return
             if action == "annotations":
                 send_json(self, update_resource_annotation(slug, payload))
+                return
+            if action == "idea-board":
+                send_json(self, update_idea_board(slug, payload))
+                return
+            if action == "idea-image-packet":
+                send_json(self, create_idea_image_packet(slug, payload))
+                return
+            if action == "idea-image-output":
+                send_json(self, update_idea_image_output(slug, payload))
                 return
             if action == "scene-change-request":
                 send_json(self, create_scene_change_request(slug, payload))
