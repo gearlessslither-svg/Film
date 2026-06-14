@@ -2279,6 +2279,8 @@ th {
 .board-node-card {
   position: absolute;
   width: 280px;
+  max-width: calc(100vw - 40px);
+  box-sizing: border-box;
   border: 1px solid var(--line);
   border-radius: 8px;
   background: var(--surface);
@@ -2287,6 +2289,7 @@ th {
   display: grid;
   gap: 8px;
   user-select: none;
+  overflow: hidden;
 }
 
 .board-node-card.main {
@@ -2303,35 +2306,37 @@ th {
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.14), var(--shadow);
 }
 
-.board-node-card header,
-.board-node-card footer {
-  display: flex;
+.board-node-card header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 30px;
   gap: 6px;
   align-items: center;
 }
 
-.board-node-card header {
-  justify-content: space-between;
-  flex-wrap: wrap;
-}
-
 .board-node-role {
-  flex: 1 1 128px;
+  grid-column: 1 / 3;
   min-height: 30px;
+  width: 100%;
+  min-width: 0;
   max-width: none;
   padding: 0 6px;
   font-size: 11px;
 }
 
 .board-node-card .mini-command {
-  flex: 1 1 104px;
   min-height: 30px;
+  min-width: 0;
+  width: 100%;
   padding: 0 7px;
   font-size: 11px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .board-node-card .icon-button {
-  flex: 0 0 30px;
+  grid-column: 3;
+  grid-row: 1;
   width: 30px;
   min-height: 30px;
   font-size: 16px;
@@ -2365,9 +2370,15 @@ th {
 }
 
 .board-node-card textarea {
+  width: 100%;
+  box-sizing: border-box;
   min-height: 70px;
   font-size: 12px;
   user-select: text;
+}
+
+.board-node-card label {
+  min-width: 0;
 }
 
 .board-edge-notes {
@@ -2382,7 +2393,10 @@ th {
 }
 
 .board-node-card footer {
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(108px, auto);
+  gap: 8px;
+  align-items: center;
 }
 
 .board-node-card footer span {
@@ -2401,6 +2415,8 @@ th {
   display: grid;
   gap: 6px;
   padding-top: 8px;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .board-generation-line {
@@ -2415,6 +2431,7 @@ th {
 
 .board-generation-line span {
   min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .board-generation-line strong {
@@ -2510,6 +2527,25 @@ th {
   color: var(--text);
 }
 
+.board-handoff-header > div {
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+}
+
+.board-handoff-header span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.board-handoff-header .mini-command {
+  flex: 0 0 auto;
+  min-height: 28px;
+  padding: 0 10px;
+  font-size: 11px;
+}
+
 .board-handoff-list {
   display: grid;
   grid-auto-flow: column;
@@ -2529,6 +2565,7 @@ th {
   gap: 8px;
   align-items: center;
   cursor: grab;
+  min-width: 0;
 }
 
 .board-handoff-card:active {
@@ -2566,6 +2603,24 @@ th {
   margin-top: 3px;
   color: var(--muted);
   font-size: 10px;
+}
+
+.board-handoff-actions {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.board-handoff-actions .mini-command {
+  min-height: 28px;
+  padding: 0 10px;
+  font-size: 11px;
+}
+
+.board-handoff-actions .icon-button {
+  width: 28px;
+  min-height: 28px;
+  font-size: 16px;
 }
 
 .board-handoff-detail {

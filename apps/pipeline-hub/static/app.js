@@ -13,6 +13,7 @@ const state = {
   boardNodes: [],
   boardEdges: [],
   boardHandoffs: [],
+  boardHandoffCollapsed: false,
   boardLinkSourceId: "",
   boardFilters: {
     scene: "all",
@@ -1114,10 +1115,12 @@ function loadBoardState() {
     state.boardNodes = Array.isArray(parsed.nodes) ? parsed.nodes : [];
     state.boardEdges = Array.isArray(parsed.edges) ? parsed.edges : [];
     state.boardHandoffs = Array.isArray(parsed.handoffs) ? parsed.handoffs : [];
+    state.boardHandoffCollapsed = Boolean(parsed.handoffCollapsed);
   } catch {
     state.boardNodes = [];
     state.boardEdges = [];
     state.boardHandoffs = [];
+    state.boardHandoffCollapsed = false;
   }
 }
 
@@ -1126,7 +1129,12 @@ function saveBoardState() {
   try {
     window.localStorage.setItem(
       boardStorageKey(),
-      JSON.stringify({ nodes: state.boardNodes, edges: state.boardEdges, handoffs: state.boardHandoffs }),
+      JSON.stringify({
+        nodes: state.boardNodes,
+        edges: state.boardEdges,
+        handoffs: state.boardHandoffs,
+        handoffCollapsed: state.boardHandoffCollapsed,
+      }),
     );
   } catch {
     // Local persistence is a convenience; generation packets remain project-backed.
@@ -1410,6 +1418,7 @@ function boardPromptForNode(node) {
     "- Generate a clean, stable, high-quality key image suitable for downstream video AIGC.",
     "- Preserve the main composition unless the note explicitly changes it.",
     "- Integrate reference elements only according to relation notes.",
+    "- Before generating, optimize the brief like a film keyframe: sharpen staging, lighting, lens language, character continuity, and negative constraints.",
     "- Avoid noise, distorted anatomy, inconsistent character identity, unreadable composition, watermarks, random text, and unwanted new props.",
   ].join("\n");
 }
@@ -1451,6 +1460,18 @@ function buildBoardHandoffText(node, result) {
     "# Codex Image Generation Handoff / Codex 生图交接包",
     "",
     "请解析这个资料包，调用当前聊天里的真实生图能力生成新图。生成完成后，将图片写回本地项目，并优先保存到 Suggested output path；如果我要替换原图，再替换 Target asset path 并更新相关记录。",
+    "",
+    "## Codex Run Mode / Codex 执行模式",
+    "- 快速出图：除非素材缺失、路径错误或安全策略阻止，不要逐步汇报读取、复制、写入、API 回填等执行细节；直接完成生成并展示图片。",
+    "- 生成前优化：先根据主图备注、关联图、连线说明和电影制作经验，做一次电影级提示词优化，再调用真实生图能力。",
+    "- 输出保持短：只给 3 条以内关键优化意见、最终图片预览、保存路径和是否已回填记录。",
+    "- 不要覆盖 Target asset path，除非我明确说替换原图。",
+    "",
+    "## Cinematic Optimization Brief / 电影级优化要求",
+    "- 强化镜头语言：构图层次、机位、景别、主体动线、视线方向必须清楚。",
+    "- 强化光影和质感：明确主光、环境光、雨夜/室内/霓虹等材质反应，避免灰脏、噪点和随机纹理。",
+    "- 强化连续性：人物身份、服装、道具、空间关系要和主图及关联图一致。",
+    "- 强化负面约束：避免畸形手脸、乱码文字、水印、额外人物、无关道具、过度锐化、低清噪点。",
     "",
     "## Project / 项目",
     `- Project slug: ${state.selectedSlug || ""}`,
@@ -1504,6 +1525,21 @@ function addBoardHandoff(node, result) {
     text: buildBoardHandoffText(node, result),
   };
   state.boardHandoffs = [handoff, ...state.boardHandoffs.filter((item) => item.outputPath !== handoff.outputPath)].slice(0, 12);
+  state.boardHandoffCollapsed = false;
+}
+
+function removeBoardHandoff(handoffId) {
+  state.boardHandoffs = state.boardHandoffs.filter((item) => item.id !== handoffId);
+  if (!state.boardHandoffs.length) state.boardHandoffCollapsed = false;
+  saveBoardState();
+  renderReferenceBoard();
+}
+
+function toggleBoardHandoffDock() {
+  state.boardHandoffCollapsed = !state.boardHandoffCollapsed;
+  saveBoardState();
+  renderBoardHandoffDock();
+  bindBoardHandoffEvents();
 }
 
 function boardGenerationMessageFromRun(runResult, adapter) {
@@ -1687,8 +1723,8 @@ function renderBoardNode(node) {
           <option value="main" ${node.role === "main" ? "selected" : ""}>主图 / Main</option>
           <option value="reference" ${node.role !== "main" ? "selected" : ""}>关联图 / Reference</option>
         </select>
-        <button class="mini-command board-link-source" data-node-id="${escapeHtml(node.id)}" type="button">${activeLink ? "等待连接 / Linking" : "设为主图 / Link from"}</button>
-        <button class="mini-command board-link-target" data-node-id="${escapeHtml(node.id)}" type="button">连为关联图 / Link to</button>
+        <button class="mini-command board-link-source" data-node-id="${escapeHtml(node.id)}" type="button" title="从这张图发起关联线 / Link from this image">${activeLink ? "等待 / Linking" : "主图线 / From"}</button>
+        <button class="mini-command board-link-target" data-node-id="${escapeHtml(node.id)}" type="button" title="把这张图连为关联图 / Link this as a reference">关联 / To</button>
         <button class="icon-button board-node-remove" data-node-id="${escapeHtml(node.id)}" type="button" title="移除 / Remove">×</button>
       </header>
       <img class="board-node-image" data-node-id="${escapeHtml(node.id)}" src="${escapeHtml(asset.url)}" alt="${escapeHtml(asset.asset_id || asset.path)}" draggable="false" title="双击预览大图 / Double-click to preview" />
@@ -1779,12 +1815,17 @@ function renderBoardHandoffDock() {
     `;
     return;
   }
+  const latest = state.boardHandoffs[0];
+  const collapsed = Boolean(state.boardHandoffCollapsed);
   root.innerHTML = `
     <div class="board-handoff-header">
-      <strong>Codex 交接区 / Codex handoff</strong>
-      <span>拖拽卡片到聊天框，或复制完整资料包 / Drag to chat or copy packet</span>
+      <div>
+        <strong>Codex 交接区 / Codex handoff</strong>
+        <span>${state.boardHandoffs.length} 个资料包${collapsed && latest ? ` · 最新: ${escapeHtml(latest.title)}` : " · 拖拽到聊天框或复制"}</span>
+      </div>
+      <button class="mini-command board-toggle-handoffs" type="button">${collapsed ? "展开 / Expand" : "最小化 / Minimize"}</button>
     </div>
-    <div class="board-handoff-list">
+    <div class="board-handoff-list" ${collapsed ? "hidden" : ""}>
       ${state.boardHandoffs
         .map(
           (handoff) => `
@@ -1794,7 +1835,10 @@ function renderBoardHandoffDock() {
                 <small>${escapeHtml(handoff.scene || "PROJECT")} · ${escapeHtml(handoff.createdAt || "")}</small>
                 ${handoff.outputPath ? `<small>${escapeHtml(handoff.outputPath)}</small>` : ""}
               </div>
-              <button class="mini-command board-copy-handoff" data-handoff-id="${escapeHtml(handoff.id)}" type="button">复制 / Copy</button>
+              <div class="board-handoff-actions">
+                <button class="mini-command board-copy-handoff" data-handoff-id="${escapeHtml(handoff.id)}" type="button">复制 / Copy</button>
+                <button class="icon-button board-delete-handoff" data-handoff-id="${escapeHtml(handoff.id)}" type="button" title="删除交接卡 / Delete handoff">×</button>
+              </div>
               <details class="board-handoff-detail">
                 <summary>展开完整资料包 / Show packet text</summary>
                 <textarea readonly rows="6">${escapeHtml(handoff.text || "")}</textarea>
@@ -1910,6 +1954,10 @@ function bindBoardAssetTrayEvents() {
 }
 
 function bindBoardHandoffEvents() {
+  $("boardHandoffDock")?.querySelector(".board-toggle-handoffs")?.addEventListener("click", (event) => {
+    event.preventDefault();
+    toggleBoardHandoffDock();
+  });
   $("boardHandoffDock")?.querySelectorAll(".board-handoff-card").forEach((card) => {
     card.addEventListener("dragstart", (event) => {
       const handoff = state.boardHandoffs.find((item) => item.id === card.dataset.handoffId);
@@ -1934,6 +1982,13 @@ function bindBoardHandoffEvents() {
         const copied = document.execCommand?.("copy");
         toast(copied ? "已复制 Codex 资料包 / Handoff copied" : "复制失败，可展开文本手动复制 / Copy failed; expand text and copy manually");
       }
+    });
+  });
+  $("boardHandoffDock")?.querySelectorAll(".board-delete-handoff").forEach((button) => {
+    button.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      removeBoardHandoff(button.dataset.handoffId || "");
     });
   });
 }
