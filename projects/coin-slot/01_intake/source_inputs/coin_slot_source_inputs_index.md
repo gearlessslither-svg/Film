@@ -1,4 +1,4 @@
-# Source Inputs Index
+﻿# Source Inputs Index
 
 - Original project root: `E:\视觉\投币口`
 - Curated archive: `resources/examples/coin-slot`

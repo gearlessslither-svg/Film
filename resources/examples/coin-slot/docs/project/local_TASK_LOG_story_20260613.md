@@ -1,4 +1,4 @@
-# TASK_LOG
+﻿# TASK_LOG
 
 ## Current Total Goal
 

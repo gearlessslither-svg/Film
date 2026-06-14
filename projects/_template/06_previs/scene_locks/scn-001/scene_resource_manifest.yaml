@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "project_slug": "new-project",
+  "scene_id": "SCN_001",
+  "scene_slug": "scn-001",
+  "title": "第一场 / Scene 1",
+  "stage_assets": {
+    "03_story": [
+      {
+        "asset_id": "SCN_001_STORY_BEATS",
+        "path": "03_story/beats/SCN_001_beats.md",
+        "role": "剧本节拍 / story beats"
+      }
+    ],
+    "04_lookdev": [
+      {
+        "asset_id": "SCN_001_LOOKDEV_REF",
+        "path": "04_lookdev/references/SCN_001_reference.md",
+        "role": "美术参考 / look reference"
+      }
+    ],
+    "05_asset_bible": [
+      {
+        "asset_id": "SCN_001_CONTINUITY_LOCK",
+        "path": "05_asset_bible/continuity/SCN_001_continuity.md",
+        "role": "连续性锁 / continuity lock"
+      }
+    ],
+    "06_previs": [
+      {
+        "asset_id": "SCN_001_SCENE_LOCK",
+        "path": "06_previs/scene_locks/scn-001/scene_resource_manifest.yaml",
+        "role": "场景锁 / scene lock"
+      }
+    ],
+    "07_shots": [
+      {
+        "asset_id": "SHOT_001_IMAGE_PROMPT",
+        "path": "07_shots/prompts/SHOT_001.md",
+        "role": "分镜图片提示词 / image prompt"
+      }
+    ],
+    "08_generation": [
+      {
+        "asset_id": "SHOT_001_KEYFRAME",
+        "path": "08_generation/outputs/SHOT_001_v001.png",
+        "role": "分镜关键帧 / keyframe"
+      }
+    ],
+    "09_edit": [
+      {
+        "asset_id": "SCN_001_ROUGH_CUT",
+        "path": "09_edit/rough_cut/SCN_001_v001.mp4",
+        "role": "粗剪 / rough cut"
+      }
+    ],
+    "10_qa": [
+      {
+        "asset_id": "SCN_001_REVIEW",
+        "path": "10_qa/scene_reviews/SCN_001.yaml",
+        "role": "审片记录 / review log"
+      }
+    ],
+    "11_delivery": [
+      {
+        "asset_id": "SCN_001_DELIVERY",
+        "path": "11_delivery/exports/SCN_001_final.mp4",
+        "role": "交付物 / delivery"
+      }
+    ]
+  }
+}

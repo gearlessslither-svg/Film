@@ -1,4 +1,4 @@
-# Coin Slot Sample Beat Sheet
+﻿# Coin Slot Sample Beat Sheet
 
 - MSB001 / Clip 01 / 老小区建立: 空镜压低视线
 - MSB003 / Clip 01 / 老小区建立: 门缝 CRT 光

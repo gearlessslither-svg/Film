@@ -1,4 +1,4 @@
-decision_id,visual_range,time_range,needs_speech,type,reason,text_strategy
+﻿decision_id,visual_range,time_range,needs_speech,type,reason,text_strategy
 AUD_DEC_001,Clip 01 / MSB001-MSB008,00:00-00:16,no,silence/ambience,开场要让空间先说话，不用旁白解释。,只保留潮湿小区、远处街机漏声和很低的电流感。
 AUD_DEC_002,Clip 02 / MSB009-MSB018,00:16-00:34,yes,dialogue,三兄弟关系需要通过小声催促和好奇建立。,短句，儿童口语，不能文学化。
 AUD_DEC_003,Clip 03 / MSB019-MSB028,00:34-00:50,mostly no,walla/source sound,进入游戏厅由环境声吞掉人物。,街机、人群、按钮声盖住零散话，不写清楚台词。

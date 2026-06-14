@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "scene_id": "SCN_ARCADE_EXIT",
+  "reviews": [
+    {
+      "review_id": "RV_SCN_ARCADE_EXIT_SOURCE_188",
+      "scene_id": "SCN_ARCADE_EXIT",
+      "status": "in_progress",
+      "notes": "从完整 188 格分镜来源补入场戏清单 / Added from the full 188-panel storyboard source.",
+      "change_request_id": "source_scene_expansion_188",
+      "created_at": "2026-06-14T15:53:58+08:00"
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-# Director Aesthetic Review
+﻿# Director Aesthetic Review
 
 Generated at: 2026-06-13T16:11:00+08:00
 

@@ -1,4 +1,4 @@
-audio_id,visual_range,time_start,time_end,speaker,voice_type,line_text,subtext,delivery,pause_before,pause_after,mic_perspective,processing,wav_name,priority
+﻿audio_id,visual_range,time_start,time_end,speaker,voice_type,line_text,subtext,delivery,pause_before,pause_after,mic_perspective,processing,wav_name,priority
 DIA_001,Clip 02 / MSB009-MSB012,00:18.0,00:20.0,阿磊,dialogue,跟紧点，别让人看见。,哥哥装成熟，也带一点偷偷摸摸的兴奋。,压低声音，快，像怕被大人听见；尾字吞掉。,0.2,0.3,medium / outdoor damp,"dry child voice, slight alley room",audio/voice_clean/DIA_001_alei_genjin.wav,A
 DIA_002,Clip 02 / MSB013-MSB016,00:24.0,00:25.6,小川,dialogue,里面真能玩吗？,主角好奇但不敢自己决定。,小声，圆眼睛看哥哥，句尾上扬。,0.1,0.4,close / outdoor damp,dry child voice,audio/voice_clean/DIA_002_xiaochuan_nengwan.wav,A
 DIA_003,Clip 02 / MSB017-MSB018,00:28.0,00:29.2,阿磊,dialogue,看我就行。,哥哥把自己放在带头位置。,短，故作轻松，带一点得意。,0.2,0.5,medium / doorway,dry child voice,audio/voice_clean/DIA_003_alei_kanwo.wav,A

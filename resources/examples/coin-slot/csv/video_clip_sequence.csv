@@ -1,4 +1,4 @@
-clip,title,duration,whitebox,keyframe,video_prompt_anchor
+﻿clip,title,duration,whitebox,keyframe,video_prompt_anchor
 01,老旧小区建立,6s,CAM_COMPOUND_01_ESTABLISH,KF01,04_video_prompts.md#clip-01--老旧小区建立
 02,三兄弟靠近,7s,CAM_COMPOUND_02_BROTHERS_APPROACH,KF02,04_video_prompts.md#clip-02--三兄弟靠近
 03,游戏厅入口,5s,CAM_ARCADE_01_ENTRANCE_WIDE,KF03,04_video_prompts.md#clip-03--游戏厅入口

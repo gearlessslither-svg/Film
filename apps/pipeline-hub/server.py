@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 from datetime import datetime, timezone
+import gzip
 import json
 import mimetypes
 import os
@@ -42,6 +43,17 @@ LFS_POINTER_PREFIX = b"version https://git-lfs.github.com/spec/v1\n"
 LEGACY_COIN_SLOT_AIGC_ROOT = REPO_ROOT.parent / "投币口" / "01_AIGC"
 STAGE_IDS = tuple(stage_id for stage_id, _description in STAGES)
 ANNOTATION_STATUSES = {"", "use", "reject"}
+IMPACT_ACTIONS = {"create", "modify", "check"}
+SCENE_STATUSES = {
+    "draft",
+    "in_progress",
+    "needs_changes",
+    "impact_ready",
+    "generation_queued",
+    "generation_failed",
+    "review_ready",
+    "approved",
+}
 RESOURCE_KIND_LABELS = {
     "script": "剧本/文档",
     "shot_prompt": "分镜提示词",
@@ -65,6 +77,8 @@ PREVIEW_VIDEO_LIMIT = 12
 PREVIEW_AUDIO_LIMIT = 12
 PREVIEW_THREE_D_LIMIT = 18
 PREVIEW_SCENE_LOCK_LIMIT = 12
+AUTH_TOKEN_ENV = "PIPELINE_HUB_TOKEN"
+AUTH_COOKIE_NAME = "pipeline_hub_token"
 
 
 def read_text(path: Path) -> str:
@@ -95,22 +109,79 @@ def read_json_body(handler: BaseHTTPRequestHandler) -> dict[str, object]:
     return json.loads(raw) if raw.strip() else {}
 
 
+def configured_auth_token() -> str:
+    return os.environ.get(AUTH_TOKEN_ENV, "").strip()
+
+
+def auth_cookie_token(handler: BaseHTTPRequestHandler) -> str:
+    cookie_header = handler.headers.get("Cookie", "")
+    for item in cookie_header.split(";"):
+        name, separator, value = item.strip().partition("=")
+        if separator and name == AUTH_COOKIE_NAME:
+            return unquote(value.strip())
+    return ""
+
+
+def request_is_authorized(handler: BaseHTTPRequestHandler, parsed) -> bool:
+    token = configured_auth_token()
+    if not token:
+        return True
+    query_token = parse_qs(parsed.query).get("token", [""])[0].strip()
+    if query_token == token:
+        setattr(handler, "_pipeline_hub_auth_cookie", token)
+        return True
+    header_token = handler.headers.get("X-Pipeline-Hub-Token", "").strip()
+    return header_token == token or auth_cookie_token(handler) == token
+
+
+def add_auth_cookie_header(handler: BaseHTTPRequestHandler) -> None:
+    token = getattr(handler, "_pipeline_hub_auth_cookie", "")
+    if token:
+        cookie = f"{AUTH_COOKIE_NAME}={quote(token)}; Path=/; HttpOnly; SameSite=Lax"
+        handler.send_header("Set-Cookie", cookie)
+
+
+def send_unauthorized(handler: BaseHTTPRequestHandler) -> None:
+    send_text(
+        handler,
+        "需要访问令牌 / Access token required. Open the authorized URL with ?token=...",
+        status=401,
+    )
+
+
+def maybe_compress_body(handler: BaseHTTPRequestHandler, body: bytes) -> tuple[bytes, bool]:
+    accepted = handler.headers.get("Accept-Encoding", "").lower()
+    if "gzip" not in accepted or len(body) < 1024:
+        return body, False
+    return gzip.compress(body), True
+
+
 def send_json(handler: BaseHTTPRequestHandler, payload: object, status: int = 200) -> None:
     body = json.dumps(payload, ensure_ascii=False, indent=2).encode("utf-8")
+    response_body, is_gzipped = maybe_compress_body(handler, body)
     handler.send_response(status)
     handler.send_header("Content-Type", "application/json; charset=utf-8")
-    handler.send_header("Content-Length", str(len(body)))
+    handler.send_header("Content-Length", str(len(response_body)))
+    handler.send_header("Vary", "Accept-Encoding")
+    if is_gzipped:
+        handler.send_header("Content-Encoding", "gzip")
+    add_auth_cookie_header(handler)
     handler.end_headers()
-    handler.wfile.write(body)
+    handler.wfile.write(response_body)
 
 
 def send_text(handler: BaseHTTPRequestHandler, text: str, status: int = 200, content_type: str = "text/plain") -> None:
     body = text.encode("utf-8")
+    response_body, is_gzipped = maybe_compress_body(handler, body)
     handler.send_response(status)
     handler.send_header("Content-Type", f"{content_type}; charset=utf-8")
-    handler.send_header("Content-Length", str(len(body)))
+    handler.send_header("Content-Length", str(len(response_body)))
+    handler.send_header("Vary", "Accept-Encoding")
+    if is_gzipped:
+        handler.send_header("Content-Encoding", "gzip")
+    add_auth_cookie_header(handler)
     handler.end_headers()
-    handler.wfile.write(body)
+    handler.wfile.write(response_body)
 
 
 def parse_json_output(stdout: str) -> object:
@@ -216,6 +287,29 @@ def load_manifest(path: Path) -> dict[str, object]:
         return parse_manifest_fallback(text)
     data = yaml.safe_load(text)
     return data if isinstance(data, dict) else {}
+
+
+def load_yaml_file(path: Path) -> dict[str, object]:
+    if not path.exists():
+        return {}
+    text = read_text_fallback(path)
+    try:
+        data = json.loads(text)
+        return data if isinstance(data, dict) else {}
+    except json.JSONDecodeError:
+        pass
+    if yaml is None:
+        return {}
+    try:
+        data = yaml.safe_load(text)
+    except Exception:
+        return {}
+    return data if isinstance(data, dict) else {}
+
+
+def write_yaml_file(path: Path, data: dict[str, object]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
 def parse_manifest_fallback(text: str) -> dict[str, object]:
@@ -367,19 +461,46 @@ def is_lfs_pointer(path: Path) -> bool:
         return False
 
 
+_LEGACY_NAME_INDEX: dict[str, Path] | None = None
+
+
+def legacy_name_index() -> dict[str, Path]:
+    """Index every real (non-LFS) file under the local 投币口 backup by basename.
+
+    Used as a name-based fallback so any local original can stand in for an
+    undownloaded LFS object, even when the relative path no longer matches.
+    """
+    global _LEGACY_NAME_INDEX
+    if _LEGACY_NAME_INDEX is not None:
+        return _LEGACY_NAME_INDEX
+    index: dict[str, Path] = {}
+    root = LEGACY_COIN_SLOT_AIGC_ROOT.parent  # 投币口/
+    if root.exists():
+        for candidate in root.rglob("*"):
+            if not candidate.is_file():
+                continue
+            if candidate.name in index:
+                continue  # keep first match; exact-path lookup handles collisions
+            if is_lfs_pointer(candidate):
+                continue
+            index[candidate.name] = candidate.resolve()
+    _LEGACY_NAME_INDEX = index
+    return index
+
+
 def legacy_coin_slot_asset_path(origin: str, rel_path: str) -> Path | None:
-    if origin != "resource" or not rel_path.startswith("media/01_AIGC/"):
+    if not rel_path or not LEGACY_COIN_SLOT_AIGC_ROOT.exists():
         return None
-    if not LEGACY_COIN_SLOT_AIGC_ROOT.exists():
-        return None
-    suffix = rel_path.removeprefix("media/01_AIGC/")
-    root = LEGACY_COIN_SLOT_AIGC_ROOT.resolve()
-    candidate = (root / suffix).resolve()
-    if root not in candidate.parents and candidate != root:
-        return None
-    if candidate.exists() and candidate.is_file() and not is_lfs_pointer(candidate):
-        return candidate
-    return None
+    # 1) Precise path mapping for media/01_AIGC/<suffix> -> 投币口/01_AIGC/<suffix>.
+    if origin == "resource" and rel_path.startswith("media/01_AIGC/"):
+        suffix = rel_path.removeprefix("media/01_AIGC/")
+        root = LEGACY_COIN_SLOT_AIGC_ROOT.resolve()
+        candidate = (root / suffix).resolve()
+        if (root in candidate.parents or candidate == root) and candidate.is_file() and not is_lfs_pointer(candidate):
+            return candidate
+    # 2) Name-based fallback across the whole 投币口 backup (covers project-origin
+    #    scene locks, renamed paths, and assets stored outside media/01_AIGC).
+    return legacy_name_index().get(Path(rel_path).name)
 
 
 def asset_item(slug: str, origin: str, rel_path: str, file_path: Path, category: str | None = None) -> dict[str, object]:
@@ -688,6 +809,983 @@ def read_shots(path: Path, limit: int = 100) -> dict[str, object]:
     return {"exists": True, "columns": reader.fieldnames or [], "rows": rows[:limit], "row_count": len(rows)}
 
 
+def load_change_requests(path: Path, scene_id: str) -> list[dict[str, object]]:
+    root = path / "10_qa" / "change_requests"
+    if not root.exists():
+        return []
+    requests: list[dict[str, object]] = []
+    for request_path in sorted(root.glob("*.yaml")):
+        data = load_yaml_file(request_path)
+        if not data or data.get("scene_id") != scene_id:
+            continue
+        impacts = data.get("impact_table", [])
+        if isinstance(impacts, list):
+            for index, impact in enumerate(impacts, start=1):
+                if isinstance(impact, dict) and not impact.get("impact_id"):
+                    impact["impact_id"] = f"I{index:03d}"
+        queue = data.get("generation_queue", [])
+        if isinstance(queue, list):
+            for item in queue:
+                if isinstance(item, dict):
+                    item.setdefault("change_request_id", data.get("change_request_id", ""))
+        data["path"] = str(request_path.relative_to(path))
+        requests.append(data)
+    return sorted(requests, key=lambda item: str(item.get("created_at", "")), reverse=True)
+
+
+def load_scene_review_log(path: Path, scene_id: str) -> dict[str, object]:
+    review_path = path / "10_qa" / "scene_reviews" / f"{scene_id}.yaml"
+    data = load_yaml_file(review_path)
+    if data:
+        return data
+    return {
+        "schema_version": 1,
+        "scene_id": scene_id,
+        "reviews": [],
+    }
+
+
+def load_scene_snapshots(path: Path, scene_id: str) -> list[dict[str, object]]:
+    root = path / "10_qa" / "scene_snapshots"
+    if not root.exists():
+        return []
+    snapshots: list[dict[str, object]] = []
+    for snapshot_path in sorted(root.glob(f"{scene_id}_*.yaml")):
+        data = load_yaml_file(snapshot_path)
+        if not data or data.get("scene_id") != scene_id:
+            continue
+        data["path"] = str(snapshot_path.relative_to(path))
+        snapshots.append(data)
+    return sorted(snapshots, key=lambda item: str(item.get("created_at", "")), reverse=True)
+
+
+def scene_generation_queue(change_requests: list[dict[str, object]]) -> list[dict[str, object]]:
+    queue: list[dict[str, object]] = []
+    for request in change_requests:
+        if str(request.get("status", "")).endswith("_example"):
+            continue
+        items = request.get("generation_queue", [])
+        if not isinstance(items, list):
+            continue
+        for item in items:
+            if not isinstance(item, dict):
+                continue
+            queue.append(
+                {
+                    **item,
+                    "change_request_id": item.get("change_request_id") or request.get("change_request_id", ""),
+                    "trigger_step": request.get("trigger_step", ""),
+                    "creative_direction": request.get("creative_direction", ""),
+                }
+            )
+    return queue
+
+
+def annotate_scene_resource_assets(slug: str, resource_manifest: dict[str, object]) -> None:
+    stage_assets = resource_manifest.get("stage_assets", {})
+    if not isinstance(stage_assets, dict):
+        return
+    for assets in stage_assets.values():
+        if not isinstance(assets, list):
+            continue
+        for asset in assets:
+            if not isinstance(asset, dict):
+                continue
+            rel_path = str(asset.get("path", "") or "")
+            if not rel_path:
+                continue
+            origin = "resource" if asset.get("origin") == "resource" else "project"
+            extension = Path(rel_path).suffix.lower()
+            asset["previewable"] = extension in MEDIA_PREVIEW_EXTENSIONS
+            asset["category"] = category_for(Path(rel_path)) if extension else "other"
+            try:
+                target = safe_asset_path(slug, origin, rel_path)
+            except Exception:
+                asset["exists"] = False
+                asset["lfs_pointer"] = False
+                asset["lfs_missing"] = False
+                continue
+            pointer = is_lfs_pointer(target)
+            fallback = legacy_coin_slot_asset_path(origin, rel_path) if pointer else None
+            asset["exists"] = target.exists()
+            asset["lfs_pointer"] = pointer
+            asset["lfs_missing"] = pointer and fallback is None
+            if fallback is not None:
+                asset["fallback"] = "legacy_local"
+
+
+def load_scene_workbench(path: Path) -> dict[str, object]:
+    scene_manifest = load_yaml_file(path / "00_admin" / "scene_manifest.yaml")
+    slug = str(scene_manifest.get("project_slug", path.name) or path.name) if isinstance(scene_manifest, dict) else path.name
+    acts = scene_manifest.get("acts", []) if isinstance(scene_manifest, dict) else []
+    scenes: list[dict[str, object]] = []
+    if isinstance(acts, list):
+        for act in acts:
+            if not isinstance(act, dict):
+                continue
+            for scene in act.get("scenes", []) or []:
+                if not isinstance(scene, dict):
+                    continue
+                scene_id = str(scene.get("scene_id") or "")
+                scene_slug = str(scene.get("scene_slug") or scene_id.lower().replace("_", "-"))
+                resource_manifest = load_yaml_file(path / "06_previs" / "scene_locks" / scene_slug / "scene_resource_manifest.yaml")
+                annotate_scene_resource_assets(slug, resource_manifest)
+                version_registry = load_yaml_file(path / "10_qa" / "version_registry" / f"{scene_id}.yaml")
+                change_requests = load_change_requests(path, scene_id)
+                scenes.append(
+                    {
+                        **scene,
+                        "act_id": act.get("act_id", ""),
+                        "act_title": act.get("title", ""),
+                        "resource_manifest": resource_manifest,
+                        "version_registry": version_registry,
+                        "change_requests": change_requests,
+                        "generation_queue": scene_generation_queue(change_requests),
+                        "review_log": load_scene_review_log(path, scene_id),
+                        "snapshots": load_scene_snapshots(path, scene_id),
+                    }
+                )
+    return {
+        "manifest": scene_manifest,
+        "scenes": scenes,
+    }
+
+
+def scene_by_id(path: Path, scene_id: str) -> dict[str, object]:
+    for scene in load_scene_workbench(path).get("scenes", []):
+        if isinstance(scene, dict) and scene.get("scene_id") == scene_id:
+            return scene
+    raise ValueError("未知场戏 / Unknown scene.")
+
+
+def change_request_path(path: Path, change_request_id: str) -> Path:
+    if not re.fullmatch(r"[A-Za-z0-9_.-]+", change_request_id):
+        raise ValueError("变更请求 ID 无效 / Invalid change request id.")
+    return path / "10_qa" / "change_requests" / f"{change_request_id}.yaml"
+
+
+def next_change_request_id(scene_id: str) -> str:
+    stamp = datetime.now(timezone.utc).astimezone().strftime("%Y%m%d_%H%M%S")
+    return f"CR_{scene_id}_{stamp}"
+
+
+def impact_reason(trigger_step: str, target_step: str, scope: str) -> str:
+    if scope == "direct":
+        return "直接修改的步骤资源 / Directly edited step asset."
+    reasons = {
+        "03_story": "故事变化会影响后续所有制作资源 / Story changes affect downstream production assets.",
+        "04_lookdev": "风格变化会影响场景锁、提示词、生成和调色 / Look changes affect scene locks, prompts, generation, and color.",
+        "05_asset_bible": "角色/场景/道具锁变化会影响引用它的场戏资源 / Bible changes affect scene assets that reference it.",
+        "06_previs": "白模、机位或场景锁变化会影响提示词、关键帧、视频和剪辑 / Previs, camera, or scene-lock changes affect prompts, keyframes, video, and edit.",
+        "07_shots": "镜头提示词变化会影响生成输出、剪辑和 QA / Shot prompt changes affect generated outputs, edit, and QA.",
+        "08_generation": "生成输出变化会影响剪辑、QA 和交付 / Generated-output changes affect edit, QA, and delivery.",
+        "09_edit": "剪辑/声音变化会影响 QA 和交付验证 / Edit or sound changes affect QA and delivery validation.",
+        "10_qa": "QA 变化会影响修复队列和交付判断 / QA changes affect fix queues and delivery decisions.",
+        "11_delivery": "交付变化通常只影响交付包 / Delivery changes usually affect delivery packages only.",
+    }
+    return reasons.get(trigger_step) or f"{trigger_step} 会影响 {target_step} / {trigger_step} affects {target_step}."
+
+
+def build_impact_table(scene: dict[str, object], trigger_step: str, trigger_asset_id: str = "") -> list[dict[str, object]]:
+    stage_assets = scene.get("resource_manifest", {}).get("stage_assets", {})
+    if not isinstance(stage_assets, dict):
+        stage_assets = {}
+    steps = [str(step) for step in scene.get("primary_steps", []) or stage_assets.keys()]
+    if trigger_step not in steps:
+        raise ValueError("再创作步骤不属于当前场戏 / Re-create step is not part of this scene.")
+    trigger_index = steps.index(trigger_step)
+    table: list[dict[str, object]] = []
+    for step_index, step in enumerate(steps):
+        assets = stage_assets.get(step, [])
+        if not isinstance(assets, list):
+            continue
+        if step_index < trigger_index and step not in {"05_asset_bible"}:
+            continue
+        if step_index == trigger_index:
+            scope = "direct"
+        elif step == "05_asset_bible":
+            scope = "shared"
+        else:
+            scope = "downstream"
+        for asset in assets:
+            if not isinstance(asset, dict):
+                continue
+            asset_id = str(asset.get("asset_id") or asset.get("role") or "")
+            if trigger_asset_id and step_index == trigger_index and asset_id != trigger_asset_id:
+                continue
+            action = "check" if scope == "shared" and step_index < trigger_index else "modify"
+            if step == "08_generation" and step_index > trigger_index:
+                action = "create"
+            selected = scope == "direct" or (step_index == trigger_index + 1)
+            table.append(
+                {
+                    "impact_id": f"I{len(table) + 1:03d}",
+                    "action": action,
+                    "impact_scope": scope,
+                    "asset_id": asset_id,
+                    "stage_id": step,
+                    "role": asset.get("role", ""),
+                    "path": asset.get("path", ""),
+                    "why": impact_reason(trigger_step, step, scope),
+                    "selected": selected,
+                }
+            )
+    return table
+
+
+def create_scene_change_request(slug: str, payload: dict[str, object]) -> dict[str, object]:
+    path = project_path(slug)
+    scene_id = str(payload.get("scene_id", "") or "").strip()
+    trigger_step = str(payload.get("trigger_step", "") or "").strip()
+    trigger_asset_id = str(payload.get("trigger_asset_id", "") or "").strip()
+    creative_direction = str(payload.get("creative_direction", "") or "").strip()
+    if not scene_id or not trigger_step or not creative_direction:
+        raise ValueError("需要场戏、步骤和创作方向 / Scene, step, and creative direction are required.")
+    scene = scene_by_id(path, scene_id)
+    change_request_id = next_change_request_id(scene_id)
+    request = {
+        "schema_version": 1,
+        "change_request_id": change_request_id,
+        "project_slug": slug,
+        "scene_id": scene_id,
+        "trigger_step": trigger_step,
+        "trigger_asset_id": trigger_asset_id,
+        "creative_direction": creative_direction,
+        "status": "impact_ready",
+        "created_at": now_iso(),
+        "impact_table": build_impact_table(scene, trigger_step, trigger_asset_id),
+        "generation_queue": [],
+        "approval": {
+            "user_confirmed": False,
+            "confirmed_at": "",
+            "notes": "",
+        },
+    }
+    write_yaml_file(change_request_path(path, change_request_id), request)
+    set_scene_manifest_status(path, scene_id, "impact_ready", creative_direction)
+    return {"ok": True, "change_request": request, "project": project_detail(slug)}
+
+
+def set_scene_manifest_status(path: Path, scene_id: str, status: str, notes: str = "") -> str:
+    manifest_path = path / "00_admin" / "scene_manifest.yaml"
+    manifest = load_yaml_file(manifest_path)
+    acts = manifest.get("acts", [])
+    if not isinstance(acts, list):
+        raise ValueError("场戏清单无效 / Scene manifest is invalid.")
+    updated_at = now_iso()
+    found = False
+    for act in acts:
+        if not isinstance(act, dict):
+            continue
+        scenes = act.get("scenes", [])
+        if not isinstance(scenes, list):
+            continue
+        for scene in scenes:
+            if not isinstance(scene, dict) or scene.get("scene_id") != scene_id:
+                continue
+            scene["status"] = status
+            scene["last_reviewed_at"] = updated_at
+            if notes:
+                scene["last_review_note"] = notes
+            found = True
+    if not found:
+        raise ValueError("未知场戏 / Unknown scene.")
+    manifest["updated_at"] = updated_at
+    write_yaml_file(manifest_path, manifest)
+    return updated_at
+
+
+def update_scene_status(slug: str, payload: dict[str, object]) -> dict[str, object]:
+    path = project_path(slug)
+    scene_id = str(payload.get("scene_id", "") or "").strip()
+    status = str(payload.get("status", "") or "").strip()
+    notes = str(payload.get("notes", "") or "").strip()
+    change_request_id = str(payload.get("change_request_id", "") or "").strip()
+    if not scene_id or status not in SCENE_STATUSES:
+        raise ValueError("需要有效场戏和状态 / A valid scene and status are required.")
+    updated_at = set_scene_manifest_status(path, scene_id, status, notes)
+
+    review_path = path / "10_qa" / "scene_reviews" / f"{scene_id}.yaml"
+    review_log = load_scene_review_log(path, scene_id)
+    reviews = review_log.setdefault("reviews", [])
+    if not isinstance(reviews, list):
+        reviews = []
+        review_log["reviews"] = reviews
+    reviews.append(
+        {
+            "review_id": f"RV_{scene_id}_{datetime.now(timezone.utc).astimezone().strftime('%Y%m%d_%H%M%S')}",
+            "scene_id": scene_id,
+            "status": status,
+            "notes": notes,
+            "change_request_id": change_request_id,
+            "created_at": updated_at,
+        }
+    )
+    write_yaml_file(review_path, review_log)
+    snapshot = save_scene_snapshot(path, slug, scene_id, status, notes, change_request_id) if status == "approved" else {}
+    return {"ok": True, "project": project_detail(slug), "review_log": review_log, "snapshot": snapshot}
+
+
+def save_scene_snapshot(
+    path: Path,
+    slug: str,
+    scene_id: str,
+    status: str,
+    notes: str = "",
+    change_request_id: str = "",
+) -> dict[str, object]:
+    scene = scene_by_id(path, scene_id)
+    registry = scene.get("version_registry", {})
+    versions = registry.get("versions", []) if isinstance(registry, dict) else []
+    if not isinstance(versions, list):
+        versions = []
+    change_requests = scene.get("change_requests", [])
+    if not isinstance(change_requests, list):
+        change_requests = []
+    review_log = load_scene_review_log(path, scene_id)
+    reviews = review_log.get("reviews", [])
+    if not isinstance(reviews, list):
+        reviews = []
+    stamp = datetime.now(timezone.utc).astimezone().strftime("%Y%m%d_%H%M%S")
+    snapshot_id = f"SNAP_{scene_id}_{stamp}"
+    snapshot = {
+        "schema_version": 1,
+        "snapshot_id": snapshot_id,
+        "project_slug": slug,
+        "scene_id": scene_id,
+        "scene_title": scene.get("title", ""),
+        "status": status,
+        "notes": notes,
+        "change_request_id": change_request_id,
+        "created_at": now_iso(),
+        "shot_ids": scene.get("shot_ids", []),
+        "primary_steps": scene.get("primary_steps", []),
+        "current_versions": [record for record in versions if isinstance(record, dict) and record.get("status") == "current"],
+        "candidate_versions": [record for record in versions if isinstance(record, dict) and record.get("status") == "candidate"],
+        "change_requests": [
+            {
+                "change_request_id": request.get("change_request_id", ""),
+                "status": request.get("status", ""),
+                "trigger_step": request.get("trigger_step", ""),
+                "creative_direction": request.get("creative_direction", ""),
+            }
+            for request in change_requests
+            if isinstance(request, dict) and not str(request.get("status", "")).endswith("_example")
+        ],
+        "review_tail": reviews[-5:],
+        "resource_manifest": scene.get("resource_manifest", {}),
+    }
+    snapshot_path = path / "10_qa" / "scene_snapshots" / f"{scene_id}_{stamp}.yaml"
+    write_yaml_file(snapshot_path, snapshot)
+    snapshot["path"] = str(snapshot_path.relative_to(path))
+    return snapshot
+
+
+def next_asset_version(versions: list[dict[str, object]], asset_id: str) -> tuple[str, str]:
+    latest_number = 0
+    latest_version = ""
+    for version in versions:
+        if not isinstance(version, dict) or version.get("asset_id") != asset_id:
+            continue
+        match = re.fullmatch(r"v(\d+)", str(version.get("version", "")))
+        if match and int(match.group(1)) >= latest_number:
+            latest_number = int(match.group(1))
+            latest_version = str(version.get("version", ""))
+    return f"v{latest_number + 1:03d}", latest_version
+
+
+def version_registry_path(path: Path, scene_id: str) -> Path:
+    if not re.fullmatch(r"[A-Za-z0-9_.-]+", scene_id):
+        raise ValueError("场戏 ID 无效 / Invalid scene id.")
+    return path / "10_qa" / "version_registry" / f"{scene_id}.yaml"
+
+
+def load_version_registry(path: Path, slug: str, scene_id: str) -> dict[str, object]:
+    return load_yaml_file(version_registry_path(path, scene_id)) or {
+        "schema_version": 1,
+        "project_slug": slug,
+        "scene_id": scene_id,
+        "current_scene_iteration": "scene_iter_001",
+        "versions": [],
+    }
+
+
+def load_generation_adapters(path: Path) -> dict[str, object]:
+    config = load_yaml_file(path / "00_admin" / "generation_adapters.yaml")
+    adapters = config.get("adapters", []) if isinstance(config, dict) else []
+    if not isinstance(adapters, list):
+        adapters = []
+    manual = {
+        "adapter_id": "manual_packet",
+        "label": "任务包 / Manual packet",
+        "type": "manual_packet",
+        "enabled": True,
+        "description": "只生成可交给外部工具的任务包 / Create handoff packets only.",
+    }
+    by_id = {"manual_packet": manual}
+    for adapter in adapters:
+        if not isinstance(adapter, dict):
+            continue
+        adapter_id = str(adapter.get("adapter_id", "") or "").strip()
+        if not re.fullmatch(r"[A-Za-z0-9_.-]+", adapter_id):
+            continue
+        by_id[adapter_id] = adapter
+    return {
+        "schema_version": 1,
+        "adapters": list(by_id.values()),
+    }
+
+
+def safe_file_stem(value: object) -> str:
+    stem = re.sub(r"[^A-Za-z0-9_.-]+", "_", str(value or "")).strip("._")
+    return stem or "asset"
+
+
+def normalize_project_rel_path(rel_path: str) -> str:
+    value = rel_path.strip().replace("\\", "/")
+    if not value:
+        raise ValueError("需要输出路径 / Output path is required.")
+    if re.match(r"^[a-zA-Z][a-zA-Z0-9+.-]*:", value) or value.startswith("/"):
+        raise ValueError("输出路径必须是项目内相对路径 / Output path must be project-relative.")
+    normalized = Path(value)
+    if any(part in {"", ".", ".."} for part in normalized.parts):
+        raise ValueError("输出路径无效 / Invalid output path.")
+    return "/".join(normalized.parts)
+
+
+def find_version_record(versions: list[dict[str, object]], asset_id: str, version: str) -> dict[str, object] | None:
+    for record in versions:
+        if not isinstance(record, dict):
+            continue
+        if record.get("asset_id") == asset_id and record.get("version") == version:
+            return record
+    return None
+
+
+def queue_scene_generation(slug: str, payload: dict[str, object]) -> dict[str, object]:
+    path = project_path(slug)
+    change_request_id = str(payload.get("change_request_id", "") or "").strip()
+    request_path = change_request_path(path, change_request_id)
+    request = load_yaml_file(request_path)
+    if not request:
+        raise ValueError("找不到变更请求 / Change request not found.")
+    if str(request.get("status", "")).endswith("_example"):
+        raise ValueError("样板变更请求不能写入生成队列 / Example change requests cannot be queued.")
+    existing_queue = request.get("generation_queue", [])
+    if request.get("status") == "generation_queued" and isinstance(existing_queue, list) and existing_queue:
+        return {
+            "ok": True,
+            "already_queued": True,
+            "change_request": request,
+            "generation_queue": existing_queue,
+            "project": project_detail(slug),
+        }
+    selected_ids = {str(item) for item in payload.get("selected_impact_ids", []) if str(item).strip()}
+    if not selected_ids:
+        raise ValueError("请选择要新增或修改的资产 / Select assets to create or modify.")
+    raw_action_overrides = payload.get("action_overrides", {})
+    action_overrides: dict[str, str] = {}
+    if isinstance(raw_action_overrides, dict):
+        for impact_id, action in raw_action_overrides.items():
+            normalized_action = str(action or "").strip()
+            if normalized_action in IMPACT_ACTIONS:
+                action_overrides[str(impact_id)] = normalized_action
+    impacts = request.get("impact_table", [])
+    if not isinstance(impacts, list):
+        impacts = []
+    selected_impacts = []
+    for impact in impacts:
+        if not isinstance(impact, dict):
+            continue
+        impact_id = str(impact.get("impact_id", ""))
+        if impact_id in action_overrides:
+            impact["action"] = action_overrides[impact_id]
+            impact["action_overridden"] = True
+        is_selected = impact_id in selected_ids
+        impact["selected"] = is_selected
+        if is_selected and impact.get("action") in {"create", "modify"}:
+            selected_impacts.append(impact)
+    if not selected_impacts:
+        raise ValueError("所选项仅需检查，不会进入生成队列 / Selected items only require review and will not enter the generation queue.")
+    scene_id = str(request.get("scene_id", ""))
+    registry_path = version_registry_path(path, scene_id)
+    registry = load_version_registry(path, slug, scene_id)
+    versions = registry.setdefault("versions", [])
+    if not isinstance(versions, list):
+        versions = []
+        registry["versions"] = versions
+    queue = []
+    for impact in selected_impacts:
+        asset_id = str(impact.get("asset_id", ""))
+        target_version, parent_version = next_asset_version(versions, asset_id)
+        output_path = str(impact.get("path", ""))
+        versions.append(
+            {
+                "asset_id": asset_id,
+                "scene_id": scene_id,
+                "stage_id": impact.get("stage_id", ""),
+                "version": target_version,
+                "status": "queued",
+                "created_at": now_iso(),
+                "change_request_id": change_request_id,
+                "trigger_step": request.get("trigger_step", ""),
+                "trigger_asset_id": request.get("trigger_asset_id", ""),
+                "action": impact.get("action", ""),
+                "parent_version": parent_version,
+                "target_path": output_path,
+                "output_path": "",
+                "notes": request.get("creative_direction", ""),
+            }
+        )
+        queue.append(
+            {
+                "queue_id": f"GEN_{change_request_id}_{len(queue) + 1:03d}",
+                "asset_id": asset_id,
+                "stage_id": impact.get("stage_id", ""),
+                "target_version": target_version,
+                "action": impact.get("action", ""),
+                "path": output_path,
+                "result_path": "",
+                "status": "queued",
+            }
+        )
+    request["generation_queue"] = queue
+    request["status"] = "generation_queued"
+    request["approval"] = {
+        "user_confirmed": True,
+        "confirmed_at": now_iso(),
+        "notes": str(payload.get("notes", "") or ""),
+    }
+    write_yaml_file(request_path, request)
+    write_yaml_file(registry_path, registry)
+    set_scene_manifest_status(path, scene_id, "generation_queued", str(request.get("creative_direction", "")))
+    job_dir = path / "08_generation" / "jobs" / change_request_id
+    write_yaml_file(job_dir / "generation_queue.yaml", {"change_request_id": change_request_id, "queue": queue})
+    return {"ok": True, "change_request": request, "generation_queue": queue, "project": project_detail(slug)}
+
+
+def generation_brief_text(request: dict[str, object], item: dict[str, object], version_record: dict[str, object]) -> str:
+    return "\n".join(
+        [
+            f"# Generation Task / 生成任务: {item.get('queue_id', '')}",
+            "",
+            f"- Scene / 场戏: {request.get('scene_id', '')}",
+            f"- Change request / 变更请求: {request.get('change_request_id', '')}",
+            f"- Trigger step / 触发步骤: {request.get('trigger_step', '')}",
+            f"- Asset / 资产: {item.get('asset_id', '')}",
+            f"- Stage / 步骤: {item.get('stage_id', '')}",
+            f"- Target version / 目标版本: {item.get('target_version', '')}",
+            f"- Action / 动作: {item.get('action', '')}",
+            f"- Source or target path / 原路径或目标路径: {item.get('path', '')}",
+            f"- Parent version / 父版本: {version_record.get('parent_version', '')}",
+            "",
+            "## Creative Direction / 创作方向",
+            "",
+            str(request.get("creative_direction", "")),
+            "",
+            "## Operator Notes / 操作说明",
+            "",
+            "- Use this brief as the handoff packet for the image, video, text, edit, or QA tool that will produce the real asset.",
+            "- 使用这份 brief 作为外部图片、视频、文本、剪辑或 QA 工具的任务交接包。",
+            "- After real output is produced, replace or link the final asset path in the version record, then promote the version if it passes review.",
+            "- 真实输出完成后，把最终资产路径回填到版本记录；审片通过后再晋级为 current。",
+            "",
+        ]
+    )
+
+
+def generation_task_payload(
+    request: dict[str, object],
+    item: dict[str, object],
+    version_record: dict[str, object],
+    packet_path: str,
+) -> dict[str, object]:
+    return {
+        "schema_version": 1,
+        "project_slug": request.get("project_slug", ""),
+        "scene_id": request.get("scene_id", ""),
+        "change_request_id": request.get("change_request_id", ""),
+        "trigger_step": request.get("trigger_step", ""),
+        "trigger_asset_id": request.get("trigger_asset_id", ""),
+        "creative_direction": request.get("creative_direction", ""),
+        "queue_id": item.get("queue_id", ""),
+        "asset_id": item.get("asset_id", ""),
+        "stage_id": item.get("stage_id", ""),
+        "target_version": item.get("target_version", ""),
+        "action": item.get("action", ""),
+        "target_path": item.get("path", ""),
+        "parent_version": version_record.get("parent_version", ""),
+        "packet_path": packet_path,
+    }
+
+
+def write_generation_packet(
+    path: Path,
+    change_request_id: str,
+    request: dict[str, object],
+    item: dict[str, object],
+    version_record: dict[str, object],
+) -> tuple[str, str, dict[str, object]]:
+    asset_id = str(item.get("asset_id", ""))
+    target_version = str(item.get("target_version", ""))
+    packet_rel_path = str(
+        Path("08_generation")
+        / "jobs"
+        / change_request_id
+        / "outputs"
+        / f"{safe_file_stem(item.get('queue_id'))}_{safe_file_stem(asset_id)}_{safe_file_stem(target_version)}.md"
+    )
+    task_rel_path = str(
+        Path("08_generation")
+        / "jobs"
+        / change_request_id
+        / "tasks"
+        / f"{safe_file_stem(item.get('queue_id'))}_{safe_file_stem(asset_id)}_{safe_file_stem(target_version)}.json"
+    )
+    task_payload = generation_task_payload(request, item, version_record, packet_rel_path)
+    (path / packet_rel_path).parent.mkdir(parents=True, exist_ok=True)
+    (path / task_rel_path).parent.mkdir(parents=True, exist_ok=True)
+    (path / packet_rel_path).write_text(generation_brief_text(request, item, version_record), encoding="utf-8")
+    (path / task_rel_path).write_text(json.dumps(task_payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    return packet_rel_path, task_rel_path, task_payload
+
+
+def format_adapter_template(template: object, task: dict[str, object]) -> str:
+    raw = str(template or "")
+    values = {key: safe_file_stem(value) for key, value in task.items()}
+    values.update({f"raw_{key}": str(value or "") for key, value in task.items()})
+    try:
+        return raw.format(**values)
+    except Exception:
+        return raw
+
+
+def command_adapter_result(
+    path: Path,
+    adapter: dict[str, object],
+    task: dict[str, object],
+    task_rel_path: str,
+    packet_rel_path: str,
+) -> dict[str, object]:
+    command = adapter.get("command", [])
+    if not isinstance(command, list) or not command or not all(isinstance(part, str) and part for part in command):
+        raise ValueError("命令适配器缺少 command 数组 / Command adapter requires a command array.")
+    if not adapter.get("enabled"):
+        raise ValueError("生成适配器未启用 / Generation adapter is not enabled.")
+    if adapter.get("requires_confirmation", True):
+        raise ValueError("生成适配器仍需确认，未执行 / Generation adapter still requires confirmation and was not run.")
+    timeout = int(adapter.get("timeout_seconds", 300) or 300)
+    env = {
+        **os.environ,
+        "PIPELINE_PROJECT_ROOT": str(path),
+        "PIPELINE_TASK_JSON": str(path / task_rel_path),
+        "PIPELINE_TASK_PACKET": str(path / packet_rel_path),
+        "PIPELINE_QUEUE_ID": str(task.get("queue_id", "")),
+        "PIPELINE_ASSET_ID": str(task.get("asset_id", "")),
+        "PIPELINE_TARGET_VERSION": str(task.get("target_version", "")),
+    }
+    started_at = now_iso()
+    completed = subprocess.run(
+        command,
+        cwd=path,
+        input=json.dumps(task, ensure_ascii=False),
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+        capture_output=True,
+        env=env,
+        timeout=timeout,
+        check=False,
+    )
+    finished_at = now_iso()
+    logs_dir = path / "08_generation" / "jobs" / str(task.get("change_request_id", "")) / "logs"
+    logs_dir.mkdir(parents=True, exist_ok=True)
+    stdout_rel = str(Path("08_generation") / "jobs" / str(task.get("change_request_id", "")) / "logs" / f"{safe_file_stem(task.get('queue_id'))}_stdout.txt")
+    stderr_rel = str(Path("08_generation") / "jobs" / str(task.get("change_request_id", "")) / "logs" / f"{safe_file_stem(task.get('queue_id'))}_stderr.txt")
+    (path / stdout_rel).write_text(completed.stdout, encoding="utf-8")
+    (path / stderr_rel).write_text(completed.stderr, encoding="utf-8")
+    result: dict[str, object] = {
+        "adapter": adapter.get("adapter_id", "command"),
+        "returncode": completed.returncode,
+        "started_at": started_at,
+        "completed_at": finished_at,
+        "stdout_path": stdout_rel,
+        "stderr_path": stderr_rel,
+    }
+    parsed: dict[str, object] = {}
+    try:
+        raw = completed.stdout.strip()
+        parsed = json.loads(raw) if raw else {}
+    except json.JSONDecodeError:
+        parsed = {}
+    if isinstance(parsed, dict):
+        result.update({key: value for key, value in parsed.items() if key in {"final_output_path", "output_path", "notes"}})
+    if completed.returncode == 0 and not (result.get("final_output_path") or result.get("output_path")):
+        output_template = adapter.get("output_path_template", "")
+        if output_template:
+            result["final_output_path"] = format_adapter_template(output_template, task)
+    return result
+
+
+def run_scene_generation(slug: str, payload: dict[str, object]) -> dict[str, object]:
+    path = project_path(slug)
+    change_request_id = str(payload.get("change_request_id", "") or "").strip()
+    adapter_id = str(payload.get("adapter_id", "manual_packet") or "manual_packet").strip()
+    request_path = change_request_path(path, change_request_id)
+    request = load_yaml_file(request_path)
+    if not request:
+        raise ValueError("找不到变更请求 / Change request not found.")
+    if str(request.get("status", "")).endswith("_example"):
+        raise ValueError("样板变更请求不能执行 / Example change requests cannot be run.")
+    queue = request.get("generation_queue", [])
+    if not isinstance(queue, list) or not queue:
+        raise ValueError("还没有生成队列 / No generation queue yet.")
+    scene_id = str(request.get("scene_id", ""))
+    registry_path = version_registry_path(path, scene_id)
+    registry = load_version_registry(path, slug, scene_id)
+    versions = registry.setdefault("versions", [])
+    if not isinstance(versions, list):
+        versions = []
+        registry["versions"] = versions
+    adapters = load_generation_adapters(path).get("adapters", [])
+    adapter = next((item for item in adapters if isinstance(item, dict) and item.get("adapter_id") == adapter_id), None)
+    if adapter is None:
+        raise ValueError("找不到生成适配器 / Generation adapter not found.")
+    adapter_type = str(adapter.get("type", "manual_packet") or "manual_packet")
+    if adapter_type == "command":
+        command = adapter.get("command", [])
+        if not adapter.get("enabled"):
+            raise ValueError("生成适配器未启用 / Generation adapter is not enabled.")
+        if adapter.get("requires_confirmation", True):
+            raise ValueError("生成适配器仍需确认，未执行 / Generation adapter still requires confirmation and was not run.")
+        if not isinstance(command, list) or not command or not all(isinstance(part, str) and part for part in command):
+            raise ValueError("命令适配器缺少 command 数组 / Command adapter requires a command array.")
+    elif adapter_type != "manual_packet":
+        raise ValueError("生成适配器类型无效 / Invalid generation adapter type.")
+
+    now = now_iso()
+    job_dir = path / "08_generation" / "jobs" / change_request_id
+    outputs_dir = job_dir / "outputs"
+    outputs_dir.mkdir(parents=True, exist_ok=True)
+    run_items: list[dict[str, object]] = []
+    failed_count = 0
+    for item in queue:
+        if not isinstance(item, dict):
+            continue
+        if item.get("status") in {"review_ready", "current", "superseded"} and adapter_type == "manual_packet":
+            run_items.append(item)
+            continue
+        asset_id = str(item.get("asset_id", ""))
+        target_version = str(item.get("target_version", ""))
+        version_record = find_version_record(versions, asset_id, target_version)
+        if version_record is None:
+            version_record = {
+                "asset_id": asset_id,
+                "scene_id": scene_id,
+                "stage_id": item.get("stage_id", ""),
+                "version": target_version,
+                "status": "queued",
+                "change_request_id": change_request_id,
+                "trigger_step": request.get("trigger_step", ""),
+                "trigger_asset_id": request.get("trigger_asset_id", ""),
+                "parent_version": "",
+                "target_path": item.get("path", ""),
+                "output_path": "",
+                "notes": request.get("creative_direction", ""),
+            }
+            versions.append(version_record)
+        packet_rel_path, task_rel_path, task_payload = write_generation_packet(path, change_request_id, request, item, version_record)
+        item["started_at"] = item.get("started_at") or now
+        item["result_path"] = packet_rel_path
+        item["packet_path"] = packet_rel_path
+        item["task_path"] = task_rel_path
+        version_record["packet_path"] = packet_rel_path
+        version_record["target_path"] = version_record.get("target_path") or item.get("path", "")
+        if adapter_type == "manual_packet":
+            item["status"] = "review_ready"
+            item["adapter"] = "manual_packet"
+            item["completed_at"] = now
+            version_record["status"] = "candidate"
+            version_record["adapter"] = "manual_packet"
+            version_record["generated_at"] = now
+            version_record["output_path"] = packet_rel_path
+            version_record["result_kind"] = "generation_brief"
+        elif adapter_type == "command":
+            item["adapter"] = adapter_id
+            task_payload["change_request_id"] = change_request_id
+            try:
+                command_result = command_adapter_result(path, adapter, task_payload, task_rel_path, packet_rel_path)
+            except Exception as exc:  # noqa: BLE001
+                command_result = {
+                    "adapter": adapter_id,
+                    "returncode": -1,
+                    "completed_at": now_iso(),
+                    "error": str(exc),
+                }
+            item["adapter_result"] = command_result
+            item["completed_at"] = str(command_result.get("completed_at", now_iso()))
+            if command_result.get("returncode") == 0:
+                final_output = str(command_result.get("final_output_path") or command_result.get("output_path") or "").strip()
+                item["status"] = "review_ready"
+                version_record["status"] = "candidate"
+                version_record["adapter"] = adapter_id
+                version_record["generated_at"] = item["completed_at"]
+                version_record["result_kind"] = "final_asset" if final_output else "generation_brief"
+                if final_output:
+                    try:
+                        final_output = normalize_project_rel_path(final_output)
+                    except ValueError as exc:
+                        failed_count += 1
+                        item["status"] = "failed"
+                        version_record["status"] = "failed"
+                        version_record["error"] = str(exc)
+                    else:
+                        item["final_output_path"] = final_output
+                        item["output_exists"] = (path / final_output).exists()
+                        version_record["output_path"] = final_output
+                        version_record["final_output_path"] = final_output
+                        version_record["output_exists"] = item["output_exists"]
+                else:
+                    version_record["output_path"] = packet_rel_path
+            else:
+                failed_count += 1
+                item["status"] = "failed"
+                version_record["status"] = "failed"
+                version_record["adapter"] = adapter_id
+                version_record["error"] = str(command_result.get("error") or command_result.get("stderr_path") or "adapter failed")
+        else:
+            raise ValueError("生成适配器类型无效 / Invalid generation adapter type.")
+        run_items.append(item)
+
+    request["generation_queue"] = queue
+    request["status"] = "generation_failed" if failed_count and failed_count == len(run_items) else "review_ready"
+    request["generation_run"] = {
+        "adapter": adapter_id,
+        "adapter_type": adapter_type,
+        "status": request["status"],
+        "started_at": now,
+        "completed_at": now,
+        "item_count": len(run_items),
+        "failed_count": failed_count,
+        "notes": str(payload.get("notes", "") or ""),
+    }
+    write_yaml_file(request_path, request)
+    write_yaml_file(registry_path, registry)
+    write_yaml_file(job_dir / "generation_queue.yaml", {"change_request_id": change_request_id, "queue": queue})
+    write_yaml_file(job_dir / "generation_run.yaml", request["generation_run"])
+    set_scene_manifest_status(path, scene_id, "needs_changes" if request["status"] == "generation_failed" else "review_ready", str(request.get("creative_direction", "")))
+    return {"ok": True, "change_request": request, "generation_queue": queue, "project": project_detail(slug)}
+
+
+def update_scene_output(slug: str, payload: dict[str, object]) -> dict[str, object]:
+    path = project_path(slug)
+    change_request_id = str(payload.get("change_request_id", "") or "").strip()
+    queue_id = str(payload.get("queue_id", "") or "").strip()
+    output_path = normalize_project_rel_path(str(payload.get("output_path", "") or ""))
+    notes = str(payload.get("notes", "") or "").strip()
+    request_path = change_request_path(path, change_request_id)
+    request = load_yaml_file(request_path)
+    if not request:
+        raise ValueError("找不到变更请求 / Change request not found.")
+    if str(request.get("status", "")).endswith("_example"):
+        raise ValueError("样板变更请求不能回填输出 / Example change requests cannot receive outputs.")
+    queue = request.get("generation_queue", [])
+    if not isinstance(queue, list):
+        raise ValueError("生成队列无效 / Generation queue is invalid.")
+    item = next((entry for entry in queue if isinstance(entry, dict) and entry.get("queue_id") == queue_id), None)
+    if item is None:
+        raise ValueError("找不到队列项 / Queue item not found.")
+    scene_id = str(request.get("scene_id", ""))
+    asset_id = str(item.get("asset_id", ""))
+    version = str(item.get("target_version", ""))
+    registry_path = version_registry_path(path, scene_id)
+    registry = load_version_registry(path, slug, scene_id)
+    versions = registry.setdefault("versions", [])
+    if not isinstance(versions, list):
+        versions = []
+        registry["versions"] = versions
+    version_record = find_version_record(versions, asset_id, version)
+    if version_record is None:
+        raise ValueError("找不到版本记录 / Version record not found.")
+    now = now_iso()
+    output_exists = (path / output_path).exists()
+
+    packet_path = str(item.get("result_path", "") or version_record.get("packet_path", "") or "")
+    if not packet_path and version_record.get("result_kind") == "generation_brief":
+        packet_path = str(version_record.get("output_path", "") or "")
+    if packet_path:
+        item["packet_path"] = packet_path
+        version_record["packet_path"] = packet_path
+
+    item["final_output_path"] = output_path
+    item["status"] = "review_ready"
+    item["output_attached_at"] = now
+    item["output_exists"] = output_exists
+    if notes:
+        item["output_notes"] = notes
+
+    version_record["status"] = "candidate"
+    version_record["output_path"] = output_path
+    version_record["final_output_path"] = output_path
+    version_record["result_kind"] = "final_asset"
+    version_record["output_attached_at"] = now
+    version_record["output_exists"] = output_exists
+    if notes:
+        version_record["output_notes"] = notes
+    registry["updated_at"] = now
+
+    request["generation_queue"] = queue
+    request["status"] = "review_ready"
+    request["last_output_attached_at"] = now
+    write_yaml_file(request_path, request)
+    write_yaml_file(registry_path, registry)
+    job_dir = path / "08_generation" / "jobs" / change_request_id
+    write_yaml_file(job_dir / "generation_queue.yaml", {"change_request_id": change_request_id, "queue": queue})
+    set_scene_manifest_status(path, scene_id, "review_ready", str(request.get("creative_direction", "")))
+    return {"ok": True, "change_request": request, "version": version_record, "project": project_detail(slug)}
+
+
+def update_scene_version(slug: str, payload: dict[str, object]) -> dict[str, object]:
+    path = project_path(slug)
+    scene_id = str(payload.get("scene_id", "") or "").strip()
+    asset_id = str(payload.get("asset_id", "") or "").strip()
+    version = str(payload.get("version", "") or "").strip()
+    action = str(payload.get("action", "promote") or "promote").strip()
+    notes = str(payload.get("notes", "") or "").strip()
+    if action not in {"promote", "rollback", "set_current"}:
+        raise ValueError("版本动作无效 / Invalid version action.")
+    if not scene_id or not asset_id or not version:
+        raise ValueError("需要场戏、资产和版本 / Scene, asset, and version are required.")
+    registry_path = version_registry_path(path, scene_id)
+    registry = load_version_registry(path, slug, scene_id)
+    versions = registry.setdefault("versions", [])
+    if not isinstance(versions, list):
+        versions = []
+        registry["versions"] = versions
+    target = find_version_record(versions, asset_id, version)
+    if target is None:
+        raise ValueError("找不到版本记录 / Version record not found.")
+    now = now_iso()
+    previous_current = ""
+    for record in versions:
+        if not isinstance(record, dict) or record.get("asset_id") != asset_id:
+            continue
+        if record.get("status") == "current" and record.get("version") != version:
+            previous_current = str(record.get("version", ""))
+            record["status"] = "superseded"
+            record["superseded_at"] = now
+            record["superseded_by"] = version
+    target["status"] = "current"
+    target["current_at"] = now
+    target["version_action"] = action
+    target["previous_current"] = previous_current
+    if notes:
+        target["review_notes"] = notes
+    registry["updated_at"] = now
+    write_yaml_file(registry_path, registry)
+    return {"ok": True, "version": target, "project": project_detail(slug)}
+
+
 def apply_annotations_to_item(item: dict[str, object], annotations: dict[str, object]) -> None:
     assets = annotations.get("assets", {})
     if not isinstance(assets, dict):
@@ -792,6 +1890,8 @@ def project_detail(slug: str, include_report_text: bool = True, include_previews
         "annotations": annotations,
         "previews": previews,
         "scene_locks": scene_locks,
+        "scene_workbench": load_scene_workbench(path),
+        "generation_adapters": load_generation_adapters(path),
     }
 
 
@@ -885,6 +1985,7 @@ def send_static(handler: BaseHTTPRequestHandler, path: str) -> None:
     handler.send_response(200)
     handler.send_header("Content-Type", content_type)
     handler.send_header("Content-Length", str(len(body)))
+    add_auth_cookie_header(handler)
     handler.end_headers()
     handler.wfile.write(body)
 
@@ -897,7 +1998,7 @@ def send_asset(handler: BaseHTTPRequestHandler, slug: str, query: str) -> None:
     if is_lfs_pointer(target):
         fallback = legacy_coin_slot_asset_path(origin, rel_path)
         if fallback is None:
-            send_text(handler, "这个资源的 Git LFS 原始文件尚未下载 / Git LFS object is not downloaded for this asset.", status=409)
+            send_text(handler, "这张图的原始文件在 Git LFS 上还没下载，本地也没有备份。请联网后运行 git lfs pull 获取。/ This image lives in Git LFS and is not downloaded, with no local backup. Run git lfs pull (online) to fetch it.", status=409)
             return
         target = fallback
     content_type = mimetypes.guess_type(str(target))[0] or "application/octet-stream"
@@ -906,6 +2007,7 @@ def send_asset(handler: BaseHTTPRequestHandler, slug: str, query: str) -> None:
     handler.send_header("Content-Type", content_type)
     handler.send_header("Content-Length", str(len(body)))
     handler.send_header("Cache-Control", "no-store")
+    add_auth_cookie_header(handler)
     handler.end_headers()
     handler.wfile.write(body)
 
@@ -934,6 +2036,9 @@ class PipelineHubHandler(BaseHTTPRequestHandler):
 
     def route_get(self) -> None:
         parsed = urlparse(self.path)
+        if not request_is_authorized(self, parsed):
+            send_unauthorized(self)
+            return
         parts = [part for part in parsed.path.split("/") if part]
         if not parts:
             send_static(self, "/")
@@ -958,6 +2063,9 @@ class PipelineHubHandler(BaseHTTPRequestHandler):
 
     def route_post(self) -> None:
         parsed = urlparse(self.path)
+        if not request_is_authorized(self, parsed):
+            send_unauthorized(self)
+            return
         parts = [part for part in parsed.path.split("/") if part]
         payload = read_json_body(self)
         if parts == ["api", "projects"]:
@@ -1028,6 +2136,24 @@ class PipelineHubHandler(BaseHTTPRequestHandler):
             if action == "annotations":
                 send_json(self, update_resource_annotation(slug, payload))
                 return
+            if action == "scene-change-request":
+                send_json(self, create_scene_change_request(slug, payload))
+                return
+            if action == "scene-generate":
+                send_json(self, queue_scene_generation(slug, payload))
+                return
+            if action == "scene-run-generation":
+                send_json(self, run_scene_generation(slug, payload))
+                return
+            if action == "scene-output":
+                send_json(self, update_scene_output(slug, payload))
+                return
+            if action == "scene-version":
+                send_json(self, update_scene_version(slug, payload))
+                return
+            if action == "scene-status":
+                send_json(self, update_scene_status(slug, payload))
+                return
         send_text(self, "未找到 / Not found", status=404)
 
 
@@ -1040,6 +2166,8 @@ def main(argv: list[str] | None = None) -> int:
     PROJECTS_ROOT.mkdir(parents=True, exist_ok=True)
     httpd = ThreadingHTTPServer((args.host, args.port), PipelineHubHandler)
     print(f"Pipeline Hub running at http://{args.host}:{args.port}")
+    if configured_auth_token():
+        print(f"Remote access token auth is enabled via {AUTH_TOKEN_ENV}")
     try:
         httpd.serve_forever()
     except KeyboardInterrupt:

@@ -1,4 +1,4 @@
-# NEW PROJECT COPY PACK v1
+﻿# NEW PROJECT COPY PACK v1
 
 这个包的目的：让你开新项目时，不再从零搭流程，直接继承当前 `1主3子 skill` 的沉淀。
 

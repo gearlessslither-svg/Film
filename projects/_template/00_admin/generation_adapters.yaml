@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "adapters": [
+    {
+      "adapter_id": "manual_packet",
+      "label": "任务包 / Manual packet",
+      "type": "manual_packet",
+      "enabled": true,
+      "description": "只生成可交给外部工具的任务包 / Create handoff packets only."
+    },
+    {
+      "adapter_id": "local_command_example",
+      "label": "本地命令示例 / Local command example",
+      "type": "command",
+      "enabled": false,
+      "requires_confirmation": true,
+      "timeout_seconds": 300,
+      "command": ["python3", "scripts/run_generation_adapter.py"],
+      "output_path_template": "08_generation/outputs/{asset_id}_{target_version}.png",
+      "description": "示例：启用前请替换为真实本地生成器，并确认不会上传敏感素材 / Example only: replace with a real local generator before enabling."
+    }
+  ]
+}

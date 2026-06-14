@@ -1,0 +1,701 @@
+{
+  "schema_version": 1,
+  "project_slug": "coin-slot",
+  "scene_id": "SCN_PHONE",
+  "scene_slug": "scn-phone",
+  "title": "电话亭 / Phone booth",
+  "source": "resources/examples/coin-slot/csv/micro_storyboard_pure_image_prompts.csv",
+  "updated_at": "2026-06-14T15:53:58+08:00",
+  "shot_ids": [
+    "MSB139",
+    "MSB140",
+    "MSB141",
+    "MSB142",
+    "MSB143",
+    "MSB144",
+    "MSB145",
+    "MSB146",
+    "MSB147",
+    "MSB148",
+    "MSB149",
+    "MSB150",
+    "MSB151",
+    "MSB152",
+    "MSB153",
+    "MSB154",
+    "MSB155",
+    "MSB156",
+    "MSB157",
+    "MSB158",
+    "MSB159",
+    "MSB160",
+    "MSB161",
+    "MSB162",
+    "MSB163",
+    "MSB164",
+    "MSB165",
+    "MSB166",
+    "MSB167",
+    "MSB168",
+    "MSB169"
+  ],
+  "stage_assets": {
+    "03_story": [
+      {
+        "asset_id": "SCN_PHONE_STORY_BEATS",
+        "role": "beat_sheet",
+        "path": "03_story/beats/coin_slot_sample_beat_sheet.md"
+      },
+      {
+        "asset_id": "SCN_PHONE_FULL_SHOT_LIST",
+        "role": "full_shot_list",
+        "path": "07_shots/shot_list.csv"
+      }
+    ],
+    "04_lookdev": [
+      {
+        "asset_id": "SCN_PHONE_LOOK_BIBLE",
+        "role": "look_bible",
+        "path": "04_lookdev/references/coin_slot_look_bible_v001.md"
+      },
+      {
+        "asset_id": "SCN_PHONE_VISUAL_REFS",
+        "role": "visual_references",
+        "path": "04_lookdev/references/coin_slot_visual_references.md"
+      },
+      {
+        "asset_id": "SCN_PHONE_SCENE_REFERENCE",
+        "role": "scene_reference",
+        "origin": "resource",
+        "path": "media/01_AIGC/scene_refs/SC_05_abandoned_corridor_phonebooth_v001.png"
+      }
+    ],
+    "05_asset_bible": [
+      {
+        "asset_id": "SCN_PHONE_CHARACTER_STAGE_LOCKS",
+        "role": "character_stage_locks",
+        "path": "05_asset_bible/character_stage_locks/coin_slot_character_stage_locks.md"
+      },
+      {
+        "asset_id": "SCN_PHONE_LOCATION_BIBLE",
+        "role": "location_bible",
+        "path": "05_asset_bible/locations/coin_slot_location_bible.md"
+      },
+      {
+        "asset_id": "SCN_PHONE_CONTINUITY_LOCKS",
+        "role": "continuity_locks",
+        "path": "05_asset_bible/continuity/coin_slot_continuity_locks.md"
+      }
+    ],
+    "06_previs": [
+      {
+        "asset_id": "SCN_PHONE_WHITEBOX_INDEX",
+        "role": "whitebox_index",
+        "path": "06_previs/scene_locks/scn-phone/whitebox_index.csv"
+      },
+      {
+        "asset_id": "MSB139_WHITEBOX",
+        "role": "whitebox",
+        "origin": "resource",
+        "path": "media/01_AIGC/whitebox_renders_v2/B05/WB2_PHONE_MSB139.png"
+      },
+      {
+        "asset_id": "MSB140_WHITEBOX",
+        "role": "whitebox",
+        "origin": "resource",
+        "path": "media/01_AIGC/whitebox_renders_v2/B05/WB2_PHONE_MSB140.png"
+      },
+      {
+        "asset_id": "MSB141_WHITEBOX",
+        "role": "whitebox",
+        "origin": "resource",
+        "path": "media/01_AIGC/whitebox_renders_v2/B05/WB2_PHONE_MSB141.png"
+      },
+      {
+        "asset_id": "MSB142_WHITEBOX",
+        "role": "whitebox",
+        "origin": "resource",
+        "path": "media/01_AIGC/whitebox_renders_v2/B05/WB2_PHONE_MSB142.png"
+      },
+      {
+        "asset_id": "MSB143_WHITEBOX",
+        "role": "whitebox",
+        "origin": "resource",
+        "path": "media/01_AIGC/whitebox_renders_v2/B05/WB2_PHONE_MSB143.png"
+      },
+      {
+        "asset_id": "MSB144_WHITEBOX",
+        "role": "whitebox",
+        "origin": "resource",
+        "path": "media/01_AIGC/whitebox_renders_v2/B05/WB2_PHONE_MSB144.png"
+      },
+      {
+        "asset_id": "MSB145_WHITEBOX",
+        "role": "whitebox",
+        "origin": "resource",
+        "path": "media/01_AIGC/whitebox_renders_v2/B05/WB2_PHONE_MSB145.png"
+      },
+      {
+        "asset_id": "MSB146_WHITEBOX",
+        "role": "whitebox",
+        "origin": "resource",
+        "path": "media/01_AIGC/whitebox_renders_v2/B05/WB2_PHONE_MSB146.png"
+      },
+      {
+        "asset_id": "MSB147_WHITEBOX",
+        "role": "whitebox",
+        "origin": "resource",
+        "path": "media/01_AIGC/whitebox_renders_v2/B05/WB2_PHONE_MSB147.png"
+      },
+      {
+        "asset_id": "MSB148_WHITEBOX",
+        "role": "whitebox",
+        "origin": "resource",
+        "path": "media/01_AIGC/whitebox_renders_v2/B05/WB2_PHONE_MSB148.png"
+      },
+      {
+        "asset_id": "MSB149_WHITEBOX",
+        "role": "whitebox",
+        "origin": "resource",
+        "path": "media/01_AIGC/whitebox_renders_v2/B05/WB2_PHONE_MSB149.png"
+      },
+      {
+        "asset_id": "MSB150_WHITEBOX",
+        "role": "whitebox",
+        "origin": "resource",
+        "path": "media/01_AIGC/whitebox_renders_v2/B05/WB2_PHONE_MSB150.png"
+      },
+      {
+        "asset_id": "MSB151_WHITEBOX",
+        "role": "whitebox",
+        "origin": "resource",
+        "path": "media/01_AIGC/whitebox_renders_v2/B05/WB2_PHONE_MSB151.png"
+      },
+      {
+        "asset_id": "MSB152_WHITEBOX",
+        "role": "whitebox",
+        "origin": "resource",
+        "path": "media/01_AIGC/whitebox_renders_v2/B05/WB2_PHONE_MSB152.png"
+      },
+      {
+        "asset_id": "MSB153_WHITEBOX",
+        "role": "whitebox",
+        "origin": "resource",
+        "path": "media/01_AIGC/whitebox_renders_v2/B05/WB2_PHONE_MSB153.png"
+      },
+      {
+        "asset_id": "MSB154_WHITEBOX",
+        "role": "whitebox",
+        "origin": "resource",
+        "path": "media/01_AIGC/whitebox_renders_v2/B05/WB2_PHONE_MSB154.png"
+      },
+      {
+        "asset_id": "MSB155_WHITEBOX",
+        "role": "whitebox",
+        "origin": "resource",
+        "path": "media/01_AIGC/whitebox_renders_v2/B06/WB2_PHONE_MSB155.png"
+      },
+      {
+        "asset_id": "MSB156_WHITEBOX",
+        "role": "whitebox",
+        "origin": "resource",
+        "path": "media/01_AIGC/whitebox_renders_v2/B06/WB2_PHONE_MSB156.png"
+      },
+      {
+        "asset_id": "MSB157_WHITEBOX",
+        "role": "whitebox",
+        "origin": "resource",
+        "path": "media/01_AIGC/whitebox_renders_v2/B06/WB2_PHONE_MSB157.png"
+      },
+      {
+        "asset_id": "MSB158_WHITEBOX",
+        "role": "whitebox",
+        "origin": "resource",
+        "path": "media/01_AIGC/whitebox_renders_v2/B06/WB2_PHONE_MSB158.png"
+      },
+      {
+        "asset_id": "MSB159_WHITEBOX",
+        "role": "whitebox",
+        "origin": "resource",
+        "path": "media/01_AIGC/whitebox_renders_v2/B06/WB2_PHONE_MSB159.png"
+      },
+      {
+        "asset_id": "MSB160_WHITEBOX",
+        "role": "whitebox",
+        "origin": "resource",
+        "path": "media/01_AIGC/whitebox_renders_v2/B06/WB2_PHONE_MSB160.png"
+      },
+      {
+        "asset_id": "MSB161_WHITEBOX",
+        "role": "whitebox",
+        "origin": "resource",
+        "path": "media/01_AIGC/whitebox_renders_v2/B06/WB2_PHONE_MSB161.png"
+      },
+      {
+        "asset_id": "MSB162_WHITEBOX",
+        "role": "whitebox",
+        "origin": "resource",
+        "path": "media/01_AIGC/whitebox_renders_v2/B06/WB2_PHONE_MSB162.png"
+      },
+      {
+        "asset_id": "MSB163_WHITEBOX",
+        "role": "whitebox",
+        "origin": "resource",
+        "path": "media/01_AIGC/whitebox_renders_v2/B06/WB2_PHONE_MSB163.png"
+      },
+      {
+        "asset_id": "MSB164_WHITEBOX",
+        "role": "whitebox",
+        "origin": "resource",
+        "path": "media/01_AIGC/whitebox_renders_v2/B06/WB2_PHONE_MSB164.png"
+      },
+      {
+        "asset_id": "MSB165_WHITEBOX",
+        "role": "whitebox",
+        "origin": "resource",
+        "path": "media/01_AIGC/whitebox_renders_v2/B06/WB2_PHONE_MSB165.png"
+      },
+      {
+        "asset_id": "MSB166_WHITEBOX",
+        "role": "whitebox",
+        "origin": "resource",
+        "path": "media/01_AIGC/whitebox_renders_v2/B06/WB2_PHONE_MSB166.png"
+      },
+      {
+        "asset_id": "MSB167_WHITEBOX",
+        "role": "whitebox",
+        "origin": "resource",
+        "path": "media/01_AIGC/whitebox_renders_v2/B06/WB2_PHONE_MSB167.png"
+      },
+      {
+        "asset_id": "MSB168_WHITEBOX",
+        "role": "whitebox",
+        "origin": "resource",
+        "path": "media/01_AIGC/whitebox_renders_v2/B06/WB2_PHONE_MSB168.png"
+      },
+      {
+        "asset_id": "MSB169_WHITEBOX",
+        "role": "whitebox",
+        "origin": "resource",
+        "path": "media/01_AIGC/whitebox_renders_v2/B06/WB2_PHONE_MSB169.png"
+      }
+    ],
+    "07_shots": [
+      {
+        "asset_id": "SCN_PHONE_SHOT_INDEX_188",
+        "role": "scene_shot_index",
+        "path": "07_shots/scene_slices/SCN_PHONE_shot_index.csv"
+      },
+      {
+        "asset_id": "SCN_PHONE_PROMPT_PACK_188",
+        "role": "scene_prompt_pack",
+        "path": "07_shots/scene_slices/SCN_PHONE_prompt_pack.csv"
+      }
+    ],
+    "08_generation": [
+      {
+        "asset_id": "SCN_PHONE_STORYBOARD_IMAGE_INDEX",
+        "role": "storyboard_image_index",
+        "path": "08_generation/outputs/images/SCN_PHONE_storyboard_image_index.csv"
+      },
+      {
+        "asset_id": "MSB139_PURE_KEYFRAME",
+        "role": "storyboard_keyframe",
+        "origin": "resource",
+        "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B05/MSB139_v001.png"
+      },
+      {
+        "asset_id": "MSB139_FINAL_STORYBOARD",
+        "role": "final_storyboard_panel",
+        "origin": "resource",
+        "path": "media/01_AIGC/final_storyboard_panels/B05/MSB139_final_storyboard_v002.jpg"
+      },
+      {
+        "asset_id": "MSB140_PURE_KEYFRAME",
+        "role": "storyboard_keyframe",
+        "origin": "resource",
+        "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B05/MSB140_v001.png"
+      },
+      {
+        "asset_id": "MSB140_FINAL_STORYBOARD",
+        "role": "final_storyboard_panel",
+        "origin": "resource",
+        "path": "media/01_AIGC/final_storyboard_panels/B05/MSB140_final_storyboard_v002.jpg"
+      },
+      {
+        "asset_id": "MSB141_PURE_KEYFRAME",
+        "role": "storyboard_keyframe",
+        "origin": "resource",
+        "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B05/MSB141_v001.png"
+      },
+      {
+        "asset_id": "MSB141_FINAL_STORYBOARD",
+        "role": "final_storyboard_panel",
+        "origin": "resource",
+        "path": "media/01_AIGC/final_storyboard_panels/B05/MSB141_final_storyboard_v002.jpg"
+      },
+      {
+        "asset_id": "MSB142_PURE_KEYFRAME",
+        "role": "storyboard_keyframe",
+        "origin": "resource",
+        "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B05/MSB142_v001.png"
+      },
+      {
+        "asset_id": "MSB142_FINAL_STORYBOARD",
+        "role": "final_storyboard_panel",
+        "origin": "resource",
+        "path": "media/01_AIGC/final_storyboard_panels/B05/MSB142_final_storyboard_v002.jpg"
+      },
+      {
+        "asset_id": "MSB143_PURE_KEYFRAME",
+        "role": "storyboard_keyframe",
+        "origin": "resource",
+        "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B05/MSB143_v001.png"
+      },
+      {
+        "asset_id": "MSB143_FINAL_STORYBOARD",
+        "role": "final_storyboard_panel",
+        "origin": "resource",
+        "path": "media/01_AIGC/final_storyboard_panels/B05/MSB143_final_storyboard_v002.jpg"
+      },
+      {
+        "asset_id": "MSB144_PURE_KEYFRAME",
+        "role": "storyboard_keyframe",
+        "origin": "resource",
+        "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B05/MSB144_v001.png"
+      },
+      {
+        "asset_id": "MSB144_FINAL_STORYBOARD",
+        "role": "final_storyboard_panel",
+        "origin": "resource",
+        "path": "media/01_AIGC/final_storyboard_panels/B05/MSB144_final_storyboard_v002.jpg"
+      },
+      {
+        "asset_id": "MSB145_PURE_KEYFRAME",
+        "role": "storyboard_keyframe",
+        "origin": "resource",
+        "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B05/MSB145_v001.png"
+      },
+      {
+        "asset_id": "MSB145_FINAL_STORYBOARD",
+        "role": "final_storyboard_panel",
+        "origin": "resource",
+        "path": "media/01_AIGC/final_storyboard_panels/B05/MSB145_final_storyboard_v002.jpg"
+      },
+      {
+        "asset_id": "MSB146_PURE_KEYFRAME",
+        "role": "storyboard_keyframe",
+        "origin": "resource",
+        "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B05/MSB146_v001.png"
+      },
+      {
+        "asset_id": "MSB146_FINAL_STORYBOARD",
+        "role": "final_storyboard_panel",
+        "origin": "resource",
+        "path": "media/01_AIGC/final_storyboard_panels/B05/MSB146_final_storyboard_v002.jpg"
+      },
+      {
+        "asset_id": "MSB147_PURE_KEYFRAME",
+        "role": "storyboard_keyframe",
+        "origin": "resource",
+        "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B05/MSB147_v001.png"
+      },
+      {
+        "asset_id": "MSB147_FINAL_STORYBOARD",
+        "role": "final_storyboard_panel",
+        "origin": "resource",
+        "path": "media/01_AIGC/final_storyboard_panels/B05/MSB147_final_storyboard_v002.jpg"
+      },
+      {
+        "asset_id": "MSB148_PURE_KEYFRAME",
+        "role": "storyboard_keyframe",
+        "origin": "resource",
+        "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B05/MSB148_v001.png"
+      },
+      {
+        "asset_id": "MSB148_FINAL_STORYBOARD",
+        "role": "final_storyboard_panel",
+        "origin": "resource",
+        "path": "media/01_AIGC/final_storyboard_panels/B05/MSB148_final_storyboard_v002.jpg"
+      },
+      {
+        "asset_id": "MSB149_PURE_KEYFRAME",
+        "role": "storyboard_keyframe",
+        "origin": "resource",
+        "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B05/MSB149_v001.png"
+      },
+      {
+        "asset_id": "MSB149_FINAL_STORYBOARD",
+        "role": "final_storyboard_panel",
+        "origin": "resource",
+        "path": "media/01_AIGC/final_storyboard_panels/B05/MSB149_final_storyboard_v002.jpg"
+      },
+      {
+        "asset_id": "MSB150_PURE_KEYFRAME",
+        "role": "storyboard_keyframe",
+        "origin": "resource",
+        "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B05/MSB150_v001.png"
+      },
+      {
+        "asset_id": "MSB150_FINAL_STORYBOARD",
+        "role": "final_storyboard_panel",
+        "origin": "resource",
+        "path": "media/01_AIGC/final_storyboard_panels/B05/MSB150_final_storyboard_v002.jpg"
+      },
+      {
+        "asset_id": "MSB151_PURE_KEYFRAME",
+        "role": "storyboard_keyframe",
+        "origin": "resource",
+        "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B05/MSB151_v001.png"
+      },
+      {
+        "asset_id": "MSB151_FINAL_STORYBOARD",
+        "role": "final_storyboard_panel",
+        "origin": "resource",
+        "path": "media/01_AIGC/final_storyboard_panels/B05/MSB151_final_storyboard_v002.jpg"
+      },
+      {
+        "asset_id": "MSB152_PURE_KEYFRAME",
+        "role": "storyboard_keyframe",
+        "origin": "resource",
+        "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B05/MSB152_v001.png"
+      },
+      {
+        "asset_id": "MSB152_FINAL_STORYBOARD",
+        "role": "final_storyboard_panel",
+        "origin": "resource",
+        "path": "media/01_AIGC/final_storyboard_panels/B05/MSB152_final_storyboard_v002.jpg"
+      },
+      {
+        "asset_id": "MSB153_PURE_KEYFRAME",
+        "role": "storyboard_keyframe",
+        "origin": "resource",
+        "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B05/MSB153_v001.png"
+      },
+      {
+        "asset_id": "MSB153_FINAL_STORYBOARD",
+        "role": "final_storyboard_panel",
+        "origin": "resource",
+        "path": "media/01_AIGC/final_storyboard_panels/B05/MSB153_final_storyboard_v002.jpg"
+      },
+      {
+        "asset_id": "MSB154_PURE_KEYFRAME",
+        "role": "storyboard_keyframe",
+        "origin": "resource",
+        "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B05/MSB154_v001.png"
+      },
+      {
+        "asset_id": "MSB154_FINAL_STORYBOARD",
+        "role": "final_storyboard_panel",
+        "origin": "resource",
+        "path": "media/01_AIGC/final_storyboard_panels/B05/MSB154_final_storyboard_v002.jpg"
+      },
+      {
+        "asset_id": "MSB155_PURE_KEYFRAME",
+        "role": "storyboard_keyframe",
+        "origin": "resource",
+        "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B06/MSB155_v001.png"
+      },
+      {
+        "asset_id": "MSB155_FINAL_STORYBOARD",
+        "role": "final_storyboard_panel",
+        "origin": "resource",
+        "path": "media/01_AIGC/final_storyboard_panels/B06/MSB155_final_storyboard_v002.jpg"
+      },
+      {
+        "asset_id": "MSB156_PURE_KEYFRAME",
+        "role": "storyboard_keyframe",
+        "origin": "resource",
+        "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B06/MSB156_v001.png"
+      },
+      {
+        "asset_id": "MSB156_FINAL_STORYBOARD",
+        "role": "final_storyboard_panel",
+        "origin": "resource",
+        "path": "media/01_AIGC/final_storyboard_panels/B06/MSB156_final_storyboard_v002.jpg"
+      },
+      {
+        "asset_id": "MSB157_PURE_KEYFRAME",
+        "role": "storyboard_keyframe",
+        "origin": "resource",
+        "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B06/MSB157_v001.png"
+      },
+      {
+        "asset_id": "MSB157_FINAL_STORYBOARD",
+        "role": "final_storyboard_panel",
+        "origin": "resource",
+        "path": "media/01_AIGC/final_storyboard_panels/B06/MSB157_final_storyboard_v002.jpg"
+      },
+      {
+        "asset_id": "MSB158_PURE_KEYFRAME",
+        "role": "storyboard_keyframe",
+        "origin": "resource",
+        "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B06/MSB158_v001.png"
+      },
+      {
+        "asset_id": "MSB158_FINAL_STORYBOARD",
+        "role": "final_storyboard_panel",
+        "origin": "resource",
+        "path": "media/01_AIGC/final_storyboard_panels/B06/MSB158_final_storyboard_v002.jpg"
+      },
+      {
+        "asset_id": "MSB159_PURE_KEYFRAME",
+        "role": "storyboard_keyframe",
+        "origin": "resource",
+        "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B06/MSB159_v001.png"
+      },
+      {
+        "asset_id": "MSB159_FINAL_STORYBOARD",
+        "role": "final_storyboard_panel",
+        "origin": "resource",
+        "path": "media/01_AIGC/final_storyboard_panels/B06/MSB159_final_storyboard_v002.jpg"
+      },
+      {
+        "asset_id": "MSB160_PURE_KEYFRAME",
+        "role": "storyboard_keyframe",
+        "origin": "resource",
+        "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B06/MSB160_v001.png"
+      },
+      {
+        "asset_id": "MSB160_FINAL_STORYBOARD",
+        "role": "final_storyboard_panel",
+        "origin": "resource",
+        "path": "media/01_AIGC/final_storyboard_panels/B06/MSB160_final_storyboard_v002.jpg"
+      },
+      {
+        "asset_id": "MSB161_PURE_KEYFRAME",
+        "role": "storyboard_keyframe",
+        "origin": "resource",
+        "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B06/MSB161_v001.png"
+      },
+      {
+        "asset_id": "MSB161_FINAL_STORYBOARD",
+        "role": "final_storyboard_panel",
+        "origin": "resource",
+        "path": "media/01_AIGC/final_storyboard_panels/B06/MSB161_final_storyboard_v002.jpg"
+      },
+      {
+        "asset_id": "MSB162_PURE_KEYFRAME",
+        "role": "storyboard_keyframe",
+        "origin": "resource",
+        "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B06/MSB162_v001.png"
+      },
+      {
+        "asset_id": "MSB162_FINAL_STORYBOARD",
+        "role": "final_storyboard_panel",
+        "origin": "resource",
+        "path": "media/01_AIGC/final_storyboard_panels/B06/MSB162_final_storyboard_v002.jpg"
+      },
+      {
+        "asset_id": "MSB163_PURE_KEYFRAME",
+        "role": "storyboard_keyframe",
+        "origin": "resource",
+        "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B06/MSB163_v001.png"
+      },
+      {
+        "asset_id": "MSB163_FINAL_STORYBOARD",
+        "role": "final_storyboard_panel",
+        "origin": "resource",
+        "path": "media/01_AIGC/final_storyboard_panels/B06/MSB163_final_storyboard_v002.jpg"
+      },
+      {
+        "asset_id": "MSB164_PURE_KEYFRAME",
+        "role": "storyboard_keyframe",
+        "origin": "resource",
+        "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B06/MSB164_v001.png"
+      },
+      {
+        "asset_id": "MSB164_FINAL_STORYBOARD",
+        "role": "final_storyboard_panel",
+        "origin": "resource",
+        "path": "media/01_AIGC/final_storyboard_panels/B06/MSB164_final_storyboard_v002.jpg"
+      },
+      {
+        "asset_id": "MSB165_PURE_KEYFRAME",
+        "role": "storyboard_keyframe",
+        "origin": "resource",
+        "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B06/MSB165_v001.png"
+      },
+      {
+        "asset_id": "MSB165_FINAL_STORYBOARD",
+        "role": "final_storyboard_panel",
+        "origin": "resource",
+        "path": "media/01_AIGC/final_storyboard_panels/B06/MSB165_final_storyboard_v002.jpg"
+      },
+      {
+        "asset_id": "MSB166_PURE_KEYFRAME",
+        "role": "storyboard_keyframe",
+        "origin": "resource",
+        "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B06/MSB166_v001.png"
+      },
+      {
+        "asset_id": "MSB166_FINAL_STORYBOARD",
+        "role": "final_storyboard_panel",
+        "origin": "resource",
+        "path": "media/01_AIGC/final_storyboard_panels/B06/MSB166_final_storyboard_v002.jpg"
+      },
+      {
+        "asset_id": "MSB167_PURE_KEYFRAME",
+        "role": "storyboard_keyframe",
+        "origin": "resource",
+        "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B06/MSB167_v001.png"
+      },
+      {
+        "asset_id": "MSB167_FINAL_STORYBOARD",
+        "role": "final_storyboard_panel",
+        "origin": "resource",
+        "path": "media/01_AIGC/final_storyboard_panels/B06/MSB167_final_storyboard_v002.jpg"
+      },
+      {
+        "asset_id": "MSB168_PURE_KEYFRAME",
+        "role": "storyboard_keyframe",
+        "origin": "resource",
+        "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B06/MSB168_v001.png"
+      },
+      {
+        "asset_id": "MSB168_FINAL_STORYBOARD",
+        "role": "final_storyboard_panel",
+        "origin": "resource",
+        "path": "media/01_AIGC/final_storyboard_panels/B06/MSB168_final_storyboard_v002.jpg"
+      },
+      {
+        "asset_id": "MSB169_PURE_KEYFRAME",
+        "role": "storyboard_keyframe",
+        "origin": "resource",
+        "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B06/MSB169_v001.png"
+      },
+      {
+        "asset_id": "MSB169_FINAL_STORYBOARD",
+        "role": "final_storyboard_panel",
+        "origin": "resource",
+        "path": "media/01_AIGC/final_storyboard_panels/B06/MSB169_final_storyboard_v002.jpg"
+      }
+    ],
+    "09_edit": [
+      {
+        "asset_id": "SCN_PHONE_ROUGH_CUT_TIMING",
+        "role": "rough_cut",
+        "path": "09_edit/rough_cut/coin_slot_12shot_timing_plan.md"
+      },
+      {
+        "asset_id": "SCN_PHONE_SOUND_INTENT",
+        "role": "sound_intent",
+        "path": "09_edit/audio/coin_slot_sound_edit_intent_map.md"
+      }
+    ],
+    "10_qa": [
+      {
+        "asset_id": "SCN_PHONE_FIX_QUEUE",
+        "role": "fix_queue",
+        "path": "10_qa/fix_queue/coin_slot_next_batch_fix_queue.md"
+      }
+    ],
+    "11_delivery": [
+      {
+        "asset_id": "SCN_PHONE_DELIVERY_MANIFEST",
+        "role": "delivery_manifest",
+        "path": "11_delivery/manifests/coin_slot_sample_delivery_manifest.md"
+      }
+    ]
+  }
+}

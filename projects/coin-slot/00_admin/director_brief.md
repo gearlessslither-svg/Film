@@ -1,4 +1,4 @@
-# Director Brief
+﻿# Director Brief
 
 ## 核心点子
 

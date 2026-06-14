@@ -1,0 +1,20 @@
+shot_id,batch,clip,clip_title,scene_id,camera,asset_type,priority,beat,pure_path,whitebox_path
+MSB170,B06,19,进入8-bit关卡,SCN_8BIT,CAM_8BIT_01_STAGE_WIDE,keyframe,A,横版舞台建立,media/01_AIGC/visual_assets/pure/micro_storyboard/B06/MSB170_v001.png,media/01_AIGC/whitebox_renders_v2/B06/WB2_8BIT_MSB170.png
+MSB171,B06,19,进入8-bit关卡,SCN_8BIT,CAM_8BIT_01_STAGE_WIDE,start_frame,A,像素小川待机,media/01_AIGC/visual_assets/pure/micro_storyboard/B06/MSB171_v001.png,media/01_AIGC/whitebox_renders_v2/B06/WB2_8BIT_MSB171.png
+MSB172,B06,19,进入8-bit关卡,SCN_8BIT,CAM_8BIT_01_STAGE_WIDE,storyboard,B,UI 初现,media/01_AIGC/visual_assets/pure/micro_storyboard/B06/MSB172_v001.png,media/01_AIGC/whitebox_renders_v2/B06/WB2_8BIT_MSB172.png
+MSB173,B06,19,进入8-bit关卡,SCN_8BIT,CAM_8BIT_01_STAGE_WIDE,storyboard,A,敌人影子右侧,media/01_AIGC/visual_assets/pure/micro_storyboard/B06/MSB173_v001.png,media/01_AIGC/whitebox_renders_v2/B06/WB2_8BIT_MSB173.png
+MSB174,B06,19,进入8-bit关卡,SCN_8BIT,CAM_8BIT_01_STAGE_WIDE,keyframe,A,彬子 mini-boss,media/01_AIGC/visual_assets/pure/micro_storyboard/B06/MSB174_v001.png,media/01_AIGC/whitebox_renders_v2/B06/WB2_8BIT_MSB174.png
+MSB175,B06,19,进入8-bit关卡,SCN_8BIT,CAM_8BIT_01_STAGE_WIDE,storyboard,B,高杆长条敌人,media/01_AIGC/visual_assets/pure/micro_storyboard/B06/MSB175_v001.png,media/01_AIGC/whitebox_renders_v2/B06/WB2_8BIT_MSB175.png
+MSB176,B06,19,进入8-bit关卡,SCN_8BIT,CAM_8BIT_01_STAGE_WIDE,storyboard,A,大海小齐入位,media/01_AIGC/visual_assets/pure/micro_storyboard/B06/MSB176_v001.png,media/01_AIGC/whitebox_renders_v2/B06/WB2_8BIT_MSB176.png
+MSB177,B06,19,进入8-bit关卡,SCN_8BIT,CAM_8BIT_01_STAGE_WIDE,end_frame,A,战斗开始前静止,media/01_AIGC/visual_assets/pure/micro_storyboard/B06/MSB177_v001.png,media/01_AIGC/whitebox_renders_v2/B06/WB2_8BIT_MSB177.png
+MSB178,B06,20,WIN / INSERT COIN,SCN_8BIT,CAM_8BIT_02_WIN_SCREEN,storyboard,A,第一下书包旋风,media/01_AIGC/visual_assets/pure/micro_storyboard/B06/MSB178_v001.png,media/01_AIGC/whitebox_renders_v2/B06/WB2_8BIT_MSB178.png
+MSB179,B06,20,WIN / INSERT COIN,SCN_8BIT,CAM_8BIT_02_WIN_SCREEN,storyboard,A,硬币冲击波,media/01_AIGC/visual_assets/pure/micro_storyboard/B06/MSB179_v001.png,media/01_AIGC/whitebox_renders_v2/B06/WB2_8BIT_MSB179.png
+MSB180,B06,20,WIN / INSERT COIN,SCN_8BIT,CAM_8BIT_02_WIN_SCREEN,storyboard,B,高杆被击退,media/01_AIGC/visual_assets/pure/micro_storyboard/B06/MSB180_v001.png,media/01_AIGC/whitebox_renders_v2/B06/WB2_8BIT_MSB180.png
+MSB181,B06,20,WIN / INSERT COIN,SCN_8BIT,CAM_8BIT_02_WIN_SCREEN,storyboard,B,大海倒退,media/01_AIGC/visual_assets/pure/micro_storyboard/B06/MSB181_v001.png,media/01_AIGC/whitebox_renders_v2/B06/WB2_8BIT_MSB181.png
+MSB182,B06,20,WIN / INSERT COIN,SCN_8BIT,CAM_8BIT_02_WIN_SCREEN,storyboard,B,小齐闪退,media/01_AIGC/visual_assets/pure/micro_storyboard/B06/MSB182_v001.png,media/01_AIGC/whitebox_renders_v2/B06/WB2_8BIT_MSB182.png
+MSB183,B06,20,WIN / INSERT COIN,SCN_8BIT,CAM_8BIT_02_WIN_SCREEN,keyframe,A,彬子 mini-boss 停住,media/01_AIGC/visual_assets/pure/micro_storyboard/B06/MSB183_v001.png,media/01_AIGC/whitebox_renders_v2/B06/WB2_8BIT_MSB183.png
+MSB184,B06,20,WIN / INSERT COIN,SCN_8BIT,CAM_8BIT_02_WIN_SCREEN,end_frame,A,清场瞬间,media/01_AIGC/visual_assets/pure/micro_storyboard/B06/MSB184_v001.png,media/01_AIGC/whitebox_renders_v2/B06/WB2_8BIT_MSB184.png
+MSB185,B06,20,WIN / INSERT COIN,SCN_8BIT,CAM_8BIT_02_WIN_SCREEN,storyboard,A,小川不庆祝,media/01_AIGC/visual_assets/pure/micro_storyboard/B06/MSB185_v001.png,media/01_AIGC/whitebox_renders_v2/B06/WB2_8BIT_MSB185.png
+MSB186,B06,20,WIN / INSERT COIN,SCN_8BIT,CAM_8BIT_02_WIN_SCREEN,keyframe,A,WIN 居中,media/01_AIGC/visual_assets/pure/micro_storyboard/B06/MSB186_v001.png,media/01_AIGC/whitebox_renders_v2/B06/WB2_8BIT_MSB186.png
+MSB187,B06,20,WIN / INSERT COIN,SCN_8BIT,CAM_8BIT_02_WIN_SCREEN,storyboard,A,一秒安静,media/01_AIGC/visual_assets/pure/micro_storyboard/B06/MSB187_v001.png,media/01_AIGC/whitebox_renders_v2/B06/WB2_8BIT_MSB187.png
+MSB188,B06,20,WIN / INSERT COIN,SCN_8BIT,CAM_8BIT_02_WIN_SCREEN,keyframe,A,INSERT COIN 尾针,media/01_AIGC/visual_assets/pure/micro_storyboard/B06/MSB188_v001.png,media/01_AIGC/whitebox_renders_v2/B06/WB2_8BIT_MSB188.png

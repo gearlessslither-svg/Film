@@ -1,4 +1,4 @@
-# 投币口 / Next Actions Under Latest Pack Rules
+﻿# 投币口 / Next Actions Under Latest Pack Rules
 
 1. Generate A-priority pure MSB story frames from `configs/micro_storyboard_panel_plan.csv`, using approved character anchors, environment bible, and approved whitebox references.
 2. Save generated files to their declared `pure_path`; do not place whiteboxes, contact sheets, or character references in final story folders as substitutes.

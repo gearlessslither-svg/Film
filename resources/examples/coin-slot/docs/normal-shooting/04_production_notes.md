@@ -1,4 +1,4 @@
-# 投币口 / 02_Normal_Shooting 制作备注 v2
+﻿# 投币口 / 02_Normal_Shooting 制作备注 v2
 
 ## 可拍摄性
 

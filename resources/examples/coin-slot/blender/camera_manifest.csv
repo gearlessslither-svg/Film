@@ -1,4 +1,4 @@
-camera_id,image,location,lens_or_ortho,note
+﻿camera_id,image,location,lens_or_ortho,note
 CAM_COMPOUND_01_ESTABLISH,E:\视觉\投币口\01_AIGC\whitebox_renders\CAM_COMPOUND_01_ESTABLISH.png,"(-17.0, -8.2, 1.55)",24.0mm,Old residential compound establishing view: remote ground-floor arcade corner.
 CAM_COMPOUND_02_BROTHERS_APPROACH,E:\视觉\投币口\01_AIGC\whitebox_renders\CAM_COMPOUND_02_BROTHERS_APPROACH.png,"(-20.8, -4.2, 1.15)",28.0mm,Older brother-like boy leads two younger brothers toward hidden arcade door.
 CAM_ARCADE_01_ENTRANCE_WIDE,E:\视觉\投币口\01_AIGC\whitebox_renders\CAM_ARCADE_01_ENTRANCE_WIDE.png,"(0.0, -5.4, 1.2)",22.0mm,Arcade entrance axis: children enter toward machine rows.

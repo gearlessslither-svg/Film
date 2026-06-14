@@ -1,4 +1,4 @@
----
+﻿---
 name: aigc-film-project-auditor
 description: Audit an AIGC film or video project folder for missing workflow assets, weak stage evidence, aesthetic risks, cinematic storytelling gaps, lookdev/previs/shot/prompt readiness, and industrial production blockers. Use when the user asks for one-click analysis of all current project steps, an asset health report, missing-work suggestions, creative QA, film-language review, or recommendations before batch image/video generation.
 ---

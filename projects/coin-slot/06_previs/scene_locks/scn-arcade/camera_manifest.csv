@@ -1,4 +1,4 @@
-shot_id,sequence,story_beat,duration_sec,aspect_ratio,location,camera,action,lighting,start_frame,end_frame,prompt_path,status
+﻿shot_id,sequence,story_beat,duration_sec,aspect_ratio,location,camera,action,lighting,start_frame,end_frame,prompt_path,status
 MSB019,03,门帘擦镜,2.0,16:9,SCN_ARCADE,CAM_ARCADE_01_ENTRANCE_WIDE,门帘晃动作为隐藏剪辑,"1990s damp night, CRT blue-green practicals, warm street spill, low-key realism",whitebox_renders_v2/B01/WB2_ARCADE_MSB019.png,visual_assets/pure/micro_storyboard/B01/MSB019_v001.png,07_shots/prompts/MSB019.md,sample_ready
 MSB020,03,三兄弟入口剪影,2.0,16:9,SCN_ARCADE,CAM_ARCADE_01_ENTRANCE_WIDE,站位保持阿磊前、小川中、小满后,"1990s damp night, CRT blue-green practicals, warm street spill, low-key realism",whitebox_renders_v2/B01/WB2_ARCADE_MSB020.png,visual_assets/pure/micro_storyboard/B01/MSB020_v001.png,07_shots/prompts/MSB020.md,sample_ready
 MSB025,03,摇杆按钮前景,2.0,16:9,SCN_ARCADE,CAM_ARCADE_01_ENTRANCE_WIDE,固定近景,"1990s damp night, CRT blue-green practicals, warm street spill, low-key realism",whitebox_renders_v2/B01/WB2_ARCADE_MSB025.png,visual_assets/pure/micro_storyboard/B01/MSB025_v001.png,07_shots/prompts/MSB025.md,sample_ready

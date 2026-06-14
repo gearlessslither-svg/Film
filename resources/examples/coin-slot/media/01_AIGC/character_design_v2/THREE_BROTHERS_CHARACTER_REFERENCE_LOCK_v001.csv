@@ -1,4 +1,4 @@
-character_id,character_name,stage,required_reference_path,identity_lock,status
+﻿character_id,character_name,stage,required_reference_path,identity_lock,status
 CHR_BRO_A,阿磊,S0_START_CLEAN,character_design_v2/CHR_BRO_A_older_brother_turnaround_expression_v001_glasses.png,"old thin-frame glasses required; navy track jacket with red-white diagonal stripe; older angular child pretending calm",active_required_reference
 CHR_BRO_B,小川,S0_START_CLEAN,character_design_v2/CHR_BRO_B_protagonist_turnaround_expression_v001_distinct.png,"skinny narrow 7-year-old protagonist; blue-white school jacket; tight red scarf; pale green backpack; anxious alert face",active_required_reference
 CHR_BRO_C,小满,S0_START_CLEAN,character_design_v2/CHR_BRO_C_younger_brother_turnaround_expression_v001_chubby.png,"small chubby youngest brother; round forehead and cheeks; warm padded vest; loose patched trousers; slow timid expression",active_required_reference

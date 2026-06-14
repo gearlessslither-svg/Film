@@ -1,2 +1,2 @@
-qa_id,asset_id,pair_or_character,checked_path,status,problem,required_fix,decision
+﻿qa_id,asset_id,pair_or_character,checked_path,status,problem,required_fix,decision
 CQA_001,CHAR_A_FRONT,阿磊身份锁 / Alei identity lock,visual_assets/pure/character_design/CHAR_A_FRONT_v001.png,approved / 已批准,"早期 S0 接触表使用了无眼镜阿磊候选，违反当前身份锁 / Earlier S0 contact sheet used a no-glasses Alei candidate, which violates the current identity lock.",使用 v003_clean_glasses 作为正式阿磊 S0 锚点；无眼镜候选仅作参考 / Use v003_clean_glasses as the formal Alei S0 anchor; no-glasses candidate is reference-only.,批准为锚点 / approved_anchor

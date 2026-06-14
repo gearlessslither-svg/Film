@@ -1,4 +1,4 @@
----
+﻿---
 name: aigc-film-pipeline
 description: Use when planning, continuing, QAing, or packaging an AIGC-first short-film production pipeline with story-stage locks, character continuity, Blender or whitebox spatial references, pure versus annotated image passes, audio cue sheets, animatics, final storyboard video, and validation scripts.
 ---

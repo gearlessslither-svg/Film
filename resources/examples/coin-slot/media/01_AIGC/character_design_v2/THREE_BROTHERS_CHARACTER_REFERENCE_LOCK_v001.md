@@ -1,4 +1,4 @@
-# Three Brothers Character Reference Lock v001
+﻿# Three Brothers Character Reference Lock v001
 
 Status: active for all future storyboard/keyframe/video generation containing the three brothers.
 

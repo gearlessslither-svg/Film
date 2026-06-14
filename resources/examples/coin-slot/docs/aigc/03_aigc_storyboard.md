@@ -1,4 +1,4 @@
-# 投币口 / 01_AIGC 叙事镜头表 v4
+﻿# 投币口 / 01_AIGC 叙事镜头表 v4
 
 说明：本文件保留 20 镜叙事顺序，负责故事逻辑和镜头衔接，不再承担全部图生视频控制。实际生成前请优先查看 `12_motion_control_table.md`、`13_generation_units.md` 和 `14_structured_video_prompts.md`。
 

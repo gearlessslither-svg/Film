@@ -1,0 +1,274 @@
+{
+  "schema_version": 1,
+  "project_slug": "coin-slot",
+  "scene_id": "SCN_ARCADE_EXIT",
+  "scene_slug": "scn-arcade-exit",
+  "title": "游戏厅出口 / Arcade exit",
+  "source": "resources/examples/coin-slot/csv/micro_storyboard_pure_image_prompts.csv",
+  "updated_at": "2026-06-14T15:53:58+08:00",
+  "shot_ids": [
+    "MSB058",
+    "MSB059",
+    "MSB060",
+    "MSB061",
+    "MSB062",
+    "MSB063",
+    "MSB064",
+    "MSB065"
+  ],
+  "stage_assets": {
+    "03_story": [
+      {
+        "asset_id": "SCN_ARCADE_EXIT_STORY_BEATS",
+        "role": "beat_sheet",
+        "path": "03_story/beats/coin_slot_sample_beat_sheet.md"
+      },
+      {
+        "asset_id": "SCN_ARCADE_EXIT_FULL_SHOT_LIST",
+        "role": "full_shot_list",
+        "path": "07_shots/shot_list.csv"
+      }
+    ],
+    "04_lookdev": [
+      {
+        "asset_id": "SCN_ARCADE_EXIT_LOOK_BIBLE",
+        "role": "look_bible",
+        "path": "04_lookdev/references/coin_slot_look_bible_v001.md"
+      },
+      {
+        "asset_id": "SCN_ARCADE_EXIT_VISUAL_REFS",
+        "role": "visual_references",
+        "path": "04_lookdev/references/coin_slot_visual_references.md"
+      },
+      {
+        "asset_id": "SCN_ARCADE_EXIT_SCENE_REFERENCE",
+        "role": "scene_reference",
+        "origin": "resource",
+        "path": "media/01_AIGC/scene_refs/SC_03_arcade_exit_v001.png"
+      }
+    ],
+    "05_asset_bible": [
+      {
+        "asset_id": "SCN_ARCADE_EXIT_CHARACTER_STAGE_LOCKS",
+        "role": "character_stage_locks",
+        "path": "05_asset_bible/character_stage_locks/coin_slot_character_stage_locks.md"
+      },
+      {
+        "asset_id": "SCN_ARCADE_EXIT_LOCATION_BIBLE",
+        "role": "location_bible",
+        "path": "05_asset_bible/locations/coin_slot_location_bible.md"
+      },
+      {
+        "asset_id": "SCN_ARCADE_EXIT_CONTINUITY_LOCKS",
+        "role": "continuity_locks",
+        "path": "05_asset_bible/continuity/coin_slot_continuity_locks.md"
+      }
+    ],
+    "06_previs": [
+      {
+        "asset_id": "SCN_ARCADE_EXIT_WHITEBOX_INDEX",
+        "role": "whitebox_index",
+        "path": "06_previs/scene_locks/scn-arcade-exit/whitebox_index.csv"
+      },
+      {
+        "asset_id": "MSB058_WHITEBOX",
+        "role": "whitebox",
+        "origin": "resource",
+        "path": "media/01_AIGC/whitebox_renders_v2/B03/WB2_EXIT_MSB058.png"
+      },
+      {
+        "asset_id": "MSB059_WHITEBOX",
+        "role": "whitebox",
+        "origin": "resource",
+        "path": "media/01_AIGC/whitebox_renders_v2/B03/WB2_EXIT_MSB059.png"
+      },
+      {
+        "asset_id": "MSB060_WHITEBOX",
+        "role": "whitebox",
+        "origin": "resource",
+        "path": "media/01_AIGC/whitebox_renders_v2/B03/WB2_EXIT_MSB060.png"
+      },
+      {
+        "asset_id": "MSB061_WHITEBOX",
+        "role": "whitebox",
+        "origin": "resource",
+        "path": "media/01_AIGC/whitebox_renders_v2/B03/WB2_EXIT_MSB061.png"
+      },
+      {
+        "asset_id": "MSB062_WHITEBOX",
+        "role": "whitebox",
+        "origin": "resource",
+        "path": "media/01_AIGC/whitebox_renders_v2/B03/WB2_EXIT_MSB062.png"
+      },
+      {
+        "asset_id": "MSB063_WHITEBOX",
+        "role": "whitebox",
+        "origin": "resource",
+        "path": "media/01_AIGC/whitebox_renders_v2/B03/WB2_EXIT_MSB063.png"
+      },
+      {
+        "asset_id": "MSB064_WHITEBOX",
+        "role": "whitebox",
+        "origin": "resource",
+        "path": "media/01_AIGC/whitebox_renders_v2/B03/WB2_EXIT_MSB064.png"
+      },
+      {
+        "asset_id": "MSB065_WHITEBOX",
+        "role": "whitebox",
+        "origin": "resource",
+        "path": "media/01_AIGC/whitebox_renders_v2/B03/WB2_EXIT_MSB065.png"
+      }
+    ],
+    "07_shots": [
+      {
+        "asset_id": "SCN_ARCADE_EXIT_SHOT_INDEX_188",
+        "role": "scene_shot_index",
+        "path": "07_shots/scene_slices/SCN_ARCADE_EXIT_shot_index.csv"
+      },
+      {
+        "asset_id": "SCN_ARCADE_EXIT_PROMPT_PACK_188",
+        "role": "scene_prompt_pack",
+        "path": "07_shots/scene_slices/SCN_ARCADE_EXIT_prompt_pack.csv"
+      },
+      {
+        "asset_id": "MSB058_IMAGE_PROMPT",
+        "role": "image_prompt",
+        "path": "07_shots/prompts/MSB058.md"
+      },
+      {
+        "asset_id": "MSB058_VIDEO_PROMPT",
+        "role": "video_prompt",
+        "path": "07_shots/video_prompts/MSB058.md"
+      }
+    ],
+    "08_generation": [
+      {
+        "asset_id": "SCN_ARCADE_EXIT_STORYBOARD_IMAGE_INDEX",
+        "role": "storyboard_image_index",
+        "path": "08_generation/outputs/images/SCN_ARCADE_EXIT_storyboard_image_index.csv"
+      },
+      {
+        "asset_id": "MSB058_PURE_KEYFRAME",
+        "role": "storyboard_keyframe",
+        "origin": "resource",
+        "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B03/MSB058_v001.png"
+      },
+      {
+        "asset_id": "MSB058_FINAL_STORYBOARD",
+        "role": "final_storyboard_panel",
+        "origin": "resource",
+        "path": "media/01_AIGC/final_storyboard_panels/B03/MSB058_final_storyboard_v002.jpg"
+      },
+      {
+        "asset_id": "MSB059_PURE_KEYFRAME",
+        "role": "storyboard_keyframe",
+        "origin": "resource",
+        "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B03/MSB059_v001.png"
+      },
+      {
+        "asset_id": "MSB059_FINAL_STORYBOARD",
+        "role": "final_storyboard_panel",
+        "origin": "resource",
+        "path": "media/01_AIGC/final_storyboard_panels/B03/MSB059_final_storyboard_v002.jpg"
+      },
+      {
+        "asset_id": "MSB060_PURE_KEYFRAME",
+        "role": "storyboard_keyframe",
+        "origin": "resource",
+        "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B03/MSB060_v001.png"
+      },
+      {
+        "asset_id": "MSB060_FINAL_STORYBOARD",
+        "role": "final_storyboard_panel",
+        "origin": "resource",
+        "path": "media/01_AIGC/final_storyboard_panels/B03/MSB060_final_storyboard_v002.jpg"
+      },
+      {
+        "asset_id": "MSB061_PURE_KEYFRAME",
+        "role": "storyboard_keyframe",
+        "origin": "resource",
+        "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B03/MSB061_v001.png"
+      },
+      {
+        "asset_id": "MSB061_FINAL_STORYBOARD",
+        "role": "final_storyboard_panel",
+        "origin": "resource",
+        "path": "media/01_AIGC/final_storyboard_panels/B03/MSB061_final_storyboard_v002.jpg"
+      },
+      {
+        "asset_id": "MSB062_PURE_KEYFRAME",
+        "role": "storyboard_keyframe",
+        "origin": "resource",
+        "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B03/MSB062_v001.png"
+      },
+      {
+        "asset_id": "MSB062_FINAL_STORYBOARD",
+        "role": "final_storyboard_panel",
+        "origin": "resource",
+        "path": "media/01_AIGC/final_storyboard_panels/B03/MSB062_final_storyboard_v002.jpg"
+      },
+      {
+        "asset_id": "MSB063_PURE_KEYFRAME",
+        "role": "storyboard_keyframe",
+        "origin": "resource",
+        "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B03/MSB063_v001.png"
+      },
+      {
+        "asset_id": "MSB063_FINAL_STORYBOARD",
+        "role": "final_storyboard_panel",
+        "origin": "resource",
+        "path": "media/01_AIGC/final_storyboard_panels/B03/MSB063_final_storyboard_v002.jpg"
+      },
+      {
+        "asset_id": "MSB064_PURE_KEYFRAME",
+        "role": "storyboard_keyframe",
+        "origin": "resource",
+        "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B03/MSB064_v001.png"
+      },
+      {
+        "asset_id": "MSB064_FINAL_STORYBOARD",
+        "role": "final_storyboard_panel",
+        "origin": "resource",
+        "path": "media/01_AIGC/final_storyboard_panels/B03/MSB064_final_storyboard_v002.jpg"
+      },
+      {
+        "asset_id": "MSB065_PURE_KEYFRAME",
+        "role": "storyboard_keyframe",
+        "origin": "resource",
+        "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B03/MSB065_v001.png"
+      },
+      {
+        "asset_id": "MSB065_FINAL_STORYBOARD",
+        "role": "final_storyboard_panel",
+        "origin": "resource",
+        "path": "media/01_AIGC/final_storyboard_panels/B03/MSB065_final_storyboard_v002.jpg"
+      }
+    ],
+    "09_edit": [
+      {
+        "asset_id": "SCN_ARCADE_EXIT_ROUGH_CUT_TIMING",
+        "role": "rough_cut",
+        "path": "09_edit/rough_cut/coin_slot_12shot_timing_plan.md"
+      },
+      {
+        "asset_id": "SCN_ARCADE_EXIT_SOUND_INTENT",
+        "role": "sound_intent",
+        "path": "09_edit/audio/coin_slot_sound_edit_intent_map.md"
+      }
+    ],
+    "10_qa": [
+      {
+        "asset_id": "SCN_ARCADE_EXIT_FIX_QUEUE",
+        "role": "fix_queue",
+        "path": "10_qa/fix_queue/coin_slot_next_batch_fix_queue.md"
+      }
+    ],
+    "11_delivery": [
+      {
+        "asset_id": "SCN_ARCADE_EXIT_DELIVERY_MANIFEST",
+        "role": "delivery_manifest",
+        "path": "11_delivery/manifests/coin_slot_sample_delivery_manifest.md"
+      }
+    ]
+  }
+}

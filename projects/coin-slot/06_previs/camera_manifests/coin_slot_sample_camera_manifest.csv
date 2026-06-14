@@ -1,4 +1,4 @@
-shot_id,camera,shot_size,whitebox_reference_path,spatial_lock,blocking,movement
+﻿shot_id,camera,shot_size,whitebox_reference_path,spatial_lock,blocking,movement
 MSB001,CAM_COMPOUND_01_ESTABLISH,远景,whitebox_renders_v2/B01/WB2_COMPOUND_MSB001.png,"Follow whitebox_renders_v2/B01/WB2_COMPOUND_MSB001.png; preserve axis, scale, foreground/midground/background, and subject blocking.",潮湿地面和破自行车占前景，居民楼底层角落被压在画面右后方,locked-off，低机位，轻微前推
 MSB003,CAM_COMPOUND_01_ESTABLISH,中远景,whitebox_renders_v2/B01/WB2_COMPOUND_MSB003.png,"Follow whitebox_renders_v2/B01/WB2_COMPOUND_MSB003.png; preserve axis, scale, foreground/midground/background, and subject blocking.",一扇不起眼的门里漏出蓝绿 CRT 光，门口杂草和水渍清楚,只允许光轻闪
 MSB006,CAM_COMPOUND_01_ESTABLISH,特写,whitebox_renders_v2/B01/WB2_COMPOUND_MSB006.png,"Follow whitebox_renders_v2/B01/WB2_COMPOUND_MSB006.png; preserve axis, scale, foreground/midground/background, and subject blocking.",潮湿地面水洼反射出微弱 CRT 色块，旁边有碎石和烟头,低角度近景

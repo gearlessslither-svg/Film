@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "change_request_id": "CR_SCN_001_YYYYMMDD_001",
+  "project_slug": "new-project",
+  "scene_id": "SCN_001",
+  "trigger_step": "06_previs",
+  "trigger_asset_id": "",
+  "creative_direction": "",
+  "status": "draft",
+  "created_at": "",
+  "impact_table": [
+    {
+      "impact_id": "I001",
+      "action": "modify",
+      "impact_scope": "direct",
+      "asset_id": "",
+      "stage_id": "06_previs",
+      "path": "",
+      "why": "",
+      "action_overridden": false,
+      "selected": true
+    },
+    {
+      "impact_id": "I002",
+      "action": "create",
+      "impact_scope": "downstream",
+      "asset_id": "",
+      "stage_id": "08_generation",
+      "path": "",
+      "why": "",
+      "action_overridden": false,
+      "selected": false
+    }
+  ],
+  "generation_queue": [
+    {
+      "queue_id": "GEN_CR_SCN_001_YYYYMMDD_001_001",
+      "asset_id": "",
+      "stage_id": "",
+      "target_version": "v001",
+      "action": "modify",
+      "path": "",
+      "result_path": "",
+      "packet_path": "",
+      "final_output_path": "",
+      "status": "queued"
+    }
+  ],
+  "generation_run": {
+    "adapter": "",
+    "status": "",
+    "started_at": "",
+    "completed_at": "",
+    "item_count": 0,
+    "notes": ""
+  },
+  "approval": {
+    "user_confirmed": false,
+    "confirmed_at": "",
+    "notes": ""
+  }
+}

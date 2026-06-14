@@ -1,4 +1,4 @@
-# 投币口 / 01_AIGC 微分镜图像提示词使用说明 v1
+﻿# 投币口 / 01_AIGC 微分镜图像提示词使用说明 v1
 
 完整提示词表：`exports/micro_storyboard_image_prompts.csv`，共 188 行，对应 MSB001-MSB188。
 

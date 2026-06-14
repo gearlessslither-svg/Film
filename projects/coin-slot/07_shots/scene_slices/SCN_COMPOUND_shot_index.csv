@@ -1,0 +1,19 @@
+shot_id,batch,clip,clip_title,scene_id,camera,asset_type,priority,beat,pure_path,whitebox_path
+MSB001,B01,01,老小区建立,SCN_COMPOUND,CAM_COMPOUND_01_ESTABLISH,storyboard,A,空镜压低视线,media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB001_v001.png,media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB001.png
+MSB002,B01,01,老小区建立,SCN_COMPOUND,CAM_COMPOUND_01_ESTABLISH,storyboard,A,居民楼像迷宫,media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB002_v001.png,media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB002.png
+MSB003,B01,01,老小区建立,SCN_COMPOUND,CAM_COMPOUND_01_ESTABLISH,keyframe,A,门缝 CRT 光,media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB003_v001.png,media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB003.png
+MSB004,B01,01,老小区建立,SCN_COMPOUND,CAM_COMPOUND_01_ESTABLISH,storyboard,B,旧招牌细节,media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB004_v001.png,media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB004.png
+MSB005,B01,01,老小区建立,SCN_COMPOUND,CAM_COMPOUND_01_ESTABLISH,storyboard,B,楼道暗处,media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB005_v001.png,media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB005.png
+MSB006,B01,01,老小区建立,SCN_COMPOUND,CAM_COMPOUND_01_ESTABLISH,storyboard,B,CRT 反光到水面,media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB006_v001.png,media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB006.png
+MSB007,B01,01,老小区建立,SCN_COMPOUND,CAM_COMPOUND_01_ESTABLISH,start_frame,A,空间方向确认,media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB007_v001.png,media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB007.png
+MSB008,B01,01,老小区建立,SCN_COMPOUND,CAM_COMPOUND_01_ESTABLISH,end_frame,A,等待人物进入,media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB008_v001.png,media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB008.png
+MSB009,B01,02,三兄弟靠近,SCN_COMPOUND,CAM_COMPOUND_02_BROTHERS_APPROACH,storyboard,A,阿磊先进画,media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB009_v001.png,media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB009.png
+MSB010,B01,02,三兄弟靠近,SCN_COMPOUND,CAM_COMPOUND_02_BROTHERS_APPROACH,storyboard,A,小川跟半步,media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB010_v001.png,media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB010.png
+MSB011,B01,02,三兄弟靠近,SCN_COMPOUND,CAM_COMPOUND_02_BROTHERS_APPROACH,storyboard,A,小满贴最后,media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB011_v001.png,media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB011.png
+MSB012,B01,02,三兄弟靠近,SCN_COMPOUND,CAM_COMPOUND_02_BROTHERS_APPROACH,keyframe,A,三人身高差,media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB012_v001.png,media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB012.png
+MSB013,B01,02,三兄弟靠近,SCN_COMPOUND,CAM_COMPOUND_02_BROTHERS_APPROACH,storyboard,B,阿磊回头催,media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB013_v001.png,media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB013.png
+MSB014,B01,02,三兄弟靠近,SCN_COMPOUND,CAM_COMPOUND_02_BROTHERS_APPROACH,storyboard,A,门口吸引小川,media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB014_v001.png,media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB014.png
+MSB015,B01,02,三兄弟靠近,SCN_COMPOUND,CAM_COMPOUND_02_BROTHERS_APPROACH,storyboard,B,小满被光吓到,media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB015_v001.png,media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB015.png
+MSB016,B01,02,三兄弟靠近,SCN_COMPOUND,CAM_COMPOUND_02_BROTHERS_APPROACH,end_frame,A,三人到门前,media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB016_v001.png,media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB016.png
+MSB017,B01,02,三兄弟靠近,SCN_COMPOUND,CAM_COMPOUND_02_BROTHERS_APPROACH,storyboard,B,阿磊伸手,media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB017_v001.png,media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB017.png
+MSB018,B01,02,三兄弟靠近,SCN_COMPOUND,CAM_COMPOUND_02_BROTHERS_APPROACH,keyframe,A,门帘前停顿,media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB018_v001.png,media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB018.png

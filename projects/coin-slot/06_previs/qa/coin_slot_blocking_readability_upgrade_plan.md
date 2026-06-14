@@ -1,4 +1,4 @@
-# Blocking Readability Upgrade Plan
+﻿# Blocking Readability Upgrade Plan
 
 Project: 投币口
 Generated at: 2026-06-13T16:32:49+08:00

@@ -1,4 +1,4 @@
-delta_id,aigc_range,value,pure_path,status
+﻿delta_id,aigc_range,value,pure_path,status
 NS_DELTA_001,Clip 02,真实儿童走路节奏和身高差,02_Normal_Shooting/delta_references/NS_DELTA_001_three_brothers_walk_v001.png,planned
 NS_DELTA_002,Clip 03,脏门帘擦镜、CRT 光吞掉孩子,02_Normal_Shooting/delta_references/NS_DELTA_002_plastic_curtain_arcade_v001.png,planned
 NS_DELTA_003,Clip 05,手、按钮、屏幕、脸部红光的连续反应,02_Normal_Shooting/delta_references/NS_DELTA_003_arcade_reaction_v001.png,planned

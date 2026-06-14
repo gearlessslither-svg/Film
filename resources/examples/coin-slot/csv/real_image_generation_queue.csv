@@ -1,4 +1,4 @@
-panel_id,batch,clip,clip_title,priority,story_stage,pure_path,annotated_path,whitebox_reference_path,status,production_order,notes
+﻿panel_id,batch,clip,clip_title,priority,story_stage,pure_path,annotated_path,whitebox_reference_path,status,production_order,notes
 MSB001,B01,01,老小区建立,A,S0_START_CLEAN,visual_assets/pure/micro_storyboard/B01/MSB001_v001.png,visual_assets/annotated/micro_storyboard/B01/MSB001_v001_annotated.png,whitebox_renders_v2/B01/WB2_COMPOUND_MSB001.png,generated_passed_qa,1,pure generated and QA passed; image=1672x941; annotated_exists=True
 MSB002,B01,01,老小区建立,A,S0_START_CLEAN,visual_assets/pure/micro_storyboard/B01/MSB002_v001.png,visual_assets/annotated/micro_storyboard/B01/MSB002_v001_annotated.png,whitebox_renders_v2/B01/WB2_COMPOUND_MSB002.png,generated_passed_qa,2,pure generated and QA passed; image=1672x941; annotated_exists=True
 MSB003,B01,01,老小区建立,A,S0_START_CLEAN,visual_assets/pure/micro_storyboard/B01/MSB003_v001.png,visual_assets/annotated/micro_storyboard/B01/MSB003_v001_annotated.png,whitebox_renders_v2/B01/WB2_COMPOUND_MSB003.png,generated_passed_qa,3,pure generated and QA passed; image=1672x941; annotated_exists=True

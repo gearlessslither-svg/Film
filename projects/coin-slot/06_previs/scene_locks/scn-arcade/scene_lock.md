@@ -1,4 +1,4 @@
-# Scene Lock Pack - SCN_ARCADE
+﻿# Scene Lock Pack - SCN_ARCADE
 
 Generated at: 2026-06-14T00:22:28+08:00
 

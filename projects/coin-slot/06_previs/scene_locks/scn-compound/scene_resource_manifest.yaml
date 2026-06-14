@@ -1,0 +1,539 @@
+{
+  "schema_version": 1,
+  "project_slug": "coin-slot",
+  "scene_id": "SCN_COMPOUND",
+  "scene_slug": "scn-compound",
+  "title": "居民楼角落 / Compound corner",
+  "source": "resources/examples/coin-slot/csv/micro_storyboard_pure_image_prompts.csv",
+  "updated_at": "2026-06-14T15:53:58+08:00",
+  "shot_ids": [
+    "MSB001",
+    "MSB002",
+    "MSB003",
+    "MSB004",
+    "MSB005",
+    "MSB006",
+    "MSB007",
+    "MSB008",
+    "MSB009",
+    "MSB010",
+    "MSB011",
+    "MSB012",
+    "MSB013",
+    "MSB014",
+    "MSB015",
+    "MSB016",
+    "MSB017",
+    "MSB018"
+  ],
+  "stage_assets": {
+    "03_story": [
+      {
+        "asset_id": "SCN_COMPOUND_STORY_BEATS",
+        "role": "beat_sheet",
+        "path": "03_story/beats/coin_slot_sample_beat_sheet.md"
+      },
+      {
+        "asset_id": "SCN_COMPOUND_FULL_SHOT_LIST",
+        "role": "full_shot_list",
+        "path": "07_shots/shot_list.csv"
+      }
+    ],
+    "04_lookdev": [
+      {
+        "asset_id": "SCN_COMPOUND_LOOK_BIBLE",
+        "role": "look_bible",
+        "path": "04_lookdev/references/coin_slot_look_bible_v001.md"
+      },
+      {
+        "asset_id": "SCN_COMPOUND_COLOR_SCRIPT",
+        "role": "color_script",
+        "path": "04_lookdev/palettes/coin_slot_color_script.md"
+      },
+      {
+        "asset_id": "SCN_COMPOUND_VISUAL_REFS",
+        "role": "visual_references",
+        "path": "04_lookdev/references/coin_slot_visual_references.md"
+      },
+      {
+        "asset_id": "SCN_COMPOUND_SCENE_REFERENCE",
+        "role": "scene_reference",
+        "origin": "resource",
+        "path": "media/01_AIGC/scene_refs/SC_01_compound_corner_v001.png"
+      }
+    ],
+    "05_asset_bible": [
+      {
+        "asset_id": "SCN_COMPOUND_CHARACTER_STAGE_LOCKS",
+        "role": "character_stage_locks",
+        "path": "05_asset_bible/character_stage_locks/coin_slot_character_stage_locks.md"
+      },
+      {
+        "asset_id": "SCN_COMPOUND_LOCATION_BIBLE",
+        "role": "location_bible",
+        "path": "05_asset_bible/locations/coin_slot_location_bible.md"
+      },
+      {
+        "asset_id": "SCN_COMPOUND_CONTINUITY_LOCKS",
+        "role": "continuity_locks",
+        "path": "05_asset_bible/continuity/coin_slot_continuity_locks.md"
+      }
+    ],
+    "06_previs": [
+      {
+        "asset_id": "SCN_COMPOUND_SCENE_LOCK",
+        "role": "scene_lock",
+        "path": "06_previs/scene_locks/scn-compound/scene_lock.yaml"
+      },
+      {
+        "asset_id": "SCN_COMPOUND_CAMERA_MANIFEST",
+        "role": "camera_manifest",
+        "path": "06_previs/scene_locks/scn-compound/camera_manifest.csv"
+      },
+      {
+        "asset_id": "SCN_COMPOUND_REFERENCE_ASSETS",
+        "role": "reference_assets",
+        "path": "06_previs/scene_locks/scn-compound/reference_assets.md"
+      },
+      {
+        "asset_id": "SCN_COMPOUND_WHITEBOX_INDEX",
+        "role": "whitebox_index",
+        "path": "06_previs/scene_locks/scn-compound/whitebox_index.csv"
+      },
+      {
+        "asset_id": "MSB001_WHITEBOX",
+        "role": "whitebox",
+        "origin": "resource",
+        "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB001.png"
+      },
+      {
+        "asset_id": "MSB002_WHITEBOX",
+        "role": "whitebox",
+        "origin": "resource",
+        "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB002.png"
+      },
+      {
+        "asset_id": "MSB003_WHITEBOX",
+        "role": "whitebox",
+        "origin": "resource",
+        "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB003.png"
+      },
+      {
+        "asset_id": "MSB004_WHITEBOX",
+        "role": "whitebox",
+        "origin": "resource",
+        "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB004.png"
+      },
+      {
+        "asset_id": "MSB005_WHITEBOX",
+        "role": "whitebox",
+        "origin": "resource",
+        "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB005.png"
+      },
+      {
+        "asset_id": "MSB006_WHITEBOX",
+        "role": "whitebox",
+        "origin": "resource",
+        "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB006.png"
+      },
+      {
+        "asset_id": "MSB007_WHITEBOX",
+        "role": "whitebox",
+        "origin": "resource",
+        "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB007.png"
+      },
+      {
+        "asset_id": "MSB008_WHITEBOX",
+        "role": "whitebox",
+        "origin": "resource",
+        "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB008.png"
+      },
+      {
+        "asset_id": "MSB009_WHITEBOX",
+        "role": "whitebox",
+        "origin": "resource",
+        "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB009.png"
+      },
+      {
+        "asset_id": "MSB010_WHITEBOX",
+        "role": "whitebox",
+        "origin": "resource",
+        "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB010.png"
+      },
+      {
+        "asset_id": "MSB011_WHITEBOX",
+        "role": "whitebox",
+        "origin": "resource",
+        "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB011.png"
+      },
+      {
+        "asset_id": "MSB012_WHITEBOX",
+        "role": "whitebox",
+        "origin": "resource",
+        "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB012.png"
+      },
+      {
+        "asset_id": "MSB013_WHITEBOX",
+        "role": "whitebox",
+        "origin": "resource",
+        "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB013.png"
+      },
+      {
+        "asset_id": "MSB014_WHITEBOX",
+        "role": "whitebox",
+        "origin": "resource",
+        "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB014.png"
+      },
+      {
+        "asset_id": "MSB015_WHITEBOX",
+        "role": "whitebox",
+        "origin": "resource",
+        "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB015.png"
+      },
+      {
+        "asset_id": "MSB016_WHITEBOX",
+        "role": "whitebox",
+        "origin": "resource",
+        "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB016.png"
+      },
+      {
+        "asset_id": "MSB017_WHITEBOX",
+        "role": "whitebox",
+        "origin": "resource",
+        "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB017.png"
+      },
+      {
+        "asset_id": "MSB018_WHITEBOX",
+        "role": "whitebox",
+        "origin": "resource",
+        "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB018.png"
+      }
+    ],
+    "07_shots": [
+      {
+        "asset_id": "SCN_COMPOUND_SHOT_LIST",
+        "role": "shot_list",
+        "path": "07_shots/shot_list.csv"
+      },
+      {
+        "asset_id": "MSB001_IMAGE_PROMPT",
+        "role": "image_prompt",
+        "path": "07_shots/prompts/MSB001.md"
+      },
+      {
+        "asset_id": "MSB003_IMAGE_PROMPT",
+        "role": "image_prompt",
+        "path": "07_shots/prompts/MSB003.md"
+      },
+      {
+        "asset_id": "MSB006_IMAGE_PROMPT",
+        "role": "image_prompt",
+        "path": "07_shots/prompts/MSB006.md"
+      },
+      {
+        "asset_id": "MSB009_IMAGE_PROMPT",
+        "role": "image_prompt",
+        "path": "07_shots/prompts/MSB009.md"
+      },
+      {
+        "asset_id": "MSB012_IMAGE_PROMPT",
+        "role": "image_prompt",
+        "path": "07_shots/prompts/MSB012.md"
+      },
+      {
+        "asset_id": "SCN_COMPOUND_SHOT_INDEX_188",
+        "role": "scene_shot_index",
+        "path": "07_shots/scene_slices/SCN_COMPOUND_shot_index.csv"
+      },
+      {
+        "asset_id": "SCN_COMPOUND_PROMPT_PACK_188",
+        "role": "scene_prompt_pack",
+        "path": "07_shots/scene_slices/SCN_COMPOUND_prompt_pack.csv"
+      },
+      {
+        "asset_id": "MSB001_VIDEO_PROMPT",
+        "role": "video_prompt",
+        "path": "07_shots/video_prompts/MSB001.md"
+      },
+      {
+        "asset_id": "MSB003_VIDEO_PROMPT",
+        "role": "video_prompt",
+        "path": "07_shots/video_prompts/MSB003.md"
+      },
+      {
+        "asset_id": "MSB006_VIDEO_PROMPT",
+        "role": "video_prompt",
+        "path": "07_shots/video_prompts/MSB006.md"
+      },
+      {
+        "asset_id": "MSB009_VIDEO_PROMPT",
+        "role": "video_prompt",
+        "path": "07_shots/video_prompts/MSB009.md"
+      },
+      {
+        "asset_id": "MSB012_VIDEO_PROMPT",
+        "role": "video_prompt",
+        "path": "07_shots/video_prompts/MSB012.md"
+      }
+    ],
+    "08_generation": [
+      {
+        "asset_id": "SCN_COMPOUND_IMAGE_OUTPUT_INDEX",
+        "role": "image_outputs",
+        "path": "08_generation/outputs/images/coin_slot_image_outputs_index.md"
+      },
+      {
+        "asset_id": "SCN_COMPOUND_REJECT_LOG",
+        "role": "rejects",
+        "path": "08_generation/rejects/coin_slot_reject_log.md"
+      },
+      {
+        "asset_id": "SCN_COMPOUND_STORYBOARD_IMAGE_INDEX",
+        "role": "storyboard_image_index",
+        "path": "08_generation/outputs/images/SCN_COMPOUND_storyboard_image_index.csv"
+      },
+      {
+        "asset_id": "MSB001_PURE_KEYFRAME",
+        "role": "storyboard_keyframe",
+        "origin": "resource",
+        "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB001_v001.png"
+      },
+      {
+        "asset_id": "MSB001_FINAL_STORYBOARD",
+        "role": "final_storyboard_panel",
+        "origin": "resource",
+        "path": "media/01_AIGC/final_storyboard_panels/B01/MSB001_final_storyboard_v002.jpg"
+      },
+      {
+        "asset_id": "MSB002_PURE_KEYFRAME",
+        "role": "storyboard_keyframe",
+        "origin": "resource",
+        "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB002_v001.png"
+      },
+      {
+        "asset_id": "MSB002_FINAL_STORYBOARD",
+        "role": "final_storyboard_panel",
+        "origin": "resource",
+        "path": "media/01_AIGC/final_storyboard_panels/B01/MSB002_final_storyboard_v002.jpg"
+      },
+      {
+        "asset_id": "MSB003_PURE_KEYFRAME",
+        "role": "storyboard_keyframe",
+        "origin": "resource",
+        "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB003_v001.png"
+      },
+      {
+        "asset_id": "MSB003_FINAL_STORYBOARD",
+        "role": "final_storyboard_panel",
+        "origin": "resource",
+        "path": "media/01_AIGC/final_storyboard_panels/B01/MSB003_final_storyboard_v002.jpg"
+      },
+      {
+        "asset_id": "MSB004_PURE_KEYFRAME",
+        "role": "storyboard_keyframe",
+        "origin": "resource",
+        "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB004_v001.png"
+      },
+      {
+        "asset_id": "MSB004_FINAL_STORYBOARD",
+        "role": "final_storyboard_panel",
+        "origin": "resource",
+        "path": "media/01_AIGC/final_storyboard_panels/B01/MSB004_final_storyboard_v002.jpg"
+      },
+      {
+        "asset_id": "MSB005_PURE_KEYFRAME",
+        "role": "storyboard_keyframe",
+        "origin": "resource",
+        "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB005_v001.png"
+      },
+      {
+        "asset_id": "MSB005_FINAL_STORYBOARD",
+        "role": "final_storyboard_panel",
+        "origin": "resource",
+        "path": "media/01_AIGC/final_storyboard_panels/B01/MSB005_final_storyboard_v002.jpg"
+      },
+      {
+        "asset_id": "MSB006_PURE_KEYFRAME",
+        "role": "storyboard_keyframe",
+        "origin": "resource",
+        "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB006_v001.png"
+      },
+      {
+        "asset_id": "MSB006_FINAL_STORYBOARD",
+        "role": "final_storyboard_panel",
+        "origin": "resource",
+        "path": "media/01_AIGC/final_storyboard_panels/B01/MSB006_final_storyboard_v002.jpg"
+      },
+      {
+        "asset_id": "MSB007_PURE_KEYFRAME",
+        "role": "storyboard_keyframe",
+        "origin": "resource",
+        "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB007_v001.png"
+      },
+      {
+        "asset_id": "MSB007_FINAL_STORYBOARD",
+        "role": "final_storyboard_panel",
+        "origin": "resource",
+        "path": "media/01_AIGC/final_storyboard_panels/B01/MSB007_final_storyboard_v002.jpg"
+      },
+      {
+        "asset_id": "MSB008_PURE_KEYFRAME",
+        "role": "storyboard_keyframe",
+        "origin": "resource",
+        "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB008_v001.png"
+      },
+      {
+        "asset_id": "MSB008_FINAL_STORYBOARD",
+        "role": "final_storyboard_panel",
+        "origin": "resource",
+        "path": "media/01_AIGC/final_storyboard_panels/B01/MSB008_final_storyboard_v002.jpg"
+      },
+      {
+        "asset_id": "MSB009_PURE_KEYFRAME",
+        "role": "storyboard_keyframe",
+        "origin": "resource",
+        "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB009_v001.png"
+      },
+      {
+        "asset_id": "MSB009_FINAL_STORYBOARD",
+        "role": "final_storyboard_panel",
+        "origin": "resource",
+        "path": "media/01_AIGC/final_storyboard_panels/B01/MSB009_final_storyboard_v002.jpg"
+      },
+      {
+        "asset_id": "MSB010_PURE_KEYFRAME",
+        "role": "storyboard_keyframe",
+        "origin": "resource",
+        "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB010_v001.png"
+      },
+      {
+        "asset_id": "MSB010_FINAL_STORYBOARD",
+        "role": "final_storyboard_panel",
+        "origin": "resource",
+        "path": "media/01_AIGC/final_storyboard_panels/B01/MSB010_final_storyboard_v002.jpg"
+      },
+      {
+        "asset_id": "MSB011_PURE_KEYFRAME",
+        "role": "storyboard_keyframe",
+        "origin": "resource",
+        "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB011_v001.png"
+      },
+      {
+        "asset_id": "MSB011_FINAL_STORYBOARD",
+        "role": "final_storyboard_panel",
+        "origin": "resource",
+        "path": "media/01_AIGC/final_storyboard_panels/B01/MSB011_final_storyboard_v002.jpg"
+      },
+      {
+        "asset_id": "MSB012_PURE_KEYFRAME",
+        "role": "storyboard_keyframe",
+        "origin": "resource",
+        "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB012_v001.png"
+      },
+      {
+        "asset_id": "MSB012_FINAL_STORYBOARD",
+        "role": "final_storyboard_panel",
+        "origin": "resource",
+        "path": "media/01_AIGC/final_storyboard_panels/B01/MSB012_final_storyboard_v002.jpg"
+      },
+      {
+        "asset_id": "MSB013_PURE_KEYFRAME",
+        "role": "storyboard_keyframe",
+        "origin": "resource",
+        "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB013_v001.png"
+      },
+      {
+        "asset_id": "MSB013_FINAL_STORYBOARD",
+        "role": "final_storyboard_panel",
+        "origin": "resource",
+        "path": "media/01_AIGC/final_storyboard_panels/B01/MSB013_final_storyboard_v002.jpg"
+      },
+      {
+        "asset_id": "MSB014_PURE_KEYFRAME",
+        "role": "storyboard_keyframe",
+        "origin": "resource",
+        "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB014_v001.png"
+      },
+      {
+        "asset_id": "MSB014_FINAL_STORYBOARD",
+        "role": "final_storyboard_panel",
+        "origin": "resource",
+        "path": "media/01_AIGC/final_storyboard_panels/B01/MSB014_final_storyboard_v002.jpg"
+      },
+      {
+        "asset_id": "MSB015_PURE_KEYFRAME",
+        "role": "storyboard_keyframe",
+        "origin": "resource",
+        "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB015_v001.png"
+      },
+      {
+        "asset_id": "MSB015_FINAL_STORYBOARD",
+        "role": "final_storyboard_panel",
+        "origin": "resource",
+        "path": "media/01_AIGC/final_storyboard_panels/B01/MSB015_final_storyboard_v002.jpg"
+      },
+      {
+        "asset_id": "MSB016_PURE_KEYFRAME",
+        "role": "storyboard_keyframe",
+        "origin": "resource",
+        "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB016_v001.png"
+      },
+      {
+        "asset_id": "MSB016_FINAL_STORYBOARD",
+        "role": "final_storyboard_panel",
+        "origin": "resource",
+        "path": "media/01_AIGC/final_storyboard_panels/B01/MSB016_final_storyboard_v002.jpg"
+      },
+      {
+        "asset_id": "MSB017_PURE_KEYFRAME",
+        "role": "storyboard_keyframe",
+        "origin": "resource",
+        "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB017_v001.png"
+      },
+      {
+        "asset_id": "MSB017_FINAL_STORYBOARD",
+        "role": "final_storyboard_panel",
+        "origin": "resource",
+        "path": "media/01_AIGC/final_storyboard_panels/B01/MSB017_final_storyboard_v002.jpg"
+      },
+      {
+        "asset_id": "MSB018_PURE_KEYFRAME",
+        "role": "storyboard_keyframe",
+        "origin": "resource",
+        "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB018_v001.png"
+      },
+      {
+        "asset_id": "MSB018_FINAL_STORYBOARD",
+        "role": "final_storyboard_panel",
+        "origin": "resource",
+        "path": "media/01_AIGC/final_storyboard_panels/B01/MSB018_final_storyboard_v002.jpg"
+      }
+    ],
+    "09_edit": [
+      {
+        "asset_id": "SCN_COMPOUND_ROUGH_CUT_TIMING",
+        "role": "rough_cut",
+        "path": "09_edit/rough_cut/coin_slot_12shot_timing_plan.md"
+      },
+      {
+        "asset_id": "SCN_COMPOUND_SOUND_INTENT",
+        "role": "sound_intent",
+        "path": "09_edit/audio/coin_slot_sound_edit_intent_map.md"
+      }
+    ],
+    "10_qa": [
+      {
+        "asset_id": "SCN_COMPOUND_FIX_QUEUE",
+        "role": "fix_queue",
+        "path": "10_qa/fix_queue/coin_slot_next_batch_fix_queue.md"
+      }
+    ],
+    "11_delivery": [
+      {
+        "asset_id": "SCN_COMPOUND_DELIVERY_MANIFEST",
+        "role": "delivery_manifest",
+        "path": "11_delivery/manifests/coin_slot_sample_delivery_manifest.md"
+      }
+    ]
+  }
+}

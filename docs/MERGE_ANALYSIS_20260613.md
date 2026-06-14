@@ -1,4 +1,4 @@
-# Story / Film Merge Analysis - 2026-06-13
+﻿# Story / Film Merge Analysis - 2026-06-13
 
 Observation time: 2026-06-13 22:25:55 +0800
 

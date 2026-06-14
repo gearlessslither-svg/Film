@@ -1,0 +1,536 @@
+{
+  "schema_version": 1,
+  "project_slug": "coin-slot",
+  "source": "resources/examples/coin-slot/csv/micro_storyboard_pure_image_prompts.csv",
+  "updated_at": "2026-06-14T15:53:58+08:00",
+  "acts": [
+    {
+      "act_id": "ACT01",
+      "title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+      "status": "in_progress",
+      "scenes": [
+        {
+          "scene_id": "SCN_COMPOUND",
+          "scene_slug": "scn-compound",
+          "title": "居民楼角落 / Compound corner",
+          "story_stage": "S0_START_CLEAN",
+          "story_stages": [
+            "S0_START_CLEAN"
+          ],
+          "status": "in_progress",
+          "shot_ids": [
+            "MSB001",
+            "MSB002",
+            "MSB003",
+            "MSB004",
+            "MSB005",
+            "MSB006",
+            "MSB007",
+            "MSB008",
+            "MSB009",
+            "MSB010",
+            "MSB011",
+            "MSB012",
+            "MSB013",
+            "MSB014",
+            "MSB015",
+            "MSB016",
+            "MSB017",
+            "MSB018"
+          ],
+          "clip_summary": [
+            {
+              "clip": "01",
+              "title": "老小区建立",
+              "shot_count": 8,
+              "first_shot": "MSB001",
+              "last_shot": "MSB008"
+            },
+            {
+              "clip": "02",
+              "title": "三兄弟靠近",
+              "shot_count": 10,
+              "first_shot": "MSB009",
+              "last_shot": "MSB018"
+            }
+          ],
+          "primary_steps": [
+            "03_story",
+            "04_lookdev",
+            "05_asset_bible",
+            "06_previs",
+            "07_shots",
+            "08_generation",
+            "09_edit",
+            "10_qa",
+            "11_delivery"
+          ]
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_slug": "scn-arcade",
+          "title": "游戏厅 / Arcade play",
+          "story_stage": "S1_ARCADE_PLAY",
+          "story_stages": [
+            "S1_ARCADE_PLAY"
+          ],
+          "status": "in_progress",
+          "shot_ids": [
+            "MSB019",
+            "MSB020",
+            "MSB021",
+            "MSB022",
+            "MSB023",
+            "MSB024",
+            "MSB025",
+            "MSB026",
+            "MSB027",
+            "MSB028",
+            "MSB029",
+            "MSB030",
+            "MSB031",
+            "MSB032",
+            "MSB033",
+            "MSB034",
+            "MSB035",
+            "MSB036",
+            "MSB037",
+            "MSB038",
+            "MSB039",
+            "MSB040",
+            "MSB041",
+            "MSB042",
+            "MSB043",
+            "MSB044",
+            "MSB045",
+            "MSB046",
+            "MSB047",
+            "MSB048",
+            "MSB049",
+            "MSB050",
+            "MSB051",
+            "MSB052",
+            "MSB053",
+            "MSB054",
+            "MSB055",
+            "MSB056",
+            "MSB057"
+          ],
+          "clip_summary": [
+            {
+              "clip": "03",
+              "title": "游戏厅入口",
+              "shot_count": 10,
+              "first_shot": "MSB019",
+              "last_shot": "MSB028"
+            },
+            {
+              "clip": "04",
+              "title": "找到街霸",
+              "shot_count": 9,
+              "first_shot": "MSB029",
+              "last_shot": "MSB037"
+            },
+            {
+              "clip": "05",
+              "title": "哥哥打赢老大",
+              "shot_count": 12,
+              "first_shot": "MSB038",
+              "last_shot": "MSB049"
+            },
+            {
+              "clip": "06",
+              "title": "老大记仇",
+              "shot_count": 8,
+              "first_shot": "MSB050",
+              "last_shot": "MSB057"
+            }
+          ],
+          "primary_steps": [
+            "03_story",
+            "04_lookdev",
+            "05_asset_bible",
+            "06_previs",
+            "07_shots",
+            "08_generation",
+            "09_edit",
+            "10_qa",
+            "11_delivery"
+          ]
+        }
+      ]
+    },
+    {
+      "act_id": "ACT02",
+      "title": "第二幕：离场与巷道 / Act 2: Exit and alley",
+      "status": "in_progress",
+      "scenes": [
+        {
+          "scene_id": "SCN_ARCADE_EXIT",
+          "scene_slug": "scn-arcade-exit",
+          "title": "游戏厅出口 / Arcade exit",
+          "story_stage": "S2_EXIT_TO_STANDOFF",
+          "story_stages": [
+            "S2_EXIT_TO_STANDOFF"
+          ],
+          "status": "in_progress",
+          "shot_ids": [
+            "MSB058",
+            "MSB059",
+            "MSB060",
+            "MSB061",
+            "MSB062",
+            "MSB063",
+            "MSB064",
+            "MSB065"
+          ],
+          "clip_summary": [
+            {
+              "clip": "07",
+              "title": "志得意满离开",
+              "shot_count": 8,
+              "first_shot": "MSB058",
+              "last_shot": "MSB065"
+            }
+          ],
+          "primary_steps": [
+            "03_story",
+            "04_lookdev",
+            "05_asset_bible",
+            "06_previs",
+            "07_shots",
+            "08_generation",
+            "09_edit",
+            "10_qa",
+            "11_delivery"
+          ]
+        },
+        {
+          "scene_id": "SCN_ALLEY",
+          "scene_slug": "scn-alley",
+          "title": "偏僻小路 / Secluded alley",
+          "story_stage": "S2_EXIT_TO_STANDOFF",
+          "story_stages": [
+            "S2_EXIT_TO_STANDOFF",
+            "S3_ALLEY_PRESSURE",
+            "S4_STONE_ACCIDENT",
+            "S5_ESCAPE_DIRTY"
+          ],
+          "status": "in_progress",
+          "shot_ids": [
+            "MSB066",
+            "MSB067",
+            "MSB068",
+            "MSB069",
+            "MSB070",
+            "MSB071",
+            "MSB072",
+            "MSB073",
+            "MSB074",
+            "MSB075",
+            "MSB076",
+            "MSB077",
+            "MSB078",
+            "MSB079",
+            "MSB080",
+            "MSB081",
+            "MSB082",
+            "MSB083",
+            "MSB084",
+            "MSB085",
+            "MSB086",
+            "MSB087",
+            "MSB088",
+            "MSB089",
+            "MSB090",
+            "MSB091",
+            "MSB092",
+            "MSB093",
+            "MSB094",
+            "MSB095",
+            "MSB096",
+            "MSB097",
+            "MSB098",
+            "MSB099",
+            "MSB100",
+            "MSB101",
+            "MSB102",
+            "MSB103",
+            "MSB104",
+            "MSB105",
+            "MSB106",
+            "MSB107",
+            "MSB108",
+            "MSB109",
+            "MSB110",
+            "MSB111",
+            "MSB112",
+            "MSB113",
+            "MSB114",
+            "MSB115",
+            "MSB116",
+            "MSB117",
+            "MSB118",
+            "MSB119"
+          ],
+          "clip_summary": [
+            {
+              "clip": "08",
+              "title": "偏僻小路",
+              "shot_count": 10,
+              "first_shot": "MSB066",
+              "last_shot": "MSB075"
+            },
+            {
+              "clip": "09",
+              "title": "四人堵路",
+              "shot_count": 10,
+              "first_shot": "MSB076",
+              "last_shot": "MSB085"
+            },
+            {
+              "clip": "10",
+              "title": "围殴哥哥",
+              "shot_count": 12,
+              "first_shot": "MSB086",
+              "last_shot": "MSB097"
+            },
+            {
+              "clip": "11",
+              "title": "石块失手",
+              "shot_count": 10,
+              "first_shot": "MSB098",
+              "last_shot": "MSB107"
+            },
+            {
+              "clip": "12",
+              "title": "主角逃跑",
+              "shot_count": 12,
+              "first_shot": "MSB108",
+              "last_shot": "MSB119"
+            }
+          ],
+          "primary_steps": [
+            "03_story",
+            "04_lookdev",
+            "05_asset_bible",
+            "06_previs",
+            "07_shots",
+            "08_generation",
+            "09_edit",
+            "10_qa",
+            "11_delivery"
+          ]
+        }
+      ]
+    },
+    {
+      "act_id": "ACT03",
+      "title": "第三幕：电话与转译 / Act 3: Phone and translation",
+      "status": "in_progress",
+      "scenes": [
+        {
+          "scene_id": "SCN_CORRIDOR",
+          "scene_slug": "scn-corridor",
+          "title": "废楼走廊 / Abandoned corridor",
+          "story_stage": "S6_CORRIDOR_PHONE_SHOCK",
+          "story_stages": [
+            "S6_CORRIDOR_PHONE_SHOCK"
+          ],
+          "status": "in_progress",
+          "shot_ids": [
+            "MSB120",
+            "MSB121",
+            "MSB122",
+            "MSB123",
+            "MSB124",
+            "MSB125",
+            "MSB126",
+            "MSB127",
+            "MSB128",
+            "MSB129",
+            "MSB130",
+            "MSB131",
+            "MSB132",
+            "MSB133",
+            "MSB134",
+            "MSB135",
+            "MSB136",
+            "MSB137",
+            "MSB138"
+          ],
+          "clip_summary": [
+            {
+              "clip": "13",
+              "title": "进入废楼",
+              "shot_count": 9,
+              "first_shot": "MSB120",
+              "last_shot": "MSB128"
+            },
+            {
+              "clip": "14",
+              "title": "无限走廊",
+              "shot_count": 10,
+              "first_shot": "MSB129",
+              "last_shot": "MSB138"
+            }
+          ],
+          "primary_steps": [
+            "03_story",
+            "04_lookdev",
+            "05_asset_bible",
+            "06_previs",
+            "07_shots",
+            "08_generation",
+            "09_edit",
+            "10_qa",
+            "11_delivery"
+          ]
+        },
+        {
+          "scene_id": "SCN_PHONE",
+          "scene_slug": "scn-phone",
+          "title": "电话亭 / Phone booth",
+          "story_stage": "S6_CORRIDOR_PHONE_SHOCK",
+          "story_stages": [
+            "S6_CORRIDOR_PHONE_SHOCK",
+            "S7_PHONE_ELECTRONICIZATION"
+          ],
+          "status": "in_progress",
+          "shot_ids": [
+            "MSB139",
+            "MSB140",
+            "MSB141",
+            "MSB142",
+            "MSB143",
+            "MSB144",
+            "MSB145",
+            "MSB146",
+            "MSB147",
+            "MSB148",
+            "MSB149",
+            "MSB150",
+            "MSB151",
+            "MSB152",
+            "MSB153",
+            "MSB154",
+            "MSB155",
+            "MSB156",
+            "MSB157",
+            "MSB158",
+            "MSB159",
+            "MSB160",
+            "MSB161",
+            "MSB162",
+            "MSB163",
+            "MSB164",
+            "MSB165",
+            "MSB166",
+            "MSB167",
+            "MSB168",
+            "MSB169"
+          ],
+          "clip_summary": [
+            {
+              "clip": "15",
+              "title": "远处电话亭",
+              "shot_count": 8,
+              "first_shot": "MSB139",
+              "last_shot": "MSB146"
+            },
+            {
+              "clip": "16",
+              "title": "靠近电话亭",
+              "shot_count": 8,
+              "first_shot": "MSB147",
+              "last_shot": "MSB154"
+            },
+            {
+              "clip": "17",
+              "title": "接起电话",
+              "shot_count": 7,
+              "first_shot": "MSB155",
+              "last_shot": "MSB161"
+            },
+            {
+              "clip": "18",
+              "title": "电子化",
+              "shot_count": 8,
+              "first_shot": "MSB162",
+              "last_shot": "MSB169"
+            }
+          ],
+          "primary_steps": [
+            "03_story",
+            "04_lookdev",
+            "05_asset_bible",
+            "06_previs",
+            "07_shots",
+            "08_generation",
+            "09_edit",
+            "10_qa",
+            "11_delivery"
+          ]
+        },
+        {
+          "scene_id": "SCN_8BIT",
+          "scene_slug": "scn-8bit",
+          "title": "8-bit 关卡 / 8-bit stage",
+          "story_stage": "S8_8BIT_TRANSLATED",
+          "story_stages": [
+            "S8_8BIT_TRANSLATED"
+          ],
+          "status": "in_progress",
+          "shot_ids": [
+            "MSB170",
+            "MSB171",
+            "MSB172",
+            "MSB173",
+            "MSB174",
+            "MSB175",
+            "MSB176",
+            "MSB177",
+            "MSB178",
+            "MSB179",
+            "MSB180",
+            "MSB181",
+            "MSB182",
+            "MSB183",
+            "MSB184",
+            "MSB185",
+            "MSB186",
+            "MSB187",
+            "MSB188"
+          ],
+          "clip_summary": [
+            {
+              "clip": "19",
+              "title": "进入8-bit关卡",
+              "shot_count": 8,
+              "first_shot": "MSB170",
+              "last_shot": "MSB177"
+            },
+            {
+              "clip": "20",
+              "title": "WIN / INSERT COIN",
+              "shot_count": 11,
+              "first_shot": "MSB178",
+              "last_shot": "MSB188"
+            }
+          ],
+          "primary_steps": [
+            "03_story",
+            "04_lookdev",
+            "05_asset_bible",
+            "06_previs",
+            "07_shots",
+            "08_generation",
+            "09_edit",
+            "10_qa",
+            "11_delivery"
+          ]
+        }
+      ]
+    }
+  ]
+}

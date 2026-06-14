@@ -1,43 +1,43 @@
 # AIGC Project Audit Report
 
-Generated at: 2026-06-13T18:44:17+08:00
+Generated at: 2026-06-15T01:03:20+08:00
 
 ## Executive Summary
 
 - Project: 投币口 (`coin-slot`)
-- Project path: `E:\视觉\coin-slot-aigc-toolkit\projects\coin-slot`
+- Project path: `/Users/jaychoupp/Desktop/Story/Film/projects/coin-slot`
 - Audit status: **pass**
 - Readiness score: **100%**
 - Stage status: 12 pass, 0 warn, 0 fail
-- Project files scanned: 93 (image: 3, text: 90)
-- Linked resource files scanned: 1073 (3d: 2, archive: 2, audio: 98, image: 899, text: 68, video: 4)
-- Shot list rows: 12
+- Project files scanned: 148 (image: 3, text: 145)
+- Linked resource files scanned: 1198 (3d: 4, archive: 2, audio: 98, image: 947, other: 1, text: 142, video: 4)
+- Shot list rows: 188
 
 This is a deterministic asset and workflow scan. It identifies structural gaps, template-only files, missing production evidence, and a representative sample for AI-assisted film/aesthetic review.
 
 ## Sampling Method
 
-- Sample size limit: 24
+- Sample size limit: 8
 - Priority order: project manifests, director/creative docs, shot tables, then representative text/image/video/audio/3D files.
 - Placeholder files such as `.gitkeep` are ignored.
 - Linked roots considered:
-- E:\视觉\coin-slot-aigc-toolkit\resources\examples\coin-slot
+- /Users/jaychoupp/Desktop/Story/Film/resources/examples/coin-slot
 
 ## Stage Coverage
 
 | Stage | Status | Files | Missing | Weak / Template |
 | --- | --- | --- | --- | --- |
-| 00_admin | pass | 4 | - | - |
+| 00_admin | pass | 7 | - | - |
 | 01_intake | pass | 4 | - | - |
 | 02_direction | pass | 3 | - | - |
 | 03_story | pass | 3 | - | - |
 | 04_lookdev | pass | 5 | - | - |
 | 05_asset_bible | pass | 5 | - | - |
-| 06_previs | pass | 22 | - | - |
-| 07_shots | pass | 26 | - | - |
-| 08_generation | pass | 4 | - | - |
+| 06_previs | pass | 36 | - | - |
+| 07_shots | pass | 40 | - | - |
+| 08_generation | pass | 11 | - | - |
 | 09_edit | pass | 5 | - | - |
-| 10_qa | pass | 6 | - | - |
+| 10_qa | pass | 23 | - | - |
 | 11_delivery | pass | 3 | - | - |
 
 ## Priority Recommendations
@@ -55,29 +55,13 @@ This is a deterministic asset and workflow scan. It identifies structural gaps, 
 | Origin | Category | Size KB | Path |
 | --- | --- | --- | --- |
 | project | text | 0.5 | 00_admin/director_brief.md |
-| project | text | 0.7 | 00_admin/project_log.md |
+| project | text | 1.6 | 00_admin/project_log.md |
 | project | text | 0.9 | 02_direction/creative_brief.md |
-| project | text | 6.5 | 07_shots/shot_list.csv |
-| project | text | 1.2 | assets_link_map.md |
+| project | text | 103.2 | 07_shots/shot_list.csv |
+| project | text | 1.9 | assets_link_map.md |
 | project | text | 2.1 | project.yaml |
-| project | image | 1480.2 | 06_previs/scene_locks/first-act_b01_scene_lock_overview.png |
-| linked | video | 17837.5 | media/01_AIGC/exports/animatic/coin_slot_storyboard_animatic_v001.mp4 |
-| linked | audio | 3937.5 | media/01_AIGC/audio/music/MUS_003_8bit_stage_loop.wav |
-| linked | 3d | 183.3 | blender/coin_slot_whitebox.blend |
-| project | text | 0.6 | 05_asset_bible/character_stage_locks/coin_slot_character_stage_locks.md |
-| linked | archive | 129570.4 | media/01_AIGC/exports/coin_slot_final_storyboard_audio_video_v002_review_package.zip |
-| project | image | 797.3 | 06_previs/scene_locks/scn-arcade/scn-arcade_preview.png |
-| linked | video | 12425.2 | media/01_AIGC/exports/animatic/coin_slot_storyboard_animatic_v001_silent.mp4 |
-| linked | audio | 7875.0 | media/01_AIGC/audio_clean/music/MUS_003_8bit_stage_loop.wav |
-| linked | 3d | 183.3 | media/01_AIGC/blender/coin_slot_whitebox.blend |
-| project | text | 1.1 | 06_previs/scene_locks/scn-arcade/camera_manifest.csv |
-| linked | archive | 63545.8 | media/01_AIGC/exports/coin_slot_aigc_overnight_package.zip |
-| project | image | 1299.3 | 06_previs/scene_locks/scn-compound/scn-compound_preview.png |
-| linked | video | 45896.8 | media/01_AIGC/exports/final_video/coin_slot_final_storyboard_video_v002.mp4 |
-| linked | audio | 1500.0 | media/01_AIGC/audio/ambience/AMB_001_compound_night_loop.wav |
-| project | text | 1.7 | 06_previs/scene_locks/scn-compound/camera_manifest.csv |
-| linked | image | 518.6 | media/01_AIGC/final_storyboard_contact_sheets/B01_final_storyboard_contact_sheet_v002.jpg |
-| linked | video | 37815.3 | media/01_AIGC/exports/final_video/coin_slot_final_storyboard_video_v002_silent.mp4 |
+| project | image | 0.1 | 06_previs/scene_locks/first-act_b01_scene_lock_overview.png |
+| linked | video | 0.1 | media/01_AIGC/exports/animatic/coin_slot_storyboard_animatic_v001.mp4 |
 
 ## Film And Aesthetic Review Checklist
 
@@ -102,7 +86,7 @@ Use the project files and sampled assets to judge:
 Use $aigc-film-project-auditor to turn this scan into a director-facing audit.
 
 Project: 投币口 (`coin-slot`)
-Project folder: E:\视觉\coin-slot-aigc-toolkit\projects\coin-slot
+Project folder: /Users/jaychoupp/Desktop/Story/Film/projects/coin-slot
 Latest scan: 10_qa/reports/project_audit_latest.md
 
 Focus the human report on:

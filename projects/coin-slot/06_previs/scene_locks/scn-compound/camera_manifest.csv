@@ -1,4 +1,4 @@
-shot_id,sequence,story_beat,duration_sec,aspect_ratio,location,camera,action,lighting,start_frame,end_frame,prompt_path,status
+﻿shot_id,sequence,story_beat,duration_sec,aspect_ratio,location,camera,action,lighting,start_frame,end_frame,prompt_path,status
 MSB001,01,空镜压低视线,2.0,16:9,SCN_COMPOUND,CAM_COMPOUND_01_ESTABLISH,locked-off，低机位，轻微前推,"1990s damp night, CRT blue-green practicals, warm street spill, low-key realism",whitebox_renders_v2/B01/WB2_COMPOUND_MSB001.png,visual_assets/pure/micro_storyboard/B01/MSB001_v001.png,07_shots/prompts/MSB001.md,sample_ready
 MSB003,01,门缝 CRT 光,2.0,16:9,SCN_COMPOUND,CAM_COMPOUND_01_ESTABLISH,只允许光轻闪,"1990s damp night, CRT blue-green practicals, warm street spill, low-key realism",whitebox_renders_v2/B01/WB2_COMPOUND_MSB003.png,visual_assets/pure/micro_storyboard/B01/MSB003_v001.png,07_shots/prompts/MSB003.md,sample_ready
 MSB006,01,CRT 反光到水面,2.0,16:9,SCN_COMPOUND,CAM_COMPOUND_01_ESTABLISH,低角度近景,"1990s damp night, CRT blue-green practicals, warm street spill, low-key realism",whitebox_renders_v2/B01/WB2_COMPOUND_MSB006.png,visual_assets/pure/micro_storyboard/B01/MSB006_v001.png,07_shots/prompts/MSB006.md,sample_ready

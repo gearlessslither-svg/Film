@@ -5,6 +5,18 @@ const state = {
   busy: false,
   selectedDocIndex: 0,
   selectedSceneLockIndex: 0,
+  selectedSceneId: "",
+  selectedFrameRef: "",
+  storyboardStage: "all",
+  referenceSelection: {},
+  sceneFilters: {
+    step: "all",
+    kind: "all",
+    decision: "all",
+    query: "",
+  },
+  recreate: null,
+  activeChangeRequest: null,
   filters: {
     stage: "all",
     kind: "all",
@@ -31,6 +43,23 @@ const STAGE_LABELS = {
 const EXTRA_STAGE_LABELS = {
   resources: "外部资源 / External resources",
   other: "其他 / Other",
+};
+
+const SCENE_STATUS_LABELS = {
+  draft: "草稿 / Draft",
+  in_progress: "制作中 / In progress",
+  needs_changes: "需修改 / Needs changes",
+  impact_ready: "影响表待确认 / Impact ready",
+  generation_queued: "生成队列中 / Generation queued",
+  generation_failed: "生成失败 / Generation failed",
+  review_ready: "待审片 / Review ready",
+  approved: "已通过 / Approved",
+};
+
+const IMPACT_ACTION_LABELS = {
+  create: "新增 / Create",
+  modify: "修改 / Modify",
+  check: "检查 / Check",
 };
 
 const KIND_LABELS = {
@@ -291,7 +320,7 @@ function assetSummary(item) {
   const decision = decisionLabel(annotationFor(item).status || "");
   if (decision) parts.push(decision);
   if (item.fallback === "legacy_local") parts.push("本地兜底 / local fallback");
-  if (item.lfs_missing) parts.push("LFS 未下载 / LFS missing");
+  if (item.lfs_missing) parts.push("未下载，需 git lfs pull / not downloaded, run git lfs pull");
   else if (item.lfs_pointer) parts.push("LFS 指针 / LFS pointer");
   return parts.join(" · ");
 }
@@ -300,11 +329,12 @@ function previewSort(a, b) {
   return Number(Boolean(a.lfs_missing)) - Number(Boolean(b.lfs_missing));
 }
 
-function renderLfsPlaceholder(label = "LFS 未下载 / LFS missing") {
+function renderLfsPlaceholder(label = "未下载 / not downloaded") {
   return `
-    <div class="lfs-placeholder">
-      <strong>LFS</strong>
+    <div class="lfs-placeholder" title="原图存在 Git LFS，需运行 git lfs pull 下载 / Original is in Git LFS; run git lfs pull to download">
+      <strong>未下载图<br><span class="lfs-en">image not downloaded</span></strong>
       <em>${escapeHtml(label)}</em>
+      <small>需 git lfs pull / run git lfs pull</small>
     </div>
   `;
 }
@@ -335,7 +365,7 @@ function renderSceneLockThumb(item, label = "场景 / Scene") {
   if (item?.url && item.previewable && !item.lfs_missing) {
     return `<img src="${escapeHtml(item.url)}" alt="${escapeHtml(label)}" loading="lazy" />`;
   }
-  return `<span class="scene-lock-placeholder ${item?.lfs_missing ? "warning" : ""}">${escapeHtml(item?.lfs_missing ? "LFS" : label)}</span>`;
+  return `<span class="scene-lock-placeholder ${item?.lfs_missing ? "warning" : ""}" title="${item?.lfs_missing ? "需 git lfs pull 下载 / run git lfs pull" : ""}">${escapeHtml(item?.lfs_missing ? "未下载 / not downloaded" : label)}</span>`;
 }
 
 function renderVisualGallery() {
@@ -345,7 +375,7 @@ function renderVisualGallery() {
   const missingCount = allImages.filter((item) => item.lfs_missing).length;
   const previewCount = allImages.filter((item) => item.previewable && !item.lfs_missing).length;
   $("visualHint").textContent = missingCount
-    ? `${previewCount}/${allImages.length} 可预览 / preview · ${missingCount} LFS 未下载 / missing`
+    ? `${previewCount}/${allImages.length} 可预览 / preview · ${missingCount} 张需 git lfs pull / need git lfs pull`
     : `${images.length} 图片 / images`;
   if (!images.length) {
     $("visualGallery").innerHTML = `<div class="empty-state">没有可预览图片 / No previewable images found.</div>`;
@@ -608,6 +638,1397 @@ function renderResourceBrowser() {
   bindResourceCardEvents();
 }
 
+function sceneAssetUrl(path, origin = "project") {
+  if (!state.selectedSlug || !path) return "";
+  const assetOrigin = origin === "resource" ? "resource" : "project";
+  return `/api/projects/${encodeURIComponent(state.selectedSlug)}/asset?origin=${encodeURIComponent(assetOrigin)}&path=${encodeURIComponent(path)}`;
+}
+
+function sceneAssetRef(asset) {
+  const origin = asset.origin === "resource" ? "resource" : "project";
+  return asset.path ? `${origin}:${asset.path}` : `scene:${asset.asset_id || asset.role || "asset"}`;
+}
+
+function selectedScene() {
+  const scenes = state.detail?.scene_workbench?.scenes || [];
+  if (!scenes.length) return null;
+  if (!state.selectedSceneId || !scenes.some((scene) => scene.scene_id === state.selectedSceneId)) {
+    state.selectedSceneId = scenes[0].scene_id || "";
+  }
+  return scenes.find((scene) => scene.scene_id === state.selectedSceneId) || scenes[0];
+}
+
+function sceneStatusLabel(status) {
+  return SCENE_STATUS_LABELS[status] || status || "未标记 / Unmarked";
+}
+
+function queueableImpact(impact) {
+  return ["create", "modify"].includes(impact.action || "");
+}
+
+function sceneAssetKind(asset, step) {
+  if (asset?.kind && KIND_LABELS[asset.kind]) return asset.kind;
+  const haystack = [asset?.asset_id, asset?.role, asset?.path, step].join(" ").toLowerCase();
+  if (haystack.includes("video_prompt")) return "video_prompt";
+  if (haystack.includes("image_prompt") || haystack.includes("/prompts/") || haystack.includes("shot_prompt")) return "shot_prompt";
+  if (haystack.includes("keyframe") || haystack.includes("storyboard")) return "storyboard_keyframe";
+  if (haystack.includes("scene_lock")) return "scene_lock";
+  if (haystack.includes("whitebox") || haystack.includes("camera") || haystack.includes("previs") || haystack.includes("blender")) return "whitebox";
+  if (haystack.includes("script") || haystack.includes("beat") || haystack.includes("outline") || haystack.includes("dialogue") || step === "03_story") return "script";
+  if (haystack.includes("look") || haystack.includes("palette") || haystack.includes("lighting") || step === "04_lookdev") return "lookdev";
+  if (haystack.includes("character")) return "character_ref";
+  if (haystack.includes("location") || haystack.includes("visual_ref") || haystack.includes("reference_assets")) return "scene_ref";
+  if (haystack.includes("audio") || haystack.includes("sound")) return "audio";
+  if (haystack.includes("rough_cut") || haystack.endsWith(".mp4") || haystack.includes("/video/")) return "video";
+  if (haystack.endsWith(".png") || haystack.endsWith(".jpg") || haystack.endsWith(".jpeg") || haystack.endsWith(".webp") || haystack.includes("/images/")) return "image";
+  if (haystack.includes("delivery") || haystack.includes("review") || haystack.includes("fix_queue")) return "document";
+  return "other";
+}
+
+function sceneKindOptions(stageAssets, steps) {
+  const counts = new Map();
+  steps.forEach((step) => {
+    (stageAssets[step] || []).forEach((asset) => {
+      const kind = sceneAssetKind(asset, step);
+      counts.set(kind, (counts.get(kind) || 0) + 1);
+    });
+  });
+  return [
+    { value: "all", label: `全部类别 / All kinds (${[...counts.values()].reduce((sum, count) => sum + count, 0)})` },
+    ...Object.entries(KIND_LABELS)
+      .filter(([kind]) => counts.has(kind))
+      .map(([kind, label]) => ({ value: kind, label: `${label} (${counts.get(kind)})` })),
+  ];
+}
+
+function impactActionOptions(impact, disabled) {
+  const current = IMPACT_ACTION_LABELS[impact?.action] ? impact.action : "modify";
+  return `
+    <select class="impact-action-select" data-impact-id="${escapeHtml(impact?.impact_id || "")}" ${disabled ? "disabled" : ""}>
+      ${Object.entries(IMPACT_ACTION_LABELS)
+        .map(([value, label]) => `<option value="${escapeHtml(value)}" ${current === value ? "selected" : ""}>${escapeHtml(label)}</option>`)
+        .join("")}
+    </select>
+  `;
+}
+
+function isExampleChangeRequest(request) {
+  return String(request?.status || "").endsWith("_example");
+}
+
+function scenePathLink(path, label = "打开 / Open") {
+  const url = sceneAssetUrl(path || "");
+  return url ? `<a href="${escapeHtml(url)}" target="_blank">${escapeHtml(label)}</a>` : "";
+}
+
+function sceneAssetLink(asset, label = "打开 / Open") {
+  const url = sceneAssetUrl(asset.path || "", asset.origin || "project");
+  return url ? `<a href="${escapeHtml(url)}" target="_blank">${escapeHtml(label)}</a>` : "";
+}
+
+function generationAdapters() {
+  const adapters = state.detail?.generation_adapters?.adapters || [];
+  if (adapters.length) return adapters;
+  return [
+    {
+      adapter_id: "manual_packet",
+      label: "任务包 / Manual packet",
+      type: "manual_packet",
+      enabled: true,
+    },
+  ];
+}
+
+function stageShortLabel(stage) {
+  const label = stageLabel(stage);
+  return label.split(" / ")[0] || stage || "其他";
+}
+
+function isImagePath(path = "") {
+  return /\.(png|jpe?g|webp|gif)$/i.test(path);
+}
+
+function shotIdFromText(value = "") {
+  const match = String(value).match(/MSB\d{3}/i);
+  return match ? match[0].toUpperCase() : "";
+}
+
+function sceneAssetShotId(asset) {
+  return shotIdFromText([asset?.asset_id, asset?.path, asset?.role].join(" "));
+}
+
+function flattenSceneAssets(scene) {
+  const stageAssets = scene?.resource_manifest?.stage_assets || {};
+  return Object.entries(stageAssets).flatMap(([stage, assets]) =>
+    (assets || []).map((asset) => ({
+      ...asset,
+      stage,
+      kind: sceneAssetKind(asset, stage),
+      ref: sceneAssetRef(asset),
+      url: sceneAssetUrl(asset.path || "", asset.origin || "project"),
+      shot_id: sceneAssetShotId(asset),
+    })),
+  );
+}
+
+function framePriority(frame) {
+  const kindOrder = {
+    storyboard_keyframe: 1,
+    image: 2,
+    whitebox: 3,
+    scene_ref: 4,
+    lookdev: 5,
+  };
+  const stageOrder = {
+    "08_generation": 1,
+    "07_shots": 2,
+    "06_previs": 3,
+    "04_lookdev": 4,
+    "05_asset_bible": 5,
+  };
+  return (kindOrder[frame.kind] || 20) * 10 + (stageOrder[frame.stage] || 9);
+}
+
+function frameIsUsable(frame) {
+  return frame && !frame.lfs_missing && frame.previewable !== false;
+}
+
+function storyboardFrames(scene) {
+  const frames = flattenSceneAssets(scene).filter((asset) => {
+    if (!asset.path || !asset.url) return false;
+    if (state.storyboardStage !== "all" && asset.stage !== state.storyboardStage) return false;
+    return isImagePath(asset.path);
+  });
+  return frames.sort((a, b) => {
+    const usable = Number(!frameIsUsable(a)) - Number(!frameIsUsable(b));
+    if (usable) return usable;
+    const shotA = a.shot_id || "ZZZ";
+    const shotB = b.shot_id || "ZZZ";
+    if (shotA !== shotB) return shotA.localeCompare(shotB);
+    const priority = framePriority(a) - framePriority(b);
+    if (priority) return priority;
+    return String(a.asset_id || a.path).localeCompare(String(b.asset_id || b.path));
+  });
+}
+
+function selectedStoryboardFrame(scene) {
+  const frames = storyboardFrames(scene);
+  if (!frames.length) {
+    state.selectedFrameRef = "";
+    return { frame: null, frames };
+  }
+  const current = frames.find((frame) => frame.ref === state.selectedFrameRef);
+  const frame = current && frameIsUsable(current) ? current : frames.find(frameIsUsable) || current || frames[0];
+  state.selectedFrameRef = frame.ref;
+  return { frame, frames };
+}
+
+function storyboardStageOptions(scene) {
+  const counts = new Map();
+  flattenSceneAssets(scene)
+    .filter((asset) => isImagePath(asset.path || ""))
+    .forEach((asset) => counts.set(asset.stage, (counts.get(asset.stage) || 0) + 1));
+  return [
+    { value: "all", label: `全部图片 / All images (${[...counts.values()].reduce((sum, count) => sum + count, 0)})` },
+    ...Object.entries(STAGE_LABELS)
+      .filter(([stage]) => counts.has(stage))
+      .map(([stage]) => ({ value: stage, label: `${stageShortLabel(stage)} (${counts.get(stage)})` })),
+  ];
+}
+
+function frameTitle(frame) {
+  if (!frame) return "";
+  const shot = frame.shot_id ? `${frame.shot_id} · ` : "";
+  return `${shot}${frame.asset_id || frame.role || frame.path}`;
+}
+
+function relatedFrameAssets(scene, frame) {
+  if (!scene || !frame) return [];
+  const assets = flattenSceneAssets(scene);
+  const sameShot = assets.filter((asset) => frame.shot_id && asset.shot_id === frame.shot_id && asset.ref !== frame.ref);
+  const context = assets.filter((asset) =>
+    ["03_story", "04_lookdev", "05_asset_bible", "06_previs"].includes(asset.stage) &&
+    asset.ref !== frame.ref &&
+    !sameShot.some((item) => item.ref === asset.ref),
+  );
+  return [...sameShot, ...context].slice(0, 12);
+}
+
+function referenceSelectionFor(frameRef, ref) {
+  const frameSelection = state.referenceSelection[frameRef] || {};
+  return frameSelection[ref] || { selected: false, note: "" };
+}
+
+function setReferenceSelection(frameRef, ref, patch) {
+  if (!state.referenceSelection[frameRef]) state.referenceSelection[frameRef] = {};
+  const current = referenceSelectionFor(frameRef, ref);
+  state.referenceSelection[frameRef][ref] = { ...current, ...patch };
+}
+
+function frameVersions(scene, frame) {
+  const versions = scene?.version_registry?.versions || [];
+  if (!frame?.asset_id || !Array.isArray(versions)) return [];
+  return versions.filter((record) => record?.asset_id === frame.asset_id).slice().reverse();
+}
+
+function storyboardRequestsForFrame(scene, frame) {
+  const requests = scene?.change_requests || [];
+  if (!frame?.asset_id || !Array.isArray(requests)) return [];
+  return requests
+    .filter(
+      (request) =>
+        !isExampleChangeRequest(request) &&
+        request?.trigger_step === frame.stage &&
+        request?.trigger_asset_id === frame.asset_id,
+    )
+    .slice(0, 3);
+}
+
+function selectedQueueableImpacts(request) {
+  const impacts = request?.impact_table || [];
+  if (!Array.isArray(impacts)) return [];
+  const direct = impacts.filter((impact) => impact?.impact_scope === "direct" && ["create", "modify"].includes(impact?.action));
+  if (direct.length) return direct;
+  return impacts.filter((impact) => impact?.selected && ["create", "modify"].includes(impact?.action));
+}
+
+function baseFixPrompt(scene, frame, qa = null) {
+  const note = $("storyboardDirectorNote")?.value.trim() || annotationForRef(frame?.ref || "").note || "";
+  const selectedRefs = relatedFrameAssets(scene, frame).filter((asset) => referenceSelectionFor(frame.ref, asset.ref).selected);
+  const referenceText = selectedRefs
+    .map((asset) => {
+      const refState = referenceSelectionFor(frame.ref, asset.ref);
+      return `- ${asset.asset_id || asset.role || asset.path}: ${refState.note || "参考其造型、空间或风格 / use as visual reference"}`;
+    })
+    .join("\n");
+  const qaText = qa?.suggestions?.length ? qa.suggestions.map((item) => `- ${item}`).join("\n") : "- clean high-resolution image, no film grain, no dirty texture, crisp edges";
+  return [
+    `Scene / 场戏: ${scene?.scene_id || ""} ${scene?.title || ""}`,
+    `Frame / 图片: ${frameTitle(frame)}`,
+    `Current stage / 当前步骤: ${frame?.stage || ""} ${stageShortLabel(frame?.stage || "")}`,
+    "",
+    "Director note / 导演修改意见:",
+    note || "- 保留剧情意图，提升图片质量与可读性 / keep story intent, improve image quality and readability",
+    "",
+    "Technical fixes / 技术修正:",
+    qaText,
+    "",
+    "Reference stack / 关联参考:",
+    referenceText || "- 使用当前场戏已标记为参考的角色、场景、白模和提示词 / use selected scene references",
+    "",
+    "Output goal / 输出目标:",
+    "- Generate a clean, stable, high-quality key image suitable for downstream video AIGC.",
+    "- Preserve the story beat, spatial relation, character identity, and shot intent.",
+    "- Avoid noise, muddy shadows, distorted hands/faces, unreadable composition, text, watermark, and random new objects.",
+  ].join("\n");
+}
+
+function scoreClass(score) {
+  if (score >= 82) return "ok";
+  if (score >= 68) return "warn";
+  return "danger";
+}
+
+function clamp(value, min, max) {
+  return Math.max(min, Math.min(max, value));
+}
+
+function analyzeImageElement(img) {
+  const size = 128;
+  const canvas = document.createElement("canvas");
+  canvas.width = size;
+  canvas.height = size;
+  const ctx = canvas.getContext("2d", { willReadFrequently: true });
+  ctx.drawImage(img, 0, 0, size, size);
+  const data = ctx.getImageData(0, 0, size, size).data;
+  const luminance = [];
+  let satSum = 0;
+  let dark = 0;
+  let bright = 0;
+  for (let i = 0; i < data.length; i += 4) {
+    const r = data[i];
+    const g = data[i + 1];
+    const b = data[i + 2];
+    const max = Math.max(r, g, b);
+    const min = Math.min(r, g, b);
+    const lum = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+    luminance.push(lum);
+    satSum += max ? (max - min) / max : 0;
+    if (lum < 35) dark += 1;
+    if (lum > 235) bright += 1;
+  }
+  const mean = luminance.reduce((sum, value) => sum + value, 0) / luminance.length;
+  const variance = luminance.reduce((sum, value) => sum + (value - mean) ** 2, 0) / luminance.length;
+  const contrast = Math.sqrt(variance);
+  let edge = 0;
+  let highFreq = 0;
+  let samples = 0;
+  for (let y = 1; y < size - 1; y += 1) {
+    for (let x = 1; x < size - 1; x += 1) {
+      const index = y * size + x;
+      const dx = Math.abs(luminance[index] - luminance[index + 1]);
+      const dy = Math.abs(luminance[index] - luminance[index + size]);
+      edge += dx + dy;
+      highFreq += Math.abs(luminance[index] * 4 - luminance[index - 1] - luminance[index + 1] - luminance[index - size] - luminance[index + size]);
+      samples += 1;
+    }
+  }
+  edge /= samples * 2;
+  highFreq /= samples;
+  const darkRatio = dark / luminance.length;
+  const brightRatio = bright / luminance.length;
+  const saturation = satSum / luminance.length;
+  const exposureScore = clamp(100 - Math.abs(mean - 118) * 0.55 - darkRatio * 35 - brightRatio * 30, 0, 100);
+  const contrastScore = clamp(100 - Math.abs(contrast - 52) * 1.25, 0, 100);
+  const sharpnessScore = clamp(edge * 5.3, 0, 100);
+  const noiseScore = clamp(100 - Math.max(0, highFreq - edge * 1.8) * 1.9, 0, 100);
+  const score = Math.round(exposureScore * 0.25 + contrastScore * 0.2 + sharpnessScore * 0.25 + noiseScore * 0.3);
+  const suggestions = [];
+  if (noiseScore < 72) suggestions.push("疑似高频噪点或脏纹偏多：提示词加入 no film grain, no sensor noise, clean smooth surfaces。");
+  if (sharpnessScore < 66) suggestions.push("边缘清晰度偏弱：强调 crisp edges, sharp focal subject, high-resolution keyframe。");
+  if (mean < 70 || darkRatio > 0.42) suggestions.push("暗部比例偏高：减少 gritty/dark/moody，改成 controlled soft lighting。");
+  if (brightRatio > 0.12) suggestions.push("高光可能过曝：加入 balanced highlights, no blown-out light。");
+  if (contrastScore < 70) suggestions.push("对比度不够稳定：要求 clean value separation, readable silhouette。");
+  if (saturation > 0.48) suggestions.push("色彩可能过饱和：加入 restrained palette, natural material color。");
+  if (!suggestions.length) suggestions.push("技术状态可用：下一步重点检查角色一致性、剧情匹配和导演审美。");
+  return {
+    score,
+    exposureScore: Math.round(exposureScore),
+    contrastScore: Math.round(contrastScore),
+    sharpnessScore: Math.round(sharpnessScore),
+    noiseScore: Math.round(noiseScore),
+    mean: Math.round(mean),
+    contrast: Math.round(contrast),
+    suggestions,
+  };
+}
+
+function renderQaResult(result) {
+  const node = $("imageQaPanel");
+  if (!node) return;
+  const cls = scoreClass(result.score);
+  node.innerHTML = `
+    <div class="qa-score ${cls}">
+      <strong>${result.score}</strong>
+      <span>/100 技术分 / technical</span>
+    </div>
+    <div class="qa-bars">
+      <span>清晰 ${result.sharpnessScore}</span>
+      <span>噪点 ${result.noiseScore}</span>
+      <span>曝光 ${result.exposureScore}</span>
+      <span>对比 ${result.contrastScore}</span>
+    </div>
+    <ul>${result.suggestions.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+  `;
+  node.dataset.qa = JSON.stringify(result);
+}
+
+function analyzeCurrentStoryboardImage() {
+  const img = $("storyboardMainImage");
+  const panel = $("imageQaPanel");
+  if (!panel) return;
+  if (!img) {
+    panel.innerHTML = `<div class="empty-state">当前页没有可质检图片 / No image to inspect.</div>`;
+    return;
+  }
+  panel.innerHTML = `<div class="qa-loading">正在估算清晰度、噪点、曝光和对比 / Checking sharpness, noise, exposure, and contrast...</div>`;
+  const run = () => {
+    try {
+      renderQaResult(analyzeImageElement(img));
+    } catch (error) {
+      panel.innerHTML = `<div class="empty-state">质检失败 / QA failed: ${escapeHtml(error.message)}</div>`;
+    }
+  };
+  if (img.complete && img.naturalWidth) {
+    window.setTimeout(run, 60);
+  } else {
+    img.addEventListener("load", run, { once: true });
+    img.addEventListener("error", () => {
+      panel.innerHTML = `<div class="empty-state">图片未能加载，无法质检 / Image failed to load.</div>`;
+    }, { once: true });
+  }
+}
+
+function renderStoryboardStudio() {
+  const root = $("storyboardStudio");
+  if (!root) return;
+  const scenes = state.detail?.scene_workbench?.scenes || [];
+  if (!state.detail) {
+    root.innerHTML = `<div class="empty-state">请选择项目 / Select a project.</div>`;
+    return;
+  }
+  if (!scenes.length) {
+    root.innerHTML = `<div class="empty-state">还没有幕/场戏清单 / No act or scene manifest yet.</div>`;
+    return;
+  }
+  const scene = selectedScene();
+  const stageOptions = storyboardStageOptions(scene);
+  if (!stageOptions.some((option) => option.value === state.storyboardStage)) state.storyboardStage = "all";
+  const { frame, frames } = selectedStoryboardFrame(scene);
+  const annotation = frame ? annotationForRef(frame.ref) : {};
+  const related = relatedFrameAssets(scene, frame);
+  const versions = frameVersions(scene, frame);
+  const frameRequests = storyboardRequestsForFrame(scene, frame);
+  const frameIndex = frame ? frames.findIndex((item) => item.ref === frame.ref) : -1;
+  const grouped = new Map();
+  scenes.forEach((item) => {
+    const key = `${item.act_id || "ACT"}|${item.act_title || "未分幕 / No act"}`;
+    if (!grouped.has(key)) grouped.set(key, []);
+    grouped.get(key).push(item);
+  });
+  root.innerHTML = `
+    <div class="studio-header">
+      <div>
+        <p class="eyebrow">Storyboard Studio</p>
+        <h3>按幕制作图片页 / Act-based image workspace</h3>
+      </div>
+      <div class="studio-status">
+        <span>${escapeHtml(scene?.act_title || "")}</span>
+        <strong>${escapeHtml(scene?.title || scene?.scene_id || "")}</strong>
+        <small class="frame-count">${frameIndex + 1 > 0 ? frameIndex + 1 : 0}/${frames.length} 图片页 / frames</small>
+      </div>
+    </div>
+    <div class="studio-layout">
+      <nav class="studio-rail">
+        ${[...grouped.entries()]
+          .map(([key, actScenes]) => {
+            const [, actTitle] = key.split("|");
+            return `
+              <section class="studio-act">
+                <strong>${escapeHtml(actTitle)}</strong>
+                ${actScenes
+                  .map(
+                    (item) => `
+                      <button class="studio-scene-button ${item.scene_id === scene?.scene_id ? "active" : ""}" data-scene-id="${escapeHtml(item.scene_id)}" type="button">
+                        <span>${escapeHtml(item.title || item.scene_id)}</span>
+                        <small>${escapeHtml(item.scene_id)} · ${(item.shot_ids || []).length} 镜头 · ${escapeHtml(sceneStatusLabel(item.status))}</small>
+                      </button>
+                    `,
+                  )
+                  .join("")}
+              </section>
+            `;
+          })
+          .join("")}
+      </nav>
+      <section class="studio-stage">
+        <div class="studio-filter-tabs">
+          ${stageOptions
+            .map((option) => `<button class="studio-stage-filter ${state.storyboardStage === option.value ? "active" : ""}" data-stage="${escapeHtml(option.value)}" type="button">${escapeHtml(option.label)}</button>`)
+            .join("")}
+        </div>
+        ${
+          frame
+            ? `
+              <figure class="frame-hero ${escapeHtml(decisionClass(annotation.status || ""))}">
+                <div class="frame-image-wrap">
+                  ${
+                    frameIsUsable(frame)
+                      ? `<img id="storyboardMainImage" src="${escapeHtml(frame.url)}" alt="${escapeHtml(frameTitle(frame))}" />`
+                      : renderLfsPlaceholder(frame.lfs_missing ? "原图未下载 / source missing" : "不可预览 / no preview")
+                  }
+                </div>
+                <figcaption>
+                  <strong>${escapeHtml(frameTitle(frame))}</strong>
+                  <span>${escapeHtml(frame.stage)} · ${escapeHtml(kindLabel(frame.kind))} · ${escapeHtml(frame.path || "")}</span>
+                </figcaption>
+              </figure>
+              <div id="imageQaPanel" class="image-qa-panel"></div>
+              <div class="frame-strip">
+                ${frames
+                  .map(
+                    (item, index) => `
+                      <button class="frame-thumb ${item.ref === frame.ref ? "active" : ""} ${frameIsUsable(item) ? "" : "missing"}" data-ref="${escapeHtml(item.ref)}" type="button" title="${escapeHtml(item.path)}">
+                        ${frameIsUsable(item) ? `<img src="${escapeHtml(item.url)}" alt="${escapeHtml(item.asset_id || item.role || item.path)}" loading="lazy" />` : `<em>缺失</em>`}
+                        <span>${index + 1}</span>
+                      </button>
+                    `,
+                  )
+                  .join("")}
+              </div>
+            `
+            : `<div class="empty-state">当前场戏还没有图片页 / This scene has no image frames yet.</div>`
+        }
+      </section>
+      <aside class="studio-inspector">
+        ${
+          frame
+            ? `
+              <section class="inspector-block">
+                <h4>当前图片 / Current Frame</h4>
+                <dl>
+                  <div><dt>场戏</dt><dd>${escapeHtml(scene.scene_id)} · ${escapeHtml(scene.title || "")}</dd></div>
+                  <div><dt>镜头</dt><dd>${escapeHtml(frame.shot_id || "未绑定 / unbound")}</dd></div>
+                  <div><dt>步骤</dt><dd>${escapeHtml(frame.stage)} · ${escapeHtml(stageShortLabel(frame.stage))}</dd></div>
+                  <div><dt>类别</dt><dd>${escapeHtml(kindLabel(frame.kind))}</dd></div>
+                </dl>
+                <div class="frame-actions" data-ref="${escapeHtml(frame.ref)}">
+                  <button class="decision-button use ${annotation.status === "use" ? "active" : ""}" data-status="use" type="button">✓</button>
+                  <button class="decision-button reject ${annotation.status === "reject" ? "active" : ""}" data-status="reject" type="button">×</button>
+                  <a class="open-resource-link" href="${escapeHtml(frame.url)}" target="_blank">打开原图 / Open</a>
+                </div>
+                <label>导演备注 / Director note
+                  <textarea id="storyboardDirectorNote" rows="4" placeholder="这张图哪里好、哪里要改 / What works and what should change">${escapeHtml(annotation.note || "")}</textarea>
+                </label>
+              </section>
+              <section class="inspector-block">
+                <h4>关联素材 / Reference Stack</h4>
+                <div class="reference-stack">
+                  ${
+                    related.length
+                      ? related
+                          .map((asset) => {
+                            const refState = referenceSelectionFor(frame.ref, asset.ref);
+                            return `
+                              <div class="reference-item" data-ref="${escapeHtml(asset.ref)}">
+                                <label class="checkbox-label">
+                                  <input class="reference-checkbox" type="checkbox" ${refState.selected ? "checked" : ""} />
+                                  <span>${escapeHtml(asset.asset_id || asset.role || asset.path)}</span>
+                                </label>
+                                <small>${escapeHtml(asset.stage)} · ${escapeHtml(kindLabel(asset.kind))}</small>
+                                <input class="reference-note-input" value="${escapeHtml(refState.note || "")}" placeholder="怎么参考它 / how to use this reference" />
+                              </div>
+                            `;
+                          })
+                          .join("")
+                      : `<div class="empty-state">暂无关联素材 / No related assets.</div>`
+                  }
+                </div>
+              </section>
+              <section class="inspector-block">
+                <h4>修正版提示词 / Fix Prompt</h4>
+                <button id="buildFixPromptBtn" class="command-button primary" type="button">生成修正版提示词 / Build Fix Prompt</button>
+                <textarea id="fixPromptOutput" rows="9" placeholder="点击上方按钮生成 / Click the button above"></textarea>
+                <button id="createFramePacketBtn" class="command-button primary" type="button">生成任务包 / Build Generation Packet</button>
+                <button id="createFrameChangeRequestBtn" class="command-button" type="button">仅写入影响表 / Impact Only</button>
+              </section>
+              <section class="inspector-block">
+                <h4>任务包 / Packets</h4>
+                <div class="request-list-mini">
+                  ${
+                    frameRequests.length
+                      ? frameRequests
+                          .map((request) => {
+                            const queue = Array.isArray(request.generation_queue) ? request.generation_queue : [];
+                            return `
+                              <div>
+                                <strong>${escapeHtml(request.change_request_id || "")}</strong>
+                                <span>${escapeHtml(request.status || "")} · ${queue.length} queue</span>
+                                ${queue
+                                  .map(
+                                    (item) => `
+                                      <small>
+                                        ${escapeHtml(item.asset_id || item.queue_id || "")} · ${escapeHtml(item.target_version || "")} · ${escapeHtml(item.status || "")}
+                                        ${scenePathLink(item.result_path || item.packet_path, "任务包 / Packet")}
+                                      </small>
+                                    `,
+                                  )
+                                  .join("")}
+                              </div>
+                            `;
+                          })
+                          .join("")
+                      : `<div class="empty-state">还没有从当前图片生成任务包 / No packet from this frame yet.</div>`
+                  }
+                </div>
+              </section>
+              <section class="inspector-block">
+                <h4>版本 / Versions</h4>
+                <div class="version-list-mini">
+                  ${
+                    versions.length
+                      ? versions
+                          .map((version) => `<div><strong>${escapeHtml(version.version || "")}</strong><span>${escapeHtml(version.status || "")}</span><small>${escapeHtml(version.final_output_path || version.output_path || "")}</small></div>`)
+                          .join("")
+                      : `<div class="empty-state">还没有版本记录 / No version records yet.</div>`
+                  }
+                </div>
+              </section>
+            `
+            : `<div class="empty-state">选择一张图片查看提示词、关联素材和质检 / Select an image to inspect prompts, references, and QA.</div>`
+        }
+      </aside>
+    </div>
+  `;
+  bindStoryboardStudioEvents(scene, frame);
+  analyzeCurrentStoryboardImage();
+}
+
+function bindStoryboardStudioEvents(scene, frame) {
+  const root = $("storyboardStudio");
+  root.querySelectorAll(".studio-scene-button").forEach((button) => {
+    button.addEventListener("click", () => {
+      state.selectedSceneId = button.dataset.sceneId || "";
+      state.selectedFrameRef = "";
+      state.activeChangeRequest = null;
+      state.recreate = null;
+      renderAll();
+    });
+  });
+  root.querySelectorAll(".studio-stage-filter").forEach((button) => {
+    button.addEventListener("click", () => {
+      state.storyboardStage = button.dataset.stage || "all";
+      state.selectedFrameRef = "";
+      renderStoryboardStudio();
+    });
+  });
+  root.querySelectorAll(".frame-thumb").forEach((button) => {
+    button.addEventListener("click", () => {
+      state.selectedFrameRef = button.dataset.ref || "";
+      renderStoryboardStudio();
+    });
+  });
+  root.querySelectorAll(".frame-actions .decision-button").forEach((button) => {
+    button.addEventListener("click", async () => {
+      if (!frame) return;
+      const current = annotationForRef(frame.ref);
+      const nextStatus = current.status === button.dataset.status ? "" : button.dataset.status;
+      const note = $("storyboardDirectorNote")?.value || current.note || "";
+      await saveResourceAnnotation(frame.ref, { status: nextStatus, note });
+    });
+  });
+  const note = $("storyboardDirectorNote");
+  if (note && frame) {
+    const saveNote = async (showToast = false) => {
+      const current = annotationForRef(frame.ref);
+      await saveResourceAnnotation(frame.ref, { status: current.status || "", note: note.value }, { rerender: false, toast: false });
+      if (showToast) toast("导演备注已保存 / Director note saved");
+    };
+    note.addEventListener("input", () => {
+      clearTimeout(note._saveTimer);
+      note._saveTimer = setTimeout(() => saveNote(false).catch((error) => toast(`备注保存失败 / Note save failed: ${error.message}`)), 650);
+    });
+    note.addEventListener("blur", async () => {
+      clearTimeout(note._saveTimer);
+      await saveNote(true);
+    });
+  }
+  root.querySelectorAll(".reference-item").forEach((item) => {
+    const ref = item.dataset.ref || "";
+    const checkbox = item.querySelector(".reference-checkbox");
+    const input = item.querySelector(".reference-note-input");
+    checkbox?.addEventListener("change", () => setReferenceSelection(frame?.ref || "", ref, { selected: checkbox.checked }));
+    input?.addEventListener("input", () => setReferenceSelection(frame?.ref || "", ref, { note: input.value }));
+  });
+  $("buildFixPromptBtn")?.addEventListener("click", () => {
+    if (!frame) return;
+    let qa = null;
+    try {
+      qa = JSON.parse($("imageQaPanel")?.dataset.qa || "null");
+    } catch {
+      qa = null;
+    }
+    $("fixPromptOutput").value = baseFixPrompt(scene, frame, qa);
+  });
+  $("createFramePacketBtn")?.addEventListener("click", async () => {
+    if (!scene || !frame) return;
+    await createStoryboardGenerationPacket(scene, frame);
+  });
+  $("createFrameChangeRequestBtn")?.addEventListener("click", async () => {
+    if (!scene || !frame) return;
+    const creativeDirection = $("fixPromptOutput")?.value.trim() || baseFixPrompt(scene, frame);
+    await runAction("再生成请求 / Re-generation request", async () => {
+      const result = await requestJson(`/api/projects/${state.selectedSlug}/scene-change-request`, {
+        method: "POST",
+        body: JSON.stringify({
+          scene_id: scene.scene_id,
+          trigger_step: frame.stage,
+          trigger_asset_id: frame.asset_id || "",
+          creative_direction: creativeDirection,
+        }),
+      });
+      state.detail = result.project || state.detail;
+      state.activeChangeRequest = result.change_request || null;
+      state.recreate = null;
+      renderAll();
+    });
+  });
+}
+
+async function createStoryboardGenerationPacket(scene, frame) {
+  const promptOutput = $("fixPromptOutput");
+  const creativeDirection = promptOutput?.value.trim() || baseFixPrompt(scene, frame);
+  if (promptOutput && !promptOutput.value.trim()) promptOutput.value = creativeDirection;
+  await runAction("当前图片任务包 / Frame packet", async () => {
+    const changeResult = await requestJson(`/api/projects/${state.selectedSlug}/scene-change-request`, {
+      method: "POST",
+      body: JSON.stringify({
+        scene_id: scene.scene_id,
+        trigger_step: frame.stage,
+        trigger_asset_id: frame.asset_id || "",
+        creative_direction: creativeDirection,
+      }),
+    });
+    const request = changeResult.change_request || {};
+    const selectedImpacts = selectedQueueableImpacts(request);
+    if (!selectedImpacts.length) {
+      state.detail = changeResult.project || state.detail;
+      state.activeChangeRequest = request;
+      renderAll();
+      throw new Error("没有可入队的当前图片资产 / No queueable frame asset.");
+    }
+    const selectedImpactIds = selectedImpacts.map((impact) => impact.impact_id);
+    const actionOverrides = Object.fromEntries(selectedImpacts.map((impact) => [impact.impact_id, impact.action]));
+    const queueResult = await requestJson(`/api/projects/${state.selectedSlug}/scene-generate`, {
+      method: "POST",
+      body: JSON.stringify({
+        change_request_id: request.change_request_id,
+        selected_impact_ids: selectedImpactIds,
+        action_overrides: actionOverrides,
+        notes: `Storyboard Studio packet for ${frameTitle(frame)}`,
+      }),
+    });
+    const runResult = await requestJson(`/api/projects/${state.selectedSlug}/scene-run-generation`, {
+      method: "POST",
+      body: JSON.stringify({
+        change_request_id: request.change_request_id,
+        adapter_id: "manual_packet",
+      }),
+    });
+    state.detail = runResult.project || queueResult.project || changeResult.project || state.detail;
+    state.activeChangeRequest = runResult.change_request || queueResult.change_request || request;
+    state.recreate = null;
+    renderAll();
+  });
+}
+
+function changeRequestSummary(request) {
+  const impacts = request.impact_table || [];
+  const queueable = impacts.filter(queueableImpact).length;
+  const selected = impacts.filter((impact) => impact.selected && queueableImpact(impact)).length;
+  const sample = isExampleChangeRequest(request) ? " · 样板 / example" : "";
+  return `${escapeHtml(request.trigger_step || "")} · ${selected}/${queueable} 新增/修改 / create or modify · ${escapeHtml(request.status || "")}${sample}`;
+}
+
+function renderSceneTree(scenes) {
+  const grouped = new Map();
+  scenes.forEach((scene) => {
+    const key = `${scene.act_id || "ACT"}|${scene.act_title || "未分幕 / No act"}`;
+    if (!grouped.has(key)) grouped.set(key, []);
+    grouped.get(key).push(scene);
+  });
+  $("sceneTree").innerHTML = [...grouped.entries()]
+    .map(([key, actScenes]) => {
+      const [, actTitle] = key.split("|");
+      return `
+        <div class="scene-act-group">
+          <strong>${escapeHtml(actTitle)}</strong>
+          ${actScenes
+            .map(
+              (scene) => `
+                <button class="scene-tree-item ${scene.scene_id === state.selectedSceneId ? "active" : ""}" data-scene-id="${escapeHtml(scene.scene_id)}" type="button">
+                  <span>${escapeHtml(scene.title || scene.scene_id)}</span>
+                  <small>${escapeHtml(scene.scene_id)} · ${(scene.shot_ids || []).length} 镜头 / shots · ${escapeHtml(sceneStatusLabel(scene.status))}</small>
+                </button>
+              `,
+            )
+            .join("")}
+        </div>
+      `;
+    })
+    .join("");
+  $("sceneTree").querySelectorAll(".scene-tree-item").forEach((button) => {
+    button.addEventListener("click", () => {
+      state.selectedSceneId = button.dataset.sceneId || "";
+      state.activeChangeRequest = null;
+      state.recreate = null;
+      renderSceneWorkbench();
+    });
+  });
+}
+
+function sceneAssetMatches(asset, step) {
+  const annotation = annotationForRef(sceneAssetRef(asset));
+  const status = annotation.status || "";
+  const query = state.sceneFilters.query.trim().toLowerCase();
+  const kind = sceneAssetKind(asset, step);
+  if (state.sceneFilters.step !== "all" && step !== state.sceneFilters.step) return false;
+  if (state.sceneFilters.kind !== "all" && kind !== state.sceneFilters.kind) return false;
+  if (state.sceneFilters.decision === "use" && status !== "use") return false;
+  if (state.sceneFilters.decision === "reject" && status !== "reject") return false;
+  if (state.sceneFilters.decision === "unset" && status) return false;
+  if (!query) return true;
+  return [asset.asset_id, asset.role, asset.path, kindLabel(kind), annotation.note].join(" ").toLowerCase().includes(query);
+}
+
+function renderSceneAsset(asset, step) {
+  const ref = sceneAssetRef(asset);
+  const annotation = annotationForRef(ref);
+  const status = annotation.status || "";
+  const note = annotation.note || "";
+  const kind = sceneAssetKind(asset, step);
+  return `
+    <div class="scene-asset-row ${escapeHtml(decisionClass(status))}" data-ref="${escapeHtml(ref)}">
+      <span class="scene-asset-main">
+        <strong>${escapeHtml(asset.asset_id || asset.role || "asset")}</strong>
+        <small>${escapeHtml(step)} · ${escapeHtml(kindLabel(kind))} · ${escapeHtml(asset.role || "资源 / asset")} · ${escapeHtml(asset.path || "")}</small>
+      </span>
+      <span class="scene-asset-actions">
+        <button class="decision-button use ${status === "use" ? "active" : ""}" data-status="use" type="button" title="标为后续参考 / Mark as reference">✓</button>
+        <button class="decision-button reject ${status === "reject" ? "active" : ""}" data-status="reject" type="button" title="标为不使用 / Mark as rejected">×</button>
+        ${sceneAssetLink(asset)}
+      </span>
+      <textarea class="scene-asset-note" data-ref="${escapeHtml(ref)}" rows="2" placeholder="备注：这份资源哪里好 / 哪里要改 / Note: what works and what should change">${escapeHtml(note)}</textarea>
+    </div>
+  `;
+}
+
+function renderSceneLoopPanel(scene, versions, changeRequests) {
+  const queue = scene?.generation_queue || [];
+  const reviews = scene?.review_log?.reviews || [];
+  const snapshots = scene?.snapshots || [];
+  const latestVersions = versions.slice().reverse().slice(0, 8);
+  const latestRequests = changeRequests.slice(0, 6);
+  const latestQueue = queue.slice(0, 8);
+  const latestSnapshots = snapshots.slice(0, 5);
+  return `
+    <section class="scene-loop-panel">
+      <form id="sceneStatusForm" class="scene-status-form">
+        <label>场戏状态 / Scene status
+          <select id="sceneStatusSelect">
+            ${Object.entries(SCENE_STATUS_LABELS)
+              .map(([value, label]) => `<option value="${escapeHtml(value)}" ${scene?.status === value ? "selected" : ""}>${escapeHtml(label)}</option>`)
+              .join("")}
+          </select>
+        </label>
+        <label>审片备注 / Review note
+          <textarea id="sceneStatusNotes" rows="2" placeholder="这一场当前哪里通过，哪里还要改 / What passes and what still needs work"></textarea>
+        </label>
+        <button class="command-button" type="submit">记录状态 / Save status</button>
+      </form>
+      <div class="scene-loop-columns">
+        <section>
+          <h4>变更请求 / Change Requests</h4>
+          ${
+            latestRequests.length
+              ? latestRequests
+                  .map(
+                    (request) => `
+                      <button class="scene-request-button ${state.activeChangeRequest?.change_request_id === request.change_request_id ? "active" : ""}" data-change-request-id="${escapeHtml(request.change_request_id)}" type="button">
+                        <strong>${escapeHtml(request.change_request_id)}</strong>
+                        <span>${changeRequestSummary(request)}</span>
+                      </button>
+                    `,
+                  )
+                  .join("")
+              : `<div class="scene-ledger-empty">暂无变更请求 / No change requests yet</div>`
+          }
+        </section>
+        <section>
+          <h4>生成队列 / Generation Queue</h4>
+          ${
+            latestQueue.length
+              ? latestQueue
+                .map(
+                    (item) => {
+                      const resultLink = scenePathLink(item.result_path, "任务包 / Packet");
+                      const packetLink = item.packet_path && item.packet_path !== item.result_path ? scenePathLink(item.packet_path, "任务包 / Packet") : "";
+                      const finalLink = scenePathLink(item.final_output_path, "输出 / Output");
+                      const targetLink = scenePathLink(item.path, "目标 / Target");
+                      return `
+                      <div class="scene-ledger-row">
+                        <strong>${escapeHtml(item.asset_id || item.queue_id || "asset")}</strong>
+                        <span>${escapeHtml(item.target_version || "")} · ${escapeHtml(item.stage_id || "")} · ${escapeHtml(item.status || "queued")}${item.final_output_path && item.output_exists === false ? " · 未落盘 / Missing" : ""}</span>
+                        <small>${escapeHtml(item.change_request_id || "")}</small>
+                        <span class="scene-ledger-links">${finalLink} ${resultLink} ${packetLink} ${targetLink}</span>
+                        <form class="scene-output-form" data-change-request-id="${escapeHtml(item.change_request_id || "")}" data-queue-id="${escapeHtml(item.queue_id || "")}">
+                          <input name="output_path" value="${escapeHtml(item.final_output_path || "")}" placeholder="真实输出路径 / Final output path" />
+                          <button class="mini-command" type="submit">回填 / Attach</button>
+                        </form>
+                      </div>
+                    `;
+                    },
+                  )
+                  .join("")
+              : `<div class="scene-ledger-empty">暂无生成队列 / No queued generation</div>`
+          }
+        </section>
+        <section>
+          <h4>版本历史 / Version History</h4>
+          ${
+            latestVersions.length
+              ? latestVersions
+                .map(
+                    (version) => {
+                      const outputLink = scenePathLink(version.final_output_path || version.output_path || version.target_path, "打开 / Open");
+                      const packetLink = scenePathLink(version.packet_path, "任务包 / Packet");
+                      const canPromote = version.status !== "current";
+                      return `
+                      <div class="scene-ledger-row">
+                        <strong>${escapeHtml(version.asset_id || "asset")} · ${escapeHtml(version.version || "")}</strong>
+                        <span>${escapeHtml(version.stage_id || "")} · ${escapeHtml(version.status || "")}${version.final_output_path && version.output_exists === false ? " · 未落盘 / Missing" : ""}</span>
+                        <small>${escapeHtml(version.change_request_id || "")} · ${escapeHtml(version.trigger_step || "")}</small>
+                        <span class="scene-ledger-links">
+                          ${outputLink}
+                          ${packetLink}
+                          ${
+                            canPromote
+                              ? `<button class="mini-command scene-version-button" data-asset-id="${escapeHtml(version.asset_id || "")}" data-version="${escapeHtml(version.version || "")}" data-action="${version.status === "superseded" ? "rollback" : "promote"}" type="button">${version.status === "superseded" ? "回滚 / Roll back" : "设为当前 / Set current"}</button>`
+                              : `<span>当前 / Current</span>`
+                          }
+                        </span>
+                      </div>
+                    `;
+                    },
+                  )
+                  .join("")
+              : `<div class="scene-ledger-empty">暂无版本记录 / No version records</div>`
+          }
+        </section>
+        <section>
+          <h4>审片记录 / Review Log</h4>
+          ${
+            reviews.length
+              ? reviews
+                  .slice()
+                  .reverse()
+                  .slice(0, 5)
+                  .map(
+                    (review) => `
+                      <div class="scene-ledger-row">
+                        <strong>${escapeHtml(sceneStatusLabel(review.status))}</strong>
+                        <span>${escapeHtml(review.notes || "无备注 / No note")}</span>
+                        <small>${escapeHtml(review.created_at || "")}</small>
+                      </div>
+                    `,
+                  )
+                  .join("")
+              : `<div class="scene-ledger-empty">暂无审片记录 / No review records</div>`
+          }
+        </section>
+        <section>
+          <h4>场戏快照 / Scene Snapshots</h4>
+          ${
+            latestSnapshots.length
+              ? latestSnapshots
+                  .map(
+                    (snapshot) => `
+                      <div class="scene-ledger-row">
+                        <strong>${escapeHtml(snapshot.snapshot_id || "snapshot")}</strong>
+                        <span>${escapeHtml(sceneStatusLabel(snapshot.status))} · ${escapeHtml(snapshot.created_at || "")}</span>
+                        <small>${escapeHtml(snapshot.change_request_id || "")}</small>
+                        <span class="scene-ledger-links">${scenePathLink(snapshot.path, "快照 / Snapshot")}</span>
+                      </div>
+                    `,
+                  )
+                  .join("")
+              : `<div class="scene-ledger-empty">暂无场戏快照 / No scene snapshots</div>`
+          }
+        </section>
+      </div>
+    </section>
+  `;
+}
+
+function renderSceneChangePanel(scene) {
+  const request = state.activeChangeRequest?.scene_id === scene?.scene_id ? state.activeChangeRequest : null;
+  if (request) {
+    const impacts = request.impact_table || [];
+    const queued = request.status === "generation_queued";
+    const reviewReady = request.status === "review_ready";
+    const example = isExampleChangeRequest(request);
+    const queue = request.generation_queue || [];
+    const canRunGeneration = !example && queue.some((item) => ["queued", "failed"].includes(item.status || ""));
+    const adapters = generationAdapters();
+    return `
+      <section class="scene-change-panel">
+        <header>
+          <strong>影响评估表 / Impact Table</strong>
+          <span>${escapeHtml(request.change_request_id)} · ${escapeHtml(request.trigger_step)} · ${escapeHtml(request.status)}</span>
+        </header>
+        <p>${escapeHtml(request.creative_direction || "")}</p>
+        <p>勾选要处理的资产，并可把动作改为新增、修改或只检查。/ Select affected assets, then choose create, modify, or check.</p>
+        <div class="impact-table-wrap">
+          <table>
+            <thead>
+              <tr><th>选 / Select</th><th>动作 / Action</th><th>范围 / Scope</th><th>步骤 / Step</th><th>资源 / Asset</th><th>原因 / Why</th></tr>
+            </thead>
+            <tbody>
+              ${impacts
+                .map(
+                  (impact) => {
+                    const canEdit = !queued && !example;
+                    return `
+                    <tr>
+                      <td><input class="impact-checkbox" type="checkbox" value="${escapeHtml(impact.impact_id)}" ${impact.selected ? "checked" : ""} ${canEdit ? "" : "disabled"} /></td>
+                      <td>${impactActionOptions(impact, !canEdit)}</td>
+                      <td>${escapeHtml(impact.impact_scope)}</td>
+                      <td>${escapeHtml(impact.stage_id)}</td>
+                      <td><strong>${escapeHtml(impact.asset_id)}</strong><small>${escapeHtml(impact.path || "")}</small></td>
+                      <td>${escapeHtml(impact.why || "")}</td>
+                    </tr>
+                  `;
+                  },
+                )
+                .join("")}
+            </tbody>
+          </table>
+        </div>
+        ${
+          queue.length
+            ? `<div class="scene-active-queue">
+                <strong>本次生成队列 / This queue</strong>
+                ${queue
+                  .map(
+                    (item) => `
+                      <span>
+                        ${escapeHtml(item.asset_id || item.queue_id || "asset")} · ${escapeHtml(item.target_version || "")} · ${escapeHtml(item.status || "")}
+                        ${scenePathLink(item.result_path, "任务包 / Packet")}
+                      </span>
+                    `,
+                  )
+                  .join("")}
+              </div>`
+            : ""
+        }
+        <textarea id="approvalNotes" rows="2" placeholder="确认备注，可写为什么选择这些资产 / Optional approval note"></textarea>
+        <button id="queueSceneGenerationBtn" class="command-button primary" type="button" ${queued || reviewReady || example ? "disabled" : ""}>
+          ${example ? "样板不可入队 / Example only" : queued || reviewReady ? "已写入生成队列 / Already queued" : "确认并写入生成队列 / Confirm & queue generation"}
+        </button>
+        ${
+          queue.length
+            ? `<label class="scene-adapter-select">生成适配器 / Generation adapter
+                <select id="sceneGenerationAdapter">
+                  ${adapters
+                    .map((adapter) => {
+                      const enabled = adapter.enabled !== false && adapter.requires_confirmation !== true;
+                      const label = adapter.label || adapter.adapter_id || "adapter";
+                      const suffix = enabled ? "" : " · 未启用 / disabled";
+                      return `<option value="${escapeHtml(adapter.adapter_id || "")}" ${adapter.adapter_id === "manual_packet" ? "selected" : ""} ${enabled ? "" : "disabled"}>${escapeHtml(label + suffix)}</option>`;
+                    })
+                    .join("")}
+                </select>
+              </label>
+              <button id="runSceneGenerationBtn" class="command-button" type="button" ${canRunGeneration ? "" : "disabled"}>
+                ${example ? "样板不可执行 / Example only" : canRunGeneration ? "开始生成任务包 / Start generation packet" : "任务包已准备审片 / Packet ready for review"}
+              </button>`
+            : ""
+        }
+      </section>
+    `;
+  }
+  if (state.recreate?.sceneId === scene?.scene_id) {
+    return `
+      <section class="scene-change-panel">
+        <header>
+          <strong>再创作方向 / Re-create Direction</strong>
+          <span>${escapeHtml(scene.scene_id)} · ${escapeHtml(state.recreate.triggerStep)}</span>
+        </header>
+        <textarea id="creativeDirection" rows="3" placeholder="写下这一轮要改变什么，例如：入口更潮湿，门帘运动更明确 / Describe what should change in this iteration"></textarea>
+        <button id="createImpactTableBtn" class="command-button primary" type="button">生成影响评估表 / Build impact table</button>
+      </section>
+    `;
+  }
+  return `<div class="scene-change-placeholder">选择某一步的“再创作”后，会先生成影响评估表，不会直接生成素材。/ Click Re-create on a step to build an impact table before any generation.</div>`;
+}
+
+function renderSceneWorkbench() {
+  const scenes = state.detail?.scene_workbench?.scenes || [];
+  $("sceneWorkbenchHint").textContent = `${scenes.length} 场戏 / scenes`;
+  if (!scenes.length) {
+    $("sceneTree").innerHTML = "";
+    $("sceneStepLanes").innerHTML = `<div class="empty-state">还没有场戏清单 / No scene manifest yet.</div>`;
+    return;
+  }
+  const scene = selectedScene();
+  renderSceneTree(scenes);
+  const stageAssets = scene?.resource_manifest?.stage_assets || {};
+  const steps = scene?.primary_steps || Object.keys(stageAssets);
+  const versions = scene?.version_registry?.versions || [];
+  const changeRequests = scene?.change_requests || [];
+  const visibleSteps = steps.filter((step) => state.sceneFilters.step === "all" || step === state.sceneFilters.step);
+  const kindOptions = sceneKindOptions(stageAssets, visibleSteps);
+  state.sceneFilters.kind = kindOptions.some((option) => option.value === state.sceneFilters.kind) ? state.sceneFilters.kind : "all";
+  const hasSceneAssetFilter = state.sceneFilters.kind !== "all" || state.sceneFilters.decision !== "all" || state.sceneFilters.query.trim();
+  const laneRows = visibleSteps
+    .map((step) => ({ step, assets: (stageAssets[step] || []).filter((asset) => sceneAssetMatches(asset, step)) }))
+    .filter((row) => row.assets.length || state.sceneFilters.step !== "all" || !hasSceneAssetFilter);
+  $("sceneStepLanes").innerHTML = `
+    <div class="scene-workbench-summary">
+      <strong>${escapeHtml(scene?.title || scene?.scene_id || "")}</strong>
+      <span>${escapeHtml(scene?.scene_id || "")} · ${escapeHtml(sceneStatusLabel(scene?.status))} · ${(scene?.shot_ids || []).length} 镜头 / shots · ${versions.length} 版本记录 / version records · ${changeRequests.length} 变更请求 / change requests</span>
+    </div>
+    <div class="scene-workbench-controls">
+      <label>步骤 / Step
+        <select id="sceneStepFilter">
+          <option value="all">全部步骤 / All steps</option>
+          ${steps.map((step) => `<option value="${escapeHtml(step)}" ${state.sceneFilters.step === step ? "selected" : ""}>${escapeHtml(step)} · ${escapeHtml(stageLabel(step))}</option>`).join("")}
+        </select>
+      </label>
+      <label>类别 / Kind
+        <select id="sceneKindFilter">
+          ${kindOptions.map((option) => `<option value="${escapeHtml(option.value)}" ${state.sceneFilters.kind === option.value ? "selected" : ""}>${escapeHtml(option.label)}</option>`).join("")}
+        </select>
+      </label>
+      <label>标注 / Mark
+        <select id="sceneDecisionFilter">
+          <option value="all" ${state.sceneFilters.decision === "all" ? "selected" : ""}>全部 / All</option>
+          <option value="use" ${state.sceneFilters.decision === "use" ? "selected" : ""}>✅ 参考 / Use</option>
+          <option value="reject" ${state.sceneFilters.decision === "reject" ? "selected" : ""}>× 不用 / Reject</option>
+          <option value="unset" ${state.sceneFilters.decision === "unset" ? "selected" : ""}>未标注 / Unmarked</option>
+        </select>
+      </label>
+      <label>搜索 / Search
+        <input id="sceneAssetSearch" value="${escapeHtml(state.sceneFilters.query)}" placeholder="资源 / 路径 / 备注 / Asset, path, note" />
+      </label>
+    </div>
+    ${renderSceneLoopPanel(scene, versions, changeRequests)}
+    <div class="scene-lane-grid">
+      ${
+        laneRows.length
+          ? laneRows
+              .map(({ step, assets }) => `
+            <section class="scene-step-lane">
+              <header>
+                <strong>${escapeHtml(step)}</strong>
+                <span>${escapeHtml(stageLabel(step))}</span>
+              </header>
+              ${assets.length ? assets.map((asset) => renderSceneAsset(asset, step)).join("") : `<div class="scene-asset-empty">暂无匹配资源 / No matching assets</div>`}
+              <button class="mini-command scene-recreate-button" data-step="${escapeHtml(step)}" type="button">再创作 / Re-create</button>
+            </section>
+          `)
+              .join("")
+          : `<div class="scene-asset-empty">没有匹配的场戏资源 / No matching scene assets</div>`
+      }
+    </div>
+    ${renderSceneChangePanel(scene)}
+  `;
+  bindSceneWorkbenchEvents();
+}
+
+function bindSceneWorkbenchEvents() {
+  const stepFilter = $("sceneStepFilter");
+  if (stepFilter) {
+    stepFilter.addEventListener("change", (event) => {
+      state.sceneFilters.step = event.target.value;
+      renderSceneWorkbench();
+    });
+  }
+  const kindFilter = $("sceneKindFilter");
+  if (kindFilter) {
+    kindFilter.addEventListener("change", (event) => {
+      state.sceneFilters.kind = event.target.value;
+      renderSceneWorkbench();
+    });
+  }
+  const decisionFilter = $("sceneDecisionFilter");
+  if (decisionFilter) {
+    decisionFilter.addEventListener("change", (event) => {
+      state.sceneFilters.decision = event.target.value;
+      renderSceneWorkbench();
+    });
+  }
+  const search = $("sceneAssetSearch");
+  if (search) {
+    search.addEventListener("input", (event) => {
+      state.sceneFilters.query = event.target.value;
+      renderSceneWorkbench();
+    });
+  }
+  $("sceneStepLanes").querySelectorAll(".scene-request-button").forEach((button) => {
+    button.addEventListener("click", () => {
+      const scene = selectedScene();
+      const request = (scene?.change_requests || []).find((item) => item.change_request_id === button.dataset.changeRequestId);
+      state.activeChangeRequest = request || null;
+      state.recreate = null;
+      renderSceneWorkbench();
+    });
+  });
+  const sceneStatusForm = $("sceneStatusForm");
+  if (sceneStatusForm) {
+    sceneStatusForm.addEventListener("submit", updateSceneStatus);
+  }
+  $("sceneStepLanes").querySelectorAll(".scene-asset-row .decision-button").forEach((button) => {
+    button.addEventListener("click", async () => {
+      const row = button.closest(".scene-asset-row");
+      const ref = row?.dataset.ref || "";
+      const current = annotationForRef(ref);
+      const nextStatus = current.status === button.dataset.status ? "" : button.dataset.status;
+      const note = row?.querySelector(".scene-asset-note")?.value || current.note || "";
+      await saveResourceAnnotation(ref, { status: nextStatus, note });
+    });
+  });
+  $("sceneStepLanes").querySelectorAll(".scene-asset-note").forEach((textarea) => {
+    const saveNote = async (showToast = false) => {
+      const ref = textarea.dataset.ref || "";
+      const current = annotationForRef(ref);
+      await saveResourceAnnotation(ref, { status: current.status || "", note: textarea.value }, { rerender: false, toast: false });
+      if (showToast) toast("场戏备注已保存 / Scene note saved");
+    };
+    textarea.addEventListener("input", () => {
+      clearTimeout(textarea._saveTimer);
+      textarea._saveTimer = setTimeout(() => saveNote(false).catch((error) => toast(`备注保存失败 / Note save failed: ${error.message}`)), 650);
+    });
+    textarea.addEventListener("blur", async () => {
+      clearTimeout(textarea._saveTimer);
+      await saveNote(true);
+    });
+  });
+  $("sceneStepLanes").querySelectorAll(".scene-recreate-button").forEach((button) => {
+    button.addEventListener("click", () => {
+      const scene = selectedScene();
+      state.activeChangeRequest = null;
+      state.recreate = { sceneId: scene?.scene_id || "", triggerStep: button.dataset.step || "" };
+      renderSceneWorkbench();
+    });
+  });
+  const createImpactButton = $("createImpactTableBtn");
+  if (createImpactButton) {
+    createImpactButton.addEventListener("click", createSceneImpactTable);
+  }
+  const queueButton = $("queueSceneGenerationBtn");
+  if (queueButton) {
+    queueButton.addEventListener("click", queueSceneGeneration);
+  }
+  const runButton = $("runSceneGenerationBtn");
+  if (runButton) {
+    runButton.addEventListener("click", runSceneGeneration);
+  }
+  $("sceneStepLanes").querySelectorAll(".scene-version-button").forEach((button) => {
+    button.addEventListener("click", () => updateSceneVersion(button));
+  });
+  $("sceneStepLanes").querySelectorAll(".scene-output-form").forEach((form) => {
+    form.addEventListener("submit", updateSceneOutput);
+  });
+}
+
+async function createSceneImpactTable() {
+  const scene = selectedScene();
+  const creativeDirection = $("creativeDirection")?.value.trim() || "";
+  if (!scene || !state.recreate?.triggerStep || !creativeDirection) {
+    toast("请先填写创作方向 / Please enter a creative direction");
+    return;
+  }
+  await runAction("影响评估 / Impact analysis", async () => {
+    const result = await requestJson(`/api/projects/${state.selectedSlug}/scene-change-request`, {
+      method: "POST",
+      body: JSON.stringify({
+        scene_id: scene.scene_id,
+        trigger_step: state.recreate.triggerStep,
+        creative_direction: creativeDirection,
+      }),
+    });
+    state.detail = result.project || state.detail;
+    state.activeChangeRequest = result.change_request || null;
+    state.recreate = null;
+    renderAll();
+  });
+}
+
+async function queueSceneGeneration() {
+  const request = state.activeChangeRequest;
+  if (!request?.change_request_id) return;
+  const selectedImpactIds = Array.from(document.querySelectorAll(".impact-checkbox:checked")).map((input) => input.value);
+  const actionOverrides = Object.fromEntries(
+    Array.from(document.querySelectorAll(".impact-action-select")).map((select) => [select.dataset.impactId, select.value]),
+  );
+  if (!selectedImpactIds.length) {
+    toast("请至少选择一个要新增或修改的资产 / Select at least one asset to create or modify");
+    return;
+  }
+  const selectedQueueableIds = selectedImpactIds.filter((impactId) => ["create", "modify"].includes(actionOverrides[impactId]));
+  if (!selectedQueueableIds.length) {
+    toast("所选项都是检查项，不会进入生成队列 / Selected items are check-only and will not enter generation");
+    return;
+  }
+  await runAction("生成队列 / Generation queue", async () => {
+    const result = await requestJson(`/api/projects/${state.selectedSlug}/scene-generate`, {
+      method: "POST",
+      body: JSON.stringify({
+        change_request_id: request.change_request_id,
+        selected_impact_ids: selectedImpactIds,
+        action_overrides: actionOverrides,
+        notes: $("approvalNotes")?.value.trim() || "",
+      }),
+    });
+    state.detail = result.project || state.detail;
+    state.activeChangeRequest = result.change_request || null;
+    renderAll();
+  });
+}
+
+async function runSceneGeneration() {
+  const request = state.activeChangeRequest;
+  if (!request?.change_request_id) return;
+  await runAction("生成任务包 / Generation packet", async () => {
+    const result = await requestJson(`/api/projects/${state.selectedSlug}/scene-run-generation`, {
+      method: "POST",
+      body: JSON.stringify({
+        change_request_id: request.change_request_id,
+        adapter_id: $("sceneGenerationAdapter")?.value || "manual_packet",
+      }),
+    });
+    state.detail = result.project || state.detail;
+    state.activeChangeRequest = result.change_request || null;
+    renderAll();
+  });
+}
+
+async function updateSceneVersion(button) {
+  const scene = selectedScene();
+  const assetId = button.dataset.assetId || "";
+  const version = button.dataset.version || "";
+  const action = button.dataset.action || "promote";
+  if (!scene || !assetId || !version) return;
+  await runAction(action === "rollback" ? "版本回滚 / Version rollback" : "版本晋级 / Version promote", async () => {
+    const result = await requestJson(`/api/projects/${state.selectedSlug}/scene-version`, {
+      method: "POST",
+      body: JSON.stringify({
+        scene_id: scene.scene_id,
+        asset_id: assetId,
+        version,
+        action,
+      }),
+    });
+    state.detail = result.project || state.detail;
+    renderAll();
+  });
+}
+
+async function updateSceneOutput(event) {
+  event.preventDefault();
+  const form = event.currentTarget;
+  const changeRequestId = form.dataset.changeRequestId || "";
+  const queueId = form.dataset.queueId || "";
+  const outputPath = new FormData(form).get("output_path") || "";
+  if (!changeRequestId || !queueId || !String(outputPath).trim()) {
+    toast("请填写真实输出路径 / Enter a final output path");
+    return;
+  }
+  await runAction("输出回填 / Attach output", async () => {
+    const result = await requestJson(`/api/projects/${state.selectedSlug}/scene-output`, {
+      method: "POST",
+      body: JSON.stringify({
+        change_request_id: changeRequestId,
+        queue_id: queueId,
+        output_path: String(outputPath).trim(),
+      }),
+    });
+    state.detail = result.project || state.detail;
+    state.activeChangeRequest = result.change_request || null;
+    renderAll();
+  });
+}
+
+async function updateSceneStatus(event) {
+  event.preventDefault();
+  const scene = selectedScene();
+  if (!scene) return;
+  await runAction("场戏状态 / Scene status", async () => {
+    const result = await requestJson(`/api/projects/${state.selectedSlug}/scene-status`, {
+      method: "POST",
+      body: JSON.stringify({
+        scene_id: scene.scene_id,
+        status: $("sceneStatusSelect")?.value || "in_progress",
+        notes: $("sceneStatusNotes")?.value.trim() || "",
+        change_request_id: state.activeChangeRequest?.change_request_id || "",
+      }),
+    });
+    state.detail = result.project || state.detail;
+    renderAll();
+  });
+}
+
 function renderAssetList() {
   const previews = state.detail?.previews || {};
   const images = previews.images || [];
@@ -645,8 +2066,10 @@ function renderAutofill() {
 function renderAll() {
   renderProjects();
   renderHeader();
+  renderStoryboardStudio();
   renderMetrics();
   renderLinks();
+  renderSceneWorkbench();
   renderResourceBrowser();
   renderSceneLocks();
   renderVisualGallery();
@@ -678,6 +2101,10 @@ async function loadDetail(slug) {
   state.selectedSlug = slug;
   state.selectedDocIndex = 0;
   state.selectedSceneLockIndex = 0;
+  state.selectedSceneId = "";
+  state.selectedFrameRef = "";
+  state.storyboardStage = "all";
+  state.referenceSelection = {};
   state.detail = await requestJson(`/api/projects/${encodeURIComponent(slug)}`);
   renderAll();
 }
@@ -808,6 +2235,8 @@ async function saveResourceAnnotation(ref, patch, options = {}) {
   });
   state.detail.annotations = payload.annotations || state.detail.annotations || { assets: {} };
   if (options.rerender !== false) {
+    renderStoryboardStudio();
+    renderSceneWorkbench();
     renderResourceBrowser();
     renderVisualGallery();
     renderAssetList();

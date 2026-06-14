@@ -1,4 +1,4 @@
-# 投币口 / Latest Pack Gate Report
+﻿# 投币口 / Latest Pack Gate Report
 
 Date: 2026-05-23
 

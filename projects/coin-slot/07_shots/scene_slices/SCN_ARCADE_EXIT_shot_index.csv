@@ -1,0 +1,9 @@
+shot_id,batch,clip,clip_title,scene_id,camera,asset_type,priority,beat,pure_path,whitebox_path
+MSB058,B03,07,志得意满离开,SCN_ARCADE_EXIT,CAM_ARCADE_EXIT_01_LEAVING,start_frame,A,门内到门外,media/01_AIGC/visual_assets/pure/micro_storyboard/B03/MSB058_v001.png,media/01_AIGC/whitebox_renders_v2/B03/WB2_EXIT_MSB058.png
+MSB059,B03,07,志得意满离开,SCN_ARCADE_EXIT,CAM_ARCADE_EXIT_01_LEAVING,storyboard,A,阿磊比划胜利,media/01_AIGC/visual_assets/pure/micro_storyboard/B03/MSB059_v001.png,media/01_AIGC/whitebox_renders_v2/B03/WB2_EXIT_MSB059.png
+MSB060,B03,07,志得意满离开,SCN_ARCADE_EXIT,CAM_ARCADE_EXIT_01_LEAVING,storyboard,B,小川学了一下,media/01_AIGC/visual_assets/pure/micro_storyboard/B03/MSB060_v001.png,media/01_AIGC/whitebox_renders_v2/B03/WB2_EXIT_MSB060.png
+MSB061,B03,07,志得意满离开,SCN_ARCADE_EXIT,CAM_ARCADE_EXIT_01_LEAVING,storyboard,B,小满跟着笑,media/01_AIGC/visual_assets/pure/micro_storyboard/B03/MSB061_v001.png,media/01_AIGC/whitebox_renders_v2/B03/WB2_EXIT_MSB061.png
+MSB062,B03,07,志得意满离开,SCN_ARCADE_EXIT,CAM_ARCADE_EXIT_01_LEAVING,keyframe,A,门口空间回看,media/01_AIGC/visual_assets/pure/micro_storyboard/B03/MSB062_v001.png,media/01_AIGC/whitebox_renders_v2/B03/WB2_EXIT_MSB062.png
+MSB063,B03,07,志得意满离开,SCN_ARCADE_EXIT,CAM_ARCADE_EXIT_01_LEAVING,storyboard,C,CRT 声远去,media/01_AIGC/visual_assets/pure/micro_storyboard/B03/MSB063_v001.png,media/01_AIGC/whitebox_renders_v2/B03/WB2_EXIT_MSB063.png
+MSB064,B03,07,志得意满离开,SCN_ARCADE_EXIT,CAM_ARCADE_EXIT_01_LEAVING,storyboard,A,阿磊走在最前,media/01_AIGC/visual_assets/pure/micro_storyboard/B03/MSB064_v001.png,media/01_AIGC/whitebox_renders_v2/B03/WB2_EXIT_MSB064.png
+MSB065,B03,07,志得意满离开,SCN_ARCADE_EXIT,CAM_ARCADE_EXIT_01_LEAVING,end_frame,A,暗巷入口,media/01_AIGC/visual_assets/pure/micro_storyboard/B03/MSB065_v001.png,media/01_AIGC/whitebox_renders_v2/B03/WB2_EXIT_MSB065.png

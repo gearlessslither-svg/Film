@@ -1,4 +1,4 @@
-asset_id,batch,asset_type,planned_path,source_panel,clip,clip_title,priority,source_camera,prompt_focus,status
+﻿asset_id,batch,asset_type,planned_path,source_panel,clip,clip_title,priority,source_camera,prompt_focus,status
 MSB001_STORYBOARD,B01,storyboard,micro_storyboard_panels/B01/MSB001_01_空镜压低视线.png,MSB001,01,老小区建立,A,CAM_COMPOUND_01_ESTABLISH,潮湿地面和破自行车占前景，居民楼底层角落被压在画面右后方,planned
 MSB002_STORYBOARD,B01,storyboard,micro_storyboard_panels/B01/MSB002_01_居民楼像迷宫.png,MSB002,01,老小区建立,A,CAM_COMPOUND_01_ESTABLISH,发黄楼体、铁栏杆、晾衣绳形成遮挡，游戏机房入口几乎被墙角吞掉,planned
 MSB003_KEYFRAME,B01,keyframe,micro_storyboard_panels/B01/MSB003_01_门缝_CRT_光.png,MSB003,01,老小区建立,A,CAM_COMPOUND_01_ESTABLISH,一扇不起眼的门里漏出蓝绿 CRT 光，门口杂草和水渍清楚,planned

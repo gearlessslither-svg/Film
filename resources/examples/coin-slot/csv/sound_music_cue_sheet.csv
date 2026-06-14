@@ -1,4 +1,4 @@
-cue_id,visual_range,time_start,time_end,category,cue_name,story_function,sonic_description,sync_point,intensity,processing,loopable,wav_name,priority
+﻿cue_id,visual_range,time_start,time_end,category,cue_name,story_function,sonic_description,sync_point,intensity,processing,loopable,wav_name,priority
 AMB_001,Clip 01 / MSB001-MSB008,00:00.0,00:16.0,ambience,潮湿老小区夜底,让空间先进入观众身体。,低风、远处住户声、潮湿水面、很远的街机漏音。,free,2,"lowpass, subtle VHS noise",yes,audio/ambience/AMB_001_compound_night_loop.wav,A
 SFX_001,Clip 01 / MSB003-MSB008,00:08.0,00:16.0,hard_sfx,门内 CRT 漏电声,引出游戏机房。,很轻的 CRT 嗡鸣和蓝绿光感，不要现代电子声。,object,2,CRT hum,yes,audio/sfx/SFX_001_crt_leak_hum.wav,A
 FOLEY_001,Clip 02 / MSB009-MSB018,00:16.0,00:34.0,foley,三兄弟湿地脚步,建立年龄差和跟随节奏。,阿磊步子大，小川轻而紧，小满慢半拍。,action,2,room/outdoor natural,no,audio/sfx/FOLEY_001_three_brothers_steps.wav,A

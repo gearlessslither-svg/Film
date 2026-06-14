@@ -58,6 +58,15 @@
           <div id="statusPills" class="status-pills"></div>
         </header>
 
+        <section id="storyboardStudio" class="storyboard-studio" aria-label="Storyboard Studio"></section>
+
+        <details class="toolbox-panel">
+          <summary>
+            <span>高级工具箱 / Advanced Toolbox</span>
+            <small>分析、自动补全、资源浏览器、场景锁和旧面板 / Analysis, autofill, resource browser, scene locks, and legacy panels</small>
+          </summary>
+          <div class="toolbox-content">
+
         <section class="summary-grid" aria-label="项目摘要 / Project summary">
           <div class="metric">
             <span>准备度 / Readiness</span>
@@ -115,6 +124,17 @@
               插件安装 / Plugin install
             </label>
             <button id="sceneLockBtn" class="command-button" type="button">场景锁 / Scene Lock</button>
+          </div>
+        </section>
+
+        <section class="panel scene-workbench-panel">
+          <div class="panel-header">
+            <h3>场戏工作台 / Scene Workbench</h3>
+            <span id="sceneWorkbenchHint"></span>
+          </div>
+          <div class="scene-workbench">
+            <div id="sceneTree" class="scene-tree"></div>
+            <div id="sceneStepLanes" class="scene-step-lanes"></div>
           </div>
         </section>
 
@@ -241,6 +261,9 @@
           </div>
           <pre id="autofillView" class="report-view"></pre>
         </section>
+
+          </div>
+        </details>
       </main>
     </div>
 

@@ -1,4 +1,4 @@
-# Generation Constraints - SCN_COMPOUND
+﻿# Generation Constraints - SCN_COMPOUND
 
 ## Prompt Anchor / 正向锚点
 

@@ -1,4 +1,4 @@
-# {{PROJECT_NAME}}
+﻿# {{PROJECT_NAME}}
 
 这是一个按工业化 AIGC 影视流程归拢的项目文件夹。
 

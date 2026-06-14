@@ -1,4 +1,4 @@
-# 投币口 / 01_AIGC 镜头资产对应表 v4
+﻿# 投币口 / 01_AIGC 镜头资产对应表 v4
 
 说明：本表保留 20 个叙事镜头的资产对应。20 镜现在只作为 macro storyboard；生产级分镜请查看 `19_micro_storyboard_188_panels.csv`。实际图生视频请再查看 `13_generation_units.md`，高风险镜头已经拆成更短生成单元；结构化提示词在 `14_structured_video_prompts.md`。
 

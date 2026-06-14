@@ -1,4 +1,4 @@
-# 投币口 / 01_AIGC 微分镜生成批次 v1
+﻿# 投币口 / 01_AIGC 微分镜生成批次 v1
 
 本文件由 `19_micro_storyboard_188_panels.csv` 汇总而来。188 张 panel 不是最终图片本身，而是下一轮生成 storyboard 图、首尾帧、关键帧和 animatic 的生产表。
 

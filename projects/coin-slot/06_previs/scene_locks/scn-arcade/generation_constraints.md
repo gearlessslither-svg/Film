@@ -1,4 +1,4 @@
-# Generation Constraints - SCN_ARCADE
+﻿# Generation Constraints - SCN_ARCADE
 
 ## Prompt Anchor / 正向锚点
 

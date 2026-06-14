@@ -1,4 +1,4 @@
-# Skill Pack Changelog
+﻿# Skill Pack Changelog
 
 ## v1.1.0 - 2026-05-28
 

@@ -30,6 +30,10 @@ venv/
 !resources/examples/coin-slot/media/
 !resources/examples/coin-slot/media/**
 
+# Curated desktop launcher artwork for the local Pipeline Hub.
+!apps/pipeline-hub/desktop-assets/
+!apps/pipeline-hub/desktop-assets/**
+
 # Managed AIGC project folders. Production media here is handled by Git LFS.
 !projects/
 !projects/**
