@@ -999,6 +999,19 @@ function selectedStoryboardFrame(scene) {
   return { frame, frames };
 }
 
+function keepActiveFrameThumbVisible() {
+  const strip = document.querySelector(".frame-strip");
+  const active = strip?.querySelector(".frame-thumb.active");
+  if (!strip || !active) return;
+  const activeLeft = active.offsetLeft;
+  const activeRight = activeLeft + active.offsetWidth;
+  const visibleLeft = strip.scrollLeft;
+  const visibleRight = visibleLeft + strip.clientWidth;
+  if (activeLeft < visibleLeft || activeRight > visibleRight) {
+    strip.scrollLeft = Math.max(0, activeLeft - (strip.clientWidth - active.offsetWidth) / 2);
+  }
+}
+
 function moveStoryboardFrame(delta) {
   if (!state.detail || document.body.classList.contains("modal-open")) return false;
   const scene = selectedScene();
@@ -1010,9 +1023,14 @@ function moveStoryboardFrame(delta) {
     toast(delta > 0 ? "已经是最后一张 / Last frame" : "已经是第一张 / First frame");
     return true;
   }
+  const scrollX = window.scrollX;
+  const scrollY = window.scrollY;
   state.selectedFrameRef = frames[nextIndex].ref;
   renderStoryboardStudio();
-  window.setTimeout(() => document.querySelector(".frame-thumb.active")?.scrollIntoView({ block: "nearest", inline: "center" }), 40);
+  window.setTimeout(() => {
+    keepActiveFrameThumbVisible();
+    window.scrollTo(scrollX, scrollY);
+  }, 40);
   return true;
 }
 
