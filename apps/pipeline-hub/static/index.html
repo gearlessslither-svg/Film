@@ -58,6 +58,7 @@
           </div>
           <div class="workspace-actions">
             <button id="openIdeaLabBtn" class="command-button" type="button">创意 / Idea</button>
+            <button id="openWhiteboxLabBtn" class="command-button" type="button">白模 / Whitebox</button>
             <button id="openBoardBtn" class="command-button primary" type="button">画布 / Board</button>
             <div id="statusPills" class="status-pills"></div>
           </div>
@@ -323,6 +324,61 @@
     <div id="boardImageLightbox" class="board-image-lightbox" hidden>
       <button id="boardImageLightboxClose" class="icon-button" type="button" title="关闭 / Close">×</button>
       <img id="boardImageLightboxImg" alt="" />
+    </div>
+    <div id="whiteboxLabModal" class="reference-board-modal whitebox-lab-modal" hidden>
+      <section class="reference-board-window whitebox-lab-window" aria-label="白模复刻工作台 / Whitebox Replica Lab">
+        <header class="board-header">
+          <div>
+            <p class="eyebrow">Whitebox Replica Lab</p>
+            <h3>白模复刻工作台 / Whitebox Replica Lab</h3>
+            <p>用一张优秀场景/分镜图复刻 1:1 白模，再默认挂到相关分镜提示词。</p>
+          </div>
+          <div class="board-header-actions">
+            <button id="buildWhiteboxJobBtn" class="command-button primary" type="button">生成白模任务包 / Build Packet</button>
+            <button id="closeWhiteboxLabBtn" class="icon-button" type="button" title="关闭 / Close">×</button>
+          </div>
+        </header>
+        <main class="whitebox-lab-main">
+          <section class="whitebox-source-panel">
+            <header>
+              <strong>1. 选择母图 / Source image</strong>
+              <span>场景图、分镜关键帧、已生成图都可以</span>
+            </header>
+            <div class="whitebox-filters">
+              <label>范围 / Scope <select id="whiteboxSceneFilter"></select></label>
+              <label>搜索 / Search <input id="whiteboxSearchInput" placeholder="场景、镜头、路径、关键词 / scene, shot, path" /></label>
+            </div>
+            <div id="whiteboxSourceGrid" class="whitebox-source-grid"></div>
+          </section>
+          <section class="whitebox-plan-panel">
+            <div id="whiteboxSelectedSource" class="whitebox-selected-source"></div>
+            <label>复刻说明 / Replica note
+              <textarea id="whiteboxReplicaNote" rows="4" placeholder="例如：保持构图 1:1，复刻墙面、旧门、街机柜位置，人物只做形体占位。"></textarea>
+            </label>
+            <label>标签 / Tags
+              <input id="whiteboxTagInput" placeholder="hidden_arcade, old_door, child_height_camera" />
+            </label>
+            <label class="checkbox-label">
+              <input id="whiteboxAttachToRows" type="checkbox" checked />
+              生成任务包后自动插入目标分镜 / Attach to selected storyboard rows
+            </label>
+            <section>
+              <header class="whitebox-target-header">
+                <strong>2. 关联分镜 / Target storyboard rows</strong>
+                <span id="whiteboxTargetHint"></span>
+              </header>
+              <div id="whiteboxTargetList" class="whitebox-target-list"></div>
+            </section>
+            <section>
+              <header class="whitebox-target-header">
+                <strong>3. 任务包 / Handoffs</strong>
+                <span>拖给 Codex 或交给 Blender 执行</span>
+              </header>
+              <div id="whiteboxHandoffDock" class="whitebox-handoff-dock"></div>
+            </section>
+          </section>
+        </main>
+      </section>
     </div>
     <script src="/static/app.js"></script>
   </body>

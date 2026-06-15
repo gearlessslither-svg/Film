@@ -23,6 +23,14 @@ const state = {
   boardHandoffs: [],
   boardHandoffCollapsed: false,
   boardLinkSourceId: "",
+  whiteboxOpen: false,
+  whiteboxSourceRef: "",
+  whiteboxSelectedTargets: [],
+  whiteboxHandoffs: [],
+  whiteboxFilters: {
+    scene: "current",
+    query: "",
+  },
   boardFilters: {
     scene: "all",
     tag: "all",
@@ -2328,6 +2336,312 @@ function clearReferenceBoard() {
   state.boardLinkSourceId = "";
   saveBoardState();
   renderReferenceBoard();
+}
+
+function whiteboxSourceAssets() {
+  return allBoardImageAssets()
+    .filter((asset) => frameIsUsable(asset))
+    .filter((asset) => asset.kind !== "whitebox");
+}
+
+function whiteboxSceneFilterOptions(assets) {
+  const options = [
+    { value: "current", label: `当前场戏 / Current scene` },
+    { value: "all", label: `全部图片 / All (${assets.length})` },
+  ];
+  const acts = new Map();
+  assets.forEach((asset) => {
+    if (asset.act_id) acts.set(asset.act_id, asset.act_title || asset.act_id);
+  });
+  acts.forEach((label, actId) => options.push({ value: `act:${actId}`, label }));
+  const scenes = new Map();
+  assets.forEach((asset) => {
+    if (asset.scene_id) scenes.set(asset.scene_id, `${asset.scene_id} · ${asset.scene_title || ""}`);
+  });
+  scenes.forEach((label, sceneId) => options.push({ value: `scene:${sceneId}`, label }));
+  options.push({ value: "global", label: "全局/未绑定 / Global or unbound" });
+  return options;
+}
+
+function whiteboxAssetMatches(asset) {
+  const filter = state.whiteboxFilters.scene || "current";
+  const scene = selectedScene();
+  if (filter === "current" && scene?.scene_id && asset.scene_id !== scene.scene_id) return false;
+  if (filter === "global" && asset.scene_id) return false;
+  if (filter.startsWith("act:") && asset.act_id !== filter.slice(4)) return false;
+  if (filter.startsWith("scene:") && asset.scene_id !== filter.slice(6)) return false;
+  const query = (state.whiteboxFilters.query || "").trim().toLowerCase();
+  if (!query) return true;
+  return [asset.asset_id, asset.role, asset.path, asset.scene_id, asset.scene_title, asset.act_title, asset.shot_id, kindLabel(asset.kind)]
+    .join(" ")
+    .toLowerCase()
+    .includes(query);
+}
+
+function selectedWhiteboxSource() {
+  const assets = whiteboxSourceAssets();
+  if (!state.whiteboxSourceRef || !assets.some((asset) => asset.ref === state.whiteboxSourceRef)) {
+    const scene = selectedScene();
+    const preferred = assets.find((asset) => asset.scene_id === scene?.scene_id) || assets[0];
+    state.whiteboxSourceRef = preferred?.ref || "";
+  }
+  return assets.find((asset) => asset.ref === state.whiteboxSourceRef) || null;
+}
+
+function wordsForWhiteboxMatch(text) {
+  return [...new Set((text || "").toLowerCase().match(/[\u4e00-\u9fa5]{2,}|[a-z0-9_]{3,}/g) || [])]
+    .filter((word) => !["cinematic", "storyboard", "keyframe", "image", "prompt", "scene", "shot"].includes(word))
+    .slice(0, 28);
+}
+
+function whiteboxTargetRowsForSource(source) {
+  const board = currentIdeaBoard();
+  const rows = board.rows || [];
+  if (!source) return [];
+  const sourceWords = wordsForWhiteboxMatch([source.asset_id, source.role, source.path, source.scene_id, source.scene_title, source.act_title].join(" "));
+  const queryWords = wordsForWhiteboxMatch(state.whiteboxFilters.query || "");
+  const hasQuery = Boolean((state.whiteboxFilters.query || "").trim());
+  const words = [...new Set([...sourceWords, ...queryWords])];
+  return rows
+    .map((row, index) => {
+      const text = [row.item_id, row.scene_id, row.beat, row.shot_type, row.frame_description, row.image_prompt, row.notes].join(" ").toLowerCase();
+      const sameScene = source.scene_id && row.scene_id === source.scene_id;
+      const score = (sameScene ? 8 : 0) + words.filter((word) => text.includes(word)).length;
+      return { row, index, score, sameScene };
+    })
+    .filter((entry) => {
+      if (source.scene_id && !hasQuery) return entry.sameScene;
+      return entry.sameScene || entry.score > 0;
+    })
+    .sort((a, b) => b.score - a.score || naturalCompare(a.row.item_id || "", b.row.item_id || ""));
+}
+
+function defaultWhiteboxTargetIds(source) {
+  return whiteboxTargetRowsForSource(source).map(({ row }) => row.item_id).filter(Boolean);
+}
+
+function renderWhiteboxSourceGrid() {
+  const root = $("whiteboxSourceGrid");
+  if (!root) return;
+  const assets = whiteboxSourceAssets().filter(whiteboxAssetMatches).slice(0, 80);
+  root.innerHTML = assets.length
+    ? assets
+        .map(
+          (asset) => `
+            <button class="whitebox-source-card ${asset.ref === state.whiteboxSourceRef ? "active" : ""}" data-asset-ref="${escapeHtml(asset.ref)}" type="button">
+              <img src="${escapeHtml(asset.url)}" alt="${escapeHtml(asset.asset_id || asset.path)}" loading="lazy" />
+              <strong>${escapeHtml(asset.asset_id || asset.role || asset.path)}</strong>
+              <span>${escapeHtml(asset.scene_id || "PROJECT")} · ${escapeHtml(kindLabel(asset.kind))}</span>
+            </button>
+          `,
+        )
+        .join("")
+    : `<div class="empty-state">没有匹配的源图 / No matching source images.</div>`;
+}
+
+function renderWhiteboxSelectedSource(source) {
+  const root = $("whiteboxSelectedSource");
+  if (!root) return;
+  if (!source) {
+    root.innerHTML = `<div class="empty-state">先选择一张要复刻成白模的母图。</div>`;
+    return;
+  }
+  root.innerHTML = `
+    <article class="whitebox-source-summary">
+      <img src="${escapeHtml(source.url)}" alt="${escapeHtml(source.asset_id || source.path)}" />
+      <div>
+        <strong>${escapeHtml(source.asset_id || source.role || source.path)}</strong>
+        <span>${escapeHtml(source.scene_id || "PROJECT")} · ${escapeHtml(source.scene_title || "")}</span>
+        <small>${escapeHtml(source.path || "")}</small>
+      </div>
+    </article>
+  `;
+}
+
+function renderWhiteboxTargetList(source) {
+  const root = $("whiteboxTargetList");
+  if (!root) return;
+  const entries = whiteboxTargetRowsForSource(source);
+  const selectedSet = new Set(state.whiteboxSelectedTargets || []);
+  $("whiteboxTargetHint").textContent = `${selectedSet.size}/${entries.length} 已选 / selected`;
+  root.innerHTML = entries.length
+    ? entries
+        .map(({ row, score, sameScene }) => {
+          const itemId = row.item_id || "";
+          return `
+            <label class="whitebox-target-row">
+              <input class="whitebox-target-check" type="checkbox" value="${escapeHtml(itemId)}" ${selectedSet.has(itemId) ? "checked" : ""} />
+              <span>
+                <strong>${escapeHtml(itemId || "Untitled")}</strong>
+                <small>${escapeHtml(row.scene_id || "")} · ${sameScene ? "同场景 / same scene" : `匹配分 ${score}`}</small>
+              </span>
+              <em>${escapeHtml(row.beat || row.frame_description || "")}</em>
+            </label>
+          `;
+        })
+        .join("")
+    : `<div class="empty-state">没有自动匹配到分镜。换一张源图，或在搜索里输入场景/道具关键词。</div>`;
+}
+
+function renderWhiteboxHandoffs() {
+  const root = $("whiteboxHandoffDock");
+  if (!root) return;
+  const serverJobs = state.detail?.whitebox_lab?.jobs || [];
+  const cards = [...(state.whiteboxHandoffs || []), ...serverJobs.slice(-4).reverse().map((job) => ({
+    id: job.job_id,
+    title: `${job.job_id} · ${job.source_asset?.asset_id || "whitebox"}`,
+    path: job.handoff_path || "",
+    text: "",
+  }))];
+  root.innerHTML = cards.length
+    ? cards
+        .map(
+          (card) => `
+            <article class="whitebox-handoff-card" draggable="${card.text ? "true" : "false"}" data-whitebox-handoff-id="${escapeHtml(card.id || "")}">
+              <strong>${escapeHtml(card.title || "Whitebox job")}</strong>
+              <small>${escapeHtml(card.path || "")}</small>
+              ${card.text ? `<textarea readonly rows="5">${escapeHtml(card.text)}</textarea>` : ""}
+            </article>
+          `,
+        )
+        .join("")
+    : `<div class="empty-state">白模任务包会出现在这里 / Whitebox packets will appear here.</div>`;
+}
+
+function renderWhiteboxLab() {
+  const modal = $("whiteboxLabModal");
+  if (!modal) return;
+  modal.hidden = !state.whiteboxOpen;
+  document.body.classList.toggle("board-open", state.whiteboxOpen || state.boardOpen);
+  if (!state.whiteboxOpen) return;
+  const assets = whiteboxSourceAssets();
+  const sceneFilter = $("whiteboxSceneFilter");
+  if (sceneFilter) {
+    sceneFilter.innerHTML = whiteboxSceneFilterOptions(assets)
+      .map((option) => `<option value="${escapeHtml(option.value)}" ${state.whiteboxFilters.scene === option.value ? "selected" : ""}>${escapeHtml(option.label)}</option>`)
+      .join("");
+  }
+  const search = $("whiteboxSearchInput");
+  if (search) search.value = state.whiteboxFilters.query || "";
+  renderWhiteboxSourceGrid();
+  const source = selectedWhiteboxSource();
+  if (!state.whiteboxSelectedTargets.length) state.whiteboxSelectedTargets = defaultWhiteboxTargetIds(source);
+  renderWhiteboxSelectedSource(source);
+  renderWhiteboxTargetList(source);
+  renderWhiteboxHandoffs();
+  bindWhiteboxLabEvents();
+}
+
+function openWhiteboxLab() {
+  if (!state.detail) {
+    toast("请先选择项目 / Select a project first");
+    return;
+  }
+  state.whiteboxOpen = true;
+  renderWhiteboxLab();
+}
+
+function closeWhiteboxLab() {
+  state.whiteboxOpen = false;
+  renderWhiteboxLab();
+}
+
+function whiteboxSourcePayload(asset) {
+  return {
+    asset_ref: asset.ref,
+    asset_id: asset.asset_id || asset.role || asset.path,
+    path: asset.path || "",
+    origin: asset.origin || "project",
+    kind: asset.kind || "image",
+    scene_id: asset.scene_id || "",
+    scene_title: asset.scene_title || "",
+    act_id: asset.act_id || "",
+    act_title: asset.act_title || "",
+  };
+}
+
+async function createWhiteboxJob() {
+  const source = selectedWhiteboxSource();
+  if (!source) {
+    toast("请先选择母图 / Select a source image first");
+    return;
+  }
+  const board = collectIdeaBoardFromDom();
+  const selectedSet = new Set(state.whiteboxSelectedTargets || []);
+  const targets = (board.rows || []).filter((row) => selectedSet.has(row.item_id));
+  if (!targets.length) {
+    toast("请至少选择一个目标分镜 / Select at least one target row");
+    return;
+  }
+  await runAction("白模任务包 / Whitebox packet", async () => {
+    await persistIdeaBoard(board, { toast: false, render: false });
+    const result = await requestJson(`/api/projects/${state.selectedSlug}/whitebox-job`, {
+      method: "POST",
+      body: JSON.stringify({
+        source_asset: whiteboxSourcePayload(source),
+        targets,
+        replica_note: $("whiteboxReplicaNote")?.value || "",
+        tags: ($("whiteboxTagInput")?.value || "").split(",").map((item) => item.trim()).filter(Boolean),
+        attach_to_rows: $("whiteboxAttachToRows")?.checked ?? true,
+      }),
+    });
+    state.detail = result.project || state.detail;
+    state.whiteboxHandoffs = [
+      {
+        id: result.job?.job_id || `whitebox_${Date.now()}`,
+        title: `${result.job?.job_id || "Whitebox"} · ${result.attached_rows || 0} 条分镜已挂载`,
+        path: result.job?.handoff_path || "",
+        text: result.handoff_text || "",
+      },
+      ...(state.whiteboxHandoffs || []),
+    ].slice(0, 8);
+    toast(`白模任务包已生成，已挂载 ${result.attached_rows || 0} 条分镜 / Whitebox packet ready`);
+    renderWhiteboxLab();
+  });
+}
+
+function bindWhiteboxLabEvents() {
+  const closeButton = $("closeWhiteboxLabBtn");
+  if (closeButton) closeButton.onclick = closeWhiteboxLab;
+  const buildButton = $("buildWhiteboxJobBtn");
+  if (buildButton) buildButton.onclick = createWhiteboxJob;
+  const sceneFilter = $("whiteboxSceneFilter");
+  if (sceneFilter) sceneFilter.onchange = (event) => {
+    state.whiteboxFilters.scene = event.target.value || "all";
+    state.whiteboxSelectedTargets = [];
+    renderWhiteboxLab();
+  };
+  const searchInput = $("whiteboxSearchInput");
+  if (searchInput) searchInput.oninput = (event) => {
+    state.whiteboxFilters.query = event.target.value || "";
+    state.whiteboxSelectedTargets = [];
+    renderWhiteboxLab();
+  };
+  $("whiteboxSourceGrid")?.querySelectorAll(".whitebox-source-card").forEach((button) => {
+    button.addEventListener("click", () => {
+      state.whiteboxSourceRef = button.dataset.assetRef || "";
+      state.whiteboxSelectedTargets = defaultWhiteboxTargetIds(selectedWhiteboxSource());
+      renderWhiteboxLab();
+    });
+  });
+  document.querySelectorAll(".whitebox-target-check").forEach((checkbox) => {
+    checkbox.addEventListener("change", () => {
+      const set = new Set(state.whiteboxSelectedTargets || []);
+      if (checkbox.checked) set.add(checkbox.value);
+      else set.delete(checkbox.value);
+      state.whiteboxSelectedTargets = [...set];
+      renderWhiteboxTargetList(selectedWhiteboxSource());
+    });
+  });
+  document.querySelectorAll(".whitebox-handoff-card").forEach((card) => {
+    card.addEventListener("dragstart", (event) => {
+      const text = card.querySelector("textarea")?.value || "";
+      if (!text) return;
+      event.dataTransfer?.setData("text/plain", text);
+      event.dataTransfer?.setData("text/markdown", text);
+      event.dataTransfer.effectAllowed = "copy";
+    });
+  });
 }
 
 function ideaHandoffStorageKey() {
@@ -4650,6 +4964,7 @@ function renderAll() {
   renderIdeaLab();
   renderStoryboardStudio();
   renderReferenceBoard();
+  renderWhiteboxLab();
   renderMetrics();
   renderLinks();
   renderSceneWorkbench();
@@ -4871,6 +5186,10 @@ function bindKeyboardShortcuts() {
       closeBoardImageLightbox();
       return;
     }
+    if (event.key === "Escape" && state.whiteboxOpen) {
+      closeWhiteboxLab();
+      return;
+    }
     if (event.key === "Escape" && state.boardOpen) {
       closeReferenceBoard();
       return;
@@ -4890,6 +5209,7 @@ function bindKeyboardShortcuts() {
 function bindEvents() {
   $("refreshBtn").addEventListener("click", () => runAction("刷新 / Refresh", loadProjects));
   $("openIdeaLabBtn")?.addEventListener("click", () => $("ideaLab")?.scrollIntoView({ behavior: "smooth", block: "start" }));
+  $("openWhiteboxLabBtn")?.addEventListener("click", openWhiteboxLab);
   $("openBoardBtn")?.addEventListener("click", openReferenceBoard);
   $("closeBoardBtn")?.addEventListener("click", closeReferenceBoard);
   $("clearBoardBtn")?.addEventListener("click", clearReferenceBoard);

@@ -11,6 +11,7 @@ import json
 import mimetypes
 import os
 import re
+import shutil
 import subprocess
 import sys
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -1892,6 +1893,7 @@ def project_detail(slug: str, include_report_text: bool = True, include_previews
         "previews": previews,
         "scene_locks": scene_locks,
         "scene_workbench": load_scene_workbench(path),
+        "whitebox_lab": load_whitebox_lab(path),
         "generation_adapters": load_generation_adapters(path),
     }
 
@@ -1979,6 +1981,14 @@ def idea_board_markdown_path(path: Path) -> Path:
 
 def idea_board_csv_path(path: Path) -> Path:
     return path / "07_shots" / "idea_board_prompts.csv"
+
+
+def whitebox_lab_dir(path: Path) -> Path:
+    return path / "06_previs" / "whitebox_lab"
+
+
+def whitebox_lab_index_path(path: Path) -> Path:
+    return whitebox_lab_dir(path) / "whitebox_lab.json"
 
 
 def bool_from_payload(value: object, default: bool = True) -> bool:
@@ -2380,6 +2390,315 @@ def update_idea_image_output(slug: str, payload: dict[str, object]) -> dict[str,
     return {"ok": True, "updated": updated, "idea_board": load_idea_board(path, slug), "project": project_detail(slug)}
 
 
+def blender_executable() -> str:
+    candidate = shutil.which("blender")
+    if candidate:
+        return candidate
+    app_binary = Path("/Applications/Blender.app/Contents/MacOS/Blender")
+    if app_binary.exists():
+        return str(app_binary)
+    return ""
+
+
+def load_whitebox_lab(path: Path) -> dict[str, object]:
+    data = load_yaml_file(whitebox_lab_index_path(path))
+    if not isinstance(data, dict):
+        data = {}
+    jobs = data.get("jobs", [])
+    if not isinstance(jobs, list):
+        jobs = []
+    return {
+        "schema_version": 1,
+        "updated_at": str(data.get("updated_at", "") or ""),
+        "blender_available": bool(blender_executable()),
+        "blender_executable": blender_executable(),
+        "jobs": jobs[-24:],
+    }
+
+
+def write_whitebox_lab(path: Path, lab: dict[str, object]) -> None:
+    lab_dir = whitebox_lab_dir(path)
+    lab_dir.mkdir(parents=True, exist_ok=True)
+    lab["schema_version"] = 1
+    lab["updated_at"] = now_iso()
+    write_yaml_file(whitebox_lab_index_path(path), lab)
+
+
+def whitebox_reference_for_job(job: dict[str, object]) -> dict[str, object]:
+    return {
+        "ref_id": safe_file_stem(str(job.get("job_id", "") or "whitebox")),
+        "asset_ref": f"project:{job.get('suggested_render_path', '')}",
+        "asset_id": str(job.get("job_id", "") or "whitebox"),
+        "path": str(job.get("suggested_render_path", "") or ""),
+        "origin": "project",
+        "kind": "whitebox",
+        "role": "replica_whitebox",
+        "note": str(job.get("default_reference_note", "") or "白模复刻参考 / replica whitebox reference"),
+    }
+
+
+def attach_whitebox_to_idea_rows(path: Path, slug: str, job: dict[str, object], target_item_ids: list[str]) -> int:
+    board = load_idea_board(path, slug)
+    rows = board.get("rows", [])
+    if not isinstance(rows, list):
+        return 0
+    target_ids = {safe_file_stem(item) for item in target_item_ids if str(item).strip()}
+    ref = whitebox_reference_for_job(job)
+    updated = 0
+    for row in rows:
+        if not isinstance(row, dict):
+            continue
+        item_id = safe_file_stem(row.get("item_id", ""))
+        if item_id not in target_ids:
+            continue
+        refs = row.get("references", [])
+        if not isinstance(refs, list):
+            refs = []
+        ref_key = ref["asset_ref"]
+        if not any(isinstance(item, dict) and item.get("asset_ref") == ref_key for item in refs):
+            refs.append(ref)
+            row["references"] = refs
+            updated += 1
+    if updated:
+        board["updated_at"] = now_iso()
+        write_idea_board_files(path, board)
+    return updated
+
+
+def build_whitebox_blender_script() -> str:
+    return r'''import json
+import math
+import sys
+from pathlib import Path
+
+import bpy
+
+
+def arg_after(flag, default=""):
+    if flag in sys.argv:
+        index = sys.argv.index(flag)
+        if index + 1 < len(sys.argv):
+            return sys.argv[index + 1]
+    return default
+
+
+spec_path = Path(arg_after("--spec")).resolve()
+spec = json.loads(spec_path.read_text(encoding="utf-8"))
+project_root = Path(spec["project_root"]).resolve()
+render_path = project_root / spec["suggested_render_path"]
+blend_path = project_root / spec["suggested_blend_path"]
+render_path.parent.mkdir(parents=True, exist_ok=True)
+blend_path.parent.mkdir(parents=True, exist_ok=True)
+
+bpy.ops.object.select_all(action="SELECT")
+bpy.ops.object.delete()
+
+scene = bpy.context.scene
+scene.render.engine = "BLENDER_EEVEE_NEXT" if "BLENDER_EEVEE_NEXT" in {item.identifier for item in bpy.types.RenderSettings.bl_rna.properties["engine"].enum_items} else "BLENDER_EEVEE"
+scene.render.resolution_x = 1920
+scene.render.resolution_y = 1080
+scene.view_settings.view_transform = "Standard"
+scene.view_settings.look = "Medium High Contrast"
+
+mat_white = bpy.data.materials.new("WBX_matte_white")
+mat_white.diffuse_color = (0.82, 0.82, 0.78, 1)
+mat_dark = bpy.data.materials.new("WBX_dark_openings")
+mat_dark.diffuse_color = (0.18, 0.19, 0.18, 1)
+mat_light = bpy.data.materials.new("WBX_light_source")
+mat_light.diffuse_color = (1.0, 0.92, 0.62, 1)
+
+
+def cube(name, loc, scale, material):
+    bpy.ops.mesh.primitive_cube_add(size=1, location=loc)
+    obj = bpy.context.object
+    obj.name = name
+    obj.dimensions = scale
+    bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
+    obj.data.materials.append(material)
+    return obj
+
+
+cube("floor_plane_match_source_perspective", (0, 0, -0.05), (9, 7, 0.1), mat_white)
+cube("back_wall_major_plane", (0, 2.7, 1.7), (9, 0.16, 3.4), mat_white)
+cube("left_depth_wall", (-4.2, 0.3, 1.6), (0.16, 5.2, 3.2), mat_white)
+cube("right_depth_wall", (4.2, 0.3, 1.6), (0.16, 5.2, 3.2), mat_white)
+
+scene_id = (spec.get("scene_id") or "").upper()
+if "ARCADE" in scene_id:
+    for i, x in enumerate([-2.6, -1.3, 0.0, 1.3, 2.6]):
+        cube(f"arcade_cabinet_row_A_{i}", (x, 1.35, 0.72), (0.72, 0.72, 1.45), mat_dark)
+    cube("entrance_door_plane", (3.15, 2.58, 1.05), (1.25, 0.18, 2.1), mat_dark)
+elif "COMPOUND" in scene_id:
+    cube("hidden_arcade_metal_door_with_peephole", (2.7, 2.56, 1.05), (1.35, 0.18, 2.1), mat_dark)
+    cube("old_pipe_left_wall", (-3.6, 2.43, 1.55), (0.12, 0.18, 2.4), mat_dark)
+else:
+    cube("primary_scene_anchor_block", (0, 1.6, 0.9), (2.2, 0.45, 1.8), mat_dark)
+
+for i, x in enumerate([-0.65, 0.0, 0.65]):
+    body = cube(f"proxy_character_{i+1}_body", (x, -1.0 - 0.12 * i, 0.75), (0.28, 0.18, 0.9), mat_white)
+    head = cube(f"proxy_character_{i+1}_head", (x, -1.0 - 0.12 * i, 1.35), (0.3, 0.24, 0.3), mat_white)
+    body.rotation_euler[2] = math.radians((i - 1) * 5)
+    head.rotation_euler[2] = math.radians((i - 1) * 5)
+
+bpy.ops.object.light_add(type="AREA", location=(0, -2.7, 4.2))
+light = bpy.context.object
+light.name = "large_soft_whitebox_key_light"
+light.data.energy = 520
+light.data.size = 5.0
+
+if "ARCADE" in scene_id:
+    bpy.ops.object.light_add(type="POINT", location=(1.8, 1.6, 1.4))
+    glow = bpy.context.object
+    glow.name = "crt_glow_proxy"
+    glow.data.energy = 180
+    glow.data.color = (0.45, 0.9, 1.0)
+
+bpy.ops.object.camera_add(location=(0, -5.6, 1.55), rotation=(math.radians(78), 0, 0))
+camera = bpy.context.object
+camera.name = "CAM_source_replica_1to1"
+camera.data.lens = 28
+scene.camera = camera
+
+empty = None
+bpy.ops.object.empty_add(type="PLAIN_AXES", location=(0, 0.8, 1.0))
+empty = bpy.context.object
+empty.name = "source_composition_center"
+constraint = camera.constraints.new(type="TRACK_TO")
+constraint.track_axis = "TRACK_NEGATIVE_Z"
+constraint.up_axis = "UP_Y"
+constraint.target = empty
+
+for note_index, target in enumerate(spec.get("targets", []), start=1):
+    empty = bpy.data.objects.new(f"target_{note_index:02d}_{target.get('item_id', 'shot')}", None)
+    empty.empty_display_type = "CUBE"
+    empty.empty_display_size = 0.25
+    empty.location = (0.35 * (note_index % 5), -0.6 + 0.15 * note_index, 1.2)
+    bpy.context.collection.objects.link(empty)
+
+scene.render.filepath = str(render_path)
+bpy.ops.wm.save_as_mainfile(filepath=str(blend_path))
+bpy.ops.render.render(write_still=True)
+'''
+
+
+def build_whitebox_handoff_text(slug: str, path: Path, job: dict[str, object], spec: dict[str, object]) -> str:
+    return "\n".join(
+        [
+            "# Codex Blender Whitebox Handoff / Codex Blender 白模复刻交接包",
+            "",
+            "请解析这个资料包，调用 Blender 制作源图 1:1 白模复刻，并按目标分镜生成可作为图生图参考的高清白模图。",
+            "",
+            "## Project / 项目",
+            f"- Project slug: {slug}",
+            f"- Project root: {path}",
+            f"- Job id: {job.get('job_id', '')}",
+            f"- Source asset: {job.get('source_asset', {}).get('asset_id', '')}",
+            f"- Source path: {job.get('source_asset', {}).get('path', '')}",
+            "",
+            "## Output / 输出",
+            f"- Suggested render path: {job.get('suggested_render_path', '')}",
+            f"- Suggested blend path: {job.get('suggested_blend_path', '')}",
+            f"- Blender script: {job.get('script_path', '')}",
+            f"- Spec path: {job.get('spec_path', '')}",
+            "",
+            "## Requirements / 要求",
+            "- 先复刻源图构图：画幅、主透视线、前中后景层次、门/墙/柜体/道具/人物位置必须一一对应。",
+            "- 白模只解决空间、机位、光照、人物形状与动作，不追求材质贴图。",
+            "- 对每条目标分镜，根据 frame_description、image_prompt、notes 调整机位、镜头焦段、人物动作和光照。",
+            "- 输出 PNG 要能直接作为该分镜的 whitebox reference。",
+            "- 完成后保留 suggested_render_path，网页已经把这个 pending whitebox 引用插入目标分镜。",
+            "",
+            "## Spec JSON / 任务规格",
+            "```json",
+            json.dumps(spec, ensure_ascii=False, indent=2),
+            "```",
+        ]
+    )
+
+
+def create_whitebox_job(slug: str, payload: dict[str, object]) -> dict[str, object]:
+    path = project_path(slug)
+    source = payload.get("source_asset", {})
+    if not isinstance(source, dict) or not source.get("path"):
+        raise ValueError("缺少源图 / Missing source image.")
+    targets_payload = payload.get("targets", [])
+    targets = [item for item in targets_payload if isinstance(item, dict)]
+    if not targets:
+        raise ValueError("请至少选择一个目标分镜 / Select at least one target storyboard row.")
+    job_id = f"WBX_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+    job_rel_dir = Path("06_previs") / "whitebox_lab" / "jobs" / job_id
+    spec_rel_path = job_rel_dir / "blender" / f"{job_id}_spec.json"
+    script_rel_path = job_rel_dir / "blender" / f"{job_id}_generate_whitebox.py"
+    blend_rel_path = job_rel_dir / "blender" / f"{job_id}.blend"
+    render_rel_path = job_rel_dir / "renders" / f"{job_id}_replica_whitebox.png"
+    handoff_rel_path = job_rel_dir / "outputs" / f"{job_id}_codex_blender_handoff.md"
+    for rel in (spec_rel_path, script_rel_path, blend_rel_path, render_rel_path, handoff_rel_path):
+        (path / rel).parent.mkdir(parents=True, exist_ok=True)
+    source_norm = {
+        "asset_ref": str(source.get("asset_ref") or source.get("ref") or "").strip(),
+        "asset_id": str(source.get("asset_id") or source.get("role") or Path(str(source.get("path"))).name).strip(),
+        "path": normalize_project_rel_path(str(source.get("path", "") or "")),
+        "origin": str(source.get("origin", "project") or "project").strip(),
+        "kind": str(source.get("kind", "image") or "image").strip(),
+        "scene_id": str(source.get("scene_id", "") or "").strip(),
+        "scene_title": str(source.get("scene_title", "") or "").strip(),
+        "act_id": str(source.get("act_id", "") or "").strip(),
+        "act_title": str(source.get("act_title", "") or "").strip(),
+    }
+    job = {
+        "job_id": job_id,
+        "created_at": now_iso(),
+        "status": "packet_ready",
+        "source_asset": source_norm,
+        "tags": [str(item).strip() for item in payload.get("tags", []) if str(item).strip()] if isinstance(payload.get("tags", []), list) else [],
+        "replica_note": str(payload.get("replica_note", "") or "").strip(),
+        "target_item_ids": [safe_file_stem(item.get("item_id", "")) for item in targets],
+        "suggested_render_path": str(render_rel_path),
+        "suggested_blend_path": str(blend_rel_path),
+        "spec_path": str(spec_rel_path),
+        "script_path": str(script_rel_path),
+        "handoff_path": str(handoff_rel_path),
+        "default_reference_note": "高精度白模复刻：默认作为该分镜空间、机位、光照和人物动作参考 / high-fidelity replica whitebox for blocking, camera, lighting, and pose.",
+    }
+    spec = {
+        "schema_version": 1,
+        "project_slug": slug,
+        "project_root": str(path),
+        **job,
+        "targets": targets,
+        "blender_available": bool(blender_executable()),
+        "blender_executable": blender_executable(),
+        "workflow": [
+            "replicate_source_image_composition_1_to_1",
+            "tag_scene_objects_and_whitebox_relationships",
+            "derive_camera_lighting_pose_variants_for_targets",
+            "render_high_resolution_whitebox_references",
+            "keep_suggested_render_path_stable_for_idea_board_references",
+        ],
+    }
+    (path / spec_rel_path).write_text(json.dumps(spec, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    (path / script_rel_path).write_text(build_whitebox_blender_script(), encoding="utf-8")
+    handoff_text = build_whitebox_handoff_text(slug, path, job, spec)
+    (path / handoff_rel_path).write_text(handoff_text, encoding="utf-8")
+    lab = load_whitebox_lab(path)
+    jobs = lab.get("jobs", [])
+    if not isinstance(jobs, list):
+        jobs = []
+    jobs.append(job)
+    lab["jobs"] = jobs[-48:]
+    write_whitebox_lab(path, lab)
+    attach_count = attach_whitebox_to_idea_rows(path, slug, job, job["target_item_ids"]) if bool_from_payload(payload.get("attach_to_rows"), True) else 0
+    return {
+        "ok": True,
+        "job": job,
+        "spec": spec,
+        "handoff_text": handoff_text,
+        "attached_rows": attach_count,
+        "whitebox_lab": load_whitebox_lab(path),
+        "project": project_detail(slug),
+    }
+
+
 def send_static(handler: BaseHTTPRequestHandler, path: str) -> None:
     if path in {"", "/"}:
         target = STATIC_ROOT / "index.html"
@@ -2555,6 +2874,9 @@ class PipelineHubHandler(BaseHTTPRequestHandler):
                 return
             if action == "idea-image-output":
                 send_json(self, update_idea_image_output(slug, payload))
+                return
+            if action == "whitebox-job":
+                send_json(self, create_whitebox_job(slug, payload))
                 return
             if action == "scene-change-request":
                 send_json(self, create_scene_change_request(slug, payload))
