@@ -269,10 +269,7 @@ function renderSidebarSceneNavigator() {
   `;
   root.querySelectorAll(".sidebar-scene-button").forEach((button) => {
     button.addEventListener("click", () => {
-      state.selectedSceneId = button.dataset.sceneId || "";
-      state.selectedFrameRef = "";
-      state.activeChangeRequest = null;
-      state.recreate = null;
+      selectScene(button.dataset.sceneId || "");
       renderAll();
     });
   });
@@ -789,6 +786,14 @@ function selectedScene() {
     state.selectedSceneId = scenes[0].scene_id || "";
   }
   return scenes.find((scene) => scene.scene_id === state.selectedSceneId) || scenes[0];
+}
+
+function selectScene(sceneId) {
+  state.selectedSceneId = sceneId || "";
+  state.selectedFrameRef = "";
+  state.activeChangeRequest = null;
+  state.recreate = null;
+  ensureIdeaActiveRowForScene(currentIdeaBoard());
 }
 
 function sceneStatusLabel(status) {
@@ -2367,6 +2372,33 @@ function nextIdeaItemId(rows) {
   return `IDEA_SHOT_${String(count).padStart(3, "0")}`;
 }
 
+function ideaRowEntriesForCurrentScene(board = currentIdeaBoard()) {
+  const rows = board.rows || [];
+  const sceneId = selectedScene()?.scene_id || "";
+  const entries = rows.map((row, index) => ({ row, index }));
+  if (!sceneId) return entries;
+  return entries.filter(({ row }) => (row.scene_id || "") === sceneId);
+}
+
+function ensureIdeaActiveRowForScene(board = currentIdeaBoard()) {
+  const entries = ideaRowEntriesForCurrentScene(board);
+  if (!entries.length) return null;
+  const activeIndex = Number(state.ideaActiveRowIndex || 0);
+  if (!entries.some(({ index }) => index === activeIndex)) {
+    state.ideaActiveRowIndex = entries[0].index;
+  }
+  return state.ideaActiveRowIndex;
+}
+
+function ideaSceneSummary(board = currentIdeaBoard()) {
+  const scene = selectedScene();
+  const sceneId = scene?.scene_id || "";
+  const visibleCount = ideaRowEntriesForCurrentScene(board).length;
+  const totalCount = (board.rows || []).length;
+  if (!sceneId) return `${totalCount} 条分镜文本 / storyboard prompt rows`;
+  return `${sceneId} · ${escapeHtml(scene?.title || "")} · ${visibleCount}/${totalCount} 条分镜文本`;
+}
+
 function compactProjectSceneContext() {
   const scenes = state.detail?.scene_workbench?.scenes || [];
   if (!Array.isArray(scenes) || !scenes.length) return "- No existing scene map yet.";
@@ -2378,14 +2410,18 @@ function compactProjectSceneContext() {
 
 function collectIdeaBoardFromDom() {
   const current = currentIdeaBoard();
-  const rows = Array.from(document.querySelectorAll(".idea-shot-row")).map((row, index) => {
+  const editedRows = new Map();
+  Array.from(document.querySelectorAll(".idea-shot-row")).forEach((row, fallbackIndex) => {
     const value = (field) => row.querySelector(`[data-idea-field="${field}"]`)?.value || "";
-    const itemId = value("item_id") || `IDEA_SHOT_${String(index + 1).padStart(3, "0")}`;
+    const rowIndex = Number(row.dataset.ideaIndex);
+    const hasStableIndex = Number.isInteger(rowIndex) && rowIndex >= 0;
+    const indexedExisting = hasStableIndex ? current.rows[rowIndex] : null;
+    const itemId = value("item_id") || indexedExisting?.item_id || `IDEA_SHOT_${String(fallbackIndex + 1).padStart(3, "0")}`;
     const existing =
       current.rows.find((item) => item.item_id === itemId) ||
-      current.rows[index] ||
+      indexedExisting ||
       {};
-    return {
+    editedRows.set(hasStableIndex ? rowIndex : current.rows.length + fallbackIndex, {
       item_id: itemId,
       scene_id: value("scene_id"),
       beat: value("beat"),
@@ -2399,8 +2435,13 @@ function collectIdeaBoardFromDom() {
       output_path: value("output_path"),
       output_notes: value("output_notes"),
       references: Array.isArray(existing.references) ? existing.references : [],
-    };
+    });
   });
+  const rows = current.rows.map((row, index) => editedRows.get(index) || row);
+  [...editedRows.entries()]
+    .filter(([index]) => index >= current.rows.length)
+    .sort(([a], [b]) => a - b)
+    .forEach(([, row]) => rows.push(row));
   const board = {
     idea: $("ideaSeedInput")?.value || "",
     story_title: $("ideaStoryTitle")?.value || "",
@@ -2471,6 +2512,8 @@ function normalizeIdeaReferenceList(refs) {
 
 function activeIdeaRow(board = currentIdeaBoard()) {
   const rows = board.rows || [];
+  const visibleIndex = ensureIdeaActiveRowForScene(board);
+  if (visibleIndex === null && selectedScene()?.scene_id) return null;
   const index = clamp(Number(state.ideaActiveRowIndex || 0), 0, Math.max(0, rows.length - 1));
   state.ideaActiveRowIndex = index;
   return rows[index] || null;
@@ -2478,7 +2521,16 @@ function activeIdeaRow(board = currentIdeaBoard()) {
 
 function cleanIdeaBatchRows(board = currentIdeaBoard()) {
   const maxIndex = Math.max(0, (board.rows || []).length - 1);
-  state.ideaBatchRows = [...new Set((state.ideaBatchRows || []).map((index) => Number(index)).filter((index) => Number.isInteger(index) && index >= 0 && index <= maxIndex))];
+  const sceneId = selectedScene()?.scene_id || "";
+  const visibleIndexes = sceneId ? new Set(ideaRowEntriesForCurrentScene(board).map(({ index }) => index)) : null;
+  state.ideaBatchRows = [
+    ...new Set(
+      (state.ideaBatchRows || [])
+        .map((index) => Number(index))
+        .filter((index) => Number.isInteger(index) && index >= 0 && index <= maxIndex)
+        .filter((index) => !visibleIndexes || visibleIndexes.has(index)),
+    ),
+  ];
   return state.ideaBatchRows;
 }
 
@@ -2643,15 +2695,15 @@ function refreshIdeaReferenceAssetGrid() {
   bindIdeaReferenceAssetButtons(grid);
 }
 
-function renderIdeaReferenceMapping(board) {
-  const rows = board.rows || [];
+function renderIdeaReferenceMapping(board, entries = ideaRowEntriesForCurrentScene(board)) {
   const globalRefs = board.global_references || [];
-  const rowRefTotal = rows.reduce((sum, row) => sum + (Array.isArray(row.references) ? row.references.length : 0), 0);
+  const rowRefTotal = (board.rows || []).reduce((sum, row) => sum + (Array.isArray(row.references) ? row.references.length : 0), 0);
+  const scene = selectedScene();
   return `
     <details class="idea-ref-mapping" open>
       <summary>
         <span>参考映射表 / Reference mapping</span>
-        <small>${globalRefs.length} 全局 · ${rowRefTotal} 条目参考</small>
+        <small>${globalRefs.length} 全局 · ${rowRefTotal} 条目参考 · 当前 ${escapeHtml(scene?.scene_id || "ALL")}</small>
       </summary>
       <div class="idea-map-global">
         <strong>全局作用于全部分镜 / Global refs apply to all rows</strong>
@@ -2659,9 +2711,9 @@ function renderIdeaReferenceMapping(board) {
       </div>
       <div class="idea-map-table">
         ${
-          rows.length
-            ? rows
-                .map((row, index) => {
+          entries.length
+            ? entries
+                .map(({ row, index }) => {
                   const refs = Array.isArray(row.references) ? row.references : [];
                   return `
                     <article class="idea-map-row ${state.ideaActiveRowIndex === index ? "active" : ""}" data-idea-index="${index}">
@@ -2672,7 +2724,7 @@ function renderIdeaReferenceMapping(board) {
                   `;
                 })
                 .join("")
-            : `<div class="empty-state">暂无分镜条目 / No storyboard rows.</div>`
+            : `<div class="empty-state">当前场戏暂无分镜条目 / No storyboard rows for this scene.</div>`
         }
       </div>
     </details>
@@ -2680,6 +2732,8 @@ function renderIdeaReferenceMapping(board) {
 }
 
 function renderIdeaReferencePanel(board) {
+  const entries = ideaRowEntriesForCurrentScene(board);
+  ensureIdeaActiveRowForScene(board);
   cleanIdeaBatchRows(board);
   const row = activeIdeaRow(board);
   const globalRefs = board.global_references || [];
@@ -2699,29 +2753,26 @@ function renderIdeaReferencePanel(board) {
           <input id="ideaRefSearchInput" value="${escapeHtml(state.ideaRefFilters.query || "")}" placeholder="搜索人设、场景、道具 / Search refs" />
         </div>
         <div class="idea-target-controls">
-          <label>目标条目 / Target row
-            <select id="ideaActiveRowSelect">
-              ${(board.rows || [])
-                .map((item, index) => {
-                  const label = `${item.item_id || `IDEA_SHOT_${String(index + 1).padStart(3, "0")}`} · ${item.beat || item.scene_id || "未命名"}`;
-                  return `<option value="${index}" ${state.ideaActiveRowIndex === index ? "selected" : ""}>${escapeHtml(label)}</option>`;
-                })
-                .join("")}
-            </select>
-          </label>
+          <div class="idea-current-target">
+            <strong>当前条目 / Current</strong>
+            <span>${escapeHtml(row?.item_id || "当前场戏暂无条目")}</span>
+            <small>点每条分镜里的“参考 / Refs”切换。</small>
+          </div>
           <div class="idea-batch-control">
             <strong>批量目标 / Batch targets</strong>
             <div class="idea-batch-list">
-              ${(board.rows || [])
-                .map(
-                  (item, index) => `
+              ${entries.length
+                ? entries
+                    .map(
+                      ({ row: item, index }) => `
                     <label class="idea-batch-item">
                       <input class="idea-batch-check" data-idea-index="${index}" type="checkbox" ${batchSet.has(index) ? "checked" : ""} />
                       <span>${escapeHtml(item.item_id || `#${index + 1}`)}</span>
                     </label>
                   `,
-                )
-                .join("")}
+                    )
+                    .join("")
+                : `<span class="muted-inline">当前场戏暂无可批量绑定的条目。</span>`}
             </div>
           </div>
         </div>
@@ -2736,7 +2787,7 @@ function renderIdeaReferencePanel(board) {
         <div class="idea-ref-asset-grid">
           ${renderIdeaReferenceAssetGrid(row)}
         </div>
-        ${renderIdeaReferenceMapping(board)}
+        ${renderIdeaReferenceMapping(board, entries)}
       </div>
     </details>
   `;
@@ -2864,17 +2915,18 @@ function renderIdeaHandoffs() {
   `;
 }
 
-function renderIdeaRows(rows) {
-  if (!rows.length) {
-    return `<div class="empty-state">还没有分镜文本。先输入 idea 生成交接卡，拖给 Codex 回填，或手动新增一条。</div>`;
+function renderIdeaRows(entries, allRows = currentIdeaBoard().rows || []) {
+  if (!entries.length) {
+    const scene = selectedScene();
+    return `<div class="empty-state">当前场戏 ${escapeHtml(scene?.scene_id || "")} 还没有分镜文本。点击“新增条目”会自动创建到这里。</div>`;
   }
-  const batchSet = ideaBatchRowSet({ rows });
-  return rows
+  const batchSet = ideaBatchRowSet({ rows: allRows });
+  return entries
     .map(
-      (row, index) => `
+      ({ row, index }) => `
         <article class="idea-shot-row ${state.ideaActiveRowIndex === index ? "active" : ""}" data-idea-index="${index}">
           <header>
-            <label>编号 / ID <input data-idea-field="item_id" value="${escapeHtml(row.item_id || nextIdeaItemId(rows))}" /></label>
+            <label>编号 / ID <input data-idea-field="item_id" value="${escapeHtml(row.item_id || nextIdeaItemId(allRows))}" /></label>
             <label>场戏 / Scene <input data-idea-field="scene_id" value="${escapeHtml(row.scene_id || "")}" /></label>
             <label>镜头 / Shot <input data-idea-field="shot_type" value="${escapeHtml(row.shot_type || "")}" /></label>
             <label class="checkbox-label"><input data-idea-field="selected" type="checkbox" ${row.selected === false ? "" : "checked"} /> 入图包 / Selected</label>
@@ -2925,6 +2977,8 @@ function renderIdeaLab() {
     return;
   }
   const board = currentIdeaBoard();
+  const visibleEntries = ideaRowEntriesForCurrentScene(board);
+  ensureIdeaActiveRowForScene(board);
   root.innerHTML = `
     <div class="idea-header">
       <div>
@@ -2959,10 +3013,10 @@ function renderIdeaLab() {
       </section>
       <section class="idea-rows-panel">
         <div class="idea-rows-header">
-          <strong>${board.rows.length} 条分镜文本 / storyboard prompt rows</strong>
-          <span>可直接编辑、增删、勾选入图包</span>
+          <strong>${ideaSceneSummary(board)}</strong>
+          <span>左侧切换场戏后，这里只显示当前场戏；保存会保留其他场戏的条目。</span>
         </div>
-        <div id="ideaRows" class="idea-rows">${renderIdeaRows(board.rows)}</div>
+        <div id="ideaRows" class="idea-rows">${renderIdeaRows(visibleEntries, board.rows)}</div>
       </section>
     </div>
   `;
@@ -3026,9 +3080,10 @@ async function createIdeaImagePacket() {
 
 function addIdeaRow() {
   const board = collectIdeaBoardFromDom();
+  const scene = selectedScene();
   board.rows.push({
     item_id: nextIdeaItemId(board.rows),
-    scene_id: "",
+    scene_id: scene?.scene_id || "",
     beat: "",
     shot_type: "",
     frame_description: "",
@@ -3040,6 +3095,7 @@ function addIdeaRow() {
     output_path: "",
     references: [],
   });
+  state.ideaActiveRowIndex = board.rows.length - 1;
   setIdeaBoardLocal(board);
   renderIdeaLab();
 }
@@ -3050,7 +3106,7 @@ function deleteIdeaRow(index) {
   state.ideaBatchRows = (state.ideaBatchRows || [])
     .filter((item) => Number(item) !== index)
     .map((item) => (Number(item) > index ? Number(item) - 1 : Number(item)));
-  state.ideaActiveRowIndex = clamp(Number(state.ideaActiveRowIndex || 0), 0, Math.max(0, board.rows.length - 1));
+  ensureIdeaActiveRowForScene(board);
   setIdeaBoardLocal(board);
   renderIdeaLab();
 }
@@ -3569,10 +3625,7 @@ function bindStoryboardStudioEvents(scene, frame, related = []) {
   const root = $("storyboardStudio");
   root.querySelectorAll(".studio-scene-button").forEach((button) => {
     button.addEventListener("click", () => {
-      state.selectedSceneId = button.dataset.sceneId || "";
-      state.selectedFrameRef = "";
-      state.activeChangeRequest = null;
-      state.recreate = null;
+      selectScene(button.dataset.sceneId || "");
       renderAll();
     });
   });
@@ -3749,10 +3802,7 @@ function renderSceneTree(scenes) {
     .join("");
   $("sceneTree").querySelectorAll(".scene-tree-item").forEach((button) => {
     button.addEventListener("click", () => {
-      state.selectedSceneId = button.dataset.sceneId || "";
-      state.selectedFrameRef = "";
-      state.activeChangeRequest = null;
-      state.recreate = null;
+      selectScene(button.dataset.sceneId || "");
       renderAll();
     });
   });

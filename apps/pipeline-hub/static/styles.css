@@ -490,6 +490,31 @@ textarea:focus {
   min-width: 0;
 }
 
+.idea-current-target {
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 8px;
+  display: grid;
+  gap: 3px;
+}
+
+.idea-current-target strong {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.idea-current-target span {
+  font-weight: 800;
+  font-size: 13px;
+  line-height: 1.35;
+  word-break: break-word;
+}
+
+.idea-current-target small {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.35;
+}
+
 .idea-batch-control {
   display: grid;
   gap: 6px;
