@@ -1,0 +1,14 @@
+{
+  "task_id": "IDEA_IMG_20260616_013841_005",
+  "item_id": "ACT1_SHOT_005",
+  "scene_id": "SCN_COMPOUND",
+  "beat": "门缝打开，机房气息泄出",
+  "shot_type": "近景 / close medium shot",
+  "frame_description": "旧门打开一条缝，老板的半张脸和手出现在门后。蓝绿街机光、烟雾和嘈杂声从门缝先涌出来，孩子们身体微微前倾。",
+  "image_prompt": "Cinematic keyframe, shabby metal door opening a narrow crack, middle-aged Chinese arcade owner partly visible inside, hand holding the door, blue-green CRT arcade light and cigarette smoke leaking from the interior, three schoolchildren with backpacks waiting outside and leaning forward, 1990s northern Chinese residential building corner, realistic gritty atmosphere, clean film still, no readable text, no watermark, no modern elements",
+  "video_prompt": "The lock turns, the door cracks open, smoke and arcade light spill out first; the children lean in before stepping through.",
+  "notes": "门缝是两个世界的边界，光、烟和声音比台词更重要。",
+  "shot_references": [],
+  "suggested_output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/005_ACT1_SHOT_005.png",
+  "suggested_output_absolute_path": "/Users/jaychoupp/Desktop/Story/Film/projects/coin-slot/08_generation/jobs/IDEA_IMG_20260616_013841/outputs/005_ACT1_SHOT_005.png"
+}

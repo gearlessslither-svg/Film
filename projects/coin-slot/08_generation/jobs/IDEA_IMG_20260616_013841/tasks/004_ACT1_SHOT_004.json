@@ -1,0 +1,14 @@
+{
+  "task_id": "IDEA_IMG_20260616_013841_004",
+  "item_id": "ACT1_SHOT_004",
+  "scene_id": "SCN_COMPOUND",
+  "beat": "老板从猫眼确认熟人",
+  "shot_type": "猫眼特写 / peephole close-up",
+  "frame_description": "从门内猫眼视角看出去，三个孩子的脸被猫眼畸变压缩，紧张又期待。门内老板确认他们是熟客。",
+  "image_prompt": "Cinematic close-up keyframe from inside a closed door peephole, fisheye peephole distortion, three Chinese schoolchildren with worn backpacks visible outside in a shabby apartment corner, nervous excited faces, 1990s northern China, faint green-blue arcade light around the peephole edge, realistic film texture, suspenseful but not horror, clean image, no text, no watermark, no modern objects",
+  "video_prompt": "Peephole POV: the children shift slightly as they wait; muffled arcade noise grows behind the door, then a lock clicks.",
+  "notes": "用猫眼制造“被审查/被放行”的边界感。可后续关联孩子人设。",
+  "shot_references": [],
+  "suggested_output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/004_ACT1_SHOT_004.png",
+  "suggested_output_absolute_path": "/Users/jaychoupp/Desktop/Story/Film/projects/coin-slot/08_generation/jobs/IDEA_IMG_20260616_013841/outputs/004_ACT1_SHOT_004.png"
+}

@@ -1,7 +1,7 @@
 # Idea Board / 创意分镜板
 
 - Project / 项目: coin-slot
-- Updated / 更新时间: 2026-06-16T01:25:09+08:00
+- Updated / 更新时间: 2026-06-16T02:49:49+08:00
 - Story title / 片名: 投币口 / Coin Slot
 - Logline / 一句话: 90年代北方小城里，三个放学后的孩子偷偷钻进居民楼角落的游戏机房，第一次跨进成人世界灰色而诱人的门缝。
 
@@ -20,9 +20,12 @@
 ## Style Notes / 风格备注
 年代和地域：上世纪90年代中国北方小城，冷灰水泥、旧砖墙、锈蚀铁门、褪色校服、旧书包、CRT 街机光。镜头语言：外部用远景/中景保持写实观察，门口用猫眼、门缝、手和脸的近景制造进入禁区的仪式感，内部用儿童视角和宽镜头展示烟雾、拥挤和鱼龙混杂。角色连续性：三个孩子始终同一组设定，背书包，年龄相近但姿态性格略有差异；老板是熟悉他们的中年男性，只在开门环节短暂出现。负面约束：不要现代智能手机、现代商场、赛博朋克霓虹、夸张恐怖片氛围、卡通化表演、随机可读文字、水印、无关主角。
 
+## Acts / 幕结构
+- None
+
 ## Global References / 全局参考
 - THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg: 三个小朋友统一人设、三视图、表情和服装连续性参考 / Global reference for the three children character identity, turnaround, expressions, and wardrobe continuity.
-- character_s0_clean_v002_contact_sheet_ascii.jpg: 三个少年整体造型、年龄感、站姿和气质参考 / Global reference for the three boys overall look, age, posture, and mood.
+- CHR_BRO_A_late_scuffed_reference_v001.png: 给哥哥带一个眼镜
 
 ## Keyframes / 关键分镜
 
@@ -31,7 +34,7 @@
 - Beat / 剧情点: 放学后偏离大路
 - Shot type / 镜头: 远景 / establishing wide shot
 - Selected / 选中: True
-- Status / 状态: draft
+- Status / 状态: image_ready
 
 Frame description / 画面描述:
 傍晚的北方小城，旧居民楼压在灰色街道边。三个背书包的小朋友从放学人流边缘脱离，避开大路，朝居民楼背面走去。
@@ -46,14 +49,14 @@ Notes / 备注:
 建立时代、地域和偷偷行动。游戏厅入口不要过早显眼，先让路线和氛围成立。
 
 Shot references / 单条参考:
-[]
+[{"ref_id": "WBX_20260616_024949", "asset_ref": "project:06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png", "asset_id": "WBX_20260616_024949", "path": "06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png", "origin": "project", "kind": "whitebox", "role": "replica_whitebox", "note": "高精度白模复刻：默认作为该分镜空间、机位、光照和人物动作参考 / high-fidelity replica whitebox for blocking, camera, lighting, and pose."}]
 
 ### 002. ACT1_SHOT_002
 - Scene / 场戏: SCN_COMPOUND
 - Beat / 剧情点: 沿墙根靠近隐藏入口
 - Shot type / 镜头: 中远景 / tracking medium-wide shot
 - Selected / 选中: True
-- Status / 状态: draft
+- Status / 状态: image_ready
 
 Frame description / 画面描述:
 三个孩子贴着居民楼墙根走，经过旧管道和剥落墙皮，互相用眼神确认没人注意，动作熟练又紧张。
@@ -68,14 +71,14 @@ Notes / 备注:
 鬼鬼祟祟但不要惊悚化，更像小孩去做一件不被允许却熟门熟路的事。
 
 Shot references / 单条参考:
-[]
+[{"ref_id": "WBX_20260616_024949", "asset_ref": "project:06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png", "asset_id": "WBX_20260616_024949", "path": "06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png", "origin": "project", "kind": "whitebox", "role": "replica_whitebox", "note": "高精度白模复刻：默认作为该分镜空间、机位、光照和人物动作参考 / high-fidelity replica whitebox for blocking, camera, lighting, and pose."}]
 
 ### 003. ACT1_SHOT_003
 - Scene / 场戏: SCN_COMPOUND
 - Beat / 剧情点: 旧门和猫眼出现
 - Shot type / 镜头: 中景 / medium shot
 - Selected / 选中: True
-- Status / 状态: draft
+- Status / 状态: image_ready
 
 Frame description / 画面描述:
 居民楼一楼角落有一扇不起眼的旧金属门，门上有猫眼，没有正式招牌。三个孩子停在门前，压低声音等待。
@@ -90,14 +93,14 @@ Notes / 备注:
 旧门+猫眼是第一幕核心视觉资产，门要普通、隐蔽、可信。
 
 Shot references / 单条参考:
-[]
+[{"ref_id": "WBX_20260616_024949", "asset_ref": "project:06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png", "asset_id": "WBX_20260616_024949", "path": "06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png", "origin": "project", "kind": "whitebox", "role": "replica_whitebox", "note": "高精度白模复刻：默认作为该分镜空间、机位、光照和人物动作参考 / high-fidelity replica whitebox for blocking, camera, lighting, and pose."}]
 
 ### 004. ACT1_SHOT_004
 - Scene / 场戏: SCN_COMPOUND
 - Beat / 剧情点: 老板从猫眼确认熟人
 - Shot type / 镜头: 猫眼特写 / peephole close-up
 - Selected / 选中: True
-- Status / 状态: draft
+- Status / 状态: image_ready
 
 Frame description / 画面描述:
 从门内猫眼视角看出去，三个孩子的脸被猫眼畸变压缩，紧张又期待。门内老板确认他们是熟客。
@@ -112,14 +115,14 @@ Notes / 备注:
 用猫眼制造“被审查/被放行”的边界感。可后续关联孩子人设。
 
 Shot references / 单条参考:
-[]
+[{"ref_id": "WBX_20260616_024949", "asset_ref": "project:06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png", "asset_id": "WBX_20260616_024949", "path": "06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png", "origin": "project", "kind": "whitebox", "role": "replica_whitebox", "note": "高精度白模复刻：默认作为该分镜空间、机位、光照和人物动作参考 / high-fidelity replica whitebox for blocking, camera, lighting, and pose."}]
 
 ### 005. ACT1_SHOT_005
 - Scene / 场戏: SCN_COMPOUND
 - Beat / 剧情点: 门缝打开，机房气息泄出
 - Shot type / 镜头: 近景 / close medium shot
 - Selected / 选中: True
-- Status / 状态: draft
+- Status / 状态: image_ready
 
 Frame description / 画面描述:
 旧门打开一条缝，老板的半张脸和手出现在门后。蓝绿街机光、烟雾和嘈杂声从门缝先涌出来，孩子们身体微微前倾。
@@ -134,14 +137,14 @@ Notes / 备注:
 门缝是两个世界的边界，光、烟和声音比台词更重要。
 
 Shot references / 单条参考:
-[]
+[{"ref_id": "WBX_20260616_024949", "asset_ref": "project:06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png", "asset_id": "WBX_20260616_024949", "path": "06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png", "origin": "project", "kind": "whitebox", "role": "replica_whitebox", "note": "高精度白模复刻：默认作为该分镜空间、机位、光照和人物动作参考 / high-fidelity replica whitebox for blocking, camera, lighting, and pose."}]
 
 ### 006. ACT1_SHOT_006
 - Scene / 场戏: SCN_ARCADE
 - Beat / 剧情点: 孩子进入乌烟瘴气的游戏厅
 - Shot type / 镜头: 儿童视角中景 / child-height medium shot
 - Selected / 选中: True
-- Status / 状态: draft
+- Status / 状态: image_ready
 
 Frame description / 画面描述:
 三个孩子刚进室内，画面被烟雾、街机屏幕光和拥挤背影包围。他们像闯进另一个秩序混乱的世界。
@@ -163,7 +166,7 @@ Shot references / 单条参考:
 - Beat / 剧情点: 游戏厅鱼龙混杂全貌
 - Shot type / 镜头: 广角全景 / wide interior shot
 - Selected / 选中: True
-- Status / 状态: draft
+- Status / 状态: image_ready
 
 Frame description / 画面描述:
 低矮拥挤的游戏厅里，一排排旧街机发出蓝绿光。成年人、少年和孩子混在一起，烟雾让空气显得浑浊。
@@ -185,7 +188,7 @@ Shot references / 单条参考:
 - Beat / 剧情点: 三个孩子站定，兴奋与不安并存
 - Shot type / 镜头: 中近景 / medium close shot
 - Selected / 选中: True
-- Status / 状态: draft
+- Status / 状态: image_ready
 
 Frame description / 画面描述:
 三个孩子站在游戏厅内部，脸被街机光照亮。他们互相看一眼，兴奋和不安同时出现，第一幕停在正式进入灰色成人空间的瞬间。

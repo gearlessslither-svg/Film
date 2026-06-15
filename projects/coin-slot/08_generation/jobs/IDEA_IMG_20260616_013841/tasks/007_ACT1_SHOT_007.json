@@ -1,0 +1,14 @@
+{
+  "task_id": "IDEA_IMG_20260616_013841_007",
+  "item_id": "ACT1_SHOT_007",
+  "scene_id": "SCN_ARCADE",
+  "beat": "游戏厅鱼龙混杂全貌",
+  "shot_type": "广角全景 / wide interior shot",
+  "frame_description": "低矮拥挤的游戏厅里，一排排旧街机发出蓝绿光。成年人、少年和孩子混在一起，烟雾让空气显得浑浊。",
+  "image_prompt": "Wide cinematic interior keyframe of a crowded 1990s Chinese arcade hall, low ceiling, rows of old arcade cabinets, cigarette smoke, mixed crowd of adult men, teenagers, and children, three schoolchildren with backpacks visible near the entrance as small figures, blue-green CRT glow, gritty social realism, northern Chinese small-town underground game room, balanced composition, high image quality, no cyberpunk neon, no modern screens, no readable text, no watermark",
+  "video_prompt": "Slow wide pan across the smoky arcade: hands on buttons, coins on cabinets, adults and kids pressed together under CRT flicker.",
+  "notes": "这一条是游戏厅场景设定核心图，既要乱，又要构图可读。",
+  "shot_references": [],
+  "suggested_output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/007_ACT1_SHOT_007.png",
+  "suggested_output_absolute_path": "/Users/jaychoupp/Desktop/Story/Film/projects/coin-slot/08_generation/jobs/IDEA_IMG_20260616_013841/outputs/007_ACT1_SHOT_007.png"
+}

@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "updated_at": "2026-06-16T03:10:00+08:00",
+  "blender_available": true,
+  "blender_executable": "/Applications/Blender.app/Contents/MacOS/Blender",
+  "jobs": [
+    {
+      "job_id": "WBX_20260616_024949",
+      "created_at": "2026-06-16T02:49:49+08:00",
+      "status": "rendered",
+      "source_asset": {
+        "asset_ref": "project:08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+        "asset_id": "ACT1_SHOT_003_SOURCE_KEYFRAME",
+        "path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+        "origin": "project",
+        "kind": "storyboard_keyframe",
+        "scene_id": "SCN_COMPOUND",
+        "scene_title": "居民楼角落 / Compound corner",
+        "act_id": "ACT01",
+        "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade"
+      },
+      "tags": [
+        "ACT01",
+        "SCN_COMPOUND",
+        "hidden_arcade_door",
+        "peephole",
+        "three_children",
+        "1to1_replica"
+      ],
+      "replica_note": "以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+      "target_item_ids": [
+        "ACT1_SHOT_001",
+        "ACT1_SHOT_002",
+        "ACT1_SHOT_003",
+        "ACT1_SHOT_004",
+        "ACT1_SHOT_005"
+      ],
+      "suggested_render_path": "06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+      "suggested_blend_path": "06_previs/whitebox_lab/jobs/WBX_20260616_024949/blender/WBX_20260616_024949.blend",
+      "spec_path": "06_previs/whitebox_lab/jobs/WBX_20260616_024949/blender/WBX_20260616_024949_spec.json",
+      "script_path": "06_previs/whitebox_lab/jobs/WBX_20260616_024949/blender/WBX_20260616_024949_generate_whitebox.py",
+      "handoff_path": "06_previs/whitebox_lab/jobs/WBX_20260616_024949/outputs/WBX_20260616_024949_codex_blender_handoff.md",
+      "default_reference_note": "高精度白模复刻：默认作为该分镜空间、机位、光照和人物动作参考 / high-fidelity replica whitebox for blocking, camera, lighting, and pose.",
+      "rendered_at": "2026-06-16T03:10:00+08:00",
+      "blender_executed": true,
+      "render_quality_note": "Blender 5.1.2 executed locally; render shows three child proxies, the closed metal door, peephole, handle, wall hole, doorway edge, and first-act compound-corner blocking.",
+      "camera_model": "ORTHO 1:1 source composition match",
+      "output_role": "default_whitebox_reference_for_first_act_compound_shots"
+    }
+  ]
+}

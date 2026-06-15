@@ -1,0 +1,14 @@
+{
+  "task_id": "IDEA_IMG_20260616_013841_003",
+  "item_id": "ACT1_SHOT_003",
+  "scene_id": "SCN_COMPOUND",
+  "beat": "旧门和猫眼出现",
+  "shot_type": "中景 / medium shot",
+  "frame_description": "居民楼一楼角落有一扇不起眼的旧金属门，门上有猫眼，没有正式招牌。三个孩子停在门前，压低声音等待。",
+  "image_prompt": "Cinematic storyboard keyframe, hidden arcade entrance in the corner of an old Chinese residential building, 1990s northern small city, shabby closed metal door with a small peephole, no obvious signboard, three schoolchildren with backpacks standing on the left side whispering and looking secretive, cracked concrete wall, dim corridor shadow, realistic film still, strong readable composition, no modern signage, no readable text, no watermark",
+  "video_prompt": "The children stop at the closed metal door; the camera settles on the small peephole while muffled arcade sounds barely leak through.",
+  "notes": "旧门+猫眼是第一幕核心视觉资产，门要普通、隐蔽、可信。",
+  "shot_references": [],
+  "suggested_output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+  "suggested_output_absolute_path": "/Users/jaychoupp/Desktop/Story/Film/projects/coin-slot/08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png"
+}

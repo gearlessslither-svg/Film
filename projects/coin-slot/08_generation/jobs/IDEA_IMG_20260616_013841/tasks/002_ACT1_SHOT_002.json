@@ -1,0 +1,14 @@
+{
+  "task_id": "IDEA_IMG_20260616_013841_002",
+  "item_id": "ACT1_SHOT_002",
+  "scene_id": "SCN_COMPOUND",
+  "beat": "沿墙根靠近隐藏入口",
+  "shot_type": "中远景 / tracking medium-wide shot",
+  "frame_description": "三个孩子贴着居民楼墙根走，经过旧管道和剥落墙皮，互相用眼神确认没人注意，动作熟练又紧张。",
+  "image_prompt": "Cinematic film keyframe, three Chinese schoolchildren in 1990s school clothes sneaking along the wall of a shabby residential building, worn backpacks, old pipes, peeling paint, chipped concrete, one child glancing back nervously while another gestures to stay quiet, northern Chinese small-town realism, low handheld perspective, subdued colors, high-quality stable image, no modern objects, no random text, no watermark",
+  "video_prompt": "Low tracking shot follows the children along the wall; one looks back, another hushes him, their footsteps small against the concrete.",
+  "notes": "鬼鬼祟祟但不要惊悚化，更像小孩去做一件不被允许却熟门熟路的事。",
+  "shot_references": [],
+  "suggested_output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/002_ACT1_SHOT_002.png",
+  "suggested_output_absolute_path": "/Users/jaychoupp/Desktop/Story/Film/projects/coin-slot/08_generation/jobs/IDEA_IMG_20260616_013841/outputs/002_ACT1_SHOT_002.png"
+}

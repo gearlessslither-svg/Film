@@ -1,0 +1,14 @@
+{
+  "task_id": "IDEA_IMG_20260616_013841_001",
+  "item_id": "ACT1_SHOT_001",
+  "scene_id": "SCN_COMPOUND",
+  "beat": "放学后偏离大路",
+  "shot_type": "远景 / establishing wide shot",
+  "frame_description": "傍晚的北方小城，旧居民楼压在灰色街道边。三个背书包的小朋友从放学人流边缘脱离，避开大路，朝居民楼背面走去。",
+  "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small city after school, old concrete apartment blocks and dusty street, muted gray winter palette, three Chinese schoolchildren with worn backpacks quietly leaving the main road and heading toward the back corner of a residential building, cautious secretive body language, realistic film still, 35mm lens, natural dusk light, subtle film grain, clean composition, no modern cars, no smartphones, no readable text, no watermark",
+  "video_prompt": "Wide observational shot: the school crowd thins out as three children peel away from the main road and move toward the old apartment corner, restrained suspense and everyday realism.",
+  "notes": "建立时代、地域和偷偷行动。游戏厅入口不要过早显眼，先让路线和氛围成立。",
+  "shot_references": [],
+  "suggested_output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/001_ACT1_SHOT_001.png",
+  "suggested_output_absolute_path": "/Users/jaychoupp/Desktop/Story/Film/projects/coin-slot/08_generation/jobs/IDEA_IMG_20260616_013841/outputs/001_ACT1_SHOT_001.png"
+}

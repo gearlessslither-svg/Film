@@ -1,0 +1,14 @@
+{
+  "task_id": "IDEA_IMG_20260616_013841_006",
+  "item_id": "ACT1_SHOT_006",
+  "scene_id": "SCN_ARCADE",
+  "beat": "孩子进入乌烟瘴气的游戏厅",
+  "shot_type": "儿童视角中景 / child-height medium shot",
+  "frame_description": "三个孩子刚进室内，画面被烟雾、街机屏幕光和拥挤背影包围。他们像闯进另一个秩序混乱的世界。",
+  "image_prompt": "Cinematic storyboard keyframe inside a smoky 1990s Chinese underground arcade, three schoolchildren with worn backpacks entering from a doorway, blue and green CRT arcade cabinet glow, cigarette smoke hanging under a low ceiling, crowded silhouettes of adults and teenagers, gritty northern small-town atmosphere, child-height camera perspective, high-quality film still, no modern machines, no smartphone, no readable random text, no watermark",
+  "video_prompt": "Child-height camera follows the three children entering the smoky arcade; CRT light flickers across their faces as sound becomes overwhelming.",
+  "notes": "三人仍然是画面锚点，不能被杂乱人群完全吞掉。",
+  "shot_references": [],
+  "suggested_output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/006_ACT1_SHOT_006.png",
+  "suggested_output_absolute_path": "/Users/jaychoupp/Desktop/Story/Film/projects/coin-slot/08_generation/jobs/IDEA_IMG_20260616_013841/outputs/006_ACT1_SHOT_006.png"
+}

@@ -1,0 +1,14 @@
+{
+  "task_id": "IDEA_IMG_20260616_013841_008",
+  "item_id": "ACT1_SHOT_008",
+  "scene_id": "SCN_ARCADE",
+  "beat": "三个孩子站定，兴奋与不安并存",
+  "shot_type": "中近景 / medium close shot",
+  "frame_description": "三个孩子站在游戏厅内部，脸被街机光照亮。他们互相看一眼，兴奋和不安同时出现，第一幕停在正式进入灰色成人空间的瞬间。",
+  "image_prompt": "Cinematic medium close-up keyframe, three Chinese schoolchildren with worn backpacks standing inside a smoky 1990s underground arcade, CRT blue-green light on their faces, expressions mixed with excitement and unease, blurred crowded arcade background, cigarette smoke, gritty realistic film still, northern Chinese small-town atmosphere, strong character continuity, clean stable image, no distorted faces, no modern objects, no readable text, no watermark",
+  "video_prompt": "The three children pause inside the arcade and exchange a look; cabinet lights flicker over their faces as the noise swells, ending the act on anticipation.",
+  "notes": "第一幕收束图，情绪锚点。后续可接投币、游戏机或危险事件。",
+  "shot_references": [],
+  "suggested_output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/008_ACT1_SHOT_008.png",
+  "suggested_output_absolute_path": "/Users/jaychoupp/Desktop/Story/Film/projects/coin-slot/08_generation/jobs/IDEA_IMG_20260616_013841/outputs/008_ACT1_SHOT_008.png"
+}
