@@ -971,10 +971,22 @@ function frameIsUsable(frame) {
   return frame && !frame.lfs_missing && frame.previewable !== false;
 }
 
+function assetIsWhitebox(asset) {
+  const haystack = [asset?.asset_id, asset?.role, asset?.path, asset?.kind, asset?.stage].join(" ").toLowerCase();
+  return asset?.kind === "whitebox" || haystack.includes("whitebox") || haystack.includes("previs");
+}
+
+function storyboardFrameMatchesFilter(asset) {
+  if (state.storyboardStage === "all") return !assetIsWhitebox(asset);
+  if (state.storyboardStage === "kind:whitebox") return assetIsWhitebox(asset);
+  if (state.storyboardStage?.startsWith("kind:")) return asset.kind === state.storyboardStage.slice(5);
+  return asset.stage === state.storyboardStage;
+}
+
 function storyboardFrames(scene) {
   const frames = flattenSceneAssets(scene).filter((asset) => {
     if (!asset.path || !asset.url) return false;
-    if (state.storyboardStage !== "all" && asset.stage !== state.storyboardStage) return false;
+    if (!storyboardFrameMatchesFilter(asset)) return false;
     return isImagePath(asset.path);
   });
   return frames.sort((a, b) => {
@@ -1038,11 +1050,22 @@ function moveStoryboardFrame(delta) {
 
 function storyboardStageOptions(scene) {
   const counts = new Map();
+  let allCount = 0;
+  let whiteboxCount = 0;
   flattenSceneAssets(scene)
     .filter((asset) => isImagePath(asset.path || ""))
-    .forEach((asset) => counts.set(asset.stage, (counts.get(asset.stage) || 0) + 1));
+    .forEach((asset) => {
+      if (assetIsWhitebox(asset)) {
+        whiteboxCount += 1;
+      } else {
+        allCount += 1;
+        counts.set(asset.stage, (counts.get(asset.stage) || 0) + 1);
+      }
+    });
+  const options = [{ value: "all", label: `全部图片 / All images (${allCount})` }];
+  if (whiteboxCount) options.push({ value: "kind:whitebox", label: `白模 / Whitebox (${whiteboxCount})` });
   return [
-    { value: "all", label: `全部图片 / All images (${[...counts.values()].reduce((sum, count) => sum + count, 0)})` },
+    ...options,
     ...Object.entries(STAGE_LABELS)
       .filter(([stage]) => counts.has(stage))
       .map(([stage]) => ({ value: stage, label: `${stageShortLabel(stage)} (${counts.get(stage)})` })),
@@ -1057,7 +1080,8 @@ function frameTitle(frame) {
 
 function relatedFrameAssets(scene, frame) {
   if (!scene || !frame) return [];
-  const assets = flattenSceneAssets(scene);
+  const allowWhitebox = assetIsWhitebox(frame);
+  const assets = flattenSceneAssets(scene).filter((asset) => allowWhitebox || !assetIsWhitebox(asset));
   const sameShot = assets.filter((asset) => frame.shot_id && asset.shot_id === frame.shot_id && asset.ref !== frame.ref);
   const context = assets.filter((asset) =>
     ["03_story", "04_lookdev", "05_asset_bible", "06_previs"].includes(asset.stage) &&
@@ -1270,6 +1294,7 @@ function boardAssetMatches(asset) {
   const sceneFilter = state.boardFilters.scene;
   if (sceneFilter?.startsWith("act:") && asset.act_id !== sceneFilter.slice(4)) return false;
   if (sceneFilter?.startsWith("scene:") && asset.scene_id !== sceneFilter.slice(6)) return false;
+  if (state.boardFilters.tag === "all" && (asset.tags || []).includes("whitebox")) return false;
   if (state.boardFilters.tag !== "all" && !(asset.tags || []).includes(state.boardFilters.tag)) return false;
   const query = state.boardFilters.query.trim().toLowerCase();
   if (!query) return true;

@@ -343,7 +343,6 @@ def write_manifest(path: Path, manifest: dict[str, object]) -> None:
     (path / "project.yaml").write_text(
         yaml.safe_dump(manifest, allow_unicode=True, sort_keys=False),
         encoding="utf-8",
-        newline="\n",
     )
 
 
@@ -1966,7 +1965,6 @@ def update_project_links(slug: str, payload: dict[str, object]) -> dict[str, obj
     (path / "assets_link_map.md").write_text(
         render_template(TEXT_TEMPLATES["assets_link_map.md"], values),
         encoding="utf-8",
-        newline="\n",
     )
     return project_detail(slug)
 
@@ -2093,7 +2091,7 @@ def write_idea_board_files(path: Path, board: dict[str, object]) -> None:
     write_yaml_file(idea_board_path(path), board)
     md_path = idea_board_markdown_path(path)
     md_path.parent.mkdir(parents=True, exist_ok=True)
-    md_path.write_text(idea_board_to_markdown(board), encoding="utf-8", newline="\n")
+    md_path.write_text(idea_board_to_markdown(board), encoding="utf-8")
     csv_path = idea_board_csv_path(path)
     csv_path.parent.mkdir(parents=True, exist_ok=True)
     fieldnames = [
@@ -2221,7 +2219,7 @@ def create_idea_image_packet(slug: str, payload: dict[str, object]) -> dict[str,
         (tasks_dir / f"{index:03d}_{item_id}.json").write_text(json.dumps(task, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     packet_rel_path = str(Path("08_generation") / "jobs" / packet_id / "outputs" / f"{packet_id}_handoff.md")
     packet_text = build_idea_image_packet_text(slug, path, board, packet_id, packet_rel_path, tasks)
-    (path / packet_rel_path).write_text(packet_text, encoding="utf-8", newline="\n")
+    (path / packet_rel_path).write_text(packet_text, encoding="utf-8")
     write_yaml_file(job_dir / "storyboard_image_tasks.json", {"packet_id": packet_id, "tasks": tasks})
     return {
         "ok": True,
