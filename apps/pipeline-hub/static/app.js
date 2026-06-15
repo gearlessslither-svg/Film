@@ -2401,7 +2401,7 @@ function collectIdeaBoardFromDom() {
       references: Array.isArray(existing.references) ? existing.references : [],
     };
   });
-  return {
+  const board = {
     idea: $("ideaSeedInput")?.value || "",
     story_title: $("ideaStoryTitle")?.value || "",
     logline: $("ideaLogline")?.value || "",
@@ -2410,6 +2410,8 @@ function collectIdeaBoardFromDom() {
     global_references: current.global_references,
     rows,
   };
+  syncIdeaReferenceNotesFromDom(board);
+  return board;
 }
 
 function setIdeaBoardLocal(board) {
@@ -2419,6 +2421,21 @@ function setIdeaBoardLocal(board) {
     global_references: Array.isArray(board.global_references) ? board.global_references : [],
     rows: Array.isArray(board.rows) ? board.rows : [],
   };
+}
+
+function syncIdeaReferenceNotesFromDom(board) {
+  document.querySelectorAll(".idea-ref-note").forEach((textarea) => {
+    const scope = textarea.dataset.refScope || "row";
+    const key = textarea.dataset.refKey || "";
+    const note = textarea.value || "";
+    const updateRefs = (refs = []) => refs.map((ref) => (ideaReferenceKey(ref) === key ? { ...ref, note } : ref));
+    if (scope === "global") {
+      board.global_references = updateRefs(board.global_references || []);
+    } else {
+      const row = board.rows?.[state.ideaActiveRowIndex];
+      if (row) row.references = updateRefs(row.references || []);
+    }
+  });
 }
 
 function ideaReferenceKey(ref) {
@@ -2913,11 +2930,11 @@ function renderIdeaLab() {
       <div>
         <p class="eyebrow">Idea Lab</p>
         <h3>创意到分镜 / Idea to Storyboard</h3>
-        <p>输入故事 idea，生成 Codex 分析卡；回填后编辑分镜提示词，再生成批量图片包。</p>
+        <p>输入故事 idea，生成 Codex 分析卡；生成卡片前会自动保存文字、勾选、参考图和备注。</p>
       </div>
       <div class="idea-actions">
         <button id="ideaBuildHandoffBtn" class="command-button primary" type="button">生成分析卡 / Analysis Card</button>
-        <button id="ideaSaveBtn" class="command-button" type="button">保存文字 / Save</button>
+        <button id="ideaSaveBtn" class="command-button" type="button">手动保存 / Save now</button>
         <button id="ideaAddRowBtn" class="command-button" type="button">新增条目 / Add Row</button>
         <button id="ideaBuildImagePacketBtn" class="command-button" type="button">生成图片包 / Image Packet</button>
       </div>
@@ -2955,27 +2972,36 @@ function renderIdeaLab() {
 async function saveIdeaBoard(options = {}) {
   if (!state.selectedSlug || !state.detail) return null;
   const board = collectIdeaBoardFromDom();
+  return persistIdeaBoard(board, options);
+}
+
+async function persistIdeaBoard(board, options = {}) {
+  if (!state.selectedSlug || !state.detail) return null;
   const result = await requestJson(`/api/projects/${state.selectedSlug}/idea-board`, {
     method: "POST",
     body: JSON.stringify(board),
   });
   state.detail = result.project || state.detail;
   if (options.toast !== false) toast("Idea Board 已保存 / Idea Board saved");
-  renderIdeaLab();
+  if (options.render !== false) renderIdeaLab();
   return result;
 }
 
-function createIdeaAnalysisHandoff() {
+async function createIdeaAnalysisHandoff() {
   if (!state.detail) return;
-  const board = collectIdeaBoardFromDom();
-  setIdeaBoardLocal(board);
-  addIdeaHandoff({
-    kind: "idea_analysis",
-    title: `${board.story_title || "Story idea"} → Codex 分析`,
-    text: buildIdeaAnalysisHandoff(board),
+  await runAction("生成分析卡 / Analysis card", async () => {
+    const board = collectIdeaBoardFromDom();
+    const result = await persistIdeaBoard(board, { toast: false, render: false });
+    const savedBoard = result?.idea_board || board;
+    setIdeaBoardLocal(savedBoard);
+    addIdeaHandoff({
+      kind: "idea_analysis",
+      title: `${savedBoard.story_title || "Story idea"} → Codex 分析`,
+      text: buildIdeaAnalysisHandoff(savedBoard),
+    });
+    renderIdeaLab();
+    toast("已自动保存并生成分析卡 / Saved and analysis handoff ready");
   });
-  renderIdeaLab();
-  toast("已生成 Codex 分析卡 / Analysis handoff ready");
 }
 
 async function createIdeaImagePacket() {
@@ -2993,6 +3019,7 @@ async function createIdeaImagePacket() {
       path: result.packet_path || "",
       text: result.handoff_text || "",
     });
+    toast("已自动保存并生成图片包 / Saved and image packet ready");
     renderAll();
   });
 }

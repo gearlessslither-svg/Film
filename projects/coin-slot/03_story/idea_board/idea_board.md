@@ -1,9 +1,9 @@
 # Idea Board / 创意分镜板
 
 - Project / 项目: coin-slot
-- Updated / 更新时间: 2026-06-16T00:45:46+08:00
-- Story title / 片名: 投币口
-- Logline / 一句话: 九十年代北方小城里，三个放学后的男孩背着书包偷偷摸到居民楼角落的游戏机房，门后的烟雾和街机光把他们带进一个成年人混杂的灰色空间。
+- Updated / 更新时间: 2026-06-16T01:25:09+08:00
+- Story title / 片名: 投币口 / Coin Slot
+- Logline / 一句话: 90年代北方小城里，三个放学后的孩子偷偷钻进居民楼角落的游戏机房，第一次跨进成人世界灰色而诱人的门缝。
 
 ## Idea / 创意
 整个故事发生在上世纪90年代的中国北方小城
@@ -15,188 +15,189 @@
 3 游戏厅里乌烟瘴气，鱼龙混杂
 
 ## Story Outline / 剧本大纲
-第一幕：放学后，三个男孩背着书包离开学校附近的大路，绕进一片旧居民楼。他们熟门熟路却又怕被人发现，贴着墙根往一楼角落的隐蔽游戏机房走。游戏机房的门关着，门上有猫眼，门内老板从猫眼里确认来人是熟面孔后，才把门开出一道缝。烟味、嘈杂声和 CRT 蓝绿光先从门缝里涌出来，孩子们进入游戏厅。里面低矮、拥挤、乌烟瘴气，成年人、少年和孩子混在街机前，三个男孩既兴奋又紧张，第一幕停在他们真正进入这个灰色成人空间的瞬间。
+第一幕只展开“进入游戏厅”这一个动作链：放学后，三个背书包的孩子避开大路，沿旧居民楼墙根绕到角落里的隐蔽机房门口。他们熟悉路线，却仍然带着怕被发现的紧张。门是关着的，猫眼成为这间地下游戏厅的第一道审查。老板从猫眼确认是熟客，开门放行。门缝打开时，烟味、街机声、蓝绿 CRT 光和混杂人声先涌出来。孩子们进入低矮拥挤的游戏厅，看见成年人、少年、学生混在机器前，空气浑浊、秩序暧昧。第一幕停在三个孩子站进这片光和烟里的瞬间，建立儿童世界与成人灰色空间之间的边界感。
 
 ## Style Notes / 风格备注
-本次只制作第一幕：1990年代中国北方小城、旧居民楼、放学书包、廉价运动服、潮湿水泥墙、封闭游戏机房、猫眼、门缝烟雾、CRT 蓝绿光、钨丝灯和烟味。镜头保持儿童视角和现实质感，重点是偷偷进入游戏厅的紧张、兴奋和灰色空间感。不要展开投币异常、8-bit、电话亭、废楼、巷道逃离等后续剧情。负面约束：不要现代手机、现代汽车、霓虹赛博朋克、夸张怪物、乱码文字、水印、额外主角、儿童血腥暴力。
+年代和地域：上世纪90年代中国北方小城，冷灰水泥、旧砖墙、锈蚀铁门、褪色校服、旧书包、CRT 街机光。镜头语言：外部用远景/中景保持写实观察，门口用猫眼、门缝、手和脸的近景制造进入禁区的仪式感，内部用儿童视角和宽镜头展示烟雾、拥挤和鱼龙混杂。角色连续性：三个孩子始终同一组设定，背书包，年龄相近但姿态性格略有差异；老板是熟悉他们的中年男性，只在开门环节短暂出现。负面约束：不要现代智能手机、现代商场、赛博朋克霓虹、夸张恐怖片氛围、卡通化表演、随机可读文字、水印、无关主角。
 
 ## Global References / 全局参考
-- None
+- THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg: 三个小朋友统一人设、三视图、表情和服装连续性参考 / Global reference for the three children character identity, turnaround, expressions, and wardrobe continuity.
+- character_s0_clean_v002_contact_sheet_ascii.jpg: 三个少年整体造型、年龄感、站姿和气质参考 / Global reference for the three boys overall look, age, posture, and mood.
 
 ## Keyframes / 关键分镜
 
 ### 001. ACT1_SHOT_001
 - Scene / 场戏: SCN_COMPOUND
-- Beat / 剧情点: 放学后的三个男孩背着书包离开大路，开始绕向旧居民楼背面。
-- Shot type / 镜头: 远景 / low wide establishing shot
+- Beat / 剧情点: 放学后偏离大路
+- Shot type / 镜头: 远景 / establishing wide shot
 - Selected / 选中: True
 - Status / 状态: draft
 
 Frame description / 画面描述:
-九十年代北方小城的傍晚，旧居民楼和潮湿水泥路压住画面，三个小学生从画面左侧偷偷拐入背街，动作带着熟练和心虚。
+傍晚的北方小城，旧居民楼压在灰色街道边。三个背书包的小朋友从放学人流边缘脱离，避开大路，朝居民楼背面走去。
 
 Image prompt / 图片提示词:
-Cinematic photorealistic 1990s northern Chinese small town after school, old residential blocks, damp concrete road, muted gray-yellow walls, three schoolboys with backpacks sneaking from the main path into the back of the compound, low child-height wide shot, realistic period clothing, subdued dusk light, grounded realism, no modern phones, no modern cars, no neon cyberpunk, no text, no watermark, 16:9 film still.
+Cinematic storyboard keyframe, 1990s northern Chinese small city after school, old concrete apartment blocks and dusty street, muted gray winter palette, three Chinese schoolchildren with worn backpacks quietly leaving the main road and heading toward the back corner of a residential building, cautious secretive body language, realistic film still, 35mm lens, natural dusk light, subtle film grain, clean composition, no modern cars, no smartphones, no readable text, no watermark
 
 Video prompt / 视频提示词:
-Low wide shot, the three boys cross from open street edge into a narrower residential back path, camera holds and gently pushes in.
+Wide observational shot: the school crowd thins out as three children peel away from the main road and move toward the old apartment corner, restrained suspense and everyday realism.
 
 Notes / 备注:
-建立时代、地点、三人关系；只做第一幕开端。
+建立时代、地域和偷偷行动。游戏厅入口不要过早显眼，先让路线和氛围成立。
 
 Shot references / 单条参考:
 []
 
 ### 002. ACT1_SHOT_002
 - Scene / 场戏: SCN_COMPOUND
-- Beat / 剧情点: 三个男孩贴着居民楼墙根前进，鬼鬼祟祟地靠近一楼角落。
-- Shot type / 镜头: 中远景 / tracking wide
+- Beat / 剧情点: 沿墙根靠近隐藏入口
+- Shot type / 镜头: 中远景 / tracking medium-wide shot
 - Selected / 选中: True
 - Status / 状态: draft
 
 Frame description / 画面描述:
-斑驳水泥墙、排水管、晾衣绳和潮湿地面形成压迫的侧向构图，三个孩子贴墙走，书包肩带晃动，彼此用眼神催促。
+三个孩子贴着居民楼墙根走，经过旧管道和剥落墙皮，互相用眼神确认没人注意，动作熟练又紧张。
 
 Image prompt / 图片提示词:
-Old Chinese residential compound wall in the 1990s, peeling plaster, drainpipe, laundry lines, wet ground, three schoolboys with backpacks moving furtively along the wall toward a hidden corner, side-on cinematic composition, child-eye-level camera, tense but playful secrecy, realistic clothes and anatomy, no modern objects, no signage, no watermark, 16:9.
+Cinematic film keyframe, three Chinese schoolchildren in 1990s school clothes sneaking along the wall of a shabby residential building, worn backpacks, old pipes, peeling paint, chipped concrete, one child glancing back nervously while another gestures to stay quiet, northern Chinese small-town realism, low handheld perspective, subdued colors, high-quality stable image, no modern objects, no random text, no watermark
 
 Video prompt / 视频提示词:
-Side tracking movement along the wall as the boys sneak forward, their backpacks shifting and shoes splashing lightly on damp concrete.
+Low tracking shot follows the children along the wall; one looks back, another hushes him, their footsteps small against the concrete.
 
 Notes / 备注:
-突出鬼鬼祟祟，不要夸张成犯罪或恐怖。
+鬼鬼祟祟但不要惊悚化，更像小孩去做一件不被允许却熟门熟路的事。
 
 Shot references / 单条参考:
 []
 
 ### 003. ACT1_SHOT_003
 - Scene / 场戏: SCN_COMPOUND
-- Beat / 剧情点: 居民楼角落的游戏机房门出现，门是关着的，猫眼成为焦点。
-- Shot type / 镜头: 悬疑中远景 / suspense wide shot
+- Beat / 剧情点: 旧门和猫眼出现
+- Shot type / 镜头: 中景 / medium shot
 - Selected / 选中: True
 - Status / 状态: draft
 
 Frame description / 画面描述:
-一楼偏僻角落里嵌着一扇旧门，门上有猫眼，右前景倒着破自行车，三个男孩停在左侧阴影里，像等暗号一样看着门。
+居民楼一楼角落有一扇不起眼的旧金属门，门上有猫眼，没有正式招牌。三个孩子停在门前，压低声音等待。
 
 Image prompt / 图片提示词:
-Rainy night old Chinese apartment compound corner, closed worn arcade door set into thick concrete wall, small peephole on the door as focal point, fallen rusty bicycle in the right foreground, three schoolboys with backpacks waiting on the left side in shadow, wet concrete reflections, faint cool light around the door seam, realistic 1990s atmosphere, low eye-level cinematic frame, no extra people, no readable signage, no watermark, 16:9.
+Cinematic storyboard keyframe, hidden arcade entrance in the corner of an old Chinese residential building, 1990s northern small city, shabby closed metal door with a small peephole, no obvious signboard, three schoolchildren with backpacks standing on the left side whispering and looking secretive, cracked concrete wall, dim corridor shadow, realistic film still, strong readable composition, no modern signage, no readable text, no watermark
 
 Video prompt / 视频提示词:
-Slow push toward the closed door and peephole while the boys hold still on the left edge of frame.
+The children stop at the closed metal door; the camera settles on the small peephole while muffled arcade sounds barely leak through.
 
 Notes / 备注:
-这是第一幕的关键视觉：门、猫眼、孩子。
+旧门+猫眼是第一幕核心视觉资产，门要普通、隐蔽、可信。
 
 Shot references / 单条参考:
 []
 
 ### 004. ACT1_SHOT_004
 - Scene / 场戏: SCN_COMPOUND
-- Beat / 剧情点: 老板从猫眼里看出来人是熟客，门内蓝绿光轻轻晃动。
+- Beat / 剧情点: 老板从猫眼确认熟人
 - Shot type / 镜头: 猫眼特写 / peephole close-up
 - Selected / 选中: True
 - Status / 状态: draft
 
 Frame description / 画面描述:
-旧门猫眼特写，金属边缘被摸得发亮，猫眼玻璃里扭曲映出三个孩子的脸和书包，门内有一点 CRT 蓝绿光。
+从门内猫眼视角看出去，三个孩子的脸被猫眼畸变压缩，紧张又期待。门内老板确认他们是熟客。
 
 Image prompt / 图片提示词:
-Extreme close-up of a worn old door peephole in a 1990s Chinese residential building, scratched brass metal ring, distorted reflection of three schoolboys with backpacks in the peephole glass, subtle cool CRT blue-green light from inside the door, damp old wood and metal texture, suspenseful realistic film still, shallow depth of field, no full adult face, no text, no watermark, 16:9.
+Cinematic close-up keyframe from inside a closed door peephole, fisheye peephole distortion, three Chinese schoolchildren with worn backpacks visible outside in a shabby apartment corner, nervous excited faces, 1990s northern China, faint green-blue arcade light around the peephole edge, realistic film texture, suspenseful but not horror, clean image, no text, no watermark, no modern objects
 
 Video prompt / 视频提示词:
-Static close-up, faint blue-green light shifts inside the peephole reflection as the boys wait outside.
+Peephole POV: the children shift slightly as they wait; muffled arcade noise grows behind the door, then a lock clicks.
 
 Notes / 备注:
-不要出现完整老板形象，只让猫眼完成确认动作。
+用猫眼制造“被审查/被放行”的边界感。可后续关联孩子人设。
 
 Shot references / 单条参考:
 []
 
 ### 005. ACT1_SHOT_005
 - Scene / 场戏: SCN_COMPOUND
-- Beat / 剧情点: 门开出一条缝，烟味、声音和街机光先涌出来。
-- Shot type / 镜头: 门缝揭示 / doorway reveal
+- Beat / 剧情点: 门缝打开，机房气息泄出
+- Shot type / 镜头: 近景 / close medium shot
 - Selected / 选中: True
 - Status / 状态: draft
 
 Frame description / 画面描述:
-旧门只开一掌宽，门内烟雾和蓝绿 CRT 光切开黑暗，三个孩子的侧脸被光照亮，外面的居民楼角落仍然潮湿安静。
+旧门打开一条缝，老板的半张脸和手出现在门后。蓝绿街机光、烟雾和嘈杂声从门缝先涌出来，孩子们身体微微前倾。
 
 Image prompt / 图片提示词:
-Old arcade door opening a narrow crack in a damp Chinese apartment compound, cigarette smoke and cool CRT blue-green light spilling out through the gap, three schoolboys at the threshold with backpacks, their side faces sliced by interior light, exterior remains dark wet concrete and peeling wall, gritty 1990s realism, cinematic doorway reveal, no modern objects, no readable text, no watermark, 16:9.
+Cinematic keyframe, shabby metal door opening a narrow crack, middle-aged Chinese arcade owner partly visible inside, hand holding the door, blue-green CRT arcade light and cigarette smoke leaking from the interior, three schoolchildren with backpacks waiting outside and leaning forward, 1990s northern Chinese residential building corner, realistic gritty atmosphere, clean film still, no readable text, no watermark, no modern elements
 
 Video prompt / 视频提示词:
-The door opens slowly from inside; smoke and arcade glow spill outward before any full interior is revealed.
+The lock turns, the door cracks open, smoke and arcade light spill out first; the children lean in before stepping through.
 
 Notes / 备注:
-从外部世界过渡到游戏厅内部。
+门缝是两个世界的边界，光、烟和声音比台词更重要。
 
 Shot references / 单条参考:
 []
 
 ### 006. ACT1_SHOT_006
 - Scene / 场戏: SCN_ARCADE
-- Beat / 剧情点: 孩子们进入游戏厅，先被烟雾、噪音和 CRT 光包围。
-- Shot type / 镜头: 入口中景 / threshold interior shot
+- Beat / 剧情点: 孩子进入乌烟瘴气的游戏厅
+- Shot type / 镜头: 儿童视角中景 / child-height medium shot
 - Selected / 选中: True
 - Status / 状态: draft
 
 Frame description / 画面描述:
-从室内回看门口，三个孩子刚跨进来，背后门缝残留外面的黑夜，前方蓝绿屏幕光、烟雾和人影压向他们。
+三个孩子刚进室内，画面被烟雾、街机屏幕光和拥挤背影包围。他们像闯进另一个秩序混乱的世界。
 
 Image prompt / 图片提示词:
-Interior threshold view of a hidden 1990s Chinese arcade room, three schoolboys with backpacks just stepping inside from a dark compound doorway, cigarette smoke haze, CRT arcade screens casting blue-green light, silhouettes of older teenagers and adults in the foreground, cramped low ceiling, realistic gritty atmosphere, no readable brand logos, no modern screens, no watermark, 16:9 film still.
+Cinematic storyboard keyframe inside a smoky 1990s Chinese underground arcade, three schoolchildren with worn backpacks entering from a doorway, blue and green CRT arcade cabinet glow, cigarette smoke hanging under a low ceiling, crowded silhouettes of adults and teenagers, gritty northern small-town atmosphere, child-height camera perspective, high-quality film still, no modern machines, no smartphone, no readable random text, no watermark
 
 Video prompt / 视频提示词:
-Camera inside the arcade faces the doorway as the boys step in; smoke and silhouettes partially obscure them.
+Child-height camera follows the three children entering the smoky arcade; CRT light flickers across their faces as sound becomes overwhelming.
 
 Notes / 备注:
-孩子第一次被成人空间吞没。
+三人仍然是画面锚点，不能被杂乱人群完全吞掉。
 
 Shot references / 单条参考:
 []
 
 ### 007. ACT1_SHOT_007
 - Scene / 场戏: SCN_ARCADE
-- Beat / 剧情点: 游戏厅全貌：乌烟瘴气，成年人、少年和孩子混在街机前。
-- Shot type / 镜头: 广角内景 / crowded interior wide
+- Beat / 剧情点: 游戏厅鱼龙混杂全貌
+- Shot type / 镜头: 广角全景 / wide interior shot
 - Selected / 选中: True
 - Status / 状态: draft
 
 Frame description / 画面描述:
-低矮拥挤的游戏厅里，CRT 屏幕排成蓝绿光带，烟雾悬在半空，成年人和少年挤在街机旁，三个男孩在过道里显得小而兴奋。
+低矮拥挤的游戏厅里，一排排旧街机发出蓝绿光。成年人、少年和孩子混在一起，烟雾让空气显得浑浊。
 
 Image prompt / 图片提示词:
-Crowded hidden 1990s Chinese arcade room, low ceiling, rows of old CRT arcade cabinets casting blue-green light, thick cigarette smoke haze, mixed adults and teenagers around machines, three small schoolboys with backpacks in the narrow aisle, gritty realistic interior, tungsten bulbs plus CRT glow, dense but readable composition, no readable brand logos, no modern devices, no watermark, 16:9 film still.
+Wide cinematic interior keyframe of a crowded 1990s Chinese arcade hall, low ceiling, rows of old arcade cabinets, cigarette smoke, mixed crowd of adult men, teenagers, and children, three schoolchildren with backpacks visible near the entrance as small figures, blue-green CRT glow, gritty social realism, northern Chinese small-town underground game room, balanced composition, high image quality, no cyberpunk neon, no modern screens, no readable text, no watermark
 
 Video prompt / 视频提示词:
-Slow lateral move through the smoky arcade aisle, CRT flicker and silhouettes crossing foreground while the three boys scan the room.
+Slow wide pan across the smoky arcade: hands on buttons, coins on cabinets, adults and kids pressed together under CRT flicker.
 
 Notes / 备注:
-只表现鱼龙混杂的环境，不展开投币异常。
+这一条是游戏厅场景设定核心图，既要乱，又要构图可读。
 
 Shot references / 单条参考:
 []
 
 ### 008. ACT1_SHOT_008
 - Scene / 场戏: SCN_ARCADE
-- Beat / 剧情点: 三个男孩在嘈杂游戏厅里互相看一眼，兴奋和不安同时出现，第一幕停在这里。
-- Shot type / 镜头: 三人中近景 / ensemble reaction shot
+- Beat / 剧情点: 三个孩子站定，兴奋与不安并存
+- Shot type / 镜头: 中近景 / medium close shot
 - Selected / 选中: True
 - Status / 状态: draft
 
 Frame description / 画面描述:
-三个男孩站在街机光和烟雾之间，脸上有兴奋、紧张和小心翼翼；背后成年人沉迷游戏，没人真正注意他们。
+三个孩子站在游戏厅内部，脸被街机光照亮。他们互相看一眼，兴奋和不安同时出现，第一幕停在正式进入灰色成人空间的瞬间。
 
 Image prompt / 图片提示词:
-Medium close ensemble shot of three Chinese schoolboys inside a smoky 1990s arcade, blue-green CRT light on their faces, backpacks still on, expressions mixed with excitement, nerves, and secrecy, blurred adults and teenagers behind them focused on arcade machines, realistic children, gritty but restrained mood, no modern objects, no text, no watermark, 16:9 film still.
+Cinematic medium close-up keyframe, three Chinese schoolchildren with worn backpacks standing inside a smoky 1990s underground arcade, CRT blue-green light on their faces, expressions mixed with excitement and unease, blurred crowded arcade background, cigarette smoke, gritty realistic film still, northern Chinese small-town atmosphere, strong character continuity, clean stable image, no distorted faces, no modern objects, no readable text, no watermark
 
 Video prompt / 视频提示词:
-Subtle handheld hold on the boys' faces as CRT light flickers; they exchange a quick nervous glance while arcade noise continues around them.
+The three children pause inside the arcade and exchange a look; cabinet lights flicker over their faces as the noise swells, ending the act on anticipation.
 
 Notes / 备注:
-第一幕收束点：他们已经进入灰色空间，但异常事件还没开始。
+第一幕收束图，情绪锚点。后续可接投币、游戏机或危险事件。
 
 Shot references / 单条参考:
 []
