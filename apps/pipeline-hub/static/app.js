@@ -2441,7 +2441,7 @@ function buildIdeaAnalysisHandoff(board) {
     idea,
     story_title: "短片片名",
     logline: "一句话故事",
-    story_outline: "三幕或多场戏剧本大纲，中文为主，可附英文关键词",
+    story_outline: "只展开用户这次 idea 明确写到的剧情范围；如果用户只写第一幕，就只写第一幕大纲",
     style_notes: "影像风格、镜头语言、角色/场景连续性、负面约束",
     global_references: [
       {
@@ -2484,7 +2484,8 @@ function buildIdeaAnalysisHandoff(board) {
     "请解析这个创意，调用当前聊天里的远程推理能力，产出剧本大纲、关键分镜、图片提示词和视频提示词。完成后调用回填接口，把 JSON 写回网页的 Idea 模块。",
     "",
     "## Codex Run Mode / 执行模式",
-    "- 先分析故事结构，再输出可执行的分镜文本，不要只写概念。",
+    "- 严格遵守用户这次 idea 的范围；不要因为项目里有后续场景就自动续写第二幕、第三幕。",
+    "- 先分析当前范围的故事结构，再输出可执行的分镜文本，不要只写概念。",
     "- 以电影制作角度优化：人物动机、场景递进、镜头节奏、可生成性、角色/场景连续性。",
     "- 输出条目要能直接变成图片生成任务；每条必须有清晰 image_prompt。",
     "- 回填成功后，只汇报条目数量和关键建议，不要长篇复述全部 JSON。",
@@ -2494,7 +2495,7 @@ function buildIdeaAnalysisHandoff(board) {
     `- Project root: ${state.detail?.path || ""}`,
     `- Callback: POST ${apiUrl}`,
     "",
-    "## Existing Scene Context / 现有场戏上下文",
+    "## Existing Scene Context / 现有场戏上下文（仅作可选参考，不代表本次必须展开）",
     compactProjectSceneContext(),
     "",
     "## User Idea / 用户创意",
