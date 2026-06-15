@@ -2018,6 +2018,27 @@ def normalize_idea_references(value: object) -> list[dict[str, object]]:
     return refs
 
 
+def normalize_idea_act(act: dict[str, object], index: int) -> dict[str, object]:
+    raw_id = str(act.get("act_id") or act.get("id") or "").strip()
+    return {
+        "act_id": safe_file_stem(raw_id) if raw_id else f"ACT{index:02d}",
+        "title": str(act.get("title", "") or "").strip(),
+        "summary": str(act.get("summary", "") or "").strip(),
+        "dramatic_purpose": str(act.get("dramatic_purpose") or act.get("purpose") or "").strip(),
+        "key_beats": str(act.get("key_beats", "") or "").strip(),
+        "status": str(act.get("status", "draft") or "draft").strip(),
+    }
+
+
+def normalize_idea_acts(value: object) -> list[dict[str, object]]:
+    acts: list[dict[str, object]] = []
+    if isinstance(value, list):
+        for index, act in enumerate(value, start=1):
+            if isinstance(act, dict):
+                acts.append(normalize_idea_act(act, index))
+    return acts
+
+
 def normalize_idea_row(row: dict[str, object], index: int) -> dict[str, object]:
     raw_id = str(row.get("item_id") or row.get("shot_id") or "").strip()
     item_id = safe_file_stem(raw_id) if raw_id else f"IDEA_SHOT_{index:03d}"
@@ -2055,6 +2076,7 @@ def normalize_idea_board(slug: str, payload: dict[str, object]) -> dict[str, obj
         "logline": str(payload.get("logline", "") or "").strip(),
         "story_outline": str(payload.get("story_outline", "") or "").strip(),
         "style_notes": str(payload.get("style_notes", "") or "").strip(),
+        "acts": normalize_idea_acts(payload.get("acts", [])),
         "global_references": normalize_idea_references(payload.get("global_references", [])),
         "rows": rows,
     }
@@ -2078,8 +2100,32 @@ def idea_board_to_markdown(board: dict[str, object]) -> str:
         "## Style Notes / 风格备注",
         str(board.get("style_notes", "") or ""),
         "",
-        "## Global References / 全局参考",
+        "## Acts / 幕结构",
     ]
+    acts = board.get("acts", [])
+    if isinstance(acts, list) and acts:
+        for index, act in enumerate(acts, start=1):
+            if not isinstance(act, dict):
+                continue
+            lines.extend(
+                [
+                    "",
+                    f"### {index:02d}. {act.get('act_id', '')} {act.get('title', '')}",
+                    f"- Status / 状态: {act.get('status', '')}",
+                    f"- Dramatic purpose / 戏剧功能: {act.get('dramatic_purpose', '')}",
+                    f"- Key beats / 关键节拍: {act.get('key_beats', '')}",
+                    "",
+                    str(act.get("summary", "") or ""),
+                ]
+            )
+    else:
+        lines.append("- None")
+    lines.extend(
+        [
+        "",
+        "## Global References / 全局参考",
+        ]
+    )
     global_refs = board.get("global_references", [])
     if isinstance(global_refs, list) and global_refs:
         for ref in global_refs:
@@ -2174,6 +2220,7 @@ def load_idea_board(path: Path, slug: str) -> dict[str, object]:
             "logline": "",
             "story_outline": "",
             "style_notes": "",
+            "acts": [],
             "global_references": [],
             "rows": [],
         }
@@ -2184,7 +2231,12 @@ def load_idea_board(path: Path, slug: str) -> dict[str, object]:
 
 def update_idea_board(slug: str, payload: dict[str, object]) -> dict[str, object]:
     path = project_path(slug)
-    board = normalize_idea_board(slug, payload)
+    existing = load_idea_board(path, slug)
+    merged = {**existing, **payload}
+    for key in ("acts", "global_references", "rows"):
+        if key not in payload:
+            merged[key] = existing.get(key, [])
+    board = normalize_idea_board(slug, merged)
     write_idea_board_files(path, board)
     return {"ok": True, "idea_board": load_idea_board(path, slug), "project": project_detail(slug)}
 
@@ -2217,6 +2269,11 @@ def build_idea_image_packet_text(
             "## Story / 故事",
             f"- Title: {board.get('story_title', '')}",
             f"- Logline: {board.get('logline', '')}",
+            "",
+            "## Acts / 幕结构",
+            "```json",
+            json.dumps(board.get("acts", []), ensure_ascii=False, indent=2),
+            "```",
             "",
             "## Global References / 全局参考",
             "这些参考作用于所有任务，不要在每条任务里重复理解；仅按 note 使用指定元素。",

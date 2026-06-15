@@ -13,6 +13,7 @@ const state = {
   ideaActiveRowIndex: 0,
   ideaBatchRows: [],
   ideaRefFilters: {
+    act: "all",
     tag: "all",
     query: "",
   },
@@ -2362,6 +2363,7 @@ function currentIdeaBoard() {
     logline: board.logline || "",
     story_outline: board.story_outline || "",
     style_notes: board.style_notes || "",
+    acts: Array.isArray(board.acts) ? board.acts : [],
     global_references: Array.isArray(board.global_references) ? board.global_references : [],
     rows: Array.isArray(board.rows) ? board.rows : [],
   };
@@ -2370,6 +2372,26 @@ function currentIdeaBoard() {
 function nextIdeaItemId(rows) {
   const count = (rows || []).length + 1;
   return `IDEA_SHOT_${String(count).padStart(3, "0")}`;
+}
+
+function nextIdeaActId(acts) {
+  return `ACT${String((acts || []).length + 1).padStart(2, "0")}`;
+}
+
+function collectIdeaActsFromDom(current) {
+  const root = $("ideaActList");
+  if (!root) return current.acts || [];
+  return Array.from(root.querySelectorAll(".idea-act-row")).map((row, index) => {
+    const value = (field) => row.querySelector(`[data-idea-act-field="${field}"]`)?.value || "";
+    return {
+      act_id: value("act_id") || `ACT${String(index + 1).padStart(2, "0")}`,
+      title: value("title"),
+      summary: value("summary"),
+      dramatic_purpose: value("dramatic_purpose"),
+      key_beats: value("key_beats"),
+      status: value("status") || "draft",
+    };
+  });
 }
 
 function ideaRowEntriesForCurrentScene(board = currentIdeaBoard()) {
@@ -2448,6 +2470,7 @@ function collectIdeaBoardFromDom() {
     logline: $("ideaLogline")?.value || "",
     story_outline: $("ideaOutline")?.value || "",
     style_notes: $("ideaStyleNotes")?.value || "",
+    acts: collectIdeaActsFromDom(current),
     global_references: current.global_references,
     rows,
   };
@@ -2459,6 +2482,7 @@ function setIdeaBoardLocal(board) {
   state.detail.idea_board = {
     ...currentIdeaBoard(),
     ...board,
+    acts: Array.isArray(board.acts) ? board.acts : [],
     global_references: Array.isArray(board.global_references) ? board.global_references : [],
     rows: Array.isArray(board.rows) ? board.rows : [],
   };
@@ -2538,10 +2562,33 @@ function ideaBatchRowSet(board = currentIdeaBoard()) {
   return new Set(cleanIdeaBatchRows(board));
 }
 
+function sceneActOptions() {
+  const acts = new Map();
+  (state.detail?.scene_workbench?.scenes || []).forEach((scene) => {
+    if (scene.act_id) acts.set(scene.act_id, scene.act_title || scene.act_id);
+  });
+  return [...acts.entries()].map(([value, label]) => ({ value, label }));
+}
+
+function ideaReferenceActOptions() {
+  const selectedAct = selectedScene()?.act_id || "";
+  const options = [
+    { value: "all", label: "全部幕 / All acts" },
+    { value: "global", label: "全局资料 / Global" },
+  ];
+  if (selectedAct) options.splice(1, 0, { value: "current", label: "当前幕 / Current act" });
+  sceneActOptions().forEach((act) => options.push({ value: `act:${act.value}`, label: act.label }));
+  return options;
+}
+
 function ideaReferenceAssets() {
   const assets = allBoardImageAssets().filter((asset) => frameIsUsable(asset));
   return assets.filter((asset) => {
     const tags = asset.tags || [];
+    const actFilter = state.ideaRefFilters.act || "all";
+    if (actFilter === "global" && asset.act_id) return false;
+    if (actFilter === "current" && asset.act_id !== (selectedScene()?.act_id || "")) return false;
+    if (actFilter.startsWith("act:") && asset.act_id !== actFilter.slice(4)) return false;
     if (state.ideaRefFilters.tag === "all" && tags.includes("whitebox")) return false;
     if (state.ideaRefFilters.tag !== "all" && !tags.includes(state.ideaRefFilters.tag)) return false;
     const query = state.ideaRefFilters.query.trim().toLowerCase();
@@ -2747,6 +2794,9 @@ function renderIdeaReferencePanel(board) {
       </summary>
       <div class="idea-reference-content">
         <div class="idea-reference-controls">
+          <select id="ideaRefActFilter">
+            ${ideaReferenceActOptions().map((option) => `<option value="${escapeHtml(option.value)}" ${state.ideaRefFilters.act === option.value ? "selected" : ""}>${escapeHtml(option.label)}</option>`).join("")}
+          </select>
           <select id="ideaRefTagFilter">
             ${BOARD_TAG_OPTIONS.map((option) => `<option value="${escapeHtml(option.value)}" ${state.ideaRefFilters.tag === option.value ? "selected" : ""}>${escapeHtml(option.label)}</option>`).join("")}
           </select>
@@ -2802,6 +2852,16 @@ function buildIdeaAnalysisHandoff(board) {
     logline: "一句话故事",
     story_outline: "只展开用户这次 idea 明确写到的剧情范围；如果用户只写第一幕，就只写第一幕大纲",
     style_notes: "影像风格、镜头语言、角色/场景连续性、负面约束",
+    acts: [
+      {
+        act_id: "ACT01",
+        title: "第一幕标题",
+        summary: "这一幕表达什么，以及从哪里开始到哪里结束",
+        dramatic_purpose: "这一幕在整部短片里的戏剧功能",
+        key_beats: "这一幕的关键剧情点，逗号或短句分隔",
+        status: "draft",
+      },
+    ],
     global_references: [
       {
         asset_ref: "project:path-or-resource:path",
@@ -2844,6 +2904,7 @@ function buildIdeaAnalysisHandoff(board) {
     "",
     "## Codex Run Mode / 执行模式",
     "- 严格遵守用户这次 idea 的范围；不要因为项目里有后续场景就自动续写第二幕、第三幕。",
+    "- 如果只有故事大纲，先判断应该拆成多少幕，并填入 acts；再决定是否需要生成 rows。",
     "- 先分析当前范围的故事结构，再输出可执行的分镜文本，不要只写概念。",
     "- 以电影制作角度优化：人物动机、场景递进、镜头节奏、可生成性、角色/场景连续性。",
     "- 输出条目要能直接变成图片生成任务；每条必须有清晰 image_prompt。",
@@ -2869,6 +2930,59 @@ function buildIdeaAnalysisHandoff(board) {
     `POST ${apiUrl}`,
     "Content-Type: application/json",
     "Body must match the schema above. Keep Chinese text readable, with optional English prompt terms where useful.",
+  ].join("\n");
+}
+
+function buildIdeaActAnalysisHandoff(board) {
+  const apiUrl = `${location.origin}/api/projects/${state.selectedSlug}/idea-board`;
+  const schema = {
+    idea: board.idea || "",
+    story_title: board.story_title || "短片片名",
+    logline: board.logline || "一句话故事",
+    story_outline: board.story_outline || "剧本大纲",
+    style_notes: board.style_notes || "风格与连续性",
+    acts: [
+      {
+        act_id: "ACT01",
+        title: "幕标题",
+        summary: "这一幕表达什么，以及从哪里开始到哪里结束",
+        dramatic_purpose: "这一幕承担的情绪、冲突、人物转变或信息揭示功能",
+        key_beats: "关键剧情点",
+        status: "draft",
+      },
+    ],
+    global_references: board.global_references || [],
+    rows: board.rows || [],
+  };
+  return [
+    "# Codex Act Structure Handoff / Codex 幕结构分析交接包",
+    "",
+    "请只根据当前 story idea、logline 和 story_outline，判断这个短片应该拆成多少幕，并把每一幕大概表达什么写回 Idea Board。",
+    "",
+    "## Codex Run Mode / 执行模式",
+    "- 只做幕结构规划；不要扩写具体分镜 rows，除非现有 rows 已存在则原样保留。",
+    "- 按电影制作角度判断：情绪递进、人物动机、冲突升级、场景承载能力、AIGC 可生成性。",
+    "- 每一幕都要说明：起点、终点、戏剧功能、关键剧情点。",
+    "- 如果当前故事只够一幕，就明确只输出一幕，不要为了三幕结构强行扩写。",
+    "- 回填成功后，只汇报幕数量和最关键的结构建议。",
+    "",
+    "## Project / 项目",
+    `- Project slug: ${state.selectedSlug || ""}`,
+    `- Project root: ${state.detail?.path || ""}`,
+    `- Callback: POST ${apiUrl}`,
+    "",
+    "## Existing Scene Context / 现有场戏上下文（仅作参考，不代表必须沿用）",
+    compactProjectSceneContext(),
+    "",
+    "## Current Idea Board / 当前内容",
+    "```json",
+    JSON.stringify(schema, null, 2),
+    "```",
+    "",
+    "## Required Callback / 必须回填",
+    `POST ${apiUrl}`,
+    "Content-Type: application/json",
+    "Body must include the full board shape above. Preserve rows/global_references unless you intentionally update them. Keep Chinese readable.",
   ].join("\n");
 }
 
@@ -2912,6 +3026,48 @@ function renderIdeaHandoffs() {
         )
         .join("")}
     </div>
+  `;
+}
+
+function renderIdeaActPlanner(board) {
+  const acts = board.acts || [];
+  return `
+    <details class="idea-act-panel" open>
+      <summary>
+        <span>幕结构 / Acts</span>
+        <small>${acts.length} 幕 · 可先分析大纲，再按幕增删</small>
+      </summary>
+      <div id="ideaActList" class="idea-act-list">
+        ${
+          acts.length
+            ? acts
+                .map(
+                  (act, index) => `
+                    <article class="idea-act-row" data-idea-act-index="${index}">
+                      <header>
+                        <label>幕编号 / Act ID <input data-idea-act-field="act_id" value="${escapeHtml(act.act_id || `ACT${String(index + 1).padStart(2, "0")}`)}" /></label>
+                        <label>标题 / Title <input data-idea-act-field="title" value="${escapeHtml(act.title || "")}" /></label>
+                        <label>状态 / Status <input data-idea-act-field="status" value="${escapeHtml(act.status || "draft")}" /></label>
+                        <button class="icon-button idea-delete-act" data-idea-act-index="${index}" type="button" title="删除这一幕 / Delete act">×</button>
+                      </header>
+                      <label>这一幕表达什么 / Act expression
+                        <textarea data-idea-act-field="summary" rows="3">${escapeHtml(act.summary || "")}</textarea>
+                      </label>
+                      <label>戏剧功能 / Dramatic purpose
+                        <textarea data-idea-act-field="dramatic_purpose" rows="2">${escapeHtml(act.dramatic_purpose || "")}</textarea>
+                      </label>
+                      <label>关键剧情点 / Key beats
+                        <textarea data-idea-act-field="key_beats" rows="2">${escapeHtml(act.key_beats || "")}</textarea>
+                      </label>
+                    </article>
+                  `,
+                )
+                .join("")
+            : `<div class="empty-state">还没有幕结构。可以先点“分析幕结构卡”，让 Codex 仅凭故事 idea/大纲判断需要几幕。</div>`
+        }
+      </div>
+      <button id="ideaAddActBtn" class="mini-command" type="button">新增幕 / Add Act</button>
+    </details>
   `;
 }
 
@@ -2987,6 +3143,7 @@ function renderIdeaLab() {
         <p>输入故事 idea，生成 Codex 分析卡；生成卡片前会自动保存文字、勾选、参考图和备注。</p>
       </div>
       <div class="idea-actions">
+        <button id="ideaBuildActCardBtn" class="command-button" type="button">分析幕结构卡 / Act Card</button>
         <button id="ideaBuildHandoffBtn" class="command-button primary" type="button">生成分析卡 / Analysis Card</button>
         <button id="ideaSaveBtn" class="command-button" type="button">手动保存 / Save now</button>
         <button id="ideaAddRowBtn" class="command-button" type="button">新增条目 / Add Row</button>
@@ -3008,6 +3165,7 @@ function renderIdeaLab() {
         <label>风格与连续性 / Style and continuity
           <textarea id="ideaStyleNotes" rows="4">${escapeHtml(board.style_notes || "")}</textarea>
         </label>
+        ${renderIdeaActPlanner(board)}
         ${renderIdeaReferencePanel(board)}
         <div id="ideaHandoffDock" class="idea-handoff-dock">${renderIdeaHandoffs()}</div>
       </section>
@@ -3058,6 +3216,23 @@ async function createIdeaAnalysisHandoff() {
   });
 }
 
+async function createIdeaActAnalysisHandoff() {
+  if (!state.detail) return;
+  await runAction("分析幕结构卡 / Act card", async () => {
+    const board = collectIdeaBoardFromDom();
+    const result = await persistIdeaBoard(board, { toast: false, render: false });
+    const savedBoard = result?.idea_board || board;
+    setIdeaBoardLocal(savedBoard);
+    addIdeaHandoff({
+      kind: "act_analysis",
+      title: `${savedBoard.story_title || "Story idea"} → 幕结构分析`,
+      text: buildIdeaActAnalysisHandoff(savedBoard),
+    });
+    renderIdeaLab();
+    toast("已自动保存并生成幕结构分析卡 / Saved and act handoff ready");
+  });
+}
+
 async function createIdeaImagePacket() {
   if (!state.selectedSlug || !state.detail) return;
   await runAction("生成图片包 / Image packet", async () => {
@@ -3076,6 +3251,29 @@ async function createIdeaImagePacket() {
     toast("已自动保存并生成图片包 / Saved and image packet ready");
     renderAll();
   });
+}
+
+function addIdeaAct() {
+  const board = collectIdeaBoardFromDom();
+  board.acts = Array.isArray(board.acts) ? board.acts : [];
+  board.acts.push({
+    act_id: nextIdeaActId(board.acts),
+    title: "",
+    summary: "",
+    dramatic_purpose: "",
+    key_beats: "",
+    status: "draft",
+  });
+  setIdeaBoardLocal(board);
+  renderIdeaLab();
+}
+
+function deleteIdeaAct(index) {
+  const board = collectIdeaBoardFromDom();
+  board.acts = Array.isArray(board.acts) ? board.acts : [];
+  board.acts.splice(index, 1);
+  setIdeaBoardLocal(board);
+  renderIdeaLab();
 }
 
 function addIdeaRow() {
@@ -3149,12 +3347,20 @@ function bindIdeaHandoffEvents() {
 }
 
 function bindIdeaLabEvents() {
+  $("ideaBuildActCardBtn")?.addEventListener("click", createIdeaActAnalysisHandoff);
   $("ideaBuildHandoffBtn")?.addEventListener("click", createIdeaAnalysisHandoff);
   $("ideaSaveBtn")?.addEventListener("click", () => saveIdeaBoard());
+  $("ideaAddActBtn")?.addEventListener("click", addIdeaAct);
   $("ideaAddRowBtn")?.addEventListener("click", addIdeaRow);
   $("ideaBuildImagePacketBtn")?.addEventListener("click", createIdeaImagePacket);
   $("ideaActiveRowSelect")?.addEventListener("change", (event) => {
     state.ideaActiveRowIndex = Number(event.target.value || 0);
+    const board = collectIdeaBoardFromDom();
+    setIdeaBoardLocal(board);
+    renderIdeaLab();
+  });
+  $("ideaRefActFilter")?.addEventListener("change", (event) => {
+    state.ideaRefFilters.act = event.target.value || "all";
     const board = collectIdeaBoardFromDom();
     setIdeaBoardLocal(board);
     renderIdeaLab();
@@ -3200,6 +3406,9 @@ function bindIdeaLabEvents() {
   });
   $("ideaRows")?.querySelectorAll(".idea-delete-row").forEach((button) => {
     button.addEventListener("click", () => deleteIdeaRow(Number(button.dataset.ideaIndex || 0)));
+  });
+  document.querySelectorAll(".idea-delete-act").forEach((button) => {
+    button.addEventListener("click", () => deleteIdeaAct(Number(button.dataset.ideaActIndex || 0)));
   });
   document.querySelectorAll(".idea-shot-row, .idea-map-row").forEach((row) => {
     row.addEventListener("dragover", (event) => {

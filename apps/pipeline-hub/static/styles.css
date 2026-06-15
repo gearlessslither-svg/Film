@@ -404,6 +404,8 @@ textarea:focus {
 }
 
 .idea-seed-panel textarea,
+.idea-act-row textarea,
+.idea-act-row input,
 .idea-shot-row textarea,
 .idea-shot-row input,
 .idea-seed-panel input {
@@ -417,7 +419,8 @@ textarea:focus {
   min-width: 0;
 }
 
-.idea-reference-panel {
+.idea-reference-panel,
+.idea-act-panel {
   border: 1px solid var(--line);
   border-radius: 8px;
   background: #fff;
@@ -425,7 +428,8 @@ textarea:focus {
   overflow: hidden;
 }
 
-.idea-reference-panel > summary {
+.idea-reference-panel > summary,
+.idea-act-panel > summary {
   cursor: pointer;
   list-style: none;
   padding: 9px 10px;
@@ -436,15 +440,18 @@ textarea:focus {
   font-size: 12px;
 }
 
-.idea-reference-panel > summary::-webkit-details-marker {
+.idea-reference-panel > summary::-webkit-details-marker,
+.idea-act-panel > summary::-webkit-details-marker {
   display: none;
 }
 
-.idea-reference-panel > summary span {
+.idea-reference-panel > summary span,
+.idea-act-panel > summary span {
   font-weight: 800;
 }
 
 .idea-reference-panel > summary small,
+.idea-act-panel > summary small,
 .muted-inline {
   color: var(--muted);
   font-size: 11px;
@@ -459,7 +466,7 @@ textarea:focus {
 
 .idea-reference-controls {
   display: grid;
-  grid-template-columns: minmax(120px, 0.8fr) minmax(0, 1fr);
+  grid-template-columns: minmax(96px, 0.8fr) minmax(112px, 0.8fr) minmax(0, 1.2fr);
   gap: 8px;
 }
 
@@ -488,6 +495,40 @@ textarea:focus {
 .idea-target-controls select {
   width: 100%;
   min-width: 0;
+}
+
+.idea-act-list {
+  border-top: 1px solid var(--line);
+  display: grid;
+  gap: 8px;
+  padding: 10px;
+}
+
+.idea-act-row {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #f8faf9;
+  padding: 8px;
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+
+.idea-act-row header {
+  display: grid;
+  grid-template-columns: minmax(72px, 96px) minmax(0, 1fr) minmax(80px, 110px) 30px;
+  gap: 8px;
+  align-items: end;
+}
+
+.idea-act-row .icon-button {
+  width: 30px;
+  min-height: 30px;
+  font-size: 16px;
+}
+
+.idea-act-panel > .mini-command {
+  margin: 0 10px 10px;
 }
 
 .idea-current-target {
