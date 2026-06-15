@@ -10,6 +10,11 @@ const state = {
   storyboardStage: "all",
   referenceSelection: {},
   ideaHandoffs: [],
+  ideaActiveRowIndex: 0,
+  ideaRefFilters: {
+    tag: "all",
+    query: "",
+  },
   boardOpen: false,
   boardNodes: [],
   boardEdges: [],
@@ -2168,6 +2173,7 @@ function currentIdeaBoard() {
     logline: board.logline || "",
     story_outline: board.story_outline || "",
     style_notes: board.style_notes || "",
+    global_references: Array.isArray(board.global_references) ? board.global_references : [],
     rows: Array.isArray(board.rows) ? board.rows : [],
   };
 }
@@ -2187,10 +2193,16 @@ function compactProjectSceneContext() {
 }
 
 function collectIdeaBoardFromDom() {
+  const current = currentIdeaBoard();
   const rows = Array.from(document.querySelectorAll(".idea-shot-row")).map((row, index) => {
     const value = (field) => row.querySelector(`[data-idea-field="${field}"]`)?.value || "";
+    const itemId = value("item_id") || `IDEA_SHOT_${String(index + 1).padStart(3, "0")}`;
+    const existing =
+      current.rows.find((item) => item.item_id === itemId) ||
+      current.rows[index] ||
+      {};
     return {
-      item_id: value("item_id") || `IDEA_SHOT_${String(index + 1).padStart(3, "0")}`,
+      item_id: itemId,
       scene_id: value("scene_id"),
       beat: value("beat"),
       shot_type: value("shot_type"),
@@ -2202,6 +2214,7 @@ function collectIdeaBoardFromDom() {
       status: value("status") || "draft",
       output_path: value("output_path"),
       output_notes: value("output_notes"),
+      references: Array.isArray(existing.references) ? existing.references : [],
     };
   });
   return {
@@ -2210,6 +2223,7 @@ function collectIdeaBoardFromDom() {
     logline: $("ideaLogline")?.value || "",
     story_outline: $("ideaOutline")?.value || "",
     style_notes: $("ideaStyleNotes")?.value || "",
+    global_references: current.global_references,
     rows,
   };
 }
@@ -2218,8 +2232,206 @@ function setIdeaBoardLocal(board) {
   state.detail.idea_board = {
     ...currentIdeaBoard(),
     ...board,
+    global_references: Array.isArray(board.global_references) ? board.global_references : [],
     rows: Array.isArray(board.rows) ? board.rows : [],
   };
+}
+
+function ideaReferenceKey(ref) {
+  return ref?.asset_ref || `${ref?.origin || ""}:${ref?.path || ""}` || ref?.ref_id || "";
+}
+
+function ideaReferenceAsset(ref) {
+  const key = ideaReferenceKey(ref);
+  return allBoardImageAssets().find((asset) => asset.ref === key || asset.path === ref?.path) || null;
+}
+
+function makeIdeaReference(asset) {
+  return {
+    ref_id: asset.asset_id || asset.path || asset.ref,
+    asset_ref: asset.ref,
+    asset_id: asset.asset_id || asset.role || asset.path,
+    path: asset.path || "",
+    origin: asset.origin || "project",
+    kind: asset.kind || "image",
+    role: asset.role || "",
+    note: "",
+  };
+}
+
+function normalizeIdeaReferenceList(refs) {
+  const byKey = new Map();
+  (refs || []).forEach((ref) => {
+    const key = ideaReferenceKey(ref);
+    if (key) byKey.set(key, ref);
+  });
+  return [...byKey.values()];
+}
+
+function activeIdeaRow(board = currentIdeaBoard()) {
+  const rows = board.rows || [];
+  const index = clamp(Number(state.ideaActiveRowIndex || 0), 0, Math.max(0, rows.length - 1));
+  state.ideaActiveRowIndex = index;
+  return rows[index] || null;
+}
+
+function ideaReferenceAssets() {
+  const assets = allBoardImageAssets().filter((asset) => frameIsUsable(asset));
+  return assets.filter((asset) => {
+    const tags = asset.tags || [];
+    if (state.ideaRefFilters.tag === "all" && tags.includes("whitebox")) return false;
+    if (state.ideaRefFilters.tag !== "all" && !tags.includes(state.ideaRefFilters.tag)) return false;
+    const query = state.ideaRefFilters.query.trim().toLowerCase();
+    if (!query) return true;
+    return [asset.asset_id, asset.role, asset.path, asset.scene_id, asset.scene_title, kindLabel(asset.kind)]
+      .join(" ")
+      .toLowerCase()
+      .includes(query);
+  });
+}
+
+function addIdeaReference(scope, assetRef) {
+  const board = collectIdeaBoardFromDom();
+  const asset = allBoardImageAssets().find((item) => item.ref === assetRef);
+  if (!asset) return;
+  const ref = makeIdeaReference(asset);
+  if (scope === "global") {
+    board.global_references = normalizeIdeaReferenceList([...(board.global_references || []), ref]);
+  } else {
+    const row = board.rows[state.ideaActiveRowIndex];
+    if (!row) return;
+    row.references = normalizeIdeaReferenceList([...(row.references || []), ref]);
+  }
+  setIdeaBoardLocal(board);
+  renderIdeaLab();
+}
+
+function removeIdeaReference(scope, key, rowIndex = null) {
+  const board = collectIdeaBoardFromDom();
+  const removeFrom = (refs = []) => refs.filter((ref) => ideaReferenceKey(ref) !== key);
+  if (scope === "global") {
+    board.global_references = removeFrom(board.global_references);
+  } else {
+    if (rowIndex !== null && !Number.isNaN(Number(rowIndex))) state.ideaActiveRowIndex = Number(rowIndex);
+    const row = board.rows[state.ideaActiveRowIndex];
+    if (row) row.references = removeFrom(row.references || []);
+  }
+  setIdeaBoardLocal(board);
+  renderIdeaLab();
+}
+
+function updateIdeaReferenceNote(scope, key, note) {
+  const board = collectIdeaBoardFromDom();
+  const updateRefs = (refs = []) =>
+    refs.map((ref) => (ideaReferenceKey(ref) === key ? { ...ref, note } : ref));
+  if (scope === "global") {
+    board.global_references = updateRefs(board.global_references || []);
+  } else {
+    const row = board.rows[state.ideaActiveRowIndex];
+    if (row) row.references = updateRefs(row.references || []);
+  }
+  setIdeaBoardLocal(board);
+}
+
+function renderIdeaReferenceChip(ref, scope, rowIndex = "") {
+  const asset = ideaReferenceAsset(ref);
+  const label = ref.asset_id || asset?.asset_id || ref.path || "Reference";
+  const key = ideaReferenceKey(ref);
+  return `
+    <div class="idea-ref-chip" data-ref-key="${escapeHtml(key)}">
+      ${asset?.url ? `<img src="${escapeHtml(asset.url)}" alt="${escapeHtml(label)}" loading="lazy" />` : ""}
+      <span>${escapeHtml(label)}</span>
+      <button class="icon-button idea-remove-ref" data-ref-scope="${escapeHtml(scope)}" data-ref-key="${escapeHtml(key)}" data-idea-index="${escapeHtml(rowIndex)}" type="button" title="移除参考 / Remove">×</button>
+    </div>
+  `;
+}
+
+function renderIdeaReferenceEditor(ref, scope) {
+  const asset = ideaReferenceAsset(ref);
+  const label = ref.asset_id || asset?.asset_id || ref.path || "Reference";
+  const key = ideaReferenceKey(ref);
+  return `
+    <article class="idea-ref-editor">
+      <div class="idea-ref-editor-head">
+        ${asset?.url ? `<img src="${escapeHtml(asset.url)}" alt="${escapeHtml(label)}" loading="lazy" />` : ""}
+        <div>
+          <strong>${escapeHtml(label)}</strong>
+          <small>${escapeHtml(kindLabel(ref.kind || asset?.kind))} · ${escapeHtml(ref.path || asset?.path || "")}</small>
+        </div>
+        <button class="icon-button idea-remove-ref" data-ref-scope="${escapeHtml(scope)}" data-ref-key="${escapeHtml(key)}" type="button" title="移除参考 / Remove">×</button>
+      </div>
+      <textarea class="idea-ref-note" data-ref-scope="${escapeHtml(scope)}" data-ref-key="${escapeHtml(key)}" rows="2" placeholder="说明要借用什么：人物身份、服装、场景结构、道具、光影等">${escapeHtml(ref.note || "")}</textarea>
+    </article>
+  `;
+}
+
+function renderIdeaReferenceAssetGrid(row) {
+  const assets = ideaReferenceAssets().slice(0, 36);
+  return assets.length
+    ? assets
+        .map(
+          (asset) => `
+            <article class="idea-ref-asset">
+              <img src="${escapeHtml(asset.url)}" alt="${escapeHtml(asset.asset_id || asset.path)}" loading="lazy" />
+              <strong>${escapeHtml(asset.asset_id || asset.role || asset.path)}</strong>
+              <small>${escapeHtml(asset.scene_id || "PROJECT")} · ${escapeHtml(kindLabel(asset.kind))}</small>
+              <div>
+                <button class="mini-command idea-add-ref" data-ref-scope="global" data-asset-ref="${escapeHtml(asset.ref)}" type="button">全局</button>
+                <button class="mini-command idea-add-ref" data-ref-scope="row" data-asset-ref="${escapeHtml(asset.ref)}" type="button" ${row ? "" : "disabled"}>当前</button>
+              </div>
+            </article>
+          `,
+        )
+        .join("")
+    : `<div class="empty-state">没有匹配参考图 / No matching references.</div>`;
+}
+
+function bindIdeaReferenceAssetButtons(root = document) {
+  root.querySelectorAll(".idea-add-ref").forEach((button) => {
+    button.addEventListener("click", () => addIdeaReference(button.dataset.refScope || "row", button.dataset.assetRef || ""));
+  });
+}
+
+function refreshIdeaReferenceAssetGrid() {
+  const board = collectIdeaBoardFromDom();
+  setIdeaBoardLocal(board);
+  const grid = document.querySelector(".idea-ref-asset-grid");
+  if (!grid) return;
+  grid.innerHTML = renderIdeaReferenceAssetGrid(activeIdeaRow(board));
+  bindIdeaReferenceAssetButtons(grid);
+}
+
+function renderIdeaReferencePanel(board) {
+  const row = activeIdeaRow(board);
+  const globalRefs = board.global_references || [];
+  const rowRefs = row?.references || [];
+  return `
+    <details class="idea-reference-panel" open>
+      <summary>
+        <span>参考库 / References</span>
+        <small>${globalRefs.length} 全局 · ${rowRefs.length} 当前条目</small>
+      </summary>
+      <div class="idea-reference-content">
+        <div class="idea-reference-controls">
+          <select id="ideaRefTagFilter">
+            ${BOARD_TAG_OPTIONS.map((option) => `<option value="${escapeHtml(option.value)}" ${state.ideaRefFilters.tag === option.value ? "selected" : ""}>${escapeHtml(option.label)}</option>`).join("")}
+          </select>
+          <input id="ideaRefSearchInput" value="${escapeHtml(state.ideaRefFilters.query || "")}" placeholder="搜索人设、场景、道具 / Search refs" />
+        </div>
+        <section class="idea-ref-section">
+          <strong>全局参考 / Global</strong>
+          <div class="idea-ref-list">${globalRefs.length ? globalRefs.map((ref) => renderIdeaReferenceEditor(ref, "global")).join("") : `<span class="muted-inline">适合人设、统一场景、道具和风格。</span>`}</div>
+        </section>
+        <section class="idea-ref-section">
+          <strong>当前条目 / Current: ${escapeHtml(row?.item_id || "无")}</strong>
+          <div class="idea-ref-list">${rowRefs.length ? rowRefs.map((ref) => renderIdeaReferenceEditor(ref, "row")).join("") : `<span class="muted-inline">只影响当前选中的分镜。</span>`}</div>
+        </section>
+        <div class="idea-ref-asset-grid">
+          ${renderIdeaReferenceAssetGrid(row)}
+        </div>
+      </div>
+    </details>
+  `;
 }
 
 function buildIdeaAnalysisHandoff(board) {
@@ -2231,6 +2443,16 @@ function buildIdeaAnalysisHandoff(board) {
     logline: "一句话故事",
     story_outline: "三幕或多场戏剧本大纲，中文为主，可附英文关键词",
     style_notes: "影像风格、镜头语言、角色/场景连续性、负面约束",
+    global_references: [
+      {
+        asset_ref: "project:path-or-resource:path",
+        asset_id: "统一作用于全部分镜的人设/场景/道具",
+        path: "reference image path",
+        origin: "project or resource",
+        kind: "character_ref / scene_ref / prop / lookdev / image",
+        note: "说明要借用什么元素",
+      },
+    ],
     rows: [
       {
         item_id: "IDEA_SHOT_001",
@@ -2241,6 +2463,16 @@ function buildIdeaAnalysisHandoff(board) {
         image_prompt: "可直接用于生成高质量分镜关键帧的图片提示词",
         video_prompt: "后续视频生成提示词，可选",
         notes: "导演备注、连续性、参考资产需求",
+        references: [
+          {
+            asset_ref: "project:path-or-resource:path",
+            asset_id: "只作用于当前分镜的参考图",
+            path: "reference image path",
+            origin: "project or resource",
+            kind: "image",
+            note: "说明当前分镜要借用什么元素",
+          },
+        ],
         selected: true,
         status: "draft",
       },
@@ -2336,8 +2568,13 @@ function renderIdeaRows(rows) {
             <label>场戏 / Scene <input data-idea-field="scene_id" value="${escapeHtml(row.scene_id || "")}" /></label>
             <label>镜头 / Shot <input data-idea-field="shot_type" value="${escapeHtml(row.shot_type || "")}" /></label>
             <label class="checkbox-label"><input data-idea-field="selected" type="checkbox" ${row.selected === false ? "" : "checked"} /> 入图包 / Selected</label>
+            <button class="mini-command idea-focus-row ${state.ideaActiveRowIndex === index ? "active" : ""}" data-idea-index="${index}" type="button">参考 / Refs</button>
             <button class="icon-button idea-delete-row" data-idea-index="${index}" type="button" title="删除条目 / Delete row">×</button>
           </header>
+          <div class="idea-row-ref-strip">
+            <span>${(row.references || []).length} 当前参考 / refs</span>
+            ${(row.references || []).slice(0, 6).map((ref) => renderIdeaReferenceChip(ref, "row", index)).join("")}
+          </div>
           <label>剧情点 / Beat
             <textarea data-idea-field="beat" rows="2">${escapeHtml(row.beat || "")}</textarea>
           </label>
@@ -2406,6 +2643,7 @@ function renderIdeaLab() {
         <label>风格与连续性 / Style and continuity
           <textarea id="ideaStyleNotes" rows="4">${escapeHtml(board.style_notes || "")}</textarea>
         </label>
+        ${renderIdeaReferencePanel(board)}
         <div id="ideaHandoffDock" class="idea-handoff-dock">${renderIdeaHandoffs()}</div>
       </section>
       <section class="idea-rows-panel">
@@ -2479,6 +2717,7 @@ function addIdeaRow() {
     selected: true,
     status: "draft",
     output_path: "",
+    references: [],
   });
   setIdeaBoardLocal(board);
   renderIdeaLab();
@@ -2533,8 +2772,33 @@ function bindIdeaLabEvents() {
   $("ideaSaveBtn")?.addEventListener("click", () => saveIdeaBoard());
   $("ideaAddRowBtn")?.addEventListener("click", addIdeaRow);
   $("ideaBuildImagePacketBtn")?.addEventListener("click", createIdeaImagePacket);
+  $("ideaRefTagFilter")?.addEventListener("change", (event) => {
+    state.ideaRefFilters.tag = event.target.value || "all";
+    const board = collectIdeaBoardFromDom();
+    setIdeaBoardLocal(board);
+    renderIdeaLab();
+  });
+  $("ideaRefSearchInput")?.addEventListener("input", (event) => {
+    state.ideaRefFilters.query = event.target.value || "";
+    refreshIdeaReferenceAssetGrid();
+  });
+  $("ideaRows")?.querySelectorAll(".idea-focus-row").forEach((button) => {
+    button.addEventListener("click", () => {
+      state.ideaActiveRowIndex = Number(button.dataset.ideaIndex || 0);
+      const board = collectIdeaBoardFromDom();
+      setIdeaBoardLocal(board);
+      renderIdeaLab();
+    });
+  });
   $("ideaRows")?.querySelectorAll(".idea-delete-row").forEach((button) => {
     button.addEventListener("click", () => deleteIdeaRow(Number(button.dataset.ideaIndex || 0)));
+  });
+  bindIdeaReferenceAssetButtons();
+  document.querySelectorAll(".idea-remove-ref").forEach((button) => {
+    button.addEventListener("click", () => removeIdeaReference(button.dataset.refScope || "row", button.dataset.refKey || "", button.dataset.ideaIndex || null));
+  });
+  document.querySelectorAll(".idea-ref-note").forEach((textarea) => {
+    textarea.addEventListener("input", () => updateIdeaReferenceNote(textarea.dataset.refScope || "row", textarea.dataset.refKey || "", textarea.value));
   });
   bindIdeaHandoffEvents();
 }

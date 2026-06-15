@@ -1994,6 +1994,30 @@ def bool_from_payload(value: object, default: bool = True) -> bool:
     return default
 
 
+def normalize_idea_reference(ref: dict[str, object], index: int) -> dict[str, object]:
+    asset_ref = str(ref.get("asset_ref") or ref.get("ref") or "").strip()
+    raw_id = str(ref.get("ref_id") or ref.get("asset_id") or asset_ref or "").strip()
+    return {
+        "ref_id": safe_file_stem(raw_id) if raw_id else f"REF_{index:03d}",
+        "asset_ref": asset_ref,
+        "asset_id": str(ref.get("asset_id", "") or "").strip(),
+        "path": str(ref.get("path", "") or "").strip(),
+        "origin": str(ref.get("origin", "") or "").strip(),
+        "kind": str(ref.get("kind", "") or "").strip(),
+        "role": str(ref.get("role", "") or "").strip(),
+        "note": str(ref.get("note", "") or "").strip(),
+    }
+
+
+def normalize_idea_references(value: object) -> list[dict[str, object]]:
+    refs: list[dict[str, object]] = []
+    if isinstance(value, list):
+        for index, ref in enumerate(value, start=1):
+            if isinstance(ref, dict):
+                refs.append(normalize_idea_reference(ref, index))
+    return refs
+
+
 def normalize_idea_row(row: dict[str, object], index: int) -> dict[str, object]:
     raw_id = str(row.get("item_id") or row.get("shot_id") or "").strip()
     item_id = safe_file_stem(raw_id) if raw_id else f"IDEA_SHOT_{index:03d}"
@@ -2011,6 +2035,7 @@ def normalize_idea_row(row: dict[str, object], index: int) -> dict[str, object]:
         "output_path": str(row.get("output_path", "") or "").strip(),
         "output_notes": str(row.get("output_notes", "") or "").strip(),
         "output_attached_at": str(row.get("output_attached_at", "") or "").strip(),
+        "references": normalize_idea_references(row.get("references", [])),
     }
 
 
@@ -2030,6 +2055,7 @@ def normalize_idea_board(slug: str, payload: dict[str, object]) -> dict[str, obj
         "logline": str(payload.get("logline", "") or "").strip(),
         "story_outline": str(payload.get("story_outline", "") or "").strip(),
         "style_notes": str(payload.get("style_notes", "") or "").strip(),
+        "global_references": normalize_idea_references(payload.get("global_references", [])),
         "rows": rows,
     }
 
@@ -2052,8 +2078,21 @@ def idea_board_to_markdown(board: dict[str, object]) -> str:
         "## Style Notes / 风格备注",
         str(board.get("style_notes", "") or ""),
         "",
-        "## Keyframes / 关键分镜",
+        "## Global References / 全局参考",
     ]
+    global_refs = board.get("global_references", [])
+    if isinstance(global_refs, list) and global_refs:
+        for ref in global_refs:
+            if isinstance(ref, dict):
+                lines.append(f"- {ref.get('asset_id') or ref.get('path')}: {ref.get('note', '')}")
+    else:
+        lines.append("- None")
+    lines.extend(
+        [
+        "",
+        "## Keyframes / 关键分镜",
+        ]
+    )
     rows = board.get("rows", [])
     if isinstance(rows, list) and rows:
         for index, row in enumerate(rows, start=1):
@@ -2080,6 +2119,9 @@ def idea_board_to_markdown(board: dict[str, object]) -> str:
                     "",
                     "Notes / 备注:",
                     str(row.get("notes", "") or ""),
+                    "",
+                    "Shot references / 单条参考:",
+                    json.dumps(row.get("references", []), ensure_ascii=False),
                 ]
             )
     else:
@@ -2106,6 +2148,7 @@ def write_idea_board_files(path: Path, board: dict[str, object]) -> None:
         "selected",
         "status",
         "output_path",
+        "references",
     ]
     rows = board.get("rows", [])
     with csv_path.open("w", encoding="utf-8", newline="") as handle:
@@ -2114,7 +2157,9 @@ def write_idea_board_files(path: Path, board: dict[str, object]) -> None:
         if isinstance(rows, list):
             for row in rows:
                 if isinstance(row, dict):
-                    writer.writerow({key: row.get(key, "") for key in fieldnames})
+                    record = {key: row.get(key, "") for key in fieldnames}
+                    record["references"] = json.dumps(row.get("references", []), ensure_ascii=False)
+                    writer.writerow(record)
 
 
 def load_idea_board(path: Path, slug: str) -> dict[str, object]:
@@ -2129,6 +2174,7 @@ def load_idea_board(path: Path, slug: str) -> dict[str, object]:
             "logline": "",
             "story_outline": "",
             "style_notes": "",
+            "global_references": [],
             "rows": [],
         }
     board = normalize_idea_board(slug, data)
@@ -2172,13 +2218,19 @@ def build_idea_image_packet_text(
             f"- Title: {board.get('story_title', '')}",
             f"- Logline: {board.get('logline', '')}",
             "",
+            "## Global References / 全局参考",
+            "这些参考作用于所有任务，不要在每条任务里重复理解；仅按 note 使用指定元素。",
+            "```json",
+            json.dumps(board.get("global_references", []), ensure_ascii=False, indent=2),
+            "```",
+            "",
             "## Callback / 回填接口",
             f"- POST: http://127.0.0.1:8787/api/projects/{slug}/idea-image-output",
             "- Body: {\"outputs\":[{\"item_id\":\"...\",\"output_path\":\"...\",\"notes\":\"...\"}]}",
             "",
             "## Tasks / 任务",
             "```json",
-            json.dumps({"packet_id": packet_id, "tasks": tasks}, ensure_ascii=False, indent=2),
+            json.dumps({"packet_id": packet_id, "global_references": board.get("global_references", []), "tasks": tasks}, ensure_ascii=False, indent=2),
             "```",
         ]
     )
@@ -2212,6 +2264,7 @@ def create_idea_image_packet(slug: str, payload: dict[str, object]) -> dict[str,
             "image_prompt": row.get("image_prompt", ""),
             "video_prompt": row.get("video_prompt", ""),
             "notes": row.get("notes", ""),
+            "shot_references": row.get("references", []),
             "suggested_output_path": output_rel_path,
             "suggested_output_absolute_path": str(path / output_rel_path),
         }
@@ -2220,7 +2273,10 @@ def create_idea_image_packet(slug: str, payload: dict[str, object]) -> dict[str,
     packet_rel_path = str(Path("08_generation") / "jobs" / packet_id / "outputs" / f"{packet_id}_handoff.md")
     packet_text = build_idea_image_packet_text(slug, path, board, packet_id, packet_rel_path, tasks)
     (path / packet_rel_path).write_text(packet_text, encoding="utf-8")
-    write_yaml_file(job_dir / "storyboard_image_tasks.json", {"packet_id": packet_id, "tasks": tasks})
+    write_yaml_file(
+        job_dir / "storyboard_image_tasks.json",
+        {"packet_id": packet_id, "global_references": board.get("global_references", []), "tasks": tasks},
+    )
     return {
         "ok": True,
         "packet_id": packet_id,
