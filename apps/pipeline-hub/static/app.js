@@ -11,6 +11,7 @@ const state = {
   referenceSelection: {},
   ideaHandoffs: [],
   ideaActiveRowIndex: 0,
+  ideaBatchRows: [],
   ideaRefFilters: {
     tag: "all",
     query: "",
@@ -2458,6 +2459,16 @@ function activeIdeaRow(board = currentIdeaBoard()) {
   return rows[index] || null;
 }
 
+function cleanIdeaBatchRows(board = currentIdeaBoard()) {
+  const maxIndex = Math.max(0, (board.rows || []).length - 1);
+  state.ideaBatchRows = [...new Set((state.ideaBatchRows || []).map((index) => Number(index)).filter((index) => Number.isInteger(index) && index >= 0 && index <= maxIndex))];
+  return state.ideaBatchRows;
+}
+
+function ideaBatchRowSet(board = currentIdeaBoard()) {
+  return new Set(cleanIdeaBatchRows(board));
+}
+
 function ideaReferenceAssets() {
   const assets = allBoardImageAssets().filter((asset) => frameIsUsable(asset));
   return assets.filter((asset) => {
@@ -2473,20 +2484,40 @@ function ideaReferenceAssets() {
   });
 }
 
-function addIdeaReference(scope, assetRef) {
+function addIdeaReferenceToRows(board, asset, rowIndexes) {
+  const ref = makeIdeaReference(asset);
+  let count = 0;
+  [...new Set(rowIndexes.map((index) => Number(index)).filter((index) => Number.isInteger(index)))]
+    .forEach((index) => {
+      const row = board.rows[index];
+      if (!row) return;
+      row.references = normalizeIdeaReferenceList([...(row.references || []), ref]);
+      count += 1;
+    });
+  return count;
+}
+
+function addIdeaReference(scope, assetRef, rowIndexes = null) {
   const board = collectIdeaBoardFromDom();
   const asset = allBoardImageAssets().find((item) => item.ref === assetRef);
   if (!asset) return;
-  const ref = makeIdeaReference(asset);
+  let count = 0;
   if (scope === "global") {
+    const ref = makeIdeaReference(asset);
     board.global_references = normalizeIdeaReferenceList([...(board.global_references || []), ref]);
+    count = 1;
+  } else if (scope === "batch") {
+    const targets = Array.isArray(rowIndexes) ? rowIndexes : cleanIdeaBatchRows(board);
+    count = addIdeaReferenceToRows(board, asset, targets);
   } else {
-    const row = board.rows[state.ideaActiveRowIndex];
-    if (!row) return;
-    row.references = normalizeIdeaReferenceList([...(row.references || []), ref]);
+    const targetIndex = rowIndexes?.length ? Number(rowIndexes[0]) : state.ideaActiveRowIndex;
+    count = addIdeaReferenceToRows(board, asset, [targetIndex]);
+    if (!Number.isNaN(targetIndex)) state.ideaActiveRowIndex = targetIndex;
   }
   setIdeaBoardLocal(board);
   renderIdeaLab();
+  if (count) toast(scope === "global" ? "已加入全局参考 / Added to global refs" : `已绑定到 ${count} 条分镜 / Added to ${count} rows`);
+  else if (scope === "batch") toast("请先勾选批量目标 / Select batch target rows first");
 }
 
 function removeIdeaReference(scope, key, rowIndex = null) {
@@ -2550,17 +2581,19 @@ function renderIdeaReferenceEditor(ref, scope) {
 
 function renderIdeaReferenceAssetGrid(row) {
   const assets = ideaReferenceAssets().slice(0, 36);
+  const batchCount = cleanIdeaBatchRows().length;
   return assets.length
     ? assets
         .map(
           (asset) => `
-            <article class="idea-ref-asset">
+            <article class="idea-ref-asset" draggable="true" data-asset-ref="${escapeHtml(asset.ref)}">
               <img src="${escapeHtml(asset.url)}" alt="${escapeHtml(asset.asset_id || asset.path)}" loading="lazy" />
               <strong>${escapeHtml(asset.asset_id || asset.role || asset.path)}</strong>
               <small>${escapeHtml(asset.scene_id || "PROJECT")} · ${escapeHtml(kindLabel(asset.kind))}</small>
               <div>
                 <button class="mini-command idea-add-ref" data-ref-scope="global" data-asset-ref="${escapeHtml(asset.ref)}" type="button">全局</button>
-                <button class="mini-command idea-add-ref" data-ref-scope="row" data-asset-ref="${escapeHtml(asset.ref)}" type="button" ${row ? "" : "disabled"}>当前</button>
+                <button class="mini-command idea-add-ref" data-ref-scope="row" data-asset-ref="${escapeHtml(asset.ref)}" type="button" ${row ? "" : "disabled"}>目标</button>
+                <button class="mini-command idea-add-ref" data-ref-scope="batch" data-asset-ref="${escapeHtml(asset.ref)}" type="button" ${batchCount ? "" : "disabled"}>多选</button>
               </div>
             </article>
           `,
@@ -2573,6 +2606,15 @@ function bindIdeaReferenceAssetButtons(root = document) {
   root.querySelectorAll(".idea-add-ref").forEach((button) => {
     button.addEventListener("click", () => addIdeaReference(button.dataset.refScope || "row", button.dataset.assetRef || ""));
   });
+  root.querySelectorAll(".idea-ref-asset").forEach((card) => {
+    card.addEventListener("dragstart", (event) => {
+      const assetRef = card.dataset.assetRef || "";
+      if (!assetRef) return;
+      event.dataTransfer?.setData("text/plain", assetRef);
+      event.dataTransfer?.setData("application/x-pipeline-asset-ref", assetRef);
+      event.dataTransfer.effectAllowed = "copy";
+    });
+  });
 }
 
 function refreshIdeaReferenceAssetGrid() {
@@ -2584,10 +2626,48 @@ function refreshIdeaReferenceAssetGrid() {
   bindIdeaReferenceAssetButtons(grid);
 }
 
+function renderIdeaReferenceMapping(board) {
+  const rows = board.rows || [];
+  const globalRefs = board.global_references || [];
+  const rowRefTotal = rows.reduce((sum, row) => sum + (Array.isArray(row.references) ? row.references.length : 0), 0);
+  return `
+    <details class="idea-ref-mapping" open>
+      <summary>
+        <span>参考映射表 / Reference mapping</span>
+        <small>${globalRefs.length} 全局 · ${rowRefTotal} 条目参考</small>
+      </summary>
+      <div class="idea-map-global">
+        <strong>全局作用于全部分镜 / Global refs apply to all rows</strong>
+        <div>${globalRefs.length ? globalRefs.map((ref) => renderIdeaReferenceChip(ref, "global")).join("") : `<span class="muted-inline">暂无全局参考</span>`}</div>
+      </div>
+      <div class="idea-map-table">
+        ${
+          rows.length
+            ? rows
+                .map((row, index) => {
+                  const refs = Array.isArray(row.references) ? row.references : [];
+                  return `
+                    <article class="idea-map-row ${state.ideaActiveRowIndex === index ? "active" : ""}" data-idea-index="${index}">
+                      <button class="mini-command idea-map-focus" data-idea-index="${index}" type="button">${escapeHtml(row.item_id || `#${index + 1}`)}</button>
+                      <span>${escapeHtml(row.beat || row.frame_description || "未命名分镜")}</span>
+                      <div>${refs.length ? refs.map((ref) => renderIdeaReferenceChip(ref, "row", index)).join("") : `<span class="muted-inline">可把参考图拖到这一条</span>`}</div>
+                    </article>
+                  `;
+                })
+                .join("")
+            : `<div class="empty-state">暂无分镜条目 / No storyboard rows.</div>`
+        }
+      </div>
+    </details>
+  `;
+}
+
 function renderIdeaReferencePanel(board) {
+  cleanIdeaBatchRows(board);
   const row = activeIdeaRow(board);
   const globalRefs = board.global_references || [];
   const rowRefs = row?.references || [];
+  const batchSet = ideaBatchRowSet(board);
   return `
     <details class="idea-reference-panel" open>
       <summary>
@@ -2601,6 +2681,33 @@ function renderIdeaReferencePanel(board) {
           </select>
           <input id="ideaRefSearchInput" value="${escapeHtml(state.ideaRefFilters.query || "")}" placeholder="搜索人设、场景、道具 / Search refs" />
         </div>
+        <div class="idea-target-controls">
+          <label>目标条目 / Target row
+            <select id="ideaActiveRowSelect">
+              ${(board.rows || [])
+                .map((item, index) => {
+                  const label = `${item.item_id || `IDEA_SHOT_${String(index + 1).padStart(3, "0")}`} · ${item.beat || item.scene_id || "未命名"}`;
+                  return `<option value="${index}" ${state.ideaActiveRowIndex === index ? "selected" : ""}>${escapeHtml(label)}</option>`;
+                })
+                .join("")}
+            </select>
+          </label>
+          <div class="idea-batch-control">
+            <strong>批量目标 / Batch targets</strong>
+            <div class="idea-batch-list">
+              ${(board.rows || [])
+                .map(
+                  (item, index) => `
+                    <label class="idea-batch-item">
+                      <input class="idea-batch-check" data-idea-index="${index}" type="checkbox" ${batchSet.has(index) ? "checked" : ""} />
+                      <span>${escapeHtml(item.item_id || `#${index + 1}`)}</span>
+                    </label>
+                  `,
+                )
+                .join("")}
+            </div>
+          </div>
+        </div>
         <section class="idea-ref-section">
           <strong>全局参考 / Global</strong>
           <div class="idea-ref-list">${globalRefs.length ? globalRefs.map((ref) => renderIdeaReferenceEditor(ref, "global")).join("") : `<span class="muted-inline">适合人设、统一场景、道具和风格。</span>`}</div>
@@ -2612,6 +2719,7 @@ function renderIdeaReferencePanel(board) {
         <div class="idea-ref-asset-grid">
           ${renderIdeaReferenceAssetGrid(row)}
         </div>
+        ${renderIdeaReferenceMapping(board)}
       </div>
     </details>
   `;
@@ -2743,20 +2851,22 @@ function renderIdeaRows(rows) {
   if (!rows.length) {
     return `<div class="empty-state">还没有分镜文本。先输入 idea 生成交接卡，拖给 Codex 回填，或手动新增一条。</div>`;
   }
+  const batchSet = ideaBatchRowSet({ rows });
   return rows
     .map(
       (row, index) => `
-        <article class="idea-shot-row" data-idea-index="${index}">
+        <article class="idea-shot-row ${state.ideaActiveRowIndex === index ? "active" : ""}" data-idea-index="${index}">
           <header>
             <label>编号 / ID <input data-idea-field="item_id" value="${escapeHtml(row.item_id || nextIdeaItemId(rows))}" /></label>
             <label>场戏 / Scene <input data-idea-field="scene_id" value="${escapeHtml(row.scene_id || "")}" /></label>
             <label>镜头 / Shot <input data-idea-field="shot_type" value="${escapeHtml(row.shot_type || "")}" /></label>
             <label class="checkbox-label"><input data-idea-field="selected" type="checkbox" ${row.selected === false ? "" : "checked"} /> 入图包 / Selected</label>
+            <label class="checkbox-label"><input class="idea-batch-check" data-idea-index="${index}" type="checkbox" ${batchSet.has(index) ? "checked" : ""} /> 批量参考</label>
             <button class="mini-command idea-focus-row ${state.ideaActiveRowIndex === index ? "active" : ""}" data-idea-index="${index}" type="button">参考 / Refs</button>
             <button class="icon-button idea-delete-row" data-idea-index="${index}" type="button" title="删除条目 / Delete row">×</button>
           </header>
           <div class="idea-row-ref-strip">
-            <span>${(row.references || []).length} 当前参考 / refs</span>
+            <span>${(row.references || []).length} 当前参考 / refs · 可拖入图片</span>
             ${(row.references || []).slice(0, 6).map((ref) => renderIdeaReferenceChip(ref, "row", index)).join("")}
           </div>
           <label>剧情点 / Beat
@@ -2910,6 +3020,10 @@ function addIdeaRow() {
 function deleteIdeaRow(index) {
   const board = collectIdeaBoardFromDom();
   board.rows.splice(index, 1);
+  state.ideaBatchRows = (state.ideaBatchRows || [])
+    .filter((item) => Number(item) !== index)
+    .map((item) => (Number(item) > index ? Number(item) - 1 : Number(item)));
+  state.ideaActiveRowIndex = clamp(Number(state.ideaActiveRowIndex || 0), 0, Math.max(0, board.rows.length - 1));
   setIdeaBoardLocal(board);
   renderIdeaLab();
 }
@@ -2956,6 +3070,12 @@ function bindIdeaLabEvents() {
   $("ideaSaveBtn")?.addEventListener("click", () => saveIdeaBoard());
   $("ideaAddRowBtn")?.addEventListener("click", addIdeaRow);
   $("ideaBuildImagePacketBtn")?.addEventListener("click", createIdeaImagePacket);
+  $("ideaActiveRowSelect")?.addEventListener("change", (event) => {
+    state.ideaActiveRowIndex = Number(event.target.value || 0);
+    const board = collectIdeaBoardFromDom();
+    setIdeaBoardLocal(board);
+    renderIdeaLab();
+  });
   $("ideaRefTagFilter")?.addEventListener("change", (event) => {
     state.ideaRefFilters.tag = event.target.value || "all";
     const board = collectIdeaBoardFromDom();
@@ -2974,8 +3094,45 @@ function bindIdeaLabEvents() {
       renderIdeaLab();
     });
   });
+  document.querySelectorAll(".idea-map-focus").forEach((button) => {
+    button.addEventListener("click", () => {
+      state.ideaActiveRowIndex = Number(button.dataset.ideaIndex || 0);
+      const board = collectIdeaBoardFromDom();
+      setIdeaBoardLocal(board);
+      renderIdeaLab();
+      document.querySelector(`.idea-shot-row[data-idea-index="${state.ideaActiveRowIndex}"]`)?.scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+  });
+  document.querySelectorAll(".idea-batch-check").forEach((checkbox) => {
+    checkbox.addEventListener("change", () => {
+      const index = Number(checkbox.dataset.ideaIndex || 0);
+      const set = new Set(state.ideaBatchRows || []);
+      if (checkbox.checked) set.add(index);
+      else set.delete(index);
+      state.ideaBatchRows = [...set].sort((a, b) => a - b);
+      const board = collectIdeaBoardFromDom();
+      setIdeaBoardLocal(board);
+      renderIdeaLab();
+    });
+  });
   $("ideaRows")?.querySelectorAll(".idea-delete-row").forEach((button) => {
     button.addEventListener("click", () => deleteIdeaRow(Number(button.dataset.ideaIndex || 0)));
+  });
+  document.querySelectorAll(".idea-shot-row, .idea-map-row").forEach((row) => {
+    row.addEventListener("dragover", (event) => {
+      const types = Array.from(event.dataTransfer?.types || []);
+      if (!types.includes("application/x-pipeline-asset-ref") && !types.includes("text/plain")) return;
+      event.preventDefault();
+      row.classList.add("drop-target");
+    });
+    row.addEventListener("dragleave", () => row.classList.remove("drop-target"));
+    row.addEventListener("drop", (event) => {
+      event.preventDefault();
+      row.classList.remove("drop-target");
+      const assetRef = event.dataTransfer?.getData("application/x-pipeline-asset-ref") || event.dataTransfer?.getData("text/plain") || "";
+      const index = Number(row.dataset.ideaIndex || 0);
+      if (assetRef) addIdeaReference("row", assetRef, [index]);
+    });
   });
   bindIdeaReferenceAssetButtons();
   document.querySelectorAll(".idea-remove-ref").forEach((button) => {
