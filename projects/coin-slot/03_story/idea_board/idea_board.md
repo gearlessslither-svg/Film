@@ -1,7 +1,7 @@
 # Idea Board / 创意分镜板
 
 - Project / 项目: coin-slot
-- Updated / 更新时间: 2026-06-18T12:18:17+08:00
+- Updated / 更新时间: 2026-06-18T12:46:39+08:00
 - Story title / 片名: 投币口 / Coin Slot
 - Logline / 一句话: 90年代北方小城里，三个放学后的孩子偷偷钻进居民楼角落的游戏机房，第一次跨进成人世界灰色而诱人的门缝。
 
@@ -22,6 +22,80 @@
 
 ## Acts / 幕结构
 - None
+
+## Project Bible / 总概念
+
+### 01. BIBLE_CHARACTER_001 三个小朋友 / Three children
+- Category / 分类: character
+- Status / 状态: draft
+- Selected / 启用: True
+- References / 参考: 2
+
+Summary / 概念说明:
+第一幕的核心人物组：三个背书包的小学生，熟门熟路但仍然心虚，互相打掩护进入隐藏游戏机房。需要保持年龄、身高差、书包、发型、衣着年代感和表演气质连续。
+
+Visual direction / 视觉方向:
+1990年代中国北方小城小学生：旧校服或朴素外套、磨旧书包、略脏鞋面、放学后的疲惫和兴奋并存；动作要小心、鬼祟、彼此贴近。
+
+Prompt notes / 提示词要点:
+three Chinese school children in 1990s northern China, carrying worn schoolbags, cautious and sneaky after school, consistent faces, hairstyles, wardrobe and height differences, cinematic realism
+
+Negative prompt / 负面约束:
+不要现代校服、智能手机、潮牌服饰、夸张动漫表情、年龄过大或过小、角色身份不一致。
+
+### 02. BIBLE_LOCATION_001 破旧居民楼角落与隐藏游戏机房入口 / Compound corner arcade entrance
+- Category / 分类: location
+- Status / 状态: draft
+- Selected / 启用: True
+- References / 参考: 1
+
+Summary / 概念说明:
+第一幕外部主场景：老居民楼侧面的不起眼角落，暗金属门藏在墙根或楼体边角处，门上有猫眼，老板从里面确认熟人后开门。
+
+Visual direction / 视觉方向:
+潮湿水泥墙、掉皮涂料、锈迹铁门、暗窄入口、灰尘和旧广告痕迹；构图强调秘密入口、孩子压低身体靠近、门内外光线反差。
+
+Prompt notes / 提示词要点:
+old residential compound corner in 1990s northern Chinese small city, hidden arcade room entrance, rusty dark metal door with peephole, peeling concrete wall, dim afternoon light, secretive composition
+
+Negative prompt / 负面约束:
+不要现代商业街、霓虹招牌、干净新楼、豪华游戏厅门面、可读随机文字或过度赛博朋克。
+
+### 03. BIBLE_LOOKDEV_001 90年代北方小城写实质感 / 1990s northern small-city realism
+- Category / 分类: lookdev
+- Status / 状态: draft
+- Selected / 启用: True
+- References / 参考: 0
+
+Summary / 概念说明:
+全片视觉底色：纪实电影感、低饱和、颗粒但不脏、旧胶片/早期DV记忆感，强调冬春交界或阴天里的灰冷空气。
+
+Visual direction / 视觉方向:
+冷灰水泥、褪色红黄广告纸、旧木门和铁门、混浊室内烟雾、钨丝灯与街面自然光混合；摄影机克制，少用夸张广角。
+
+Prompt notes / 提示词要点:
+cinematic realism, 1990s northern Chinese small town, muted colors, natural film grain, smoky interiors, mixed tungsten and overcast daylight, grounded documentary texture
+
+Negative prompt / 负面约束:
+不要过度磨皮、塑料感、CG感、现代高清广告片、过饱和网红色调、随机英文霓虹和水印。
+
+### 04. BIBLE_PROP_001 旧金属门、猫眼与游戏机房道具 / Door, peephole and arcade props
+- Category / 分类: prop
+- Status / 状态: draft
+- Selected / 启用: True
+- References / 参考: 1
+
+Summary / 概念说明:
+关键道具承担叙事信息：猫眼说明老板识别熟人，旧门说明游戏厅隐蔽，室内街机、烟灰缸、硬币和杂乱桌椅说明地下游戏机房生态。
+
+Visual direction / 视觉方向:
+门要厚重、旧、暗、带磨损把手和猫眼；室内道具应杂乱但有时代感，街机屏幕亮度压住烟雾，不出现现代 LCD 大屏。
+
+Prompt notes / 提示词要点:
+rusty metal door with peephole, worn handle, 1990s arcade machines, coin slot, smoke haze, ashtrays, cluttered stools and cables, period-correct props
+
+Negative prompt / 负面约束:
+不要现代网吧、电竞椅、液晶显示器、智能门锁、干净商场电玩、随机品牌文字。
 
 ## Global References / 全局参考
 - THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg: 三个小朋友统一人设、三视图、表情和服装连续性参考 / Global reference for the three children character identity, turnaround, expressions, and wardrobe continuity.

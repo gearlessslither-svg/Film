@@ -11,6 +11,7 @@ const state = {
   referenceSelection: {},
   ideaHandoffs: [],
   ideaActiveRowIndex: 0,
+  ideaActiveBibleIndex: 0,
   ideaBatchRows: [],
   ideaRefFilters: {
     act: "all",
@@ -56,6 +57,17 @@ const state = {
     query: "",
   },
 };
+
+const PROJECT_BIBLE_SCENE_ID = "__PROJECT_BIBLE__";
+const PROJECT_BIBLE_CATEGORY_OPTIONS = [
+  { value: "character", label: "人物 / Character" },
+  { value: "location", label: "场景 / Location" },
+  { value: "prop", label: "道具 / Prop" },
+  { value: "lookdev", label: "美术 / Lookdev" },
+  { value: "mood", label: "氛围 / Mood" },
+  { value: "period", label: "年代 / Period" },
+  { value: "constraint", label: "约束 / Constraint" },
+];
 
 const STAGE_LABELS = {
   "00_admin": "项目控制、导演意图、模型配置、日志 / Admin, brief, model config, log",
@@ -254,6 +266,10 @@ function renderSidebarSceneNavigator() {
         <span>场戏 / Scenes</span>
         <small>${scenes.length}</small>
       </div>
+      <button class="sidebar-scene-button project-bible ${isProjectBibleSelected() ? "active" : ""}" data-project-bible="true" type="button">
+        <span>总概念 / Project Bible</span>
+        <small>人物 · 场景 · 道具 · 美术 · 氛围</small>
+      </button>
       ${[...grouped.entries()]
         .map(([key, actScenes]) => {
           const [, actTitle] = key.split("|");
@@ -278,6 +294,11 @@ function renderSidebarSceneNavigator() {
   `;
   root.querySelectorAll(".sidebar-scene-button").forEach((button) => {
     button.addEventListener("click", () => {
+      if (button.dataset.projectBible === "true") {
+        selectProjectBible();
+        renderAll();
+        return;
+      }
       selectScene(button.dataset.sceneId || "");
       renderAll();
     });
@@ -789,12 +810,25 @@ function sceneAssetRef(asset) {
 }
 
 function selectedScene() {
+  if (isProjectBibleSelected()) return null;
   const scenes = state.detail?.scene_workbench?.scenes || [];
   if (!scenes.length) return null;
   if (!state.selectedSceneId || !scenes.some((scene) => scene.scene_id === state.selectedSceneId)) {
     state.selectedSceneId = scenes[0].scene_id || "";
   }
   return scenes.find((scene) => scene.scene_id === state.selectedSceneId) || scenes[0];
+}
+
+function isProjectBibleSelected() {
+  return state.selectedSceneId === PROJECT_BIBLE_SCENE_ID;
+}
+
+function selectProjectBible() {
+  state.selectedSceneId = PROJECT_BIBLE_SCENE_ID;
+  state.selectedFrameRef = "";
+  state.activeChangeRequest = null;
+  state.recreate = null;
+  state.ideaBatchRows = [];
 }
 
 function selectScene(sceneId) {
@@ -2678,6 +2712,7 @@ function currentIdeaBoard() {
     story_outline: board.story_outline || "",
     style_notes: board.style_notes || "",
     acts: Array.isArray(board.acts) ? board.acts : [],
+    project_bible: Array.isArray(board.project_bible) ? board.project_bible : [],
     global_references: Array.isArray(board.global_references) ? board.global_references : [],
     rows: Array.isArray(board.rows) ? board.rows : [],
   };
@@ -2690,6 +2725,10 @@ function nextIdeaItemId(rows) {
 
 function nextIdeaActId(acts) {
   return `ACT${String((acts || []).length + 1).padStart(2, "0")}`;
+}
+
+function nextProjectBibleCardId(cards) {
+  return `BIBLE_${String((cards || []).length + 1).padStart(3, "0")}`;
 }
 
 function collectIdeaActsFromDom(current) {
@@ -2708,7 +2747,30 @@ function collectIdeaActsFromDom(current) {
   });
 }
 
+function collectProjectBibleFromDom(current) {
+  const root = $("projectBibleCardList");
+  if (!root) return current.project_bible || [];
+  return Array.from(root.querySelectorAll(".project-bible-card")).map((card, index) => {
+    const value = (field) => card.querySelector(`[data-bible-field="${field}"]`)?.value || "";
+    const cardIndex = Number(card.dataset.bibleIndex);
+    const existing = current.project_bible?.[Number.isInteger(cardIndex) ? cardIndex : index] || {};
+    return {
+      card_id: value("card_id") || existing.card_id || `BIBLE_${String(index + 1).padStart(3, "0")}`,
+      category: value("category") || existing.category || "lookdev",
+      title: value("title"),
+      summary: value("summary"),
+      visual_direction: value("visual_direction"),
+      prompt_notes: value("prompt_notes"),
+      negative_prompt: value("negative_prompt"),
+      selected: card.querySelector('[data-bible-field="selected"]')?.checked ?? true,
+      status: value("status") || "draft",
+      references: Array.isArray(existing.references) ? existing.references : [],
+    };
+  });
+}
+
 function ideaRowEntriesForCurrentScene(board = currentIdeaBoard()) {
+  if (isProjectBibleSelected()) return [];
   const rows = board.rows || [];
   const sceneId = selectedScene()?.scene_id || "";
   const entries = rows.map((row, index) => ({ row, index }));
@@ -2785,6 +2847,7 @@ function collectIdeaBoardFromDom() {
     story_outline: $("ideaOutline")?.value || "",
     style_notes: $("ideaStyleNotes")?.value || "",
     acts: collectIdeaActsFromDom(current),
+    project_bible: collectProjectBibleFromDom(current),
     global_references: current.global_references,
     rows,
   };
@@ -2797,6 +2860,7 @@ function setIdeaBoardLocal(board) {
     ...currentIdeaBoard(),
     ...board,
     acts: Array.isArray(board.acts) ? board.acts : [],
+    project_bible: Array.isArray(board.project_bible) ? board.project_bible : [],
     global_references: Array.isArray(board.global_references) ? board.global_references : [],
     rows: Array.isArray(board.rows) ? board.rows : [],
   };
@@ -2810,6 +2874,9 @@ function syncIdeaReferenceNotesFromDom(board) {
     const updateRefs = (refs = []) => refs.map((ref) => (ideaReferenceKey(ref) === key ? { ...ref, note } : ref));
     if (scope === "global") {
       board.global_references = updateRefs(board.global_references || []);
+    } else if (scope === "bible") {
+      const card = board.project_bible?.[state.ideaActiveBibleIndex];
+      if (card) card.references = updateRefs(card.references || []);
     } else {
       const row = board.rows?.[state.ideaActiveRowIndex];
       if (row) row.references = updateRefs(row.references || []);
@@ -2846,6 +2913,14 @@ function normalizeIdeaReferenceList(refs) {
     if (key) byKey.set(key, ref);
   });
   return [...byKey.values()];
+}
+
+function activeProjectBibleCard(board = currentIdeaBoard()) {
+  const cards = board.project_bible || [];
+  if (!cards.length) return null;
+  const index = clamp(Number(state.ideaActiveBibleIndex || 0), 0, Math.max(0, cards.length - 1));
+  state.ideaActiveBibleIndex = index;
+  return cards[index] || null;
 }
 
 function activeIdeaRow(board = currentIdeaBoard()) {
@@ -2936,6 +3011,15 @@ function addIdeaReference(scope, assetRef, rowIndexes = null) {
     const ref = makeIdeaReference(asset);
     board.global_references = normalizeIdeaReferenceList([...(board.global_references || []), ref]);
     count = 1;
+  } else if (scope === "bible") {
+    const ref = makeIdeaReference(asset);
+    const targetIndex = rowIndexes?.length ? Number(rowIndexes[0]) : state.ideaActiveBibleIndex;
+    const card = board.project_bible?.[targetIndex];
+    if (card) {
+      card.references = normalizeIdeaReferenceList([...(card.references || []), ref]);
+      state.ideaActiveBibleIndex = targetIndex;
+      count = 1;
+    }
   } else if (scope === "batch") {
     const targets = Array.isArray(rowIndexes) ? rowIndexes : cleanIdeaBatchRows(board);
     count = addIdeaReferenceToRows(board, asset, targets);
@@ -2946,7 +3030,11 @@ function addIdeaReference(scope, assetRef, rowIndexes = null) {
   }
   setIdeaBoardLocal(board);
   renderIdeaLab();
-  if (count) toast(scope === "global" ? "已加入全局参考 / Added to global refs" : `已绑定到 ${count} 条分镜 / Added to ${count} rows`);
+  if (count) {
+    if (scope === "global") toast("已加入全局参考 / Added to global refs");
+    else if (scope === "bible") toast("已加入总概念卡 / Added to Project Bible card");
+    else toast(`已绑定到 ${count} 条分镜 / Added to ${count} rows`);
+  }
   else if (scope === "batch") toast("请先勾选批量目标 / Select batch target rows first");
 }
 
@@ -2955,6 +3043,10 @@ function removeIdeaReference(scope, key, rowIndex = null) {
   const removeFrom = (refs = []) => refs.filter((ref) => ideaReferenceKey(ref) !== key);
   if (scope === "global") {
     board.global_references = removeFrom(board.global_references);
+  } else if (scope === "bible") {
+    if (rowIndex !== null && !Number.isNaN(Number(rowIndex))) state.ideaActiveBibleIndex = Number(rowIndex);
+    const card = board.project_bible?.[state.ideaActiveBibleIndex];
+    if (card) card.references = removeFrom(card.references || []);
   } else {
     if (rowIndex !== null && !Number.isNaN(Number(rowIndex))) state.ideaActiveRowIndex = Number(rowIndex);
     const row = board.rows[state.ideaActiveRowIndex];
@@ -2970,6 +3062,9 @@ function updateIdeaReferenceNote(scope, key, note) {
     refs.map((ref) => (ideaReferenceKey(ref) === key ? { ...ref, note } : ref));
   if (scope === "global") {
     board.global_references = updateRefs(board.global_references || []);
+  } else if (scope === "bible") {
+    const card = board.project_bible?.[state.ideaActiveBibleIndex];
+    if (card) card.references = updateRefs(card.references || []);
   } else {
     const row = board.rows[state.ideaActiveRowIndex];
     if (row) row.references = updateRefs(row.references || []);
@@ -3012,6 +3107,7 @@ function renderIdeaReferenceEditor(ref, scope) {
 function renderIdeaReferenceAssetGrid(row) {
   const assets = ideaReferenceAssets().slice(0, 36);
   const batchCount = cleanIdeaBatchRows().length;
+  const bibleMode = isProjectBibleSelected();
   return assets.length
     ? assets
         .map(
@@ -3022,8 +3118,12 @@ function renderIdeaReferenceAssetGrid(row) {
               <small>${escapeHtml(asset.scene_id || "PROJECT")} · ${escapeHtml(kindLabel(asset.kind))}</small>
               <div>
                 <button class="mini-command idea-add-ref" data-ref-scope="global" data-asset-ref="${escapeHtml(asset.ref)}" type="button">全局</button>
-                <button class="mini-command idea-add-ref" data-ref-scope="row" data-asset-ref="${escapeHtml(asset.ref)}" type="button" ${row ? "" : "disabled"}>目标</button>
-                <button class="mini-command idea-add-ref" data-ref-scope="batch" data-asset-ref="${escapeHtml(asset.ref)}" type="button" ${batchCount ? "" : "disabled"}>多选</button>
+                ${
+                  bibleMode
+                    ? `<button class="mini-command idea-add-ref" data-ref-scope="bible" data-asset-ref="${escapeHtml(asset.ref)}" type="button" ${activeProjectBibleCard() ? "" : "disabled"}>当前卡</button>`
+                    : `<button class="mini-command idea-add-ref" data-ref-scope="row" data-asset-ref="${escapeHtml(asset.ref)}" type="button" ${row ? "" : "disabled"}>目标</button>
+                       <button class="mini-command idea-add-ref" data-ref-scope="batch" data-asset-ref="${escapeHtml(asset.ref)}" type="button" ${batchCount ? "" : "disabled"}>多选</button>`
+                }
               </div>
             </article>
           `,
@@ -3176,6 +3276,20 @@ function buildIdeaAnalysisHandoff(board) {
         status: "draft",
       },
     ],
+    project_bible: [
+      {
+        card_id: "BIBLE_CHARACTER_001",
+        category: "character",
+        title: "人物设定",
+        summary: "人物身份、年龄、气质、关系和连续性",
+        visual_direction: "服装、发型、体态、表演方向",
+        prompt_notes: "可直接加入图片提示词的人物描述",
+        negative_prompt: "不要出现的时代错位、造型偏差或风格偏差",
+        references: [],
+        selected: true,
+        status: "draft",
+      },
+    ],
     global_references: [
       {
         asset_ref: "project:path-or-resource:path",
@@ -3265,6 +3379,7 @@ function buildIdeaActAnalysisHandoff(board) {
         status: "draft",
       },
     ],
+    project_bible: board.project_bible || [],
     global_references: board.global_references || [],
     rows: board.rows || [],
   };
@@ -3297,6 +3412,84 @@ function buildIdeaActAnalysisHandoff(board) {
     `POST ${apiUrl}`,
     "Content-Type: application/json",
     "Body must include the full board shape above. Preserve rows/global_references unless you intentionally update them. Keep Chinese readable.",
+  ].join("\n");
+}
+
+function buildProjectBibleAnalysisHandoff(board) {
+  const apiUrl = `${location.origin}/api/projects/${state.selectedSlug}/idea-board`;
+  const schema = {
+    idea: board.idea || "",
+    story_title: board.story_title || "短片片名",
+    logline: board.logline || "一句话故事",
+    story_outline: board.story_outline || "剧本大纲",
+    style_notes: board.style_notes || "全局风格与连续性",
+    acts: board.acts || [],
+    project_bible: [
+      {
+        card_id: "BIBLE_CHARACTER_001",
+        category: "character / location / prop / lookdev / mood / period / constraint",
+        title: "总概念卡标题",
+        summary: "分析对象的核心设定，不写剧情分镜",
+        visual_direction: "造型、材质、色彩、光线、年代细节和设计规则",
+        prompt_notes: "可直接加入后续分镜图片提示词的稳定描述",
+        negative_prompt: "必须避免的偏差、现代元素、错误风格或误读",
+        references: [
+          {
+            asset_ref: "project:path-or-resource:path",
+            asset_id: "参考图",
+            path: "reference image path",
+            origin: "project or resource",
+            kind: "character_ref / scene_ref / prop_ref / lookdev / image",
+            note: "说明这张参考图在总概念里的作用",
+          },
+        ],
+        selected: true,
+        status: "draft",
+      },
+    ],
+    global_references: board.global_references || [],
+    rows: board.rows || [],
+  };
+  return [
+    "# Codex Project Bible Handoff / Codex 总概念分析交接包",
+    "",
+    "请解析当前项目资料，重点产出人物、美术、场景、道具、氛围、年代和负面约束卡片。不要扩写剧情分镜，除非 rows 已存在则原样保留。",
+    "",
+    "## Codex Run Mode / 执行模式",
+    "- 分析目标不是故事推进，而是项目级视觉圣经：人物、场景、道具、美术、氛围、年代、统一负面约束。",
+    "- 每张 project_bible 卡都要能直接服务后续图片生成；prompt_notes 必须可执行、稳定、具体。",
+    "- references 和 global_references 要保留；可根据已有参考图 note 推断它属于人物、场景、道具或美术。",
+    "- 不要删除现有 acts 或 rows；只更新 project_bible、style_notes 和必要的 global reference notes。",
+    "- 回填成功后，只汇报卡片数量和最关键的视觉统一建议。",
+    "",
+    "## Project / 项目",
+    `- Project slug: ${state.selectedSlug || ""}`,
+    `- Project root: ${state.detail?.path || ""}`,
+    `- Callback: POST ${apiUrl}`,
+    "",
+    "## Current Context / 当前上下文",
+    "```json",
+    JSON.stringify({
+      idea: board.idea || "",
+      story_title: board.story_title || "",
+      logline: board.logline || "",
+      story_outline: board.story_outline || "",
+      style_notes: board.style_notes || "",
+      acts: board.acts || [],
+      project_bible: board.project_bible || [],
+      global_references: board.global_references || [],
+    }, null, 2),
+    "```",
+    "",
+    "## Required JSON Schema / 必须回填的 JSON 结构",
+    "```json",
+    JSON.stringify(schema, null, 2),
+    "```",
+    "",
+    "## Callback Instruction / 回填说明",
+    `POST ${apiUrl}`,
+    "Content-Type: application/json",
+    "Body must include the full board shape above. Preserve rows unless explicitly asked to change them.",
   ].join("\n");
 }
 
@@ -3385,6 +3578,153 @@ function renderIdeaActPlanner(board) {
   `;
 }
 
+function projectBibleCategoryLabel(value) {
+  return PROJECT_BIBLE_CATEGORY_OPTIONS.find((option) => option.value === value)?.label || value || "总概念 / Concept";
+}
+
+function renderProjectBibleReferencePanel(board) {
+  const cards = board.project_bible || [];
+  const card = activeProjectBibleCard(board);
+  const globalRefs = board.global_references || [];
+  const cardRefs = card?.references || [];
+  return `
+    <details class="idea-reference-panel project-bible-reference-panel" open>
+      <summary>
+        <span>总概念参考库 / Bible References</span>
+        <small>${globalRefs.length} 全局 · ${cardRefs.length} 当前卡</small>
+      </summary>
+      <div class="idea-reference-content">
+        <div class="idea-reference-controls">
+          <select id="ideaRefActFilter">
+            ${ideaReferenceActOptions().map((option) => `<option value="${escapeHtml(option.value)}" ${state.ideaRefFilters.act === option.value ? "selected" : ""}>${escapeHtml(option.label)}</option>`).join("")}
+          </select>
+          <select id="ideaRefTagFilter">
+            ${BOARD_TAG_OPTIONS.map((option) => `<option value="${escapeHtml(option.value)}" ${state.ideaRefFilters.tag === option.value ? "selected" : ""}>${escapeHtml(option.label)}</option>`).join("")}
+          </select>
+          <input id="ideaRefSearchInput" value="${escapeHtml(state.ideaRefFilters.query || "")}" placeholder="搜索人设、场景、道具、美术 / Search bible refs" />
+        </div>
+        <section class="idea-ref-section">
+          <strong>全局参考 / Global</strong>
+          <div class="idea-ref-list">${globalRefs.length ? globalRefs.map((ref) => renderIdeaReferenceEditor(ref, "global")).join("") : `<span class="muted-inline">所有幕默认继承的人设、场景、道具和风格参考。</span>`}</div>
+        </section>
+        <section class="idea-ref-section">
+          <strong>当前卡 / Current: ${escapeHtml(card?.title || card?.card_id || "无")}</strong>
+          <div class="idea-ref-list">${cardRefs.length ? cardRefs.map((ref) => renderIdeaReferenceEditor(ref, "bible")).join("") : `<span class="muted-inline">只影响当前总概念卡。</span>`}</div>
+        </section>
+        <div class="idea-ref-asset-grid">
+          ${renderIdeaReferenceAssetGrid(card)}
+        </div>
+        <div class="project-bible-mini-map">
+          ${cards.length
+            ? cards
+                .map(
+                  (item, index) => `
+                    <button class="project-bible-map-item ${state.ideaActiveBibleIndex === index ? "active" : ""}" data-bible-index="${index}" type="button">
+                      <span>${escapeHtml(projectBibleCategoryLabel(item.category))}</span>
+                      <strong>${escapeHtml(item.title || item.card_id || `#${index + 1}`)}</strong>
+                      <small>${(item.references || []).length} refs</small>
+                    </button>
+                  `,
+                )
+                .join("")
+            : `<div class="empty-state">还没有总概念卡 / No Project Bible cards yet.</div>`}
+        </div>
+      </div>
+    </details>
+  `;
+}
+
+function renderProjectBibleCards(board) {
+  const cards = board.project_bible || [];
+  if (!cards.length) {
+    return `<div class="empty-state">还没有总概念卡。建议先新增人物、场景、道具、美术或氛围卡，再绑定参考图。</div>`;
+  }
+  return cards
+    .map(
+      (card, index) => `
+        <article class="project-bible-card ${state.ideaActiveBibleIndex === index ? "active" : ""}" data-bible-index="${index}">
+          <header>
+            <label>编号 / ID <input data-bible-field="card_id" value="${escapeHtml(card.card_id || `BIBLE_${String(index + 1).padStart(3, "0")}`)}" /></label>
+            <label>分类 / Type
+              <select data-bible-field="category">
+                ${PROJECT_BIBLE_CATEGORY_OPTIONS.map((option) => `<option value="${escapeHtml(option.value)}" ${card.category === option.value ? "selected" : ""}>${escapeHtml(option.label)}</option>`).join("")}
+              </select>
+            </label>
+            <label>标题 / Title <input data-bible-field="title" value="${escapeHtml(card.title || "")}" /></label>
+            <label class="checkbox-label"><input data-bible-field="selected" type="checkbox" ${card.selected === false ? "" : "checked"} /> 启用 / Use</label>
+            <button class="mini-command project-bible-focus ${state.ideaActiveBibleIndex === index ? "active" : ""}" data-bible-index="${index}" type="button">参考 / Refs</button>
+            <button class="icon-button project-bible-delete" data-bible-index="${index}" type="button" title="删除总概念卡 / Delete card">×</button>
+          </header>
+          <div class="idea-row-ref-strip">
+            <span>${(card.references || []).length} 当前参考 / refs · ${escapeHtml(projectBibleCategoryLabel(card.category))}</span>
+            ${(card.references || []).slice(0, 8).map((ref) => renderIdeaReferenceChip(ref, "bible", index)).join("")}
+          </div>
+          <label>概念说明 / Summary
+            <textarea data-bible-field="summary" rows="3">${escapeHtml(card.summary || "")}</textarea>
+          </label>
+          <label>视觉方向 / Visual direction
+            <textarea data-bible-field="visual_direction" rows="3">${escapeHtml(card.visual_direction || "")}</textarea>
+          </label>
+          <label>提示词要点 / Prompt notes
+            <textarea data-bible-field="prompt_notes" rows="3">${escapeHtml(card.prompt_notes || "")}</textarea>
+          </label>
+          <label>负面约束 / Negative prompt
+            <textarea data-bible-field="negative_prompt" rows="2">${escapeHtml(card.negative_prompt || "")}</textarea>
+          </label>
+          <footer>
+            <label>状态 / Status <input data-bible-field="status" value="${escapeHtml(card.status || "draft")}" /></label>
+          </footer>
+        </article>
+      `,
+    )
+    .join("");
+}
+
+function renderProjectBibleLab(board) {
+  const cardCount = (board.project_bible || []).length;
+  const enabledCount = (board.project_bible || []).filter((card) => card.selected !== false).length;
+  return `
+    <div class="idea-header">
+      <div>
+        <p class="eyebrow">Project Bible</p>
+        <h3>总概念 / Project Bible</h3>
+        <p>管理全项目人物、场景、道具、美术、氛围和负面约束；所有幕和分镜默认继承这里的设定。</p>
+      </div>
+      <div class="idea-actions">
+        <button id="projectBibleBuildHandoffBtn" class="command-button primary" type="button">生成总概念分析卡 / Bible Card</button>
+        <button id="ideaSaveBtn" class="command-button" type="button">手动保存 / Save now</button>
+        <button id="projectBibleAddCardBtn" class="command-button" type="button">新增概念卡 / Add Card</button>
+      </div>
+    </div>
+    <div class="idea-layout project-bible-layout">
+      <section class="idea-seed-panel">
+        <label>项目核心 idea / Core idea
+          <textarea id="ideaSeedInput" rows="4">${escapeHtml(board.idea || "")}</textarea>
+        </label>
+        <div class="idea-meta-grid">
+          <label>片名 / Title <input id="ideaStoryTitle" value="${escapeHtml(board.story_title || "")}" /></label>
+          <label>一句话 / Logline <input id="ideaLogline" value="${escapeHtml(board.logline || "")}" /></label>
+        </div>
+        <label>剧本大纲 / Story outline
+          <textarea id="ideaOutline" rows="4">${escapeHtml(board.story_outline || "")}</textarea>
+        </label>
+        <label>全局风格与连续性 / Global style and continuity
+          <textarea id="ideaStyleNotes" rows="4">${escapeHtml(board.style_notes || "")}</textarea>
+        </label>
+        ${renderProjectBibleReferencePanel(board)}
+        <div id="ideaHandoffDock" class="idea-handoff-dock">${renderIdeaHandoffs()}</div>
+      </section>
+      <section class="idea-rows-panel project-bible-panel">
+        <div class="idea-rows-header">
+          <strong>总概念卡 / ${enabledCount}/${cardCount} enabled</strong>
+          <span>人物、场景、道具、美术、氛围和年代设定；分镜局部备注优先级更高。</span>
+        </div>
+        <div id="projectBibleCardList" class="idea-rows project-bible-cards">${renderProjectBibleCards(board)}</div>
+      </section>
+    </div>
+  `;
+}
+
 function renderIdeaRows(entries, allRows = currentIdeaBoard().rows || []) {
   if (!entries.length) {
     const scene = selectedScene();
@@ -3447,6 +3787,11 @@ function renderIdeaLab() {
     return;
   }
   const board = currentIdeaBoard();
+  if (isProjectBibleSelected()) {
+    root.innerHTML = renderProjectBibleLab(board);
+    bindIdeaLabEvents();
+    return;
+  }
   const visibleEntries = ideaRowEntriesForCurrentScene(board);
   ensureIdeaActiveRowForScene(board);
   root.innerHTML = `
@@ -3547,6 +3892,23 @@ async function createIdeaActAnalysisHandoff() {
   });
 }
 
+async function createProjectBibleAnalysisHandoff() {
+  if (!state.detail) return;
+  await runAction("总概念分析卡 / Project Bible card", async () => {
+    const board = collectIdeaBoardFromDom();
+    const result = await persistIdeaBoard(board, { toast: false, render: false });
+    const savedBoard = result?.idea_board || board;
+    setIdeaBoardLocal(savedBoard);
+    addIdeaHandoff({
+      kind: "project_bible",
+      title: `${savedBoard.story_title || "Project"} → 总概念分析`,
+      text: buildProjectBibleAnalysisHandoff(savedBoard),
+    });
+    renderIdeaLab();
+    toast("已自动保存并生成总概念分析卡 / Saved and Project Bible handoff ready");
+  });
+}
+
 async function createIdeaImagePacket() {
   if (!state.selectedSlug || !state.detail) return;
   await runAction("生成图片包 / Image packet", async () => {
@@ -3586,6 +3948,35 @@ function deleteIdeaAct(index) {
   const board = collectIdeaBoardFromDom();
   board.acts = Array.isArray(board.acts) ? board.acts : [];
   board.acts.splice(index, 1);
+  setIdeaBoardLocal(board);
+  renderIdeaLab();
+}
+
+function addProjectBibleCard(category = "lookdev") {
+  const board = collectIdeaBoardFromDom();
+  board.project_bible = Array.isArray(board.project_bible) ? board.project_bible : [];
+  board.project_bible.push({
+    card_id: nextProjectBibleCardId(board.project_bible),
+    category,
+    title: "",
+    summary: "",
+    visual_direction: "",
+    prompt_notes: "",
+    negative_prompt: "",
+    selected: true,
+    status: "draft",
+    references: [],
+  });
+  state.ideaActiveBibleIndex = board.project_bible.length - 1;
+  setIdeaBoardLocal(board);
+  renderIdeaLab();
+}
+
+function deleteProjectBibleCard(index) {
+  const board = collectIdeaBoardFromDom();
+  board.project_bible = Array.isArray(board.project_bible) ? board.project_bible : [];
+  board.project_bible.splice(index, 1);
+  state.ideaActiveBibleIndex = clamp(state.ideaActiveBibleIndex, 0, Math.max(0, board.project_bible.length - 1));
   setIdeaBoardLocal(board);
   renderIdeaLab();
 }
@@ -3661,6 +4052,8 @@ function bindIdeaHandoffEvents() {
 }
 
 function bindIdeaLabEvents() {
+  $("projectBibleBuildHandoffBtn")?.addEventListener("click", createProjectBibleAnalysisHandoff);
+  $("projectBibleAddCardBtn")?.addEventListener("click", () => addProjectBibleCard());
   $("ideaBuildActCardBtn")?.addEventListener("click", createIdeaActAnalysisHandoff);
   $("ideaBuildHandoffBtn")?.addEventListener("click", createIdeaAnalysisHandoff);
   $("ideaSaveBtn")?.addEventListener("click", () => saveIdeaBoard());
@@ -3723,6 +4116,34 @@ function bindIdeaLabEvents() {
   });
   document.querySelectorAll(".idea-delete-act").forEach((button) => {
     button.addEventListener("click", () => deleteIdeaAct(Number(button.dataset.ideaActIndex || 0)));
+  });
+  document.querySelectorAll(".project-bible-focus, .project-bible-map-item").forEach((button) => {
+    button.addEventListener("click", () => {
+      state.ideaActiveBibleIndex = Number(button.dataset.bibleIndex || 0);
+      const board = collectIdeaBoardFromDom();
+      setIdeaBoardLocal(board);
+      renderIdeaLab();
+      document.querySelector(`.project-bible-card[data-bible-index="${state.ideaActiveBibleIndex}"]`)?.scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+  });
+  document.querySelectorAll(".project-bible-delete").forEach((button) => {
+    button.addEventListener("click", () => deleteProjectBibleCard(Number(button.dataset.bibleIndex || 0)));
+  });
+  document.querySelectorAll(".project-bible-card").forEach((card) => {
+    card.addEventListener("dragover", (event) => {
+      const types = Array.from(event.dataTransfer?.types || []);
+      if (!types.includes("application/x-pipeline-asset-ref") && !types.includes("text/plain")) return;
+      event.preventDefault();
+      card.classList.add("drop-target");
+    });
+    card.addEventListener("dragleave", () => card.classList.remove("drop-target"));
+    card.addEventListener("drop", (event) => {
+      event.preventDefault();
+      card.classList.remove("drop-target");
+      const assetRef = event.dataTransfer?.getData("application/x-pipeline-asset-ref") || event.dataTransfer?.getData("text/plain") || "";
+      const index = Number(card.dataset.bibleIndex || 0);
+      if (assetRef) addIdeaReference("bible", assetRef, [index]);
+    });
   });
   document.querySelectorAll(".idea-shot-row, .idea-map-row").forEach((row) => {
     row.addEventListener("dragover", (event) => {
@@ -4601,7 +5022,7 @@ function renderSceneChangePanel(scene) {
       </section>
     `;
   }
-  if (state.recreate?.sceneId === scene?.scene_id) {
+  if (scene && state.recreate?.sceneId === scene.scene_id) {
     return `
       <section class="scene-change-panel">
         <header>
@@ -4626,6 +5047,14 @@ function renderSceneWorkbench() {
   }
   const scene = selectedScene();
   renderSceneTree(scenes);
+  if (!scene) {
+    $("sceneStepLanes").innerHTML = `
+      <div class="empty-state">
+        当前正在编辑总概念 / Project Bible。场戏资源筛选会在选择具体幕或场戏后显示。
+      </div>
+    `;
+    return;
+  }
   const stageAssets = scene?.resource_manifest?.stage_assets || {};
   const steps = scene?.primary_steps || Object.keys(stageAssets);
   const versions = scene?.version_registry?.versions || [];

@@ -408,6 +408,9 @@ textarea:focus {
 .idea-act-row input,
 .idea-shot-row textarea,
 .idea-shot-row input,
+.project-bible-card textarea,
+.project-bible-card input,
+.project-bible-card select,
 .idea-seed-panel input {
   width: 100%;
   box-sizing: border-box;
@@ -957,7 +960,8 @@ textarea:focus {
   align-content: start;
 }
 
-.idea-shot-row {
+.idea-shot-row,
+.project-bible-card {
   border: 1px solid var(--line);
   border-radius: 8px;
   background: #fff;
@@ -967,13 +971,15 @@ textarea:focus {
   min-width: 0;
 }
 
-.idea-shot-row.active {
+.idea-shot-row.active,
+.project-bible-card.active {
   border-color: var(--accent);
   box-shadow: inset 3px 0 0 var(--accent);
 }
 
 .idea-shot-row.drop-target,
-.idea-map-row.drop-target {
+.idea-map-row.drop-target,
+.project-bible-card.drop-target {
   border-color: #2563eb;
   background: #eef5ff;
   box-shadow: inset 0 0 0 2px rgba(37, 99, 235, 0.16);
@@ -982,6 +988,13 @@ textarea:focus {
 .idea-shot-row header {
   display: grid;
   grid-template-columns: minmax(100px, 140px) minmax(120px, 1fr) minmax(120px, 1fr) auto auto minmax(80px, auto) 30px;
+  gap: 8px;
+  align-items: end;
+}
+
+.project-bible-card header {
+  display: grid;
+  grid-template-columns: minmax(90px, 120px) minmax(110px, 140px) minmax(0, 1fr) auto minmax(78px, auto) 30px;
   gap: 8px;
   align-items: end;
 }
@@ -1009,28 +1022,80 @@ textarea:focus {
   font-size: 11px;
 }
 
-.idea-shot-row footer {
+.idea-shot-row footer,
+.project-bible-card footer {
   display: grid;
   grid-template-columns: minmax(110px, 160px) minmax(0, 1fr) auto;
   gap: 8px;
   align-items: end;
 }
 
-.idea-shot-row .checkbox-label {
+.idea-shot-row .checkbox-label,
+.project-bible-card .checkbox-label {
   min-height: 36px;
   align-items: center;
 }
 
-.idea-shot-row .icon-button {
+.idea-shot-row .icon-button,
+.project-bible-card .icon-button {
   width: 30px;
   min-height: 30px;
   font-size: 16px;
 }
 
-.idea-shot-row textarea {
+.idea-shot-row textarea,
+.project-bible-card textarea {
   min-height: 58px;
   font-size: 12px;
   user-select: text;
+}
+
+.project-bible-layout .idea-seed-panel {
+  background: #f8faf9;
+}
+
+.project-bible-cards {
+  gap: 12px;
+}
+
+.project-bible-mini-map {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #f8faf9;
+  padding: 8px;
+  display: grid;
+  gap: 6px;
+  max-height: 220px;
+  overflow: auto;
+}
+
+.project-bible-map-item {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  padding: 8px;
+  text-align: left;
+  display: grid;
+  gap: 2px;
+  cursor: pointer;
+}
+
+.project-bible-map-item.active {
+  border-color: var(--accent);
+  box-shadow: inset 3px 0 0 var(--accent);
+}
+
+.project-bible-map-item span,
+.project-bible-map-item small {
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.project-bible-map-item strong {
+  font-size: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .studio-header {
@@ -3717,8 +3782,15 @@ th {
   }
 
   .idea-shot-row header,
-  .idea-shot-row footer {
+  .idea-shot-row footer,
+  .project-bible-card header,
+  .project-bible-card footer {
     grid-template-columns: 1fr;
+  }
+
+  .project-bible-card .project-bible-focus,
+  .project-bible-card .icon-button {
+    justify-self: start;
   }
 
   .studio-inspector {

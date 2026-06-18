@@ -2057,6 +2057,51 @@ def normalize_idea_acts(value: object) -> list[dict[str, object]]:
     return acts
 
 
+def normalize_project_bible_card(card: dict[str, object], index: int) -> dict[str, object]:
+    raw_id = str(card.get("card_id") or card.get("id") or "").strip()
+    return {
+        "card_id": safe_file_stem(raw_id) if raw_id else f"BIBLE_{index:03d}",
+        "category": str(card.get("category", "lookdev") or "lookdev").strip(),
+        "title": str(card.get("title", "") or "").strip(),
+        "summary": str(card.get("summary", "") or "").strip(),
+        "visual_direction": str(card.get("visual_direction", "") or "").strip(),
+        "prompt_notes": str(card.get("prompt_notes", "") or "").strip(),
+        "negative_prompt": str(card.get("negative_prompt", "") or "").strip(),
+        "selected": bool_from_payload(card.get("selected"), True),
+        "status": str(card.get("status", "draft") or "draft").strip(),
+        "references": normalize_idea_references(card.get("references", [])),
+    }
+
+
+def normalize_project_bible(value: object) -> list[dict[str, object]]:
+    cards: list[dict[str, object]] = []
+    if isinstance(value, list):
+        for index, card in enumerate(value, start=1):
+            if isinstance(card, dict):
+                cards.append(normalize_project_bible_card(card, index))
+    return cards
+
+
+def enabled_project_bible_cards(board: dict[str, object]) -> list[dict[str, object]]:
+    cards = board.get("project_bible", [])
+    if not isinstance(cards, list):
+        return []
+    return [
+        card
+        for card in cards
+        if isinstance(card, dict) and bool_from_payload(card.get("selected"), True)
+    ]
+
+
+def project_bible_references(cards: list[dict[str, object]]) -> list[dict[str, object]]:
+    references: list[dict[str, object]] = []
+    for card in cards:
+        refs = card.get("references", [])
+        if isinstance(refs, list):
+            references.extend(ref for ref in refs if isinstance(ref, dict))
+    return references
+
+
 def normalize_idea_row(row: dict[str, object], index: int) -> dict[str, object]:
     raw_id = str(row.get("item_id") or row.get("shot_id") or "").strip()
     item_id = safe_file_stem(raw_id) if raw_id else f"IDEA_SHOT_{index:03d}"
@@ -2095,6 +2140,7 @@ def normalize_idea_board(slug: str, payload: dict[str, object]) -> dict[str, obj
         "story_outline": str(payload.get("story_outline", "") or "").strip(),
         "style_notes": str(payload.get("style_notes", "") or "").strip(),
         "acts": normalize_idea_acts(payload.get("acts", [])),
+        "project_bible": normalize_project_bible(payload.get("project_bible", [])),
         "global_references": normalize_idea_references(payload.get("global_references", [])),
         "rows": rows,
     }
@@ -2134,6 +2180,43 @@ def idea_board_to_markdown(board: dict[str, object]) -> str:
                     f"- Key beats / 关键节拍: {act.get('key_beats', '')}",
                     "",
                     str(act.get("summary", "") or ""),
+                ]
+            )
+    else:
+        lines.append("- None")
+    lines.extend(
+        [
+            "",
+            "## Project Bible / 总概念",
+        ]
+    )
+    project_bible = board.get("project_bible", [])
+    if isinstance(project_bible, list) and project_bible:
+        for index, card in enumerate(project_bible, start=1):
+            if not isinstance(card, dict):
+                continue
+            refs = card.get("references", [])
+            ref_count = len(refs) if isinstance(refs, list) else 0
+            lines.extend(
+                [
+                    "",
+                    f"### {index:02d}. {card.get('card_id', '')} {card.get('title', '')}",
+                    f"- Category / 分类: {card.get('category', '')}",
+                    f"- Status / 状态: {card.get('status', '')}",
+                    f"- Selected / 启用: {card.get('selected', True)}",
+                    f"- References / 参考: {ref_count}",
+                    "",
+                    "Summary / 概念说明:",
+                    str(card.get("summary", "") or ""),
+                    "",
+                    "Visual direction / 视觉方向:",
+                    str(card.get("visual_direction", "") or ""),
+                    "",
+                    "Prompt notes / 提示词要点:",
+                    str(card.get("prompt_notes", "") or ""),
+                    "",
+                    "Negative prompt / 负面约束:",
+                    str(card.get("negative_prompt", "") or ""),
                 ]
             )
     else:
@@ -2239,6 +2322,7 @@ def load_idea_board(path: Path, slug: str) -> dict[str, object]:
             "story_outline": "",
             "style_notes": "",
             "acts": [],
+            "project_bible": [],
             "global_references": [],
             "rows": [],
         }
@@ -2251,7 +2335,7 @@ def update_idea_board(slug: str, payload: dict[str, object]) -> dict[str, object
     path = project_path(slug)
     existing = load_idea_board(path, slug)
     merged = {**existing, **payload}
-    for key in ("acts", "global_references", "rows"):
+    for key in ("acts", "project_bible", "global_references", "rows"):
         if key not in payload:
             merged[key] = existing.get(key, [])
     board = normalize_idea_board(slug, merged)
@@ -2267,6 +2351,7 @@ def build_idea_image_packet_text(
     packet_rel_path: str,
     tasks: list[dict[str, object]],
 ) -> str:
+    project_bible = enabled_project_bible_cards(board)
     return "\n".join(
         [
             "# Codex Storyboard Image Batch Handoff / Codex 分镜图片批量生图包",
@@ -2299,6 +2384,12 @@ def build_idea_image_packet_text(
             json.dumps(board.get("acts", []), ensure_ascii=False, indent=2),
             "```",
             "",
+            "## Project Bible / 总概念",
+            "这些卡片是项目级视觉圣经，作用于所有任务；分镜备注可以局部覆盖它们。",
+            "```json",
+            json.dumps(project_bible, ensure_ascii=False, indent=2),
+            "```",
+            "",
             "## Global References / 全局参考",
             "这些参考作用于所有任务，不要在每条任务里重复理解；仅按 note 使用指定元素。",
             "```json",
@@ -2311,7 +2402,7 @@ def build_idea_image_packet_text(
             "",
             "## Tasks / 任务",
             "```json",
-            json.dumps({"packet_id": packet_id, "global_references": board.get("global_references", []), "tasks": tasks}, ensure_ascii=False, indent=2),
+            json.dumps({"packet_id": packet_id, "project_bible": project_bible, "global_references": board.get("global_references", []), "tasks": tasks}, ensure_ascii=False, indent=2),
             "```",
         ]
     )
@@ -2326,6 +2417,8 @@ def create_idea_image_packet(slug: str, payload: dict[str, object]) -> dict[str,
     rows = [row for row in board.get("rows", []) if isinstance(row, dict) and row.get("selected", True)]
     if not rows:
         raise ValueError("没有选中的分镜条目 / No selected storyboard rows.")
+    project_bible = enabled_project_bible_cards(board)
+    bible_references = project_bible_references(project_bible)
     packet_id = f"IDEA_IMG_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
     job_dir = path / "08_generation" / "jobs" / packet_id
     outputs_dir = job_dir / "outputs"
@@ -2344,7 +2437,7 @@ def create_idea_image_packet(slug: str, payload: dict[str, object]) -> dict[str,
             shot_references = []
         whitebox_guidance = [
             str(ref.get("generation_guidance", "") or "").strip()
-            for ref in [*global_references, *shot_references]
+            for ref in [*global_references, *bible_references, *shot_references]
             if isinstance(ref, dict) and is_whitebox_reference(ref) and str(ref.get("generation_guidance", "") or "").strip()
         ]
         task = {
@@ -2369,7 +2462,7 @@ def create_idea_image_packet(slug: str, payload: dict[str, object]) -> dict[str,
     (path / packet_rel_path).write_text(packet_text, encoding="utf-8")
     write_yaml_file(
         job_dir / "storyboard_image_tasks.json",
-        {"packet_id": packet_id, "global_references": global_references, "tasks": tasks},
+        {"packet_id": packet_id, "project_bible": project_bible, "global_references": global_references, "tasks": tasks},
     )
     return {
         "ok": True,
@@ -2580,6 +2673,14 @@ def enrich_idea_board_whitebox_references(path: Path, board: dict[str, object]) 
     lookup = whitebox_job_lookup(path)
     enriched = dict(board)
     enriched["global_references"] = enrich_idea_references_for_generation(board.get("global_references", []), lookup)
+    project_bible = []
+    for card in board.get("project_bible", []):
+        if not isinstance(card, dict):
+            continue
+        next_card = dict(card)
+        next_card["references"] = enrich_idea_references_for_generation(card.get("references", []), lookup)
+        project_bible.append(next_card)
+    enriched["project_bible"] = project_bible
     rows = []
     for row in board.get("rows", []):
         if not isinstance(row, dict):
