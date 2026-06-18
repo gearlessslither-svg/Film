@@ -2820,6 +2820,7 @@ function collectProjectBibleFromDom(current) {
       summary: value("summary"),
       visual_direction: value("visual_direction"),
       prompt_notes: value("prompt_notes"),
+      revision_note: value("revision_note"),
       negative_prompt: value("negative_prompt"),
       selected: card.querySelector('[data-bible-field="selected"]')?.checked ?? true,
       image_selected: card.querySelector('[data-bible-field="image_selected"]')?.checked ?? true,
@@ -2891,6 +2892,7 @@ function collectIdeaBoardFromDom() {
       image_prompt: value("image_prompt"),
       video_prompt: value("video_prompt"),
       notes: value("notes"),
+      revision_note: value("revision_note"),
       selected: row.querySelector('[data-idea-field="selected"]')?.checked ?? true,
       status: value("status") || "draft",
       output_path: value("output_path"),
@@ -3324,6 +3326,7 @@ function buildIdeaAnalysisHandoff(board) {
         summary: "人物身份、年龄、气质、关系和连续性",
         visual_direction: "服装、发型、体态、表演方向",
         prompt_notes: "可直接加入图片提示词的人物描述",
+        revision_note: "本轮生成或精修时要重点改变什么；留空则按长期设定生成",
         negative_prompt: "不要出现的时代错位、造型偏差或风格偏差",
         references: [],
         selected: true,
@@ -3353,6 +3356,7 @@ function buildIdeaAnalysisHandoff(board) {
         image_prompt: "可直接用于生成高质量分镜关键帧的图片提示词",
         video_prompt: "后续视频生成提示词，可选",
         notes: "导演备注、连续性、参考资产需求",
+        revision_note: "本轮生成或精修时要重点改变什么；留空则按长期设定生成",
         references: [
           {
             asset_ref: "project:path-or-resource:path",
@@ -3478,6 +3482,7 @@ function buildProjectBibleAnalysisHandoff(board) {
         summary: "分析对象的核心设定，不写剧情分镜",
         visual_direction: "造型、材质、色彩、光线、年代细节和设计规则",
         prompt_notes: "可直接加入后续分镜图片提示词的稳定描述",
+        revision_note: "本轮生成或精修时要重点改变什么；留空则按长期设定生成",
         negative_prompt: "必须避免的偏差、现代元素、错误风格或误读",
         references: [
           {
@@ -3670,10 +3675,13 @@ function renderCardVersionPreview(cardOrRow, label = "版本 / Versions") {
         ${versions
           .map(
             (version) => `
-              <a href="${escapeHtml(sceneAssetUrl(version.output_path || ""))}" target="_blank" title="${escapeHtml(version.notes || version.output_path || "")}">
-                <img src="${escapeHtml(sceneAssetUrl(version.output_path || ""))}" alt="${escapeHtml(version.version_id || "version")}" loading="lazy" />
-                <span>${escapeHtml(version.version_id || "")}</span>
-              </a>
+              <div class="card-version-thumb" title="${escapeHtml(version.notes || version.output_path || "")}">
+                <a href="${escapeHtml(sceneAssetUrl(version.output_path || ""))}" target="_blank">
+                  <img src="${escapeHtml(sceneAssetUrl(version.output_path || ""))}" alt="${escapeHtml(version.version_id || "version")}" loading="lazy" />
+                  <span>${escapeHtml(version.version_id || "")}</span>
+                </a>
+                <button class="mini-command card-version-to-board" data-version-path="${escapeHtml(version.output_path || "")}" type="button">画板</button>
+              </div>
             `,
           )
           .join("")}
@@ -3795,6 +3803,9 @@ function renderProjectBibleCards(board) {
           <label>提示词要点 / Prompt notes
             <textarea data-bible-field="prompt_notes" rows="3">${escapeHtml(card.prompt_notes || "")}</textarea>
           </label>
+          <label>本次修图意见 / Revision note
+            <textarea data-bible-field="revision_note" rows="2" placeholder="只写这一轮要改什么，例如：保留人物，降低饱和度，改成阴天窗边侧光">${escapeHtml(card.revision_note || "")}</textarea>
+          </label>
           <label>负面约束 / Negative prompt
             <textarea data-bible-field="negative_prompt" rows="2">${escapeHtml(card.negative_prompt || "")}</textarea>
           </label>
@@ -3894,6 +3905,9 @@ function renderIdeaRows(entries, allRows = currentIdeaBoard().rows || []) {
           </label>
           <label>备注 / Notes
             <textarea data-idea-field="notes" rows="2">${escapeHtml(row.notes || "")}</textarea>
+          </label>
+          <label>本次修图意见 / Revision note
+            <textarea data-idea-field="revision_note" rows="2" placeholder="只写这一轮要改什么，例如：加一道关着的门，三个孩子更靠左，画面更干净">${escapeHtml(row.revision_note || "")}</textarea>
           </label>
           ${renderCardVersionPreview(row, "分镜图版本 / Storyboard image versions")}
           <footer>
@@ -4157,6 +4171,7 @@ function addProjectBibleCard(category = "lookdev") {
     summary: "",
     visual_direction: "",
     prompt_notes: "",
+    revision_note: "",
     negative_prompt: "",
     selected: true,
     image_selected: true,
@@ -4191,6 +4206,7 @@ function addIdeaRow() {
     image_prompt: "",
     video_prompt: "",
     notes: "",
+    revision_note: "",
     selected: true,
     status: "draft",
     output_path: "",
