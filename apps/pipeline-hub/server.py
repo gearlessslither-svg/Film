@@ -3069,9 +3069,48 @@ def collect_video_reference_entries(slug: str, path: Path, board: dict[str, obje
     return entries
 
 
+def qa_score_value(item: dict[str, object]) -> int | None:
+    qa = item.get("qa")
+    if not isinstance(qa, dict):
+        return None
+    try:
+        return int(qa.get("score"))
+    except (TypeError, ValueError):
+        return None
+
+
+def video_reference_qa_summary(current_assets: list[dict[str, object]], reference_assets: list[dict[str, object]]) -> dict[str, object]:
+    def counts(items: list[dict[str, object]]) -> dict[str, int]:
+        result = {"total": len(items), "unscored": 0, "ok": 0, "warn": 0, "risk": 0}
+        for item in items:
+            score = qa_score_value(item)
+            if score is None:
+                result["unscored"] += 1
+            elif score >= 82:
+                result["ok"] += 1
+            elif score >= 68:
+                result["warn"] += 1
+            else:
+                result["risk"] += 1
+        return result
+
+    return {
+        "current": counts(current_assets),
+        "reference": counts(reference_assets),
+    }
+
+
 def build_video_reference_package_text(package: dict[str, object]) -> str:
     current_assets = package.get("current_assets", [])
     reference_assets = package.get("reference_assets", [])
+    qa_summary = package.get("qa_summary") if isinstance(package.get("qa_summary"), dict) else video_reference_qa_summary(current_assets, reference_assets)
+    current_qa = qa_summary.get("current", {}) if isinstance(qa_summary.get("current"), dict) else {}
+    reference_qa = qa_summary.get("reference", {}) if isinstance(qa_summary.get("reference"), dict) else {}
+    current_warnings = [
+        item
+        for item in current_assets
+        if qa_score_value(item) is None or (qa_score_value(item) or 0) < 82
+    ]
     lines = [
         "# Video Reference Package / 视频参考图包",
         "",
@@ -3091,8 +3130,21 @@ def build_video_reference_package_text(package: dict[str, object]) -> str:
         "- 不要使用 rejected/candidate 图，除非导演另行指定。",
         "- 保持角色身份、场景空间、年代质感、构图和光线连续性。",
         "",
-        f"## Current Assets / 采用图 ({len(current_assets)})",
+        "## Quality Gate / 质量门槛",
+        f"- Current assets: {current_qa.get('ok', 0)} 合格 / OK · {current_qa.get('warn', 0)} 需检查 / warn · {current_qa.get('risk', 0)} 低分风险 / risk · {current_qa.get('unscored', 0)} 未质检 / unscored",
+        f"- Reference assets: {reference_qa.get('ok', 0)} 合格 / OK · {reference_qa.get('warn', 0)} 需检查 / warn · {reference_qa.get('risk', 0)} 低分风险 / risk · {reference_qa.get('unscored', 0)} 未质检 / unscored",
+        "- 建议只有 current assets 全部达到 QA OK 或经导演确认后，再交给视频模型。",
+        "",
+        "## Current QA Warnings / 采用图警示",
     ]
+    if current_warnings:
+        for item in current_warnings:
+            score = qa_score_value(item)
+            label = "未质检 / unscored" if score is None else f"{score}/100"
+            lines.append(f"- {item.get('card_id', '')} {item.get('title', '')}: {label} · {item.get('output_path', '')}")
+    else:
+        lines.append("- None")
+    lines.extend(["", f"## Current Assets / 采用图 ({len(current_assets)})"])
     if current_assets:
         for index, item in enumerate(current_assets, start=1):
             lines.extend(
@@ -3154,6 +3206,7 @@ def create_current_version_package(slug: str, payload: dict[str, object]) -> dic
         reference_assets.extend(global_context)
     if not current_assets and not reference_assets:
         raise ValueError("当前范围没有采用或参考版本图 / No current or reference image versions in this scope.")
+    qa_summary = video_reference_qa_summary(current_assets, reference_assets)
     package_id = f"VRP_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
     package_dir = path / "11_delivery" / "video_reference_packages" / package_id
     package_dir.mkdir(parents=True, exist_ok=True)
@@ -3167,6 +3220,7 @@ def create_current_version_package(slug: str, payload: dict[str, object]) -> dic
         "scene_id": scene_id,
         "act_id": act_id,
         "created_at": now_iso(),
+        "qa_summary": qa_summary,
         "current_assets": current_assets,
         "reference_assets": reference_assets,
     }

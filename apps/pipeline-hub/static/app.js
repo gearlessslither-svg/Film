@@ -173,6 +173,10 @@ const BOARD_TAG_OPTIONS = [
   { value: "version_candidate", label: "候选版本 / Candidate version" },
   { value: "version_reference", label: "参考版本 / Reference version" },
   { value: "version_rejected", label: "淘汰版本 / Rejected version" },
+  { value: "qa_ok", label: "技术合格 / QA OK" },
+  { value: "qa_warn", label: "需检查 / QA warn" },
+  { value: "qa_danger", label: "低分风险 / QA risk" },
+  { value: "qa_unscored", label: "未质检 / QA missing" },
   { value: "marked_use", label: "✅ 已选 / Marked use" },
   { value: "marked_reject", label: "× 不用 / Rejected" },
   { value: "unmarked", label: "未标注 / Unmarked" },
@@ -1264,6 +1268,13 @@ function boardAssetTags(asset) {
   if (asset.kind === "storyboard_keyframe" || haystack.includes("keyframe") || haystack.includes("storyboard")) tags.add("keyframe");
   if (asset.kind === "lookdev" || haystack.includes("lookdev") || haystack.includes("style") || haystack.includes("palette")) tags.add("lookdev");
   if (asset.version_status) tags.add(`version_${asset.version_status}`);
+  if (asset.version_status || asset.card_type) {
+    const qaScore = Number(asset.qa_score);
+    if (asset.qa_score === undefined || asset.qa_score === null || asset.qa_score === "" || !Number.isFinite(qaScore)) tags.add("qa_unscored");
+    else if (qaScore >= 82) tags.add("qa_ok");
+    else if (qaScore >= 68) tags.add("qa_warn");
+    else tags.add("qa_danger");
+  }
   const annotation = annotationForRef(asset.ref);
   if (annotation.status === "use") tags.add("marked_use");
   if (annotation.status === "reject") tags.add("marked_reject");
@@ -1298,6 +1309,7 @@ function mergeBoardImageAsset(byRef, incoming) {
     "card_category",
     "card_summary",
     "card_prompt",
+    "qa_score",
   ].forEach((key) => {
     if (!merged[key] && incoming[key]) merged[key] = incoming[key];
   });
@@ -1530,6 +1542,7 @@ function imageAssetMatchesLibraryFilters(asset, filters = {}, scopeKey = "scene"
     asset.card_category,
     asset.card_summary,
     asset.card_prompt,
+    asset.qa_score,
     kindLabel(asset.kind),
     tags.join(" "),
     annotation.note,
@@ -1584,6 +1597,12 @@ function boardSceneFilterOptions(assets) {
 
 function boardAssetMatches(asset) {
   return imageAssetMatchesLibraryFilters(asset, state.boardFilters, "scene");
+}
+
+function assetQaLabel(asset) {
+  const score = asset?.qa_score;
+  if (score === undefined || score === null || score === "") return "";
+  return ` · QA ${score}`;
 }
 
 function boardNodeTitle(node) {
@@ -2321,7 +2340,7 @@ function renderBoardAssetTray() {
             <article class="board-asset-card" data-ref="${escapeHtml(asset.ref)}" title="${escapeHtml(asset.path || "")}">
               <img src="${escapeHtml(asset.url)}" alt="${escapeHtml(asset.asset_id || asset.path)}" draggable="false" />
               <strong>${escapeHtml(asset.asset_id || asset.role || asset.path)}</strong>
-              <small>${escapeHtml(asset.scene_id || asset.act_id || "PROJECT")} · ${escapeHtml(kindLabel(asset.kind))}${versionLabel ? ` · ${escapeHtml(versionLabel)}` : ""}</small>
+              <small>${escapeHtml(asset.scene_id || asset.act_id || "PROJECT")} · ${escapeHtml(kindLabel(asset.kind))}${versionLabel ? ` · ${escapeHtml(versionLabel)}` : ""}${escapeHtml(assetQaLabel(asset))}</small>
               ${asset.card_id ? `<small>${escapeHtml(asset.card_id)}${asset.card_title ? ` · ${escapeHtml(asset.card_title)}` : ""}</small>` : ""}
             </article>
           `;
@@ -3318,7 +3337,7 @@ function renderIdeaReferenceAssetGrid(row) {
             <article class="idea-ref-asset" draggable="true" data-asset-ref="${escapeHtml(asset.ref)}">
               <img src="${escapeHtml(asset.url)}" alt="${escapeHtml(asset.asset_id || asset.path)}" loading="lazy" />
               <strong>${escapeHtml(asset.asset_id || asset.role || asset.path)}</strong>
-              <small>${escapeHtml(asset.scene_id || asset.act_id || "PROJECT")} · ${escapeHtml(kindLabel(asset.kind))}${versionLabel ? ` · ${escapeHtml(versionLabel)}` : ""}</small>
+              <small>${escapeHtml(asset.scene_id || asset.act_id || "PROJECT")} · ${escapeHtml(kindLabel(asset.kind))}${versionLabel ? ` · ${escapeHtml(versionLabel)}` : ""}${escapeHtml(assetQaLabel(asset))}</small>
               ${asset.card_id ? `<small>${escapeHtml(asset.card_id)}${asset.card_title ? ` · ${escapeHtml(asset.card_title)}` : ""}</small>` : ""}
               <div>
                 <button class="mini-command idea-add-ref" data-ref-scope="global" data-asset-ref="${escapeHtml(asset.ref)}" type="button">全局</button>
