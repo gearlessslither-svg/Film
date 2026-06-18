@@ -68,6 +68,12 @@ const PROJECT_BIBLE_CATEGORY_OPTIONS = [
   { value: "period", label: "年代 / Period" },
   { value: "constraint", label: "约束 / Constraint" },
 ];
+const CARD_VERSION_STATUS_LABELS = {
+  candidate: "候选 / Candidate",
+  current: "采用 / Current",
+  reference: "参考 / Reference",
+  rejected: "淘汰 / Rejected",
+};
 
 const STAGE_LABELS = {
   "00_admin": "项目控制、导演意图、模型配置、日志 / Admin, brief, model config, log",
@@ -3637,14 +3643,20 @@ function projectBibleCategoryLabel(value) {
 }
 
 function cardVersionEntries(cardOrRow) {
-  const versions = Array.isArray(cardOrRow?.versions) ? [...cardOrRow.versions] : [];
   const currentPath = cardOrRow?.preview_path || cardOrRow?.output_path || "";
+  const versions = Array.isArray(cardOrRow?.versions)
+    ? cardOrRow.versions.map((version) => ({
+        ...version,
+        status: version.status || (version.output_path === currentPath ? "current" : "candidate"),
+      }))
+    : [];
   if (currentPath && !versions.some((version) => version.output_path === currentPath)) {
     versions.push({
       version_id: "current",
       output_path: currentPath,
       notes: cardOrRow?.output_notes || "",
       created_at: cardOrRow?.output_attached_at || "",
+      status: "current",
     });
   }
   return versions.filter((version) => version?.output_path);
@@ -3655,19 +3667,20 @@ function renderCardVersionPreview(cardOrRow, label = "版本 / Versions") {
   if (!versions.length) {
     return `<div class="card-version-empty">暂无图片版本 / No image versions yet.</div>`;
   }
-  const latest = versions[versions.length - 1];
+  const current = [...versions].reverse().find((version) => version.status === "current") || versions[versions.length - 1];
+  const statusLabel = (status) => CARD_VERSION_STATUS_LABELS[status || "candidate"] || CARD_VERSION_STATUS_LABELS.candidate;
   return `
     <div class="card-version-panel">
       <div class="card-version-latest">
-        <a href="${escapeHtml(sceneAssetUrl(latest.output_path || ""))}" target="_blank">
-          <img src="${escapeHtml(sceneAssetUrl(latest.output_path || ""))}" alt="${escapeHtml(latest.version_id || "latest")}" loading="lazy" />
+        <a href="${escapeHtml(sceneAssetUrl(current.output_path || ""))}" target="_blank">
+          <img src="${escapeHtml(sceneAssetUrl(current.output_path || ""))}" alt="${escapeHtml(current.version_id || "current")}" loading="lazy" />
         </a>
         <div>
           <strong>${escapeHtml(label)}</strong>
-          <span>${escapeHtml(latest.version_id || "latest")} · ${escapeHtml(latest.created_at || "")}</span>
-          <small>${escapeHtml(latest.notes || latest.output_path || "")}</small>
+          <span>${escapeHtml(current.version_id || "current")} · ${escapeHtml(statusLabel(current.status))} · ${escapeHtml(current.created_at || "")}</span>
+          <small>${escapeHtml(current.notes || current.output_path || "")}</small>
           <div class="card-version-actions">
-            <button class="mini-command card-version-to-board" data-version-path="${escapeHtml(latest.output_path || "")}" type="button">画板精修 / Board refine</button>
+            <button class="mini-command card-version-to-board" data-version-path="${escapeHtml(current.output_path || "")}" type="button">画板精修 / Board refine</button>
           </div>
         </div>
       </div>
@@ -3675,12 +3688,18 @@ function renderCardVersionPreview(cardOrRow, label = "版本 / Versions") {
         ${versions
           .map(
             (version) => `
-              <div class="card-version-thumb" title="${escapeHtml(version.notes || version.output_path || "")}">
+              <div class="card-version-thumb ${escapeHtml(version.status || "candidate")}" title="${escapeHtml(version.notes || version.output_path || "")}">
                 <a href="${escapeHtml(sceneAssetUrl(version.output_path || ""))}" target="_blank">
                   <img src="${escapeHtml(sceneAssetUrl(version.output_path || ""))}" alt="${escapeHtml(version.version_id || "version")}" loading="lazy" />
                   <span>${escapeHtml(version.version_id || "")}</span>
                 </a>
-                <button class="mini-command card-version-to-board" data-version-path="${escapeHtml(version.output_path || "")}" type="button">画板</button>
+                <small>${escapeHtml(statusLabel(version.status))}</small>
+                <div class="card-version-mini-actions">
+                  <button class="mini-command card-version-status" data-version-id="${escapeHtml(version.version_id || "")}" data-version-path="${escapeHtml(version.output_path || "")}" data-version-status="current" type="button">采用</button>
+                  <button class="mini-command card-version-status" data-version-id="${escapeHtml(version.version_id || "")}" data-version-path="${escapeHtml(version.output_path || "")}" data-version-status="reference" type="button">参考</button>
+                  <button class="mini-command card-version-status" data-version-id="${escapeHtml(version.version_id || "")}" data-version-path="${escapeHtml(version.output_path || "")}" data-version-status="rejected" type="button">淘汰</button>
+                  <button class="mini-command card-version-to-board" data-version-path="${escapeHtml(version.output_path || "")}" type="button">画板</button>
+                </div>
               </div>
             `,
           )
@@ -3712,6 +3731,109 @@ function sendVersionImageToBoard(path) {
   }
   renderReferenceBoard();
   toast("这张图已在画板中 / Image is already on the board");
+}
+
+function normalizeCardVersionsForEdit(cardOrRow) {
+  return (Array.isArray(cardOrRow?.versions) ? cardOrRow.versions : [])
+    .filter((version) => version?.output_path)
+    .map((version, index) => ({
+      version_id: version.version_id || `v${String(index + 1).padStart(3, "0")}`,
+      output_path: version.output_path || "",
+      notes: version.notes || "",
+      created_at: version.created_at || "",
+      status: version.status || (version.output_path === (cardOrRow.preview_path || cardOrRow.output_path || "") ? "current" : "candidate"),
+    }));
+}
+
+function applyVersionStatusToCard(cardOrRow, versionId, versionPath, nextStatus, cardType) {
+  const versions = normalizeCardVersionsForEdit(cardOrRow);
+  let target = versions.find((version) => version.version_id === versionId && version.output_path === versionPath)
+    || versions.find((version) => version.output_path === versionPath)
+    || versions.find((version) => version.version_id === versionId);
+  if (!target && versionPath) {
+    target = {
+      version_id: versionId || `v${String(versions.length + 1).padStart(3, "0")}`,
+      output_path: versionPath,
+      notes: "",
+      created_at: "",
+      status: "candidate",
+    };
+    versions.push(target);
+  }
+  if (!target) return false;
+  if (nextStatus === "current") {
+    versions.forEach((version) => {
+      if (version.status === "current") version.status = "candidate";
+    });
+    target.status = "current";
+  } else {
+    target.status = nextStatus;
+  }
+  const currentPath = cardType === "concept" ? cardOrRow.preview_path : cardOrRow.output_path;
+  if (["reference", "rejected"].includes(nextStatus) && target.output_path === currentPath) {
+    const fallback = [...versions].reverse().find((version) => version.output_path !== target.output_path && version.status !== "rejected");
+    if (fallback) {
+      versions.forEach((version) => {
+        if (version.status === "current") version.status = "candidate";
+      });
+      fallback.status = "current";
+      if (cardType === "concept") {
+        cardOrRow.preview_path = fallback.output_path;
+      } else {
+        cardOrRow.output_path = fallback.output_path;
+        cardOrRow.output_notes = fallback.notes || "";
+        cardOrRow.output_attached_at = fallback.created_at || cardOrRow.output_attached_at || "";
+      }
+    } else if (cardType === "concept") {
+      cardOrRow.preview_path = "";
+    } else {
+      cardOrRow.output_path = "";
+      cardOrRow.output_notes = "";
+    }
+  } else if (nextStatus === "current") {
+    if (cardType === "concept") {
+      cardOrRow.preview_path = target.output_path;
+      cardOrRow.status = "image_ready";
+    } else {
+      cardOrRow.output_path = target.output_path;
+      cardOrRow.output_notes = target.notes || "";
+      cardOrRow.output_attached_at = target.created_at || cardOrRow.output_attached_at || "";
+      cardOrRow.status = "image_ready";
+    }
+  }
+  cardOrRow.versions = versions;
+  return true;
+}
+
+async function updateCardVersionStatus(button) {
+  if (!button) return;
+  const status = button.dataset.versionStatus || "candidate";
+  const versionId = button.dataset.versionId || "";
+  const versionPath = button.dataset.versionPath || "";
+  const board = collectIdeaBoardFromDom();
+  let cardType = "";
+  let target = null;
+  const bibleCard = button.closest(".project-bible-card");
+  const shotRow = button.closest(".idea-shot-row");
+  if (bibleCard) {
+    const index = Number(bibleCard.dataset.bibleIndex || state.ideaActiveBibleIndex || 0);
+    cardType = "concept";
+    target = board.project_bible?.[index] || null;
+  } else if (shotRow) {
+    const index = Number(shotRow.dataset.ideaIndex || state.ideaActiveRowIndex || 0);
+    cardType = "storyboard";
+    target = board.rows?.[index] || null;
+  }
+  if (!target || !applyVersionStatusToCard(target, versionId, versionPath, status, cardType)) {
+    toast("没有找到这个版本 / Version not found");
+    return;
+  }
+  await runAction("更新版本状态 / Update version status", async () => {
+    const result = await persistIdeaBoard(board, { toast: false, render: false });
+    setIdeaBoardLocal(result?.idea_board || board);
+    renderIdeaLab();
+    toast(`版本已标记为 ${CARD_VERSION_STATUS_LABELS[status] || status}`);
+  });
 }
 
 function renderProjectBibleReferencePanel(board) {
@@ -4280,6 +4402,9 @@ function bindIdeaLabEvents() {
   $("ideaBuildImagePacketBtn")?.addEventListener("click", createIdeaImagePacket);
   document.querySelectorAll(".card-version-to-board").forEach((button) => {
     button.addEventListener("click", () => sendVersionImageToBoard(button.dataset.versionPath || ""));
+  });
+  document.querySelectorAll(".card-version-status").forEach((button) => {
+    button.addEventListener("click", () => updateCardVersionStatus(button));
   });
   document.querySelectorAll(".card-generate-one").forEach((button) => {
     button.addEventListener("click", () => {

@@ -2037,6 +2037,7 @@ def normalize_idea_references(value: object) -> list[dict[str, object]]:
 
 
 def normalize_concept_card_versions(value: object) -> list[dict[str, object]]:
+    allowed_statuses = {"candidate", "current", "reference", "rejected"}
     versions: list[dict[str, object]] = []
     if isinstance(value, list):
         for index, version in enumerate(value, start=1):
@@ -2046,15 +2047,45 @@ def normalize_concept_card_versions(value: object) -> list[dict[str, object]]:
             if not raw_output_path:
                 continue
             output_path = normalize_project_rel_path(raw_output_path)
+            status = str(version.get("status", "candidate") or "candidate").strip()
+            if status not in allowed_statuses:
+                status = "candidate"
             versions.append(
                 {
                     "version_id": safe_file_stem(version.get("version_id") or f"v{index:03d}"),
                     "output_path": output_path,
                     "notes": str(version.get("notes", "") or "").strip(),
                     "created_at": str(version.get("created_at", "") or "").strip(),
+                    "status": status,
                 }
             )
     return versions
+
+
+def append_current_card_version(
+    versions: list[dict[str, object]],
+    version_id: str,
+    output_path: str,
+    notes: str,
+) -> list[dict[str, object]]:
+    next_versions: list[dict[str, object]] = []
+    for version in versions:
+        if not isinstance(version, dict):
+            continue
+        next_version = dict(version)
+        if next_version.get("status") == "current":
+            next_version["status"] = "candidate"
+        next_versions.append(next_version)
+    next_versions.append(
+        {
+            "version_id": version_id,
+            "output_path": output_path,
+            "notes": notes,
+            "created_at": now_iso(),
+            "status": "current",
+        }
+    )
+    return next_versions
 
 
 def normalize_idea_act(act: dict[str, object], index: int) -> dict[str, object]:
@@ -2547,16 +2578,10 @@ def update_idea_image_output(slug: str, payload: dict[str, object]) -> dict[str,
             output_path = normalize_project_rel_path(str(output.get("output_path", "") or ""))
             versions = normalize_concept_card_versions(row.get("versions", []))
             version_id = safe_file_stem(output.get("version_id") or f"v{len(versions) + 1:03d}")
-            versions.append(
-                {
-                    "version_id": version_id,
-                    "output_path": output_path,
-                    "notes": str(output.get("notes", "") or ""),
-                    "created_at": now_iso(),
-                }
-            )
+            notes = str(output.get("notes", "") or "")
+            versions = append_current_card_version(versions, version_id, output_path, notes)
             row["output_path"] = output_path
-            row["output_notes"] = str(output.get("notes", "") or "")
+            row["output_notes"] = notes
             row["output_attached_at"] = now_iso()
             row["versions"] = versions
             row["status"] = "image_ready"
@@ -2866,7 +2891,7 @@ def update_card_image_output(slug: str, payload: dict[str, object]) -> dict[str,
                 continue
             versions = normalize_concept_card_versions(card.get("versions", []))
             version_id = safe_file_stem(output.get("version_id") or f"v{len(versions) + 1:03d}")
-            versions.append({"version_id": version_id, "output_path": output_path, "notes": notes, "created_at": now_iso()})
+            versions = append_current_card_version(versions, version_id, output_path, notes)
             card["versions"] = versions
             card["preview_path"] = output_path
             card["status"] = "image_ready"
@@ -2878,7 +2903,7 @@ def update_card_image_output(slug: str, payload: dict[str, object]) -> dict[str,
                 continue
             versions = normalize_concept_card_versions(row.get("versions", []))
             version_id = safe_file_stem(output.get("version_id") or f"v{len(versions) + 1:03d}")
-            versions.append({"version_id": version_id, "output_path": output_path, "notes": notes, "created_at": now_iso()})
+            versions = append_current_card_version(versions, version_id, output_path, notes)
             row["versions"] = versions
             row["output_path"] = output_path
             row["output_notes"] = notes
