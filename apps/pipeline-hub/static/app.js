@@ -4112,6 +4112,7 @@ function renderProjectBibleLab(board) {
       <div class="idea-actions">
         <button id="projectBibleBuildHandoffBtn" class="command-button primary" type="button">生成总概念分析卡 / Bible Card</button>
         <button id="cardBuildImagePacketBtn" class="command-button" type="button">生成勾选卡片 / Selected Cards</button>
+        <button id="currentVersionPackageBtn" class="command-button" type="button">采用图包 / Current Pack</button>
         <button id="cardSelectVisibleBtn" class="command-button" type="button">全选当前 / Select All</button>
         <button id="cardClearVisibleBtn" class="command-button" type="button">清空当前 / Clear</button>
         <button id="ideaSaveBtn" class="command-button" type="button">手动保存 / Save now</button>
@@ -4232,6 +4233,7 @@ function renderIdeaLab() {
         <button id="ideaBuildActCardBtn" class="command-button" type="button">分析幕结构卡 / Act Card</button>
         <button id="ideaBuildHandoffBtn" class="command-button primary" type="button">生成分析卡 / Analysis Card</button>
         <button id="cardBuildImagePacketBtn" class="command-button" type="button">生成勾选卡片 / Selected Cards</button>
+        <button id="currentVersionPackageBtn" class="command-button" type="button">采用图包 / Current Pack</button>
         <button id="cardSelectVisibleBtn" class="command-button" type="button">全选当前 / Select All</button>
         <button id="cardClearVisibleBtn" class="command-button" type="button">清空当前 / Clear</button>
         <button id="ideaSaveBtn" class="command-button" type="button">手动保存 / Save now</button>
@@ -4402,6 +4404,38 @@ async function createCardImagePacket(singleTarget = null) {
   });
 }
 
+function currentVersionPackageScope() {
+  const assets = allBoardImageAssets();
+  return effectiveImageScope(state.ideaRefFilters.act || "all", assets);
+}
+
+async function createCurrentVersionPackage() {
+  if (!state.selectedSlug || !state.detail) return;
+  await runAction("生成采用图包 / Current version package", async () => {
+    const board = collectIdeaBoardFromDom();
+    await persistIdeaBoard(board, { toast: false, render: false });
+    const scene = selectedScene();
+    const scope = currentVersionPackageScope();
+    const result = await requestJson(`/api/projects/${state.selectedSlug}/current-version-package`, {
+      method: "POST",
+      body: JSON.stringify({
+        scope,
+        scene_id: scene?.scene_id || "",
+        act_id: scene?.act_id || "",
+      }),
+    });
+    state.detail = result.project || state.detail;
+    addIdeaHandoff({
+      kind: "video_reference_package",
+      title: `${result.current_count || 0} 采用 · ${result.reference_count || 0} 参考 → 视频参考图包`,
+      path: result.package_path || "",
+      text: result.handoff_text || "",
+    });
+    toast("已生成采用图包 / Current version package ready");
+    renderAll();
+  });
+}
+
 function setVisibleCardSelection(checked) {
   if (isProjectBibleSelected()) {
     document.querySelectorAll('.project-bible-card [data-bible-field="image_selected"]').forEach((input) => {
@@ -4550,6 +4584,7 @@ function bindIdeaLabEvents() {
   $("projectBibleBuildHandoffBtn")?.addEventListener("click", createProjectBibleAnalysisHandoff);
   $("projectBibleAddCardBtn")?.addEventListener("click", () => addProjectBibleCard());
   $("cardBuildImagePacketBtn")?.addEventListener("click", () => createCardImagePacket());
+  $("currentVersionPackageBtn")?.addEventListener("click", createCurrentVersionPackage);
   $("cardSelectVisibleBtn")?.addEventListener("click", () => setVisibleCardSelection(true));
   $("cardClearVisibleBtn")?.addEventListener("click", () => setVisibleCardSelection(false));
   $("ideaBuildActCardBtn")?.addEventListener("click", createIdeaActAnalysisHandoff);

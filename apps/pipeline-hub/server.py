@@ -2920,6 +2920,269 @@ def update_card_image_output(slug: str, payload: dict[str, object]) -> dict[str,
     return {"ok": True, "updated": updated, "idea_board": load_idea_board(path, slug), "project": project_detail(slug)}
 
 
+def project_bible_card_kind(card: dict[str, object]) -> str:
+    category = str(card.get("category", "") or "").strip()
+    if category == "character":
+        return "character_ref"
+    if category == "location":
+        return "scene_ref"
+    if category == "prop":
+        return "prop_ref"
+    if category in {"lookdev", "mood", "period", "constraint"}:
+        return "lookdev"
+    return "image"
+
+
+def version_entries_for_output(record: dict[str, object], current_path_key: str) -> list[dict[str, object]]:
+    versions = normalize_concept_card_versions(record.get("versions", []))
+    current_path = normalize_project_rel_path(str(record.get(current_path_key, "") or "").strip()) if record.get(current_path_key) else ""
+    has_current = any(version.get("status") == "current" for version in versions)
+    matched_current_path = False
+    if current_path:
+        for version in versions:
+            if version.get("output_path") == current_path:
+                matched_current_path = True
+                if not has_current and version.get("status") == "candidate":
+                    version["status"] = "current"
+                    has_current = True
+        if not matched_current_path:
+            versions.append(
+                {
+                    "version_id": "current",
+                    "output_path": current_path,
+                    "notes": str(record.get("output_notes", "") or "").strip(),
+                    "created_at": str(record.get("output_attached_at", "") or "").strip(),
+                    "status": "current",
+                }
+            )
+    return versions
+
+
+def package_scope_matches(entry: dict[str, object], scope: str, scene_id: str, act_id: str) -> bool:
+    value = str(scope or "all").strip()
+    entry_scene = str(entry.get("scene_id", "") or "")
+    entry_act = str(entry.get("act_id", "") or "")
+    if value == "all":
+        return True
+    if value == "global":
+        return not entry_scene and not entry_act
+    if value == "current_scene":
+        return bool(scene_id) and entry_scene == scene_id
+    if value == "current_act":
+        return bool(act_id) and entry_act == act_id
+    if value.startswith("scene:"):
+        return entry_scene == value.split(":", 1)[1]
+    if value.startswith("act:"):
+        return entry_act == value.split(":", 1)[1]
+    return True
+
+
+def video_reference_scope_label(scope: str, scene_id: str, act_id: str, scenes: list[dict[str, object]]) -> str:
+    if scope == "current_scene" and scene_id:
+        scene = next((item for item in scenes if item.get("scene_id") == scene_id), {})
+        return f"当前场戏 / Current scene: {scene_id} {scene.get('title', '')}"
+    if scope == "current_act" and act_id:
+        scene = next((item for item in scenes if item.get("act_id") == act_id), {})
+        return f"当前幕 / Current act: {act_id} {scene.get('act_title', '')}"
+    if scope.startswith("scene:"):
+        return f"场戏 / Scene: {scope.split(':', 1)[1]}"
+    if scope.startswith("act:"):
+        return f"幕 / Act: {scope.split(':', 1)[1]}"
+    if scope == "global":
+        return "全局资料库 / Global library"
+    return "全部项目 / Whole project"
+
+
+def collect_video_reference_entries(slug: str, path: Path, board: dict[str, object]) -> list[dict[str, object]]:
+    scenes = [scene for scene in load_scene_workbench(path).get("scenes", []) if isinstance(scene, dict)]
+    scene_by_id = {str(scene.get("scene_id", "") or ""): scene for scene in scenes}
+    entries: list[dict[str, object]] = []
+    for card in board.get("project_bible", []):
+        if not isinstance(card, dict) or not bool_from_payload(card.get("selected"), True):
+            continue
+        for version in version_entries_for_output(card, "preview_path"):
+            if version.get("status") not in {"current", "reference"}:
+                continue
+            output_path = str(version.get("output_path", "") or "")
+            if not output_path:
+                continue
+            entries.append(
+                {
+                    "card_type": "concept",
+                    "card_id": card.get("card_id", ""),
+                    "title": card.get("title", ""),
+                    "category": card.get("category", ""),
+                    "kind": project_bible_card_kind(card),
+                    "scene_id": "",
+                    "act_id": card.get("act_id", ""),
+                    "act_title": card.get("act_id", ""),
+                    "version_id": version.get("version_id", ""),
+                    "version_status": version.get("status", ""),
+                    "output_path": output_path,
+                    "absolute_path": str(path / output_path),
+                    "browser_url": asset_url(slug, "project", output_path),
+                    "notes": version.get("notes", ""),
+                    "prompt_context": " ".join(
+                        str(card.get(key, "") or "").strip()
+                        for key in ("summary", "visual_direction", "prompt_notes", "negative_prompt")
+                        if str(card.get(key, "") or "").strip()
+                    ),
+                }
+            )
+    for row in board.get("rows", []):
+        if not isinstance(row, dict):
+            continue
+        scene = scene_by_id.get(str(row.get("scene_id", "") or ""), {})
+        for version in version_entries_for_output(row, "output_path"):
+            if version.get("status") not in {"current", "reference"}:
+                continue
+            output_path = str(version.get("output_path", "") or "")
+            if not output_path:
+                continue
+            entries.append(
+                {
+                    "card_type": "storyboard",
+                    "card_id": row.get("item_id", ""),
+                    "title": row.get("beat", "") or row.get("item_id", ""),
+                    "category": "storyboard",
+                    "kind": "storyboard_keyframe",
+                    "scene_id": row.get("scene_id", ""),
+                    "scene_title": scene.get("title", ""),
+                    "act_id": scene.get("act_id", ""),
+                    "act_title": scene.get("act_title", ""),
+                    "version_id": version.get("version_id", ""),
+                    "version_status": version.get("status", ""),
+                    "output_path": output_path,
+                    "absolute_path": str(path / output_path),
+                    "browser_url": asset_url(slug, "project", output_path),
+                    "notes": version.get("notes", ""),
+                    "prompt_context": " ".join(
+                        str(row.get(key, "") or "").strip()
+                        for key in ("frame_description", "image_prompt", "video_prompt", "notes")
+                        if str(row.get(key, "") or "").strip()
+                    ),
+                }
+            )
+    return entries
+
+
+def build_video_reference_package_text(package: dict[str, object]) -> str:
+    current_assets = package.get("current_assets", [])
+    reference_assets = package.get("reference_assets", [])
+    lines = [
+        "# Video Reference Package / 视频参考图包",
+        "",
+        "这个包汇总文字界面中已标记为采用或参考的图片版本，用于交给视频模型或后续 Codex 生成视频任务。",
+        "This package collects current/reference image versions for video-model handoff.",
+        "",
+        "## Project / 项目",
+        f"- Project slug: {package.get('project_slug', '')}",
+        f"- Project root: {package.get('project_root', '')}",
+        f"- Package id: {package.get('package_id', '')}",
+        f"- Scope: {package.get('scope_label', '')}",
+        f"- Created at: {package.get('created_at', '')}",
+        "",
+        "## Use Rules / 使用规则",
+        "- Current assets 是主参考图；优先作为视频模型的画面/角色/场景参考。",
+        "- Reference assets 是辅助参考；只按 notes 或 prompt_context 借用元素。",
+        "- 不要使用 rejected/candidate 图，除非导演另行指定。",
+        "- 保持角色身份、场景空间、年代质感、构图和光线连续性。",
+        "",
+        f"## Current Assets / 采用图 ({len(current_assets)})",
+    ]
+    if current_assets:
+        for index, item in enumerate(current_assets, start=1):
+            lines.extend(
+                [
+                    "",
+                    f"### {index:03d}. {item.get('card_id', '')} {item.get('title', '')}",
+                    f"- Type / 类型: {item.get('card_type', '')} · {item.get('kind', '')}",
+                    f"- Scene / 场戏: {item.get('scene_id', '')} {item.get('scene_title', '')}",
+                    f"- Version / 版本: {item.get('version_id', '')} · {item.get('version_status', '')}",
+                    f"- Path / 路径: {item.get('output_path', '')}",
+                    f"- Absolute / 绝对路径: {item.get('absolute_path', '')}",
+                    f"- Browser URL: {item.get('browser_url', '')}",
+                    f"- Notes / 备注: {item.get('notes', '')}",
+                    f"- Prompt context / 提示词上下文: {item.get('prompt_context', '')}",
+                ]
+            )
+    else:
+        lines.append("- None")
+    lines.extend(["", f"## Reference Assets / 辅助参考图 ({len(reference_assets)})"])
+    if reference_assets:
+        for index, item in enumerate(reference_assets, start=1):
+            lines.extend(
+                [
+                    "",
+                    f"### R{index:03d}. {item.get('card_id', '')} {item.get('title', '')}",
+                    f"- Type / 类型: {item.get('card_type', '')} · {item.get('kind', '')}",
+                    f"- Version / 版本: {item.get('version_id', '')} · {item.get('version_status', '')}",
+                    f"- Path / 路径: {item.get('output_path', '')}",
+                    f"- Notes / 备注: {item.get('notes', '')}",
+                ]
+            )
+    else:
+        lines.append("- None")
+    return "\n".join(lines).rstrip() + "\n"
+
+
+def create_current_version_package(slug: str, payload: dict[str, object]) -> dict[str, object]:
+    path = project_path(slug)
+    board = load_idea_board(path, slug)
+    scope = str(payload.get("scope", "all") or "all").strip()
+    scene_id = str(payload.get("scene_id", "") or "").strip()
+    act_id = str(payload.get("act_id", "") or "").strip()
+    scenes = [scene for scene in load_scene_workbench(path).get("scenes", []) if isinstance(scene, dict)]
+    entries = collect_video_reference_entries(slug, path, board)
+    scoped_entries = [entry for entry in entries if package_scope_matches(entry, scope, scene_id, act_id)]
+    global_context = [
+        entry
+        for entry in entries
+        if entry.get("card_type") == "concept"
+        and not entry.get("act_id")
+        and entry not in scoped_entries
+        and entry.get("version_status") in {"current", "reference"}
+    ]
+    current_assets = [entry for entry in scoped_entries if entry.get("version_status") == "current"]
+    reference_assets = [entry for entry in scoped_entries if entry.get("version_status") == "reference"]
+    if scope not in {"all", "global"}:
+        reference_assets.extend(global_context)
+    if not current_assets and not reference_assets:
+        raise ValueError("当前范围没有采用或参考版本图 / No current or reference image versions in this scope.")
+    package_id = f"VRP_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+    package_dir = path / "11_delivery" / "video_reference_packages" / package_id
+    package_dir.mkdir(parents=True, exist_ok=True)
+    package: dict[str, object] = {
+        "schema_version": 1,
+        "project_slug": slug,
+        "project_root": str(path),
+        "package_id": package_id,
+        "scope": scope,
+        "scope_label": video_reference_scope_label(scope, scene_id, act_id, scenes),
+        "scene_id": scene_id,
+        "act_id": act_id,
+        "created_at": now_iso(),
+        "current_assets": current_assets,
+        "reference_assets": reference_assets,
+    }
+    json_rel_path = Path("11_delivery") / "video_reference_packages" / package_id / f"{package_id}.json"
+    md_rel_path = Path("11_delivery") / "video_reference_packages" / package_id / f"{package_id}.md"
+    handoff_text = build_video_reference_package_text(package)
+    (path / json_rel_path).write_text(json.dumps(package, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    (path / md_rel_path).write_text(handoff_text, encoding="utf-8")
+    return {
+        "ok": True,
+        "package_id": package_id,
+        "package_path": str(md_rel_path),
+        "package_absolute_path": str(path / md_rel_path),
+        "json_path": str(json_rel_path),
+        "current_count": len(current_assets),
+        "reference_count": len(reference_assets),
+        "handoff_text": handoff_text,
+        "project": project_detail(slug),
+    }
+
+
 def blender_executable() -> str:
     candidate = shutil.which("blender")
     if candidate:
@@ -3781,6 +4044,9 @@ class PipelineHubHandler(BaseHTTPRequestHandler):
                 return
             if action == "card-image-output":
                 send_json(self, update_card_image_output(slug, payload))
+                return
+            if action == "current-version-package":
+                send_json(self, create_current_version_package(slug, payload))
                 return
             if action == "whitebox-job":
                 send_json(self, create_whitebox_job(slug, payload))
