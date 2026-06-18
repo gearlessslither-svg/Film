@@ -3043,6 +3043,96 @@ def update_card_image_output(slug: str, payload: dict[str, object]) -> dict[str,
     return {"ok": True, "updated": updated, "idea_board": load_idea_board(path, slug), "project": project_detail(slug)}
 
 
+def load_json_file(path: Path) -> object:
+    if not path.exists():
+        return None
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        return None
+
+
+def codex_card_handoff_candidates(slug: str, path: Path) -> list[dict[str, object]]:
+    jobs_dir = path / "08_generation" / "jobs"
+    if not jobs_dir.exists():
+        return []
+    candidates: list[dict[str, object]] = []
+    for job_dir in jobs_dir.iterdir():
+        if not job_dir.is_dir():
+            continue
+        packet_id = job_dir.name
+        card_tasks_path = job_dir / "card_image_tasks.json"
+        board_task_path = job_dir / "board_card_task.json"
+        if card_tasks_path.exists():
+            data = load_json_file(card_tasks_path)
+            if not isinstance(data, dict):
+                continue
+            tasks = data.get("tasks", [])
+            if not isinstance(tasks, list):
+                tasks = []
+            handoff_path = job_dir / "outputs" / f"{packet_id}_card_handoff.md"
+            handoff_text = handoff_path.read_text(encoding="utf-8") if handoff_path.exists() else ""
+            modified_at = max(card_tasks_path.stat().st_mtime, handoff_path.stat().st_mtime if handoff_path.exists() else 0)
+            candidates.append(
+                {
+                    "kind": "card_image_packet",
+                    "packet_id": str(data.get("packet_id") or packet_id),
+                    "packet_path": str(handoff_path.relative_to(path)) if handoff_path.exists() else "",
+                    "packet_absolute_path": str(handoff_path) if handoff_path.exists() else "",
+                    "task_source_path": str(card_tasks_path.relative_to(path)),
+                    "task_count": len(tasks),
+                    "tasks": tasks,
+                    "handoff_text": handoff_text,
+                    "callback_url": f"http://127.0.0.1:8787/api/projects/{slug}/card-image-output",
+                    "modified_at": modified_at,
+                    "modified_at_iso": datetime.fromtimestamp(modified_at, timezone.utc).astimezone().isoformat(),
+                }
+            )
+        if board_task_path.exists():
+            data = load_json_file(board_task_path)
+            if not isinstance(data, dict):
+                continue
+            task = data.get("task") if isinstance(data.get("task"), dict) else {}
+            tasks = [task] if task else []
+            handoff_path = job_dir / "outputs" / f"{packet_id}_board_card_handoff.md"
+            handoff_text = handoff_path.read_text(encoding="utf-8") if handoff_path.exists() else ""
+            modified_at = max(board_task_path.stat().st_mtime, handoff_path.stat().st_mtime if handoff_path.exists() else 0)
+            candidates.append(
+                {
+                    "kind": "board_card_refinement",
+                    "packet_id": str(data.get("packet_id") or packet_id),
+                    "packet_path": str(handoff_path.relative_to(path)) if handoff_path.exists() else "",
+                    "packet_absolute_path": str(handoff_path) if handoff_path.exists() else "",
+                    "task_source_path": str(board_task_path.relative_to(path)),
+                    "task_count": len(tasks),
+                    "tasks": tasks,
+                    "handoff_text": handoff_text,
+                    "callback_url": f"http://127.0.0.1:8787/api/projects/{slug}/card-image-output",
+                    "modified_at": modified_at,
+                    "modified_at_iso": datetime.fromtimestamp(modified_at, timezone.utc).astimezone().isoformat(),
+                }
+            )
+    return sorted(candidates, key=lambda item: float(item.get("modified_at", 0) or 0), reverse=True)
+
+
+def latest_codex_card_handoff(slug: str, query: str = "") -> dict[str, object]:
+    path = project_path(slug)
+    params = parse_qs(query)
+    kind_filter = str(params.get("kind", ["any"])[0] or "any").strip()
+    candidates = codex_card_handoff_candidates(slug, path)
+    if kind_filter in {"card_image_packet", "board_card_refinement"}:
+        candidates = [item for item in candidates if item.get("kind") == kind_filter]
+    latest = candidates[0] if candidates else None
+    return {
+        "ok": bool(latest),
+        "project_slug": slug,
+        "project_root": str(path),
+        "latest": latest,
+        "available_count": len(candidates),
+        "usage": "在 Codex 聊天中说“分析卡片”或“生成卡片图片”时，读取 latest.tasks，逐项生成图片，然后 POST callback_url 回填。",
+    }
+
+
 def board_card_target(board: dict[str, object], card_type: str, card_id: str) -> dict[str, object] | None:
     if card_type == "concept":
         cards = board.get("project_bible", [])
@@ -4419,6 +4509,9 @@ class PipelineHubHandler(BaseHTTPRequestHandler):
         if len(parts) == 4 and parts[:2] == ["api", "projects"] and parts[3] == "report":
             detail = project_detail(parts[2])
             send_text(self, detail["report"].get("text", ""))
+            return
+        if len(parts) == 5 and parts[:2] == ["api", "projects"] and parts[3] == "codex-card-handoff" and parts[4] == "latest":
+            send_json(self, latest_codex_card_handoff(parts[2], parsed.query))
             return
         send_text(self, "未找到 / Not found", status=404)
 
