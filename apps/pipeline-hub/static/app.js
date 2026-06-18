@@ -4246,6 +4246,7 @@ function renderProjectBibleLab(board) {
         <button id="cardBuildImagePacketBtn" class="command-button" type="button">生成勾选卡片 / Selected Cards</button>
         <button id="currentVersionPackageBtn" class="command-button" type="button">采用图包 / Current Pack</button>
         <button id="batchVersionQaBtn" class="command-button" type="button">批量质检 / Batch QA</button>
+        <button id="qaRepairPacketBtn" class="command-button" type="button">低分修复包 / QA Fix</button>
         <button id="cardSelectVisibleBtn" class="command-button" type="button">全选当前 / Select All</button>
         <button id="cardClearVisibleBtn" class="command-button" type="button">清空当前 / Clear</button>
         <button id="ideaSaveBtn" class="command-button" type="button">手动保存 / Save now</button>
@@ -4368,6 +4369,7 @@ function renderIdeaLab() {
         <button id="cardBuildImagePacketBtn" class="command-button" type="button">生成勾选卡片 / Selected Cards</button>
         <button id="currentVersionPackageBtn" class="command-button" type="button">采用图包 / Current Pack</button>
         <button id="batchVersionQaBtn" class="command-button" type="button">批量质检 / Batch QA</button>
+        <button id="qaRepairPacketBtn" class="command-button" type="button">低分修复包 / QA Fix</button>
         <button id="cardSelectVisibleBtn" class="command-button" type="button">全选当前 / Select All</button>
         <button id="cardClearVisibleBtn" class="command-button" type="button">清空当前 / Clear</button>
         <button id="ideaSaveBtn" class="command-button" type="button">手动保存 / Save now</button>
@@ -4518,23 +4520,73 @@ async function createCardImagePacket(singleTarget = null) {
   await runAction("生成勾选卡片 / Card image packet", async () => {
     const board = collectIdeaBoardFromDom();
     const targets = singleTarget ? [singleTarget] : collectVisibleCardTargets();
-    if (!targets.length) {
-      toast("请先勾选要生成的卡片 / Select target cards first");
-      return;
-    }
-    const result = await requestJson(`/api/projects/${state.selectedSlug}/card-image-packet`, {
-      method: "POST",
-      body: JSON.stringify({ ...board, targets }),
-    });
-    state.detail = result.project || state.detail;
-    addIdeaHandoff({
-      kind: "card_image",
-      title: `${result.task_count || 0} 张卡片 → Codex 生图`,
-      path: result.packet_path || "",
-      text: result.handoff_text || "",
-    });
-    toast("已自动保存并生成卡片图片包 / Saved and card image packet ready");
-    renderAll();
+    await createCardImagePacketForTargets(board, targets, "card_image", "请先勾选要生成的卡片 / Select target cards first");
+  });
+}
+
+async function createCardImagePacketForTargets(board, targets, kind = "card_image", emptyMessage = "没有可生成的卡片 / No target cards") {
+  if (!targets.length) {
+    toast(emptyMessage);
+    return null;
+  }
+  const result = await requestJson(`/api/projects/${state.selectedSlug}/card-image-packet`, {
+    method: "POST",
+    body: JSON.stringify({ ...board, targets }),
+  });
+  state.detail = result.project || state.detail;
+  addIdeaHandoff({
+    kind,
+    title: `${result.task_count || 0} 张卡片 → Codex 生图`,
+    path: result.packet_path || "",
+    text: result.handoff_text || "",
+  });
+  toast("已自动保存并生成卡片图片包 / Saved and card image packet ready");
+  renderAll();
+  return result;
+}
+
+function qaRepairDirective(version) {
+  const qa = version?.qa && typeof version.qa === "object" ? version.qa : {};
+  const score = qa.score;
+  const suggestions = Array.isArray(qa.suggestions) ? qa.suggestions : [];
+  if (score === undefined || score === null || score === "") {
+    return [
+      "QA repair / 技术修复：当前主版本尚未质检，重新生成时优先保证干净、稳定、高清。",
+      "Add: clean high-resolution key image, crisp edges, readable silhouettes, no sensor noise, no dirty texture, balanced exposure.",
+    ].join("\n");
+  }
+  return [
+    `QA repair / 技术修复：当前主版本技术分 ${score}/100，需要重新生成一个更稳定的版本。`,
+    ...suggestions.map((item) => `- ${item}`),
+    "Preserve the card intent, references, characters, scene continuity, and composition unless the revision note says otherwise.",
+  ].join("\n");
+}
+
+function repairTargetsFromVisibleQa(board) {
+  return visibleCardsForBatchQa(board)
+    .map((item) => ({ ...item, version: currentVersionForQa(item.target) }))
+    .filter((item) => {
+      if (!item.version?.output_path) return false;
+      const rawScore = item.version.qa?.score;
+      const score = Number(rawScore);
+      return rawScore === undefined || rawScore === null || rawScore === "" || !Number.isFinite(score) || score < 82;
+    })
+    .map((item) => {
+      item.target.revision_note = [item.target.revision_note || "", qaRepairDirective(item.version)].filter(Boolean).join("\n\n");
+      if (item.cardType === "concept") {
+        return { card_type: "concept", card_id: item.target.card_id || "" };
+      }
+      return { card_type: "storyboard", item_id: item.target.item_id || "" };
+    })
+    .filter((target) => target.card_id || target.item_id);
+}
+
+async function createQaRepairPacket() {
+  if (!state.selectedSlug || !state.detail) return;
+  await runAction("生成低分修复包 / QA repair packet", async () => {
+    const board = collectIdeaBoardFromDom();
+    const targets = repairTargetsFromVisibleQa(board);
+    await createCardImagePacketForTargets(board, targets, "qa_repair_image", "当前可见卡片没有低分或未质检主版本 / No visible QA issues");
   });
 }
 
@@ -4720,6 +4772,7 @@ function bindIdeaLabEvents() {
   $("cardBuildImagePacketBtn")?.addEventListener("click", () => createCardImagePacket());
   $("currentVersionPackageBtn")?.addEventListener("click", createCurrentVersionPackage);
   $("batchVersionQaBtn")?.addEventListener("click", runVisibleCardVersionQa);
+  $("qaRepairPacketBtn")?.addEventListener("click", createQaRepairPacket);
   $("cardSelectVisibleBtn")?.addEventListener("click", () => setVisibleCardSelection(true));
   $("cardClearVisibleBtn")?.addEventListener("click", () => setVisibleCardSelection(false));
   $("ideaBuildActCardBtn")?.addEventListener("click", createIdeaActAnalysisHandoff);
