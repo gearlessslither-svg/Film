@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "project_slug": "coin-slot",
-  "updated_at": "2026-06-16T02:49:49+08:00",
+  "updated_at": "2026-06-18T12:18:17+08:00",
   "idea": "整个故事发生在上世纪90年代的中国北方小城\n\n第一幕故事大概是：\n\n1 三个小朋友下课后，背着书包，鬼鬼祟祟的前往一个破旧居民楼边角处的游戏机房\n2 机房老板从猫眼看到是熟人，开门放行\n3 游戏厅里乌烟瘴气，鱼龙混杂",
   "story_title": "投币口 / Coin Slot",
   "logline": "90年代北方小城里，三个放学后的孩子偷偷钻进居民楼角落的游戏机房，第一次跨进成人世界灰色而诱人的门缝。",
@@ -54,7 +54,43 @@
           "origin": "project",
           "kind": "whitebox",
           "role": "replica_whitebox",
-          "note": "高精度白模复刻：默认作为该分镜空间、机位、光照和人物动作参考 / high-fidelity replica whitebox for blocking, camera, lighting, and pose."
+          "note": "高精度白模复刻：默认作为该分镜空间、机位、光照和人物动作参考 / high-fidelity replica whitebox for blocking, camera, lighting, and pose.",
+          "whitebox_interpretation": {
+            "mode": "spatial_control_only",
+            "source_asset_id": "ACT1_SHOT_003_SOURCE_KEYFRAME",
+            "source_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+            "replica_note": "以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+            "tags": [
+              "ACT01",
+              "SCN_COMPOUND",
+              "hidden_arcade_door",
+              "peephole",
+              "three_children",
+              "1to1_replica"
+            ],
+            "use_for": [
+              "camera framing and lens/composition",
+              "subject scale, blocking, pose, sightline, and depth order",
+              "major set anchors such as doors, windows, corridors, walls, props, and openings",
+              "main light direction, shadow rhythm, and scene readability"
+            ],
+            "preserve": [
+              "overall aspect ratio and camera angle",
+              "relative positions between characters and key set pieces",
+              "door/window/opening height and screen position when present",
+              "foreground/midground/background separation"
+            ],
+            "ignore": [
+              "gray clay material",
+              "primitive cube/sphere/cylinder shapes",
+              "mannequin or toy-like character appearance",
+              "unfinished low-poly geometry",
+              "plain studio-white lighting unless the shot explicitly asks for it"
+            ],
+            "prompt_bridge": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。"
+          },
+          "usage_note": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。",
+          "generation_guidance": "Whitebox guidance / 白模读取说明:\n- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.\n- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.\n- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.\n- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.\n- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.\n- Source whitebox replica seed: ACT1_SHOT_003_SOURCE_KEYFRAME.\n- Replica intent / 复刻意图: 以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。"
         }
       ]
     },
@@ -81,7 +117,43 @@
           "origin": "project",
           "kind": "whitebox",
           "role": "replica_whitebox",
-          "note": "高精度白模复刻：默认作为该分镜空间、机位、光照和人物动作参考 / high-fidelity replica whitebox for blocking, camera, lighting, and pose."
+          "note": "高精度白模复刻：默认作为该分镜空间、机位、光照和人物动作参考 / high-fidelity replica whitebox for blocking, camera, lighting, and pose.",
+          "whitebox_interpretation": {
+            "mode": "spatial_control_only",
+            "source_asset_id": "ACT1_SHOT_003_SOURCE_KEYFRAME",
+            "source_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+            "replica_note": "以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+            "tags": [
+              "ACT01",
+              "SCN_COMPOUND",
+              "hidden_arcade_door",
+              "peephole",
+              "three_children",
+              "1to1_replica"
+            ],
+            "use_for": [
+              "camera framing and lens/composition",
+              "subject scale, blocking, pose, sightline, and depth order",
+              "major set anchors such as doors, windows, corridors, walls, props, and openings",
+              "main light direction, shadow rhythm, and scene readability"
+            ],
+            "preserve": [
+              "overall aspect ratio and camera angle",
+              "relative positions between characters and key set pieces",
+              "door/window/opening height and screen position when present",
+              "foreground/midground/background separation"
+            ],
+            "ignore": [
+              "gray clay material",
+              "primitive cube/sphere/cylinder shapes",
+              "mannequin or toy-like character appearance",
+              "unfinished low-poly geometry",
+              "plain studio-white lighting unless the shot explicitly asks for it"
+            ],
+            "prompt_bridge": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。"
+          },
+          "usage_note": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。",
+          "generation_guidance": "Whitebox guidance / 白模读取说明:\n- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.\n- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.\n- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.\n- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.\n- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.\n- Source whitebox replica seed: ACT1_SHOT_003_SOURCE_KEYFRAME.\n- Replica intent / 复刻意图: 以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。"
         }
       ]
     },
@@ -108,7 +180,43 @@
           "origin": "project",
           "kind": "whitebox",
           "role": "replica_whitebox",
-          "note": "高精度白模复刻：默认作为该分镜空间、机位、光照和人物动作参考 / high-fidelity replica whitebox for blocking, camera, lighting, and pose."
+          "note": "高精度白模复刻：默认作为该分镜空间、机位、光照和人物动作参考 / high-fidelity replica whitebox for blocking, camera, lighting, and pose.",
+          "whitebox_interpretation": {
+            "mode": "spatial_control_only",
+            "source_asset_id": "ACT1_SHOT_003_SOURCE_KEYFRAME",
+            "source_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+            "replica_note": "以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+            "tags": [
+              "ACT01",
+              "SCN_COMPOUND",
+              "hidden_arcade_door",
+              "peephole",
+              "three_children",
+              "1to1_replica"
+            ],
+            "use_for": [
+              "camera framing and lens/composition",
+              "subject scale, blocking, pose, sightline, and depth order",
+              "major set anchors such as doors, windows, corridors, walls, props, and openings",
+              "main light direction, shadow rhythm, and scene readability"
+            ],
+            "preserve": [
+              "overall aspect ratio and camera angle",
+              "relative positions between characters and key set pieces",
+              "door/window/opening height and screen position when present",
+              "foreground/midground/background separation"
+            ],
+            "ignore": [
+              "gray clay material",
+              "primitive cube/sphere/cylinder shapes",
+              "mannequin or toy-like character appearance",
+              "unfinished low-poly geometry",
+              "plain studio-white lighting unless the shot explicitly asks for it"
+            ],
+            "prompt_bridge": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。"
+          },
+          "usage_note": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。",
+          "generation_guidance": "Whitebox guidance / 白模读取说明:\n- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.\n- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.\n- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.\n- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.\n- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.\n- Source whitebox replica seed: ACT1_SHOT_003_SOURCE_KEYFRAME.\n- Replica intent / 复刻意图: 以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。"
         }
       ]
     },
@@ -135,7 +243,43 @@
           "origin": "project",
           "kind": "whitebox",
           "role": "replica_whitebox",
-          "note": "高精度白模复刻：默认作为该分镜空间、机位、光照和人物动作参考 / high-fidelity replica whitebox for blocking, camera, lighting, and pose."
+          "note": "高精度白模复刻：默认作为该分镜空间、机位、光照和人物动作参考 / high-fidelity replica whitebox for blocking, camera, lighting, and pose.",
+          "whitebox_interpretation": {
+            "mode": "spatial_control_only",
+            "source_asset_id": "ACT1_SHOT_003_SOURCE_KEYFRAME",
+            "source_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+            "replica_note": "以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+            "tags": [
+              "ACT01",
+              "SCN_COMPOUND",
+              "hidden_arcade_door",
+              "peephole",
+              "three_children",
+              "1to1_replica"
+            ],
+            "use_for": [
+              "camera framing and lens/composition",
+              "subject scale, blocking, pose, sightline, and depth order",
+              "major set anchors such as doors, windows, corridors, walls, props, and openings",
+              "main light direction, shadow rhythm, and scene readability"
+            ],
+            "preserve": [
+              "overall aspect ratio and camera angle",
+              "relative positions between characters and key set pieces",
+              "door/window/opening height and screen position when present",
+              "foreground/midground/background separation"
+            ],
+            "ignore": [
+              "gray clay material",
+              "primitive cube/sphere/cylinder shapes",
+              "mannequin or toy-like character appearance",
+              "unfinished low-poly geometry",
+              "plain studio-white lighting unless the shot explicitly asks for it"
+            ],
+            "prompt_bridge": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。"
+          },
+          "usage_note": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。",
+          "generation_guidance": "Whitebox guidance / 白模读取说明:\n- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.\n- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.\n- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.\n- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.\n- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.\n- Source whitebox replica seed: ACT1_SHOT_003_SOURCE_KEYFRAME.\n- Replica intent / 复刻意图: 以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。"
         }
       ]
     },
@@ -162,7 +306,43 @@
           "origin": "project",
           "kind": "whitebox",
           "role": "replica_whitebox",
-          "note": "高精度白模复刻：默认作为该分镜空间、机位、光照和人物动作参考 / high-fidelity replica whitebox for blocking, camera, lighting, and pose."
+          "note": "高精度白模复刻：默认作为该分镜空间、机位、光照和人物动作参考 / high-fidelity replica whitebox for blocking, camera, lighting, and pose.",
+          "whitebox_interpretation": {
+            "mode": "spatial_control_only",
+            "source_asset_id": "ACT1_SHOT_003_SOURCE_KEYFRAME",
+            "source_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+            "replica_note": "以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+            "tags": [
+              "ACT01",
+              "SCN_COMPOUND",
+              "hidden_arcade_door",
+              "peephole",
+              "three_children",
+              "1to1_replica"
+            ],
+            "use_for": [
+              "camera framing and lens/composition",
+              "subject scale, blocking, pose, sightline, and depth order",
+              "major set anchors such as doors, windows, corridors, walls, props, and openings",
+              "main light direction, shadow rhythm, and scene readability"
+            ],
+            "preserve": [
+              "overall aspect ratio and camera angle",
+              "relative positions between characters and key set pieces",
+              "door/window/opening height and screen position when present",
+              "foreground/midground/background separation"
+            ],
+            "ignore": [
+              "gray clay material",
+              "primitive cube/sphere/cylinder shapes",
+              "mannequin or toy-like character appearance",
+              "unfinished low-poly geometry",
+              "plain studio-white lighting unless the shot explicitly asks for it"
+            ],
+            "prompt_bridge": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。"
+          },
+          "usage_note": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。",
+          "generation_guidance": "Whitebox guidance / 白模读取说明:\n- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.\n- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.\n- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.\n- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.\n- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.\n- Source whitebox replica seed: ACT1_SHOT_003_SOURCE_KEYFRAME.\n- Replica intent / 复刻意图: 以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。"
         }
       ]
     },

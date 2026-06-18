@@ -2007,7 +2007,7 @@ def bool_from_payload(value: object, default: bool = True) -> bool:
 def normalize_idea_reference(ref: dict[str, object], index: int) -> dict[str, object]:
     asset_ref = str(ref.get("asset_ref") or ref.get("ref") or "").strip()
     raw_id = str(ref.get("ref_id") or ref.get("asset_id") or asset_ref or "").strip()
-    return {
+    normalized = {
         "ref_id": safe_file_stem(raw_id) if raw_id else f"REF_{index:03d}",
         "asset_ref": asset_ref,
         "asset_id": str(ref.get("asset_id", "") or "").strip(),
@@ -2017,6 +2017,14 @@ def normalize_idea_reference(ref: dict[str, object], index: int) -> dict[str, ob
         "role": str(ref.get("role", "") or "").strip(),
         "note": str(ref.get("note", "") or "").strip(),
     }
+    for key in ("usage_note", "generation_guidance"):
+        value = str(ref.get(key, "") or "").strip()
+        if value:
+            normalized[key] = value
+    interpretation = ref.get("whitebox_interpretation")
+    if isinstance(interpretation, dict):
+        normalized["whitebox_interpretation"] = interpretation
+    return normalized
 
 
 def normalize_idea_references(value: object) -> list[dict[str, object]]:
@@ -2208,7 +2216,7 @@ def write_idea_board_files(path: Path, board: dict[str, object]) -> None:
     ]
     rows = board.get("rows", [])
     with csv_path.open("w", encoding="utf-8", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=fieldnames)
+        writer = csv.DictWriter(handle, fieldnames=fieldnames, lineterminator="\n")
         writer.writeheader()
         if isinstance(rows, list):
             for row in rows:
@@ -2270,6 +2278,12 @@ def build_idea_image_packet_text(
             "- 生成前优化：每条提示词先做电影级优化，强化构图、光影、角色连续性、负面约束，再生成图片。",
             "- 输出保持短：给关键优化原则、图片预览、保存路径、回填状态。",
             "",
+            "## Whitebox Reading Rules / 白模读取规则",
+            "- 白模只用于控制空间、机位、构图、人物站位、遮挡关系、动作、景深层次和主要光照方向。",
+            "- 不要复制白模的灰色材质、方块/球体/圆柱形状、低模人偶、干净测试渲染质感。",
+            "- 最终图必须按分镜提示词、角色参考、场景参考、年代、材质和电影美术方向重建。",
+            "- 如果任务里有 whitebox_guidance，以该说明为准；它是白模到最终图之间的解释层。",
+            "",
             "## Project / 项目",
             f"- Project slug: {slug}",
             f"- Project root: {path}",
@@ -2306,6 +2320,7 @@ def build_idea_image_packet_text(
 def create_idea_image_packet(slug: str, payload: dict[str, object]) -> dict[str, object]:
     path = project_path(slug)
     board = normalize_idea_board(slug, payload) if payload.get("rows") is not None else load_idea_board(path, slug)
+    board = enrich_idea_board_whitebox_references(path, board)
     if payload.get("rows") is not None:
         write_idea_board_files(path, board)
     rows = [row for row in board.get("rows", []) if isinstance(row, dict) and row.get("selected", True)]
@@ -2318,9 +2333,20 @@ def create_idea_image_packet(slug: str, payload: dict[str, object]) -> dict[str,
     outputs_dir.mkdir(parents=True, exist_ok=True)
     tasks_dir.mkdir(parents=True, exist_ok=True)
     tasks: list[dict[str, object]] = []
+    global_references = board.get("global_references", [])
+    if not isinstance(global_references, list):
+        global_references = []
     for index, row in enumerate(rows, start=1):
         item_id = safe_file_stem(row.get("item_id") or f"IDEA_SHOT_{index:03d}")
         output_rel_path = str(Path("08_generation") / "jobs" / packet_id / "outputs" / f"{index:03d}_{item_id}.png")
+        shot_references = row.get("references", [])
+        if not isinstance(shot_references, list):
+            shot_references = []
+        whitebox_guidance = [
+            str(ref.get("generation_guidance", "") or "").strip()
+            for ref in [*global_references, *shot_references]
+            if isinstance(ref, dict) and is_whitebox_reference(ref) and str(ref.get("generation_guidance", "") or "").strip()
+        ]
         task = {
             "task_id": f"{packet_id}_{index:03d}",
             "item_id": item_id,
@@ -2331,7 +2357,8 @@ def create_idea_image_packet(slug: str, payload: dict[str, object]) -> dict[str,
             "image_prompt": row.get("image_prompt", ""),
             "video_prompt": row.get("video_prompt", ""),
             "notes": row.get("notes", ""),
-            "shot_references": row.get("references", []),
+            "shot_references": shot_references,
+            "whitebox_guidance": whitebox_guidance,
             "suggested_output_path": output_rel_path,
             "suggested_output_absolute_path": str(path / output_rel_path),
         }
@@ -2342,7 +2369,7 @@ def create_idea_image_packet(slug: str, payload: dict[str, object]) -> dict[str,
     (path / packet_rel_path).write_text(packet_text, encoding="utf-8")
     write_yaml_file(
         job_dir / "storyboard_image_tasks.json",
-        {"packet_id": packet_id, "global_references": board.get("global_references", []), "tasks": tasks},
+        {"packet_id": packet_id, "global_references": global_references, "tasks": tasks},
     )
     return {
         "ok": True,
@@ -2424,7 +2451,148 @@ def write_whitebox_lab(path: Path, lab: dict[str, object]) -> None:
     write_yaml_file(whitebox_lab_index_path(path), lab)
 
 
+def is_whitebox_reference(ref: dict[str, object]) -> bool:
+    text = " ".join(
+        str(ref.get(key, "") or "").lower()
+        for key in ("kind", "role", "asset_id", "ref_id", "asset_ref", "path")
+    )
+    return "whitebox" in text or "白模" in text or "previs" in text or "blender" in text
+
+
+def whitebox_interpretation_for_job(job: dict[str, object]) -> dict[str, object]:
+    source = job.get("source_asset", {})
+    if not isinstance(source, dict):
+        source = {}
+    tags = job.get("tags", [])
+    if not isinstance(tags, list):
+        tags = []
+    return {
+        "mode": "spatial_control_only",
+        "source_asset_id": str(source.get("asset_id", "") or ""),
+        "source_path": str(source.get("path", "") or ""),
+        "replica_note": str(job.get("replica_note", "") or ""),
+        "tags": [str(item) for item in tags if str(item).strip()],
+        "use_for": [
+            "camera framing and lens/composition",
+            "subject scale, blocking, pose, sightline, and depth order",
+            "major set anchors such as doors, windows, corridors, walls, props, and openings",
+            "main light direction, shadow rhythm, and scene readability",
+        ],
+        "preserve": [
+            "overall aspect ratio and camera angle",
+            "relative positions between characters and key set pieces",
+            "door/window/opening height and screen position when present",
+            "foreground/midground/background separation",
+        ],
+        "ignore": [
+            "gray clay material",
+            "primitive cube/sphere/cylinder shapes",
+            "mannequin or toy-like character appearance",
+            "unfinished low-poly geometry",
+            "plain studio-white lighting unless the shot explicitly asks for it",
+        ],
+        "prompt_bridge": (
+            "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；"
+            "不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。"
+            "最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。"
+        ),
+    }
+
+
+def whitebox_generation_guidance(job_or_ref: dict[str, object]) -> str:
+    interpretation = job_or_ref.get("whitebox_interpretation")
+    if not isinstance(interpretation, dict):
+        interpretation = whitebox_interpretation_for_job(job_or_ref)
+    replica_note = str(interpretation.get("replica_note", "") or "").strip()
+    source_asset_id = str(interpretation.get("source_asset_id", "") or "").strip()
+    source_path = str(interpretation.get("source_path", "") or "").strip()
+    header = "Whitebox guidance / 白模读取说明"
+    lines = [
+        f"{header}:",
+        "- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.",
+        "- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.",
+        "- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.",
+        "- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.",
+        "- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.",
+    ]
+    if source_asset_id or source_path:
+        lines.append(f"- Source whitebox replica seed: {source_asset_id or source_path}.")
+    if replica_note:
+        lines.append(f"- Replica intent / 复刻意图: {replica_note}")
+    return "\n".join(lines)
+
+
+def whitebox_job_lookup(path: Path) -> dict[str, dict[str, object]]:
+    lookup: dict[str, dict[str, object]] = {}
+    lab = load_whitebox_lab(path)
+    jobs = lab.get("jobs", [])
+    if not isinstance(jobs, list):
+        return lookup
+    for job in jobs:
+        if not isinstance(job, dict):
+            continue
+        keys = {
+            str(job.get("job_id", "") or ""),
+            str(job.get("suggested_render_path", "") or ""),
+            f"project:{job.get('suggested_render_path', '')}",
+        }
+        for key in keys:
+            if key:
+                lookup[key] = job
+    return lookup
+
+
+def enrich_whitebox_reference_for_generation(ref: dict[str, object], lookup: dict[str, dict[str, object]]) -> dict[str, object]:
+    normalized = dict(ref)
+    if not is_whitebox_reference(normalized):
+        return normalized
+    job = (
+        lookup.get(str(normalized.get("asset_id", "") or ""))
+        or lookup.get(str(normalized.get("ref_id", "") or ""))
+        or lookup.get(str(normalized.get("asset_ref", "") or ""))
+        or lookup.get(str(normalized.get("path", "") or ""))
+        or {}
+    )
+    source = job if job else normalized
+    interpretation = normalized.get("whitebox_interpretation")
+    if not isinstance(interpretation, dict):
+        interpretation = whitebox_interpretation_for_job(source)
+    normalized["whitebox_interpretation"] = interpretation
+    normalized.setdefault("usage_note", interpretation.get("prompt_bridge", ""))
+    normalized.setdefault("generation_guidance", whitebox_generation_guidance({**source, "whitebox_interpretation": interpretation}))
+    return normalized
+
+
+def enrich_idea_references_for_generation(
+    refs: object,
+    lookup: dict[str, dict[str, object]],
+) -> list[dict[str, object]]:
+    enriched: list[dict[str, object]] = []
+    if not isinstance(refs, list):
+        return enriched
+    for index, ref in enumerate(refs, start=1):
+        if isinstance(ref, dict):
+            enriched.append(enrich_whitebox_reference_for_generation(normalize_idea_reference(ref, index), lookup))
+    return enriched
+
+
+def enrich_idea_board_whitebox_references(path: Path, board: dict[str, object]) -> dict[str, object]:
+    lookup = whitebox_job_lookup(path)
+    enriched = dict(board)
+    enriched["global_references"] = enrich_idea_references_for_generation(board.get("global_references", []), lookup)
+    rows = []
+    for row in board.get("rows", []):
+        if not isinstance(row, dict):
+            continue
+        next_row = dict(row)
+        next_row["references"] = enrich_idea_references_for_generation(row.get("references", []), lookup)
+        rows.append(next_row)
+    enriched["rows"] = rows
+    return enriched
+
+
 def whitebox_reference_for_job(job: dict[str, object]) -> dict[str, object]:
+    interpretation = whitebox_interpretation_for_job(job)
     return {
         "ref_id": safe_file_stem(str(job.get("job_id", "") or "whitebox")),
         "asset_ref": f"project:{job.get('suggested_render_path', '')}",
@@ -2434,6 +2602,9 @@ def whitebox_reference_for_job(job: dict[str, object]) -> dict[str, object]:
         "kind": "whitebox",
         "role": "replica_whitebox",
         "note": str(job.get("default_reference_note", "") or "白模复刻参考 / replica whitebox reference"),
+        "usage_note": str(interpretation.get("prompt_bridge", "") or ""),
+        "generation_guidance": whitebox_generation_guidance({**job, "whitebox_interpretation": interpretation}),
+        "whitebox_interpretation": interpretation,
     }
 
 
@@ -2607,6 +2778,9 @@ def build_whitebox_handoff_text(slug: str, path: Path, job: dict[str, object], s
             "- 对每条目标分镜，根据 frame_description、image_prompt、notes 调整机位、镜头焦段、人物动作和光照。",
             "- 输出 PNG 要能直接作为该分镜的 whitebox reference。",
             "- 完成后保留 suggested_render_path，网页已经把这个 pending whitebox 引用插入目标分镜。",
+            "",
+            "## Final Image Usage / 最终图使用说明",
+            str(job.get("generation_guidance") or whitebox_generation_guidance(job)),
             "",
             "## Spec JSON / 任务规格",
             "```json",
@@ -2874,6 +3048,8 @@ def create_whitebox_job(slug: str, payload: dict[str, object]) -> dict[str, obje
         "handoff_path": str(handoff_rel_path),
         "default_reference_note": "高精度白模复刻：默认作为该分镜空间、机位、光照和人物动作参考 / high-fidelity replica whitebox for blocking, camera, lighting, and pose.",
     }
+    job["whitebox_interpretation"] = whitebox_interpretation_for_job(job)
+    job["generation_guidance"] = whitebox_generation_guidance(job)
     spec = {
         "schema_version": 1,
         "project_slug": slug,
