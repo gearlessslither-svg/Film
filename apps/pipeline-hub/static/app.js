@@ -24,6 +24,8 @@ const state = {
     query: "",
   },
   cardFilters: {
+    scope: "",
+    tag: "all",
     mode: "all",
     query: "",
   },
@@ -883,13 +885,16 @@ function selectProjectBible() {
   state.activeChangeRequest = null;
   state.recreate = null;
   state.ideaBatchRows = [];
+  if (!state.cardFilters.scope || state.cardFilters.scope === "current_scene") state.cardFilters.scope = "all";
 }
 
 function selectScene(sceneId) {
+  const fromConceptWorkspace = isProjectBibleSelected();
   state.selectedSceneId = sceneId || "";
   state.selectedFrameRef = "";
   state.activeChangeRequest = null;
   state.recreate = null;
+  if (fromConceptWorkspace && (!state.cardFilters.scope || state.cardFilters.scope === "all")) state.cardFilters.scope = "current_scene";
   ensureIdeaActiveRowForScene(currentIdeaBoard());
 }
 
@@ -3446,7 +3451,7 @@ function activeProjectBibleCard(board = currentIdeaBoard()) {
 
 function activeIdeaRow(board = currentIdeaBoard()) {
   const rows = board.rows || [];
-  const visibleIndex = ensureIdeaActiveRowForScene(board);
+  const visibleIndex = ensureIdeaActiveRowForFilteredCards(board);
   if (visibleIndex === null && selectedScene()?.scene_id) return null;
   const index = clamp(Number(state.ideaActiveRowIndex || 0), 0, Math.max(0, rows.length - 1));
   state.ideaActiveRowIndex = index;
@@ -4415,12 +4420,126 @@ function cardQaBucket(card) {
   return "qa_risk";
 }
 
-function cardMatchesCardFilters(card, cardType) {
-  const filters = state.cardFilters || {};
+function sceneForIdeaRow(row) {
+  const scenes = state.detail?.scene_workbench?.scenes || [];
+  return scenes.find((scene) => scene.scene_id === row?.scene_id) || {};
+}
+
+function cardFilterAsset(card, cardType, board = currentIdeaBoard(), index = 0) {
+  if (cardType === "concept") {
+    const actLabel = card.act_id ? projectBibleActLabel(board, card.act_id) : "";
+    return {
+      ref: `card:concept:${card.card_id || index}`,
+      asset_id: card.card_id || `BIBLE_${index + 1}`,
+      role: card.title || card.summary || card.card_id || "Concept card",
+      path: card.preview_path || "",
+      kind: projectBibleCategoryKind(card.category || ""),
+      stage: "08_generation",
+      scene_id: "",
+      scene_title: "总概念 / Project Bible",
+      act_id: card.act_id || "",
+      act_title: actLabel,
+      card_type: "concept",
+      card_id: card.card_id || "",
+      card_scope: card.scope || "project",
+      card_act_id: card.act_id || "",
+      card_act_title: actLabel,
+      card_title: card.title || "",
+      card_category: card.category || "",
+      card_summary: card.summary || "",
+      card_prompt: [card.visual_direction, card.prompt_notes, card.revision_note, card.negative_prompt].filter(Boolean).join(" "),
+    };
+  }
+  const scene = sceneForIdeaRow(card);
+  return {
+    ref: `card:storyboard:${card.item_id || index}`,
+    asset_id: card.item_id || `IDEA_SHOT_${index + 1}`,
+    role: card.beat || card.frame_description || card.item_id || "Storyboard card",
+    path: card.output_path || "",
+    kind: "storyboard_keyframe",
+    stage: "08_generation",
+    scene_id: card.scene_id || "",
+    scene_title: scene.title || "",
+    act_id: scene.act_id || "",
+    act_title: scene.act_title || "",
+    shot_id: card.item_id || "",
+    card_type: "storyboard",
+    card_id: card.item_id || "",
+    card_scope: "scene",
+    card_act_id: scene.act_id || "",
+    card_act_title: scene.act_title || "",
+    card_title: card.beat || card.item_id || "",
+    card_category: "storyboard",
+    card_summary: card.frame_description || "",
+    card_prompt: [card.image_prompt, card.video_prompt, card.revision_note, card.notes].filter(Boolean).join(" "),
+  };
+}
+
+function cardFilterTags(card, cardType, board = currentIdeaBoard(), index = 0) {
+  const baseAsset = cardFilterAsset(card, cardType, board, index);
+  const tags = new Set(
+    boardAssetTags(baseAsset).filter((tag) => !tag.startsWith("version_") && !tag.startsWith("qa_")),
+  );
+  cardVersionEntries(card).forEach((version) => {
+    boardAssetTags({
+      ...baseAsset,
+      ref: `${baseAsset.ref}:${version.version_id || version.output_path || "version"}`,
+      path: version.output_path || baseAsset.path,
+      version_id: version.version_id || "",
+      version_status: version.status || "candidate",
+      qa_score: version.qa?.score ?? null,
+    }).forEach((tag) => tags.add(tag));
+  });
+  return [...tags];
+}
+
+function cardFilterAssets(board = currentIdeaBoard(), cardType = "storyboard") {
+  const cards = cardType === "concept" ? board.project_bible || [] : board.rows || [];
+  return cards.map((card, index) => {
+    const asset = cardFilterAsset(card, cardType, board, index);
+    return {
+      ...asset,
+      tags: cardFilterTags(card, cardType, board, index),
+    };
+  });
+}
+
+function defaultCardFilterScope(cardType) {
+  return cardType === "concept" ? "all" : "current_scene";
+}
+
+function effectiveCardFilterScope(cardType, board = currentIdeaBoard()) {
+  const fallback = defaultCardFilterScope(cardType);
+  const raw = state.cardFilters?.scope || fallback;
+  const options = imageLibraryScopeOptions(cardFilterAssets(board, cardType));
+  if (options.some((option) => option.value === raw)) return raw;
+  if (options.some((option) => option.value === fallback)) return fallback;
+  return "all";
+}
+
+function normalizedCardFilters(cardType, board = currentIdeaBoard()) {
+  return {
+    scope: effectiveCardFilterScope(cardType, board),
+    tag: state.cardFilters?.tag || "all",
+    mode: state.cardFilters?.mode || "all",
+    query: state.cardFilters?.query || "",
+  };
+}
+
+function cardMatchesCardScope(card, cardType, board = currentIdeaBoard(), index = 0) {
+  const filters = normalizedCardFilters(cardType, board);
+  return imageAssetMatchesScope(cardFilterAsset(card, cardType, board, index), filters.scope);
+}
+
+function cardMatchesCardFilters(card, cardType, board = currentIdeaBoard(), index = 0) {
+  const filters = normalizedCardFilters(cardType, board);
   const mode = filters.mode || "all";
   const versions = cardVersionEntries(card);
   const hasImage = versions.length > 0;
   const selected = cardSelectedForGeneration(card, cardType);
+  if (!imageAssetMatchesScope(cardFilterAsset(card, cardType, board, index), filters.scope)) return false;
+  const tag = filters.tag || "all";
+  if (tag !== "all" && !cardFilterTags(card, cardType, board, index).includes(tag)) return false;
   if (mode === "selected" && !selected) return false;
   if (mode === "unselected" && selected) return false;
   if (mode === "no_image" && hasImage) return false;
@@ -4459,20 +4578,52 @@ function cardMatchesCardFilters(card, cardType) {
     .includes(query);
 }
 
+function cardScopeOptions(board = currentIdeaBoard(), cardType = "storyboard") {
+  const allLabel = cardType === "concept" ? "全部概念卡 / All concept cards" : "全部分镜卡 / All storyboard cards";
+  return imageLibraryScopeOptions(cardFilterAssets(board, cardType)).map((option) => (
+    option.value === "all" ? { ...option, label: option.label.replace(/^全部图片 \/ All images/, allLabel) } : option
+  ));
+}
+
+function cardTagOptions() {
+  return BOARD_TAG_OPTIONS.map((option) => (
+    option.value === "all" ? { ...option, label: "全部类别 / All types" } : option
+  ));
+}
+
 function filteredProjectBibleEntries(board = currentIdeaBoard()) {
   return (board.project_bible || [])
     .map((card, index) => ({ card, index }))
-    .filter(({ card }) => cardMatchesCardFilters(card, "concept"));
+    .filter(({ card, index }) => cardMatchesCardFilters(card, "concept", board, index));
+}
+
+function projectBibleEntriesForCardScope(board = currentIdeaBoard()) {
+  return (board.project_bible || [])
+    .map((card, index) => ({ card, index }))
+    .filter(({ card, index }) => cardMatchesCardScope(card, "concept", board, index));
+}
+
+function ideaRowEntriesForCardScope(board = currentIdeaBoard()) {
+  return (board.rows || [])
+    .map((row, index) => ({ row, index }))
+    .filter(({ row, index }) => cardMatchesCardScope(row, "storyboard", board, index));
 }
 
 function filteredIdeaRowEntriesForCurrentScene(board = currentIdeaBoard()) {
-  return ideaRowEntriesForCurrentScene(board).filter(({ row }) => cardMatchesCardFilters(row, "storyboard"));
+  return ideaRowEntriesForCardScope(board).filter(({ row, index }) => cardMatchesCardFilters(row, "storyboard", board, index));
 }
 
-function renderCardFilterControls(total, visible) {
-  const filters = state.cardFilters || {};
+function renderCardFilterControls(total, visible, cardType, board = currentIdeaBoard()) {
+  const filters = normalizedCardFilters(cardType, board);
+  const scopeOptions = cardScopeOptions(board, cardType);
   return `
     <div class="card-filter-controls">
+      <select id="cardFilterScope">
+        ${scopeOptions.map((option) => `<option value="${escapeHtml(option.value)}" ${filters.scope === option.value ? "selected" : ""}>${escapeHtml(option.label)}</option>`).join("")}
+      </select>
+      <select id="cardFilterTag">
+        ${cardTagOptions().map((option) => `<option value="${escapeHtml(option.value)}" ${filters.tag === option.value ? "selected" : ""}>${escapeHtml(option.label)}</option>`).join("")}
+      </select>
       <select id="cardFilterMode">
         ${CARD_FILTER_OPTIONS.map((option) => `<option value="${escapeHtml(option.value)}" ${(filters.mode || "all") === option.value ? "selected" : ""}>${escapeHtml(option.label)}</option>`).join("")}
       </select>
@@ -4649,6 +4800,7 @@ function renderProjectBibleCards(board, entries = filteredProjectBibleEntries(bo
 function renderProjectBibleLab(board) {
   const cardCount = (board.project_bible || []).length;
   const enabledCount = (board.project_bible || []).filter((card) => card.selected !== false).length;
+  const scopeEntries = projectBibleEntriesForCardScope(board);
   const visibleEntries = filteredProjectBibleEntries(board);
   ensureProjectBibleActiveForFilteredCards(board);
   return `
@@ -4694,7 +4846,7 @@ function renderProjectBibleLab(board) {
             <strong>总概念卡 / ${enabledCount}/${cardCount} enabled</strong>
             <span>人物、场景、道具、美术、氛围和年代设定；分镜局部备注优先级更高。</span>
           </div>
-          ${renderCardFilterControls(cardCount, visibleEntries.length)}
+          ${renderCardFilterControls(scopeEntries.length, visibleEntries.length, "concept", board)}
         </div>
         <div id="projectBibleCardList" class="idea-rows project-bible-cards">${renderProjectBibleCards(board, visibleEntries)}</div>
       </section>
@@ -4705,9 +4857,9 @@ function renderProjectBibleLab(board) {
 function renderIdeaRows(entries, allRows = currentIdeaBoard().rows || []) {
   if (!entries.length) {
     const scene = selectedScene();
-    const sceneTotal = ideaRowEntriesForCurrentScene(currentIdeaBoard()).length;
+    const sceneTotal = ideaRowEntriesForCardScope(currentIdeaBoard()).length;
     if (sceneTotal) return `<div class="empty-state">没有匹配的分镜卡片 / No matching storyboard cards.</div>`;
-    return `<div class="empty-state">当前场戏 ${escapeHtml(scene?.scene_id || "")} 还没有分镜文本。点击“新增条目”会自动创建到这里。</div>`;
+    return `<div class="empty-state">当前范围 ${escapeHtml(scene?.scene_id || "ALL")} 还没有分镜文本。点击“新增条目”会自动创建到当前场戏。</div>`;
   }
   const batchSet = ideaBatchRowSet({ rows: allRows });
   return entries
@@ -4776,9 +4928,9 @@ function renderIdeaLab() {
     bindIdeaLabEvents();
     return;
   }
-  const sceneEntries = ideaRowEntriesForCurrentScene(board);
+  const sceneEntries = ideaRowEntriesForCardScope(board);
   const visibleEntries = filteredIdeaRowEntriesForCurrentScene(board);
-  ensureIdeaActiveRowForScene(board);
+  ensureIdeaActiveRowForFilteredCards(board);
   root.innerHTML = `
     <div class="idea-header">
       <div>
@@ -4824,7 +4976,7 @@ function renderIdeaLab() {
             <strong>${ideaSceneSummary(board)}</strong>
             <span>当前筛选显示 ${visibleEntries.length}/${sceneEntries.length}；保存会保留其他场戏和被隐藏条目。</span>
           </div>
-          ${renderCardFilterControls(sceneEntries.length, visibleEntries.length)}
+          ${renderCardFilterControls(sceneEntries.length, visibleEntries.length, "storyboard", board)}
         </div>
         <div id="ideaRows" class="idea-rows">${renderIdeaRows(visibleEntries, board.rows)}</div>
       </section>
@@ -5229,6 +5381,18 @@ function bindIdeaLabEvents() {
   $("qaRepairPacketBtn")?.addEventListener("click", createQaRepairPacket);
   $("cardSelectVisibleBtn")?.addEventListener("click", () => setVisibleCardSelection(true));
   $("cardClearVisibleBtn")?.addEventListener("click", () => setVisibleCardSelection(false));
+  $("cardFilterScope")?.addEventListener("change", (event) => {
+    state.cardFilters.scope = event.target.value || defaultCardFilterScope(isProjectBibleSelected() ? "concept" : "storyboard");
+    const board = collectIdeaBoardFromDom();
+    setIdeaBoardLocal(board);
+    renderIdeaLab();
+  });
+  $("cardFilterTag")?.addEventListener("change", (event) => {
+    state.cardFilters.tag = event.target.value || "all";
+    const board = collectIdeaBoardFromDom();
+    setIdeaBoardLocal(board);
+    renderIdeaLab();
+  });
   $("cardFilterMode")?.addEventListener("change", (event) => {
     state.cardFilters.mode = event.target.value || "all";
     const board = collectIdeaBoardFromDom();
@@ -5242,7 +5406,12 @@ function bindIdeaLabEvents() {
     renderIdeaLab();
   });
   $("cardFilterClearBtn")?.addEventListener("click", () => {
-    state.cardFilters = { mode: "all", query: "" };
+    state.cardFilters = {
+      scope: defaultCardFilterScope(isProjectBibleSelected() ? "concept" : "storyboard"),
+      tag: "all",
+      mode: "all",
+      query: "",
+    };
     const board = collectIdeaBoardFromDom();
     setIdeaBoardLocal(board);
     renderIdeaLab();
