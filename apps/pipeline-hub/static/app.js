@@ -18,6 +18,11 @@ const state = {
     tag: "all",
     query: "",
   },
+  imageLibraryFilters: {
+    scope: "all",
+    tag: "all",
+    query: "",
+  },
   boardOpen: false,
   boardNodes: [],
   boardEdges: [],
@@ -1552,6 +1557,57 @@ function imageAssetMatchesLibraryFilters(asset, filters = {}, scopeKey = "scene"
     .includes(query);
 }
 
+function imageLibraryFilterPatch(filters = {}) {
+  const patch = {};
+  const has = (key) => Object.prototype.hasOwnProperty.call(filters, key);
+  if (has("scope") || has("scene") || has("act")) {
+    patch.scope = filters.scope ?? filters.scene ?? filters.act ?? "all";
+  }
+  if (has("tag")) patch.tag = filters.tag ?? "all";
+  if (has("query")) patch.query = filters.query ?? "";
+  return patch;
+}
+
+function normalizedImageLibraryFilters(filters = {}) {
+  const patch = imageLibraryFilterPatch(filters);
+  return {
+    scope: patch.scope || "all",
+    tag: patch.tag || "all",
+    query: patch.query || "",
+  };
+}
+
+function mirrorImageLibraryFilters(filters) {
+  state.ideaRefFilters.act = filters.scope;
+  state.ideaRefFilters.tag = filters.tag;
+  state.ideaRefFilters.query = filters.query;
+  state.boardFilters.scene = filters.scope;
+  state.boardFilters.tag = filters.tag;
+  state.boardFilters.query = filters.query;
+  state.whiteboxFilters.scene = filters.scope;
+  state.whiteboxFilters.query = filters.query;
+}
+
+function setImageLibraryFilters(patch = {}, assets = allBoardImageAssets()) {
+  const previous = normalizedImageLibraryFilters(state.imageLibraryFilters || state.ideaRefFilters || state.boardFilters || {});
+  const next = {
+    ...previous,
+    ...imageLibraryFilterPatch(patch),
+  };
+  next.scope = effectiveImageScope(next.scope, assets);
+  state.imageLibraryFilters = next;
+  mirrorImageLibraryFilters(next);
+  return next;
+}
+
+function currentImageLibraryFilters(assets = allBoardImageAssets()) {
+  const next = normalizedImageLibraryFilters(state.imageLibraryFilters || state.ideaRefFilters || state.boardFilters || {});
+  next.scope = effectiveImageScope(next.scope, assets);
+  state.imageLibraryFilters = next;
+  mirrorImageLibraryFilters(next);
+  return next;
+}
+
 function boardAssetByRef(ref) {
   return allBoardImageAssets().find((asset) => asset.ref === ref) || null;
 }
@@ -1596,7 +1652,8 @@ function boardSceneFilterOptions(assets) {
 }
 
 function boardAssetMatches(asset) {
-  return imageAssetMatchesLibraryFilters(asset, state.boardFilters, "scene");
+  const filters = normalizedImageLibraryFilters(state.imageLibraryFilters || {});
+  return imageAssetMatchesLibraryFilters(asset, { scene: filters.scope, tag: filters.tag, query: filters.query }, "scene");
 }
 
 function assetQaLabel(asset) {
@@ -2266,14 +2323,14 @@ function renderBoardFilters(assets) {
   const tagFilter = $("boardTagFilter");
   const search = $("boardSearchInput");
   if (!sceneFilter || !tagFilter || !search) return;
-  state.boardFilters.scene = effectiveImageScope(state.boardFilters.scene, assets);
+  const filters = currentImageLibraryFilters(assets);
   sceneFilter.innerHTML = boardSceneFilterOptions(assets)
-    .map((option) => `<option value="${escapeHtml(option.value)}" ${state.boardFilters.scene === option.value ? "selected" : ""}>${escapeHtml(option.label)}</option>`)
+    .map((option) => `<option value="${escapeHtml(option.value)}" ${filters.scope === option.value ? "selected" : ""}>${escapeHtml(option.label)}</option>`)
     .join("");
   tagFilter.innerHTML = BOARD_TAG_OPTIONS.map(
-    (option) => `<option value="${escapeHtml(option.value)}" ${state.boardFilters.tag === option.value ? "selected" : ""}>${escapeHtml(option.label)}</option>`,
+    (option) => `<option value="${escapeHtml(option.value)}" ${filters.tag === option.value ? "selected" : ""}>${escapeHtml(option.label)}</option>`,
   ).join("");
-  search.value = state.boardFilters.query || "";
+  search.value = filters.query || "";
 }
 
 function renderBoardHandoffDock() {
@@ -2328,7 +2385,7 @@ function renderBoardAssetTray() {
   const tray = $("boardAssetTray");
   if (!tray) return;
   const assets = allBoardImageAssets();
-  state.boardFilters.scene = effectiveImageScope(state.boardFilters.scene, assets);
+  currentImageLibraryFilters(assets);
   renderBoardFilters(assets);
   const visible = assets.filter(boardAssetMatches).slice(0, 160);
   tray.innerHTML = visible.length
@@ -2476,17 +2533,17 @@ function bindReferenceBoardEvents() {
   bindBoardAssetTrayEvents();
   const sceneFilter = $("boardSceneFilter");
   if (sceneFilter) sceneFilter.onchange = (event) => {
-    state.boardFilters.scene = event.target.value;
+    setImageLibraryFilters({ scope: event.target.value }, allBoardImageAssets());
     renderReferenceBoard();
   };
   const tagFilter = $("boardTagFilter");
   if (tagFilter) tagFilter.onchange = (event) => {
-    state.boardFilters.tag = event.target.value;
+    setImageLibraryFilters({ tag: event.target.value }, allBoardImageAssets());
     renderReferenceBoard();
   };
   const searchInput = $("boardSearchInput");
   if (searchInput) searchInput.oninput = (event) => {
-    state.boardFilters.query = event.target.value;
+    setImageLibraryFilters({ query: event.target.value }, allBoardImageAssets());
     renderBoardAssetTray();
     bindBoardAssetTrayEvents();
   };
@@ -2619,9 +2676,9 @@ function whiteboxSceneFilterOptions(assets) {
 }
 
 function whiteboxAssetMatches(asset) {
-  const filter = normalizedImageScope(state.whiteboxFilters.scene || "current_scene");
-  if (!imageAssetMatchesScope(asset, filter)) return false;
-  const query = (state.whiteboxFilters.query || "").trim().toLowerCase();
+  const filters = normalizedImageLibraryFilters(state.imageLibraryFilters || {});
+  if (!imageAssetMatchesScope(asset, filters.scope)) return false;
+  const query = (filters.query || "").trim().toLowerCase();
   if (!query) return true;
   return [asset.asset_id, asset.role, asset.path, asset.scene_id, asset.scene_title, asset.act_title, asset.shot_id, kindLabel(asset.kind)]
     .join(" ")
@@ -2766,15 +2823,15 @@ function renderWhiteboxLab() {
   document.body.classList.toggle("board-open", state.whiteboxOpen || state.boardOpen);
   if (!state.whiteboxOpen) return;
   const assets = whiteboxSourceAssets();
-  state.whiteboxFilters.scene = effectiveImageScope(state.whiteboxFilters.scene || "current_scene", assets);
+  const filters = currentImageLibraryFilters(assets);
   const sceneFilter = $("whiteboxSceneFilter");
   if (sceneFilter) {
     sceneFilter.innerHTML = whiteboxSceneFilterOptions(assets)
-      .map((option) => `<option value="${escapeHtml(option.value)}" ${normalizedImageScope(state.whiteboxFilters.scene) === option.value ? "selected" : ""}>${escapeHtml(option.label)}</option>`)
+      .map((option) => `<option value="${escapeHtml(option.value)}" ${filters.scope === option.value ? "selected" : ""}>${escapeHtml(option.label)}</option>`)
       .join("");
   }
   const search = $("whiteboxSearchInput");
-  if (search) search.value = state.whiteboxFilters.query || "";
+  if (search) search.value = filters.query || "";
   renderWhiteboxSourceGrid();
   const source = selectedWhiteboxSource();
   if (!state.whiteboxSelectedTargets.length) state.whiteboxSelectedTargets = defaultWhiteboxTargetIds(source);
@@ -2859,13 +2916,13 @@ function bindWhiteboxLabEvents() {
   if (buildButton) buildButton.onclick = createWhiteboxJob;
   const sceneFilter = $("whiteboxSceneFilter");
   if (sceneFilter) sceneFilter.onchange = (event) => {
-    state.whiteboxFilters.scene = event.target.value || "all";
+    setImageLibraryFilters({ scope: event.target.value || "all" }, whiteboxSourceAssets());
     state.whiteboxSelectedTargets = [];
     renderWhiteboxLab();
   };
   const searchInput = $("whiteboxSearchInput");
   if (searchInput) searchInput.oninput = (event) => {
-    state.whiteboxFilters.query = event.target.value || "";
+    setImageLibraryFilters({ query: event.target.value || "" }, whiteboxSourceAssets());
     state.whiteboxSelectedTargets = [];
     renderWhiteboxLab();
   };
@@ -3205,8 +3262,8 @@ function ideaReferenceActOptions(assets = allBoardImageAssets()) {
 
 function ideaReferenceAssets() {
   const assets = allBoardImageAssets().filter((asset) => frameIsUsable(asset));
-  state.ideaRefFilters.act = effectiveImageScope(state.ideaRefFilters.act, assets);
-  return assets.filter((asset) => imageAssetMatchesLibraryFilters(asset, state.ideaRefFilters, "act"));
+  const filters = currentImageLibraryFilters(assets);
+  return assets.filter((asset) => imageAssetMatchesLibraryFilters(asset, { act: filters.scope, tag: filters.tag, query: filters.query }, "act"));
 }
 
 function addIdeaReferenceToRows(board, asset, rowIndexes) {
@@ -3344,8 +3401,8 @@ function renderIdeaReferenceAssetGrid(row) {
                 ${
                   bibleMode
                     ? `<button class="mini-command idea-add-ref" data-ref-scope="bible" data-asset-ref="${escapeHtml(asset.ref)}" type="button" ${activeProjectBibleCard() ? "" : "disabled"}>当前卡</button>`
-                    : `<button class="mini-command idea-add-ref" data-ref-scope="row" data-asset-ref="${escapeHtml(asset.ref)}" type="button" ${row ? "" : "disabled"}>目标</button>
-                       <button class="mini-command idea-add-ref" data-ref-scope="batch" data-asset-ref="${escapeHtml(asset.ref)}" type="button" ${batchCount ? "" : "disabled"}>同步</button>`
+                    : `<button class="mini-command idea-add-ref" data-ref-scope="row" data-asset-ref="${escapeHtml(asset.ref)}" type="button" ${row ? "" : "disabled"}>当前卡</button>
+                       <button class="mini-command idea-add-ref" data-ref-scope="batch" data-asset-ref="${escapeHtml(asset.ref)}" type="button" ${batchCount ? "" : "disabled"}>勾选卡</button>`
                 }
               </div>
             </article>
@@ -3424,7 +3481,7 @@ function renderIdeaReferencePanel(board) {
   const globalRefs = board.global_references || [];
   const rowRefs = row?.references || [];
   const batchSet = ideaBatchRowSet(board);
-  state.ideaRefFilters.act = effectiveImageScope(state.ideaRefFilters.act, allBoardImageAssets().filter((asset) => frameIsUsable(asset)));
+  const filters = currentImageLibraryFilters(allBoardImageAssets().filter((asset) => frameIsUsable(asset)));
   return `
     <details class="idea-reference-panel" open>
       <summary>
@@ -3434,21 +3491,21 @@ function renderIdeaReferencePanel(board) {
       <div class="idea-reference-content">
         <div class="idea-reference-controls">
           <select id="ideaRefActFilter">
-            ${ideaReferenceActOptions().map((option) => `<option value="${escapeHtml(option.value)}" ${normalizedImageScope(state.ideaRefFilters.act) === option.value ? "selected" : ""}>${escapeHtml(option.label)}</option>`).join("")}
+            ${ideaReferenceActOptions().map((option) => `<option value="${escapeHtml(option.value)}" ${filters.scope === option.value ? "selected" : ""}>${escapeHtml(option.label)}</option>`).join("")}
           </select>
           <select id="ideaRefTagFilter">
-            ${BOARD_TAG_OPTIONS.map((option) => `<option value="${escapeHtml(option.value)}" ${state.ideaRefFilters.tag === option.value ? "selected" : ""}>${escapeHtml(option.label)}</option>`).join("")}
+            ${BOARD_TAG_OPTIONS.map((option) => `<option value="${escapeHtml(option.value)}" ${filters.tag === option.value ? "selected" : ""}>${escapeHtml(option.label)}</option>`).join("")}
           </select>
-          <input id="ideaRefSearchInput" value="${escapeHtml(state.ideaRefFilters.query || "")}" placeholder="搜索人设、场景、道具 / Search refs" />
+          <input id="ideaRefSearchInput" value="${escapeHtml(filters.query || "")}" placeholder="搜索人设、场景、道具 / Search refs" />
         </div>
         <div class="idea-target-controls">
           <div class="idea-current-target">
-            <strong>当前条目 / Current</strong>
+            <strong>当前分镜卡 / Current card</strong>
             <span>${escapeHtml(row?.item_id || "当前场戏暂无条目")}</span>
             <small>点每条分镜里的“参考 / Refs”切换。</small>
           </div>
           <div class="idea-batch-control">
-            <strong>同步参考 / Sync refs</strong>
+            <strong>批量绑定参考 / Batch refs</strong>
             <div class="idea-batch-list">
               ${entries.length
                 ? entries
@@ -4131,7 +4188,7 @@ function renderProjectBibleReferencePanel(board) {
   const card = activeProjectBibleCard(board);
   const globalRefs = board.global_references || [];
   const cardRefs = card?.references || [];
-  state.ideaRefFilters.act = effectiveImageScope(state.ideaRefFilters.act, allBoardImageAssets().filter((asset) => frameIsUsable(asset)));
+  const filters = currentImageLibraryFilters(allBoardImageAssets().filter((asset) => frameIsUsable(asset)));
   return `
     <details class="idea-reference-panel project-bible-reference-panel" open>
       <summary>
@@ -4141,12 +4198,12 @@ function renderProjectBibleReferencePanel(board) {
       <div class="idea-reference-content">
         <div class="idea-reference-controls">
           <select id="ideaRefActFilter">
-            ${ideaReferenceActOptions().map((option) => `<option value="${escapeHtml(option.value)}" ${normalizedImageScope(state.ideaRefFilters.act) === option.value ? "selected" : ""}>${escapeHtml(option.label)}</option>`).join("")}
+            ${ideaReferenceActOptions().map((option) => `<option value="${escapeHtml(option.value)}" ${filters.scope === option.value ? "selected" : ""}>${escapeHtml(option.label)}</option>`).join("")}
           </select>
           <select id="ideaRefTagFilter">
-            ${BOARD_TAG_OPTIONS.map((option) => `<option value="${escapeHtml(option.value)}" ${state.ideaRefFilters.tag === option.value ? "selected" : ""}>${escapeHtml(option.label)}</option>`).join("")}
+            ${BOARD_TAG_OPTIONS.map((option) => `<option value="${escapeHtml(option.value)}" ${filters.tag === option.value ? "selected" : ""}>${escapeHtml(option.label)}</option>`).join("")}
           </select>
-          <input id="ideaRefSearchInput" value="${escapeHtml(state.ideaRefFilters.query || "")}" placeholder="搜索人设、场景、道具、美术 / Search bible refs" />
+          <input id="ideaRefSearchInput" value="${escapeHtml(filters.query || "")}" placeholder="搜索人设、场景、道具、美术 / Search bible refs" />
         </div>
         <section class="idea-ref-section">
           <strong>全局参考 / Global</strong>
@@ -4592,7 +4649,7 @@ async function createQaRepairPacket() {
 
 function currentVersionPackageScope() {
   const assets = allBoardImageAssets();
-  return effectiveImageScope(state.ideaRefFilters.act || "all", assets);
+  return currentImageLibraryFilters(assets).scope;
 }
 
 async function createCurrentVersionPackage() {
@@ -4811,19 +4868,19 @@ function bindIdeaLabEvents() {
     renderIdeaLab();
   });
   $("ideaRefActFilter")?.addEventListener("change", (event) => {
-    state.ideaRefFilters.act = event.target.value || "all";
+    setImageLibraryFilters({ scope: event.target.value || "all" }, allBoardImageAssets().filter((asset) => frameIsUsable(asset)));
     const board = collectIdeaBoardFromDom();
     setIdeaBoardLocal(board);
     renderIdeaLab();
   });
   $("ideaRefTagFilter")?.addEventListener("change", (event) => {
-    state.ideaRefFilters.tag = event.target.value || "all";
+    setImageLibraryFilters({ tag: event.target.value || "all" }, allBoardImageAssets().filter((asset) => frameIsUsable(asset)));
     const board = collectIdeaBoardFromDom();
     setIdeaBoardLocal(board);
     renderIdeaLab();
   });
   $("ideaRefSearchInput")?.addEventListener("input", (event) => {
-    state.ideaRefFilters.query = event.target.value || "";
+    setImageLibraryFilters({ query: event.target.value || "" }, allBoardImageAssets().filter((asset) => frameIsUsable(asset)));
     refreshIdeaReferenceAssetGrid();
   });
   $("ideaRows")?.querySelectorAll(".idea-focus-row").forEach((button) => {
