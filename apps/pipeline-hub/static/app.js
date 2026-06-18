@@ -176,6 +176,10 @@ const QA_REPAIR_INTENTS = {
 };
 const BOARD_TAG_OPTIONS = [
   { value: "all", label: "全部图片 / All images" },
+  { value: "card_concept", label: "概念卡图 / Concept card images" },
+  { value: "card_storyboard", label: "分镜卡图 / Storyboard card images" },
+  { value: "scope_global", label: "全局设定图 / Global scope" },
+  { value: "scope_act", label: "幕级设定图 / Act scope" },
   { value: "character", label: "人物 / Character" },
   { value: "scene", label: "场景 / Scene" },
   { value: "prop", label: "道具 / Prop" },
@@ -1288,7 +1292,23 @@ function projectBibleCategoryKind(category) {
 
 function boardAssetTags(asset) {
   const tags = new Set();
-  const haystack = [asset.asset_id, asset.role, asset.path, asset.kind, asset.stage, asset.card_category, asset.card_title].join(" ").toLowerCase();
+  const haystack = [
+    asset.asset_id,
+    asset.role,
+    asset.path,
+    asset.kind,
+    asset.stage,
+    asset.card_type,
+    asset.card_scope,
+    asset.card_act_id,
+    asset.card_act_title,
+    asset.card_category,
+    asset.card_title,
+  ].join(" ").toLowerCase();
+  if (asset.card_type === "concept") tags.add("card_concept");
+  if (asset.card_type === "storyboard") tags.add("card_storyboard");
+  if (asset.card_type === "concept" && (asset.card_scope || "project") === "project") tags.add("scope_global");
+  if (asset.card_type === "concept" && (asset.card_scope === "act" || asset.card_act_id || asset.act_id)) tags.add("scope_act");
   if (asset.kind === "character_ref" || haystack.includes("character") || haystack.includes("person") || haystack.includes("三视图")) tags.add("character");
   if (asset.kind === "scene_ref" || haystack.includes("location") || haystack.includes("scene") || haystack.includes("environment")) tags.add("scene");
   if (asset.kind === "prop_ref" || haystack.includes("prop") || haystack.includes("道具")) tags.add("prop");
@@ -1333,6 +1353,9 @@ function mergeBoardImageAsset(byRef, incoming) {
     "version_status",
     "card_type",
     "card_id",
+    "card_scope",
+    "card_act_id",
+    "card_act_title",
     "card_title",
     "card_category",
     "card_summary",
@@ -1356,6 +1379,8 @@ function cardVersionImageAssets() {
   const sceneIndexById = new Map(scenes.map((scene, index) => [scene.scene_id, index]));
   const assets = [];
   (board.project_bible || []).forEach((card, cardIndex) => {
+    const cardScope = card.scope || "project";
+    const cardActLabel = card.act_id ? projectBibleActLabel(board, card.act_id) : "全项目 / Project";
     cardVersionEntries(card).forEach((version, versionIndex) => {
       const path = version.output_path || "";
       if (!isImagePath(path)) return;
@@ -1374,7 +1399,7 @@ function cardVersionImageAssets() {
         scene_title: "总概念 / Project Bible",
         scene_slug: "",
         act_id: card.act_id || "",
-        act_title: card.act_id ? card.act_id : "全项目 / Project",
+        act_title: cardActLabel,
         shot_id: "",
         scene_order: 9000 + cardIndex,
         asset_order: versionIndex,
@@ -1383,6 +1408,9 @@ function cardVersionImageAssets() {
         version_status: version.status || "candidate",
         card_type: "concept",
         card_id: card.card_id || "",
+        card_scope: cardScope,
+        card_act_id: card.act_id || "",
+        card_act_title: cardActLabel,
         card_title: card.title || "",
         card_category: card.category || "",
         card_summary: card.summary || "",
@@ -1419,6 +1447,9 @@ function cardVersionImageAssets() {
         version_status: version.status || "candidate",
         card_type: "storyboard",
         card_id: row.item_id || "",
+        card_scope: "scene",
+        card_act_id: scene.act_id || "",
+        card_act_title: scene.act_title || "",
         card_title: row.beat || row.item_id || "",
         card_category: "storyboard",
         card_summary: row.frame_description || "",
@@ -1566,6 +1597,9 @@ function imageAssetMatchesLibraryFilters(asset, filters = {}, scopeKey = "scene"
     asset.version_status,
     asset.card_type,
     asset.card_id,
+    asset.card_scope,
+    asset.card_act_id,
+    asset.card_act_title,
     asset.card_title,
     asset.card_category,
     asset.card_summary,
