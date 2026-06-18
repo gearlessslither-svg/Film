@@ -126,6 +126,55 @@ input {
   border-color: var(--accent);
 }
 
+button[data-help] {
+  position: relative;
+  overflow: visible;
+}
+
+button[data-help]::after {
+  content: "?";
+  display: inline-grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  margin-left: 6px;
+  border-radius: 50%;
+  background: rgba(15, 118, 110, 0.12);
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+button[data-help].primary::after,
+button[data-help].priority::after {
+  background: rgba(255, 255, 255, 0.22);
+  color: #ffffff;
+}
+
+button[data-help]:hover::before,
+button[data-help]:focus-visible::before {
+  content: attr(data-help);
+  position: absolute;
+  right: 0;
+  top: calc(100% + 7px);
+  z-index: 80;
+  width: max-content;
+  max-width: 280px;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #14231f;
+  color: #ffffff;
+  box-shadow: var(--shadow);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.45;
+  white-space: normal;
+  text-align: left;
+  pointer-events: none;
+}
+
 .command-button.primary {
   background: var(--accent);
   border-color: var(--accent);
@@ -149,6 +198,34 @@ input {
 
 .command-button.full {
   width: 100%;
+}
+
+.workflow-steps {
+  margin: 10px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  list-style: none;
+}
+
+.workflow-steps li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 28px;
+  padding: 4px 8px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #f8faf9;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.25;
+}
+
+.workflow-steps strong {
+  color: var(--accent);
+  font-size: 11px;
 }
 
 .project-list {
@@ -357,7 +434,7 @@ textarea:focus {
   border-radius: 8px;
   box-shadow: var(--shadow);
   min-width: 0;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .idea-header {
@@ -861,6 +938,22 @@ textarea:focus {
 .idea-handoff-list {
   display: grid;
   gap: 8px;
+}
+
+.idea-handoff-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 11px;
+  margin-bottom: 8px;
+}
+
+.idea-handoff-toolbar .mini-command {
+  min-height: 26px;
+  padding: 0 10px;
+  font-size: 11px;
 }
 
 .idea-handoff-card {
@@ -3567,6 +3660,12 @@ th {
   font-size: 11px;
 }
 
+.board-handoff-header-actions {
+  display: flex;
+  gap: 6px;
+  flex: 0 0 auto;
+}
+
 .board-handoff-list {
   display: grid;
   grid-auto-flow: column;
@@ -4120,4 +4219,8 @@ th {
   .board-filters {
     grid-template-columns: 1fr;
   }
+}
+
+button[data-help] {
+  overflow: visible;
 }

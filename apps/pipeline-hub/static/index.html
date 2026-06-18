@@ -296,9 +296,15 @@
             <p class="eyebrow">Image Reference Board</p>
             <h3>图片关系画布 / Image Reference Board</h3>
             <p>主图、关联图、白模、人设、场景和道具参考 / Main image, references, whiteboxes, characters, scenes, and props</p>
+            <ol class="workflow-steps">
+              <li><strong>01</strong><span>拖入图片</span></li>
+              <li><strong>02</strong><span>设主图/关联图</span></li>
+              <li><strong>03</strong><span>写备注和连线</span></li>
+              <li><strong>04</strong><span>生成精修任务包</span></li>
+            </ol>
           </div>
           <div class="board-header-actions">
-            <button id="clearBoardBtn" class="command-button" type="button">清空画布 / Clear</button>
+            <button id="clearBoardBtn" class="command-button" data-help="移除画布上的节点、连线和临时交接卡，不删除项目里的图片文件。" type="button">清空画布 / Clear</button>
             <button id="closeBoardBtn" class="icon-button" type="button" title="关闭 / Close">×</button>
           </div>
         </header>
@@ -332,9 +338,15 @@
             <p class="eyebrow">Whitebox Replica Lab</p>
             <h3>白模复刻工作台 / Whitebox Replica Lab</h3>
             <p>用一张优秀场景/分镜图复刻 1:1 白模，再默认挂到相关分镜提示词。</p>
+            <ol class="workflow-steps">
+              <li><strong>01</strong><span>选母图</span></li>
+              <li><strong>02</strong><span>选关联分镜</span></li>
+              <li><strong>03</strong><span>写复刻说明</span></li>
+              <li><strong>04</strong><span>生成白模包</span></li>
+            </ol>
           </div>
           <div class="board-header-actions">
-            <button id="buildWhiteboxJobBtn" class="command-button primary" type="button">生成白模任务包 / Build Packet</button>
+            <button id="buildWhiteboxJobBtn" class="command-button primary" data-help="根据选中的母图和目标分镜，生成 Blender 白模复刻任务包并可自动挂载到分镜参考。" type="button">生成白模任务包 / Build Packet</button>
             <button id="closeWhiteboxLabBtn" class="icon-button" type="button" title="关闭 / Close">×</button>
           </div>
         </header>

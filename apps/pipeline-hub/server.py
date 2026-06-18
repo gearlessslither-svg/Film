@@ -2202,6 +2202,7 @@ def normalize_idea_row(row: dict[str, object], index: int) -> dict[str, object]:
     versions = normalize_concept_card_versions(row.get("versions", []))
     return {
         "item_id": item_id,
+        "act_id": safe_file_stem(row.get("act_id", "") or ""),
         "scene_id": str(row.get("scene_id", "") or "").strip(),
         "beat": str(row.get("beat", "") or "").strip(),
         "shot_type": str(row.get("shot_type", "") or "").strip(),
@@ -2351,6 +2352,7 @@ def idea_board_to_markdown(board: dict[str, object]) -> str:
                 [
                     "",
                     f"### {index:03d}. {row.get('item_id', '')}",
+                    f"- Act / 所属幕: {row.get('act_id', '')}",
                     f"- Scene / 场戏: {row.get('scene_id', '')}",
                     f"- Beat / 剧情点: {row.get('beat', '')}",
                     f"- Shot type / 镜头: {row.get('shot_type', '')}",
@@ -3121,6 +3123,56 @@ def load_json_file(path: Path) -> object:
         return None
 
 
+def card_handoff_output_paths(task: object) -> list[str]:
+    if not isinstance(task, dict):
+        return []
+    paths: list[str] = []
+    suggested_output = task.get("suggested_output_path")
+    if isinstance(suggested_output, str) and suggested_output.strip():
+        paths.append(suggested_output.strip())
+    candidate_outputs = task.get("suggested_candidate_outputs")
+    if isinstance(candidate_outputs, list):
+        for candidate in candidate_outputs:
+            if not isinstance(candidate, dict):
+                continue
+            output_path = candidate.get("output_path")
+            if isinstance(output_path, str) and output_path.strip():
+                paths.append(output_path.strip())
+    seen: set[str] = set()
+    unique_paths: list[str] = []
+    for rel_path in paths:
+        if rel_path in seen:
+            continue
+        seen.add(rel_path)
+        unique_paths.append(rel_path)
+    return unique_paths
+
+
+def card_handoff_processed_state(project_root: Path, tasks: list[object]) -> dict[str, object]:
+    processed_count = 0
+    output_mtimes: list[float] = []
+    existing_outputs: list[str] = []
+    for task in tasks:
+        task_processed = False
+        for rel_path in card_handoff_output_paths(task):
+            output_path = project_root / rel_path
+            if not output_path.exists() or not output_path.is_file():
+                continue
+            task_processed = True
+            existing_outputs.append(rel_path)
+            output_mtimes.append(output_path.stat().st_mtime)
+        if task_processed:
+            processed_count += 1
+    processed_at = max(output_mtimes) if output_mtimes else 0
+    return {
+        "processed": bool(tasks) and processed_count >= len(tasks),
+        "processed_task_count": processed_count,
+        "processed_at": processed_at,
+        "processed_at_iso": datetime.fromtimestamp(processed_at, timezone.utc).astimezone().isoformat() if processed_at else "",
+        "existing_output_paths": existing_outputs,
+    }
+
+
 def codex_card_handoff_candidates(slug: str, path: Path) -> list[dict[str, object]]:
     jobs_dir = path / "08_generation" / "jobs"
     if not jobs_dir.exists():
@@ -3142,6 +3194,7 @@ def codex_card_handoff_candidates(slug: str, path: Path) -> list[dict[str, objec
             handoff_path = job_dir / "outputs" / f"{packet_id}_card_handoff.md"
             handoff_text = handoff_path.read_text(encoding="utf-8") if handoff_path.exists() else ""
             modified_at = max(card_tasks_path.stat().st_mtime, handoff_path.stat().st_mtime if handoff_path.exists() else 0)
+            processed_state = card_handoff_processed_state(path, tasks)
             candidates.append(
                 {
                     "kind": "card_image_packet",
@@ -3155,6 +3208,7 @@ def codex_card_handoff_candidates(slug: str, path: Path) -> list[dict[str, objec
                     "callback_url": f"http://127.0.0.1:8787/api/projects/{slug}/card-image-output",
                     "modified_at": modified_at,
                     "modified_at_iso": datetime.fromtimestamp(modified_at, timezone.utc).astimezone().isoformat(),
+                    **processed_state,
                 }
             )
         if board_task_path.exists():
@@ -3166,6 +3220,7 @@ def codex_card_handoff_candidates(slug: str, path: Path) -> list[dict[str, objec
             handoff_path = job_dir / "outputs" / f"{packet_id}_board_card_handoff.md"
             handoff_text = handoff_path.read_text(encoding="utf-8") if handoff_path.exists() else ""
             modified_at = max(board_task_path.stat().st_mtime, handoff_path.stat().st_mtime if handoff_path.exists() else 0)
+            processed_state = card_handoff_processed_state(path, tasks)
             candidates.append(
                 {
                     "kind": "board_card_refinement",
@@ -3179,6 +3234,7 @@ def codex_card_handoff_candidates(slug: str, path: Path) -> list[dict[str, objec
                     "callback_url": f"http://127.0.0.1:8787/api/projects/{slug}/card-image-output",
                     "modified_at": modified_at,
                     "modified_at_iso": datetime.fromtimestamp(modified_at, timezone.utc).astimezone().isoformat(),
+                    **processed_state,
                 }
             )
     return sorted(candidates, key=lambda item: float(item.get("modified_at", 0) or 0), reverse=True)
@@ -3188,9 +3244,30 @@ def latest_codex_card_handoff(slug: str, query: str = "") -> dict[str, object]:
     path = project_path(slug)
     params = parse_qs(query)
     kind_filter = str(params.get("kind", ["any"])[0] or "any").strip()
+    include_processed = str(params.get("include_processed", ["0"])[0] or "0").lower() in {"1", "true", "yes"}
+    include_stale = str(params.get("include_stale", ["0"])[0] or "0").lower() in {"1", "true", "yes"}
     candidates = codex_card_handoff_candidates(slug, path)
+    board_mtime = idea_board_path(path).stat().st_mtime if idea_board_path(path).exists() else 0
+    next_candidates: list[dict[str, object]] = []
+    for item in candidates:
+        next_item = dict(item)
+        modified_at = float(next_item.get("modified_at", 0) or 0)
+        stale = bool(board_mtime and modified_at and board_mtime > modified_at + 0.5)
+        next_item["stale"] = stale
+        next_item["stale_reason"] = "Idea Board updated after this packet; regenerate the packet before processing." if stale else ""
+        next_candidates.append(next_item)
+    candidates = next_candidates
     if kind_filter in {"card_image_packet", "board_card_refinement"}:
         candidates = [item for item in candidates if item.get("kind") == kind_filter]
+    total_count = len(candidates)
+    if not include_processed:
+        candidates = [item for item in candidates if not item.get("processed")]
+    processed_filtered_count = total_count - len(candidates)
+    if not include_stale:
+        before_stale_filter = len(candidates)
+        candidates = [item for item in candidates if not item.get("stale")]
+    else:
+        before_stale_filter = len(candidates)
     latest = candidates[0] if candidates else None
     return {
         "ok": bool(latest),
@@ -3200,10 +3277,13 @@ def latest_codex_card_handoff(slug: str, query: str = "") -> dict[str, object]:
         "project_root": str(path),
         "latest": latest,
         "available_count": len(candidates),
+        "total_count": total_count,
+        "processed_hidden_count": max(0, processed_filtered_count),
+        "stale_hidden_count": max(0, before_stale_filter - len(candidates)),
         "allowed_triggers": ["电影", "处理电影卡片", "生成电影卡片图片", "生成分镜图片", "生成概念图"],
         "do_not_use_for": ["分析策略卡片", "投资策略卡片", "财务状况"],
         "image_selection_policy": "默认回传全部候选图；只有用户明确要求先挑选时才等待选择。候选编号只写入文件名/version_id/candidate_id，不得画进图片。",
-        "usage": "只在用户明确说“电影 / 处理电影卡片 / 生成电影卡片图片 / 生成分镜图片 / 生成概念图”时读取 latest.tasks，逐项生成图片，然后 POST callback_url 回填。不要用本接口处理投资策略卡片。",
+        "usage": "只在用户明确说“电影 / 处理电影卡片 / 生成电影卡片图片 / 生成分镜图片 / 生成概念图”时读取 latest.tasks，逐项生成图片，然后 POST callback_url 回填。已存在输出文件或早于 Idea Board 最新修改的卡片会自动从待处理队列隐藏。不要用本接口处理投资策略卡片。",
     }
 
 

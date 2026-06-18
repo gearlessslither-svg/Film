@@ -7,7 +7,7 @@ const state = {
   selectedSceneLockIndex: 0,
   selectedSceneId: "",
   selectedFrameRef: "",
-  storyboardStage: "all",
+  storyboardStage: "final",
   referenceSelection: {},
   ideaHandoffs: [],
   ideaActiveRowIndex: 0,
@@ -1109,29 +1109,110 @@ function assetIsWhitebox(asset) {
   return asset?.kind === "whitebox" || haystack.includes("whitebox") || haystack.includes("previs");
 }
 
-function storyboardFrameMatchesFilter(asset) {
-  if (state.storyboardStage === "all") return !assetIsWhitebox(asset);
-  if (state.storyboardStage === "kind:whitebox") return assetIsWhitebox(asset);
-  if (state.storyboardStage?.startsWith("kind:")) return asset.kind === state.storyboardStage.slice(5);
-  return asset.stage === state.storyboardStage;
+function storyboardActId(scene) {
+  return scene?.act_id || scene?.scene_id || "";
+}
+
+function storyboardRowsForAct(scene, board = currentIdeaBoard()) {
+  const actId = scene?.act_id || "";
+  const sceneId = scene?.scene_id || "";
+  return (board.rows || [])
+    .map((row, index) => ({ row, index }))
+    .filter(({ row }) => {
+      const rowActId = row.act_id || sceneForIdeaRow(row).act_id || "";
+      if (actId) return rowActId === actId;
+      return sceneId ? row.scene_id === sceneId : true;
+    });
+}
+
+function finalStoryboardFrames(scene) {
+  const board = currentIdeaBoard();
+  return storyboardRowsForAct(scene, board)
+    .map(({ row, index }) => {
+      const current = [...cardVersionEntries(row)].reverse().find((version) => version.status === "current");
+      const path = current?.output_path || "";
+      if (!isImagePath(path)) return null;
+      const rowScene = sceneForIdeaRow(row);
+      const rowActId = row.act_id || rowScene.act_id || scene?.act_id || "";
+      return {
+        asset_id: row.item_id || `IDEA_SHOT_${index + 1}`,
+        role: row.beat || row.frame_description || row.item_id || "Storyboard keyframe",
+        path,
+        origin: "project",
+        url: sceneAssetUrl(path),
+        ref: `project:${path}`,
+        kind: "storyboard_keyframe",
+        stage: "08_generation",
+        scene_id: row.scene_id || "",
+        scene_title: rowScene.title || "",
+        act_id: rowActId,
+        act_title: rowActId ? projectBibleActLabel(board, rowActId) : rowScene.act_title || "",
+        shot_id: row.item_id || "",
+        asset_order: index,
+        sort_text: [row.item_id, row.beat, current?.version_id, path].filter(Boolean).join(" "),
+        version_id: current?.version_id || "",
+        version_status: "current",
+        card_type: "storyboard",
+        card_id: row.item_id || "",
+        card_scope: rowActId ? "act" : "scene",
+        card_act_id: rowActId,
+        card_act_title: rowActId ? projectBibleActLabel(board, rowActId) : "",
+        card_title: row.beat || row.item_id || "",
+        card_category: "storyboard",
+        card_summary: row.frame_description || "",
+        card_prompt: [row.image_prompt, row.video_prompt, row.revision_note, row.notes].filter(Boolean).join(" "),
+        qa_score: current?.qa?.score ?? null,
+        is_final_storyboard_frame: true,
+        row_index: index,
+        previewable: true,
+        tags: [],
+      };
+    })
+    .filter(Boolean)
+    .map((asset) => ({ ...asset, tags: boardAssetTags(asset) }))
+    .sort((a, b) => {
+      const order = Number(a.row_index ?? 9999) - Number(b.row_index ?? 9999);
+      if (order) return order;
+      return naturalCompare(a.shot_id || a.path, b.shot_id || b.path);
+    });
+}
+
+function assetMatchesStoryboardAct(asset, scene) {
+  const actId = scene?.act_id || "";
+  const sceneId = scene?.scene_id || "";
+  if (actId) {
+    return asset.act_id === actId || asset.card_act_id === actId;
+  }
+  return sceneId ? asset.scene_id === sceneId : true;
+}
+
+function pendingStoryboardFrames(scene) {
+  const finalPaths = new Set(finalStoryboardFrames(scene).map((frame) => frame.path));
+  return allBoardImageAssets()
+    .filter((asset) => {
+      if (!asset?.path || !asset?.url || !isImagePath(asset.path)) return false;
+      if (!assetMatchesStoryboardAct(asset, scene)) return false;
+      return !finalPaths.has(asset.path);
+    })
+    .sort((a, b) => {
+      const shot = naturalCompare(a.shot_id || a.card_id || "ZZZ", b.shot_id || b.card_id || "ZZZ");
+      if (shot) return shot;
+      const priority = framePriority(a) - framePriority(b);
+      if (priority) return priority;
+      const status = naturalCompare(a.version_status || "ZZZ", b.version_status || "ZZZ");
+      if (status) return status;
+      return naturalCompare(a.asset_id || a.path, b.asset_id || b.path);
+    });
 }
 
 function storyboardFrames(scene) {
-  const frames = flattenSceneAssets(scene).filter((asset) => {
-    if (!asset.path || !asset.url) return false;
-    if (!storyboardFrameMatchesFilter(asset)) return false;
-    return isImagePath(asset.path);
-  });
-  return frames.sort((a, b) => {
-    const usable = Number(!frameIsUsable(a)) - Number(!frameIsUsable(b));
-    if (usable) return usable;
-    const shotA = a.shot_id || "ZZZ";
-    const shotB = b.shot_id || "ZZZ";
-    if (shotA !== shotB) return shotA.localeCompare(shotB);
-    const priority = framePriority(a) - framePriority(b);
-    if (priority) return priority;
-    return String(a.asset_id || a.path).localeCompare(String(b.asset_id || b.path));
-  });
+  const stage = state.storyboardStage || "final";
+  if (stage === "final") return finalStoryboardFrames(scene);
+  const pending = pendingStoryboardFrames(scene);
+  if (stage === "pending") return pending;
+  if (stage === "kind:whitebox") return pending.filter(assetIsWhitebox);
+  if (stage?.startsWith("kind:")) return pending.filter((asset) => asset.kind === stage.slice(5));
+  return pending.filter((asset) => asset.stage === stage);
 }
 
 function selectedStoryboardFrame(scene) {
@@ -1182,26 +1263,23 @@ function moveStoryboardFrame(delta) {
 }
 
 function storyboardStageOptions(scene) {
+  const pending = pendingStoryboardFrames(scene);
   const counts = new Map();
-  let allCount = 0;
-  let whiteboxCount = 0;
-  flattenSceneAssets(scene)
-    .filter((asset) => isImagePath(asset.path || ""))
-    .forEach((asset) => {
-      if (assetIsWhitebox(asset)) {
-        whiteboxCount += 1;
-      } else {
-        allCount += 1;
-        counts.set(asset.stage, (counts.get(asset.stage) || 0) + 1);
-      }
-    });
-  const options = [{ value: "all", label: `全部图片 / All images (${allCount})` }];
-  if (whiteboxCount) options.push({ value: "kind:whitebox", label: `白模 / Whitebox (${whiteboxCount})` });
+  pending.forEach((asset) => {
+    counts.set(asset.stage, (counts.get(asset.stage) || 0) + 1);
+  });
+  const finalCount = finalStoryboardFrames(scene).length;
+  const whiteboxCount = pending.filter(assetIsWhitebox).length;
+  const options = [
+    { value: "final", label: `最终分镜预览 / Final keyframes (${finalCount})`, help: "只看当前幕按分镜顺序排列的最终采用关键帧。" },
+    { value: "pending", label: `待定区 / Pending (${pending.length})`, help: "查看当前幕未被采用的候选图、废图、参考图和其他临时资产。" },
+  ];
+  if (whiteboxCount) options.push({ value: "kind:whitebox", label: `白模 / Whitebox (${whiteboxCount})`, help: "只看当前幕的白模/预演图，用于空间、机位和光照参考。" });
   return [
     ...options,
     ...Object.entries(STAGE_LABELS)
       .filter(([stage]) => counts.has(stage))
-      .map(([stage]) => ({ value: stage, label: `${stageShortLabel(stage)} (${counts.get(stage)})` })),
+      .map(([stage]) => ({ value: stage, label: `${stageShortLabel(stage)} (${counts.get(stage)})`, help: `只看待定区里属于 ${stageShortLabel(stage)} 的图片。` })),
   ];
 }
 
@@ -1454,8 +1532,8 @@ function cardVersionImageAssets() {
         scene_id: row.scene_id || "",
         scene_title: scene.title || "",
         scene_slug: scene.scene_slug || "",
-        act_id: scene.act_id || "",
-        act_title: scene.act_title || "",
+        act_id: row.act_id || scene.act_id || "",
+        act_title: row.act_id ? projectBibleActLabel(board, row.act_id) : scene.act_title || "",
         shot_id: row.item_id || "",
         scene_order: sceneIndexById.get(row.scene_id) ?? 8000 + rowIndex,
         asset_order: versionIndex,
@@ -1464,9 +1542,9 @@ function cardVersionImageAssets() {
         version_status: version.status || "candidate",
         card_type: "storyboard",
         card_id: row.item_id || "",
-        card_scope: "scene",
-        card_act_id: scene.act_id || "",
-        card_act_title: scene.act_title || "",
+        card_scope: row.act_id || scene.act_id ? "act" : "scene",
+        card_act_id: row.act_id || scene.act_id || "",
+        card_act_title: row.act_id ? projectBibleActLabel(board, row.act_id) : scene.act_title || "",
         card_title: row.beat || row.item_id || "",
         card_category: "storyboard",
         card_summary: row.frame_description || "",
@@ -2190,6 +2268,13 @@ function removeBoardHandoff(handoffId) {
   renderReferenceBoard();
 }
 
+function clearBoardHandoffs() {
+  state.boardHandoffs = [];
+  state.boardHandoffCollapsed = false;
+  saveBoardState();
+  renderReferenceBoard();
+}
+
 function toggleBoardHandoffDock() {
   state.boardHandoffCollapsed = !state.boardHandoffCollapsed;
   saveBoardState();
@@ -2459,8 +2544,8 @@ function renderBoardNode(node) {
           <option value="main" ${node.role === "main" ? "selected" : ""}>主图 / Main</option>
           <option value="reference" ${node.role !== "main" ? "selected" : ""}>关联图 / Reference</option>
         </select>
-        <button class="mini-command board-link-source" data-node-id="${escapeHtml(node.id)}" type="button" title="从这张图发起关联线 / Link from this image">${activeLink ? "等待 / Linking" : "主图线 / From"}</button>
-        <button class="mini-command board-link-target" data-node-id="${escapeHtml(node.id)}" type="button" title="把这张图连为关联图 / Link this as a reference">关联 / To</button>
+        <button class="mini-command board-link-source" data-help="从这张图发起一条关系线。通常主图用它连接到人物、白模、道具等关联图。" data-node-id="${escapeHtml(node.id)}" type="button" title="从这张图发起关联线 / Link from this image">${activeLink ? "等待 / Linking" : "主图线 / From"}</button>
+        <button class="mini-command board-link-target" data-help="把这张图接到上一张主图线上，作为参考元素参与重生成。" data-node-id="${escapeHtml(node.id)}" type="button" title="把这张图连为关联图 / Link this as a reference">关联 / To</button>
         <button class="icon-button board-node-remove" data-node-id="${escapeHtml(node.id)}" type="button" title="移除 / Remove">×</button>
       </header>
       <img class="board-node-image" data-node-id="${escapeHtml(node.id)}" src="${escapeHtml(asset.url)}" alt="${escapeHtml(asset.asset_id || asset.path)}" draggable="false" title="双击预览大图 / Double-click to preview" />
@@ -2502,7 +2587,7 @@ function renderBoardNode(node) {
       }
       <footer>
         <span>${outgoingCount} 关联 / refs</span>
-        <button class="command-button primary board-generate-node" data-node-id="${escapeHtml(node.id)}" type="button" ${state.busy ? "disabled" : ""}>${activeGeneration ? `生成中 ${progress}%` : cardTarget ? "精修入卡 / Revise Card" : "生成 / Generate"}</button>
+        <button class="command-button primary board-generate-node" data-help="${cardTarget ? "把这张卡片版本和画布备注整理成精修任务包，生成后回填到原卡片版本。" : "汇总主图、关联图、连线说明和备注，生成可交给 Codex 处理的图片任务包。"}" data-node-id="${escapeHtml(node.id)}" type="button" ${state.busy ? "disabled" : ""}>${activeGeneration ? `生成中 ${progress}%` : cardTarget ? "精修入卡 / Revise Card" : "生成 / Generate"}</button>
       </footer>
       ${
         generationMessage
@@ -2574,7 +2659,10 @@ function renderBoardHandoffDock() {
         <strong>Codex 交接区 / Codex handoff</strong>
         <span>${state.boardHandoffs.length} 个资料包${collapsed && latest ? ` · 最新: ${escapeHtml(latest.title)}` : " · 拖拽到聊天框或复制"}</span>
       </div>
-      <button class="mini-command board-toggle-handoffs" type="button">${collapsed ? "展开 / Expand" : "最小化 / Minimize"}</button>
+      <div class="board-handoff-header-actions">
+        <button class="mini-command board-clear-handoffs" data-help="清掉画板里的临时 Codex 交接卡，不删除图片和项目记录。" type="button">清空 / Clear</button>
+        <button class="mini-command board-toggle-handoffs" data-help="只展开或收起交接区，不影响任务包文件。" type="button">${collapsed ? "展开 / Expand" : "最小化 / Minimize"}</button>
+      </div>
     </div>
     <div class="board-handoff-list" ${collapsed ? "hidden" : ""}>
       ${state.boardHandoffs
@@ -2714,6 +2802,11 @@ function bindBoardHandoffEvents() {
   $("boardHandoffDock")?.querySelector(".board-toggle-handoffs")?.addEventListener("click", (event) => {
     event.preventDefault();
     toggleBoardHandoffDock();
+  });
+  $("boardHandoffDock")?.querySelector(".board-clear-handoffs")?.addEventListener("click", (event) => {
+    event.preventDefault();
+    clearBoardHandoffs();
+    toast("已清空交接卡 / Handoff cards cleared");
   });
   $("boardHandoffDock")?.querySelectorAll(".board-handoff-card").forEach((card) => {
     card.addEventListener("dragstart", (event) => {
@@ -3198,6 +3291,12 @@ function saveIdeaHandoffs() {
   }
 }
 
+function clearIdeaHandoffs() {
+  state.ideaHandoffs = [];
+  saveIdeaHandoffs();
+  renderIdeaLab();
+}
+
 function currentIdeaBoard() {
   const board = state.detail?.idea_board || {};
   return {
@@ -3297,10 +3396,15 @@ function collectProjectBibleFromDom(current) {
 function ideaRowEntriesForCurrentScene(board = currentIdeaBoard()) {
   if (isConceptWorkspaceSelected()) return [];
   const rows = board.rows || [];
-  const sceneId = selectedScene()?.scene_id || "";
+  const scene = selectedScene();
+  const sceneId = scene?.scene_id || "";
+  const actId = scene?.act_id || "";
   const entries = rows.map((row, index) => ({ row, index }));
   if (!sceneId) return entries;
-  return entries.filter(({ row }) => (row.scene_id || "") === sceneId);
+  return entries.filter(({ row }) => {
+    if ((row.scene_id || "") === sceneId) return true;
+    return Boolean(actId) && (row.act_id || "") === actId;
+  });
 }
 
 function ensureIdeaActiveRowForScene(board = currentIdeaBoard()) {
@@ -3346,6 +3450,7 @@ function collectIdeaBoardFromDom() {
       {};
     editedRows.set(hasStableIndex ? rowIndex : current.rows.length + fallbackIndex, {
       item_id: itemId,
+      act_id: value("act_id") || existing.act_id || sceneForIdeaRow(existing).act_id || "",
       scene_id: value("scene_id"),
       beat: value("beat"),
       shot_type: value("shot_type"),
@@ -3833,6 +3938,7 @@ function buildIdeaAnalysisHandoff(board) {
     rows: [
       {
         item_id: "IDEA_SHOT_001",
+        act_id: "ACT01",
         scene_id: "SCN_EXAMPLE",
         beat: "剧情点",
         shot_type: "远景/中景/近景/特写/运动镜头等",
@@ -3926,6 +4032,7 @@ function buildIdeaActAnalysisHandoff(board) {
       : [
           {
             item_id: "IDEA_SHOT_001",
+            act_id: targetScope.selected_act_id || "ACT01",
             scene_id: targetScope.selected_scene_id || "SCN_EXAMPLE",
             beat: "剧情点",
             shot_type: "远景/中景/近景/特写/运动镜头等",
@@ -4084,6 +4191,10 @@ function renderIdeaHandoffs() {
     return `<div class="idea-handoff-empty">生成的 Codex 交接卡会出现在这里，可以拖进聊天框。</div>`;
   }
   return `
+    <div class="idea-handoff-toolbar">
+      <span>${state.ideaHandoffs.length} 张交接卡 · 处理完成后可清空</span>
+      <button class="mini-command idea-clear-handoffs" data-help="清掉本地显示的临时交接卡，不删除已经保存的分镜、图片和项目文件。" type="button">清空 / Clear</button>
+    </div>
     <div class="idea-handoff-list">
       ${state.ideaHandoffs
         .map(
@@ -4237,8 +4348,8 @@ function renderCardVersionPreview(cardOrRow, label = "版本 / Versions") {
           ${qaBadge(current)}
           <small>${escapeHtml(current.notes || current.output_path || "")}</small>
           <div class="card-version-actions">
-            <button class="mini-command card-version-qa-run" data-version-id="${escapeHtml(current.version_id || "")}" data-version-path="${escapeHtml(current.output_path || "")}" type="button">质检 / QA</button>
-            <button class="mini-command card-version-to-board" data-version-path="${escapeHtml(current.output_path || "")}" type="button">画板精修 / Board refine</button>
+            <button class="mini-command card-version-qa-run" data-help="对这张版本图做技术评分，检查清晰度、噪点、曝光和对比。" data-version-id="${escapeHtml(current.version_id || "")}" data-version-path="${escapeHtml(current.output_path || "")}" type="button">质检 / QA</button>
+            <button class="mini-command card-version-to-board" data-help="把这张图送入画板，用主图/关联图/备注方式继续精修。" data-version-path="${escapeHtml(current.output_path || "")}" type="button">画板精修 / Board refine</button>
           </div>
         </div>
       </div>
@@ -4254,11 +4365,11 @@ function renderCardVersionPreview(cardOrRow, label = "版本 / Versions") {
                 <small>${escapeHtml(statusLabel(version.status))}</small>
                 ${qaBadge(version)}
                 <div class="card-version-mini-actions">
-                  <button class="mini-command card-version-status" data-version-id="${escapeHtml(version.version_id || "")}" data-version-path="${escapeHtml(version.output_path || "")}" data-version-status="current" type="button">采用</button>
-                  <button class="mini-command card-version-status" data-version-id="${escapeHtml(version.version_id || "")}" data-version-path="${escapeHtml(version.output_path || "")}" data-version-status="reference" type="button">参考</button>
-                  <button class="mini-command card-version-status" data-version-id="${escapeHtml(version.version_id || "")}" data-version-path="${escapeHtml(version.output_path || "")}" data-version-status="rejected" type="button">淘汰</button>
-                  <button class="mini-command card-version-qa-run" data-version-id="${escapeHtml(version.version_id || "")}" data-version-path="${escapeHtml(version.output_path || "")}" type="button">质检</button>
-                  <button class="mini-command card-version-to-board" data-version-path="${escapeHtml(version.output_path || "")}" type="button">画板</button>
+                  <button class="mini-command card-version-status" data-help="设为最终采用图；按幕图片页的大图预览只展示这类版本。" data-version-id="${escapeHtml(version.version_id || "")}" data-version-path="${escapeHtml(version.output_path || "")}" data-version-status="current" type="button">采用</button>
+                  <button class="mini-command card-version-status" data-help="保留为参考图；不会进入最终大图预览，但可在画板和参考包里使用。" data-version-id="${escapeHtml(version.version_id || "")}" data-version-path="${escapeHtml(version.output_path || "")}" data-version-status="reference" type="button">参考</button>
+                  <button class="mini-command card-version-status" data-help="标记为不用；它会离开最终预览，留在待定/废图管理逻辑里。" data-version-id="${escapeHtml(version.version_id || "")}" data-version-path="${escapeHtml(version.output_path || "")}" data-version-status="rejected" type="button">淘汰</button>
+                  <button class="mini-command card-version-qa-run" data-help="对这张版本图做技术评分。" data-version-id="${escapeHtml(version.version_id || "")}" data-version-path="${escapeHtml(version.output_path || "")}" type="button">质检</button>
+                  <button class="mini-command card-version-to-board" data-help="送入画板继续单图精修。" data-version-path="${escapeHtml(version.output_path || "")}" type="button">画板</button>
                 </div>
               </div>
             `,
@@ -4505,6 +4616,8 @@ function cardFilterAsset(card, cardType, board = currentIdeaBoard(), index = 0) 
     };
   }
   const scene = sceneForIdeaRow(card);
+  const rowActId = card.act_id || scene.act_id || "";
+  const rowActTitle = card.act_id ? projectBibleActLabel(board, card.act_id) : scene.act_title || "";
   return {
     ref: `card:storyboard:${card.item_id || index}`,
     asset_id: card.item_id || `IDEA_SHOT_${index + 1}`,
@@ -4514,14 +4627,14 @@ function cardFilterAsset(card, cardType, board = currentIdeaBoard(), index = 0) 
     stage: "08_generation",
     scene_id: card.scene_id || "",
     scene_title: scene.title || "",
-    act_id: scene.act_id || "",
-    act_title: scene.act_title || "",
+    act_id: rowActId,
+    act_title: rowActTitle,
     shot_id: card.item_id || "",
     card_type: "storyboard",
     card_id: card.item_id || "",
-    card_scope: "scene",
-    card_act_id: scene.act_id || "",
-    card_act_title: scene.act_title || "",
+    card_scope: rowActId ? "act" : "scene",
+    card_act_id: rowActId,
+    card_act_title: rowActTitle,
     card_title: card.beat || card.item_id || "",
     card_category: "storyboard",
     card_summary: card.frame_description || "",
@@ -4604,7 +4717,7 @@ function cardMatchesCardFilters(card, cardType, board = currentIdeaBoard(), inde
   if (!query) return true;
   const scopeSearchFields = cardType === "concept"
     ? [card.scope, card.act_id, projectBibleScopeLabel(card.scope), projectBibleActLabel(currentIdeaBoard(), card.act_id)]
-    : [];
+    : [card.act_id, projectBibleActLabel(currentIdeaBoard(), card.act_id)];
   return [
     card.card_id,
     card.item_id,
@@ -4616,6 +4729,7 @@ function cardMatchesCardFilters(card, cardType, board = currentIdeaBoard(), inde
     card.prompt_notes,
     card.negative_prompt,
     card.beat,
+    card.act_id,
     card.scene_id,
     card.shot_type,
     card.frame_description,
@@ -4818,8 +4932,8 @@ function renderProjectBibleCards(board, entries = filteredProjectBibleEntries(bo
             <label>标题 / Title <input data-bible-field="title" value="${escapeHtml(card.title || "")}" /></label>
             <label class="checkbox-label"><input data-bible-field="selected" type="checkbox" ${card.selected === false ? "" : "checked"} /> 启用 / Use</label>
             <label class="checkbox-label"><input data-bible-field="image_selected" type="checkbox" ${card.image_selected === false ? "" : "checked"} /> 本次生成</label>
-            <button class="mini-command project-bible-focus ${state.ideaActiveBibleIndex === index ? "active" : ""}" data-bible-index="${index}" type="button">参考 / Refs</button>
-            <button class="mini-command card-generate-one" data-card-type="concept" data-card-id="${escapeHtml(card.card_id || "")}" type="button">只生成此卡</button>
+            <button class="mini-command project-bible-focus ${state.ideaActiveBibleIndex === index ? "active" : ""}" data-help="把这张概念卡设为当前参考绑定目标，图库拖入的图片会挂到它身上。" data-bible-index="${index}" type="button">参考 / Refs</button>
+            <button class="mini-command card-generate-one" data-help="只为这一张概念卡生成图片包，适合单独精修人物、场景或道具。" data-card-type="concept" data-card-id="${escapeHtml(card.card_id || "")}" type="button">只生成此卡</button>
             <button class="icon-button project-bible-delete" data-bible-index="${index}" type="button" title="删除总概念卡 / Delete card">×</button>
           </header>
           <div class="idea-row-ref-strip">
@@ -4863,17 +4977,23 @@ function renderProjectBibleLab(board) {
         <p class="eyebrow">Project Bible</p>
         <h3>总概念 / Project Bible</h3>
         <p>管理全项目人物、场景、道具、美术、氛围和负面约束；所有幕和分镜默认继承这里的设定。</p>
+        <ol class="workflow-steps">
+          <li><strong>01</strong><span>写总设定</span></li>
+          <li><strong>02</strong><span>生成概念卡</span></li>
+          <li><strong>03</strong><span>出图并选采用版本</span></li>
+          <li><strong>04</strong><span>进入分镜/画板复用</span></li>
+        </ol>
       </div>
       <div class="idea-actions">
-        <button id="projectBibleBuildHandoffBtn" class="command-button primary" type="button">生成总概念分析卡 / Bible Card</button>
-        <button id="cardBuildImagePacketBtn" class="command-button" type="button">生成电影图片包 / Film Image Pack</button>
-        <button id="currentVersionPackageBtn" class="command-button" type="button">采用图包 / Current Pack</button>
-        <button id="batchVersionQaBtn" class="command-button" type="button">批量质检 / Batch QA</button>
-        <button id="qaRepairPacketBtn" class="command-button" type="button">低分修复包 / QA Fix</button>
-        <button id="cardSelectVisibleBtn" class="command-button" type="button">全选当前 / Select All</button>
-        <button id="cardClearVisibleBtn" class="command-button" type="button">清空当前 / Clear</button>
-        <button id="ideaSaveBtn" class="command-button" type="button">手动保存 / Save now</button>
-        <button id="projectBibleAddCardBtn" class="command-button" type="button">新增概念卡 / Add Card</button>
+        <button id="projectBibleBuildHandoffBtn" class="command-button primary" data-help="把当前总概念文字交给 Codex 扩展成人物、场景、道具、美术等概念卡。" type="button">生成总概念分析卡 / Bible Card</button>
+        <button id="cardBuildImagePacketBtn" class="command-button" data-help="只把当前范围里勾选的概念卡打包成图片生成任务，不会自动处理未勾选卡。" type="button">生成电影图片包 / Film Image Pack</button>
+        <button id="currentVersionPackageBtn" class="command-button" data-help="收集当前范围已经标为采用或参考的图片，做成后续视频生成参考包。" type="button">采用图包 / Current Pack</button>
+        <button id="batchVersionQaBtn" class="command-button" data-help="对当前可见卡片的采用图做技术质检，给出清晰度、噪点、曝光等分数。" type="button">批量质检 / Batch QA</button>
+        <button id="qaRepairPacketBtn" class="command-button" data-help="把当前范围里低分或未质检的图片整理成修复生图包。" type="button">低分修复包 / QA Fix</button>
+        <button id="cardSelectVisibleBtn" class="command-button" data-help="勾选当前筛选结果里的所有卡片，下一次图片包只处理这些可见卡。" type="button">全选当前 / Select All</button>
+        <button id="cardClearVisibleBtn" class="command-button" data-help="取消当前筛选结果里的生成勾选，不删除卡片内容。" type="button">清空当前 / Clear</button>
+        <button id="ideaSaveBtn" class="command-button" data-help="手动把当前文字、勾选、参考图和备注保存到项目文件。" type="button">手动保存 / Save now</button>
+        <button id="projectBibleAddCardBtn" class="command-button" data-help="新增一张总概念卡，用于单独描述人物、场景、道具或风格。" type="button">新增概念卡 / Add Card</button>
       </div>
     </div>
     <div class="idea-layout project-bible-layout">
@@ -4922,12 +5042,13 @@ function renderIdeaRows(entries, allRows = currentIdeaBoard().rows || []) {
         <article class="idea-shot-row ${state.ideaActiveRowIndex === index ? "active" : ""}" data-idea-index="${index}">
           <header>
             <label>编号 / ID <input data-idea-field="item_id" value="${escapeHtml(row.item_id || nextIdeaItemId(allRows))}" /></label>
+            <label>幕 / Act <input data-idea-field="act_id" value="${escapeHtml(row.act_id || sceneForIdeaRow(row).act_id || "")}" /></label>
             <label>场戏 / Scene <input data-idea-field="scene_id" value="${escapeHtml(row.scene_id || "")}" /></label>
             <label>镜头 / Shot <input data-idea-field="shot_type" value="${escapeHtml(row.shot_type || "")}" /></label>
             <label class="checkbox-label"><input data-idea-field="selected" type="checkbox" ${row.selected === false ? "" : "checked"} /> 本次生成</label>
             <label class="checkbox-label"><input class="idea-batch-check" data-idea-index="${index}" type="checkbox" ${batchSet.has(index) ? "checked" : ""} /> 同步参考</label>
-            <button class="mini-command idea-focus-row ${state.ideaActiveRowIndex === index ? "active" : ""}" data-idea-index="${index}" type="button">参考 / Refs</button>
-            <button class="mini-command card-generate-one" data-card-type="storyboard" data-card-id="${escapeHtml(row.item_id || "")}" type="button">只生成此卡</button>
+            <button class="mini-command idea-focus-row ${state.ideaActiveRowIndex === index ? "active" : ""}" data-help="把这张分镜设为当前参考绑定目标，下面图库拖入的图片会挂到它身上。" data-idea-index="${index}" type="button">参考 / Refs</button>
+            <button class="mini-command card-generate-one" data-help="只为这一张分镜文字卡生成图片包，适合单张精修。" data-card-type="storyboard" data-card-id="${escapeHtml(row.item_id || "")}" type="button">只生成此卡</button>
             <button class="icon-button idea-delete-row" data-idea-index="${index}" type="button" title="删除条目 / Delete row">×</button>
           </header>
           <div class="idea-row-ref-strip">
@@ -4991,18 +5112,24 @@ function renderIdeaLab() {
         <p class="eyebrow">Idea Lab</p>
         <h3>创意到分镜 / Idea to Storyboard</h3>
         <p>输入故事 idea，生成 Codex 分析卡；生成卡片前会自动保存文字、勾选、参考图和备注。</p>
+        <ol class="workflow-steps">
+          <li><strong>01</strong><span>写大纲/选择幕</span></li>
+          <li><strong>02</strong><span>拆成分镜文字卡</span></li>
+          <li><strong>03</strong><span>勾选并生成图片包</span></li>
+          <li><strong>04</strong><span>采用版本进入图片页</span></li>
+        </ol>
       </div>
       <div class="idea-actions">
-        <button id="ideaBuildActCardBtn" class="command-button priority" type="button">分析幕结构并拆分镜 / Build Acts</button>
-        <button id="ideaBuildHandoffBtn" class="command-button primary" type="button">生成分析卡 / Analysis Card</button>
-        <button id="cardBuildImagePacketBtn" class="command-button" type="button">生成电影图片包 / Film Image Pack</button>
-        <button id="currentVersionPackageBtn" class="command-button" type="button">采用图包 / Current Pack</button>
-        <button id="batchVersionQaBtn" class="command-button" type="button">批量质检 / Batch QA</button>
-        <button id="qaRepairPacketBtn" class="command-button" type="button">低分修复包 / QA Fix</button>
-        <button id="cardSelectVisibleBtn" class="command-button" type="button">全选当前 / Select All</button>
-        <button id="cardClearVisibleBtn" class="command-button" type="button">清空当前 / Clear</button>
-        <button id="ideaSaveBtn" class="command-button" type="button">手动保存 / Save now</button>
-        <button id="ideaAddRowBtn" class="command-button" type="button">新增条目 / Add Row</button>
+        <button id="ideaBuildActCardBtn" class="command-button priority" data-help="用高级推理把当前大纲拆成幕结构和分镜文字卡；适合从故事进入正式分镜。" type="button">分析幕结构并拆分镜 / Build Acts</button>
+        <button id="ideaBuildHandoffBtn" class="command-button primary" data-help="把当前 idea 做成通用分析交接卡，适合需要重新扩写故事和提示词时使用。" type="button">生成分析卡 / Analysis Card</button>
+        <button id="cardBuildImagePacketBtn" class="command-button" data-help="把当前可见且勾选的分镜卡打包成图片生成任务。" type="button">生成电影图片包 / Film Image Pack</button>
+        <button id="currentVersionPackageBtn" class="command-button" data-help="收集当前幕/场景已采用或参考的图片，供视频生成阶段使用。" type="button">采用图包 / Current Pack</button>
+        <button id="batchVersionQaBtn" class="command-button" data-help="批量检查当前可见分镜图的清晰度、噪点、曝光和对比。" type="button">批量质检 / Batch QA</button>
+        <button id="qaRepairPacketBtn" class="command-button" data-help="把低分图片整理成修复包，便于集中重生成。" type="button">低分修复包 / QA Fix</button>
+        <button id="cardSelectVisibleBtn" class="command-button" data-help="勾选当前筛选出来的分镜卡，下一步只生成这些卡。" type="button">全选当前 / Select All</button>
+        <button id="cardClearVisibleBtn" class="command-button" data-help="取消当前筛选结果的生成勾选，不删除文字卡。" type="button">清空当前 / Clear</button>
+        <button id="ideaSaveBtn" class="command-button" data-help="手动保存当前所有文字、勾选、参考图和备注。" type="button">手动保存 / Save now</button>
+        <button id="ideaAddRowBtn" class="command-button" data-help="在当前幕/场景下新增一张空白分镜文字卡。" type="button">新增条目 / Add Row</button>
       </div>
     </div>
     <div class="idea-layout">
@@ -5359,6 +5486,7 @@ function addIdeaRow() {
   const scene = selectedScene();
   board.rows.push({
     item_id: nextIdeaItemId(board.rows),
+    act_id: scene?.act_id || "",
     scene_id: scene?.scene_id || "",
     beat: "",
     shot_type: "",
@@ -5390,6 +5518,11 @@ function deleteIdeaRow(index) {
 }
 
 function bindIdeaHandoffEvents() {
+  $("ideaHandoffDock")?.querySelector(".idea-clear-handoffs")?.addEventListener("click", (event) => {
+    event.preventDefault();
+    clearIdeaHandoffs();
+    toast("已清空交接卡 / Handoff cards cleared");
+  });
   $("ideaHandoffDock")?.querySelectorAll(".idea-handoff-card").forEach((card) => {
     card.addEventListener("dragstart", (event) => {
       const handoff = state.ideaHandoffs.find((item) => item.id === card.dataset.ideaHandoffId);
@@ -5755,7 +5888,7 @@ function qaRepairButtons(result) {
   return Object.entries(QA_REPAIR_INTENTS)
     .map(
       ([key, intent]) => `
-        <button class="qa-repair-button ${recommended.has(key) ? "recommended" : ""}" data-repair-key="${escapeHtml(key)}" type="button">
+        <button class="qa-repair-button ${recommended.has(key) ? "recommended" : ""}" data-help="${escapeHtml(intent.directive)}" data-repair-key="${escapeHtml(key)}" type="button">
           ${escapeHtml(intent.label)}
         </button>
       `,
@@ -5840,7 +5973,7 @@ function renderStoryboardStudio() {
   }
   const scene = selectedScene();
   const stageOptions = storyboardStageOptions(scene);
-  if (!stageOptions.some((option) => option.value === state.storyboardStage)) state.storyboardStage = "all";
+  if (!stageOptions.some((option) => option.value === state.storyboardStage)) state.storyboardStage = "final";
   const { frame, frames } = selectedStoryboardFrame(scene);
   const annotation = frame ? annotationForRef(frame.ref) : {};
   const related = relatedFrameAssets(scene, frame);
@@ -5852,6 +5985,12 @@ function renderStoryboardStudio() {
       <div>
         <p class="eyebrow">Storyboard Studio</p>
         <h3>按幕制作图片页 / Act-based image workspace</h3>
+        <ol class="workflow-steps">
+          <li><strong>01</strong><span>选幕</span></li>
+          <li><strong>02</strong><span>看最终分镜大图</span></li>
+          <li><strong>03</strong><span>标注/质检/修图</span></li>
+          <li><strong>04</strong><span>待定区查废图和白模</span></li>
+        </ol>
       </div>
       <div class="studio-status">
         <span>${escapeHtml(scene?.act_title || "")}</span>
@@ -5863,7 +6002,7 @@ function renderStoryboardStudio() {
       <section class="studio-stage">
         <div class="studio-filter-tabs">
           ${stageOptions
-            .map((option) => `<button class="studio-stage-filter ${state.storyboardStage === option.value ? "active" : ""}" data-stage="${escapeHtml(option.value)}" type="button">${escapeHtml(option.label)}</button>`)
+            .map((option) => `<button class="studio-stage-filter ${state.storyboardStage === option.value ? "active" : ""}" data-help="${escapeHtml(option.help || "切换当前图片页显示范围。")}" data-stage="${escapeHtml(option.value)}" type="button">${escapeHtml(option.label)}</button>`)
             .join("")}
         </div>
         ${
@@ -5912,8 +6051,8 @@ function renderStoryboardStudio() {
                   <div><dt>类别</dt><dd>${escapeHtml(kindLabel(frame.kind))}</dd></div>
                 </dl>
                 <div class="frame-actions" data-ref="${escapeHtml(frame.ref)}">
-                  <button class="decision-button use ${annotation.status === "use" ? "active" : ""}" data-status="use" type="button">✓</button>
-                  <button class="decision-button reject ${annotation.status === "reject" ? "active" : ""}" data-status="reject" type="button">×</button>
+                  <button class="decision-button use ${annotation.status === "use" ? "active" : ""}" data-help="标记这张图后续要参考或采用。" data-status="use" type="button">✓</button>
+                  <button class="decision-button reject ${annotation.status === "reject" ? "active" : ""}" data-help="标记这张图不要用于后续参考。" data-status="reject" type="button">×</button>
                   <a class="open-resource-link" href="${escapeHtml(frame.url)}" target="_blank">打开原图 / Open</a>
                 </div>
                 <label>导演备注 / Director note
@@ -5947,10 +6086,10 @@ function renderStoryboardStudio() {
               </section>
               <section class="inspector-block">
                 <h4>修正版提示词 / Fix Prompt</h4>
-                <button id="buildFixPromptBtn" class="command-button primary" type="button">生成修正版提示词 / Build Fix Prompt</button>
+                <button id="buildFixPromptBtn" class="command-button primary" data-help="根据当前图、导演备注、关联参考和质检结果，生成一段更适合重生成的提示词。" type="button">生成修正版提示词 / Build Fix Prompt</button>
                 <textarea id="fixPromptOutput" rows="9" placeholder="点击上方按钮生成 / Click the button above"></textarea>
-                <button id="createFramePacketBtn" class="command-button primary" type="button">生成任务包 / Build Generation Packet</button>
-                <button id="createFrameChangeRequestBtn" class="command-button" type="button">仅写入影响表 / Impact Only</button>
+                <button id="createFramePacketBtn" class="command-button primary" data-help="把当前图和修图提示词打包成可交给 Codex 生图并回填的任务包。" type="button">生成任务包 / Build Generation Packet</button>
+                <button id="createFrameChangeRequestBtn" class="command-button" data-help="只在项目里记录这次修改会影响哪些资产，不生成生图包。" type="button">仅写入影响表 / Impact Only</button>
               </section>
               <section class="inspector-block">
                 <h4>任务包 / Packets</h4>
@@ -6014,7 +6153,7 @@ function bindStoryboardStudioEvents(scene, frame, related = []) {
   });
   root.querySelectorAll(".studio-stage-filter").forEach((button) => {
     button.addEventListener("click", () => {
-      state.storyboardStage = button.dataset.stage || "all";
+      state.storyboardStage = button.dataset.stage || "final";
       state.selectedFrameRef = "";
       renderStoryboardStudio();
     });
@@ -6869,7 +7008,7 @@ async function loadDetail(slug) {
   state.selectedSceneLockIndex = 0;
   state.selectedSceneId = "";
   state.selectedFrameRef = "";
-  state.storyboardStage = "all";
+  state.storyboardStage = "final";
   state.referenceSelection = {};
   state.detail = await requestJson(`/api/projects/${encodeURIComponent(slug)}`);
   loadBoardState();
@@ -7074,6 +7213,59 @@ function bindKeyboardShortcuts() {
   });
 }
 
+const BUTTON_HELP_FALLBACKS = new Map([
+  ["×", "关闭窗口、删除当前项，或移除这张临时卡片，具体取决于所在位置。"],
+  ["✓", "标记当前图片后续可以采用或参考。"],
+  ["打开原图 / Open", "在新窗口打开当前图片原始文件。"],
+  ["复制 / Copy", "复制这张交接卡的完整文本。"],
+  ["清空 / Clear", "清空当前临时选择或筛选结果，不删除项目文件。"],
+  ["展开 / Expand", "展开当前交接卡列表。"],
+  ["最小化 / Minimize", "收起当前交接卡列表，保留内容。"],
+]);
+
+function buttonHelpText(button) {
+  if (!button) return "";
+  const explicit = button.dataset.help || "";
+  if (explicit) return explicit;
+  const title = button.getAttribute("title") || "";
+  if (title) return title;
+  const text = button.textContent?.trim().replace(/\s+/g, " ") || "";
+  if (BUTTON_HELP_FALLBACKS.has(text)) return BUTTON_HELP_FALLBACKS.get(text);
+  if (button.type === "submit") return text ? `提交当前表单：${text}` : "提交当前表单。";
+  if (button.classList.contains("studio-stage-filter")) return "切换图片页显示范围。";
+  if (button.classList.contains("frame-thumb")) return "切换到这张图片页。";
+  if (button.classList.contains("quick-filter")) return "快速切换资源筛选条件。";
+  if (button.classList.contains("sidebar-scene-button")) return "切换当前幕/场戏。";
+  return text ? `执行此操作：${text}` : "执行这个按钮对应的操作。";
+}
+
+function applyButtonHelpFallbacks(root = document) {
+  root.querySelectorAll?.("button").forEach((button) => {
+    if (button.dataset.noHelp === "true") return;
+    button.dataset.help = buttonHelpText(button);
+  });
+}
+
+function installButtonHelpObserver() {
+  applyButtonHelpFallbacks(document);
+  const observer = new MutationObserver((mutations) => {
+    const roots = new Set();
+    mutations.forEach((mutation) => {
+      mutation.addedNodes.forEach((node) => {
+        if (node.nodeType !== 1) return;
+        roots.add(node);
+      });
+    });
+    roots.forEach((node) => {
+      if (node.matches?.("button")) {
+        node.dataset.help = buttonHelpText(node);
+      }
+      applyButtonHelpFallbacks(node);
+    });
+  });
+  observer.observe(document.body, { childList: true, subtree: true });
+}
+
 function bindEvents() {
   $("refreshBtn").addEventListener("click", () => runAction("刷新 / Refresh", loadProjects));
   $("openIdeaLabBtn")?.addEventListener("click", () => $("ideaLab")?.scrollIntoView({ behavior: "smooth", block: "start" }));
@@ -7097,6 +7289,7 @@ function bindEvents() {
   });
   bindResourceFilters();
   bindKeyboardShortcuts();
+  installButtonHelpObserver();
 }
 
 bindEvents();
