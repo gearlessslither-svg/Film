@@ -869,6 +869,26 @@ textarea:focus {
   cursor: grabbing;
 }
 
+.idea-handoff-card.ready {
+  border-color: #8bc79b;
+  box-shadow: inset 3px 0 0 var(--ok);
+}
+
+.idea-handoff-card.blocked {
+  border-color: #e59a91;
+  box-shadow: inset 3px 0 0 var(--danger);
+}
+
+.idea-handoff-card.review {
+  border-color: #f0c36b;
+  box-shadow: inset 3px 0 0 #d97706;
+}
+
+.idea-handoff-card.reference_review {
+  border-color: #8bb7e0;
+  box-shadow: inset 3px 0 0 #2563eb;
+}
+
 .idea-handoff-card strong,
 .idea-handoff-card small {
   display: block;
@@ -885,6 +905,11 @@ textarea:focus {
   margin-top: 3px;
   color: var(--muted);
   font-size: 10px;
+}
+
+.idea-handoff-card .idea-handoff-message {
+  white-space: normal;
+  line-height: 1.35;
 }
 
 .idea-handoff-actions {

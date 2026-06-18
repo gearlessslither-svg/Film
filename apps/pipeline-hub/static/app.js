@@ -515,6 +515,10 @@ function decisionClass(status) {
   return "";
 }
 
+function classToken(value) {
+  return String(value || "").replace(/[^a-z0-9_-]/gi, "");
+}
+
 function annotationBadge(item) {
   const status = annotationFor(item).status || "";
   const label = decisionLabel(status);
@@ -4033,11 +4037,12 @@ function renderIdeaHandoffs() {
       ${state.ideaHandoffs
         .map(
           (handoff) => `
-            <article class="idea-handoff-card" draggable="true" data-idea-handoff-id="${escapeHtml(handoff.id)}">
+            <article class="idea-handoff-card ${escapeHtml(classToken(handoff.status))}" draggable="true" data-idea-handoff-id="${escapeHtml(handoff.id)}">
               <div>
                 <strong>${escapeHtml(handoff.title || "Codex handoff")}</strong>
                 <small>${escapeHtml(handoff.kind || "")} · ${escapeHtml(handoff.createdAt || "")}</small>
                 ${handoff.path ? `<small>${escapeHtml(handoff.path)}</small>` : ""}
+                ${handoff.message ? `<small class="idea-handoff-message">${escapeHtml(handoff.message)}</small>` : ""}
               </div>
               <div class="idea-handoff-actions">
                 <button class="mini-command idea-copy-handoff" data-idea-handoff-id="${escapeHtml(handoff.id)}" type="button">复制 / Copy</button>
@@ -5060,6 +5065,8 @@ async function createCurrentVersionPackage() {
     const gate = result.quality_gate || {};
     addIdeaHandoff({
       kind: "video_reference_package",
+      status: gate.status || "",
+      message: videoReferenceGateMessage(gate),
       title: `${videoReferenceGateLabel(gate)} · ${result.current_count || 0} 采用 · ${result.reference_count || 0} 参考 → 视频参考图包`,
       path: result.package_path || "",
       text: result.handoff_text || "",

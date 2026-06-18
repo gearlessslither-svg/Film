@@ -3278,6 +3278,73 @@ def video_reference_scope_label(scope: str, scene_id: str, act_id: str, scenes: 
     return "全部项目 / Whole project"
 
 
+def act_title_for_id(board: dict[str, object], scenes: list[dict[str, object]], act_id: str) -> str:
+    value = str(act_id or "").strip()
+    if not value:
+        return ""
+    acts = board.get("acts", [])
+    if isinstance(acts, list):
+        for act in acts:
+            if isinstance(act, dict) and str(act.get("act_id", "") or "") == value:
+                title = str(act.get("title", "") or "").strip()
+                if title:
+                    return title
+    for scene in scenes:
+        if str(scene.get("act_id", "") or "") == value:
+            title = str(scene.get("act_title", "") or "").strip()
+            if title:
+                return title
+    return ""
+
+
+def package_context_act_id(scope: str, scene_id: str, act_id: str, scenes: list[dict[str, object]]) -> str:
+    value = str(scope or "all").strip()
+    explicit_act = str(act_id or "").strip()
+    if value == "current_act":
+        return explicit_act
+    if value.startswith("act:"):
+        return value.split(":", 1)[1]
+    if explicit_act:
+        return explicit_act
+    target_scene = ""
+    if value == "current_scene":
+        target_scene = str(scene_id or "").strip()
+    elif value.startswith("scene:"):
+        target_scene = value.split(":", 1)[1]
+    if target_scene:
+        scene = next((item for item in scenes if str(item.get("scene_id", "") or "") == target_scene), {})
+        return str(scene.get("act_id", "") or "").strip()
+    return ""
+
+
+def video_reference_entry_identity(entry: dict[str, object]) -> tuple[str, str, str, str]:
+    return (
+        str(entry.get("card_type", "") or ""),
+        str(entry.get("card_id", "") or ""),
+        str(entry.get("version_id", "") or ""),
+        str(entry.get("output_path", "") or ""),
+    )
+
+
+def append_reference_context(
+    reference_assets: list[dict[str, object]],
+    candidates: list[dict[str, object]],
+    context_role: str,
+    existing_assets: list[dict[str, object]] | None = None,
+) -> None:
+    seen = {video_reference_entry_identity(item) for item in reference_assets}
+    if existing_assets:
+        seen.update(video_reference_entry_identity(item) for item in existing_assets)
+    for entry in candidates:
+        identity = video_reference_entry_identity(entry)
+        if identity in seen:
+            continue
+        contextual_entry = dict(entry)
+        contextual_entry["context_role"] = context_role
+        reference_assets.append(contextual_entry)
+        seen.add(identity)
+
+
 def collect_video_reference_entries(slug: str, path: Path, board: dict[str, object]) -> list[dict[str, object]]:
     scenes = [scene for scene in load_scene_workbench(path).get("scenes", []) if isinstance(scene, dict)]
     scene_by_id = {str(scene.get("scene_id", "") or ""): scene for scene in scenes}
@@ -3300,7 +3367,7 @@ def collect_video_reference_entries(slug: str, path: Path, board: dict[str, obje
                     "kind": project_bible_card_kind(card),
                     "scene_id": "",
                     "act_id": card.get("act_id", ""),
-                    "act_title": card.get("act_id", ""),
+                    "act_title": act_title_for_id(board, scenes, str(card.get("act_id", "") or "")),
                     "version_id": version.get("version_id", ""),
                     "version_status": version.get("status", ""),
                     "output_path": output_path,
@@ -3476,6 +3543,7 @@ def build_video_reference_package_text(package: dict[str, object]) -> str:
                     f"### {index:03d}. {item.get('card_id', '')} {item.get('title', '')}",
                     f"- Type / 类型: {item.get('card_type', '')} · {item.get('kind', '')}",
                     f"- Scene / 场戏: {item.get('scene_id', '')} {item.get('scene_title', '')}",
+                    f"- Scope / 范围: {item.get('act_id', '')} {item.get('act_title', '')}",
                     f"- Version / 版本: {item.get('version_id', '')} · {item.get('version_status', '')}",
                     f"- Path / 路径: {item.get('output_path', '')}",
                     f"- Absolute / 绝对路径: {item.get('absolute_path', '')}",
@@ -3495,6 +3563,8 @@ def build_video_reference_package_text(package: dict[str, object]) -> str:
                     "",
                     f"### R{index:03d}. {item.get('card_id', '')} {item.get('title', '')}",
                     f"- Type / 类型: {item.get('card_type', '')} · {item.get('kind', '')}",
+                    f"- Context / 上下文角色: {item.get('context_role', '')}",
+                    f"- Scope / 范围: {item.get('act_id', '')} {item.get('act_title', '')} · {item.get('scene_id', '')} {item.get('scene_title', '')}",
                     f"- Version / 版本: {item.get('version_id', '')} · {item.get('version_status', '')}",
                     f"- Path / 路径: {item.get('output_path', '')}",
                     f"- Notes / 备注: {item.get('notes', '')}",
@@ -3515,6 +3585,16 @@ def create_current_version_package(slug: str, payload: dict[str, object]) -> dic
     scenes = [scene for scene in load_scene_workbench(path).get("scenes", []) if isinstance(scene, dict)]
     entries = collect_video_reference_entries(slug, path, board)
     scoped_entries = [entry for entry in entries if package_scope_matches(entry, scope, scene_id, act_id)]
+    context_act_id = package_context_act_id(scope, scene_id, act_id, scenes)
+    act_context = [
+        entry
+        for entry in entries
+        if entry.get("card_type") == "concept"
+        and bool(context_act_id)
+        and entry.get("act_id") == context_act_id
+        and entry not in scoped_entries
+        and entry.get("version_status") in {"current", "reference"}
+    ]
     global_context = [
         entry
         for entry in entries
@@ -3526,7 +3606,8 @@ def create_current_version_package(slug: str, payload: dict[str, object]) -> dic
     current_assets = [entry for entry in scoped_entries if entry.get("version_status") == "current"]
     reference_assets = [entry for entry in scoped_entries if entry.get("version_status") == "reference"]
     if scope not in {"all", "global"}:
-        reference_assets.extend(global_context)
+        append_reference_context(reference_assets, act_context, "same_act_context", current_assets)
+        append_reference_context(reference_assets, global_context, "global_context", current_assets)
     if not current_assets and not reference_assets:
         raise ValueError("当前范围没有采用或参考版本图 / No current or reference image versions in this scope.")
     qa_summary = video_reference_qa_summary(current_assets, reference_assets)
