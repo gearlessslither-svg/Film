@@ -521,6 +521,14 @@ function classToken(value) {
   return String(value || "").replace(/[^a-z0-9_-]/gi, "");
 }
 
+function autoCopyHandoffText(text) {
+  const value = String(text || "");
+  if (!value || !navigator.clipboard?.writeText) return;
+  navigator.clipboard.writeText(value).catch(() => {
+    // Browser clipboard permissions vary; manual copy/drag remains available.
+  });
+}
+
 function annotationBadge(item) {
   const status = annotationFor(item).status || "";
   const label = decisionLabel(status);
@@ -2168,9 +2176,11 @@ function addBoardHandoff(node, result) {
     outputPath: result.outputPath || "",
     createdAt: new Date().toLocaleString(),
     text: result.handoffText || buildBoardHandoffText(node, result),
+    autoCopy: true,
   };
   state.boardHandoffs = [handoff, ...state.boardHandoffs.filter((item) => item.outputPath !== handoff.outputPath)].slice(0, 12);
   state.boardHandoffCollapsed = false;
+  autoCopyHandoffText(handoff.text);
 }
 
 function removeBoardHandoff(handoffId) {
@@ -2575,6 +2585,7 @@ function renderBoardHandoffDock() {
                 <strong>${escapeHtml(handoff.title)}</strong>
                 <small>${escapeHtml(handoff.scene || "PROJECT")} · ${escapeHtml(handoff.createdAt || "")}</small>
                 ${handoff.outputPath ? `<small>${escapeHtml(handoff.outputPath)}</small>` : ""}
+                ${handoff.autoCopy ? `<small class="handoff-copy-hint">已尝试自动复制 / Auto-copy attempted</small>` : ""}
               </div>
               <div class="board-handoff-actions">
                 <button class="mini-command board-copy-handoff" data-handoff-id="${escapeHtml(handoff.id)}" type="button">复制 / Copy</button>
@@ -4022,15 +4033,15 @@ function buildProjectBibleAnalysisHandoff(board) {
 }
 
 function addIdeaHandoff(handoff) {
-  state.ideaHandoffs = [
-    {
-      id: `idea_handoff_${Date.now()}_${Math.random().toString(16).slice(2, 8)}`,
-      createdAt: new Date().toLocaleString(),
-      ...handoff,
-    },
-    ...state.ideaHandoffs,
-  ].slice(0, 12);
+  const nextHandoff = {
+    id: `idea_handoff_${Date.now()}_${Math.random().toString(16).slice(2, 8)}`,
+    createdAt: new Date().toLocaleString(),
+    autoCopy: true,
+    ...handoff,
+  };
+  state.ideaHandoffs = [nextHandoff, ...state.ideaHandoffs].slice(0, 12);
   saveIdeaHandoffs();
+  autoCopyHandoffText(nextHandoff.text);
 }
 
 function renderIdeaHandoffs() {
@@ -4048,6 +4059,7 @@ function renderIdeaHandoffs() {
                 <small>${escapeHtml(handoff.kind || "")} · ${escapeHtml(handoff.createdAt || "")}</small>
                 ${handoff.path ? `<small>${escapeHtml(handoff.path)}</small>` : ""}
                 ${handoff.message ? `<small class="idea-handoff-message">${escapeHtml(handoff.message)}</small>` : ""}
+                ${handoff.autoCopy ? `<small class="handoff-copy-hint">已尝试自动复制 / Auto-copy attempted</small>` : ""}
               </div>
               <div class="idea-handoff-actions">
                 <button class="mini-command idea-copy-handoff" data-idea-handoff-id="${escapeHtml(handoff.id)}" type="button">复制 / Copy</button>

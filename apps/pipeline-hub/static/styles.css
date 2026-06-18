@@ -912,6 +912,11 @@ textarea:focus {
   line-height: 1.35;
 }
 
+.handoff-copy-hint {
+  color: var(--ok) !important;
+  white-space: normal !important;
+}
+
 .idea-handoff-actions {
   display: flex;
   gap: 6px;
