@@ -2172,6 +2172,22 @@ def project_bible_references(cards: list[dict[str, object]]) -> list[dict[str, o
     return references
 
 
+def whitebox_guidance_from_references(*ref_lists: object) -> list[str]:
+    guidance: list[str] = []
+    seen: set[str] = set()
+    for refs in ref_lists:
+        if not isinstance(refs, list):
+            continue
+        for ref in refs:
+            if not isinstance(ref, dict) or not is_whitebox_reference(ref):
+                continue
+            text = str(ref.get("generation_guidance", "") or "").strip()
+            if text and text not in seen:
+                guidance.append(text)
+                seen.add(text)
+    return guidance
+
+
 def normalize_idea_row(row: dict[str, object], index: int) -> dict[str, object]:
     raw_id = str(row.get("item_id") or row.get("shot_id") or "").strip()
     item_id = safe_file_stem(raw_id) if raw_id else f"IDEA_SHOT_{index:03d}"
@@ -2760,6 +2776,29 @@ def concept_card_context(path: Path, board: dict[str, object], card: dict[str, o
     }
 
 
+def card_generation_context(path: Path, board: dict[str, object], card_type: str, target: dict[str, object]) -> dict[str, object]:
+    global_references = board.get("global_references", [])
+    if not isinstance(global_references, list):
+        global_references = []
+    context_cards = enabled_project_bible_cards(board)
+    context_references = project_bible_references(context_cards)
+    target_references = target.get("references", [])
+    if not isinstance(target_references, list):
+        target_references = []
+    if card_type == "concept":
+        target_context = concept_card_context(path, board, target)
+    else:
+        target_context = scene_context_for_row(path, board, target)
+    return {
+        "global_references": global_references,
+        "context_cards": context_cards,
+        "context_references": context_references,
+        "target_references": target_references,
+        "target_context": target_context,
+        "whitebox_guidance": whitebox_guidance_from_references(global_references, context_references, target_references),
+    }
+
+
 def build_card_image_packet_text(
     slug: str,
     path: Path,
@@ -2858,7 +2897,6 @@ def create_card_image_packet(slug: str, payload: dict[str, object]) -> dict[str,
     if not isinstance(global_references, list):
         global_references = []
     context_cards = enabled_project_bible_cards(board)
-    context_references = project_bible_references(context_cards)
     tasks: list[dict[str, object]] = []
     seen: set[tuple[str, str]] = set()
     for card_type, card_id in target_keys:
@@ -2873,14 +2911,9 @@ def create_card_image_packet(slug: str, payload: dict[str, object]) -> dict[str,
                 continue
             versions = card.get("versions", []) if isinstance(card.get("versions", []), list) else []
             output_rel_path = str(Path("08_generation") / "jobs" / packet_id / "outputs" / f"{index:03d}_{card_id}_v{len(versions) + 1:03d}.png")
-            card_refs = card.get("references", [])
-            if not isinstance(card_refs, list):
-                card_refs = []
-            whitebox_guidance = [
-                str(ref.get("generation_guidance", "") or "").strip()
-                for ref in [*global_references, *context_references, *card_refs]
-                if isinstance(ref, dict) and is_whitebox_reference(ref) and str(ref.get("generation_guidance", "") or "").strip()
-            ]
+            generation_context = card_generation_context(path, board, "concept", card)
+            card_refs = generation_context["target_references"]
+            whitebox_guidance = generation_context["whitebox_guidance"]
             task = {
                 "task_id": f"{packet_id}_{index:03d}",
                 "card_type": "concept",
@@ -2896,7 +2929,8 @@ def create_card_image_packet(slug: str, payload: dict[str, object]) -> dict[str,
                 "negative_prompt": card.get("negative_prompt", ""),
                 "target_references": card_refs,
                 "existing_versions": versions,
-                "act_context": concept_card_context(path, board, card),
+                "act_context": generation_context["target_context"],
+                "generation_context": generation_context,
                 "whitebox_guidance": whitebox_guidance,
                 "suggested_output_path": output_rel_path,
                 "suggested_output_absolute_path": str(path / output_rel_path),
@@ -2907,14 +2941,9 @@ def create_card_image_packet(slug: str, payload: dict[str, object]) -> dict[str,
                 continue
             versions = row.get("versions", []) if isinstance(row.get("versions", []), list) else []
             output_rel_path = str(Path("08_generation") / "jobs" / packet_id / "outputs" / f"{index:03d}_{card_id}_v{len(versions) + 1:03d}.png")
-            row_refs = row.get("references", [])
-            if not isinstance(row_refs, list):
-                row_refs = []
-            whitebox_guidance = [
-                str(ref.get("generation_guidance", "") or "").strip()
-                for ref in [*global_references, *context_references, *row_refs]
-                if isinstance(ref, dict) and is_whitebox_reference(ref) and str(ref.get("generation_guidance", "") or "").strip()
-            ]
+            generation_context = card_generation_context(path, board, "storyboard", row)
+            row_refs = generation_context["target_references"]
+            whitebox_guidance = generation_context["whitebox_guidance"]
             task = {
                 "task_id": f"{packet_id}_{index:03d}",
                 "card_type": "storyboard",
@@ -2930,7 +2959,8 @@ def create_card_image_packet(slug: str, payload: dict[str, object]) -> dict[str,
                 "target_references": row_refs,
                 "existing_output_path": row.get("output_path", ""),
                 "existing_versions": versions,
-                "nearby_context": scene_context_for_row(path, board, row),
+                "nearby_context": generation_context["target_context"],
+                "generation_context": generation_context,
                 "whitebox_guidance": whitebox_guidance,
                 "suggested_output_path": output_rel_path,
                 "suggested_output_absolute_path": str(path / output_rel_path),
@@ -3054,6 +3084,7 @@ def build_board_card_packet_text(slug: str, path: Path, packet_id: str, packet_r
             "## Codex Run Mode / 执行模式",
             "- 这是单卡精修，不是整幕批量生成；不要自动生成其他卡片。",
             "- 以 Source image 为主图，按 Board note、Reference stack 和 Relation note 精修。",
+            "- Generation Context 是原文字卡片继承的全局参考、概念卡、幕/场戏上下文；Board Reference Stack 是这次画板手动连线补充。",
             "- 生成前可做电影级提示词优化，但不要改变卡片核心意图、人物身份、场景连续性和既有构图，除非备注明确要求。",
             "- 保存后调用 card-image-output 回填接口，让新图出现在原卡片的版本预览里。",
             "- 输出保持短：图片预览、保存路径、回填状态。",
@@ -3089,6 +3120,11 @@ def build_board_card_packet_text(slug: str, path: Path, packet_id: str, packet_r
             json.dumps(task.get("references", []), ensure_ascii=False, indent=2),
             "```",
             "",
+            "## Generation Context / 原卡片上下文",
+            "```json",
+            json.dumps(task.get("generation_context", {}), ensure_ascii=False, indent=2),
+            "```",
+            "",
             "## Board Prompt / 画板提示词",
             "```text",
             str(task.get("generation_prompt", "") or ""),
@@ -3111,7 +3147,7 @@ def build_board_card_packet_text(slug: str, path: Path, packet_id: str, packet_r
 
 def create_board_card_packet(slug: str, payload: dict[str, object]) -> dict[str, object]:
     path = project_path(slug)
-    board = load_idea_board(path, slug)
+    board = enrich_idea_board_whitebox_references(path, load_idea_board(path, slug))
     card_type = str(payload.get("card_type") or payload.get("type") or "").strip()
     raw_card_id = payload.get("card_id") or payload.get("item_id") or payload.get("id") or ""
     card_id = safe_file_stem(raw_card_id)
@@ -3131,6 +3167,7 @@ def create_board_card_packet(slug: str, payload: dict[str, object]) -> dict[str,
     source_asset = payload.get("source_asset") if isinstance(payload.get("source_asset"), dict) else {}
     references = payload.get("references") if isinstance(payload.get("references"), list) else []
     routing = payload.get("routing") if isinstance(payload.get("routing"), dict) else {}
+    generation_context = card_generation_context(path, board, card_type, target)
     task: dict[str, object] = {
         "task_id": f"{packet_id}_001",
         "card_type": card_type,
@@ -3140,6 +3177,8 @@ def create_board_card_packet(slug: str, payload: dict[str, object]) -> dict[str,
         "existing_versions": versions,
         "source_asset": source_asset,
         "references": references,
+        "generation_context": generation_context,
+        "whitebox_guidance": generation_context.get("whitebox_guidance", []),
         "routing": routing,
         "board_note": str(payload.get("board_note", "") or ""),
         "generation_prompt": str(payload.get("generation_prompt", "") or ""),
