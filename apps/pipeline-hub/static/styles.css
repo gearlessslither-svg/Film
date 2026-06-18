@@ -136,6 +136,17 @@ input {
   background: var(--accent-strong);
 }
 
+.command-button.priority {
+  background: #b45309;
+  border-color: #b45309;
+  color: #ffffff;
+}
+
+.command-button.priority:hover {
+  background: #92400e;
+  border-color: #92400e;
+}
+
 .command-button.full {
   width: 100%;
 }

@@ -3895,6 +3895,14 @@ function buildIdeaAnalysisHandoff(board) {
 
 function buildIdeaActAnalysisHandoff(board) {
   const apiUrl = `${location.origin}/api/projects/${state.selectedSlug}/idea-board`;
+  const scene = selectedScene();
+  const targetScope = {
+    selected_scene_id: scene?.scene_id || "",
+    selected_scene_title: scene?.title || "",
+    selected_act_id: scene?.act_id || "",
+    selected_act_title: scene?.act_title || "",
+    card_filter_scope: normalizedCardFilters("storyboard", board).scope,
+  };
   const schema = {
     idea: board.idea || "",
     story_title: board.story_title || "短片片名",
@@ -3913,24 +3921,51 @@ function buildIdeaActAnalysisHandoff(board) {
     ],
     project_bible: board.project_bible || [],
     global_references: board.global_references || [],
-    rows: board.rows || [],
+    rows: (board.rows || []).length
+      ? board.rows || []
+      : [
+          {
+            item_id: "IDEA_SHOT_001",
+            scene_id: targetScope.selected_scene_id || "SCN_EXAMPLE",
+            beat: "剧情点",
+            shot_type: "远景/中景/近景/特写/运动镜头等",
+            frame_description: "这一帧看到什么，谁在哪里，情绪和动作是什么",
+            image_prompt: "可直接用于生成高质量分镜关键帧的图片提示词",
+            video_prompt: "后续视频生成提示词，可选",
+            notes: "导演备注、连续性、参考资产需求",
+            revision_note: "",
+            references: [],
+            selected: true,
+            versions: [],
+            status: "draft",
+          },
+        ],
   };
   return [
     "# Codex Act Structure Handoff / Codex 幕结构分析交接包",
     "",
-    "请只根据当前 story idea、logline 和 story_outline，判断这个短片应该拆成多少幕，并把每一幕大概表达什么写回 Idea Board。",
+    "请根据当前 story idea、logline 和 story_outline，先判断幕结构，再把用户这次明确写到的剧本范围拆成可执行分镜文字卡，并回填 Idea Board。",
     "",
     "## Codex Run Mode / 执行模式",
-    "- 只做幕结构规划；不要扩写具体分镜 rows，除非现有 rows 已存在则原样保留。",
-    "- 按电影制作角度判断：情绪递进、人物动机、冲突升级、场景承载能力、AIGC 可生成性。",
+    "- 这是从 idea/大纲产出剧本与分镜卡的第一步：必须先更新 acts，再产出或更新 rows。",
+    "- 如果用户这次只写了某一幕，例如第二幕，就只拆这一幕；不要自动续写其他幕。",
+    "- 如果当前 UI 选中了某一场戏或某一幕，优先把新 rows 映射到该 scene_id/act_id；无法确定时再新建合理 scene_id。",
+    "- 保留不属于本次范围的既有 rows、global_references、project_bible 和已生成版本；只替换或新增本次明确范围内的分镜卡。",
+    "- 按电影制作角度判断：情绪递进、人物动机、冲突升级、场景承载能力、AIGC 可生成性、角色/场景连续性。",
     "- 每一幕都要说明：起点、终点、戏剧功能、关键剧情点。",
+    "- 每条 row 必须有清晰 beat、shot_type、frame_description、image_prompt；image_prompt 要能直接进入生图。",
     "- 如果当前故事只够一幕，就明确只输出一幕，不要为了三幕结构强行扩写。",
-    "- 回填成功后，只汇报幕数量和最关键的结构建议。",
+    "- 回填成功后，只汇报幕数量、分镜条目数量和最关键的结构建议。",
     "",
     "## Project / 项目",
     `- Project slug: ${state.selectedSlug || ""}`,
     `- Project root: ${state.detail?.path || ""}`,
     `- Callback: POST ${apiUrl}`,
+    "",
+    "## Current UI Target Scope / 当前界面目标范围",
+    "```json",
+    JSON.stringify(targetScope, null, 2),
+    "```",
     "",
     "## Existing Scene Context / 现有场戏上下文（仅作参考，不代表必须沿用）",
     compactProjectSceneContext(),
@@ -3943,7 +3978,7 @@ function buildIdeaActAnalysisHandoff(board) {
     "## Required Callback / 必须回填",
     `POST ${apiUrl}`,
     "Content-Type: application/json",
-    "Body must include the full board shape above. Preserve rows/global_references unless you intentionally update them. Keep Chinese readable.",
+    "Body must include the full board shape above. Preserve unrelated rows/global_references/project_bible/versions. Keep Chinese readable.",
   ].join("\n");
 }
 
@@ -4184,6 +4219,7 @@ function renderCardVersionPreview(cardOrRow, label = "版本 / Versions") {
   }
   const current = [...versions].reverse().find((version) => version.status === "current") || versions[versions.length - 1];
   const statusLabel = (status) => CARD_VERSION_STATUS_LABELS[status || "candidate"] || CARD_VERSION_STATUS_LABELS.candidate;
+  const versionLabel = (version) => [version.version_id || "current", version.candidate_id || ""].filter(Boolean).join(" · ");
   const qaBadge = (version) => {
     const score = version.qa?.score;
     if (score === undefined || score === null || score === "") return `<span class="card-version-qa muted">未质检</span>`;
@@ -4197,7 +4233,7 @@ function renderCardVersionPreview(cardOrRow, label = "版本 / Versions") {
         </a>
         <div>
           <strong>${escapeHtml(label)}</strong>
-          <span>${escapeHtml(current.version_id || "current")} · ${escapeHtml(statusLabel(current.status))} · ${escapeHtml(current.created_at || "")}</span>
+          <span>${escapeHtml(versionLabel(current))} · ${escapeHtml(statusLabel(current.status))} · ${escapeHtml(current.created_at || "")}</span>
           ${qaBadge(current)}
           <small>${escapeHtml(current.notes || current.output_path || "")}</small>
           <div class="card-version-actions">
@@ -4213,7 +4249,7 @@ function renderCardVersionPreview(cardOrRow, label = "版本 / Versions") {
               <div class="card-version-thumb ${escapeHtml(version.status || "candidate")}" title="${escapeHtml(version.notes || version.output_path || "")}">
                 <a href="${escapeHtml(sceneAssetUrl(version.output_path || ""))}" target="_blank">
                   <img src="${escapeHtml(sceneAssetUrl(version.output_path || ""))}" alt="${escapeHtml(version.version_id || "version")}" loading="lazy" />
-                  <span>${escapeHtml(version.version_id || "")}</span>
+                  <span>${escapeHtml(versionLabel(version))}</span>
                 </a>
                 <small>${escapeHtml(statusLabel(version.status))}</small>
                 ${qaBadge(version)}
@@ -4266,6 +4302,9 @@ function normalizeCardVersionsForEdit(cardOrRow) {
       notes: version.notes || "",
       created_at: version.created_at || "",
       status: version.status || (version.output_path === (cardOrRow.preview_path || cardOrRow.output_path || "") ? "current" : "candidate"),
+      candidate_id: version.candidate_id || "",
+      task_id: version.task_id || "",
+      packet_id: version.packet_id || "",
       qa: version.qa && typeof version.qa === "object" ? version.qa : {},
     }));
 }
@@ -4282,6 +4321,9 @@ function findOrCreateCardVersion(cardOrRow, versionId, versionPath) {
       notes: "",
       created_at: "",
       status: "candidate",
+      candidate_id: "",
+      task_id: "",
+      packet_id: "",
       qa: {},
     };
     versions.push(target);
@@ -4951,7 +4993,7 @@ function renderIdeaLab() {
         <p>输入故事 idea，生成 Codex 分析卡；生成卡片前会自动保存文字、勾选、参考图和备注。</p>
       </div>
       <div class="idea-actions">
-        <button id="ideaBuildActCardBtn" class="command-button" type="button">分析幕结构卡 / Act Card</button>
+        <button id="ideaBuildActCardBtn" class="command-button priority" type="button">分析幕结构并拆分镜 / Build Acts</button>
         <button id="ideaBuildHandoffBtn" class="command-button primary" type="button">生成分析卡 / Analysis Card</button>
         <button id="cardBuildImagePacketBtn" class="command-button" type="button">生成电影图片包 / Film Image Pack</button>
         <button id="currentVersionPackageBtn" class="command-button" type="button">采用图包 / Current Pack</button>

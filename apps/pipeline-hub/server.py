@@ -2062,6 +2062,9 @@ def normalize_concept_card_versions(value: object) -> list[dict[str, object]]:
                     "notes": str(version.get("notes", "") or "").strip(),
                     "created_at": str(version.get("created_at", "") or "").strip(),
                     "status": status,
+                    "candidate_id": str(version.get("candidate_id", "") or "").strip(),
+                    "task_id": str(version.get("task_id", "") or "").strip(),
+                    "packet_id": str(version.get("packet_id", "") or "").strip(),
                     "qa": version.get("qa") if isinstance(version.get("qa"), dict) else {},
                 }
             )
@@ -2073,6 +2076,7 @@ def append_current_card_version(
     version_id: str,
     output_path: str,
     notes: str,
+    metadata: dict[str, object] | None = None,
 ) -> list[dict[str, object]]:
     next_versions: list[dict[str, object]] = []
     for version in versions:
@@ -2082,15 +2086,19 @@ def append_current_card_version(
         if next_version.get("status") == "current":
             next_version["status"] = "candidate"
         next_versions.append(next_version)
-    next_versions.append(
-        {
-            "version_id": version_id,
-            "output_path": output_path,
-            "notes": notes,
-            "created_at": now_iso(),
-            "status": "current",
-        }
-    )
+    entry: dict[str, object] = {
+        "version_id": version_id,
+        "output_path": output_path,
+        "notes": notes,
+        "created_at": now_iso(),
+        "status": "current",
+    }
+    if isinstance(metadata, dict):
+        for key in ("candidate_id", "task_id", "packet_id"):
+            value = str(metadata.get(key, "") or "").strip()
+            if value:
+                entry[key] = value
+    next_versions.append(entry)
     return next_versions
 
 
@@ -2460,6 +2468,9 @@ def build_idea_image_packet_text(
             "- 快速出图：不要逐步汇报读取、复制、写入等执行细节；除非缺文件或路径错误，直接生成图片并展示结果。",
             "- 生成前优化：每条提示词先做电影级优化，强化构图、光影、角色连续性、负面约束，再生成图片。",
             "- 如果任务里有 revision_note，它是本轮修改的最高优先级；保留长期设定，只改 revision_note 指定的问题。",
+            "- 默认回传全部：除非用户明确要求先挑选，否则你生成的每一张候选图都要保存并回填，不要只回传其中一张。",
+            "- 编号记录规则：分镜号、版本号、候选号只能写入文件名、version_id、candidate_id 和回填 JSON；绝对不要画进图片像素里。",
+            "- 画面必须干净：不要在图上加分镜号、版本号、候选编号、字幕、水印、标签、随机文字或 UI 标记。",
             "- 输出保持短：给关键优化原则、图片预览、保存路径、回填状态。",
             "",
             "## Whitebox Reading Rules / 白模读取规则",
@@ -2497,7 +2508,7 @@ def build_idea_image_packet_text(
             "",
             "## Callback / 回填接口",
             f"- POST: http://127.0.0.1:8787/api/projects/{slug}/idea-image-output",
-            "- Body: {\"outputs\":[{\"item_id\":\"...\",\"output_path\":\"...\",\"notes\":\"...\"}]}",
+            "- Body: {\"outputs\":[{\"item_id\":\"...\",\"version_id\":\"v001_c01\",\"candidate_id\":\"c01\",\"task_id\":\"...\",\"packet_id\":\"...\",\"output_path\":\"...\",\"notes\":\"...\"}]}",
             "",
             "## Tasks / 任务",
             "```json",
@@ -2530,7 +2541,19 @@ def create_idea_image_packet(slug: str, payload: dict[str, object]) -> dict[str,
         global_references = []
     for index, row in enumerate(rows, start=1):
         item_id = safe_file_stem(row.get("item_id") or f"IDEA_SHOT_{index:03d}")
-        output_rel_path = str(Path("08_generation") / "jobs" / packet_id / "outputs" / f"{index:03d}_{item_id}.png")
+        versions = normalize_concept_card_versions(row.get("versions", []))
+        version_id = f"v{len(versions) + 1:03d}"
+        candidate_outputs = [
+            {
+                "candidate_id": f"c{candidate_index:02d}",
+                "version_id": f"{version_id}_c{candidate_index:02d}",
+                "output_path": str(Path("08_generation") / "jobs" / packet_id / "outputs" / f"{index:03d}_{item_id}_{version_id}_c{candidate_index:02d}.png"),
+            }
+            for candidate_index in range(1, 4)
+        ]
+        output_rel_path = str(candidate_outputs[0]["output_path"])
+        for candidate in candidate_outputs:
+            candidate["output_absolute_path"] = str(path / str(candidate["output_path"]))
         shot_references = row.get("references", [])
         if not isinstance(shot_references, list):
             shot_references = []
@@ -2552,6 +2575,8 @@ def create_idea_image_packet(slug: str, payload: dict[str, object]) -> dict[str,
             "revision_note": row.get("revision_note", ""),
             "shot_references": shot_references,
             "whitebox_guidance": whitebox_guidance,
+            "suggested_version_id": version_id,
+            "suggested_candidate_outputs": candidate_outputs,
             "suggested_output_path": output_rel_path,
             "suggested_output_absolute_path": str(path / output_rel_path),
         }
@@ -2603,7 +2628,17 @@ def update_idea_image_output(slug: str, payload: dict[str, object]) -> dict[str,
             versions = normalize_concept_card_versions(row.get("versions", []))
             version_id = safe_file_stem(output.get("version_id") or f"v{len(versions) + 1:03d}")
             notes = str(output.get("notes", "") or "")
-            versions = append_current_card_version(versions, version_id, output_path, notes)
+            versions = append_current_card_version(
+                versions,
+                version_id,
+                output_path,
+                notes,
+                {
+                    "candidate_id": output.get("candidate_id", ""),
+                    "task_id": output.get("task_id", ""),
+                    "packet_id": output.get("packet_id", ""),
+                },
+            )
             row["output_path"] = output_path
             row["output_notes"] = notes
             row["output_attached_at"] = now_iso()
@@ -2820,7 +2855,10 @@ def build_card_image_packet_text(
             "- revision_note 是本轮精修意见，优先级高于长期 notes/prompt_notes；不要把一次性修改写死成永久设定。",
             "- Concept task 的 scope/act_id/act_context 决定它是全项目设定还是某一幕设定；幕级概念只继承并服务对应 act 的上下文。",
             "- Context cards、global references、nearby storyboard cards、related assets 只用于风格和连续性参考，不是生成目标。",
-            "- 每个任务保存到 Suggested output path；完成后调用回填接口追加到对应卡片 versions，并更新当前预览。",
+            "- 默认回传全部：除非用户明确要求先挑选，否则你生成的每一张候选图都要保存并回填，不要只回传其中一张。",
+            "- 编号记录规则：分镜号/卡片号、版本号、候选号只能写入文件名、version_id、candidate_id 和回填 JSON；绝对不要画进图片像素里。",
+            "- 画面必须干净：不要在图上加分镜号、版本号、候选编号、字幕、水印、标签、随机文字或 UI 标记。",
+            "- 如果只生成一张图，保存到 suggested_candidate_outputs[0] 或 Suggested output path；如果生成多张候选，按 c01/c02/c03 保存并全部回填。",
             "- 输出保持短：图片预览、保存路径、回填状态。",
             "",
             "## Project / 项目",
@@ -2846,7 +2884,7 @@ def build_card_image_packet_text(
             "",
             "## Callback / 回填接口",
             f"- POST: http://127.0.0.1:8787/api/projects/{slug}/card-image-output",
-            "- Body: {\"outputs\":[{\"card_type\":\"storyboard|concept\",\"item_id\":\"...\",\"card_id\":\"...\",\"output_path\":\"...\",\"notes\":\"...\"}]}",
+            "- Body: {\"outputs\":[{\"card_type\":\"storyboard|concept\",\"item_id\":\"...\",\"card_id\":\"...\",\"version_id\":\"v001_c01\",\"candidate_id\":\"c01\",\"task_id\":\"...\",\"packet_id\":\"...\",\"output_path\":\"...\",\"notes\":\"...\"}]}",
             "",
             "## Tasks / 目标卡片任务",
             "```json",
@@ -2909,8 +2947,19 @@ def create_card_image_packet(slug: str, payload: dict[str, object]) -> dict[str,
             card = card_by_id.get(card_id)
             if not card:
                 continue
-            versions = card.get("versions", []) if isinstance(card.get("versions", []), list) else []
-            output_rel_path = str(Path("08_generation") / "jobs" / packet_id / "outputs" / f"{index:03d}_{card_id}_v{len(versions) + 1:03d}.png")
+            versions = normalize_concept_card_versions(card.get("versions", []))
+            version_id = f"v{len(versions) + 1:03d}"
+            candidate_outputs = [
+                {
+                    "candidate_id": f"c{candidate_index:02d}",
+                    "version_id": f"{version_id}_c{candidate_index:02d}",
+                    "output_path": str(Path("08_generation") / "jobs" / packet_id / "outputs" / f"{index:03d}_{card_id}_{version_id}_c{candidate_index:02d}.png"),
+                }
+                for candidate_index in range(1, 4)
+            ]
+            output_rel_path = str(candidate_outputs[0]["output_path"])
+            for candidate in candidate_outputs:
+                candidate["output_absolute_path"] = str(path / str(candidate["output_path"]))
             generation_context = card_generation_context(path, board, "concept", card)
             card_refs = generation_context["target_references"]
             whitebox_guidance = generation_context["whitebox_guidance"]
@@ -2932,6 +2981,8 @@ def create_card_image_packet(slug: str, payload: dict[str, object]) -> dict[str,
                 "act_context": generation_context["target_context"],
                 "generation_context": generation_context,
                 "whitebox_guidance": whitebox_guidance,
+                "suggested_version_id": version_id,
+                "suggested_candidate_outputs": candidate_outputs,
                 "suggested_output_path": output_rel_path,
                 "suggested_output_absolute_path": str(path / output_rel_path),
             }
@@ -2939,8 +2990,19 @@ def create_card_image_packet(slug: str, payload: dict[str, object]) -> dict[str,
             row = row_by_id.get(card_id)
             if not row:
                 continue
-            versions = row.get("versions", []) if isinstance(row.get("versions", []), list) else []
-            output_rel_path = str(Path("08_generation") / "jobs" / packet_id / "outputs" / f"{index:03d}_{card_id}_v{len(versions) + 1:03d}.png")
+            versions = normalize_concept_card_versions(row.get("versions", []))
+            version_id = f"v{len(versions) + 1:03d}"
+            candidate_outputs = [
+                {
+                    "candidate_id": f"c{candidate_index:02d}",
+                    "version_id": f"{version_id}_c{candidate_index:02d}",
+                    "output_path": str(Path("08_generation") / "jobs" / packet_id / "outputs" / f"{index:03d}_{card_id}_{version_id}_c{candidate_index:02d}.png"),
+                }
+                for candidate_index in range(1, 4)
+            ]
+            output_rel_path = str(candidate_outputs[0]["output_path"])
+            for candidate in candidate_outputs:
+                candidate["output_absolute_path"] = str(path / str(candidate["output_path"]))
             generation_context = card_generation_context(path, board, "storyboard", row)
             row_refs = generation_context["target_references"]
             whitebox_guidance = generation_context["whitebox_guidance"]
@@ -2962,6 +3024,8 @@ def create_card_image_packet(slug: str, payload: dict[str, object]) -> dict[str,
                 "nearby_context": generation_context["target_context"],
                 "generation_context": generation_context,
                 "whitebox_guidance": whitebox_guidance,
+                "suggested_version_id": version_id,
+                "suggested_candidate_outputs": candidate_outputs,
                 "suggested_output_path": output_rel_path,
                 "suggested_output_absolute_path": str(path / output_rel_path),
             }
@@ -3012,6 +3076,11 @@ def update_card_image_output(slug: str, payload: dict[str, object]) -> dict[str,
         card_type = str(output.get("card_type") or output.get("type") or "").strip()
         output_path = normalize_project_rel_path(str(output.get("output_path", "") or ""))
         notes = str(output.get("notes", "") or "")
+        metadata = {
+            "candidate_id": output.get("candidate_id", ""),
+            "task_id": output.get("task_id", ""),
+            "packet_id": output.get("packet_id", ""),
+        }
         if card_type == "concept":
             card_id = safe_file_stem(output.get("card_id", "") or output.get("item_id", ""))
             card = card_by_id.get(card_id)
@@ -3019,7 +3088,7 @@ def update_card_image_output(slug: str, payload: dict[str, object]) -> dict[str,
                 continue
             versions = normalize_concept_card_versions(card.get("versions", []))
             version_id = safe_file_stem(output.get("version_id") or f"v{len(versions) + 1:03d}")
-            versions = append_current_card_version(versions, version_id, output_path, notes)
+            versions = append_current_card_version(versions, version_id, output_path, notes, metadata)
             card["versions"] = versions
             card["preview_path"] = output_path
             card["status"] = "image_ready"
@@ -3031,7 +3100,7 @@ def update_card_image_output(slug: str, payload: dict[str, object]) -> dict[str,
                 continue
             versions = normalize_concept_card_versions(row.get("versions", []))
             version_id = safe_file_stem(output.get("version_id") or f"v{len(versions) + 1:03d}")
-            versions = append_current_card_version(versions, version_id, output_path, notes)
+            versions = append_current_card_version(versions, version_id, output_path, notes, metadata)
             row["versions"] = versions
             row["output_path"] = output_path
             row["output_notes"] = notes
@@ -3133,6 +3202,7 @@ def latest_codex_card_handoff(slug: str, query: str = "") -> dict[str, object]:
         "available_count": len(candidates),
         "allowed_triggers": ["电影", "处理电影卡片", "生成电影卡片图片", "生成分镜图片", "生成概念图"],
         "do_not_use_for": ["分析策略卡片", "投资策略卡片", "财务状况"],
+        "image_selection_policy": "默认回传全部候选图；只有用户明确要求先挑选时才等待选择。候选编号只写入文件名/version_id/candidate_id，不得画进图片。",
         "usage": "只在用户明确说“电影 / 处理电影卡片 / 生成电影卡片图片 / 生成分镜图片 / 生成概念图”时读取 latest.tasks，逐项生成图片，然后 POST callback_url 回填。不要用本接口处理投资策略卡片。",
     }
 
@@ -3153,7 +3223,7 @@ def board_card_target(board: dict[str, object], card_type: str, card_id: str) ->
 
 def board_card_output_path(packet_id: str, index: int, card_id: str, versions: list[dict[str, object]]) -> str:
     version_id = f"v{len(versions) + 1:03d}"
-    return str(Path("08_generation") / "jobs" / packet_id / "outputs" / f"{index:03d}_{card_id}_{version_id}.png")
+    return str(Path("08_generation") / "jobs" / packet_id / "outputs" / f"{index:03d}_{card_id}_{version_id}_c01.png")
 
 
 def build_board_card_packet_text(slug: str, path: Path, packet_id: str, packet_rel_path: str, task: dict[str, object]) -> str:
@@ -3162,6 +3232,10 @@ def build_board_card_packet_text(slug: str, path: Path, packet_id: str, packet_r
     card_id = str(task.get("card_id") or task.get("item_id") or "")
     callback_item = {
         "card_type": card_type,
+        "version_id": str(task.get("suggested_version_id") or ""),
+        "candidate_id": str(task.get("candidate_id") or "c01"),
+        "task_id": str(task.get("task_id") or ""),
+        "packet_id": packet_id,
         "output_path": output_path,
         "notes": "Board refinement / 画板精修版本",
     }
@@ -3180,6 +3254,8 @@ def build_board_card_packet_text(slug: str, path: Path, packet_id: str, packet_r
             "- 以 Source image 为主图，按 Board note、Reference stack 和 Relation note 精修。",
             "- Generation Context 是原文字卡片继承的全局参考、概念卡、幕/场戏上下文；Board Reference Stack 是这次画板手动连线补充。",
             "- 生成前可做电影级提示词优化，但不要改变卡片核心意图、人物身份、场景连续性和既有构图，除非备注明确要求。",
+            "- 编号只做记录：version_id、candidate_id、卡片号只能写入文件名和回填 JSON；不要画进图片像素里。",
+            "- 画面必须干净：不要在图上加编号、字幕、水印、标签、随机文字或 UI 标记。",
             "- 保存后调用 card-image-output 回填接口，让新图出现在原卡片的版本预览里。",
             "- 输出保持短：图片预览、保存路径、回填状态。",
             "",
@@ -3262,6 +3338,7 @@ def create_board_card_packet(slug: str, payload: dict[str, object]) -> dict[str,
     references = payload.get("references") if isinstance(payload.get("references"), list) else []
     routing = payload.get("routing") if isinstance(payload.get("routing"), dict) else {}
     generation_context = card_generation_context(path, board, card_type, target)
+    suggested_version_id = f"v{len(versions) + 1:03d}_c01"
     task: dict[str, object] = {
         "task_id": f"{packet_id}_001",
         "card_type": card_type,
@@ -3276,6 +3353,8 @@ def create_board_card_packet(slug: str, payload: dict[str, object]) -> dict[str,
         "routing": routing,
         "board_note": str(payload.get("board_note", "") or ""),
         "generation_prompt": str(payload.get("generation_prompt", "") or ""),
+        "suggested_version_id": suggested_version_id,
+        "candidate_id": "c01",
         "suggested_output_path": output_path,
         "suggested_output_absolute_path": str(path / output_path),
     }
