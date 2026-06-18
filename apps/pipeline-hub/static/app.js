@@ -23,6 +23,10 @@ const state = {
     tag: "all",
     query: "",
   },
+  cardFilters: {
+    mode: "all",
+    query: "",
+  },
   boardOpen: false,
   boardNodes: [],
   boardEdges: [],
@@ -194,6 +198,21 @@ const BOARD_OUTPUT_KIND_OPTIONS = [
   { value: "lookdev", label: "风格参考 / Lookdev reference" },
   { value: "whitebox", label: "白模参考 / Whitebox reference" },
   { value: "image", label: "普通图片 / Image" },
+];
+const CARD_FILTER_OPTIONS = [
+  { value: "all", label: "全部卡片 / All cards" },
+  { value: "selected", label: "本次生成 / Selected" },
+  { value: "unselected", label: "未勾选 / Unselected" },
+  { value: "no_image", label: "未出图 / No image" },
+  { value: "has_image", label: "已有图 / Has image" },
+  { value: "current", label: "有采用版本 / Has current" },
+  { value: "reference", label: "有参考版本 / Has reference" },
+  { value: "candidate", label: "有候选版本 / Has candidate" },
+  { value: "rejected", label: "有淘汰版本 / Has rejected" },
+  { value: "qa_unscored", label: "主版本未质检 / Current unscored" },
+  { value: "qa_ok", label: "主版本合格 / QA OK" },
+  { value: "qa_warn", label: "主版本需检查 / QA warn" },
+  { value: "qa_risk", label: "主版本低分 / QA risk" },
 ];
 
 const $ = (id) => document.getElementById(id);
@@ -4284,11 +4303,90 @@ function currentVersionForQa(cardOrRow) {
     || versions[versions.length - 1];
 }
 
+function cardSelectedForGeneration(card, cardType) {
+  return cardType === "concept" ? card.image_selected !== false : card.selected !== false;
+}
+
+function cardQaBucket(card) {
+  const version = currentVersionForQa(card);
+  if (!version?.output_path) return "no_image";
+  const rawScore = version.qa?.score;
+  const score = Number(rawScore);
+  if (rawScore === undefined || rawScore === null || rawScore === "" || !Number.isFinite(score)) return "qa_unscored";
+  if (score >= 82) return "qa_ok";
+  if (score >= 68) return "qa_warn";
+  return "qa_risk";
+}
+
+function cardMatchesCardFilters(card, cardType) {
+  const filters = state.cardFilters || {};
+  const mode = filters.mode || "all";
+  const versions = cardVersionEntries(card);
+  const hasImage = versions.length > 0;
+  const selected = cardSelectedForGeneration(card, cardType);
+  if (mode === "selected" && !selected) return false;
+  if (mode === "unselected" && selected) return false;
+  if (mode === "no_image" && hasImage) return false;
+  if (mode === "has_image" && !hasImage) return false;
+  if (["current", "reference", "candidate", "rejected"].includes(mode) && !versions.some((version) => version.status === mode)) return false;
+  if (mode.startsWith("qa_") && cardQaBucket(card) !== mode) return false;
+  const query = String(filters.query || "").trim().toLowerCase();
+  if (!query) return true;
+  return [
+    card.card_id,
+    card.item_id,
+    card.title,
+    card.category,
+    card.summary,
+    card.visual_direction,
+    card.prompt_notes,
+    card.negative_prompt,
+    card.beat,
+    card.scene_id,
+    card.shot_type,
+    card.frame_description,
+    card.image_prompt,
+    card.video_prompt,
+    card.notes,
+    card.revision_note,
+    card.status,
+    ...(card.references || []).flatMap((ref) => [ref.asset_id, ref.path, ref.kind, ref.note]),
+    ...versions.flatMap((version) => [version.version_id, version.status, version.notes, version.output_path, version.qa?.score]),
+  ]
+    .join(" ")
+    .toLowerCase()
+    .includes(query);
+}
+
+function filteredProjectBibleEntries(board = currentIdeaBoard()) {
+  return (board.project_bible || [])
+    .map((card, index) => ({ card, index }))
+    .filter(({ card }) => cardMatchesCardFilters(card, "concept"));
+}
+
+function filteredIdeaRowEntriesForCurrentScene(board = currentIdeaBoard()) {
+  return ideaRowEntriesForCurrentScene(board).filter(({ row }) => cardMatchesCardFilters(row, "storyboard"));
+}
+
+function renderCardFilterControls(total, visible) {
+  const filters = state.cardFilters || {};
+  return `
+    <div class="card-filter-controls">
+      <select id="cardFilterMode">
+        ${CARD_FILTER_OPTIONS.map((option) => `<option value="${escapeHtml(option.value)}" ${(filters.mode || "all") === option.value ? "selected" : ""}>${escapeHtml(option.label)}</option>`).join("")}
+      </select>
+      <input id="cardFilterQuery" value="${escapeHtml(filters.query || "")}" placeholder="搜索卡片、提示词、版本 / Search cards" />
+      <button id="cardFilterClearBtn" class="mini-command" type="button">清除 / Clear</button>
+      <span>${visible}/${total}</span>
+    </div>
+  `;
+}
+
 function visibleCardsForBatchQa(board) {
   if (isProjectBibleSelected()) {
-    return (board.project_bible || []).map((card) => ({ cardType: "concept", target: card }));
+    return filteredProjectBibleEntries(board).map(({ card }) => ({ cardType: "concept", target: card }));
   }
-  return ideaRowEntriesForCurrentScene(board).map(({ row }) => ({ cardType: "storyboard", target: row }));
+  return filteredIdeaRowEntriesForCurrentScene(board).map(({ row }) => ({ cardType: "storyboard", target: row }));
 }
 
 async function runVisibleCardVersionQa() {
@@ -4381,14 +4479,17 @@ function renderProjectBibleReferencePanel(board) {
   `;
 }
 
-function renderProjectBibleCards(board) {
+function renderProjectBibleCards(board, entries = filteredProjectBibleEntries(board)) {
   const cards = board.project_bible || [];
   if (!cards.length) {
     return `<div class="empty-state">还没有总概念卡。建议先新增人物、场景、道具、美术或氛围卡，再绑定参考图。</div>`;
   }
-  return cards
+  if (!entries.length) {
+    return `<div class="empty-state">没有匹配的总概念卡 / No matching Project Bible cards.</div>`;
+  }
+  return entries
     .map(
-      (card, index) => `
+      ({ card, index }) => `
         <article class="project-bible-card ${state.ideaActiveBibleIndex === index ? "active" : ""}" data-bible-index="${index}">
           <header>
             <label>编号 / ID <input data-bible-field="card_id" value="${escapeHtml(card.card_id || `BIBLE_${String(index + 1).padStart(3, "0")}`)}" /></label>
@@ -4436,6 +4537,7 @@ function renderProjectBibleCards(board) {
 function renderProjectBibleLab(board) {
   const cardCount = (board.project_bible || []).length;
   const enabledCount = (board.project_bible || []).filter((card) => card.selected !== false).length;
+  const visibleEntries = filteredProjectBibleEntries(board);
   return `
     <div class="idea-header">
       <div>
@@ -4475,10 +4577,13 @@ function renderProjectBibleLab(board) {
       </section>
       <section class="idea-rows-panel project-bible-panel">
         <div class="idea-rows-header">
-          <strong>总概念卡 / ${enabledCount}/${cardCount} enabled</strong>
-          <span>人物、场景、道具、美术、氛围和年代设定；分镜局部备注优先级更高。</span>
+          <div class="idea-rows-title">
+            <strong>总概念卡 / ${enabledCount}/${cardCount} enabled</strong>
+            <span>人物、场景、道具、美术、氛围和年代设定；分镜局部备注优先级更高。</span>
+          </div>
+          ${renderCardFilterControls(cardCount, visibleEntries.length)}
         </div>
-        <div id="projectBibleCardList" class="idea-rows project-bible-cards">${renderProjectBibleCards(board)}</div>
+        <div id="projectBibleCardList" class="idea-rows project-bible-cards">${renderProjectBibleCards(board, visibleEntries)}</div>
       </section>
     </div>
   `;
@@ -4487,6 +4592,8 @@ function renderProjectBibleLab(board) {
 function renderIdeaRows(entries, allRows = currentIdeaBoard().rows || []) {
   if (!entries.length) {
     const scene = selectedScene();
+    const sceneTotal = ideaRowEntriesForCurrentScene(currentIdeaBoard()).length;
+    if (sceneTotal) return `<div class="empty-state">没有匹配的分镜卡片 / No matching storyboard cards.</div>`;
     return `<div class="empty-state">当前场戏 ${escapeHtml(scene?.scene_id || "")} 还没有分镜文本。点击“新增条目”会自动创建到这里。</div>`;
   }
   const batchSet = ideaBatchRowSet({ rows: allRows });
@@ -4556,7 +4663,8 @@ function renderIdeaLab() {
     bindIdeaLabEvents();
     return;
   }
-  const visibleEntries = ideaRowEntriesForCurrentScene(board);
+  const sceneEntries = ideaRowEntriesForCurrentScene(board);
+  const visibleEntries = filteredIdeaRowEntriesForCurrentScene(board);
   ensureIdeaActiveRowForScene(board);
   root.innerHTML = `
     <div class="idea-header">
@@ -4599,8 +4707,11 @@ function renderIdeaLab() {
       </section>
       <section class="idea-rows-panel">
         <div class="idea-rows-header">
-          <strong>${ideaSceneSummary(board)}</strong>
-          <span>左侧切换场戏后，这里只显示当前场戏；保存会保留其他场戏的条目。</span>
+          <div class="idea-rows-title">
+            <strong>${ideaSceneSummary(board)}</strong>
+            <span>当前筛选显示 ${visibleEntries.length}/${sceneEntries.length}；保存会保留其他场戏和被隐藏条目。</span>
+          </div>
+          ${renderCardFilterControls(sceneEntries.length, visibleEntries.length)}
         </div>
         <div id="ideaRows" class="idea-rows">${renderIdeaRows(visibleEntries, board.rows)}</div>
       </section>
@@ -5003,6 +5114,24 @@ function bindIdeaLabEvents() {
   $("qaRepairPacketBtn")?.addEventListener("click", createQaRepairPacket);
   $("cardSelectVisibleBtn")?.addEventListener("click", () => setVisibleCardSelection(true));
   $("cardClearVisibleBtn")?.addEventListener("click", () => setVisibleCardSelection(false));
+  $("cardFilterMode")?.addEventListener("change", (event) => {
+    state.cardFilters.mode = event.target.value || "all";
+    const board = collectIdeaBoardFromDom();
+    setIdeaBoardLocal(board);
+    renderIdeaLab();
+  });
+  $("cardFilterQuery")?.addEventListener("input", (event) => {
+    state.cardFilters.query = event.target.value || "";
+    const board = collectIdeaBoardFromDom();
+    setIdeaBoardLocal(board);
+    renderIdeaLab();
+  });
+  $("cardFilterClearBtn")?.addEventListener("click", () => {
+    state.cardFilters = { mode: "all", query: "" };
+    const board = collectIdeaBoardFromDom();
+    setIdeaBoardLocal(board);
+    renderIdeaLab();
+  });
   $("ideaBuildActCardBtn")?.addEventListener("click", createIdeaActAnalysisHandoff);
   $("ideaBuildHandoffBtn")?.addEventListener("click", createIdeaAnalysisHandoff);
   $("ideaSaveBtn")?.addEventListener("click", () => saveIdeaBoard());

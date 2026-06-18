@@ -936,10 +936,16 @@ textarea:focus {
 .idea-rows-header {
   padding: 12px 14px;
   border-bottom: 1px solid var(--line);
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 420px);
   gap: 12px;
   align-items: center;
+}
+
+.idea-rows-title {
+  min-width: 0;
+  display: grid;
+  gap: 3px;
 }
 
 .idea-rows-header strong {
@@ -949,7 +955,26 @@ textarea:focus {
 .idea-rows-header span {
   color: var(--muted);
   font-size: 12px;
-  text-align: right;
+}
+
+.card-filter-controls {
+  display: grid;
+  grid-template-columns: minmax(118px, 0.9fr) minmax(130px, 1fr) auto auto;
+  gap: 7px;
+  align-items: center;
+  min-width: 0;
+}
+
+.card-filter-controls select,
+.card-filter-controls input {
+  width: 100%;
+  min-width: 0;
+}
+
+.card-filter-controls span {
+  justify-self: end;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
 }
 
 .idea-rows {
@@ -3954,6 +3979,15 @@ th {
   .idea-shot-row footer,
   .project-bible-card header,
   .project-bible-card footer {
+    grid-template-columns: 1fr;
+  }
+
+  .idea-rows-header {
+    grid-template-columns: 1fr;
+    align-items: stretch;
+  }
+
+  .card-filter-controls {
     grid-template-columns: 1fr;
   }
 
