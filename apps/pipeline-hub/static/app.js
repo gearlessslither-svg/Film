@@ -3404,7 +3404,7 @@ function activeIdeaRow(board = currentIdeaBoard()) {
 function cleanIdeaBatchRows(board = currentIdeaBoard()) {
   const maxIndex = Math.max(0, (board.rows || []).length - 1);
   const sceneId = selectedScene()?.scene_id || "";
-  const visibleIndexes = sceneId ? new Set(ideaRowEntriesForCurrentScene(board).map(({ index }) => index)) : null;
+  const visibleIndexes = sceneId ? new Set(filteredIdeaRowEntriesForCurrentScene(board).map(({ index }) => index)) : null;
   state.ideaBatchRows = [
     ...new Set(
       (state.ideaBatchRows || [])
@@ -3418,6 +3418,16 @@ function cleanIdeaBatchRows(board = currentIdeaBoard()) {
 
 function ideaBatchRowSet(board = currentIdeaBoard()) {
   return new Set(cleanIdeaBatchRows(board));
+}
+
+function ensureIdeaActiveRowForFilteredCards(board = currentIdeaBoard()) {
+  const entries = filteredIdeaRowEntriesForCurrentScene(board);
+  if (!entries.length) return ensureIdeaActiveRowForScene(board);
+  const activeIndex = Number(state.ideaActiveRowIndex || 0);
+  if (!entries.some(({ index }) => index === activeIndex)) {
+    state.ideaActiveRowIndex = entries[0].index;
+  }
+  return state.ideaActiveRowIndex;
 }
 
 function ideaReferenceActOptions(assets = allBoardImageAssets()) {
@@ -3601,7 +3611,7 @@ function refreshIdeaReferenceAssetGrid() {
   bindIdeaReferenceAssetButtons(grid);
 }
 
-function renderIdeaReferenceMapping(board, entries = ideaRowEntriesForCurrentScene(board)) {
+function renderIdeaReferenceMapping(board, entries = filteredIdeaRowEntriesForCurrentScene(board)) {
   const globalRefs = board.global_references || [];
   const rowRefTotal = (board.rows || []).reduce((sum, row) => sum + (Array.isArray(row.references) ? row.references.length : 0), 0);
   const scene = selectedScene();
@@ -3609,7 +3619,7 @@ function renderIdeaReferenceMapping(board, entries = ideaRowEntriesForCurrentSce
     <details class="idea-ref-mapping" open>
       <summary>
         <span>参考映射表 / Reference mapping</span>
-        <small>${globalRefs.length} 全局 · ${rowRefTotal} 条目参考 · 当前 ${escapeHtml(scene?.scene_id || "ALL")}</small>
+        <small>${globalRefs.length} 全局 · ${rowRefTotal} 条目参考 · 当前筛选 ${entries.length}</small>
       </summary>
       <div class="idea-map-global">
         <strong>全局作用于全部分镜 / Global refs apply to all rows</strong>
@@ -3638,8 +3648,8 @@ function renderIdeaReferenceMapping(board, entries = ideaRowEntriesForCurrentSce
 }
 
 function renderIdeaReferencePanel(board) {
-  const entries = ideaRowEntriesForCurrentScene(board);
-  ensureIdeaActiveRowForScene(board);
+  const entries = filteredIdeaRowEntriesForCurrentScene(board);
+  ensureIdeaActiveRowForFilteredCards(board);
   cleanIdeaBatchRows(board);
   const row = activeIdeaRow(board);
   const globalRefs = board.global_references || [];
