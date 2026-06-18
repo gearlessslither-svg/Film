@@ -2812,7 +2812,7 @@ def build_card_image_packet_text(
         [
             "# Codex Card Image Handoff / Codex 卡片图片生成包",
             "",
-            "请解析这个资料包，调用当前聊天里的真实生图能力，只为 Tasks 中列出的目标卡片生成图片。不要因为上下文里有其他卡片，就自动生成它们。",
+            "这是电影项目的概念/分镜卡片图片生成包，不是投资策略卡片。请调用当前聊天里的真实生图能力，只为 Tasks 中列出的目标电影卡片生成图片。不要因为上下文里有其他卡片，就自动生成它们。",
             "",
             "## Codex Run Mode / 执行模式",
             "- 目标是卡片级生成：如果 Tasks 里只有 1 张卡，就只生成 1 张；有多张才批量生成。",
@@ -3125,11 +3125,15 @@ def latest_codex_card_handoff(slug: str, query: str = "") -> dict[str, object]:
     latest = candidates[0] if candidates else None
     return {
         "ok": bool(latest),
+        "domain": "film_pipeline",
+        "tool": "pipeline-hub",
         "project_slug": slug,
         "project_root": str(path),
         "latest": latest,
         "available_count": len(candidates),
-        "usage": "在 Codex 聊天中说“分析卡片”或“生成卡片图片”时，读取 latest.tasks，逐项生成图片，然后 POST callback_url 回填。",
+        "allowed_triggers": ["处理电影卡片", "生成电影卡片图片", "生成分镜图片", "生成概念图"],
+        "do_not_use_for": ["分析策略卡片", "投资策略卡片", "财务状况"],
+        "usage": "只在用户明确说“处理电影卡片 / 生成电影卡片图片 / 生成分镜图片 / 生成概念图”时读取 latest.tasks，逐项生成图片，然后 POST callback_url 回填。不要用本接口处理投资策略卡片。",
     }
 
 

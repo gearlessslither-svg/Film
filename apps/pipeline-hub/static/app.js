@@ -4824,7 +4824,7 @@ function renderProjectBibleLab(board) {
       </div>
       <div class="idea-actions">
         <button id="projectBibleBuildHandoffBtn" class="command-button primary" type="button">生成总概念分析卡 / Bible Card</button>
-        <button id="cardBuildImagePacketBtn" class="command-button" type="button">生成勾选卡片 / Selected Cards</button>
+        <button id="cardBuildImagePacketBtn" class="command-button" type="button">生成电影图片包 / Film Image Pack</button>
         <button id="currentVersionPackageBtn" class="command-button" type="button">采用图包 / Current Pack</button>
         <button id="batchVersionQaBtn" class="command-button" type="button">批量质检 / Batch QA</button>
         <button id="qaRepairPacketBtn" class="command-button" type="button">低分修复包 / QA Fix</button>
@@ -4953,7 +4953,7 @@ function renderIdeaLab() {
       <div class="idea-actions">
         <button id="ideaBuildActCardBtn" class="command-button" type="button">分析幕结构卡 / Act Card</button>
         <button id="ideaBuildHandoffBtn" class="command-button primary" type="button">生成分析卡 / Analysis Card</button>
-        <button id="cardBuildImagePacketBtn" class="command-button" type="button">生成勾选卡片 / Selected Cards</button>
+        <button id="cardBuildImagePacketBtn" class="command-button" type="button">生成电影图片包 / Film Image Pack</button>
         <button id="currentVersionPackageBtn" class="command-button" type="button">采用图包 / Current Pack</button>
         <button id="batchVersionQaBtn" class="command-button" type="button">批量质检 / Batch QA</button>
         <button id="qaRepairPacketBtn" class="command-button" type="button">低分修复包 / QA Fix</button>
@@ -5107,7 +5107,7 @@ function collectVisibleCardTargets() {
 
 async function createCardImagePacket(singleTarget = null) {
   if (!state.selectedSlug || !state.detail) return;
-  await runAction("生成勾选卡片 / Card image packet", async () => {
+  await runAction("生成电影卡片图片包 / Film card image packet", async () => {
     const board = collectIdeaBoardFromDom();
     const targets = singleTarget ? [singleTarget] : collectVisibleCardTargets();
     await createCardImagePacketForTargets(board, targets, "card_image", "请先勾选要生成的卡片 / Select target cards first");
@@ -5126,11 +5126,11 @@ async function createCardImagePacketForTargets(board, targets, kind = "card_imag
   state.detail = result.project || state.detail;
   addIdeaHandoff({
     kind,
-    title: `${result.task_count || 0} 张卡片 → Codex 生图`,
+    title: `${result.task_count || 0} 张电影卡片 → Codex 生图`,
     path: result.packet_path || "",
     text: result.handoff_text || "",
   });
-  toast("已自动保存并生成卡片图片包 / Saved and card image packet ready");
+  toast("已自动保存并生成电影图片包 / Film image packet ready");
   renderAll();
   return result;
 }
