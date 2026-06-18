@@ -3131,9 +3131,9 @@ def latest_codex_card_handoff(slug: str, query: str = "") -> dict[str, object]:
         "project_root": str(path),
         "latest": latest,
         "available_count": len(candidates),
-        "allowed_triggers": ["处理电影卡片", "生成电影卡片图片", "生成分镜图片", "生成概念图"],
+        "allowed_triggers": ["电影", "处理电影卡片", "生成电影卡片图片", "生成分镜图片", "生成概念图"],
         "do_not_use_for": ["分析策略卡片", "投资策略卡片", "财务状况"],
-        "usage": "只在用户明确说“处理电影卡片 / 生成电影卡片图片 / 生成分镜图片 / 生成概念图”时读取 latest.tasks，逐项生成图片，然后 POST callback_url 回填。不要用本接口处理投资策略卡片。",
+        "usage": "只在用户明确说“电影 / 处理电影卡片 / 生成电影卡片图片 / 生成分镜图片 / 生成概念图”时读取 latest.tasks，逐项生成图片，然后 POST callback_url 回填。不要用本接口处理投资策略卡片。",
     }
 
 
