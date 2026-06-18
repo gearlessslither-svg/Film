@@ -2274,6 +2274,8 @@ def idea_board_to_markdown(board: dict[str, object]) -> str:
                 [
                     "",
                     f"### {index:02d}. {card.get('card_id', '')} {card.get('title', '')}",
+                    f"- Scope / 层级: {card.get('scope', '')}",
+                    f"- Act / 所属幕: {card.get('act_id', '')}",
                     f"- Category / 分类: {card.get('category', '')}",
                     f"- Status / 状态: {card.get('status', '')}",
                     f"- Selected / 启用: {card.get('selected', True)}",
@@ -2672,6 +2674,92 @@ def scene_context_for_row(path: Path, board: dict[str, object], row: dict[str, o
     }
 
 
+def concept_card_context(path: Path, board: dict[str, object], card: dict[str, object]) -> dict[str, object]:
+    scope = str(card.get("scope", "project") or "project").strip()
+    act_id = str(card.get("act_id", "") or "").strip()
+    scene_data = load_scene_workbench(path)
+    scenes = [scene for scene in scene_data.get("scenes", []) if isinstance(scene, dict)]
+    acts = [act for act in board.get("acts", []) if isinstance(act, dict)]
+    target_act = next((act for act in acts if str(act.get("act_id", "") or "") == act_id), {})
+    scoped_scenes = [
+        scene
+        for scene in scenes
+        if act_id and str(scene.get("act_id", "") or "") == act_id
+    ]
+    scene_ids = {str(scene.get("scene_id", "") or "") for scene in scoped_scenes}
+    rows = board.get("rows", [])
+    if not isinstance(rows, list):
+        rows = []
+    if act_id:
+        scoped_rows = [
+            row
+            for row in rows
+            if isinstance(row, dict)
+            and (
+                str(row.get("act_id", "") or "") == act_id
+                or (bool(scene_ids) and str(row.get("scene_id", "") or "") in scene_ids)
+            )
+        ]
+    elif scope == "act":
+        scoped_rows = []
+    else:
+        scoped_rows = [row for row in rows if isinstance(row, dict)]
+    related_assets: list[dict[str, object]] = []
+    source_scenes = scoped_scenes if act_id else scenes[:12]
+    for scene in source_scenes:
+        stage_assets = scene.get("resource_manifest", {}).get("stage_assets", {})
+        if not isinstance(stage_assets, dict):
+            continue
+        for step, assets in stage_assets.items():
+            if not isinstance(assets, list):
+                continue
+            for asset in assets:
+                if not isinstance(asset, dict):
+                    continue
+                related_assets.append(
+                    {
+                        "scene_id": scene.get("scene_id", ""),
+                        "scene_title": scene.get("title", ""),
+                        "act_id": scene.get("act_id", ""),
+                        "act_title": scene.get("act_title", ""),
+                        "step": step,
+                        "asset_id": asset.get("asset_id", ""),
+                        "kind": asset.get("kind", ""),
+                        "role": asset.get("role", ""),
+                        "path": asset.get("path", ""),
+                    }
+                )
+    return {
+        "scope": scope,
+        "act_id": act_id,
+        "act": target_act,
+        "scenes": [
+            {
+                "scene_id": scene.get("scene_id", ""),
+                "title": scene.get("title", ""),
+                "act_id": scene.get("act_id", ""),
+                "act_title": scene.get("act_title", ""),
+            }
+            for scene in source_scenes
+        ],
+        "nearby_storyboard_cards": [
+            {
+                "item_id": row.get("item_id", ""),
+                "scene_id": row.get("scene_id", ""),
+                "beat": row.get("beat", ""),
+                "shot_type": row.get("shot_type", ""),
+                "frame_description": row.get("frame_description", ""),
+                "image_prompt": row.get("image_prompt", ""),
+                "notes": row.get("notes", ""),
+                "output_path": row.get("output_path", ""),
+                "versions": row.get("versions", []),
+            }
+            for row in scoped_rows[:40]
+        ],
+        "related_assets": related_assets[:80],
+    }
+
+
 def build_card_image_packet_text(
     slug: str,
     path: Path,
@@ -2691,6 +2779,7 @@ def build_card_image_packet_text(
             "- 目标是卡片级生成：如果 Tasks 里只有 1 张卡，就只生成 1 张；有多张才批量生成。",
             "- 生成前可做电影级提示词优化，强化构图、光影、材质、角色连续性和负面约束。",
             "- revision_note 是本轮精修意见，优先级高于长期 notes/prompt_notes；不要把一次性修改写死成永久设定。",
+            "- Concept task 的 scope/act_id/act_context 决定它是全项目设定还是某一幕设定；幕级概念只继承并服务对应 act 的上下文。",
             "- Context cards、global references、nearby storyboard cards、related assets 只用于风格和连续性参考，不是生成目标。",
             "- 每个任务保存到 Suggested output path；完成后调用回填接口追加到对应卡片 versions，并更新当前预览。",
             "- 输出保持短：图片预览、保存路径、回填状态。",
@@ -2796,6 +2885,8 @@ def create_card_image_packet(slug: str, payload: dict[str, object]) -> dict[str,
                 "task_id": f"{packet_id}_{index:03d}",
                 "card_type": "concept",
                 "card_id": card_id,
+                "scope": card.get("scope", "project"),
+                "act_id": card.get("act_id", ""),
                 "category": card.get("category", ""),
                 "title": card.get("title", ""),
                 "summary": card.get("summary", ""),
@@ -2805,6 +2896,7 @@ def create_card_image_packet(slug: str, payload: dict[str, object]) -> dict[str,
                 "negative_prompt": card.get("negative_prompt", ""),
                 "target_references": card_refs,
                 "existing_versions": versions,
+                "act_context": concept_card_context(path, board, card),
                 "whitebox_guidance": whitebox_guidance,
                 "suggested_output_path": output_rel_path,
                 "suggested_output_absolute_path": str(path / output_rel_path),

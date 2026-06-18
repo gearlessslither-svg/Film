@@ -68,6 +68,10 @@ const state = {
 };
 
 const PROJECT_BIBLE_SCENE_ID = "__PROJECT_BIBLE__";
+const PROJECT_BIBLE_SCOPE_OPTIONS = [
+  { value: "project", label: "全项目 / Project" },
+  { value: "act", label: "单幕 / Act" },
+];
 const PROJECT_BIBLE_CATEGORY_OPTIONS = [
   { value: "character", label: "人物 / Character" },
   { value: "location", label: "场景 / Location" },
@@ -3179,6 +3183,16 @@ function ensureIdeaActiveBibleForScope(board = currentIdeaBoard()) {
   return state.ideaActiveBibleIndex;
 }
 
+function ensureProjectBibleActiveForFilteredCards(board = currentIdeaBoard()) {
+  const entries = filteredProjectBibleEntries(board);
+  if (!entries.length) return ensureIdeaActiveBibleForScope(board);
+  const activeIndex = Number(state.ideaActiveBibleIndex || 0);
+  if (!entries.some(({ index }) => index === activeIndex)) {
+    state.ideaActiveBibleIndex = entries[0].index;
+  }
+  return state.ideaActiveBibleIndex;
+}
+
 function collectIdeaActsFromDom(current) {
   const root = $("ideaActList");
   if (!root) return current.acts || [];
@@ -3927,6 +3941,7 @@ function buildProjectBibleAnalysisHandoff(board) {
     "",
     "## Codex Run Mode / 执行模式",
     "- 分析目标不是故事推进，而是项目级视觉圣经：人物、场景、道具、美术、氛围、年代、统一负面约束。",
+    "- 每张 concept card 都是独立可生成/可精修的卡片；scope=project 表示全片通用，scope=act 且 act_id 有值表示只服务某一幕。",
     "- 每张 project_bible 卡都要能直接服务后续图片生成；prompt_notes 必须可执行、稳定、具体。",
     "- references 和 global_references 要保留；可根据已有参考图 note 推断它属于人物、场景、道具或美术。",
     "- 不要删除现有 acts 或 rows；只更新 project_bible、style_notes 和必要的 global reference notes。",
@@ -4050,6 +4065,39 @@ function renderIdeaActPlanner(board) {
 
 function projectBibleCategoryLabel(value) {
   return PROJECT_BIBLE_CATEGORY_OPTIONS.find((option) => option.value === value)?.label || value || "总概念 / Concept";
+}
+
+function projectBibleScopeLabel(value) {
+  return PROJECT_BIBLE_SCOPE_OPTIONS.find((option) => option.value === value)?.label || value || "全项目 / Project";
+}
+
+function projectBibleActLabel(board, actId) {
+  if (!actId) return "全部幕 / All acts";
+  const act = (board.acts || []).find((item) => item.act_id === actId);
+  return act ? `${act.act_id} · ${act.title || "未命名幕"}` : actId;
+}
+
+function renderProjectBibleScopeOptions(selected) {
+  const known = PROJECT_BIBLE_SCOPE_OPTIONS.some((option) => option.value === selected);
+  const options = known || !selected
+    ? PROJECT_BIBLE_SCOPE_OPTIONS
+    : [...PROJECT_BIBLE_SCOPE_OPTIONS, { value: selected, label: selected }];
+  return options
+    .map((option) => `<option value="${escapeHtml(option.value)}" ${selected === option.value ? "selected" : ""}>${escapeHtml(option.label)}</option>`)
+    .join("");
+}
+
+function renderProjectBibleActOptions(board, selected) {
+  const acts = board.acts || [];
+  const known = !selected || acts.some((act) => act.act_id === selected);
+  const options = [
+    { value: "", label: "全部幕 / All acts" },
+    ...acts.map((act) => ({ value: act.act_id, label: `${act.act_id} · ${act.title || "未命名幕"}` })),
+  ];
+  if (!known) options.push({ value: selected, label: selected });
+  return options
+    .map((option) => `<option value="${escapeHtml(option.value)}" ${selected === option.value ? "selected" : ""}>${escapeHtml(option.label)}</option>`)
+    .join("");
 }
 
 function cardVersionEntries(cardOrRow) {
@@ -4342,9 +4390,13 @@ function cardMatchesCardFilters(card, cardType) {
   if (mode.startsWith("qa_") && cardQaBucket(card) !== mode) return false;
   const query = String(filters.query || "").trim().toLowerCase();
   if (!query) return true;
+  const scopeSearchFields = cardType === "concept"
+    ? [card.scope, card.act_id, projectBibleScopeLabel(card.scope), projectBibleActLabel(currentIdeaBoard(), card.act_id)]
+    : [];
   return [
     card.card_id,
     card.item_id,
+    ...scopeSearchFields,
     card.title,
     card.category,
     card.summary,
@@ -4438,6 +4490,7 @@ async function runVisibleCardVersionQa() {
 
 function renderProjectBibleReferencePanel(board) {
   const cards = board.project_bible || [];
+  ensureProjectBibleActiveForFilteredCards(board);
   const card = activeProjectBibleCard(board);
   const globalRefs = board.global_references || [];
   const cardRefs = card?.references || [];
@@ -4477,7 +4530,7 @@ function renderProjectBibleReferencePanel(board) {
                     <button class="project-bible-map-item ${state.ideaActiveBibleIndex === index ? "active" : ""}" data-bible-index="${index}" type="button">
                       <span>${escapeHtml(projectBibleCategoryLabel(item.category))}</span>
                       <strong>${escapeHtml(item.title || item.card_id || `#${index + 1}`)}</strong>
-                      <small>${(item.references || []).length} refs</small>
+                      <small>${escapeHtml(projectBibleScopeLabel(item.scope))}${item.act_id ? ` · ${escapeHtml(projectBibleActLabel(board, item.act_id))}` : ""} · ${(item.references || []).length} refs</small>
                     </button>
                   `,
                 )
@@ -4503,6 +4556,16 @@ function renderProjectBibleCards(board, entries = filteredProjectBibleEntries(bo
         <article class="project-bible-card ${state.ideaActiveBibleIndex === index ? "active" : ""}" data-bible-index="${index}">
           <header>
             <label>编号 / ID <input data-bible-field="card_id" value="${escapeHtml(card.card_id || `BIBLE_${String(index + 1).padStart(3, "0")}`)}" /></label>
+            <label>层级 / Scope
+              <select data-bible-field="scope">
+                ${renderProjectBibleScopeOptions(card.scope || "project")}
+              </select>
+            </label>
+            <label>所属幕 / Act
+              <select data-bible-field="act_id">
+                ${renderProjectBibleActOptions(board, card.act_id || "")}
+              </select>
+            </label>
             <label>分类 / Type
               <select data-bible-field="category">
                 ${PROJECT_BIBLE_CATEGORY_OPTIONS.map((option) => `<option value="${escapeHtml(option.value)}" ${card.category === option.value ? "selected" : ""}>${escapeHtml(option.label)}</option>`).join("")}
@@ -4516,7 +4579,7 @@ function renderProjectBibleCards(board, entries = filteredProjectBibleEntries(bo
             <button class="icon-button project-bible-delete" data-bible-index="${index}" type="button" title="删除总概念卡 / Delete card">×</button>
           </header>
           <div class="idea-row-ref-strip">
-            <span>${(card.references || []).length} 当前参考 / refs · ${escapeHtml(projectBibleCategoryLabel(card.category))}</span>
+            <span>${(card.references || []).length} 当前参考 / refs · ${escapeHtml(projectBibleScopeLabel(card.scope))}${card.act_id ? ` · ${escapeHtml(projectBibleActLabel(board, card.act_id))}` : ""} · ${escapeHtml(projectBibleCategoryLabel(card.category))}</span>
             ${(card.references || []).slice(0, 8).map((ref) => renderIdeaReferenceChip(ref, "bible", index)).join("")}
           </div>
           <label>概念说明 / Summary
@@ -4548,6 +4611,7 @@ function renderProjectBibleLab(board) {
   const cardCount = (board.project_bible || []).length;
   const enabledCount = (board.project_bible || []).filter((card) => card.selected !== false).length;
   const visibleEntries = filteredProjectBibleEntries(board);
+  ensureProjectBibleActiveForFilteredCards(board);
   return `
     <div class="idea-header">
       <div>
