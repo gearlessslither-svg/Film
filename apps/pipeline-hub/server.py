@@ -2921,6 +2921,159 @@ def update_card_image_output(slug: str, payload: dict[str, object]) -> dict[str,
     return {"ok": True, "updated": updated, "idea_board": load_idea_board(path, slug), "project": project_detail(slug)}
 
 
+def board_card_target(board: dict[str, object], card_type: str, card_id: str) -> dict[str, object] | None:
+    if card_type == "concept":
+        cards = board.get("project_bible", [])
+        if not isinstance(cards, list):
+            return None
+        return next((card for card in cards if isinstance(card, dict) and safe_file_stem(card.get("card_id", "")) == card_id), None)
+    if card_type == "storyboard":
+        rows = board.get("rows", [])
+        if not isinstance(rows, list):
+            return None
+        return next((row for row in rows if isinstance(row, dict) and safe_file_stem(row.get("item_id", "")) == card_id), None)
+    return None
+
+
+def board_card_output_path(packet_id: str, index: int, card_id: str, versions: list[dict[str, object]]) -> str:
+    version_id = f"v{len(versions) + 1:03d}"
+    return str(Path("08_generation") / "jobs" / packet_id / "outputs" / f"{index:03d}_{card_id}_{version_id}.png")
+
+
+def build_board_card_packet_text(slug: str, path: Path, packet_id: str, packet_rel_path: str, task: dict[str, object]) -> str:
+    output_path = str(task.get("suggested_output_path", "") or "")
+    card_type = str(task.get("card_type", "") or "")
+    card_id = str(task.get("card_id") or task.get("item_id") or "")
+    callback_item = {
+        "card_type": card_type,
+        "output_path": output_path,
+        "notes": "Board refinement / 画板精修版本",
+    }
+    if card_type == "concept":
+        callback_item["card_id"] = card_id
+    else:
+        callback_item["item_id"] = card_id
+    return "\n".join(
+        [
+            "# Codex Board Card Refinement Handoff / Codex 画板卡片精修包",
+            "",
+            "请解析这个资料包，调用当前聊天里的真实生图能力，只为 Target Card 生成一个新的精修版本。生成完成后把图片保存到 Suggested output path，并调用回填接口追加到这张卡片的 versions。",
+            "",
+            "## Codex Run Mode / 执行模式",
+            "- 这是单卡精修，不是整幕批量生成；不要自动生成其他卡片。",
+            "- 以 Source image 为主图，按 Board note、Reference stack 和 Relation note 精修。",
+            "- 生成前可做电影级提示词优化，但不要改变卡片核心意图、人物身份、场景连续性和既有构图，除非备注明确要求。",
+            "- 保存后调用 card-image-output 回填接口，让新图出现在原卡片的版本预览里。",
+            "- 输出保持短：图片预览、保存路径、回填状态。",
+            "",
+            "## Project / 项目",
+            f"- Project slug: {slug}",
+            f"- Project root: {path}",
+            f"- Packet id: {packet_id}",
+            f"- Packet path: {packet_rel_path}",
+            "",
+            "## Target Card / 目标卡片",
+            "```json",
+            json.dumps(
+                {
+                    "card_type": card_type,
+                    "card_id": task.get("card_id", ""),
+                    "item_id": task.get("item_id", ""),
+                    "target_record": task.get("target_record", {}),
+                    "existing_versions": task.get("existing_versions", []),
+                },
+                ensure_ascii=False,
+                indent=2,
+            ),
+            "```",
+            "",
+            "## Source Image / 主图版本",
+            "```json",
+            json.dumps(task.get("source_asset", {}), ensure_ascii=False, indent=2),
+            "```",
+            "",
+            "## Reference Stack / 关联素材",
+            "```json",
+            json.dumps(task.get("references", []), ensure_ascii=False, indent=2),
+            "```",
+            "",
+            "## Board Prompt / 画板提示词",
+            "```text",
+            str(task.get("generation_prompt", "") or ""),
+            "```",
+            "",
+            "## Output / 输出",
+            f"- Suggested output path: {output_path}",
+            f"- Suggested output absolute path: {path / output_path if output_path else ''}",
+            f"- Suggested catalog path: {task.get('routing', {}).get('suggested_catalog_path', '') if isinstance(task.get('routing'), dict) else ''}",
+            "",
+            "## Callback / 回填接口",
+            f"- POST: http://127.0.0.1:8787/api/projects/{slug}/card-image-output",
+            "- Body:",
+            "```json",
+            json.dumps({"outputs": [callback_item]}, ensure_ascii=False, indent=2),
+            "```",
+        ]
+    )
+
+
+def create_board_card_packet(slug: str, payload: dict[str, object]) -> dict[str, object]:
+    path = project_path(slug)
+    board = load_idea_board(path, slug)
+    card_type = str(payload.get("card_type") or payload.get("type") or "").strip()
+    raw_card_id = payload.get("card_id") or payload.get("item_id") or payload.get("id") or ""
+    card_id = safe_file_stem(raw_card_id)
+    if card_type not in {"concept", "storyboard"} or not card_id:
+        raise ValueError("画板精修需要目标卡片 / Board refinement needs a target card.")
+    target = board_card_target(board, card_type, card_id)
+    if not target:
+        raise ValueError("没有找到目标卡片 / Target card was not found.")
+    versions = normalize_concept_card_versions(target.get("versions", []))
+    packet_id = f"BOARD_CARD_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+    job_dir = path / "08_generation" / "jobs" / packet_id
+    outputs_dir = job_dir / "outputs"
+    tasks_dir = job_dir / "tasks"
+    outputs_dir.mkdir(parents=True, exist_ok=True)
+    tasks_dir.mkdir(parents=True, exist_ok=True)
+    output_path = board_card_output_path(packet_id, 1, card_id, versions)
+    source_asset = payload.get("source_asset") if isinstance(payload.get("source_asset"), dict) else {}
+    references = payload.get("references") if isinstance(payload.get("references"), list) else []
+    routing = payload.get("routing") if isinstance(payload.get("routing"), dict) else {}
+    task: dict[str, object] = {
+        "task_id": f"{packet_id}_001",
+        "card_type": card_type,
+        "card_id": card_id if card_type == "concept" else "",
+        "item_id": card_id if card_type == "storyboard" else "",
+        "target_record": target,
+        "existing_versions": versions,
+        "source_asset": source_asset,
+        "references": references,
+        "routing": routing,
+        "board_note": str(payload.get("board_note", "") or ""),
+        "generation_prompt": str(payload.get("generation_prompt", "") or ""),
+        "suggested_output_path": output_path,
+        "suggested_output_absolute_path": str(path / output_path),
+    }
+    task_rel_path = str(Path("08_generation") / "jobs" / packet_id / "tasks" / "001_board_card_refinement.json")
+    (path / task_rel_path).write_text(json.dumps(task, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    packet_rel_path = str(Path("08_generation") / "jobs" / packet_id / "outputs" / f"{packet_id}_board_card_handoff.md")
+    packet_text = build_board_card_packet_text(slug, path, packet_id, packet_rel_path, task)
+    (path / packet_rel_path).write_text(packet_text, encoding="utf-8")
+    write_yaml_file(job_dir / "board_card_task.json", {"packet_id": packet_id, "task": task})
+    return {
+        "ok": True,
+        "packet_id": packet_id,
+        "packet_path": packet_rel_path,
+        "packet_absolute_path": str(path / packet_rel_path),
+        "task_path": task_rel_path,
+        "task_count": 1,
+        "task": task,
+        "handoff_text": packet_text,
+        "suggested_output_path": output_path,
+        "project": project_detail(slug),
+    }
+
+
 def project_bible_card_kind(card: dict[str, object]) -> str:
     category = str(card.get("category", "") or "").strip()
     if category == "character":
@@ -4100,6 +4253,9 @@ class PipelineHubHandler(BaseHTTPRequestHandler):
                 return
             if action == "card-image-packet":
                 send_json(self, create_card_image_packet(slug, payload))
+                return
+            if action == "board-card-packet":
+                send_json(self, create_board_card_packet(slug, payload))
                 return
             if action == "card-image-output":
                 send_json(self, update_card_image_output(slug, payload))

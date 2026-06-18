@@ -3670,6 +3670,10 @@ th {
   white-space: nowrap;
 }
 
+.board-card-target {
+  color: var(--accent) !important;
+}
+
 .board-image-lightbox {
   position: fixed;
   inset: 0;

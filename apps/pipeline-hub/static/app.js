@@ -1929,6 +1929,82 @@ function boardReferenceLines(node) {
     .join("\n\n");
 }
 
+function boardCardTargetForAsset(asset) {
+  if (!asset?.card_type || !asset?.card_id) return null;
+  if (asset.card_type === "concept") return { card_type: "concept", card_id: asset.card_id };
+  if (asset.card_type === "storyboard") return { card_type: "storyboard", item_id: asset.card_id };
+  return null;
+}
+
+function boardReferencePayloads(node) {
+  return boardNodeOutgoingEdges(node.id)
+    .map((edge, index) => {
+      const refNode = state.boardNodes.find((item) => item.id === edge.targetId);
+      const refAsset = boardNodeAsset(refNode);
+      if (!refNode || !refAsset) return null;
+      return {
+        index: index + 1,
+        asset_ref: refAsset.ref || "",
+        asset_id: refAsset.asset_id || refAsset.path || "",
+        path: refAsset.path || "",
+        origin: refAsset.origin || "project",
+        kind: refAsset.kind || "image",
+        scene_id: refAsset.scene_id || "",
+        scene_title: refAsset.scene_title || "",
+        version_id: refAsset.version_id || "",
+        version_status: refAsset.version_status || "",
+        card_type: refAsset.card_type || "",
+        card_id: refAsset.card_id || "",
+        note: refNode.note || "",
+        relation_note: edge.note || "",
+        browser_url: `${location.origin}${refAsset.url || ""}`,
+      };
+    })
+    .filter(Boolean);
+}
+
+function boardCardPacketPayload(node, asset) {
+  const target = boardCardTargetForAsset(asset);
+  const outputTarget = boardOutputTargetForNode(node, asset);
+  const catalogPath = boardOutputSuggestedCatalogPath(node, asset);
+  return {
+    ...target,
+    source_asset: {
+      asset_ref: asset.ref || "",
+      asset_id: asset.asset_id || asset.path || "",
+      path: asset.path || "",
+      origin: asset.origin || "project",
+      kind: asset.kind || "image",
+      scene_id: asset.scene_id || "",
+      scene_title: asset.scene_title || "",
+      act_id: asset.act_id || "",
+      act_title: asset.act_title || "",
+      version_id: asset.version_id || "",
+      version_status: asset.version_status || "",
+      card_type: asset.card_type || "",
+      card_id: asset.card_id || "",
+      card_title: asset.card_title || "",
+      card_category: asset.card_category || "",
+      card_summary: asset.card_summary || "",
+      card_prompt: asset.card_prompt || "",
+      qa_score: asset.qa_score ?? "",
+      browser_url: `${location.origin}${asset.url || ""}`,
+    },
+    references: boardReferencePayloads(node),
+    routing: {
+      scope: outputTarget.scope,
+      scope_label: boardOutputScopeLabel(outputTarget.scope),
+      kind: outputTarget.kind,
+      kind_label: boardOutputKindLabel(outputTarget.kind),
+      note: outputTarget.note || "",
+      suggested_catalog_path: catalogPath,
+      suggested_catalog_absolute_path: projectAbsolutePath(catalogPath),
+    },
+    board_note: node.note || "",
+    generation_prompt: boardPromptForNode(node),
+  };
+}
+
 function buildBoardHandoffText(node, result) {
   const asset = boardNodeAsset(node);
   const scene = boardSceneForNode(asset);
@@ -1977,6 +2053,9 @@ function buildBoardHandoffText(node, result) {
     "",
     "## Main Image / 主图",
     `- Asset: ${asset?.asset_id || asset?.path || ""}`,
+    `- Source card type: ${asset?.card_type || ""}`,
+    `- Source card id: ${asset?.card_id || ""}`,
+    `- Source card version: ${asset?.version_id || ""} · ${asset?.version_status || ""}`,
     `- Stage: ${asset?.stage || ""}`,
     `- Kind: ${kindLabel(asset?.kind)}`,
     `- Target asset path: ${asset?.path || ""}`,
@@ -2022,7 +2101,7 @@ function addBoardHandoff(node, result) {
     status: result.status || "packet",
     outputPath: result.outputPath || "",
     createdAt: new Date().toLocaleString(),
-    text: buildBoardHandoffText(node, result),
+    text: result.handoffText || buildBoardHandoffText(node, result),
   };
   state.boardHandoffs = [handoff, ...state.boardHandoffs.filter((item) => item.outputPath !== handoff.outputPath)].slice(0, 12);
   state.boardHandoffCollapsed = false;
@@ -2078,6 +2157,66 @@ function boardGenerationMessageFromRun(runResult, adapter) {
   };
 }
 
+async function createBoardCardGenerationPacket(nodeId) {
+  const node = state.boardNodes.find((item) => item.id === nodeId);
+  const asset = boardNodeAsset(node);
+  const target = boardCardTargetForAsset(asset);
+  if (!node || !asset || !target) {
+    toast("这张图没有绑定到文字卡片版本 / This image is not linked to a card version");
+    return;
+  }
+  if (state.busy) {
+    toast("已有任务正在执行 / Another task is running");
+    return;
+  }
+  state.busy = true;
+  node.lastGeneration = {
+    status: "running",
+    message: "正在创建卡片精修包 / Creating card refinement packet...",
+    outputPath: "",
+  };
+  setBoardGeneration(nodeId, 18, node.lastGeneration.message);
+  try {
+    setBoardGeneration(nodeId, 58, "正在写入回填信息 / Writing card callback...");
+    const result = await requestJson(`/api/projects/${state.selectedSlug}/board-card-packet`, {
+      method: "POST",
+      body: JSON.stringify(boardCardPacketPayload(node, asset)),
+    });
+    state.detail = result.project || state.detail;
+    const packetResult = {
+      status: "packet",
+      outputPath: result.packet_path || "",
+      message: "已生成卡片精修包，可拖给 Codex 生图并回填到原卡片版本 / Card refinement packet ready.",
+      handoffText: result.handoff_text || "",
+      suggestedOutputPath: result.suggested_output_path || "",
+      cardTarget: target,
+    };
+    node.lastGeneration = {
+      ...packetResult,
+      completedAt: new Date().toLocaleString(),
+    };
+    addBoardHandoff(node, packetResult);
+    saveBoardState();
+    setBoardGeneration(nodeId, 100, packetResult.message);
+    renderAll();
+    renderReferenceBoard();
+    toast(packetResult.message);
+  } catch (error) {
+    node.lastGeneration = {
+      status: "failed",
+      message: error.message,
+      outputPath: "",
+      completedAt: new Date().toLocaleString(),
+    };
+    saveBoardState();
+    setBoardGeneration(nodeId, 100, `生成失败 / Failed: ${error.message}`);
+    toast(`卡片精修包失败 / Card refinement failed: ${error.message}`);
+  } finally {
+    state.busy = false;
+    window.setTimeout(clearBoardGeneration, 1600);
+  }
+}
+
 function setBoardGeneration(nodeId, progress, message) {
   state.boardGeneration = { nodeId, progress, message };
   renderBoardCanvas();
@@ -2096,6 +2235,10 @@ async function createBoardGenerationPacket(nodeId) {
   const scene = boardSceneForNode(asset);
   if (!node || !asset) {
     toast("画布节点缺少图片信息 / Board node is missing image context");
+    return;
+  }
+  if (boardCardTargetForAsset(asset)) {
+    await createBoardCardGenerationPacket(nodeId);
     return;
   }
   if (!scene) {
@@ -2232,6 +2375,7 @@ function renderBoardNode(node) {
   const generationOutput = !activeGeneration && lastGeneration.outputPath ? lastGeneration.outputPath : "";
   const generationClass = activeGeneration ? "running" : lastGeneration.status || "";
   const outputTarget = boardOutputTargetForNode(node, asset);
+  const cardTarget = boardCardTargetForAsset(asset);
   return `
     <article class="board-node-card ${escapeHtml(node.role || "reference")} ${activeLink ? "linking" : ""} ${activeGeneration ? "generating" : ""}" data-node-id="${escapeHtml(node.id)}" style="left:${Number(node.x || 0)}px; top:${Number(node.y || 0)}px;">
       <header>
@@ -2247,6 +2391,7 @@ function renderBoardNode(node) {
       <div class="board-node-meta">
         <strong>${escapeHtml(asset.asset_id || asset.role || asset.path)}</strong>
         <small>${escapeHtml(asset.scene_id || "PROJECT")} · ${escapeHtml(kindLabel(asset.kind))} · ${escapeHtml(asset.path || "")}</small>
+        ${cardTarget ? `<small class="board-card-target">回填卡片 / Card version: ${escapeHtml(asset.card_type || "")} · ${escapeHtml(asset.card_id || "")}</small>` : ""}
       </div>
       <label>${escapeHtml(boardNodeNoteLabel(node))}
         <textarea class="board-node-note" data-node-id="${escapeHtml(node.id)}" rows="4" placeholder="${node.role === "main" ? "完整描述要生成的新图 / Describe the full new image" : "说明要借用什么元素 / Describe what to borrow"}">${escapeHtml(node.note || "")}</textarea>
@@ -2281,7 +2426,7 @@ function renderBoardNode(node) {
       }
       <footer>
         <span>${outgoingCount} 关联 / refs</span>
-        <button class="command-button primary board-generate-node" data-node-id="${escapeHtml(node.id)}" type="button" ${state.busy ? "disabled" : ""}>${activeGeneration ? `生成中 ${progress}%` : "生成 / Generate"}</button>
+        <button class="command-button primary board-generate-node" data-node-id="${escapeHtml(node.id)}" type="button" ${state.busy ? "disabled" : ""}>${activeGeneration ? `生成中 ${progress}%` : cardTarget ? "精修入卡 / Revise Card" : "生成 / Generate"}</button>
       </footer>
       ${
         generationMessage
