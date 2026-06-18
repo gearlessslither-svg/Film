@@ -3829,13 +3829,14 @@ function cardVersionEntries(cardOrRow) {
         status: version.status || (version.output_path === currentPath ? "current" : "candidate"),
       }))
     : [];
+  const hasCurrentVersion = versions.some((version) => version.status === "current");
   if (currentPath && !versions.some((version) => version.output_path === currentPath)) {
     versions.push({
       version_id: "current",
       output_path: currentPath,
       notes: cardOrRow?.output_notes || "",
       created_at: cardOrRow?.output_attached_at || "",
-      status: "current",
+      status: hasCurrentVersion ? "candidate" : "current",
     });
   }
   return versions.filter((version) => version?.output_path);
@@ -4073,6 +4074,58 @@ async function runCardVersionQa(button) {
   });
 }
 
+function currentVersionForQa(cardOrRow) {
+  const versions = cardVersionEntries(cardOrRow);
+  if (!versions.length) return null;
+  return [...versions].reverse().find((version) => version.status === "current")
+    || [...versions].reverse().find((version) => version.status !== "rejected")
+    || versions[versions.length - 1];
+}
+
+function visibleCardsForBatchQa(board) {
+  if (isProjectBibleSelected()) {
+    return (board.project_bible || []).map((card) => ({ cardType: "concept", target: card }));
+  }
+  return ideaRowEntriesForCurrentScene(board).map(({ row }) => ({ cardType: "storyboard", target: row }));
+}
+
+async function runVisibleCardVersionQa() {
+  if (!state.selectedSlug || !state.detail) return;
+  await runAction("批量质检当前卡片 / Batch QA", async () => {
+    const board = collectIdeaBoardFromDom();
+    const targets = visibleCardsForBatchQa(board)
+      .map((item) => ({ ...item, version: currentVersionForQa(item.target) }))
+      .filter((item) => item.version?.output_path);
+    if (!targets.length) {
+      toast("当前没有可质检的图片版本 / No visible image versions to QA");
+      return;
+    }
+    let passed = 0;
+    let failed = 0;
+    for (const item of targets) {
+      const version = findOrCreateCardVersion(item.target, item.version.version_id || "", item.version.output_path || "");
+      if (!version?.output_path) {
+        failed += 1;
+        continue;
+      }
+      try {
+        const result = await analyzeImageUrl(sceneAssetUrl(version.output_path));
+        version.qa = {
+          ...result,
+          analyzed_at: new Date().toISOString(),
+        };
+        passed += 1;
+      } catch {
+        failed += 1;
+      }
+    }
+    const saved = await persistIdeaBoard(board, { toast: false, render: false });
+    setIdeaBoardLocal(saved?.idea_board || board);
+    renderIdeaLab();
+    toast(`批量质检完成 / Batch QA done: ${passed} 成功, ${failed} 失败`);
+  });
+}
+
 function renderProjectBibleReferencePanel(board) {
   const cards = board.project_bible || [];
   const card = activeProjectBibleCard(board);
@@ -4192,6 +4245,7 @@ function renderProjectBibleLab(board) {
         <button id="projectBibleBuildHandoffBtn" class="command-button primary" type="button">生成总概念分析卡 / Bible Card</button>
         <button id="cardBuildImagePacketBtn" class="command-button" type="button">生成勾选卡片 / Selected Cards</button>
         <button id="currentVersionPackageBtn" class="command-button" type="button">采用图包 / Current Pack</button>
+        <button id="batchVersionQaBtn" class="command-button" type="button">批量质检 / Batch QA</button>
         <button id="cardSelectVisibleBtn" class="command-button" type="button">全选当前 / Select All</button>
         <button id="cardClearVisibleBtn" class="command-button" type="button">清空当前 / Clear</button>
         <button id="ideaSaveBtn" class="command-button" type="button">手动保存 / Save now</button>
@@ -4313,6 +4367,7 @@ function renderIdeaLab() {
         <button id="ideaBuildHandoffBtn" class="command-button primary" type="button">生成分析卡 / Analysis Card</button>
         <button id="cardBuildImagePacketBtn" class="command-button" type="button">生成勾选卡片 / Selected Cards</button>
         <button id="currentVersionPackageBtn" class="command-button" type="button">采用图包 / Current Pack</button>
+        <button id="batchVersionQaBtn" class="command-button" type="button">批量质检 / Batch QA</button>
         <button id="cardSelectVisibleBtn" class="command-button" type="button">全选当前 / Select All</button>
         <button id="cardClearVisibleBtn" class="command-button" type="button">清空当前 / Clear</button>
         <button id="ideaSaveBtn" class="command-button" type="button">手动保存 / Save now</button>
@@ -4664,6 +4719,7 @@ function bindIdeaLabEvents() {
   $("projectBibleAddCardBtn")?.addEventListener("click", () => addProjectBibleCard());
   $("cardBuildImagePacketBtn")?.addEventListener("click", () => createCardImagePacket());
   $("currentVersionPackageBtn")?.addEventListener("click", createCurrentVersionPackage);
+  $("batchVersionQaBtn")?.addEventListener("click", runVisibleCardVersionQa);
   $("cardSelectVisibleBtn")?.addEventListener("click", () => setVisibleCardSelection(true));
   $("cardClearVisibleBtn")?.addEventListener("click", () => setVisibleCardSelection(false));
   $("ideaBuildActCardBtn")?.addEventListener("click", createIdeaActAnalysisHandoff);
