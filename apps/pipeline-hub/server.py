@@ -3253,12 +3253,50 @@ def video_reference_qa_summary(current_assets: list[dict[str, object]], referenc
     }
 
 
+def video_reference_quality_gate(qa_summary: dict[str, object]) -> dict[str, object]:
+    current = qa_summary.get("current", {}) if isinstance(qa_summary.get("current"), dict) else {}
+    reference = qa_summary.get("reference", {}) if isinstance(qa_summary.get("reference"), dict) else {}
+    current_warn = int(current.get("warn", 0) or 0)
+    current_risk = int(current.get("risk", 0) or 0)
+    current_unscored = int(current.get("unscored", 0) or 0)
+    reference_warn = int(reference.get("warn", 0) or 0)
+    reference_risk = int(reference.get("risk", 0) or 0)
+    reference_unscored = int(reference.get("unscored", 0) or 0)
+    current_issues = current_warn + current_risk + current_unscored
+    reference_issues = reference_warn + reference_risk + reference_unscored
+    if current_risk or current_unscored:
+        status = "blocked"
+        label = "采用图未达视频参考门槛 / Current assets need QA before video"
+    elif current_warn:
+        status = "review"
+        label = "采用图需导演复核 / Current assets need review"
+    elif reference_risk or reference_unscored or reference_warn:
+        status = "reference_review"
+        label = "辅助参考需复核 / Reference assets need review"
+    else:
+        status = "ready"
+        label = "可进入视频参考 / Ready for video reference"
+    return {
+        "status": status,
+        "label": label,
+        "current_issues": current_issues,
+        "reference_issues": reference_issues,
+        "current_warn": current_warn,
+        "current_risk": current_risk,
+        "current_unscored": current_unscored,
+        "reference_warn": reference_warn,
+        "reference_risk": reference_risk,
+        "reference_unscored": reference_unscored,
+    }
+
+
 def build_video_reference_package_text(package: dict[str, object]) -> str:
     current_assets = package.get("current_assets", [])
     reference_assets = package.get("reference_assets", [])
     qa_summary = package.get("qa_summary") if isinstance(package.get("qa_summary"), dict) else video_reference_qa_summary(current_assets, reference_assets)
     current_qa = qa_summary.get("current", {}) if isinstance(qa_summary.get("current"), dict) else {}
     reference_qa = qa_summary.get("reference", {}) if isinstance(qa_summary.get("reference"), dict) else {}
+    quality_gate = package.get("quality_gate") if isinstance(package.get("quality_gate"), dict) else video_reference_quality_gate(qa_summary)
     current_warnings = [
         item
         for item in current_assets
@@ -3284,6 +3322,7 @@ def build_video_reference_package_text(package: dict[str, object]) -> str:
         "- 保持角色身份、场景空间、年代质感、构图和光线连续性。",
         "",
         "## Quality Gate / 质量门槛",
+        f"- Gate: {quality_gate.get('status', '')} · {quality_gate.get('label', '')}",
         f"- Current assets: {current_qa.get('ok', 0)} 合格 / OK · {current_qa.get('warn', 0)} 需检查 / warn · {current_qa.get('risk', 0)} 低分风险 / risk · {current_qa.get('unscored', 0)} 未质检 / unscored",
         f"- Reference assets: {reference_qa.get('ok', 0)} 合格 / OK · {reference_qa.get('warn', 0)} 需检查 / warn · {reference_qa.get('risk', 0)} 低分风险 / risk · {reference_qa.get('unscored', 0)} 未质检 / unscored",
         "- 建议只有 current assets 全部达到 QA OK 或经导演确认后，再交给视频模型。",
@@ -3360,6 +3399,7 @@ def create_current_version_package(slug: str, payload: dict[str, object]) -> dic
     if not current_assets and not reference_assets:
         raise ValueError("当前范围没有采用或参考版本图 / No current or reference image versions in this scope.")
     qa_summary = video_reference_qa_summary(current_assets, reference_assets)
+    quality_gate = video_reference_quality_gate(qa_summary)
     package_id = f"VRP_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
     package_dir = path / "11_delivery" / "video_reference_packages" / package_id
     package_dir.mkdir(parents=True, exist_ok=True)
@@ -3374,6 +3414,7 @@ def create_current_version_package(slug: str, payload: dict[str, object]) -> dic
         "act_id": act_id,
         "created_at": now_iso(),
         "qa_summary": qa_summary,
+        "quality_gate": quality_gate,
         "current_assets": current_assets,
         "reference_assets": reference_assets,
     }
@@ -3390,6 +3431,8 @@ def create_current_version_package(slug: str, payload: dict[str, object]) -> dic
         "json_path": str(json_rel_path),
         "current_count": len(current_assets),
         "reference_count": len(reference_assets),
+        "qa_summary": qa_summary,
+        "quality_gate": quality_gate,
         "handoff_text": handoff_text,
         "project": project_detail(slug),
     }

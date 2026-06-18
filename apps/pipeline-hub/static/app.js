@@ -4797,6 +4797,31 @@ function currentVersionPackageScope() {
   return currentImageLibraryFilters(assets).scope;
 }
 
+function videoReferenceGateLabel(gate = {}) {
+  const status = gate.status || "";
+  if (status === "ready") return "QA READY";
+  if (status === "blocked") return "QA BLOCKED";
+  if (status === "review") return "QA REVIEW";
+  if (status === "reference_review") return "REF REVIEW";
+  return "QA CHECK";
+}
+
+function videoReferenceGateMessage(gate = {}) {
+  const currentIssues = Number(gate.current_issues || 0);
+  const referenceIssues = Number(gate.reference_issues || 0);
+  if (gate.status === "ready") return "采用图包已生成，当前采用图均达 QA OK / Current assets are QA OK";
+  if (gate.status === "blocked") {
+    return `采用图包已生成，但 ${currentIssues} 张采用图未质检或低分；建议先批量质检/低分修复 / ${currentIssues} current assets need QA or repair`;
+  }
+  if (gate.status === "review") {
+    return `采用图包已生成，但 ${currentIssues} 张采用图需复核 / ${currentIssues} current assets need review`;
+  }
+  if (gate.status === "reference_review") {
+    return `采用图包已生成，${referenceIssues} 张辅助参考需复核 / ${referenceIssues} reference assets need review`;
+  }
+  return "已生成采用图包 / Current version package ready";
+}
+
 async function createCurrentVersionPackage() {
   if (!state.selectedSlug || !state.detail) return;
   await runAction("生成采用图包 / Current version package", async () => {
@@ -4813,13 +4838,14 @@ async function createCurrentVersionPackage() {
       }),
     });
     state.detail = result.project || state.detail;
+    const gate = result.quality_gate || {};
     addIdeaHandoff({
       kind: "video_reference_package",
-      title: `${result.current_count || 0} 采用 · ${result.reference_count || 0} 参考 → 视频参考图包`,
+      title: `${videoReferenceGateLabel(gate)} · ${result.current_count || 0} 采用 · ${result.reference_count || 0} 参考 → 视频参考图包`,
       path: result.package_path || "",
       text: result.handoff_text || "",
     });
-    toast("已生成采用图包 / Current version package ready");
+    toast(videoReferenceGateMessage(gate));
     renderAll();
   });
 }
