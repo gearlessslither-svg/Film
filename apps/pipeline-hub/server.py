@@ -2036,6 +2036,27 @@ def normalize_idea_references(value: object) -> list[dict[str, object]]:
     return refs
 
 
+def normalize_concept_card_versions(value: object) -> list[dict[str, object]]:
+    versions: list[dict[str, object]] = []
+    if isinstance(value, list):
+        for index, version in enumerate(value, start=1):
+            if not isinstance(version, dict):
+                continue
+            raw_output_path = str(version.get("output_path", "") or "").strip()
+            if not raw_output_path:
+                continue
+            output_path = normalize_project_rel_path(raw_output_path)
+            versions.append(
+                {
+                    "version_id": safe_file_stem(version.get("version_id") or f"v{index:03d}"),
+                    "output_path": output_path,
+                    "notes": str(version.get("notes", "") or "").strip(),
+                    "created_at": str(version.get("created_at", "") or "").strip(),
+                }
+            )
+    return versions
+
+
 def normalize_idea_act(act: dict[str, object], index: int) -> dict[str, object]:
     raw_id = str(act.get("act_id") or act.get("id") or "").strip()
     return {
@@ -2059,8 +2080,16 @@ def normalize_idea_acts(value: object) -> list[dict[str, object]]:
 
 def normalize_project_bible_card(card: dict[str, object], index: int) -> dict[str, object]:
     raw_id = str(card.get("card_id") or card.get("id") or "").strip()
+    raw_act_id = str(card.get("act_id", "") or "").strip()
+    versions = normalize_concept_card_versions(card.get("versions", []))
+    raw_preview_path = str(card.get("preview_path", "") or "").strip()
+    preview_path = normalize_project_rel_path(raw_preview_path) if raw_preview_path else ""
+    if not preview_path and versions:
+        preview_path = str(versions[-1].get("output_path", "") or "")
     return {
         "card_id": safe_file_stem(raw_id) if raw_id else f"BIBLE_{index:03d}",
+        "scope": str(card.get("scope", "project") or "project").strip(),
+        "act_id": safe_file_stem(raw_act_id) if raw_act_id else "",
         "category": str(card.get("category", "lookdev") or "lookdev").strip(),
         "title": str(card.get("title", "") or "").strip(),
         "summary": str(card.get("summary", "") or "").strip(),
@@ -2068,8 +2097,11 @@ def normalize_project_bible_card(card: dict[str, object], index: int) -> dict[st
         "prompt_notes": str(card.get("prompt_notes", "") or "").strip(),
         "negative_prompt": str(card.get("negative_prompt", "") or "").strip(),
         "selected": bool_from_payload(card.get("selected"), True),
+        "image_selected": bool_from_payload(card.get("image_selected"), True),
         "status": str(card.get("status", "draft") or "draft").strip(),
         "references": normalize_idea_references(card.get("references", [])),
+        "preview_path": preview_path,
+        "versions": versions,
     }
 
 
@@ -2105,6 +2137,7 @@ def project_bible_references(cards: list[dict[str, object]]) -> list[dict[str, o
 def normalize_idea_row(row: dict[str, object], index: int) -> dict[str, object]:
     raw_id = str(row.get("item_id") or row.get("shot_id") or "").strip()
     item_id = safe_file_stem(raw_id) if raw_id else f"IDEA_SHOT_{index:03d}"
+    versions = normalize_concept_card_versions(row.get("versions", []))
     return {
         "item_id": item_id,
         "scene_id": str(row.get("scene_id", "") or "").strip(),
@@ -2119,6 +2152,7 @@ def normalize_idea_row(row: dict[str, object], index: int) -> dict[str, object]:
         "output_path": str(row.get("output_path", "") or "").strip(),
         "output_notes": str(row.get("output_notes", "") or "").strip(),
         "output_attached_at": str(row.get("output_attached_at", "") or "").strip(),
+        "versions": versions,
         "references": normalize_idea_references(row.get("references", [])),
     }
 
@@ -2500,8 +2534,339 @@ def update_idea_image_output(slug: str, payload: dict[str, object]) -> dict[str,
             if not output:
                 continue
             output_path = normalize_project_rel_path(str(output.get("output_path", "") or ""))
+            versions = normalize_concept_card_versions(row.get("versions", []))
+            version_id = safe_file_stem(output.get("version_id") or f"v{len(versions) + 1:03d}")
+            versions.append(
+                {
+                    "version_id": version_id,
+                    "output_path": output_path,
+                    "notes": str(output.get("notes", "") or ""),
+                    "created_at": now_iso(),
+                }
+            )
             row["output_path"] = output_path
             row["output_notes"] = str(output.get("notes", "") or "")
+            row["output_attached_at"] = now_iso()
+            row["versions"] = versions
+            row["status"] = "image_ready"
+            updated += 1
+    board["updated_at"] = now_iso()
+    write_idea_board_files(path, board)
+    return {"ok": True, "updated": updated, "idea_board": load_idea_board(path, slug), "project": project_detail(slug)}
+
+
+def scene_context_for_row(path: Path, board: dict[str, object], row: dict[str, object]) -> dict[str, object]:
+    scene_id = str(row.get("scene_id", "") or "")
+    scene_data = load_scene_workbench(path)
+    scenes = [scene for scene in scene_data.get("scenes", []) if isinstance(scene, dict)]
+    scene = next((item for item in scenes if item.get("scene_id") == scene_id), {})
+    act_id = str(scene.get("act_id", "") or "")
+    scene_ids = {
+        str(item.get("scene_id", "") or "")
+        for item in scenes
+        if act_id and str(item.get("act_id", "") or "") == act_id
+    }
+    rows = board.get("rows", [])
+    if not isinstance(rows, list):
+        rows = []
+    sibling_rows = [
+        item
+        for item in rows
+        if isinstance(item, dict)
+        and (
+            str(item.get("scene_id", "") or "") == scene_id
+            or (scene_ids and str(item.get("scene_id", "") or "") in scene_ids)
+        )
+    ]
+    related_assets: list[dict[str, object]] = []
+    for item in scenes:
+        if scene_ids and str(item.get("scene_id", "") or "") not in scene_ids:
+            continue
+        if not scene_ids and str(item.get("scene_id", "") or "") != scene_id:
+            continue
+        stage_assets = item.get("resource_manifest", {}).get("stage_assets", {})
+        if not isinstance(stage_assets, dict):
+            continue
+        for step, assets in stage_assets.items():
+            if not isinstance(assets, list):
+                continue
+            for asset in assets:
+                if not isinstance(asset, dict):
+                    continue
+                related_assets.append(
+                    {
+                        "scene_id": item.get("scene_id", ""),
+                        "scene_title": item.get("title", ""),
+                        "step": step,
+                        "asset_id": asset.get("asset_id", ""),
+                        "kind": asset.get("kind", ""),
+                        "role": asset.get("role", ""),
+                        "path": asset.get("path", ""),
+                    }
+                )
+    return {
+        "scene": {
+            "scene_id": scene.get("scene_id", scene_id),
+            "title": scene.get("title", ""),
+            "act_id": act_id,
+            "act_title": scene.get("act_title", ""),
+        },
+        "nearby_storyboard_cards": [
+            {
+                "item_id": item.get("item_id", ""),
+                "scene_id": item.get("scene_id", ""),
+                "beat": item.get("beat", ""),
+                "shot_type": item.get("shot_type", ""),
+                "frame_description": item.get("frame_description", ""),
+                "image_prompt": item.get("image_prompt", ""),
+                "notes": item.get("notes", ""),
+                "output_path": item.get("output_path", ""),
+                "versions": item.get("versions", []),
+            }
+            for item in sibling_rows[:40]
+        ],
+        "related_assets": related_assets[:80],
+    }
+
+
+def build_card_image_packet_text(
+    slug: str,
+    path: Path,
+    board: dict[str, object],
+    packet_id: str,
+    packet_rel_path: str,
+    tasks: list[dict[str, object]],
+) -> str:
+    context_cards = enabled_project_bible_cards(board)
+    return "\n".join(
+        [
+            "# Codex Card Image Handoff / Codex 卡片图片生成包",
+            "",
+            "请解析这个资料包，调用当前聊天里的真实生图能力，只为 Tasks 中列出的目标卡片生成图片。不要因为上下文里有其他卡片，就自动生成它们。",
+            "",
+            "## Codex Run Mode / 执行模式",
+            "- 目标是卡片级生成：如果 Tasks 里只有 1 张卡，就只生成 1 张；有多张才批量生成。",
+            "- 生成前可做电影级提示词优化，强化构图、光影、材质、角色连续性和负面约束。",
+            "- Context cards、global references、nearby storyboard cards、related assets 只用于风格和连续性参考，不是生成目标。",
+            "- 每个任务保存到 Suggested output path；完成后调用回填接口追加到对应卡片 versions，并更新当前预览。",
+            "- 输出保持短：图片预览、保存路径、回填状态。",
+            "",
+            "## Project / 项目",
+            f"- Project slug: {slug}",
+            f"- Project root: {path}",
+            f"- Packet id: {packet_id}",
+            f"- Packet path: {packet_rel_path}",
+            "",
+            "## Story / 故事",
+            f"- Title: {board.get('story_title', '')}",
+            f"- Logline: {board.get('logline', '')}",
+            "",
+            "## Context Cards / 上下文概念卡",
+            "这些卡片用于统一人物、场景、道具、美术、年代和负面约束；不要自动生成它们，除非它们也出现在 Tasks 里。",
+            "```json",
+            json.dumps(context_cards, ensure_ascii=False, indent=2),
+            "```",
+            "",
+            "## Global References / 全局参考",
+            "```json",
+            json.dumps(board.get("global_references", []), ensure_ascii=False, indent=2),
+            "```",
+            "",
+            "## Callback / 回填接口",
+            f"- POST: http://127.0.0.1:8787/api/projects/{slug}/card-image-output",
+            "- Body: {\"outputs\":[{\"card_type\":\"storyboard|concept\",\"item_id\":\"...\",\"card_id\":\"...\",\"output_path\":\"...\",\"notes\":\"...\"}]}",
+            "",
+            "## Tasks / 目标卡片任务",
+            "```json",
+            json.dumps({"packet_id": packet_id, "tasks": tasks}, ensure_ascii=False, indent=2),
+            "```",
+        ]
+    )
+
+
+def create_card_image_packet(slug: str, payload: dict[str, object]) -> dict[str, object]:
+    path = project_path(slug)
+    board = normalize_idea_board(slug, payload) if payload.get("rows") is not None or payload.get("project_bible") is not None else load_idea_board(path, slug)
+    board = enrich_idea_board_whitebox_references(path, board)
+    if payload.get("rows") is not None or payload.get("project_bible") is not None:
+        write_idea_board_files(path, board)
+    targets_payload = payload.get("targets", [])
+    if not isinstance(targets_payload, list):
+        targets_payload = []
+    target_keys = []
+    for target in targets_payload:
+        if not isinstance(target, dict):
+            continue
+        card_type = str(target.get("card_type") or target.get("type") or "").strip()
+        card_id = safe_file_stem(target.get("card_id") or target.get("item_id") or target.get("id") or "")
+        if card_type and card_id:
+            target_keys.append((card_type, card_id))
+    if not target_keys:
+        raise ValueError("没有勾选的目标卡片 / No selected target cards.")
+    rows = board.get("rows", [])
+    cards = board.get("project_bible", [])
+    row_by_id = {
+        safe_file_stem(row.get("item_id", "")): row
+        for row in rows
+        if isinstance(row, dict)
+    } if isinstance(rows, list) else {}
+    card_by_id = {
+        safe_file_stem(card.get("card_id", "")): card
+        for card in cards
+        if isinstance(card, dict)
+    } if isinstance(cards, list) else {}
+    packet_id = f"CARD_IMG_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+    job_dir = path / "08_generation" / "jobs" / packet_id
+    outputs_dir = job_dir / "outputs"
+    tasks_dir = job_dir / "tasks"
+    outputs_dir.mkdir(parents=True, exist_ok=True)
+    tasks_dir.mkdir(parents=True, exist_ok=True)
+    global_references = board.get("global_references", [])
+    if not isinstance(global_references, list):
+        global_references = []
+    context_cards = enabled_project_bible_cards(board)
+    context_references = project_bible_references(context_cards)
+    tasks: list[dict[str, object]] = []
+    seen: set[tuple[str, str]] = set()
+    for card_type, card_id in target_keys:
+        key = (card_type, card_id)
+        if key in seen:
+            continue
+        seen.add(key)
+        index = len(tasks) + 1
+        if card_type == "concept":
+            card = card_by_id.get(card_id)
+            if not card:
+                continue
+            versions = card.get("versions", []) if isinstance(card.get("versions", []), list) else []
+            output_rel_path = str(Path("08_generation") / "jobs" / packet_id / "outputs" / f"{index:03d}_{card_id}_v{len(versions) + 1:03d}.png")
+            card_refs = card.get("references", [])
+            if not isinstance(card_refs, list):
+                card_refs = []
+            whitebox_guidance = [
+                str(ref.get("generation_guidance", "") or "").strip()
+                for ref in [*global_references, *context_references, *card_refs]
+                if isinstance(ref, dict) and is_whitebox_reference(ref) and str(ref.get("generation_guidance", "") or "").strip()
+            ]
+            task = {
+                "task_id": f"{packet_id}_{index:03d}",
+                "card_type": "concept",
+                "card_id": card_id,
+                "category": card.get("category", ""),
+                "title": card.get("title", ""),
+                "summary": card.get("summary", ""),
+                "visual_direction": card.get("visual_direction", ""),
+                "prompt_notes": card.get("prompt_notes", ""),
+                "negative_prompt": card.get("negative_prompt", ""),
+                "target_references": card_refs,
+                "existing_versions": versions,
+                "whitebox_guidance": whitebox_guidance,
+                "suggested_output_path": output_rel_path,
+                "suggested_output_absolute_path": str(path / output_rel_path),
+            }
+        elif card_type == "storyboard":
+            row = row_by_id.get(card_id)
+            if not row:
+                continue
+            versions = row.get("versions", []) if isinstance(row.get("versions", []), list) else []
+            output_rel_path = str(Path("08_generation") / "jobs" / packet_id / "outputs" / f"{index:03d}_{card_id}_v{len(versions) + 1:03d}.png")
+            row_refs = row.get("references", [])
+            if not isinstance(row_refs, list):
+                row_refs = []
+            whitebox_guidance = [
+                str(ref.get("generation_guidance", "") or "").strip()
+                for ref in [*global_references, *context_references, *row_refs]
+                if isinstance(ref, dict) and is_whitebox_reference(ref) and str(ref.get("generation_guidance", "") or "").strip()
+            ]
+            task = {
+                "task_id": f"{packet_id}_{index:03d}",
+                "card_type": "storyboard",
+                "item_id": card_id,
+                "scene_id": row.get("scene_id", ""),
+                "beat": row.get("beat", ""),
+                "shot_type": row.get("shot_type", ""),
+                "frame_description": row.get("frame_description", ""),
+                "image_prompt": row.get("image_prompt", ""),
+                "video_prompt": row.get("video_prompt", ""),
+                "notes": row.get("notes", ""),
+                "target_references": row_refs,
+                "existing_output_path": row.get("output_path", ""),
+                "existing_versions": versions,
+                "nearby_context": scene_context_for_row(path, board, row),
+                "whitebox_guidance": whitebox_guidance,
+                "suggested_output_path": output_rel_path,
+                "suggested_output_absolute_path": str(path / output_rel_path),
+            }
+        else:
+            continue
+        tasks.append(task)
+        (tasks_dir / f"{index:03d}_{card_type}_{card_id}.json").write_text(json.dumps(task, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    if not tasks:
+        raise ValueError("没有可生成的目标卡片 / No valid target cards.")
+    packet_rel_path = str(Path("08_generation") / "jobs" / packet_id / "outputs" / f"{packet_id}_card_handoff.md")
+    packet_text = build_card_image_packet_text(slug, path, board, packet_id, packet_rel_path, tasks)
+    (path / packet_rel_path).write_text(packet_text, encoding="utf-8")
+    write_yaml_file(job_dir / "card_image_tasks.json", {"packet_id": packet_id, "tasks": tasks})
+    return {
+        "ok": True,
+        "packet_id": packet_id,
+        "packet_path": packet_rel_path,
+        "packet_absolute_path": str(path / packet_rel_path),
+        "task_count": len(tasks),
+        "tasks": tasks,
+        "handoff_text": packet_text,
+        "project": project_detail(slug),
+    }
+
+
+def update_card_image_output(slug: str, payload: dict[str, object]) -> dict[str, object]:
+    path = project_path(slug)
+    board = load_idea_board(path, slug)
+    outputs = payload.get("outputs", [])
+    if not isinstance(outputs, list):
+        outputs = []
+    rows = board.get("rows", [])
+    cards = board.get("project_bible", [])
+    row_by_id = {
+        safe_file_stem(row.get("item_id", "")): row
+        for row in rows
+        if isinstance(row, dict)
+    } if isinstance(rows, list) else {}
+    card_by_id = {
+        safe_file_stem(card.get("card_id", "")): card
+        for card in cards
+        if isinstance(card, dict)
+    } if isinstance(cards, list) else {}
+    updated = 0
+    for output in outputs:
+        if not isinstance(output, dict):
+            continue
+        card_type = str(output.get("card_type") or output.get("type") or "").strip()
+        output_path = normalize_project_rel_path(str(output.get("output_path", "") or ""))
+        notes = str(output.get("notes", "") or "")
+        if card_type == "concept":
+            card_id = safe_file_stem(output.get("card_id", "") or output.get("item_id", ""))
+            card = card_by_id.get(card_id)
+            if not card:
+                continue
+            versions = normalize_concept_card_versions(card.get("versions", []))
+            version_id = safe_file_stem(output.get("version_id") or f"v{len(versions) + 1:03d}")
+            versions.append({"version_id": version_id, "output_path": output_path, "notes": notes, "created_at": now_iso()})
+            card["versions"] = versions
+            card["preview_path"] = output_path
+            card["status"] = "image_ready"
+            updated += 1
+        elif card_type == "storyboard":
+            item_id = safe_file_stem(output.get("item_id", "") or output.get("card_id", ""))
+            row = row_by_id.get(item_id)
+            if not row:
+                continue
+            versions = normalize_concept_card_versions(row.get("versions", []))
+            version_id = safe_file_stem(output.get("version_id") or f"v{len(versions) + 1:03d}")
+            versions.append({"version_id": version_id, "output_path": output_path, "notes": notes, "created_at": now_iso()})
+            row["versions"] = versions
+            row["output_path"] = output_path
+            row["output_notes"] = notes
             row["output_attached_at"] = now_iso()
             row["status"] = "image_ready"
             updated += 1
@@ -3365,6 +3730,12 @@ class PipelineHubHandler(BaseHTTPRequestHandler):
                 return
             if action == "idea-image-output":
                 send_json(self, update_idea_image_output(slug, payload))
+                return
+            if action == "card-image-packet":
+                send_json(self, create_card_image_packet(slug, payload))
+                return
+            if action == "card-image-output":
+                send_json(self, update_card_image_output(slug, payload))
                 return
             if action == "whitebox-job":
                 send_json(self, create_whitebox_job(slug, payload))

@@ -40,7 +40,12 @@
           "role": "image",
           "note": "给哥哥带一个眼镜"
         }
-      ]
+      ],
+      "scope": "project",
+      "act_id": "",
+      "image_selected": true,
+      "preview_path": "",
+      "versions": []
     },
     {
       "card_id": "BIBLE_LOCATION_001",
@@ -99,7 +104,12 @@
             "prompt_bridge": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。"
           }
         }
-      ]
+      ],
+      "scope": "project",
+      "act_id": "",
+      "image_selected": true,
+      "preview_path": "",
+      "versions": []
     },
     {
       "card_id": "BIBLE_LOOKDEV_001",
@@ -111,7 +121,12 @@
       "negative_prompt": "不要过度磨皮、塑料感、CG感、现代高清广告片、过饱和网红色调、随机英文霓虹和水印。",
       "selected": true,
       "status": "draft",
-      "references": []
+      "references": [],
+      "scope": "project",
+      "act_id": "",
+      "image_selected": true,
+      "preview_path": "",
+      "versions": []
     },
     {
       "card_id": "BIBLE_PROP_001",
@@ -170,7 +185,12 @@
             "prompt_bridge": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。"
           }
         }
-      ]
+      ],
+      "scope": "project",
+      "act_id": "",
+      "image_selected": true,
+      "preview_path": "",
+      "versions": []
     }
   ],
   "global_references": [
@@ -257,7 +277,8 @@
             "prompt_bridge": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。"
           }
         }
-      ]
+      ],
+      "versions": []
     },
     {
       "item_id": "ACT1_SHOT_002",
@@ -320,7 +341,8 @@
             "prompt_bridge": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。"
           }
         }
-      ]
+      ],
+      "versions": []
     },
     {
       "item_id": "ACT1_SHOT_003",
@@ -383,7 +405,8 @@
             "prompt_bridge": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。"
           }
         }
-      ]
+      ],
+      "versions": []
     },
     {
       "item_id": "ACT1_SHOT_004",
@@ -446,7 +469,8 @@
             "prompt_bridge": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。"
           }
         }
-      ]
+      ],
+      "versions": []
     },
     {
       "item_id": "ACT1_SHOT_005",
@@ -509,7 +533,8 @@
             "prompt_bridge": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。"
           }
         }
-      ]
+      ],
+      "versions": []
     },
     {
       "item_id": "ACT1_SHOT_006",
@@ -525,7 +550,8 @@
       "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/006_ACT1_SHOT_006.png",
       "output_notes": "Generated keyframe: children enter smoky arcade, child-height perspective.",
       "output_attached_at": "2026-06-16T02:04:02+08:00",
-      "references": []
+      "references": [],
+      "versions": []
     },
     {
       "item_id": "ACT1_SHOT_007",
@@ -541,7 +567,8 @@
       "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/007_ACT1_SHOT_007.png",
       "output_notes": "Generated keyframe: wide smoky arcade with mixed crowd and old cabinets.",
       "output_attached_at": "2026-06-16T02:04:02+08:00",
-      "references": []
+      "references": [],
+      "versions": []
     },
     {
       "item_id": "ACT1_SHOT_008",
@@ -557,7 +584,8 @@
       "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/008_ACT1_SHOT_008.png",
       "output_notes": "Generated keyframe: three boys inside arcade, excitement and unease.",
       "output_attached_at": "2026-06-16T02:04:02+08:00",
-      "references": []
+      "references": [],
+      "versions": []
     }
   ]
 }
