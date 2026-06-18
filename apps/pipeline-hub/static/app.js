@@ -1347,6 +1347,7 @@ function cardVersionImageAssets() {
         card_category: card.category || "",
         card_summary: card.summary || "",
         card_prompt: [card.visual_direction, card.prompt_notes, card.revision_note, card.negative_prompt].filter(Boolean).join(" "),
+        qa_score: version.qa?.score ?? null,
       });
     });
   });
@@ -1382,6 +1383,7 @@ function cardVersionImageAssets() {
         card_category: "storyboard",
         card_summary: row.frame_description || "",
         card_prompt: [row.image_prompt, row.revision_note, row.notes].filter(Boolean).join(" "),
+        qa_score: version.qa?.score ?? null,
       });
     });
   });
@@ -3827,6 +3829,11 @@ function renderCardVersionPreview(cardOrRow, label = "版本 / Versions") {
   }
   const current = [...versions].reverse().find((version) => version.status === "current") || versions[versions.length - 1];
   const statusLabel = (status) => CARD_VERSION_STATUS_LABELS[status || "candidate"] || CARD_VERSION_STATUS_LABELS.candidate;
+  const qaBadge = (version) => {
+    const score = version.qa?.score;
+    if (score === undefined || score === null || score === "") return `<span class="card-version-qa muted">未质检</span>`;
+    return `<span class="card-version-qa ${scoreClass(Number(score))}">技术分 ${escapeHtml(score)}</span>`;
+  };
   return `
     <div class="card-version-panel">
       <div class="card-version-latest">
@@ -3836,8 +3843,10 @@ function renderCardVersionPreview(cardOrRow, label = "版本 / Versions") {
         <div>
           <strong>${escapeHtml(label)}</strong>
           <span>${escapeHtml(current.version_id || "current")} · ${escapeHtml(statusLabel(current.status))} · ${escapeHtml(current.created_at || "")}</span>
+          ${qaBadge(current)}
           <small>${escapeHtml(current.notes || current.output_path || "")}</small>
           <div class="card-version-actions">
+            <button class="mini-command card-version-qa-run" data-version-id="${escapeHtml(current.version_id || "")}" data-version-path="${escapeHtml(current.output_path || "")}" type="button">质检 / QA</button>
             <button class="mini-command card-version-to-board" data-version-path="${escapeHtml(current.output_path || "")}" type="button">画板精修 / Board refine</button>
           </div>
         </div>
@@ -3852,10 +3861,12 @@ function renderCardVersionPreview(cardOrRow, label = "版本 / Versions") {
                   <span>${escapeHtml(version.version_id || "")}</span>
                 </a>
                 <small>${escapeHtml(statusLabel(version.status))}</small>
+                ${qaBadge(version)}
                 <div class="card-version-mini-actions">
                   <button class="mini-command card-version-status" data-version-id="${escapeHtml(version.version_id || "")}" data-version-path="${escapeHtml(version.output_path || "")}" data-version-status="current" type="button">采用</button>
                   <button class="mini-command card-version-status" data-version-id="${escapeHtml(version.version_id || "")}" data-version-path="${escapeHtml(version.output_path || "")}" data-version-status="reference" type="button">参考</button>
                   <button class="mini-command card-version-status" data-version-id="${escapeHtml(version.version_id || "")}" data-version-path="${escapeHtml(version.output_path || "")}" data-version-status="rejected" type="button">淘汰</button>
+                  <button class="mini-command card-version-qa-run" data-version-id="${escapeHtml(version.version_id || "")}" data-version-path="${escapeHtml(version.output_path || "")}" type="button">质检</button>
                   <button class="mini-command card-version-to-board" data-version-path="${escapeHtml(version.output_path || "")}" type="button">画板</button>
                 </div>
               </div>
@@ -3900,10 +3911,11 @@ function normalizeCardVersionsForEdit(cardOrRow) {
       notes: version.notes || "",
       created_at: version.created_at || "",
       status: version.status || (version.output_path === (cardOrRow.preview_path || cardOrRow.output_path || "") ? "current" : "candidate"),
+      qa: version.qa && typeof version.qa === "object" ? version.qa : {},
     }));
 }
 
-function applyVersionStatusToCard(cardOrRow, versionId, versionPath, nextStatus, cardType) {
+function findOrCreateCardVersion(cardOrRow, versionId, versionPath) {
   const versions = normalizeCardVersionsForEdit(cardOrRow);
   let target = versions.find((version) => version.version_id === versionId && version.output_path === versionPath)
     || versions.find((version) => version.output_path === versionPath)
@@ -3915,9 +3927,17 @@ function applyVersionStatusToCard(cardOrRow, versionId, versionPath, nextStatus,
       notes: "",
       created_at: "",
       status: "candidate",
+      qa: {},
     };
     versions.push(target);
   }
+  cardOrRow.versions = versions;
+  return target || null;
+}
+
+function applyVersionStatusToCard(cardOrRow, versionId, versionPath, nextStatus, cardType) {
+  const target = findOrCreateCardVersion(cardOrRow, versionId, versionPath);
+  const versions = cardOrRow.versions || [];
   if (!target) return false;
   if (nextStatus === "current") {
     versions.forEach((version) => {
@@ -3963,25 +3983,27 @@ function applyVersionStatusToCard(cardOrRow, versionId, versionPath, nextStatus,
   return true;
 }
 
+function cardVersionTargetFromButton(button) {
+  const board = collectIdeaBoardFromDom();
+  const bibleCard = button.closest(".project-bible-card");
+  const shotRow = button.closest(".idea-shot-row");
+  if (bibleCard) {
+    const index = Number(bibleCard.dataset.bibleIndex || state.ideaActiveBibleIndex || 0);
+    return { board, cardType: "concept", target: board.project_bible?.[index] || null };
+  }
+  if (shotRow) {
+    const index = Number(shotRow.dataset.ideaIndex || state.ideaActiveRowIndex || 0);
+    return { board, cardType: "storyboard", target: board.rows?.[index] || null };
+  }
+  return { board, cardType: "", target: null };
+}
+
 async function updateCardVersionStatus(button) {
   if (!button) return;
   const status = button.dataset.versionStatus || "candidate";
   const versionId = button.dataset.versionId || "";
   const versionPath = button.dataset.versionPath || "";
-  const board = collectIdeaBoardFromDom();
-  let cardType = "";
-  let target = null;
-  const bibleCard = button.closest(".project-bible-card");
-  const shotRow = button.closest(".idea-shot-row");
-  if (bibleCard) {
-    const index = Number(bibleCard.dataset.bibleIndex || state.ideaActiveBibleIndex || 0);
-    cardType = "concept";
-    target = board.project_bible?.[index] || null;
-  } else if (shotRow) {
-    const index = Number(shotRow.dataset.ideaIndex || state.ideaActiveRowIndex || 0);
-    cardType = "storyboard";
-    target = board.rows?.[index] || null;
-  }
+  const { board, cardType, target } = cardVersionTargetFromButton(button);
   if (!target || !applyVersionStatusToCard(target, versionId, versionPath, status, cardType)) {
     toast("没有找到这个版本 / Version not found");
     return;
@@ -3991,6 +4013,44 @@ async function updateCardVersionStatus(button) {
     setIdeaBoardLocal(result?.idea_board || board);
     renderIdeaLab();
     toast(`版本已标记为 ${CARD_VERSION_STATUS_LABELS[status] || status}`);
+  });
+}
+
+function analyzeImageUrl(url) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => {
+      try {
+        resolve(analyzeImageElement(img));
+      } catch (error) {
+        reject(error);
+      }
+    };
+    img.onerror = () => reject(new Error("图片无法载入 / Image failed to load"));
+    img.src = url;
+  });
+}
+
+async function runCardVersionQa(button) {
+  if (!button) return;
+  const versionId = button.dataset.versionId || "";
+  const versionPath = button.dataset.versionPath || "";
+  const { board, target } = cardVersionTargetFromButton(button);
+  const version = target ? findOrCreateCardVersion(target, versionId, versionPath) : null;
+  if (!target || !version?.output_path) {
+    toast("没有找到这个版本 / Version not found");
+    return;
+  }
+  await runAction("卡片版本质检 / Card version QA", async () => {
+    const result = await analyzeImageUrl(sceneAssetUrl(version.output_path));
+    version.qa = {
+      ...result,
+      analyzed_at: new Date().toISOString(),
+    };
+    const saved = await persistIdeaBoard(board, { toast: false, render: false });
+    setIdeaBoardLocal(saved?.idea_board || board);
+    renderIdeaLab();
+    toast(`技术分 ${result.score} / QA score ${result.score}`);
   });
 }
 
@@ -4598,6 +4658,9 @@ function bindIdeaLabEvents() {
   });
   document.querySelectorAll(".card-version-status").forEach((button) => {
     button.addEventListener("click", () => updateCardVersionStatus(button));
+  });
+  document.querySelectorAll(".card-version-qa-run").forEach((button) => {
+    button.addEventListener("click", () => runCardVersionQa(button));
   });
   document.querySelectorAll(".card-generate-one").forEach((button) => {
     button.addEventListener("click", () => {

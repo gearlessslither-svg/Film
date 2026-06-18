@@ -2062,6 +2062,7 @@ def normalize_concept_card_versions(value: object) -> list[dict[str, object]]:
                     "notes": str(version.get("notes", "") or "").strip(),
                     "created_at": str(version.get("created_at", "") or "").strip(),
                     "status": status,
+                    "qa": version.get("qa") if isinstance(version.get("qa"), dict) else {},
                 }
             )
     return versions
@@ -3022,6 +3023,7 @@ def collect_video_reference_entries(slug: str, path: Path, board: dict[str, obje
                     "absolute_path": str(path / output_path),
                     "browser_url": asset_url(slug, "project", output_path),
                     "notes": version.get("notes", ""),
+                    "qa": version.get("qa") if isinstance(version.get("qa"), dict) else {},
                     "prompt_context": " ".join(
                         str(card.get(key, "") or "").strip()
                         for key in ("summary", "visual_direction", "prompt_notes", "negative_prompt")
@@ -3056,6 +3058,7 @@ def collect_video_reference_entries(slug: str, path: Path, board: dict[str, obje
                     "absolute_path": str(path / output_path),
                     "browser_url": asset_url(slug, "project", output_path),
                     "notes": version.get("notes", ""),
+                    "qa": version.get("qa") if isinstance(version.get("qa"), dict) else {},
                     "prompt_context": " ".join(
                         str(row.get(key, "") or "").strip()
                         for key in ("frame_description", "image_prompt", "video_prompt", "notes")
@@ -3103,6 +3106,7 @@ def build_video_reference_package_text(package: dict[str, object]) -> str:
                     f"- Absolute / 绝对路径: {item.get('absolute_path', '')}",
                     f"- Browser URL: {item.get('browser_url', '')}",
                     f"- Notes / 备注: {item.get('notes', '')}",
+                    f"- QA / 技术分: {item.get('qa', {}).get('score', '') if isinstance(item.get('qa'), dict) else ''}",
                     f"- Prompt context / 提示词上下文: {item.get('prompt_context', '')}",
                 ]
             )
@@ -3119,6 +3123,7 @@ def build_video_reference_package_text(package: dict[str, object]) -> str:
                     f"- Version / 版本: {item.get('version_id', '')} · {item.get('version_status', '')}",
                     f"- Path / 路径: {item.get('output_path', '')}",
                     f"- Notes / 备注: {item.get('notes', '')}",
+                    f"- QA / 技术分: {item.get('qa', {}).get('score', '') if isinstance(item.get('qa'), dict) else ''}",
                 ]
             )
     else:

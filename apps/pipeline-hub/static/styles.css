@@ -1169,6 +1169,39 @@ textarea:focus {
   white-space: nowrap;
 }
 
+.card-version-qa {
+  display: inline-flex;
+  width: fit-content;
+  max-width: 100%;
+  border-radius: 999px;
+  padding: 2px 6px;
+  font-size: 10px;
+  line-height: 1.2;
+  white-space: nowrap;
+  background: #f2f4f7;
+  color: var(--muted);
+}
+
+.card-version-qa.ok {
+  background: #e8f5ed;
+  color: #17633f;
+}
+
+.card-version-qa.warn {
+  background: #fff6df;
+  color: #8a5a00;
+}
+
+.card-version-qa.danger {
+  background: #ffecec;
+  color: #9f2525;
+}
+
+.card-version-qa.muted {
+  background: #f2f4f7;
+  color: var(--muted);
+}
+
 .card-version-mini-actions {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
