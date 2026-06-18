@@ -1098,6 +1098,13 @@ textarea:focus {
   overflow-wrap: anywhere;
 }
 
+.card-version-actions {
+  margin-top: 4px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
 .card-version-strip {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
