@@ -2016,6 +2016,11 @@ def normalize_idea_reference(ref: dict[str, object], index: int) -> dict[str, ob
         "kind": str(ref.get("kind", "") or "").strip(),
         "role": str(ref.get("role", "") or "").strip(),
         "note": str(ref.get("note", "") or "").strip(),
+        "version_id": str(ref.get("version_id", "") or "").strip(),
+        "version_status": str(ref.get("version_status", "") or "").strip(),
+        "card_type": str(ref.get("card_type", "") or "").strip(),
+        "card_id": str(ref.get("card_id", "") or "").strip(),
+        "card_title": str(ref.get("card_title", "") or "").strip(),
     }
     for key in ("usage_note", "generation_guidance"):
         value = str(ref.get(key, "") or "").strip()

@@ -169,6 +169,10 @@ const BOARD_TAG_OPTIONS = [
   { value: "whitebox", label: "白模 / Whitebox" },
   { value: "keyframe", label: "关键帧 / Keyframe" },
   { value: "lookdev", label: "风格 / Lookdev" },
+  { value: "version_current", label: "采用版本 / Current version" },
+  { value: "version_candidate", label: "候选版本 / Candidate version" },
+  { value: "version_reference", label: "参考版本 / Reference version" },
+  { value: "version_rejected", label: "淘汰版本 / Rejected version" },
   { value: "marked_use", label: "✅ 已选 / Marked use" },
   { value: "marked_reject", label: "× 不用 / Rejected" },
   { value: "unmarked", label: "未标注 / Unmarked" },
@@ -1242,20 +1246,146 @@ function saveBoardState() {
   }
 }
 
+function projectBibleCategoryKind(category) {
+  if (category === "character") return "character_ref";
+  if (category === "location") return "scene_ref";
+  if (category === "prop") return "prop_ref";
+  if (["lookdev", "mood", "period", "constraint"].includes(category)) return "lookdev";
+  return "image";
+}
+
 function boardAssetTags(asset) {
   const tags = new Set();
-  const haystack = [asset.asset_id, asset.role, asset.path, asset.kind, asset.stage].join(" ").toLowerCase();
+  const haystack = [asset.asset_id, asset.role, asset.path, asset.kind, asset.stage, asset.card_category, asset.card_title].join(" ").toLowerCase();
   if (asset.kind === "character_ref" || haystack.includes("character") || haystack.includes("person") || haystack.includes("三视图")) tags.add("character");
   if (asset.kind === "scene_ref" || haystack.includes("location") || haystack.includes("scene") || haystack.includes("environment")) tags.add("scene");
   if (asset.kind === "prop_ref" || haystack.includes("prop") || haystack.includes("道具")) tags.add("prop");
   if (asset.kind === "whitebox" || haystack.includes("whitebox") || haystack.includes("previs")) tags.add("whitebox");
   if (asset.kind === "storyboard_keyframe" || haystack.includes("keyframe") || haystack.includes("storyboard")) tags.add("keyframe");
   if (asset.kind === "lookdev" || haystack.includes("lookdev") || haystack.includes("style") || haystack.includes("palette")) tags.add("lookdev");
+  if (asset.version_status) tags.add(`version_${asset.version_status}`);
   const annotation = annotationForRef(asset.ref);
   if (annotation.status === "use") tags.add("marked_use");
   if (annotation.status === "reject") tags.add("marked_reject");
   if (!annotation.status) tags.add("unmarked");
   return [...tags];
+}
+
+function mergeBoardImageAsset(byRef, incoming) {
+  if (!incoming?.ref) return;
+  incoming.tags = incoming.tags || boardAssetTags(incoming);
+  const existing = byRef.get(incoming.ref);
+  if (!existing) {
+    byRef.set(incoming.ref, incoming);
+    return;
+  }
+  const merged = { ...existing };
+  [
+    "asset_id",
+    "role",
+    "path",
+    "origin",
+    "url",
+    "kind",
+    "stage",
+    "shot_id",
+    "sort_text",
+    "version_id",
+    "version_status",
+    "card_type",
+    "card_id",
+    "card_title",
+    "card_category",
+    "card_summary",
+    "card_prompt",
+  ].forEach((key) => {
+    if (!merged[key] && incoming[key]) merged[key] = incoming[key];
+  });
+  ["scene_id", "scene_title", "scene_slug", "act_id", "act_title"].forEach((key) => {
+    if (!merged[key] && incoming[key]) merged[key] = incoming[key];
+  });
+  merged.scene_order = Math.min(Number(existing.scene_order ?? 9999), Number(incoming.scene_order ?? 9999));
+  merged.asset_order = Math.min(Number(existing.asset_order ?? 9999), Number(incoming.asset_order ?? 9999));
+  merged.tags = [...new Set([...(existing.tags || []), ...(incoming.tags || []), ...boardAssetTags(merged)])];
+  byRef.set(incoming.ref, merged);
+}
+
+function cardVersionImageAssets() {
+  const board = currentIdeaBoard();
+  const scenes = state.detail?.scene_workbench?.scenes || [];
+  const sceneIndexById = new Map(scenes.map((scene, index) => [scene.scene_id, index]));
+  const assets = [];
+  (board.project_bible || []).forEach((card, cardIndex) => {
+    cardVersionEntries(card).forEach((version, versionIndex) => {
+      const path = version.output_path || "";
+      if (!isImagePath(path)) return;
+      const ref = `project:${path}`;
+      const kind = projectBibleCategoryKind(card.category || "");
+      assets.push({
+        asset_id: `${card.card_id || "BIBLE"}_${version.version_id || versionIndex + 1}`,
+        role: card.title || card.card_id || "Project Bible version",
+        path,
+        origin: "project",
+        url: sceneAssetUrl(path),
+        ref,
+        kind,
+        stage: "08_generation",
+        scene_id: "",
+        scene_title: "总概念 / Project Bible",
+        scene_slug: "",
+        act_id: card.act_id || "",
+        act_title: card.act_id ? card.act_id : "全项目 / Project",
+        shot_id: "",
+        scene_order: 9000 + cardIndex,
+        asset_order: versionIndex,
+        sort_text: [card.card_id, card.title, card.category, version.version_id, version.notes, path].filter(Boolean).join(" "),
+        version_id: version.version_id || "",
+        version_status: version.status || "candidate",
+        card_type: "concept",
+        card_id: card.card_id || "",
+        card_title: card.title || "",
+        card_category: card.category || "",
+        card_summary: card.summary || "",
+        card_prompt: [card.visual_direction, card.prompt_notes, card.revision_note, card.negative_prompt].filter(Boolean).join(" "),
+      });
+    });
+  });
+  (board.rows || []).forEach((row, rowIndex) => {
+    const scene = scenes.find((item) => item.scene_id === row.scene_id) || {};
+    cardVersionEntries(row).forEach((version, versionIndex) => {
+      const path = version.output_path || "";
+      if (!isImagePath(path)) return;
+      const ref = `project:${path}`;
+      assets.push({
+        asset_id: `${row.item_id || "IDEA_SHOT"}_${version.version_id || versionIndex + 1}`,
+        role: row.beat || row.item_id || "Storyboard version",
+        path,
+        origin: "project",
+        url: sceneAssetUrl(path),
+        ref,
+        kind: "storyboard_keyframe",
+        stage: "08_generation",
+        scene_id: row.scene_id || "",
+        scene_title: scene.title || "",
+        scene_slug: scene.scene_slug || "",
+        act_id: scene.act_id || "",
+        act_title: scene.act_title || "",
+        shot_id: row.item_id || "",
+        scene_order: sceneIndexById.get(row.scene_id) ?? 8000 + rowIndex,
+        asset_order: versionIndex,
+        sort_text: [row.item_id, row.beat, row.shot_type, version.version_id, version.notes, path].filter(Boolean).join(" "),
+        version_id: version.version_id || "",
+        version_status: version.status || "candidate",
+        card_type: "storyboard",
+        card_id: row.item_id || "",
+        card_title: row.beat || row.item_id || "",
+        card_category: "storyboard",
+        card_summary: row.frame_description || "",
+        card_prompt: [row.image_prompt, row.revision_note, row.notes].filter(Boolean).join(" "),
+      });
+    });
+  });
+  return assets.map((asset) => ({ ...asset, tags: boardAssetTags(asset) }));
 }
 
 function allBoardImageAssets() {
@@ -1277,7 +1407,7 @@ function allBoardImageAssets() {
           sort_text: [asset.shot_id, asset.asset_id, asset.role, asset.path].filter(Boolean).join(" "),
         };
         boardAsset.tags = boardAssetTags(boardAsset);
-        byRef.set(boardAsset.ref, boardAsset);
+        mergeBoardImageAsset(byRef, boardAsset);
       });
   });
   const previews = state.detail?.previews || {};
@@ -1308,7 +1438,10 @@ function allBoardImageAssets() {
       sort_text: [shotIdFromText(item.path), item.name, item.path].filter(Boolean).join(" "),
     };
     boardAsset.tags = boardAssetTags(boardAsset);
-    byRef.set(ref, boardAsset);
+    mergeBoardImageAsset(byRef, boardAsset);
+  });
+  cardVersionImageAssets().forEach((asset) => {
+    mergeBoardImageAsset(byRef, asset);
   });
   return [...byRef.values()].sort((a, b) => {
     const sceneOrder = Number(a.scene_order ?? 9999) - Number(b.scene_order ?? 9999);
@@ -1387,6 +1520,14 @@ function imageAssetMatchesLibraryFilters(asset, filters = {}, scopeKey = "scene"
     asset.scene_title,
     asset.act_title,
     asset.shot_id,
+    asset.version_id,
+    asset.version_status,
+    asset.card_type,
+    asset.card_id,
+    asset.card_title,
+    asset.card_category,
+    asset.card_summary,
+    asset.card_prompt,
     kindLabel(asset.kind),
     tags.join(" "),
     annotation.note,
@@ -2172,13 +2313,17 @@ function renderBoardAssetTray() {
   tray.innerHTML = visible.length
     ? visible
         .map(
-          (asset) => `
+          (asset) => {
+            const versionLabel = asset.version_status ? CARD_VERSION_STATUS_LABELS[asset.version_status] || asset.version_status : "";
+            return `
             <article class="board-asset-card" data-ref="${escapeHtml(asset.ref)}" title="${escapeHtml(asset.path || "")}">
               <img src="${escapeHtml(asset.url)}" alt="${escapeHtml(asset.asset_id || asset.path)}" draggable="false" />
               <strong>${escapeHtml(asset.asset_id || asset.role || asset.path)}</strong>
-              <small>${escapeHtml(asset.scene_id || "PROJECT")} · ${escapeHtml(kindLabel(asset.kind))}</small>
+              <small>${escapeHtml(asset.scene_id || asset.act_id || "PROJECT")} · ${escapeHtml(kindLabel(asset.kind))}${versionLabel ? ` · ${escapeHtml(versionLabel)}` : ""}</small>
+              ${asset.card_id ? `<small>${escapeHtml(asset.card_id)}${asset.card_title ? ` · ${escapeHtml(asset.card_title)}` : ""}</small>` : ""}
             </article>
-          `,
+          `;
+          },
         )
         .join("")
     : `<div class="empty-state">没有匹配图片 / No matching images.</div>`;
@@ -2967,6 +3112,10 @@ function ideaReferenceAsset(ref) {
 }
 
 function makeIdeaReference(asset) {
+  const versionLabel = asset.version_status ? CARD_VERSION_STATUS_LABELS[asset.version_status] || asset.version_status : "";
+  const sourceNote = asset.card_id
+    ? `${asset.card_id}${asset.version_id ? ` ${asset.version_id}` : ""}${versionLabel ? ` · ${versionLabel}` : ""}`
+    : "";
   return {
     ref_id: asset.asset_id || asset.path || asset.ref,
     asset_ref: asset.ref,
@@ -2975,7 +3124,12 @@ function makeIdeaReference(asset) {
     origin: asset.origin || "project",
     kind: asset.kind || "image",
     role: asset.role || "",
-    note: "",
+    version_id: asset.version_id || "",
+    version_status: asset.version_status || "",
+    card_type: asset.card_type || "",
+    card_id: asset.card_id || "",
+    card_title: asset.card_title || "",
+    note: sourceNote ? `参考卡片版本 / Use card version: ${sourceNote}` : "",
   };
 }
 
@@ -3156,11 +3310,14 @@ function renderIdeaReferenceAssetGrid(row) {
   return assets.length
     ? assets
         .map(
-          (asset) => `
+          (asset) => {
+            const versionLabel = asset.version_status ? CARD_VERSION_STATUS_LABELS[asset.version_status] || asset.version_status : "";
+            return `
             <article class="idea-ref-asset" draggable="true" data-asset-ref="${escapeHtml(asset.ref)}">
               <img src="${escapeHtml(asset.url)}" alt="${escapeHtml(asset.asset_id || asset.path)}" loading="lazy" />
               <strong>${escapeHtml(asset.asset_id || asset.role || asset.path)}</strong>
-              <small>${escapeHtml(asset.scene_id || "PROJECT")} · ${escapeHtml(kindLabel(asset.kind))}</small>
+              <small>${escapeHtml(asset.scene_id || asset.act_id || "PROJECT")} · ${escapeHtml(kindLabel(asset.kind))}${versionLabel ? ` · ${escapeHtml(versionLabel)}` : ""}</small>
+              ${asset.card_id ? `<small>${escapeHtml(asset.card_id)}${asset.card_title ? ` · ${escapeHtml(asset.card_title)}` : ""}</small>` : ""}
               <div>
                 <button class="mini-command idea-add-ref" data-ref-scope="global" data-asset-ref="${escapeHtml(asset.ref)}" type="button">全局</button>
                 ${
@@ -3171,7 +3328,8 @@ function renderIdeaReferenceAssetGrid(row) {
                 }
               </div>
             </article>
-          `,
+          `;
+          },
         )
         .join("")
     : `<div class="empty-state">没有匹配参考图 / No matching references.</div>`;
