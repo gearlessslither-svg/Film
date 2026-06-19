@@ -3389,6 +3389,10 @@ th {
   object-fit: contain;
 }
 
+.asset-preview-image {
+  cursor: zoom-out;
+}
+
 .asset-preview-audio {
   width: 100%;
 }
@@ -4231,6 +4235,7 @@ body.board-link-dragging {
   object-fit: contain;
   border-radius: 8px;
   box-shadow: var(--shadow);
+  cursor: zoom-out;
 }
 
 .whitebox-lab-window {

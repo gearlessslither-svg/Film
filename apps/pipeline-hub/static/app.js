@@ -1196,7 +1196,7 @@ async function openAssetPreview(asset) {
   modal.hidden = false;
   document.body.classList.add("modal-open");
   if (isImagePath(path)) {
-    body.innerHTML = `<img class="asset-preview-image" src="${escapeHtml(asset.url)}" alt="${escapeHtml(title.textContent)}" ${externalImageDragAttrs(asset.url, path, asset.asset_id || asset.role || path)} />`;
+    body.innerHTML = `<img class="asset-preview-image" src="${escapeHtml(asset.url)}" alt="${escapeHtml(title.textContent)}" title="单击关闭 / Click to close" ${externalImageDragAttrs(asset.url, path, asset.asset_id || asset.role || path)} />`;
     return;
   }
   if (VIDEO_PREVIEW_EXTENSIONS.test(path)) {
@@ -8529,7 +8529,8 @@ function bindEvents() {
   $("clearBoardBtn")?.addEventListener("click", clearReferenceBoard);
   $("boardImageLightboxClose")?.addEventListener("click", closeBoardImageLightbox);
   $("boardImageLightbox")?.addEventListener("click", (event) => {
-    if (event.target?.id === "boardImageLightbox") closeBoardImageLightbox();
+    event.preventDefault();
+    closeBoardImageLightbox();
   });
   $("validateBtn").addEventListener("click", validateCurrentProject);
   $("analyzeBtn").addEventListener("click", analyzeCurrentProject);
@@ -8539,7 +8540,7 @@ function bindEvents() {
   $("linkForm").addEventListener("submit", updateLinks);
   $("assetPreviewClose")?.addEventListener("click", closeAssetPreview);
   $("assetPreviewModal")?.addEventListener("click", (event) => {
-    if (event.target?.id === "assetPreviewModal") closeAssetPreview();
+    if (event.target?.id === "assetPreviewModal" || event.target?.closest?.(".asset-preview-image")) closeAssetPreview();
   });
   bindResourceFilters();
   bindKeyboardShortcuts();
