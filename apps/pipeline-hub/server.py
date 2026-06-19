@@ -4228,6 +4228,11 @@ def update_card_image_output(slug: str, payload: dict[str, object]) -> dict[str,
         for row in rows
         if isinstance(row, dict)
     } if isinstance(rows, list) else {}
+    row_by_uid = {
+        safe_file_stem(row.get("card_uid", "")): row
+        for row in rows
+        if isinstance(row, dict) and row.get("card_uid")
+    } if isinstance(rows, list) else {}
     card_by_id = {
         safe_file_stem(card.get("card_id", "")): card
         for card in cards
