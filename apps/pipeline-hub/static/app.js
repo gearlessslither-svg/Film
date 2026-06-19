@@ -5220,7 +5220,7 @@ function renderCardVersionPreview(cardOrRow, label = "版本 / Versions") {
   return `
     <div class="card-version-panel">
       <div class="card-version-latest">
-        <a href="${escapeHtml(sceneAssetUrl(current.output_path || ""))}" target="_blank" ${externalImageDragAttrs(sceneAssetUrl(current.output_path || ""), current.output_path || "", current.version_id || "current")}>
+        <a class="card-version-preview-link" href="${escapeHtml(sceneAssetUrl(current.output_path || ""))}" target="_blank" title="点击预览大图 / Click to preview full image" data-version-id="${escapeHtml(current.version_id || "current")}" data-version-path="${escapeHtml(current.output_path || "")}" ${externalImageDragAttrs(sceneAssetUrl(current.output_path || ""), current.output_path || "", current.version_id || "current")}>
           <img src="${escapeHtml(sceneAssetUrl(current.output_path || ""))}" alt="${escapeHtml(current.version_id || "current")}" loading="lazy" ${externalImageDragAttrs(sceneAssetUrl(current.output_path || ""), current.output_path || "", current.version_id || "current")} />
         </a>
         <div>
@@ -5239,7 +5239,7 @@ function renderCardVersionPreview(cardOrRow, label = "版本 / Versions") {
           .map(
             (version) => `
               <div class="card-version-thumb ${escapeHtml(version.status || "candidate")}" title="${escapeHtml(version.notes || version.output_path || "")}">
-                <a href="${escapeHtml(sceneAssetUrl(version.output_path || ""))}" target="_blank" ${externalImageDragAttrs(sceneAssetUrl(version.output_path || ""), version.output_path || "", version.version_id || "version")}>
+                <a class="card-version-preview-link" href="${escapeHtml(sceneAssetUrl(version.output_path || ""))}" target="_blank" title="点击预览大图 / Click to preview full image" data-version-id="${escapeHtml(version.version_id || "version")}" data-version-path="${escapeHtml(version.output_path || "")}" ${externalImageDragAttrs(sceneAssetUrl(version.output_path || ""), version.output_path || "", version.version_id || "version")}>
                   <img src="${escapeHtml(sceneAssetUrl(version.output_path || ""))}" alt="${escapeHtml(version.version_id || "version")}" loading="lazy" ${externalImageDragAttrs(sceneAssetUrl(version.output_path || ""), version.output_path || "", version.version_id || "version")} />
                   <span>${escapeHtml(versionLabel(version))}</span>
                 </a>
@@ -5260,6 +5260,20 @@ function renderCardVersionPreview(cardOrRow, label = "版本 / Versions") {
       </div>
     </div>
   `;
+}
+
+function openCardVersionImagePreview(path, name = "") {
+  const cleanPath = String(path || "").trim();
+  const url = sceneAssetUrl(cleanPath);
+  if (!cleanPath || !url) {
+    toast("这张版本图还没有路径 / This version has no image path");
+    return;
+  }
+  showBoardImageLightbox({
+    url,
+    path: cleanPath,
+    asset_id: name || imageFileNameFromPath(cleanPath),
+  });
 }
 
 function sendVersionImageToBoard(path) {
@@ -6831,6 +6845,12 @@ function bindIdeaLabEvents() {
   document.querySelectorAll(".idea-add-act").forEach((button) => button.addEventListener("click", addIdeaAct));
   $("ideaAddRowBtn")?.addEventListener("click", addIdeaRow);
   $("ideaBuildImagePacketBtn")?.addEventListener("click", createIdeaImagePacket);
+  document.querySelectorAll(".card-version-preview-link").forEach((link) => {
+    link.addEventListener("click", (event) => {
+      event.preventDefault();
+      openCardVersionImagePreview(link.dataset.versionPath || "", link.dataset.versionId || "");
+    });
+  });
   document.querySelectorAll(".card-version-to-board").forEach((button) => {
     button.addEventListener("click", () => sendVersionImageToBoard(button.dataset.versionPath || ""));
   });

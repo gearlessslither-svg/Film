@@ -1457,6 +1457,10 @@ textarea:focus {
   min-width: 0;
 }
 
+.card-version-preview-link img {
+  cursor: zoom-in;
+}
+
 .card-version-strip img {
   width: 100%;
   aspect-ratio: 16 / 9;
