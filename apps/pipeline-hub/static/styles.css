@@ -1258,12 +1258,21 @@ textarea:focus {
   font-size: 11px;
 }
 
+.idea-insert-before,
 .idea-insert-after {
   display: grid;
   place-items: center;
+}
+
+.idea-insert-before {
+  padding-bottom: 2px;
+}
+
+.idea-insert-after {
   padding-top: 2px;
 }
 
+.idea-insert-row-before,
 .idea-insert-row-after {
   width: 42px;
   min-height: 32px;
@@ -1277,6 +1286,7 @@ textarea:focus {
   cursor: pointer;
 }
 
+.idea-insert-row-before:hover,
 .idea-insert-row-after:hover {
   background: #dff1ed;
   border-color: var(--accent);

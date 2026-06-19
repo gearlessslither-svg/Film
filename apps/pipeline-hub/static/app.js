@@ -3614,6 +3614,36 @@ function renumberRowsAfterInsert(board, insertIndex, baseRow) {
   return updateStoryboardIdReferences(board, idMap);
 }
 
+function renumberRowsBeforeInsert(board, insertIndex, baseRow) {
+  const parsedBase = parseRenumberableShotId(baseRow?.item_id || "");
+  if (!parsedBase) return board;
+  const scopeKey = rowInsertScopeKey(baseRow);
+  const idMap = new Map();
+  let nextNumber = parsedBase.number;
+  for (let index = insertIndex; index < (board.rows || []).length; index += 1) {
+    const row = board.rows[index];
+    if (!rowMatchesInsertScope(row, scopeKey)) continue;
+    const parsed = parseRenumberableShotId(row.item_id || "");
+    if (parsed && parsed.prefix !== parsedBase.prefix) continue;
+    const suffix = parsed?.suffix || "";
+    const oldId = row.item_id || "";
+    const newId = `${parsedBase.prefix}${String(nextNumber).padStart(parsedBase.width, "0")}${suffix}`;
+    row.item_id = newId;
+    if (oldId && oldId !== newId) idMap.set(oldId, newId);
+    nextNumber += 1;
+  }
+  return updateStoryboardIdReferences(board, idMap);
+}
+
+function previousRowInInsertScope(board, index, baseRow) {
+  const scopeKey = rowInsertScopeKey(baseRow);
+  for (let cursor = index - 1; cursor >= 0; cursor -= 1) {
+    const row = board.rows?.[cursor];
+    if (row && rowMatchesInsertScope(row, scopeKey)) return row;
+  }
+  return null;
+}
+
 function nextIdeaActId(acts) {
   const count = Math.max(storyActEntries().length, (acts || []).length) + 1;
   return `ACT${String(count).padStart(2, "0")}`;
@@ -5449,6 +5479,9 @@ function renderIdeaRows(entries, allRows = currentIdeaBoard().rows || []) {
     .map(
       ({ row, index }) => `
         <article class="idea-shot-row ${state.ideaActiveRowIndex === index ? "active" : ""}" data-idea-index="${index}">
+          <div class="idea-insert-before">
+            <button class="idea-insert-row-before" data-help="在这张卡前面插入一张空白分镜卡，并自动关联当前卡；适合在第一帧之前补镜头。" data-idea-index="${index}" type="button" title="在这张卡前面插入一张空白分镜卡，并自动关联当前卡。">＋</button>
+          </div>
           <header>
             <label>编号 / ID <input data-idea-field="item_id" value="${escapeHtml(row.item_id || nextIdeaItemId(allRows))}" /></label>
             <label>幕 / Act <input data-idea-field="act_id" value="${escapeHtml(row.act_id || sceneForIdeaRow(row).act_id || "")}" /></label>
@@ -5504,7 +5537,7 @@ function renderIdeaRows(entries, allRows = currentIdeaBoard().rows || []) {
             }
           </footer>
           <div class="idea-insert-after">
-            <button class="idea-insert-row-after" data-idea-index="${index}" type="button" title="在这张卡后面插入一张空白分镜卡，并自动关联当前卡。">＋</button>
+            <button class="idea-insert-row-after" data-help="在这张卡后面插入一张空白分镜卡，并自动关联当前卡。" data-idea-index="${index}" type="button" title="在这张卡后面插入一张空白分镜卡，并自动关联当前卡。">＋</button>
           </div>
         </article>
       `,
@@ -6075,6 +6108,46 @@ function insertIdeaRowAfter(index) {
   document.querySelector(`.idea-shot-row[data-idea-index="${state.ideaActiveRowIndex}"]`)?.scrollIntoView({ behavior: "smooth", block: "center" });
 }
 
+function insertIdeaRowBefore(index) {
+  const board = collectIdeaBoardFromDom();
+  const baseRow = board.rows?.[index];
+  if (!baseRow) return;
+  const linkedId = baseRow.item_id || "";
+  const previousRow = previousRowInInsertScope(board, index, baseRow);
+  const parsedLinkedId = parseRenumberableShotId(linkedId);
+  const insertedId = parsedLinkedId
+    ? linkedId
+    : nextIdeaItemIdForAct(board.rows, baseRow.act_id || activeStoryActId() || "");
+  const newRow = {
+    item_id: insertedId,
+    act_id: baseRow.act_id || "",
+    scene_id: baseRow.scene_id || "",
+    beat: "",
+    shot_type: "",
+    frame_description: "",
+    linked_cards: linkedId ? [linkedId] : [],
+    spatial_logic: "",
+    image_prompt: "",
+    video_prompt: "",
+    notes: "",
+    revision_note: "",
+    sort_after: previousRow?.item_id || "",
+    selected: true,
+    status: "draft",
+    output_path: "",
+    output_notes: "",
+    versions: [],
+    references: [],
+  };
+  board.rows.splice(index, 0, newRow);
+  renumberRowsBeforeInsert(board, index, baseRow);
+  state.ideaBatchRows = (state.ideaBatchRows || []).map((item) => (Number(item) >= index ? Number(item) + 1 : Number(item)));
+  state.ideaActiveRowIndex = index;
+  setIdeaBoardLocal(board);
+  renderIdeaLab();
+  document.querySelector(`.idea-shot-row[data-idea-index="${state.ideaActiveRowIndex}"]`)?.scrollIntoView({ behavior: "smooth", block: "center" });
+}
+
 function deleteIdeaRow(index) {
   const board = collectIdeaBoardFromDom();
   board.rows.splice(index, 1);
@@ -6260,6 +6333,9 @@ function bindIdeaLabEvents() {
   });
   $("ideaRows")?.querySelectorAll(".idea-delete-row").forEach((button) => {
     button.addEventListener("click", () => deleteIdeaRow(Number(button.dataset.ideaIndex || 0)));
+  });
+  $("ideaRows")?.querySelectorAll(".idea-insert-row-before").forEach((button) => {
+    button.addEventListener("click", () => insertIdeaRowBefore(Number(button.dataset.ideaIndex || 0)));
   });
   $("ideaRows")?.querySelectorAll(".idea-insert-row-after").forEach((button) => {
     button.addEventListener("click", () => insertIdeaRowAfter(Number(button.dataset.ideaIndex || 0)));
