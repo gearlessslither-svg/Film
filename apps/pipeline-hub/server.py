@@ -2079,6 +2079,8 @@ def normalize_concept_card_versions(value: object) -> list[dict[str, object]]:
                     "candidate_id": str(version.get("candidate_id", "") or "").strip(),
                     "task_id": str(version.get("task_id", "") or "").strip(),
                     "packet_id": str(version.get("packet_id", "") or "").strip(),
+                    "video_prompt": str(version.get("video_prompt", "") or "").strip(),
+                    "image_analysis": version.get("image_analysis") if isinstance(version.get("image_analysis"), (dict, list)) else str(version.get("image_analysis", "") or "").strip(),
                     "qa": version.get("qa") if isinstance(version.get("qa"), dict) else {},
                 }
             )
@@ -2108,12 +2110,135 @@ def append_current_card_version(
         "status": "current",
     }
     if isinstance(metadata, dict):
-        for key in ("candidate_id", "task_id", "packet_id"):
+        for key in ("candidate_id", "task_id", "packet_id", "video_prompt"):
             value = str(metadata.get(key, "") or "").strip()
             if value:
                 entry[key] = value
+        image_analysis = metadata.get("image_analysis")
+        if isinstance(image_analysis, (dict, list)):
+            entry["image_analysis"] = image_analysis
+        elif str(image_analysis or "").strip():
+            entry["image_analysis"] = str(image_analysis or "").strip()
     next_versions.append(entry)
     return next_versions
+
+
+def payload_text_value(source: dict[str, object], *keys: str) -> str:
+    for key in keys:
+        value = source.get(key)
+        if value is None:
+            continue
+        if isinstance(value, (dict, list)):
+            text = json.dumps(value, ensure_ascii=False)
+        else:
+            text = str(value)
+        text = text.strip()
+        if text:
+            return text
+    return ""
+
+
+def image_analysis_payload(output: dict[str, object]) -> tuple[dict[str, object], str]:
+    raw = output.get("image_analysis")
+    if raw is None:
+        raw = output.get("analysis")
+    if isinstance(raw, dict):
+        return raw, json.dumps(raw, ensure_ascii=False)
+    if isinstance(raw, list):
+        return {}, "\n".join(str(item).strip() for item in raw if str(item).strip())
+    return {}, str(raw or "").strip()
+
+
+def output_or_analysis_text(output: dict[str, object], analysis: dict[str, object], *keys: str) -> str:
+    value = payload_text_value(output, *keys)
+    if value:
+        return value
+    return payload_text_value(analysis, *keys)
+
+
+def infer_video_duration(row: dict[str, object], output: dict[str, object], analysis: dict[str, object]) -> str:
+    explicit = output_or_analysis_text(output, analysis, "video_duration", "duration", "duration_seconds", "time")
+    if explicit:
+        return explicit
+    text = " ".join(str(row.get(key, "") or "") for key in ("shot_type", "beat", "frame_description", "video_prompt")).lower()
+    if any(token in text for token in ("特写", "close-up", "closeup", "insert")):
+        return "3-4秒 / 3-4 seconds"
+    if any(token in text for token in ("远景", "wide", "establishing", "环境")):
+        return "5-7秒 / 5-7 seconds"
+    return "4-5秒 / 4-5 seconds"
+
+
+def infer_camera_movement(row: dict[str, object], output: dict[str, object], analysis: dict[str, object]) -> str:
+    explicit = output_or_analysis_text(output, analysis, "camera_movement", "movement", "camera", "camera_motion")
+    if explicit:
+        return explicit
+    text = " ".join(str(row.get(key, "") or "") for key in ("shot_type", "frame_description", "spatial_logic", "video_prompt")).lower()
+    if any(token in text for token in ("低机位", "脚", "feet", "foot", "ground")):
+        return "低机位稳定镜头，轻微手持呼吸感，保持观察视角 / Low locked-off angle with subtle handheld breathing."
+    if any(token in text for token in ("背影", "走", "walking", "home path")):
+        return "慢速跟拍或近似静态长焦观察，跟随人物行走节奏 / Slow follow or nearly locked observational lens following the walk."
+    if any(token in text for token in ("特写", "close-up", "closeup")):
+        return "稳定特写，轻微推近，不改变主体方向 / Locked close-up with a tiny push-in."
+    return "稳定电影镜头，轻微手持，不做炫技运动 / Stable cinematic framing with slight handheld naturalness."
+
+
+def infer_dialogue_cue(row: dict[str, object], output: dict[str, object], analysis: dict[str, object]) -> str:
+    explicit = output_or_analysis_text(output, analysis, "dialogue", "dialogue_cue", "lines", "voice")
+    if explicit:
+        return explicit
+    text = " ".join(str(row.get(key, "") or "") for key in ("beat", "frame_description", "notes", "video_prompt"))
+    if "夸" in text:
+        return "两个弟弟兴奋夸哥哥刚才太厉害；哥哥短句装镇定，保留脚步声和远处环境声。"
+    if "模仿" in text:
+        return "哥哥模仿黄毛气急败坏的短促语气和按钮声节奏，两个弟弟笑；黄毛本人不出现。"
+    if any(token in text for token in ("没有察觉", "背影", "小路", "被盯", "脚部", "盯梢")):
+        return "不加清晰对白，保留孩子远处笑声、脚步声、夜间环境声。"
+    return "无新增明确对白；如原分镜已有对白，以原分镜为准，环境声优先。"
+
+
+def build_video_prompt_from_image_callback(row: dict[str, object], output: dict[str, object], notes: str) -> str:
+    explicit = payload_text_value(output, "video_prompt", "video_generation_prompt", "generated_video_prompt")
+    if explicit:
+        return explicit
+    analysis, analysis_text = image_analysis_payload(output)
+    duration = infer_video_duration(row, output, analysis)
+    shot_size = output_or_analysis_text(output, analysis, "shot_size", "framing", "shot_type") or str(row.get("shot_type", "") or "按回填图景别 / Match returned image framing").strip()
+    camera = infer_camera_movement(row, output, analysis)
+    lighting = output_or_analysis_text(output, analysis, "lighting", "light", "color", "atmosphere") or "严格延续回填图的光影、色温、明暗层次和环境氛围。"
+    action = output_or_analysis_text(output, analysis, "character_action", "action", "performance", "motion") or str(row.get("frame_description", "") or "").strip()
+    dialogue = infer_dialogue_cue(row, output, analysis)
+    source_analysis = analysis_text or notes or str(row.get("output_notes", "") or "").strip() or "依据回填图片、原分镜文字和连续性锁自动生成。"
+    spatial_logic = str(row.get("spatial_logic", "") or "").strip()
+    negative = output_or_analysis_text(output, analysis, "negative_prompt", "avoid", "video_negative") or "不要改变人物身份、服装、道具结构、地点连续性和构图方向；不要新增字幕、水印、随机文字或现代物件。"
+    return "\n".join(
+        [
+            "基于回填图片的视频生成提示词 / Image-based video prompt",
+            f"- 时长 / Duration: {duration}",
+            f"- 景别 / Shot size: {shot_size}",
+            f"- 机位运动 / Camera movement: {camera}",
+            f"- 光影 / Lighting: {lighting}",
+            f"- 人物动作 / Character action: {action}",
+            f"- 台词/声音 / Dialogue & sound: {dialogue}",
+            f"- 画面分析 / Image analysis: {source_analysis}",
+            f"- 空间硬约束 / Spatial logic: {spatial_logic or '保持回填图片里的方向、深度、遮挡和人物关系。'}",
+            f"- 图生视频约束 / Video constraints: 以当前回填图片作为首帧或强参考帧，保持人物脸、衣服、道具、地点、光影和画面比例连续。{negative}",
+        ]
+    ).strip()
+
+
+def merge_video_prompt_for_callback(row: dict[str, object], output: dict[str, object], notes: str) -> str:
+    mode = str(output.get("video_prompt_update_mode") or output.get("video_prompt_mode") or "replace").strip().lower()
+    existing = str(row.get("video_prompt", "") or "").strip()
+    if mode in {"false", "0", "no", "none", "skip", "preserve", "off", "不更新", "保留"}:
+        return existing
+    generated = build_video_prompt_from_image_callback(row, output, notes)
+    if not generated:
+        return existing
+    if mode in {"append", "追加"} and existing:
+        if generated in existing:
+            return existing
+        return f"{existing}\n\n---\n{generated}".strip()
+    return generated
 
 
 def normalize_idea_act(act: dict[str, object], index: int) -> dict[str, object]:
@@ -3745,6 +3870,8 @@ def build_card_image_packet_text(
             "- 编号记录规则：分镜号/卡片号、版本号、候选号只能写入文件名、version_id、candidate_id 和回填 JSON；绝对不要画进图片像素里。",
             "- 画面必须干净：不要在图上加分镜号、版本号、候选编号、字幕、水印、标签、随机文字或 UI 标记。",
             "- 如果只生成一张图，保存到 suggested_candidate_outputs[0] 或 Suggested output path；如果生成多张候选，按 c01/c02/c03 保存并全部回填。",
+            "- 回填每张 storyboard 图片前必须先分析图片内容，然后在 callback 中带 image_analysis 和 video_prompt；video_prompt 要写入视频时长、景别、机位运动、光影、人物动作、台词/声音和图生视频约束。",
+            "- 若 callback 没有 video_prompt，后端会用 image_analysis、原分镜和 notes 自动合成；如需保留原提示词，显式传 video_prompt_update_mode='preserve'。",
             "- 输出保持短：图片预览、保存路径、回填状态。",
             "",
             "## Project / 项目",
@@ -3770,7 +3897,7 @@ def build_card_image_packet_text(
             "",
             "## Callback / 回填接口",
             f"- POST: http://127.0.0.1:8787/api/projects/{slug}/card-image-output",
-            "- Body: {\"outputs\":[{\"card_type\":\"storyboard|concept\",\"card_uid\":\"...\",\"item_id\":\"...\",\"card_id\":\"...\",\"version_id\":\"v001_c01\",\"candidate_id\":\"c01\",\"task_id\":\"...\",\"packet_id\":\"...\",\"output_path\":\"...\",\"notes\":\"...\"}]}",
+            "- Body: {\"outputs\":[{\"card_type\":\"storyboard|concept\",\"card_uid\":\"...\",\"item_id\":\"...\",\"card_id\":\"...\",\"version_id\":\"v001_c01\",\"candidate_id\":\"c01\",\"task_id\":\"...\",\"packet_id\":\"...\",\"output_path\":\"...\",\"notes\":\"...\",\"image_analysis\":\"...\",\"video_prompt\":\"...\"}]}",
             "",
             "## Tasks / 目标卡片任务",
             "```json",
@@ -4300,6 +4427,13 @@ def update_card_image_output(slug: str, payload: dict[str, object]) -> dict[str,
                         row_by_uid[safe_file_stem(row.get("card_uid", ""))] = row
             versions = normalize_concept_card_versions(row.get("versions", []))
             version_id = safe_file_stem(output.get("version_id") or f"v{len(versions) + 1:03d}")
+            video_prompt = merge_video_prompt_for_callback(row, output, notes)
+            if video_prompt:
+                row["video_prompt"] = video_prompt
+                metadata["video_prompt"] = video_prompt
+            image_analysis = output.get("image_analysis") if output.get("image_analysis") is not None else output.get("analysis")
+            if image_analysis:
+                metadata["image_analysis"] = image_analysis
             versions = append_current_card_version(versions, version_id, output_path, notes, metadata)
             row["versions"] = versions
             row["output_path"] = output_path
@@ -4525,6 +4659,8 @@ def build_board_card_packet_text(slug: str, path: Path, packet_id: str, packet_r
         callback_item["card_id"] = card_id
     else:
         callback_item["item_id"] = card_id
+        callback_item["image_analysis"] = "分析回填图里的时长建议、景别、机位、光影、人物动作、台词/声音和视频约束。"
+        callback_item["video_prompt"] = "基于回填图写完整图生视频提示词。"
     return "\n".join(
         [
             "# Codex Board Card Refinement Handoff / Codex 画板卡片精修包",
@@ -4539,6 +4675,7 @@ def build_board_card_packet_text(slug: str, path: Path, packet_id: str, packet_r
             "- 编号只做记录：version_id、candidate_id、卡片号只能写入文件名和回填 JSON；不要画进图片像素里。",
             "- 画面必须干净：不要在图上加编号、字幕、水印、标签、随机文字或 UI 标记。",
             "- 保存后调用 card-image-output 回填接口，让新图出现在原卡片的版本预览里。",
+            "- 如果目标是 storyboard，回填前必须先分析新图，并在 callback 中带 image_analysis 和 video_prompt，写明视频时长、景别、机位运动、光影、人物动作、台词/声音和图生视频约束。",
             "- 输出保持短：图片预览、保存路径、回填状态。",
             "",
             "## Project / 项目",

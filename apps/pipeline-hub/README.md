@@ -78,6 +78,25 @@ http://127.0.0.1:8787
 
 新增图片如果回填时找不到原分镜卡，app 会自动补一张分镜卡；如果无法判断故事顺序，先作为情绪卡放到末尾。
 
+## 图片回填和视频提示词
+
+`card-image-output` 不只回填图片路径。对 `storyboard` 分镜图，Codex 在回填前必须先看图并分析画面内容，然后带上：
+
+- `image_analysis`：图片内容分析，可为文本或结构化对象。
+- `video_prompt`：写回分镜卡“视频生成提示词”的完整图生视频提示词。
+
+`video_prompt` 至少应包含：
+
+- 视频时长。
+- 镜头景别。
+- 机位运动。
+- 光影和色温。
+- 人物动作/表演。
+- 台词、笑声、脚步声、环境声等声音提示。
+- 图生视频约束：必须保持回填图里的构图、人物身份、服装、道具、地点和光影连续。
+
+如果 callback 没有显式传 `video_prompt`，后端会用 `image_analysis`、原分镜文字、`notes` 和 `spatial_logic` 自动合成一份。若只想回填图片并保留原视频提示词，可传 `video_prompt_update_mode: "preserve"`。
+
 ## 分镜插入和专属画布
 
 - 每张分镜卡上方的 `+` 会在当前卡前创建一张空白分镜卡，适合在第一帧之前补镜头。
@@ -195,7 +214,7 @@ http://127.0.0.1:8787
 - `POST /api/projects/<slug>/act-autopilot-packet`：按某一幕剧情创建 Codex 远程总控分析卡。
 - `POST /api/projects/<slug>/card-image-preflight`：生成前检查重复编号、空提示词、缺白模、缺连续性锁和空间风险。
 - `POST /api/projects/<slug>/card-image-packet`：生成设定卡/分镜卡图片任务包。
-- `POST /api/projects/<slug>/card-image-output`：回填图片输出。
+- `POST /api/projects/<slug>/card-image-output`：回填图片输出；分镜图会同时更新 `video_prompt`，除非传 `video_prompt_update_mode: "preserve"`。
 - `POST /api/projects/<slug>/whitebox-jobs`：生成白模任务。
 - `GET /api/projects/<slug>/asset?origin=<project|resource>&path=<path>`：预览项目或资源文件。
 - `POST /api/projects/<slug>/video-reference-package`：生成 Final/参考图包。
