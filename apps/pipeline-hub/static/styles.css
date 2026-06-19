@@ -1398,7 +1398,7 @@ textarea:focus {
   border: 1px solid var(--line);
 }
 
-.card-version-latest div {
+.card-version-latest > div {
   display: grid;
   gap: 3px;
   min-width: 0;
@@ -1416,26 +1416,39 @@ textarea:focus {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
+  align-items: center;
+}
+
+.card-version-actions .mini-command {
+  flex: 0 0 auto;
 }
 
 .card-version-strip {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
-  gap: 6px;
+  grid-template-columns: repeat(auto-fill, minmax(138px, 1fr));
+  gap: 8px;
 }
 
 .card-version-thumb {
   display: grid;
-  gap: 4px;
+  gap: 6px;
   min-width: 0;
-  padding: 4px;
-  border-radius: 6px;
-  border: 1px solid transparent;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: #ffffff;
 }
 
 .card-version-thumb.current {
-  border-color: #237a57;
+  border-color: #0f7a61;
   background: #eef8f2;
+  box-shadow: 0 0 0 2px rgba(15, 122, 97, 0.12);
+}
+
+.card-version-thumb.final {
+  border-color: #0f7a61;
+  background: #e8f5ed;
+  box-shadow: 0 0 0 2px rgba(15, 122, 97, 0.18);
 }
 
 .card-version-thumb.reference {
@@ -1451,7 +1464,7 @@ textarea:focus {
 
 .card-version-strip a {
   display: grid;
-  gap: 3px;
+  gap: 5px;
   color: inherit;
   text-decoration: none;
   min-width: 0;
@@ -1472,7 +1485,7 @@ textarea:focus {
 
 .card-version-strip span {
   color: var(--muted);
-  font-size: 10px;
+  font-size: 11px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -1480,10 +1493,40 @@ textarea:focus {
 
 .card-version-thumb small {
   color: var(--muted);
-  font-size: 10px;
+  font-size: 11px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.card-version-state {
+  display: inline-flex;
+  width: fit-content;
+  max-width: 100%;
+  border-radius: 999px;
+  padding: 3px 7px;
+  font-size: 11px;
+  line-height: 1.2;
+  font-weight: 700;
+  white-space: nowrap;
+  background: #eef1ef;
+  color: var(--muted);
+}
+
+.card-version-state.final,
+.card-version-state.current {
+  background: #dff3e8;
+  color: #0f6a4f;
+}
+
+.card-version-state.reference {
+  background: #e5edff;
+  color: #315b98;
+}
+
+.card-version-state.rejected {
+  background: #ececec;
+  color: #6e7470;
 }
 
 .card-version-qa {
@@ -1522,14 +1565,45 @@ textarea:focus {
 .card-version-mini-actions {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 3px;
+  gap: 5px;
 }
 
 .card-version-thumb .mini-command {
-  min-height: 24px;
-  padding: 3px 6px;
+  min-height: 30px;
+  padding: 4px 6px;
   justify-content: center;
-  font-size: 10px;
+  font-size: 11px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-version-status.active {
+  border-color: #0f7a61;
+  background: #0f7a61;
+  color: #ffffff;
+  font-weight: 750;
+  box-shadow: 0 0 0 2px rgba(15, 122, 97, 0.14);
+}
+
+.card-version-panel button[data-help]::after {
+  display: none;
+}
+
+.card-version-panel .card-version-status.active::after {
+  content: " ✓";
+  display: inline;
+  position: static;
+  width: auto;
+  height: auto;
+  margin-left: 2px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
 }
 
 .project-bible-layout .idea-seed-panel {

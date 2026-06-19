@@ -2604,6 +2604,7 @@ function addBoardHandoff(node, result) {
   state.boardHandoffs = [handoff, ...state.boardHandoffs.filter((item) => item.outputPath !== handoff.outputPath)].slice(0, 12);
   state.boardHandoffCollapsed = false;
   autoCopyHandoffText(handoff.text);
+  syncIdeaHandoffCompletionPolling();
 }
 
 function removeBoardHandoff(handoffId) {
@@ -3894,6 +3895,21 @@ function pruneCompletedIdeaHandoffs(completedIds) {
   return removed;
 }
 
+function pruneCompletedBoardHandoffs(completedIds) {
+  const ids = normalizeIdeaHandoffIds(completedIds);
+  const idSet = new Set(ids);
+  if (!idSet.size || !state.boardHandoffs.length) return 0;
+  const before = state.boardHandoffs.length;
+  state.boardHandoffs = state.boardHandoffs.filter((handoff) => {
+    if (idSet.has(handoff.id) || idSet.has(handoff.outputPath)) return false;
+    const text = [handoff.title, handoff.outputPath, handoff.text].filter(Boolean).join("\n");
+    return !ids.some((id) => text.includes(id));
+  });
+  const removed = before - state.boardHandoffs.length;
+  if (removed > 0) saveBoardState();
+  return removed;
+}
+
 function stopIdeaHandoffCompletionPolling() {
   if (!state.ideaHandoffPollTimer) return;
   window.clearInterval(state.ideaHandoffPollTimer);
@@ -3901,25 +3917,33 @@ function stopIdeaHandoffCompletionPolling() {
 }
 
 async function pollIdeaHandoffCompletions() {
-  if (!state.selectedSlug || !state.ideaHandoffs.length) {
+  if (!state.selectedSlug || (!state.ideaHandoffs.length && !state.boardHandoffs.length)) {
     stopIdeaHandoffCompletionPolling();
     return;
   }
   try {
     const payload = await requestJson(`/api/projects/${encodeURIComponent(state.selectedSlug)}/idea-handoffs/completed`);
-    const removed = pruneCompletedIdeaHandoffs(payload.completed_handoff_ids || []);
+    const completedIds = payload.completed_handoff_ids || [];
+    const removed = pruneCompletedIdeaHandoffs(completedIds);
+    const removedBoard = pruneCompletedBoardHandoffs(completedIds);
     if (removed > 0) {
       renderIdeaLab();
-      toast(`已自动删除 ${removed} 张完成的 Codex 分析卡 / Completed cards removed`);
+    }
+    if (removedBoard > 0 && state.boardOpen) {
+      renderBoardHandoffDock();
+      bindBoardHandoffEvents();
+    }
+    if (removed || removedBoard) {
+      toast(`已自动删除 ${removed + removedBoard} 张完成的 Codex 卡 / Completed cards removed`);
     }
   } catch {
     // Completion cleanup is best-effort; manual delete stays available.
   }
-  if (!state.ideaHandoffs.length) stopIdeaHandoffCompletionPolling();
+  if (!state.ideaHandoffs.length && !state.boardHandoffs.length) stopIdeaHandoffCompletionPolling();
 }
 
 function syncIdeaHandoffCompletionPolling() {
-  if (!state.selectedSlug || !state.ideaHandoffs.length) {
+  if (!state.selectedSlug || (!state.ideaHandoffs.length && !state.boardHandoffs.length)) {
     stopIdeaHandoffCompletionPolling();
     return;
   }
@@ -5211,6 +5235,11 @@ function renderCardVersionPreview(cardOrRow, label = "版本 / Versions") {
     || [...versions].reverse().find((version) => version.status === "current")
     || versions[versions.length - 1];
   const statusLabel = (status) => CARD_VERSION_STATUS_LABELS[status || "candidate"] || CARD_VERSION_STATUS_LABELS.candidate;
+  const statusClass = (status) => (["final", "current", "reference", "rejected", "candidate"].includes(status) ? status : "candidate");
+  const actionStateAttrs = (version, status) => {
+    const active = version.status === status;
+    return `class="mini-command card-version-status${active ? " active" : ""}" aria-pressed="${active ? "true" : "false"}"`;
+  };
   const versionLabel = (version) => [version.version_id || "current", version.candidate_id || ""].filter(Boolean).join(" · ");
   const qaBadge = (version) => {
     const score = version.qa?.score;
@@ -5226,6 +5255,7 @@ function renderCardVersionPreview(cardOrRow, label = "版本 / Versions") {
         <div>
           <strong>${escapeHtml(label)}</strong>
           <span>${escapeHtml(versionLabel(current))} · ${escapeHtml(statusLabel(current.status))} · ${escapeHtml(current.created_at || "")}</span>
+          <span class="card-version-state ${escapeHtml(statusClass(current.status))}">${escapeHtml(statusLabel(current.status))}</span>
           ${qaBadge(current)}
           <small>${escapeHtml(current.notes || current.output_path || "")}</small>
           <div class="card-version-actions">
@@ -5238,18 +5268,18 @@ function renderCardVersionPreview(cardOrRow, label = "版本 / Versions") {
         ${versions
           .map(
             (version) => `
-              <div class="card-version-thumb ${escapeHtml(version.status || "candidate")}" title="${escapeHtml(version.notes || version.output_path || "")}">
+              <div class="card-version-thumb ${escapeHtml(statusClass(version.status))}" title="${escapeHtml(version.notes || version.output_path || "")}">
                 <a class="card-version-preview-link" href="${escapeHtml(sceneAssetUrl(version.output_path || ""))}" target="_blank" title="点击预览大图 / Click to preview full image" data-version-id="${escapeHtml(version.version_id || "version")}" data-version-path="${escapeHtml(version.output_path || "")}" ${externalImageDragAttrs(sceneAssetUrl(version.output_path || ""), version.output_path || "", version.version_id || "version")}>
                   <img src="${escapeHtml(sceneAssetUrl(version.output_path || ""))}" alt="${escapeHtml(version.version_id || "version")}" loading="lazy" ${externalImageDragAttrs(sceneAssetUrl(version.output_path || ""), version.output_path || "", version.version_id || "version")} />
                   <span>${escapeHtml(versionLabel(version))}</span>
                 </a>
-                <small>${escapeHtml(statusLabel(version.status))}</small>
+                <small class="card-version-state ${escapeHtml(statusClass(version.status))}">${escapeHtml(statusLabel(version.status))}</small>
                 ${qaBadge(version)}
                 <div class="card-version-mini-actions">
-                  <button class="mini-command card-version-status" data-help="标记为最终分镜图；只有 Final 图会进入下方最终分镜 preview。" data-version-id="${escapeHtml(version.version_id || "")}" data-version-path="${escapeHtml(version.output_path || "")}" data-version-status="final" type="button">Final</button>
-                  <button class="mini-command card-version-status" data-help="设为当前采用候选；不会进入最终分镜 preview，除非再标记 Final。" data-version-id="${escapeHtml(version.version_id || "")}" data-version-path="${escapeHtml(version.output_path || "")}" data-version-status="current" type="button">采用</button>
-                  <button class="mini-command card-version-status" data-help="保留为参考图；不会进入最终大图预览，但可在画板和参考包里使用。" data-version-id="${escapeHtml(version.version_id || "")}" data-version-path="${escapeHtml(version.output_path || "")}" data-version-status="reference" type="button">参考</button>
-                  <button class="mini-command card-version-status" data-help="标记为不用；它会离开最终预览，留在待定/废图管理逻辑里。" data-version-id="${escapeHtml(version.version_id || "")}" data-version-path="${escapeHtml(version.output_path || "")}" data-version-status="rejected" type="button">淘汰</button>
+                  <button ${actionStateAttrs(version, "final")} data-help="标记为最终分镜图；只有 Final 图会进入下方最终分镜 preview。" data-version-id="${escapeHtml(version.version_id || "")}" data-version-path="${escapeHtml(version.output_path || "")}" data-version-status="final" type="button">Final</button>
+                  <button ${actionStateAttrs(version, "current")} data-help="设为当前采用候选；不会进入最终分镜 preview，除非再标记 Final。" data-version-id="${escapeHtml(version.version_id || "")}" data-version-path="${escapeHtml(version.output_path || "")}" data-version-status="current" type="button">采用</button>
+                  <button ${actionStateAttrs(version, "reference")} data-help="保留为参考图；不会进入最终大图预览，但可在画板和参考包里使用。" data-version-id="${escapeHtml(version.version_id || "")}" data-version-path="${escapeHtml(version.output_path || "")}" data-version-status="reference" type="button">参考</button>
+                  <button ${actionStateAttrs(version, "rejected")} data-help="标记为不用；它会离开最终预览，留在待定/废图管理逻辑里。" data-version-id="${escapeHtml(version.version_id || "")}" data-version-path="${escapeHtml(version.output_path || "")}" data-version-status="rejected" type="button">淘汰</button>
                   <button class="mini-command card-version-qa-run" data-help="对这张版本图做技术评分。" data-version-id="${escapeHtml(version.version_id || "")}" data-version-path="${escapeHtml(version.output_path || "")}" type="button">质检</button>
                   <button class="mini-command card-version-to-board" data-help="送入画板继续单图精修。" data-version-path="${escapeHtml(version.output_path || "")}" type="button">画板</button>
                 </div>
@@ -5274,6 +5304,50 @@ function openCardVersionImagePreview(path, name = "") {
     path: cleanPath,
     asset_id: name || imageFileNameFromPath(cleanPath),
   });
+}
+
+function fileIsImage(file) {
+  return Boolean(file?.type?.startsWith("image/") || /\.(png|jpe?g|webp|gif)$/i.test(file?.name || ""));
+}
+
+function readFileAsDataUrl(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result || ""));
+    reader.onerror = () => reject(reader.error || new Error("File read failed"));
+    reader.readAsDataURL(file);
+  });
+}
+
+async function uploadDroppedStoryboardVersion(rowElement, file) {
+  if (!state.selectedSlug || !rowElement || !fileIsImage(file)) {
+    toast("只能拖入图片文件 / Drop an image file");
+    return;
+  }
+  const index = Number(rowElement.dataset.ideaIndex || 0);
+  const board = collectIdeaBoardFromDom();
+  const row = board.rows?.[index];
+  if (!row?.item_id) {
+    toast("没有找到这张分镜卡 / Storyboard card not found");
+    return;
+  }
+  setIdeaBoardLocal(board);
+  const dataUrl = await readFileAsDataUrl(file);
+  const payload = await requestJson(`/api/projects/${encodeURIComponent(state.selectedSlug)}/card-version-upload`, {
+    method: "POST",
+    body: JSON.stringify({
+      card_type: "storyboard",
+      item_id: row.item_id,
+      card_uid: row.card_uid || "",
+      file_name: file.name || "dropped-image.png",
+      mime_type: file.type || "",
+      data_url: dataUrl,
+      notes: `外部拖拽导入备选图 / External drop candidate: ${file.name || "image"}`,
+    }),
+  });
+  state.detail = payload.project || state.detail;
+  renderIdeaLab();
+  toast("已放入这张分镜卡的备选区 / Added to this card's candidates");
 }
 
 function sendVersionImageToBoard(path) {
@@ -5312,6 +5386,8 @@ function normalizeCardVersionsForEdit(cardOrRow) {
       candidate_id: version.candidate_id || "",
       task_id: version.task_id || "",
       packet_id: version.packet_id || "",
+      video_prompt: version.video_prompt || "",
+      image_analysis: version.image_analysis || "",
       qa: version.qa && typeof version.qa === "object" ? version.qa : {},
     }));
 }
@@ -5331,6 +5407,8 @@ function findOrCreateCardVersion(cardOrRow, versionId, versionPath) {
       candidate_id: "",
       task_id: "",
       packet_id: "",
+      video_prompt: "",
+      image_analysis: "",
       qa: {},
     };
     versions.push(target);
@@ -6971,14 +7049,24 @@ function bindIdeaLabEvents() {
   document.querySelectorAll(".idea-shot-row, .idea-map-row").forEach((row) => {
     row.addEventListener("dragover", (event) => {
       const types = Array.from(event.dataTransfer?.types || []);
-      if (!types.includes("application/x-pipeline-asset-ref") && !types.includes("text/plain")) return;
+      if (!types.includes("Files") && !types.includes("application/x-pipeline-asset-ref") && !types.includes("text/plain")) return;
       event.preventDefault();
+      event.dataTransfer.dropEffect = types.includes("Files") ? "copy" : "link";
       row.classList.add("drop-target");
     });
     row.addEventListener("dragleave", () => row.classList.remove("drop-target"));
-    row.addEventListener("drop", (event) => {
+    row.addEventListener("drop", async (event) => {
       event.preventDefault();
       row.classList.remove("drop-target");
+      const files = [...(event.dataTransfer?.files || [])].filter(fileIsImage);
+      if (files.length) {
+        try {
+          await uploadDroppedStoryboardVersion(row, files[0]);
+        } catch (error) {
+          toast(`导入备选图失败 / Import failed: ${error.message}`);
+        }
+        return;
+      }
       const assetRef = event.dataTransfer?.getData("application/x-pipeline-asset-ref") || event.dataTransfer?.getData("text/plain") || "";
       const index = Number(row.dataset.ideaIndex || 0);
       if (assetRef) addIdeaReference("row", assetRef, [index]);
@@ -8286,6 +8374,7 @@ async function loadDetail(slug) {
   loadBoardState();
   loadIdeaHandoffs();
   pruneCompletedIdeaHandoffs(currentIdeaBoard().completed_handoff_ids || []);
+  pruneCompletedBoardHandoffs(currentIdeaBoard().completed_handoff_ids || []);
   syncIdeaHandoffCompletionPolling();
   renderAll();
 }

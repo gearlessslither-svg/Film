@@ -4,6 +4,8 @@
 from __future__ import annotations
 
 import argparse
+import base64
+import binascii
 import csv
 from datetime import datetime, timezone
 import gzip
@@ -4450,6 +4452,114 @@ def update_card_image_output(slug: str, payload: dict[str, object]) -> dict[str,
     return {"ok": True, "updated": updated, "idea_board": load_idea_board(path, slug), "project": project_detail(slug)}
 
 
+def data_url_image_bytes(data_url: str) -> tuple[bytes, str]:
+    match = re.fullmatch(r"data:(image/[a-zA-Z0-9.+-]+);base64,(.+)", str(data_url or ""), flags=re.DOTALL)
+    if not match:
+        raise ValueError("上传图片必须是 data:image/*;base64 格式 / Uploaded image must be a data:image/*;base64 payload.")
+    mime_type = match.group(1).lower()
+    try:
+        data = base64.b64decode(match.group(2), validate=True)
+    except (binascii.Error, ValueError) as exc:
+        raise ValueError("上传图片 base64 无效 / Invalid uploaded image base64.") from exc
+    if not data:
+        raise ValueError("上传图片为空 / Uploaded image is empty.")
+    if len(data) > 32 * 1024 * 1024:
+        raise ValueError("上传图片超过 32MB / Uploaded image exceeds 32MB.")
+    return data, mime_type
+
+
+def image_extension_for_upload(file_name: str, mime_type: str) -> str:
+    suffix = Path(str(file_name or "")).suffix.lower()
+    if suffix in IMAGE_PREVIEW_EXTENSIONS:
+        return suffix
+    return {
+        "image/jpeg": ".jpg",
+        "image/jpg": ".jpg",
+        "image/png": ".png",
+        "image/webp": ".webp",
+        "image/gif": ".gif",
+    }.get(mime_type.lower(), ".png")
+
+
+def upload_card_version_image(slug: str, payload: dict[str, object]) -> dict[str, object]:
+    path = project_path(slug)
+    board = load_idea_board(path, slug)
+    rows = board.get("rows", [])
+    cards = board.get("project_bible", [])
+    card_type = str(payload.get("card_type", "storyboard") or "storyboard").strip()
+    item_id = safe_file_stem(payload.get("item_id", "") or payload.get("card_id", ""))
+    card_uid = safe_file_stem(payload.get("card_uid", "") or "")
+    data, mime_type = data_url_image_bytes(str(payload.get("data_url", "") or ""))
+    file_name = str(payload.get("file_name", "") or "dropped-image.png")
+    extension = image_extension_for_upload(file_name, mime_type)
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    packet_id = safe_file_stem(payload.get("packet_id") or f"EXTERNAL_DROP_{timestamp}")
+    output_dir = path / "08_generation" / "jobs" / packet_id / "outputs"
+    output_dir.mkdir(parents=True, exist_ok=True)
+    stem = safe_file_stem(payload.get("output_stem") or item_id or Path(file_name).stem or "dropped_image")
+    existing_count = len(list(output_dir.glob(f"{stem}_drop_*{extension}")))
+    output_name = f"{stem}_drop_{existing_count + 1:02d}{extension}"
+    output_path = normalize_project_rel_path(str((output_dir / output_name).relative_to(path)))
+    (output_dir / output_name).write_bytes(data)
+
+    notes = str(payload.get("notes", "") or "外部拖拽导入备选图 / External drop candidate").strip()
+    candidate_id = safe_file_stem(payload.get("candidate_id") or f"drop{existing_count + 1:02d}")
+    updated = 0
+    target: dict[str, object] | None = None
+    if card_type == "concept":
+        for card in (cards if isinstance(cards, list) else []):
+            if not isinstance(card, dict):
+                continue
+            if safe_file_stem(card.get("card_id", "")) == item_id:
+                target = card
+                break
+    else:
+        for row in (rows if isinstance(rows, list) else []):
+            if not isinstance(row, dict):
+                continue
+            if (card_uid and safe_file_stem(row.get("card_uid", "")) == card_uid) or safe_file_stem(row.get("item_id", "")) == item_id:
+                target = row
+                break
+    if target is None:
+        raise ValueError("没有找到要回填的卡片 / Target card not found.")
+    versions = normalize_concept_card_versions(target.get("versions", []))
+    version_id = safe_file_stem(payload.get("version_id") or f"drop_v{len(versions) + 1:03d}")
+    versions.append(
+        {
+            "version_id": version_id,
+            "output_path": output_path,
+            "notes": notes,
+            "created_at": now_iso(),
+            "status": "candidate",
+            "candidate_id": candidate_id,
+            "task_id": str(payload.get("task_id", "") or "").strip(),
+            "packet_id": packet_id,
+            "video_prompt": str(payload.get("video_prompt", "") or "").strip(),
+            "image_analysis": str(payload.get("image_analysis", "") or "").strip(),
+            "qa": {},
+        }
+    )
+    target["versions"] = versions
+    if card_type == "concept" and not str(target.get("preview_path", "") or "").strip():
+        target["preview_path"] = output_path
+        target["status"] = "image_ready"
+    elif card_type != "concept" and not str(target.get("output_path", "") or "").strip():
+        target["output_path"] = output_path
+        target["output_notes"] = notes
+        target["output_attached_at"] = now_iso()
+        target["status"] = "image_ready"
+    updated = 1
+    write_idea_board_files(path, board)
+    return {
+        "ok": True,
+        "updated": updated,
+        "output_path": output_path,
+        "version": versions[-1],
+        "idea_board": load_idea_board(path, slug),
+        "project": project_detail(slug),
+    }
+
+
 def load_json_file(path: Path) -> object:
     if not path.exists():
         return None
@@ -6132,6 +6242,9 @@ class PipelineHubHandler(BaseHTTPRequestHandler):
                 return
             if action == "card-image-output":
                 send_json(self, update_card_image_output(slug, payload))
+                return
+            if action == "card-version-upload":
+                send_json(self, upload_card_version_image(slug, payload))
                 return
             if action == "current-version-package":
                 send_json(self, create_current_version_package(slug, payload))
