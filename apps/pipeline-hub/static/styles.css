@@ -3506,10 +3506,57 @@ th {
   max-width: 360px;
 }
 
+.board-canvas-viewport {
+  position: relative;
+  width: 2400px;
+  height: 1500px;
+}
+
 .board-canvas-stage {
   position: relative;
   width: 2400px;
   height: 1500px;
+  transform-origin: 0 0;
+}
+
+.board-zoom-toolbar {
+  position: sticky;
+  top: 10px;
+  left: 10px;
+  z-index: 6;
+  width: fit-content;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(2px);
+}
+
+.board-zoom-toolbar button {
+  min-width: 30px;
+  height: 28px;
+  padding: 0 8px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: #1f2926;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.board-zoom-toolbar .board-zoom-level {
+  min-width: 52px;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.board-zoom-toolbar button:hover {
+  background: rgba(15, 118, 110, 0.12);
 }
 
 .board-empty-state {
@@ -3560,6 +3607,18 @@ th {
   gap: 8px;
   user-select: none;
   overflow: hidden;
+}
+
+/* Cards are absolutely positioned and stack by DOM order; lift the one under the
+   pointer so an overlapped card's top-right remove (×) button is always clickable. */
+.board-node-card:hover,
+.board-node-card:focus-within {
+  z-index: 5;
+}
+
+.board-node-card .board-node-remove {
+  position: relative;
+  z-index: 2;
 }
 
 .board-node-card.main {

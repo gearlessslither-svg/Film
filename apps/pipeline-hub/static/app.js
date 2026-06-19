@@ -34,6 +34,7 @@ const state = {
   boardEdges: [],
   boardHandoffs: [],
   boardHandoffCollapsed: false,
+  boardScale: 1,
   boardLinkSourceId: "",
   boardTargetCard: null,
   whiteboxOpen: false,
@@ -1386,8 +1387,58 @@ function selectedQueueableImpacts(request) {
   return impacts.filter((impact) => impact?.selected && ["create", "modify"].includes(impact?.action));
 }
 
+const BOARD_MIN_SCALE = 0.3;
+const BOARD_MAX_SCALE = 3;
+const BOARD_STAGE_WIDTH = 2400;
+const BOARD_STAGE_HEIGHT = 1500;
+
 function boardStorageKey() {
   return state.selectedSlug ? `pipeline-board:${state.selectedSlug}` : "pipeline-board";
+}
+
+function clampBoardScale(value) {
+  return clamp(Number(value) || 1, BOARD_MIN_SCALE, BOARD_MAX_SCALE);
+}
+
+function boardScale() {
+  return clampBoardScale(state.boardScale);
+}
+
+// Push the scale into the DOM without a full re-render so pinch/zoom stays smooth.
+function applyBoardScale() {
+  const scale = boardScale();
+  const stage = $("referenceBoardCanvas")?.querySelector(".board-canvas-stage");
+  const viewport = $("referenceBoardCanvas")?.querySelector(".board-canvas-viewport");
+  if (stage) stage.style.transform = `scale(${scale})`;
+  if (viewport) {
+    viewport.style.width = `${Math.round(BOARD_STAGE_WIDTH * scale)}px`;
+    viewport.style.height = `${Math.round(BOARD_STAGE_HEIGHT * scale)}px`;
+  }
+  const indicator = $("referenceBoardCanvas")?.querySelector(".board-zoom-level");
+  if (indicator) indicator.textContent = `${Math.round(scale * 100)}%`;
+}
+
+// Set a new zoom level, keeping the content point under `anchor` (client coords) fixed.
+function setBoardScale(nextScale, anchor) {
+  const canvas = $("referenceBoardCanvas");
+  const old = boardScale();
+  const next = clampBoardScale(nextScale);
+  if (!canvas || next === old) return;
+  const rect = canvas.getBoundingClientRect();
+  const anchorX = anchor ? anchor.clientX - rect.left : rect.width / 2;
+  const anchorY = anchor ? anchor.clientY - rect.top : rect.height / 2;
+  const contentX = canvas.scrollLeft + anchorX;
+  const contentY = canvas.scrollTop + anchorY;
+  const ratio = next / old;
+  state.boardScale = next;
+  applyBoardScale();
+  canvas.scrollLeft = contentX * ratio - anchorX;
+  canvas.scrollTop = contentY * ratio - anchorY;
+  saveBoardState();
+}
+
+function resetBoardScale() {
+  setBoardScale(1);
 }
 
 function loadBoardState() {
@@ -1398,11 +1449,13 @@ function loadBoardState() {
     state.boardEdges = Array.isArray(parsed.edges) ? parsed.edges : [];
     state.boardHandoffs = Array.isArray(parsed.handoffs) ? parsed.handoffs : [];
     state.boardHandoffCollapsed = Boolean(parsed.handoffCollapsed);
+    state.boardScale = clampBoardScale(Number(parsed.scale) || 1);
   } catch {
     state.boardNodes = [];
     state.boardEdges = [];
     state.boardHandoffs = [];
     state.boardHandoffCollapsed = false;
+    state.boardScale = 1;
   }
 }
 
@@ -1416,6 +1469,7 @@ function saveBoardState() {
         edges: state.boardEdges,
         handoffs: state.boardHandoffs,
         handoffCollapsed: state.boardHandoffCollapsed,
+        scale: state.boardScale,
       }),
     );
   } catch {
@@ -1989,9 +2043,11 @@ function boardCanvasPoint(event) {
   const stage = $("referenceBoardCanvas")?.querySelector(".board-canvas-stage");
   const rect = stage?.getBoundingClientRect();
   if (!rect) return { x: 40, y: 40 };
+  // rect is the post-transform (scaled) box, so divide back into the stage's logical coordinates.
+  const scale = boardScale();
   return {
-    x: clamp(event.clientX - rect.left + stage.scrollLeft - 140, 12, Math.max(12, stage.scrollWidth - 300)),
-    y: clamp(event.clientY - rect.top + stage.scrollTop - 80, 12, Math.max(12, stage.scrollHeight - 260)),
+    x: clamp((event.clientX - rect.left) / scale - 140, 12, Math.max(12, BOARD_STAGE_WIDTH - 300)),
+    y: clamp((event.clientY - rect.top) / scale - 80, 12, Math.max(12, BOARD_STAGE_HEIGHT - 260)),
   };
 }
 
@@ -2725,15 +2781,23 @@ function renderBoardNode(node) {
 function renderBoardCanvas() {
   const root = $("referenceBoardCanvas");
   if (!root) return;
+  const scale = boardScale();
   root.innerHTML = `
     ${renderBoardTargetBanner()}
-    <div class="board-canvas-stage">
-      ${renderBoardEdges()}
-      ${
-        state.boardNodes.length
-          ? state.boardNodes.map(renderBoardNode).join("")
-          : `<div class="board-empty-state">从下方素材栏拖入图片 / Drag images from the dock below</div>`
-      }
+    <div class="board-zoom-toolbar" role="group" aria-label="缩放 / Zoom">
+      <button class="board-zoom-out" type="button" title="缩小 / Zoom out">−</button>
+      <button class="board-zoom-level" type="button" title="重置缩放 / Reset zoom">${Math.round(scale * 100)}%</button>
+      <button class="board-zoom-in" type="button" title="放大 / Zoom in">+</button>
+    </div>
+    <div class="board-canvas-viewport" style="width:${Math.round(BOARD_STAGE_WIDTH * scale)}px; height:${Math.round(BOARD_STAGE_HEIGHT * scale)}px;">
+      <div class="board-canvas-stage" style="transform:scale(${scale}); transform-origin:0 0;">
+        ${renderBoardEdges()}
+        ${
+          state.boardNodes.length
+            ? state.boardNodes.map(renderBoardNode).join("")
+            : `<div class="board-empty-state">从下方素材栏拖入图片 / Drag images from the dock below</div>`
+        }
+      </div>
     </div>
   `;
 }
@@ -2845,11 +2909,13 @@ function bindBoardNodeDrag() {
       const startY = event.clientY;
       const originalX = Number(node.x || 0);
       const originalY = Number(node.y || 0);
-      const maxX = Math.max(12, stage.scrollWidth - 300);
-      const maxY = Math.max(12, stage.scrollHeight - 320);
+      const scale = boardScale();
+      const maxX = Math.max(12, BOARD_STAGE_WIDTH - 300);
+      const maxY = Math.max(12, BOARD_STAGE_HEIGHT - 320);
       const onMove = (moveEvent) => {
-        node.x = Math.round(clamp(originalX + moveEvent.clientX - startX, 12, maxX));
-        node.y = Math.round(clamp(originalY + moveEvent.clientY - startY, 12, maxY));
+        // Pointer travel is in screen pixels; divide by scale to move in stage units.
+        node.x = Math.round(clamp(originalX + (moveEvent.clientX - startX) / scale, 12, maxX));
+        node.y = Math.round(clamp(originalY + (moveEvent.clientY - startY) / scale, 12, maxY));
         card.style.left = `${node.x}px`;
         card.style.top = `${node.y}px`;
       };
@@ -3027,7 +3093,32 @@ function bindReferenceBoardEvents() {
       event.preventDefault();
       openBoardImageLightbox(image.dataset.nodeId || "");
     };
+    // Trackpad pinch on Chromium/Atlas arrives as a wheel event with ctrlKey set.
+    canvas.onwheel = (event) => {
+      if (!event.ctrlKey) return;
+      event.preventDefault();
+      const factor = Math.exp(-event.deltaY * 0.01);
+      setBoardScale(boardScale() * factor, event);
+    };
     canvas.onclick = (event) => {
+      const zoomIn = event.target?.closest?.(".board-zoom-in");
+      if (zoomIn) {
+        event.preventDefault();
+        setBoardScale(boardScale() * 1.2);
+        return;
+      }
+      const zoomOut = event.target?.closest?.(".board-zoom-out");
+      if (zoomOut) {
+        event.preventDefault();
+        setBoardScale(boardScale() / 1.2);
+        return;
+      }
+      const zoomReset = event.target?.closest?.(".board-zoom-level");
+      if (zoomReset) {
+        event.preventDefault();
+        resetBoardScale();
+        return;
+      }
       const sourceButton = event.target?.closest?.(".board-link-source");
       if (sourceButton) {
         event.preventDefault();
