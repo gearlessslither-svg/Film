@@ -54,6 +54,7 @@ http://127.0.0.1:8787
 
 - 只生成 `Tasks` 中列出的目标卡。
 - `global_references`、`project_bible`、`nearby_storyboard_cards` 只作为上下文，不自动生成。
+- `continuity_locks` 是硬性连续性锁，不是氛围参考；同一人物、同一门、同一街机、同一地点跨幕出现时，身份和结构必须保持一致。
 - 默认每张卡生成 `c01/c02/c03` 三个候选，并全部回填。
 - 分镜号、版本号、候选号只能写入文件名和 JSON，不能画到图片像素里。
 
@@ -61,7 +62,8 @@ http://127.0.0.1:8787
 
 每张分镜卡至少包含：
 
-- `item_id`：稳定分镜编号。
+- `card_uid`：稳定内部身份。这个值不随排序或 `item_id` 重排变化，远程回填和图片版本优先用它定位原卡。
+- `item_id`：可读分镜编号，用于显示和排序；插入新卡后可能随当前幕顺序重排。
 - `act_id`：所属幕。
 - `scene_id`：所属场戏。
 - `beat`：剧情点。
@@ -86,9 +88,47 @@ http://127.0.0.1:8787
 - 专属画布仍可拖入任意图片作为主图、拖入多张参考图并连线；区别是生成按钮会创建单卡精修包，默认回填到打开画布的那张分镜。
 - 自由画布入口仍是全局画布，关闭专属画布后不会保留目标分镜锁定。
 
+## 远程总控模式
+
+远程总控模式的主路径不是让用户在浏览器里点按钮，而是让 Codex 在聊天里直接操作本地接口。用户可以离开电脑，在对话里给某一幕的主要剧情，Codex 负责调用接口创建远程总控任务包，并继续执行扩写、拆分镜、找参考、白模门禁、图片包、生成和回填。
+
+浏览器里的 **远程生成 / Autopilot Act** 按钮只是可选入口；人在电脑前时可以用它创建同样的 Codex 分析卡。
+
+远程总控标准流程：
+
+1. 用户在聊天里给目标幕剧情，例如“第三幕主要剧情是……”。
+2. Codex 调用 `POST /api/projects/<slug>/act-autopilot-packet` 创建总控分析卡。
+3. Codex 根据分析卡更新 `acts`、`act_inputs` 和目标幕 `rows`。
+4. Codex 调用 `POST /api/projects/<slug>/card-image-preflight` 做生成前检查。
+5. 若有关键白模缺失，先调用 `POST /api/projects/<slug>/whitebox-job` 或提示用户补资料。
+6. 通过 `POST /api/projects/<slug>/card-image-packet` 创建图片包，生成图片后用 `POST /api/projects/<slug>/card-image-output` 回填。
+
+远程回填必须优先带 `card_uid`，其次才用 `item_id`。这样即使分镜显示编号重排，图片也能回到正确卡片。
+
+## 连续性锁
+
+普通参考图只说明“可以参考”，连续性锁说明“同一个对象必须长一样”。生成图片包时，后端会从目标卡文本、备注、场景、单卡参考、全局人设、设定卡和已标 `final/current/reference` 的分镜图中自动识别连续性锚点，并写入每个 task 的 `continuity_locks`。
+
+当前自动识别的锚点包括：
+
+- `three_brothers_identity`：三兄弟人设、年龄、身高差、服装、书包和表演气质。
+- `hidden_arcade_door`：游戏机房门/出口、旧墙、卷帘/金属门、猫眼、门内 CRT 漏光和门外黄路灯。
+- `arcade_cabinet_prop`：双人街机实体结构、单 CRT、左右操作位、投币口、两个低凳。
+- `yellow_hair_identity`：黄毛对手的人物外形和表演；若只是“哥哥模仿黄毛”，只继承动作情绪，不让黄毛本人出现。
+- `home_path_lamp_weeds`：回家小路、昏黄路灯、杂草、长影子和被盯上的空间情绪。
+- `young_spectator_crowd`：围观者年龄层必须偏年轻。
+
+生成前检查会返回 `continuity_lock_count`、`continuity_anchor_ids` 和 `missing_continuity`。如果某张卡写了已出现的门、街机或人物但没有锁到任何参考，状态会变成 `review`，应先补参考图或白模，不要直接当最终图批量生成。
+
 ## 空间逻辑检查
 
 `spatial_logic` 是硬约束，优先级高于情绪描述。生成图片包时，后端会自动生成 `spatial_logic_checks`，让 Codex 在生图前先检查结构关系。
+
+在最终图片包前，可单独调用 `POST /api/projects/<slug>/card-image-preflight`。它会返回：
+
+- `ready`：可直接生成。
+- `review`：建议先补白模，但可选择继续跑探索图。
+- `blocked`：存在重复编号、缺提示词或找不到目标卡，不能直接生成最终图。
 
 当前内置检查包括：
 
@@ -152,6 +192,8 @@ http://127.0.0.1:8787
 - `GET /api/projects`：列出项目。
 - `GET /api/projects/<slug>`：读取项目详情。
 - `POST /api/projects/<slug>/idea-board`：保存故事板、设定、幕、分镜卡。
+- `POST /api/projects/<slug>/act-autopilot-packet`：按某一幕剧情创建 Codex 远程总控分析卡。
+- `POST /api/projects/<slug>/card-image-preflight`：生成前检查重复编号、空提示词、缺白模、缺连续性锁和空间风险。
 - `POST /api/projects/<slug>/card-image-packet`：生成设定卡/分镜卡图片任务包。
 - `POST /api/projects/<slug>/card-image-output`：回填图片输出。
 - `POST /api/projects/<slug>/whitebox-jobs`：生成白模任务。

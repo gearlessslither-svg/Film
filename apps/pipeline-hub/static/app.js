@@ -95,6 +95,10 @@ const CARD_VERSION_STATUS_LABELS = {
   rejected: "淘汰 / Rejected",
 };
 
+function newIdeaCardUid() {
+  return `CARD_${Date.now().toString(36)}_${Math.random().toString(16).slice(2, 8)}`;
+}
+
 const STAGE_LABELS = {
   "00_admin": "项目控制、导演意图、模型配置、日志 / Admin, brief, model config, log",
   "01_intake": "输入归档、参考素材、AI 分析 / Intake, references, AI analysis",
@@ -3888,10 +3892,11 @@ function collectIdeaBoardFromDom() {
     const indexedExisting = hasStableIndex ? current.rows[rowIndex] : null;
     const itemId = value("item_id") || indexedExisting?.item_id || `IDEA_SHOT_${String(fallbackIndex + 1).padStart(3, "0")}`;
     const existing =
-      current.rows.find((item) => item.item_id === itemId) ||
       indexedExisting ||
+      current.rows.find((item) => item.item_id === itemId) ||
       {};
     editedRows.set(hasStableIndex ? rowIndex : current.rows.length + fallbackIndex, {
+      card_uid: existing.card_uid || row.dataset.cardUid || newIdeaCardUid(),
       item_id: itemId,
       act_id: value("act_id") || existing.act_id || sceneForIdeaRow(existing).act_id || "",
       scene_id: value("scene_id"),
@@ -4344,6 +4349,37 @@ function renderIdeaReferencePanel(board) {
           ${renderIdeaReferenceAssetGrid(row)}
         </div>
         ${renderIdeaReferenceMapping(board, entries)}
+      </div>
+    </details>
+  `;
+}
+
+function renderActAutopilotPanel(board) {
+  const actId = activeStoryActId() || nextIdeaActId(board.acts || []);
+  const activeAct = storyActEntryForId(board, actId) || {};
+  const inputs = activeIdeaInputs(board);
+  const missingRows = (board.rows || []).filter((row) => rowMatchesStoryAct(row, actId, board)).length;
+  return `
+    <details class="idea-autopilot-panel">
+      <summary>
+        <span>远程总控 / Act Autopilot</span>
+        <small>${escapeHtml(actId || "ACT")} · ${missingRows} cards</small>
+      </summary>
+      <div class="idea-autopilot-content">
+        <div class="idea-meta-grid">
+          <label>目标幕 / Target act <input id="actAutopilotActId" value="${escapeHtml(actId || "")}" /></label>
+        </div>
+        <label>这一幕主要剧情 / Main plot
+          <textarea id="actAutopilotBrief" rows="6" placeholder="把第三幕主要剧情写在这里；Codex 会按它扩写幕结构、拆分镜、找参考、判断白模并生成图片包。">${escapeHtml(inputs.idea || activeAct.summary || "")}</textarea>
+        </label>
+        <div class="idea-autopilot-gates">
+          <span>01 扩写幕</span>
+          <span>02 拆分镜</span>
+          <span>03 自动找参考</span>
+          <span>04 白模门禁</span>
+          <span>05 生图回填</span>
+        </div>
+        <button id="actAutopilotBtn" class="command-button primary full" data-help="可选入口：生成一张 Codex 远程总控分析卡。真正远程时，用户也可以直接在聊天里给剧情，由 Codex 调用后台接口继续执行。" type="button">远程生成 / Autopilot Act</button>
       </div>
     </details>
   `;
@@ -5478,7 +5514,7 @@ function renderIdeaRows(entries, allRows = currentIdeaBoard().rows || []) {
   return entries
     .map(
       ({ row, index }) => `
-        <article class="idea-shot-row ${state.ideaActiveRowIndex === index ? "active" : ""}" data-idea-index="${index}">
+        <article class="idea-shot-row ${state.ideaActiveRowIndex === index ? "active" : ""}" data-idea-index="${index}" data-card-uid="${escapeHtml(row.card_uid || "")}">
           <div class="idea-insert-before">
             <button class="idea-insert-row-before" data-help="在这张卡前面插入一张空白分镜卡，并自动关联当前卡；适合在第一帧之前补镜头。" data-idea-index="${index}" type="button" title="在这张卡前面插入一张空白分镜卡，并自动关联当前卡。">＋</button>
           </div>
@@ -5495,7 +5531,7 @@ function renderIdeaRows(entries, allRows = currentIdeaBoard().rows || []) {
             <button class="icon-button idea-delete-row" data-idea-index="${index}" type="button" title="删除条目 / Delete row">×</button>
           </header>
           <div class="idea-row-ref-strip">
-            <span>${(row.references || []).length} 当前参考 / refs · 可拖入图片</span>
+            <span>${(row.references || []).length} 当前参考 / refs · ${escapeHtml(row.card_uid || "UID pending")} · 可拖入图片</span>
             ${(row.references || []).slice(0, 6).map((ref) => renderIdeaReferenceChip(ref, "row", index)).join("")}
           </div>
           <label>剧情点 / Beat
@@ -5580,6 +5616,7 @@ function renderIdeaLab() {
         <button id="ideaBuildActsBtn" class="command-button priority" data-help="故事只有大纲时使用：让 AI 把整体故事扩展成一幕幕独立的戏，只更新幕结构和每幕故事草稿。" type="button">生成幕 / Build Acts</button>
         <button id="ideaBuildStoryboardCardsBtn" class="command-button primary" data-help="当前幕故事内容确定后使用：只按当前幕生成一张张分镜文字卡，不改其他幕。" type="button">生成分镜卡 / Build Cards</button>
         <button id="ideaWhiteboxBtn" class="command-button" data-help="在最终出图前锁定复杂空间、核心道具和人物关系；适合街机、并排对战、背后机位和走位复杂镜头。" type="button">生成白模 / Whitebox</button>
+        <button id="cardPreflightBtn" class="command-button" data-help="在生成图片包前检查重复编号、空提示词、缺白模、缺连续性锁和空间逻辑风险。" type="button">生成前检查 / Preflight</button>
         <button id="cardBuildImagePacketBtn" class="command-button" data-help="把当前可见且勾选的分镜卡打包成图片生成任务。" type="button">生成图片包 / Image Pack</button>
         <button id="currentVersionPackageBtn" class="command-button" data-help="收集当前幕/场景已标为 Final 或参考的图片，供视频生成阶段使用。" type="button">Final图包 / Final Pack</button>
         <button id="batchVersionQaBtn" class="command-button" data-help="批量检查当前可见分镜图的清晰度、噪点、曝光和对比。" type="button">批量质检 / Batch QA</button>
@@ -5606,6 +5643,7 @@ function renderIdeaLab() {
           <textarea id="ideaStyleNotes" rows="4">${escapeHtml(board.style_notes || "")}</textarea>
         </label>
         ${renderIdeaActPlanner(board)}
+        ${renderActAutopilotPanel(board)}
         ${renderIdeaReferencePanel(board)}
         <div id="ideaHandoffDock" class="idea-handoff-dock">${renderIdeaHandoffs()}</div>
       </section>
@@ -5682,6 +5720,36 @@ async function createIdeaStoryboardCardsHandoff() {
   });
 }
 
+async function createActAutopilotPacket() {
+  if (!state.selectedSlug || !state.detail) return;
+  await runAction("远程总控 / Act autopilot", async () => {
+    const board = collectIdeaBoardFromDom();
+    const actId = ($("actAutopilotActId")?.value || activeStoryActId() || "").trim();
+    const storyBrief = ($("actAutopilotBrief")?.value || "").trim();
+    if (!actId) {
+      toast("请填写目标幕编号 / Enter target act id");
+      return;
+    }
+    if (!storyBrief) {
+      toast("请先填写这一幕主要剧情 / Enter the act plot first");
+      return;
+    }
+    const result = await requestJson(`/api/projects/${state.selectedSlug}/act-autopilot-packet`, {
+      method: "POST",
+      body: JSON.stringify({ ...board, act_id: actId, story_brief: storyBrief }),
+    });
+    state.detail = result.project || state.detail;
+    addIdeaHandoff({
+      kind: "act_autopilot",
+      title: `${result.act_id || actId} → 远程总控`,
+      path: result.packet_path || "",
+      text: result.handoff_text || "",
+    });
+    renderAll();
+    toast("远程总控分析卡已生成 / Act autopilot handoff ready");
+  });
+}
+
 async function createProjectBibleAnalysisHandoff() {
   if (!state.detail) return;
   await runAction("生成设定卡 / Build settings cards", async () => {
@@ -5733,6 +5801,7 @@ function collectVisibleCardTargets() {
     .filter((row) => row.querySelector('[data-idea-field="selected"]')?.checked)
     .map((row) => ({
       card_type: "storyboard",
+      card_uid: row.dataset.cardUid || "",
       item_id: row.querySelector('[data-idea-field="item_id"]')?.value || "",
     }))
     .filter((target) => target.item_id);
@@ -5814,21 +5883,107 @@ function whiteboxPreflightIssues(board, targets) {
     .map((row) => `${row.item_id || ""} ${row.beat || row.frame_description || ""}`.trim());
 }
 
+async function requestCardImagePreflight(board, targets) {
+  if (!state.selectedSlug) return null;
+  return requestJson(`/api/projects/${state.selectedSlug}/card-image-preflight`, {
+    method: "POST",
+    body: JSON.stringify({ ...board, targets }),
+  });
+}
+
+function cardImagePreflightMessage(preflight = {}) {
+  const summary = preflight.summary || {};
+  const lines = [
+    `状态 / Status: ${preflight.status || "unknown"}`,
+    `目标 / Targets: ${preflight.target_count || 0}`,
+    `可直接生成 / Ready: ${summary.ready || 0}`,
+    `缺白模 / Whitebox missing: ${summary.whitebox_missing || 0}`,
+    `连续性锁 / Continuity locks: ${summary.continuity_locks || 0}`,
+    `缺连续性锁 / Continuity missing: ${summary.continuity_missing || 0}`,
+    `缺提示词 / Prompt gaps: ${summary.prompt_gaps || 0}`,
+    `重复编号 / Duplicate IDs: ${summary.duplicate_item_ids || 0}`,
+    `找不到目标 / Unresolved: ${summary.unresolved_targets || 0}`,
+  ];
+  if ((preflight.duplicate_item_ids || []).length) {
+    lines.push("", `重复编号: ${(preflight.duplicate_item_ids || []).join(", ")}`);
+  }
+  if ((preflight.prompt_gaps || []).length) {
+    lines.push("", "缺提示词:");
+    (preflight.prompt_gaps || []).slice(0, 8).forEach((item) => lines.push(`- ${item.item_id || ""} ${item.beat || ""}`.trim()));
+  }
+  if ((preflight.missing_whitebox || []).length) {
+    lines.push("", "建议先补白模:");
+    (preflight.missing_whitebox || []).slice(0, 10).forEach((item) => lines.push(`- ${item.item_id || ""} ${item.beat || ""}`.trim()));
+  }
+  if ((preflight.missing_continuity || []).length) {
+    lines.push("", "建议先补连续性参考:");
+    (preflight.missing_continuity || []).slice(0, 10).forEach((item) => {
+      const missing = (item.continuity_missing || []).map((entry) => entry.anchor_label || entry.anchor_id).filter(Boolean).join(" / ");
+      lines.push(`- ${item.item_id || ""} ${item.beat || ""}${missing ? ` · ${missing}` : ""}`.trim());
+    });
+  }
+  return lines.join("\n");
+}
+
+function cardImagePreflightHandoffText(preflight = {}) {
+  return [
+    "# Card Image Preflight / 生成前检查",
+    "",
+    "这张卡只记录生成前检查结果，不生成图片。",
+    "",
+    "```json",
+    JSON.stringify(preflight, null, 2),
+    "```",
+  ].join("\n");
+}
+
+async function runVisibleCardImagePreflight() {
+  if (!state.selectedSlug || !state.detail) return;
+  await runAction("生成前检查 / Card image preflight", async () => {
+    const board = collectIdeaBoardFromDom();
+    const targets = collectVisibleCardTargets();
+    if (!targets.length) {
+      toast("请先勾选要检查的卡片 / Select cards first");
+      return;
+    }
+    const preflight = await requestCardImagePreflight(board, targets);
+    addIdeaHandoff({
+      kind: "preflight",
+      status: preflight?.status || "",
+      title: `生成前检查 · ${preflight?.target_count || 0} 张卡`,
+      message: cardImagePreflightMessage(preflight).split("\n").slice(0, 3).join(" · "),
+      text: cardImagePreflightHandoffText(preflight),
+    });
+    toast(`生成前检查完成 / Preflight: ${preflight?.status || "unknown"}`);
+    renderIdeaLab();
+  });
+}
+
 async function createCardImagePacket(singleTarget = null) {
   if (!state.selectedSlug || !state.detail) return;
   await runAction("生成电影卡片图片包 / Film card image packet", async () => {
     const board = collectIdeaBoardFromDom();
     const targets = singleTarget ? [singleTarget] : collectVisibleCardTargets();
-    const issues = whiteboxPreflightIssues(board, targets);
-    if (issues.length) {
-      const message = [
-        "这些镜头建议先补白模/道具锁，再生成最终图：",
-        ...issues.slice(0, 12).map((item) => `- ${item}`),
-        issues.length > 12 ? `...还有 ${issues.length - 12} 条` : "",
-        "",
-        "确定：继续跑探索图。取消：先打开白模入口。",
-      ].filter(Boolean).join("\n");
-      if (!window.confirm(message)) {
+    if (!targets.length) {
+      toast("请先勾选要生成的卡片 / Select target cards first");
+      return;
+    }
+    const preflight = await requestCardImagePreflight(board, targets);
+    if (preflight?.status === "blocked") {
+      window.alert(`生成前检查未通过，请先修复：\n\n${cardImagePreflightMessage(preflight)}`);
+      addIdeaHandoff({
+        kind: "preflight_blocked",
+        status: "blocked",
+        title: "生成前检查未通过 / Preflight blocked",
+        message: "存在重复编号、空提示词或找不到目标卡。",
+        text: cardImagePreflightHandoffText(preflight),
+      });
+      renderIdeaLab();
+      return;
+    }
+    if (preflight?.status === "review") {
+      const proceed = window.confirm(`${cardImagePreflightMessage(preflight)}\n\n确定：继续生成探索图。取消：先打开白模入口。`);
+      if (!proceed) {
         openWhiteboxLab();
         return;
       }
@@ -6045,6 +6200,7 @@ function addIdeaRow() {
   const sceneId = storyAct?.scene_id || scene?.scene_id || defaultSceneIdForAct(board, storyActId) || "";
   const rowActId = scene?.act_id || (storyAct?.source === "custom" ? storyActId : "") || storyActId || "";
   board.rows.push({
+    card_uid: newIdeaCardUid(),
     item_id: nextIdeaItemIdForAct(board.rows, storyActId || rowActId || ""),
     act_id: rowActId,
     scene_id: sceneId,
@@ -6079,6 +6235,7 @@ function insertIdeaRowAfter(index) {
     ? `${parsedLinkedId.prefix}${String(parsedLinkedId.number + 1).padStart(parsedLinkedId.width, "0")}`
     : nextIdeaItemIdForAct(board.rows, baseRow.act_id || activeStoryActId() || "");
   const newRow = {
+    card_uid: newIdeaCardUid(),
     item_id: insertedId,
     act_id: baseRow.act_id || "",
     scene_id: baseRow.scene_id || "",
@@ -6119,6 +6276,7 @@ function insertIdeaRowBefore(index) {
     ? linkedId
     : nextIdeaItemIdForAct(board.rows, baseRow.act_id || activeStoryActId() || "");
   const newRow = {
+    card_uid: newIdeaCardUid(),
     item_id: insertedId,
     act_id: baseRow.act_id || "",
     scene_id: baseRow.scene_id || "",
@@ -6249,7 +6407,9 @@ function bindIdeaLabEvents() {
   });
   $("ideaBuildActsBtn")?.addEventListener("click", createIdeaActsHandoff);
   $("ideaBuildStoryboardCardsBtn")?.addEventListener("click", createIdeaStoryboardCardsHandoff);
+  $("actAutopilotBtn")?.addEventListener("click", createActAutopilotPacket);
   $("ideaWhiteboxBtn")?.addEventListener("click", openWhiteboxLab);
+  $("cardPreflightBtn")?.addEventListener("click", runVisibleCardImagePreflight);
   $("ideaSaveBtn")?.addEventListener("click", () => saveIdeaBoard());
   document.querySelectorAll(".idea-add-act").forEach((button) => button.addEventListener("click", addIdeaAct));
   $("ideaAddRowBtn")?.addEventListener("click", addIdeaRow);
@@ -6273,7 +6433,7 @@ function bindIdeaLabEvents() {
       } else if (type === "storyboard") {
         const row = button.closest(".idea-shot-row");
         const itemId = row?.querySelector('[data-idea-field="item_id"]')?.value || button.dataset.cardId || "";
-        createCardImagePacket({ card_type: "storyboard", item_id: itemId });
+        createCardImagePacket({ card_type: "storyboard", card_uid: row?.dataset.cardUid || "", item_id: itemId });
       }
     });
   });

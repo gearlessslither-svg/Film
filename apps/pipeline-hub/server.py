@@ -7,6 +7,7 @@ import argparse
 import csv
 from datetime import datetime, timezone
 import gzip
+import hashlib
 import json
 import mimetypes
 import os
@@ -2026,6 +2027,19 @@ def normalize_idea_reference(ref: dict[str, object], index: int) -> dict[str, ob
         value = str(ref.get(key, "") or "").strip()
         if value:
             normalized[key] = value
+    for key in (
+        "anchor_id",
+        "anchor_label",
+        "anchor_kind",
+        "lock_strength",
+        "continuity_priority",
+        "continuity_source",
+        "source_card_uid",
+        "must_preserve",
+    ):
+        value = str(ref.get(key, "") or "").strip()
+        if value:
+            normalized[key] = value
     interpretation = ref.get("whitebox_interpretation")
     if isinstance(interpretation, dict):
         normalized["whitebox_interpretation"] = interpretation
@@ -2211,6 +2225,457 @@ def whitebox_guidance_from_references(*ref_lists: object) -> list[str]:
     return guidance
 
 
+CONTINUITY_ANCHOR_RULES: list[dict[str, object]] = [
+    {
+        "anchor_id": "three_brothers_identity",
+        "label": "三兄弟人设 / three brothers identity",
+        "kind": "character",
+        "tokens": [
+            "三兄弟",
+            "三个孩子",
+            "三个小朋友",
+            "孩子们",
+            "两个弟弟",
+            "阿磊",
+            "小川",
+            "小满",
+            "背书包",
+            "three brothers",
+            "three children",
+            "brothers",
+        ],
+        "guidance": "三兄弟必须沿用同一人设：哥哥阿磊戴眼镜、深蓝运动服；二弟小川蓝夹克/红领巾/书包；小弟小满偏胖、棕马甲。年龄、身高差、发型、衣服和书包不能重画成新人。",
+    },
+    {
+        "anchor_id": "hidden_arcade_door",
+        "label": "游戏机房门/出口 / hidden arcade door and exit",
+        "kind": "location_prop",
+        "tokens": [
+            "游戏厅出口",
+            "游戏机房门口",
+            "游戏机房入口",
+            "隐藏游戏机房入口",
+            "街机厅门口",
+            "门内 crt",
+            "门内crt",
+            "旧卷帘门",
+            "旧金属门",
+            "金属门",
+            "猫眼",
+            "老小区背后",
+            "arcade exit",
+            "arcade entrance",
+            "hidden arcade door",
+        ],
+        "context_tokens": ["门", "入口", "出口", "door", "entrance", "exit"],
+        "context_required": ["游戏", "街机", "arcade"],
+        "guidance": "游戏机房门、出口、旧墙、卷帘/金属门、猫眼、门内冷色 CRT 漏光和门外黄路灯必须沿用既有参考；同一扇门不要被重新设计成另一个入口。",
+    },
+    {
+        "anchor_id": "arcade_cabinet_prop",
+        "label": "双人街机实体 / two-player arcade cabinet",
+        "kind": "prop",
+        "tokens": [
+            "街机",
+            "游戏机台",
+            "游戏机柜",
+            "crt",
+            "屏幕",
+            "投币",
+            "摇杆",
+            "按钮",
+            "真人快打",
+            "操作位",
+            "arcade cabinet",
+            "coin slot",
+            "control panel",
+        ],
+        "guidance": "街机必须保持同一实体结构：一台旧 CRT 双人街机、单一屏幕、左右并排操作位、宽控制台、两组摇杆按钮、中央投币口和两个低凳。",
+    },
+    {
+        "anchor_id": "yellow_hair_identity",
+        "label": "黄毛对手 / yellow-haired opponent",
+        "kind": "character",
+        "tokens": ["黄毛", "黄头发", "yellow hair", "yellow-haired"],
+        "guidance": "黄毛的年龄、发色、体型、凶狠气质和游戏厅混混感要沿用既有参考；若分镜说明只是模仿动作，则只继承动作情绪，不让黄毛本人出现在画面里。",
+    },
+    {
+        "anchor_id": "home_path_lamp_weeds",
+        "label": "回家小路/路灯/杂草 / home path, lamp and weeds",
+        "kind": "location",
+        "tokens": [
+            "回家小路",
+            "小路",
+            "路灯",
+            "昏黄",
+            "杂草",
+            "路边",
+            "长影子",
+            "暗巷",
+            "home path",
+            "roadside weeds",
+            "yellow streetlamp",
+        ],
+        "guidance": "回家小路要延续既有空间：老小区背后的安静小路、昏黄路灯、路边杂草、长影子和从高兴转向被盯上的压迫感。",
+    },
+    {
+        "anchor_id": "young_spectator_crowd",
+        "label": "年轻围观者 / young spectator crowd",
+        "kind": "crowd",
+        "tokens": ["围观", "人群", "看热闹", "spectator", "crowd"],
+        "guidance": "围观者以少年、中学生和年轻小青年为主，不要变成中年成人江湖场。",
+    },
+]
+
+
+def continuity_anchor_rule(anchor_id: str) -> dict[str, object]:
+    return next((rule for rule in CONTINUITY_ANCHOR_RULES if rule.get("anchor_id") == anchor_id), {})
+
+
+def continuity_text_for_item(item: dict[str, object], extra_keys: tuple[str, ...] = ()) -> str:
+    keys = (
+        "card_id",
+        "item_id",
+        "scene_id",
+        "act_id",
+        "title",
+        "category",
+        "summary",
+        "visual_direction",
+        "prompt_notes",
+        "beat",
+        "shot_type",
+        "frame_description",
+        "spatial_logic",
+        "image_prompt",
+        "video_prompt",
+        "notes",
+        "revision_note",
+        "card_title",
+        "note",
+        "role",
+        "kind",
+        "asset_id",
+        "path",
+    ) + extra_keys
+    chunks: list[str] = []
+    for key in keys:
+        value = item.get(key)
+        if value:
+            chunks.append(str(value))
+    refs = item.get("references")
+    if isinstance(refs, list):
+        for ref in refs:
+            if isinstance(ref, dict):
+                chunks.append(continuity_text_for_item(ref))
+    return " ".join(chunks).lower()
+
+
+def continuity_anchor_ids_for_text(text: str) -> list[str]:
+    lowered = text.lower()
+    anchors: list[str] = []
+    for rule in CONTINUITY_ANCHOR_RULES:
+        anchor_id = str(rule.get("anchor_id", "") or "")
+        tokens = [str(token).lower() for token in rule.get("tokens", []) if str(token).strip()]
+        context_tokens = [str(token).lower() for token in rule.get("context_tokens", []) if str(token).strip()]
+        context_required = [str(token).lower() for token in rule.get("context_required", []) if str(token).strip()]
+        direct_match = any(token in lowered for token in tokens)
+        contextual_match = bool(context_tokens) and any(token in lowered for token in context_tokens) and all(
+            token in lowered for token in context_required
+        )
+        if anchor_id and (direct_match or contextual_match):
+            anchors.append(anchor_id)
+    return anchors
+
+
+def continuity_anchor_ids_for_target(target: dict[str, object]) -> list[str]:
+    anchors = continuity_anchor_ids_for_text(continuity_text_for_item(target))
+    # Existing per-card references often contain the real continuity language even
+    # when the visible shot description is intentionally short.
+    refs = target.get("references")
+    if isinstance(refs, list):
+        for ref in refs:
+            if not isinstance(ref, dict):
+                continue
+            explicit_anchor = str(ref.get("anchor_id", "") or "").strip()
+            if explicit_anchor:
+                anchors.append(explicit_anchor)
+            anchors.extend(continuity_anchor_ids_for_text(continuity_text_for_item(ref)))
+    seen: set[str] = set()
+    ordered: list[str] = []
+    for anchor_id in anchors:
+        if anchor_id and anchor_id not in seen:
+            seen.add(anchor_id)
+            ordered.append(anchor_id)
+    return ordered
+
+
+def reference_identity(ref: dict[str, object]) -> tuple[str, str, str, str, str]:
+    path_key = str(ref.get("path", "") or ref.get("asset_ref", "") or ref.get("ref_id", "") or "")
+    return (
+        str(ref.get("origin", "") or ""),
+        path_key,
+        str(ref.get("card_type", "") or ""),
+        str(ref.get("card_id", "") or ref.get("asset_id", "") or ""),
+        str(ref.get("anchor_id", "") or ""),
+    )
+
+
+def merge_references(*ref_lists: object) -> list[dict[str, object]]:
+    merged: list[dict[str, object]] = []
+    seen: set[tuple[str, str, str, str, str]] = set()
+    for refs in ref_lists:
+        if not isinstance(refs, list):
+            continue
+        for ref in refs:
+            if not isinstance(ref, dict):
+                continue
+            identity = reference_identity(ref)
+            if identity in seen:
+                continue
+            seen.add(identity)
+            merged.append(ref)
+    return merged
+
+
+def continuity_lock_from_reference(
+    ref: dict[str, object],
+    anchor_id: str,
+    source: str,
+    priority: int,
+) -> dict[str, object]:
+    rule = continuity_anchor_rule(anchor_id)
+    lock = normalize_idea_reference(ref, priority + 1)
+    lock["anchor_id"] = anchor_id
+    lock["anchor_label"] = str(rule.get("label", "") or anchor_id)
+    lock["anchor_kind"] = str(rule.get("kind", "") or "")
+    lock["lock_strength"] = "hard"
+    lock["continuity_priority"] = str(priority)
+    lock["continuity_source"] = source
+    guidance = str(rule.get("guidance", "") or "").strip()
+    if guidance:
+        lock["must_preserve"] = guidance
+    if not lock.get("note"):
+        lock["note"] = guidance or f"Continuity lock for {anchor_id}"
+    return lock
+
+
+def continuity_reference_candidate(
+    ref: dict[str, object],
+    source_text: str,
+    source: str,
+    priority: int,
+    forced_anchors: list[str] | None = None,
+) -> list[dict[str, object]]:
+    anchors = list(forced_anchors or [])
+    explicit_anchor = str(ref.get("anchor_id", "") or "").strip()
+    if explicit_anchor:
+        anchors.append(explicit_anchor)
+    anchors.extend(continuity_anchor_ids_for_text(" ".join([source_text, continuity_text_for_item(ref)])))
+    if str(ref.get("role", "") or "").lower() in {"continuity_reference", "continuity_lock"}:
+        anchors.extend(continuity_anchor_ids_for_text(continuity_text_for_item(ref)))
+    seen: set[str] = set()
+    return [
+        continuity_lock_from_reference(ref, anchor_id, source, priority)
+        for anchor_id in anchors
+        if anchor_id and not (anchor_id in seen or seen.add(anchor_id))
+    ]
+
+
+def continuity_reference_for_version(
+    source: str,
+    path_value: str,
+    source_text: str,
+    priority: int,
+    *,
+    card_type: str,
+    asset_id: str,
+    title: str,
+    version_id: str,
+    version_status: str,
+    card_uid: str = "",
+) -> list[dict[str, object]]:
+    output_path = normalize_project_rel_path(path_value)
+    if not output_path:
+        return []
+    ref = {
+        "ref_id": safe_file_stem(f"{asset_id}_{version_id or version_status or 'current'}"),
+        "asset_ref": f"project:{output_path}",
+        "asset_id": asset_id,
+        "path": output_path,
+        "origin": "project",
+        "kind": "storyboard_keyframe" if card_type == "storyboard" else "concept_image",
+        "role": "continuity_lock_candidate",
+        "note": title,
+        "version_id": version_id,
+        "version_status": version_status,
+        "card_type": card_type,
+        "card_id": asset_id,
+        "card_title": title,
+        "source_card_uid": card_uid,
+    }
+    return continuity_reference_candidate(ref, source_text, source, priority)
+
+
+def continuity_lock_candidates_from_board(board: dict[str, object]) -> list[dict[str, object]]:
+    candidates: list[dict[str, object]] = []
+    for index, ref in enumerate(board.get("global_references", []) if isinstance(board.get("global_references"), list) else []):
+        if not isinstance(ref, dict):
+            continue
+        role_text = continuity_text_for_item(ref)
+        forced = ["three_brothers_identity"] if "character" in role_text or "brother" in role_text or "小朋友" in role_text else []
+        candidates.extend(continuity_reference_candidate(ref, role_text, "global_reference", 10 + index, forced))
+    cards = enabled_project_bible_cards(board)
+    for card_index, card in enumerate(cards):
+        source_text = continuity_text_for_item(card)
+        base_priority = 100 + card_index * 10
+        for ref_index, ref in enumerate(card.get("references", []) if isinstance(card.get("references"), list) else []):
+            if isinstance(ref, dict):
+                candidates.extend(continuity_reference_candidate(ref, source_text, "project_bible_reference", base_priority + ref_index))
+        for version_index, version in enumerate(normalize_concept_card_versions(card.get("versions", []))):
+            if version.get("status") not in {"final", "current", "reference"}:
+                continue
+            status_rank = {"final": 0, "current": 1, "reference": 2}.get(str(version.get("status", "")), 5)
+            candidates.extend(
+                continuity_reference_for_version(
+                    "project_bible_version",
+                    str(version.get("output_path", "") or ""),
+                    source_text,
+                    base_priority + status_rank + version_index,
+                    card_type="concept",
+                    asset_id=str(card.get("card_id", "") or ""),
+                    title=str(card.get("title", "") or card.get("summary", "") or ""),
+                    version_id=str(version.get("version_id", "") or ""),
+                    version_status=str(version.get("status", "") or ""),
+                )
+            )
+    rows = board.get("rows", [])
+    if isinstance(rows, list):
+        for row_index, row in enumerate(rows):
+            if not isinstance(row, dict):
+                continue
+            source_text = continuity_text_for_item(row)
+            base_priority = 1000 + row_index * 10
+            for version_index, version in enumerate(normalize_concept_card_versions(row.get("versions", []))):
+                if version.get("status") not in {"final", "current", "reference"}:
+                    continue
+                status_rank = {"final": 0, "current": 1, "reference": 2}.get(str(version.get("status", "")), 5)
+                candidates.extend(
+                    continuity_reference_for_version(
+                        "storyboard_version",
+                        str(version.get("output_path", "") or ""),
+                        source_text,
+                        base_priority + status_rank + version_index,
+                        card_type="storyboard",
+                        asset_id=str(row.get("item_id", "") or ""),
+                        title=str(row.get("beat", "") or row.get("frame_description", "") or ""),
+                        version_id=str(version.get("version_id", "") or ""),
+                        version_status=str(version.get("status", "") or ""),
+                        card_uid=str(row.get("card_uid", "") or ""),
+                    )
+                )
+            output_path = str(row.get("output_path", "") or "").strip()
+            if output_path:
+                candidates.extend(
+                    continuity_reference_for_version(
+                        "storyboard_output",
+                        output_path,
+                        source_text,
+                        base_priority + 3,
+                        card_type="storyboard",
+                        asset_id=str(row.get("item_id", "") or ""),
+                        title=str(row.get("beat", "") or row.get("frame_description", "") or ""),
+                        version_id="current",
+                        version_status="current",
+                        card_uid=str(row.get("card_uid", "") or ""),
+                    )
+                )
+            for ref_index, ref in enumerate(row.get("references", []) if isinstance(row.get("references"), list) else []):
+                if isinstance(ref, dict) and str(ref.get("role", "") or "").lower() in {"continuity_reference", "continuity_lock"}:
+                    candidates.extend(continuity_reference_candidate(ref, source_text, "storyboard_explicit_reference", base_priority + 5 + ref_index))
+    return merge_references(candidates)
+
+
+def continuity_locks_for_target(board: dict[str, object], target: dict[str, object]) -> tuple[list[str], list[dict[str, object]], list[dict[str, object]]]:
+    anchors = continuity_anchor_ids_for_target(target)
+    target_refs = target.get("references", []) if isinstance(target.get("references"), list) else []
+    explicit_locks: list[dict[str, object]] = []
+    for ref_index, ref in enumerate(target_refs):
+        if not isinstance(ref, dict):
+            continue
+        role = str(ref.get("role", "") or "").lower()
+        explicit_anchor = str(ref.get("anchor_id", "") or "").strip()
+        if role in {"continuity_reference", "continuity_lock"} or explicit_anchor:
+            ref_anchors = [explicit_anchor] if explicit_anchor else continuity_anchor_ids_for_text(continuity_text_for_item(ref))
+            for anchor_id in ref_anchors:
+                explicit_locks.append(continuity_lock_from_reference(ref, anchor_id, "target_reference", 0 + ref_index))
+                if anchor_id not in anchors:
+                    anchors.append(anchor_id)
+    candidates = continuity_lock_candidates_from_board(board)
+    selected: list[dict[str, object]] = []
+    for anchor_id in anchors:
+        anchor_matches = [
+            candidate
+            for candidate in candidates
+            if candidate.get("anchor_id") == anchor_id
+            and not (
+                str(candidate.get("card_type", "") or "") == "storyboard"
+                and str(candidate.get("source_card_uid", "") or "")
+                and str(candidate.get("source_card_uid", "") or "") == str(target.get("card_uid", "") or "")
+            )
+        ]
+        anchor_matches.sort(
+            key=lambda item: (
+                int(str(item.get("continuity_priority", "9999") or "9999")),
+                str(item.get("version_status", "") or ""),
+                str(item.get("path", "") or ""),
+            )
+        )
+        selected.extend(anchor_matches[:3])
+    locks = merge_references(explicit_locks, selected)
+    missing = [
+        {
+            "anchor_id": anchor_id,
+            "anchor_label": str(continuity_anchor_rule(anchor_id).get("label", "") or anchor_id),
+            "guidance": str(continuity_anchor_rule(anchor_id).get("guidance", "") or ""),
+        }
+        for anchor_id in anchors
+        if not any(lock.get("anchor_id") == anchor_id for lock in locks)
+    ]
+    return anchors, locks, missing
+
+
+def continuity_lock_guidance(locks: list[dict[str, object]]) -> list[str]:
+    lines: list[str] = []
+    seen: set[str] = set()
+    for lock in locks:
+        anchor = str(lock.get("anchor_label") or lock.get("anchor_id") or "").strip()
+        path_value = str(lock.get("path") or lock.get("asset_ref") or "").strip()
+        preserve = str(lock.get("must_preserve") or lock.get("note") or "").strip()
+        text = " | ".join(part for part in (anchor, path_value, preserve) if part)
+        if text and text not in seen:
+            lines.append(text)
+            seen.add(text)
+    return lines
+
+
+def idea_card_uid_for(row: dict[str, object], index: int, item_id: str) -> str:
+    raw_uid = str(row.get("card_uid") or row.get("uid") or "").strip()
+    if raw_uid:
+        return safe_file_stem(raw_uid)
+    seed = "|".join(
+        [
+            item_id,
+            str(row.get("act_id", "") or ""),
+            str(row.get("scene_id", "") or ""),
+            str(row.get("beat", "") or ""),
+            str(index),
+        ]
+    )
+    digest = hashlib.sha1(seed.encode("utf-8")).hexdigest()[:12]
+    return f"CARD_{digest}"
+
+
 def normalize_idea_row(row: dict[str, object], index: int) -> dict[str, object]:
     raw_id = str(row.get("item_id") or row.get("shot_id") or "").strip()
     item_id = safe_file_stem(raw_id) if raw_id else f"IDEA_SHOT_{index:03d}"
@@ -2234,6 +2699,7 @@ def normalize_idea_row(row: dict[str, object], index: int) -> dict[str, object]:
         seen_linked_cards.add(linked_id)
         linked_cards.append(linked_id)
     return {
+        "card_uid": idea_card_uid_for(row, index, item_id),
         "item_id": item_id,
         "act_id": safe_file_stem(row.get("act_id", "") or ""),
         "scene_id": str(row.get("scene_id", "") or "").strip(),
@@ -2500,6 +2966,7 @@ def idea_board_to_markdown(board: dict[str, object]) -> str:
                 [
                     "",
                     f"### {index:03d}. {row.get('item_id', '')}",
+                    f"- Stable card uid / 稳定卡片 UID: {row.get('card_uid', '')}",
                     f"- Act / 所属幕: {row.get('act_id', '')}",
                     f"- Scene / 场戏: {row.get('scene_id', '')}",
                     f"- Beat / 剧情点: {row.get('beat', '')}",
@@ -2544,6 +3011,7 @@ def write_idea_board_files(path: Path, board: dict[str, object]) -> None:
     csv_path = idea_board_csv_path(path)
     csv_path.parent.mkdir(parents=True, exist_ok=True)
     fieldnames = [
+        "card_uid",
         "item_id",
         "scene_id",
         "beat",
@@ -2875,6 +3343,7 @@ def scene_context_for_row(path: Path, board: dict[str, object], row: dict[str, o
         },
         "nearby_storyboard_cards": [
             {
+                "card_uid": item.get("card_uid", ""),
                 "item_id": item.get("item_id", ""),
                 "scene_id": item.get("scene_id", ""),
                 "beat": item.get("beat", ""),
@@ -2964,6 +3433,7 @@ def concept_card_context(path: Path, board: dict[str, object], card: dict[str, o
         ],
         "nearby_storyboard_cards": [
             {
+                "card_uid": row.get("card_uid", ""),
                 "item_id": row.get("item_id", ""),
                 "scene_id": row.get("scene_id", ""),
                 "beat": row.get("beat", ""),
@@ -2995,13 +3465,18 @@ def card_generation_context(path: Path, board: dict[str, object], card_type: str
         target_context = concept_card_context(path, board, target)
     else:
         target_context = scene_context_for_row(path, board, target)
+    continuity_anchors, continuity_locks, continuity_missing = continuity_locks_for_target(board, target)
     return {
         "global_references": global_references,
         "context_cards": context_cards,
         "context_references": context_references,
         "target_references": target_references,
+        "continuity_anchors": continuity_anchors,
+        "continuity_locks": continuity_locks,
+        "continuity_missing": continuity_missing,
+        "continuity_lock_guidance": continuity_lock_guidance(continuity_locks),
         "target_context": target_context,
-        "whitebox_guidance": whitebox_guidance_from_references(global_references, context_references, target_references),
+        "whitebox_guidance": whitebox_guidance_from_references(global_references, context_references, target_references, continuity_locks),
     }
 
 
@@ -3079,6 +3554,168 @@ def storyboard_spatial_logic_checks(row: dict[str, object]) -> list[dict[str, ob
     return checks
 
 
+def storyboard_row_requires_whitebox(row: dict[str, object]) -> bool:
+    text = " ".join(
+        str(row.get(key, "") or "")
+        for key in (
+            "item_id",
+            "beat",
+            "shot_type",
+            "frame_description",
+            "spatial_logic",
+            "image_prompt",
+            "video_prompt",
+            "notes",
+            "revision_note",
+        )
+    ).lower()
+    keywords = (
+        "街机",
+        "真人快打",
+        "游戏机",
+        "屏幕",
+        "操作位",
+        "投币",
+        "并排",
+        "背后",
+        "后脑",
+        "脑袋后",
+        "对战",
+        "围观",
+        "开门",
+        "门缝",
+        "入口",
+        "空间关系",
+        "机位",
+        "道具锁",
+        "arcade",
+        "cabinet",
+        "screen",
+        "coin slot",
+        "side-by-side",
+        "behind the heads",
+        "over-the-shoulder",
+        "door",
+        "entrance",
+        "spatial",
+    )
+    return any(keyword in text for keyword in keywords)
+
+
+def card_image_preflight_for_targets(slug: str, payload: dict[str, object]) -> dict[str, object]:
+    path = project_path(slug)
+    board = normalize_idea_board(slug, payload) if payload.get("rows") is not None or payload.get("project_bible") is not None else load_idea_board(path, slug)
+    board = enrich_idea_board_whitebox_references(path, board)
+    targets_payload = payload.get("targets", [])
+    if not isinstance(targets_payload, list):
+        targets_payload = []
+    rows = board.get("rows", [])
+    if not isinstance(rows, list):
+        rows = []
+    row_by_id = {
+        safe_file_stem(row.get("item_id", "")): row
+        for row in rows
+        if isinstance(row, dict)
+    }
+    row_by_uid = {
+        safe_file_stem(row.get("card_uid", "")): row
+        for row in rows
+        if isinstance(row, dict) and row.get("card_uid")
+    }
+    duplicate_item_ids = sorted(
+        item_id
+        for item_id in {str(row.get("item_id", "") or "") for row in rows if isinstance(row, dict)}
+        if item_id and sum(1 for row in rows if isinstance(row, dict) and str(row.get("item_id", "") or "") == item_id) > 1
+    )
+    items: list[dict[str, object]] = []
+    missing_whitebox: list[dict[str, object]] = []
+    missing_continuity: list[dict[str, object]] = []
+    prompt_gaps: list[dict[str, object]] = []
+    unresolved_targets: list[dict[str, object]] = []
+    for target in targets_payload:
+        if not isinstance(target, dict):
+            continue
+        card_type = str(target.get("card_type") or target.get("type") or "").strip()
+        if card_type != "storyboard":
+            continue
+        item_id = safe_file_stem(target.get("item_id") or target.get("card_id") or target.get("id") or "")
+        card_uid = safe_file_stem(target.get("card_uid") or "")
+        row = row_by_uid.get(card_uid) if card_uid else None
+        row = row or row_by_id.get(item_id)
+        if not row:
+            unresolved_targets.append({"card_uid": card_uid, "item_id": item_id})
+            continue
+        generation_context = card_generation_context(path, board, "storyboard", row)
+        spatial_checks = storyboard_spatial_logic_checks(row)
+        requires_whitebox = storyboard_row_requires_whitebox(row)
+        has_whitebox = bool(generation_context.get("whitebox_guidance"))
+        continuity_locks = generation_context.get("continuity_locks", [])
+        if not isinstance(continuity_locks, list):
+            continuity_locks = []
+        continuity_missing = generation_context.get("continuity_missing", [])
+        if not isinstance(continuity_missing, list):
+            continuity_missing = []
+        reference_count = sum(
+            len(generation_context.get(key, []))
+            for key in ("global_references", "context_references", "target_references", "continuity_locks")
+            if isinstance(generation_context.get(key), list)
+        )
+        missing_prompt = not str(row.get("frame_description", "") or "").strip() and not str(row.get("image_prompt", "") or "").strip()
+        item = {
+            "card_uid": row.get("card_uid", ""),
+            "item_id": row.get("item_id", ""),
+            "act_id": row.get("act_id", ""),
+            "scene_id": row.get("scene_id", ""),
+            "beat": row.get("beat", ""),
+            "requires_whitebox": requires_whitebox,
+            "has_whitebox": has_whitebox,
+            "whitebox_missing": requires_whitebox and not has_whitebox,
+            "reference_count": reference_count,
+            "continuity_anchor_ids": generation_context.get("continuity_anchors", []),
+            "continuity_lock_count": len(continuity_locks),
+            "continuity_missing": continuity_missing,
+            "continuity_missing_count": len(continuity_missing),
+            "missing_prompt": missing_prompt,
+            "spatial_logic_checks": spatial_checks,
+        }
+        items.append(item)
+        if item["whitebox_missing"]:
+            missing_whitebox.append(item)
+        if continuity_missing:
+            missing_continuity.append(item)
+        if missing_prompt:
+            prompt_gaps.append(item)
+    status = "ready"
+    if unresolved_targets or duplicate_item_ids or prompt_gaps:
+        status = "blocked"
+    elif missing_whitebox or missing_continuity:
+        status = "review"
+    return {
+        "ok": True,
+        "status": status,
+        "target_count": len(items),
+        "items": items,
+        "missing_whitebox": missing_whitebox,
+        "missing_continuity": missing_continuity,
+        "prompt_gaps": prompt_gaps,
+        "duplicate_item_ids": duplicate_item_ids,
+        "unresolved_targets": unresolved_targets,
+        "summary": {
+            "ready": sum(
+                1
+                for item in items
+                if not item.get("whitebox_missing") and not item.get("missing_prompt") and not item.get("continuity_missing")
+            ),
+            "whitebox_missing": len(missing_whitebox),
+            "continuity_missing": len(missing_continuity),
+            "continuity_locks": sum(int(item.get("continuity_lock_count", 0) or 0) for item in items),
+            "prompt_gaps": len(prompt_gaps),
+            "duplicate_item_ids": len(duplicate_item_ids),
+            "unresolved_targets": len(unresolved_targets),
+        },
+    }
+
+
 def build_card_image_packet_text(
     slug: str,
     path: Path,
@@ -3099,9 +3736,11 @@ def build_card_image_packet_text(
             "- 生成前可做电影级提示词优化，强化构图、光影、材质、角色连续性和负面约束。",
             "- revision_note 是本轮精修意见，优先级高于长期 notes/prompt_notes；不要把一次性修改写死成永久设定。",
             "- spatial_logic 和 spatial_logic_checks 是硬性空间检查；生成提示词前先核对门内外方向、人物视线、屏幕位置、机位轴线和道具结构。若情绪描述与空间逻辑冲突，空间逻辑优先。",
+            "- continuity_locks 是硬性连续性锁，不是氛围参考：同一人物、同一门、同一街机、同一地点跨幕出现时，身份、外形、比例、颜色、门/道具结构和空间锚点必须保持一致。",
+            "- 如果 task 命中 continuity_anchors 但 continuity_missing 不为空，不要硬跑最终图；先补参考/白模，或明确只生成探索图并标注风险。",
             "- Concept task 的 scope/act_id/act_context 决定它是全项目设定还是某一幕设定；幕级概念只继承并服务对应 act 的上下文。",
             "- Context cards、global references、nearby storyboard cards、related assets 只用于风格和连续性参考，不是生成目标。",
-            "- 每个 task 的 inherited_references/all_references 是必须读取的继承参考；全局人设、设定参考和单卡参考都要纳入生成提示。",
+            "- 每个 task 的 inherited_references/continuity_locks/all_references 是必须读取的继承参考；全局人设、设定参考、单卡参考和连续性锁都要纳入生成提示。",
             "- 默认回传全部：除非用户明确要求先挑选，否则你生成的每一张候选图都要保存并回填，不要只回传其中一张。",
             "- 编号记录规则：分镜号/卡片号、版本号、候选号只能写入文件名、version_id、candidate_id 和回填 JSON；绝对不要画进图片像素里。",
             "- 画面必须干净：不要在图上加分镜号、版本号、候选编号、字幕、水印、标签、随机文字或 UI 标记。",
@@ -3131,7 +3770,7 @@ def build_card_image_packet_text(
             "",
             "## Callback / 回填接口",
             f"- POST: http://127.0.0.1:8787/api/projects/{slug}/card-image-output",
-            "- Body: {\"outputs\":[{\"card_type\":\"storyboard|concept\",\"item_id\":\"...\",\"card_id\":\"...\",\"version_id\":\"v001_c01\",\"candidate_id\":\"c01\",\"task_id\":\"...\",\"packet_id\":\"...\",\"output_path\":\"...\",\"notes\":\"...\"}]}",
+            "- Body: {\"outputs\":[{\"card_type\":\"storyboard|concept\",\"card_uid\":\"...\",\"item_id\":\"...\",\"card_id\":\"...\",\"version_id\":\"v001_c01\",\"candidate_id\":\"c01\",\"task_id\":\"...\",\"packet_id\":\"...\",\"output_path\":\"...\",\"notes\":\"...\"}]}",
             "",
             "## Tasks / 目标卡片任务",
             "```json",
@@ -3141,10 +3780,254 @@ def build_card_image_packet_text(
     )
 
 
+def current_image_versions_for_autopilot(board: dict[str, object]) -> list[dict[str, object]]:
+    assets: list[dict[str, object]] = []
+    for card in board.get("project_bible", []):
+        if not isinstance(card, dict):
+            continue
+        for version in normalize_concept_card_versions(card.get("versions", [])):
+            if not version.get("output_path"):
+                continue
+            assets.append(
+                {
+                    "source": "project_bible",
+                    "card_id": card.get("card_id", ""),
+                    "title": card.get("title", ""),
+                    "category": card.get("category", ""),
+                    "scope": card.get("scope", "project"),
+                    "act_id": card.get("act_id", ""),
+                    "version_id": version.get("version_id", ""),
+                    "status": version.get("status", ""),
+                    "path": version.get("output_path", ""),
+                }
+            )
+    for row in board.get("rows", []):
+        if not isinstance(row, dict):
+            continue
+        for version in normalize_concept_card_versions(row.get("versions", [])):
+            if not version.get("output_path"):
+                continue
+            assets.append(
+                {
+                    "source": "storyboard",
+                    "card_uid": row.get("card_uid", ""),
+                    "item_id": row.get("item_id", ""),
+                    "act_id": row.get("act_id", ""),
+                    "scene_id": row.get("scene_id", ""),
+                    "beat": row.get("beat", ""),
+                    "version_id": version.get("version_id", ""),
+                    "status": version.get("status", ""),
+                    "path": version.get("output_path", ""),
+                }
+            )
+        output_path = str(row.get("output_path", "") or "").strip()
+        if output_path and not any(item.get("path") == output_path for item in assets):
+            assets.append(
+                {
+                    "source": "storyboard",
+                    "card_uid": row.get("card_uid", ""),
+                    "item_id": row.get("item_id", ""),
+                    "act_id": row.get("act_id", ""),
+                    "scene_id": row.get("scene_id", ""),
+                    "beat": row.get("beat", ""),
+                    "version_id": "current",
+                    "status": "current",
+                    "path": output_path,
+                }
+            )
+    priority = {"final": 0, "current": 1, "reference": 2, "candidate": 3}
+    assets.sort(key=lambda item: (priority.get(str(item.get("status", "")), 9), str(item.get("act_id", "")), str(item.get("item_id", ""))))
+    return assets[:120]
+
+
+def build_act_autopilot_text(
+    slug: str,
+    path: Path,
+    board: dict[str, object],
+    packet_id: str,
+    packet_rel_path: str,
+    act_id: str,
+    story_brief: str,
+) -> str:
+    target_act = next(
+        (act for act in board.get("acts", []) if isinstance(act, dict) and str(act.get("act_id", "") or "") == act_id),
+        {},
+    )
+    act_input = board.get("act_inputs", {}).get(act_id, {}) if isinstance(board.get("act_inputs"), dict) else {}
+    reference_candidates = current_image_versions_for_autopilot(board)
+    whitebox_lab = load_whitebox_lab(path)
+    whitebox_jobs = whitebox_lab.get("jobs", []) if isinstance(whitebox_lab, dict) else []
+    return "\n".join(
+        [
+            "# Codex Act Autopilot Handoff / Codex 单幕远程总控包",
+            "",
+            "请把这张卡当作远程总控任务：根据用户给的单幕剧情，自主完成该幕的大纲扩写、分镜拆分、参考图匹配、白模判断/创建、图片包生成、最终图片生成与回填。不要改动无关幕和无关设定。",
+            "",
+            "## Codex Run Mode / 执行模式",
+            "- 这是电影 AIGC 工作流，不是投资策略任务。",
+            "- 先扩写故事，再拆分镜，再匹配参考，再做生成前检查；不要跳过空间逻辑。",
+            "- 自动找参考图：优先使用全局人设、已标 Final/current/reference 的分镜图、启用的 project_bible 设定图、已有 whitebox 参考。",
+            "- 自动连续性锁：若新分镜出现三兄弟、游戏机房门/出口、街机、黄毛、回家小路等已出现对象，必须把对应历史图/白模作为 hard continuity lock；不要重新设计同一人物、同一道具或同一地点。",
+            "- 白模门禁：街机结构、门内外方向、并排对战、后脑机位、复杂遮挡/走位必须先检查是否已有白模；缺白模时先调用 whitebox-job 或明确停止请用户补。",
+            "- 生最终图前必须调用或等价执行 card-image-preflight；blocked 项不要硬生成最终图。",
+            "- 允许先生成探索图，但最终图必须尊重 whitebox_guidance、spatial_logic 和 spatial_logic_checks。",
+            "- 回填时优先带 card_uid，其次 item_id；不要因为后续编号变化把图回到错误卡。",
+            "- 默认每张分镜先回填候选图，Final 只在非常确定可用时建议标记，不要替用户锁死所有 Final。",
+            "- 每完成一个阶段都回填 app，并在最终 callback 带 completed_handoff_id。",
+            "",
+            "## Required Local APIs / 本地接口",
+            f"- Save board: POST http://127.0.0.1:8787/api/projects/{slug}/idea-board",
+            f"- Preflight: POST http://127.0.0.1:8787/api/projects/{slug}/card-image-preflight",
+            f"- Whitebox job: POST http://127.0.0.1:8787/api/projects/{slug}/whitebox-job",
+            f"- Image packet: POST http://127.0.0.1:8787/api/projects/{slug}/card-image-packet",
+            f"- Image output: POST http://127.0.0.1:8787/api/projects/{slug}/card-image-output",
+            "",
+            "## Target / 目标幕",
+            f"- Project slug: {slug}",
+            f"- Project root: {path}",
+            f"- Packet id: {packet_id}",
+            f"- Packet path: {packet_rel_path}",
+            f"- Target act id: {act_id}",
+            "",
+            "## User Act Brief / 用户给的单幕剧情",
+            story_brief or str(act_input.get("idea", "") or ""),
+            "",
+            "## Existing Target Act / 当前幕结构",
+            "```json",
+            json.dumps({"act": target_act, "act_input": act_input}, ensure_ascii=False, indent=2),
+            "```",
+            "",
+            "## Project Story Context / 全片上下文",
+            "```json",
+            json.dumps(
+                {
+                    "story_title": board.get("story_title", ""),
+                    "logline": board.get("logline", ""),
+                    "story_outline": board.get("story_outline", ""),
+                    "style_notes": board.get("style_notes", ""),
+                    "acts": board.get("acts", []),
+                },
+                ensure_ascii=False,
+                indent=2,
+            ),
+            "```",
+            "",
+            "## Enabled Settings / 启用设定",
+            "```json",
+            json.dumps(enabled_project_bible_cards(board), ensure_ascii=False, indent=2),
+            "```",
+            "",
+            "## Global References / 全局参考",
+            "```json",
+            json.dumps(board.get("global_references", []), ensure_ascii=False, indent=2),
+            "```",
+            "",
+            "## Reference Candidates / 自动参考候选图",
+            "```json",
+            json.dumps(reference_candidates, ensure_ascii=False, indent=2),
+            "```",
+            "",
+            "## Existing Whitebox Jobs / 现有白模",
+            "```json",
+            json.dumps(whitebox_jobs[-24:], ensure_ascii=False, indent=2),
+            "```",
+            "",
+            "## Existing Rows For Target Act / 目标幕已有分镜",
+            "```json",
+            json.dumps(
+                [
+                    row
+                    for row in board.get("rows", [])
+                    if isinstance(row, dict) and str(row.get("act_id", "") or "") == act_id
+                ],
+                ensure_ascii=False,
+                indent=2,
+            ),
+            "```",
+            "",
+            "## Required Work / 必须完成",
+            "1. 更新目标幕 act_inputs[act_id].idea、acts 中的 summary/dramatic_purpose/key_beats。",
+            "2. 为目标幕生成或修订 rows；每张卡必须包含 card_uid、item_id、act_id、scene_id、beat、shot_type、frame_description、linked_cards、spatial_logic、image_prompt、video_prompt、notes、sort_after。",
+            "3. 自动给每张卡绑定必要 references；引用全局人设、道具、场景、已有 Final/current 图和已有白模。",
+            "4. 对目标幕分镜调用 card-image-preflight；若 status=blocked，先修文字/编号/提示词；若 missing_whitebox 非空，优先生成或绑定白模。",
+            "5. 通过 card-image-packet 创建图片包；调用生图能力生成候选图，保存到 suggested_candidate_outputs 路径，调用 card-image-output 回填。",
+            "6. 最终只汇报：新增/更新分镜数、白模任务数、图片回填数、需要用户复核的卡。",
+            "",
+            "## Completion / 完成标记",
+            "- 最后一次回填时，callback JSON 顶层必须带 completed_handoff_id。",
+            "- completed_handoff_id: __IDEA_HANDOFF_ID__",
+        ]
+    )
+
+
+def create_act_autopilot_packet(slug: str, payload: dict[str, object]) -> dict[str, object]:
+    path = project_path(slug)
+    board = normalize_idea_board(slug, payload) if payload.get("rows") is not None or payload.get("project_bible") is not None else load_idea_board(path, slug)
+    act_id = safe_file_stem(payload.get("act_id") or "")
+    if not act_id:
+        acts = [act for act in board.get("acts", []) if isinstance(act, dict)]
+        act_id = str(acts[0].get("act_id", "") or "ACT01") if acts else "ACT01"
+    story_brief = str(payload.get("story_brief") or "").strip()
+    act_inputs = board.get("act_inputs", {})
+    if not isinstance(act_inputs, dict):
+        act_inputs = {}
+    if story_brief:
+        current_input = act_inputs.get(act_id, {}) if isinstance(act_inputs.get(act_id), dict) else {}
+        act_inputs[act_id] = {
+            **current_input,
+            "idea": story_brief,
+            "story_title": current_input.get("story_title", board.get("story_title", "")),
+            "logline": current_input.get("logline", board.get("logline", "")),
+        }
+        board["act_inputs"] = act_inputs
+    acts = board.get("acts", [])
+    if not isinstance(acts, list):
+        acts = []
+    if not any(isinstance(act, dict) and str(act.get("act_id", "") or "") == act_id for act in acts):
+        acts.append(
+            {
+                "act_id": act_id,
+                "title": "",
+                "summary": story_brief,
+                "dramatic_purpose": "",
+                "key_beats": "",
+                "status": "draft",
+            }
+        )
+        board["acts"] = acts
+    write_idea_board_files(path, board)
+    packet_id = f"AUTOPILOT_ACT_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+    job_dir = path / "03_story" / "autopilot" / "jobs" / packet_id
+    outputs_dir = job_dir / "outputs"
+    outputs_dir.mkdir(parents=True, exist_ok=True)
+    packet_rel_path = str(Path("03_story") / "autopilot" / "jobs" / packet_id / "outputs" / f"{packet_id}_handoff.md")
+    handoff_text = build_act_autopilot_text(slug, path, board, packet_id, packet_rel_path, act_id, story_brief)
+    (path / packet_rel_path).write_text(handoff_text, encoding="utf-8")
+    write_yaml_file(
+        job_dir / "autopilot_task.json",
+        {
+            "packet_id": packet_id,
+            "act_id": act_id,
+            "story_brief": story_brief,
+            "packet_path": packet_rel_path,
+        },
+    )
+    return {
+        "ok": True,
+        "packet_id": packet_id,
+        "act_id": act_id,
+        "packet_path": packet_rel_path,
+        "packet_absolute_path": str(path / packet_rel_path),
+        "handoff_text": handoff_text,
+        "project": project_detail(slug),
+    }
+
+
 def create_card_image_packet(slug: str, payload: dict[str, object]) -> dict[str, object]:
     path = project_path(slug)
     board = normalize_idea_board(slug, payload) if payload.get("rows") is not None or payload.get("project_bible") is not None else load_idea_board(path, slug)
     board = enrich_idea_board_whitebox_references(path, board)
+    preflight = card_image_preflight_for_targets(slug, payload)
     if payload.get("rows") is not None or payload.get("project_bible") is not None:
         write_idea_board_files(path, board)
     targets_payload = payload.get("targets", [])
@@ -3156,8 +4039,9 @@ def create_card_image_packet(slug: str, payload: dict[str, object]) -> dict[str,
             continue
         card_type = str(target.get("card_type") or target.get("type") or "").strip()
         card_id = safe_file_stem(target.get("card_id") or target.get("item_id") or target.get("id") or "")
-        if card_type and card_id:
-            target_keys.append((card_type, card_id))
+        card_uid = safe_file_stem(target.get("card_uid") or "")
+        if card_type and (card_id or card_uid):
+            target_keys.append((card_type, card_id, card_uid))
     if not target_keys:
         raise ValueError("没有勾选的目标卡片 / No selected target cards.")
     rows = board.get("rows", [])
@@ -3166,6 +4050,16 @@ def create_card_image_packet(slug: str, payload: dict[str, object]) -> dict[str,
         safe_file_stem(row.get("item_id", "")): row
         for row in rows
         if isinstance(row, dict)
+    } if isinstance(rows, list) else {}
+    row_by_uid = {
+        safe_file_stem(row.get("card_uid", "")): row
+        for row in rows
+        if isinstance(row, dict) and row.get("card_uid")
+    } if isinstance(rows, list) else {}
+    row_by_uid = {
+        safe_file_stem(row.get("card_uid", "")): row
+        for row in rows
+        if isinstance(row, dict) and row.get("card_uid")
     } if isinstance(rows, list) else {}
     card_by_id = {
         safe_file_stem(card.get("card_id", "")): card
@@ -3183,9 +4077,9 @@ def create_card_image_packet(slug: str, payload: dict[str, object]) -> dict[str,
         global_references = []
     context_cards = enabled_project_bible_cards(board)
     tasks: list[dict[str, object]] = []
-    seen: set[tuple[str, str]] = set()
-    for card_type, card_id in target_keys:
-        key = (card_type, card_id)
+    seen: set[tuple[str, str, str]] = set()
+    for card_type, card_id, card_uid in target_keys:
+        key = (card_type, card_id, card_uid)
         if key in seen:
             continue
         seen.add(key)
@@ -3210,6 +4104,7 @@ def create_card_image_packet(slug: str, payload: dict[str, object]) -> dict[str,
             generation_context = card_generation_context(path, board, "concept", card)
             card_refs = generation_context["target_references"]
             inherited_refs = [*generation_context["global_references"], *generation_context["context_references"]]
+            continuity_locks = generation_context["continuity_locks"]
             whitebox_guidance = generation_context["whitebox_guidance"]
             task = {
                 "task_id": f"{packet_id}_{index:03d}",
@@ -3226,7 +4121,11 @@ def create_card_image_packet(slug: str, payload: dict[str, object]) -> dict[str,
                 "negative_prompt": card.get("negative_prompt", ""),
                 "target_references": card_refs,
                 "inherited_references": inherited_refs,
-                "all_references": [*inherited_refs, *card_refs],
+                "continuity_anchors": generation_context["continuity_anchors"],
+                "continuity_locks": continuity_locks,
+                "continuity_lock_guidance": generation_context["continuity_lock_guidance"],
+                "continuity_missing": generation_context["continuity_missing"],
+                "all_references": merge_references(inherited_refs, card_refs, continuity_locks),
                 "existing_versions": versions,
                 "act_context": generation_context["target_context"],
                 "generation_context": generation_context,
@@ -3237,9 +4136,11 @@ def create_card_image_packet(slug: str, payload: dict[str, object]) -> dict[str,
                 "suggested_output_absolute_path": str(path / output_rel_path),
             }
         elif card_type == "storyboard":
-            row = row_by_id.get(card_id)
+            row = row_by_uid.get(card_uid) if card_uid else None
+            row = row or row_by_id.get(card_id)
             if not row:
                 continue
+            card_id = safe_file_stem(row.get("item_id", "") or card_id)
             versions = normalize_concept_card_versions(row.get("versions", []))
             version_id = f"v{len(versions) + 1:03d}"
             candidate_outputs = [
@@ -3256,10 +4157,12 @@ def create_card_image_packet(slug: str, payload: dict[str, object]) -> dict[str,
             generation_context = card_generation_context(path, board, "storyboard", row)
             row_refs = generation_context["target_references"]
             inherited_refs = [*generation_context["global_references"], *generation_context["context_references"]]
+            continuity_locks = generation_context["continuity_locks"]
             whitebox_guidance = generation_context["whitebox_guidance"]
             task = {
                 "task_id": f"{packet_id}_{index:03d}",
                 "card_type": "storyboard",
+                "card_uid": row.get("card_uid", ""),
                 "item_id": card_id,
                 "scene_id": row.get("scene_id", ""),
                 "beat": row.get("beat", ""),
@@ -3274,7 +4177,11 @@ def create_card_image_packet(slug: str, payload: dict[str, object]) -> dict[str,
                 "spatial_logic_checks": storyboard_spatial_logic_checks(row),
                 "target_references": row_refs,
                 "inherited_references": inherited_refs,
-                "all_references": [*inherited_refs, *row_refs],
+                "continuity_anchors": generation_context["continuity_anchors"],
+                "continuity_locks": continuity_locks,
+                "continuity_lock_guidance": generation_context["continuity_lock_guidance"],
+                "continuity_missing": generation_context["continuity_missing"],
+                "all_references": merge_references(inherited_refs, row_refs, continuity_locks),
                 "existing_output_path": row.get("output_path", ""),
                 "existing_versions": versions,
                 "nearby_context": generation_context["target_context"],
@@ -3302,6 +4209,7 @@ def create_card_image_packet(slug: str, payload: dict[str, object]) -> dict[str,
         "packet_absolute_path": str(path / packet_rel_path),
         "task_count": len(tasks),
         "tasks": tasks,
+        "preflight": preflight,
         "handoff_text": packet_text,
         "project": project_detail(slug),
     }
@@ -3351,15 +4259,18 @@ def update_card_image_output(slug: str, payload: dict[str, object]) -> dict[str,
             updated += 1
         elif card_type == "storyboard":
             item_id = safe_file_stem(output.get("item_id", "") or output.get("card_id", ""))
+            card_uid = safe_file_stem(output.get("card_uid") or "")
             if not item_id:
                 raw_path = normalize_project_rel_path(str(output.get("output_path", "") or ""))
                 item_id = safe_file_stem(Path(raw_path).stem) if raw_path else ""
             if not item_id:
                 item_id = f"EMOTION_CARD_{len(row_by_id) + 1:03d}"
-            row = row_by_id.get(item_id)
+            row = row_by_uid.get(card_uid) if card_uid else None
+            row = row or row_by_id.get(item_id)
             if not row:
                 row = normalize_idea_row(
                     {
+                        "card_uid": card_uid,
                         "item_id": item_id,
                         "act_id": output.get("act_id", ""),
                         "scene_id": output.get("scene_id", ""),
@@ -3380,6 +4291,8 @@ def update_card_image_output(slug: str, payload: dict[str, object]) -> dict[str,
                 if isinstance(rows, list):
                     rows.append(row)
                     row_by_id[item_id] = row
+                    if row.get("card_uid"):
+                        row_by_uid[safe_file_stem(row.get("card_uid", ""))] = row
             versions = normalize_concept_card_versions(row.get("versions", []))
             version_id = safe_file_stem(output.get("version_id") or f"v{len(versions) + 1:03d}")
             versions = append_current_card_version(versions, version_id, output_path, notes, metadata)
@@ -5062,8 +5975,14 @@ class PipelineHubHandler(BaseHTTPRequestHandler):
             if action == "idea-image-output":
                 send_json(self, update_idea_image_output(slug, payload))
                 return
+            if action == "act-autopilot-packet":
+                send_json(self, create_act_autopilot_packet(slug, payload))
+                return
             if action == "card-image-packet":
                 send_json(self, create_card_image_packet(slug, payload))
+                return
+            if action == "card-image-preflight":
+                send_json(self, card_image_preflight_for_targets(slug, payload))
                 return
             if action == "board-card-packet":
                 send_json(self, create_board_card_packet(slug, payload))
