@@ -3528,11 +3528,19 @@ th {
   transform-origin: 0 0;
 }
 
-.board-zoom-toolbar {
+.board-zoom-toolbar-wrap {
   position: sticky;
   top: 10px;
-  left: 10px;
   z-index: 6;
+  width: 100%;
+  box-sizing: border-box;
+  padding-right: 10px;
+  display: flex;
+  justify-content: flex-end;
+  pointer-events: none;
+}
+
+.board-zoom-toolbar {
   width: fit-content;
   display: inline-flex;
   align-items: center;
@@ -3543,6 +3551,7 @@ th {
   background: rgba(255, 255, 255, 0.94);
   box-shadow: var(--shadow);
   backdrop-filter: blur(2px);
+  pointer-events: auto;
 }
 
 .board-zoom-toolbar button {
@@ -3662,7 +3671,7 @@ th {
 }
 
 .board-node-link-row {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr)) 34px;
 }
 
 .board-node-role {
@@ -3683,6 +3692,55 @@ th {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.board-link-drag {
+  width: 34px;
+  min-width: 34px;
+  min-height: 30px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #ecfdf5;
+  color: #0f766e;
+  font-size: 17px;
+  font-weight: 850;
+  cursor: crosshair;
+}
+
+.board-link-drag:hover {
+  border-color: #0f766e;
+  background: #d1fae5;
+}
+
+.board-link-drag-source {
+  outline: 3px solid rgba(15, 118, 110, 0.22);
+}
+
+.board-link-drop-target {
+  outline: 3px solid rgba(37, 99, 235, 0.3);
+  box-shadow: 0 0 0 5px rgba(37, 99, 235, 0.12), var(--shadow);
+}
+
+.board-link-drag-ghost {
+  position: fixed;
+  z-index: 9999;
+  width: 32px;
+  height: 32px;
+  transform: translate(-50%, -50%);
+  border: 2px solid #0f766e;
+  border-radius: 999px;
+  background: rgba(236, 253, 245, 0.96);
+  color: #0f766e;
+  display: grid;
+  place-items: center;
+  font-size: 18px;
+  font-weight: 850;
+  pointer-events: none;
+  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.2);
+}
+
+body.board-link-dragging {
+  cursor: crosshair;
 }
 
 .board-node-card .icon-button {

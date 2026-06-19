@@ -1544,6 +1544,7 @@ const BOARD_STAGE_WIDTH = 2400;
 const BOARD_STAGE_HEIGHT = 1500;
 const BOARD_NODE_WIDTH = 420;
 const BOARD_NODE_HEIGHT_FOR_LINKS = 280;
+let boardLinkDragActive = false;
 
 function boardStorageKey() {
   return state.selectedSlug ? `pipeline-board:${state.selectedSlug}` : "pipeline-board";
@@ -2038,9 +2039,7 @@ function boardSceneForNode(asset) {
   return selectedScene() || scenes[0] || null;
 }
 
-function openBoardImageLightbox(nodeId) {
-  const node = state.boardNodes.find((item) => item.id === nodeId);
-  const asset = boardNodeAsset(node);
+function showBoardImageLightbox(asset) {
   const modal = $("boardImageLightbox");
   const img = $("boardImageLightboxImg");
   if (!asset?.url || !modal || !img) return;
@@ -2053,6 +2052,15 @@ function openBoardImageLightbox(nodeId) {
   img.draggable = true;
   modal.hidden = false;
   document.body.classList.add("modal-open");
+}
+
+function openBoardImageLightbox(nodeId) {
+  const node = state.boardNodes.find((item) => item.id === nodeId);
+  showBoardImageLightbox(boardNodeAsset(node));
+}
+
+function openBoardAssetLightbox(assetRef) {
+  showBoardImageLightbox(boardAssetByRef(assetRef));
 }
 
 function closeBoardImageLightbox() {
@@ -2254,16 +2262,16 @@ function removeBoardNode(nodeId) {
 function createBoardEdge(sourceId, targetId) {
   if (!sourceId) {
     toast("请先点击“设为主图” / Choose Link from first");
-    return;
+    return false;
   }
   if (!targetId || sourceId === targetId) {
     toast("请选择另一张图片作为关联图 / Choose another image as reference");
-    return;
+    return false;
   }
   const existing = state.boardEdges.find((edge) => edge.sourceId === sourceId && edge.targetId === targetId);
   if (existing) {
     toast("这条关联已经存在 / Relation already exists");
-    return;
+    return false;
   }
   const source = state.boardNodes.find((node) => node.id === sourceId);
   const target = state.boardNodes.find((node) => node.id === targetId);
@@ -2278,6 +2286,17 @@ function createBoardEdge(sourceId, targetId) {
   state.boardLinkSourceId = "";
   saveBoardState();
   renderReferenceBoard();
+  return true;
+}
+
+function createBoardRelation(sourceId, targetId) {
+  const source = state.boardNodes.find((node) => node.id === sourceId);
+  const target = state.boardNodes.find((node) => node.id === targetId);
+  if (!source || !target) return false;
+  if (target.role === "main" && source.role !== "main") {
+    return createBoardEdge(targetId, sourceId);
+  }
+  return createBoardEdge(sourceId, targetId);
 }
 
 function boardPromptForNode(node) {
@@ -2877,6 +2896,7 @@ function renderBoardNode(node) {
         <div class="board-node-link-row">
           <button class="mini-command board-link-source" data-help="从这张图发起一条关系线。通常主图用它连接到人物、白模、道具等关联图。" data-node-id="${escapeHtml(node.id)}" type="button" title="从这张图发起关联线 / Link from this image">${activeLink ? "等待 / Linking" : "主图线 / From"}</button>
           <button class="mini-command board-link-target" data-help="把这张图接到上一张主图线上，作为参考元素参与重生成。" data-node-id="${escapeHtml(node.id)}" type="button" title="把这张图连为关联图 / Link this as a reference">关联 / To</button>
+          <button class="board-link-drag" data-help="按住拖到另一张图上建立关联线。拖到主图时会自动把这张图作为参考放进主图生成包。" data-node-id="${escapeHtml(node.id)}" type="button" title="拖拽建立关联 / Drag to link">↗</button>
         </div>
       </header>
       <img class="board-node-image" data-node-id="${escapeHtml(node.id)}" src="${escapeHtml(asset.url)}" alt="${escapeHtml(asset.asset_id || asset.path)}" title="双击预览大图；也可拖到外部上传区 / Double-click to preview; drag to external upload" ${externalImageDragAttrs(asset.url, asset.path, asset.asset_id || asset.path)} />
@@ -2947,10 +2967,12 @@ function renderBoardCanvas() {
   const scale = boardScale();
   root.innerHTML = `
     ${renderBoardTargetBanner()}
-    <div class="board-zoom-toolbar" role="group" aria-label="缩放 / Zoom">
-      <button class="board-zoom-out" type="button" title="缩小 / Zoom out">−</button>
-      <button class="board-zoom-level" type="button" title="重置缩放 / Reset zoom">${Math.round(scale * 100)}%</button>
-      <button class="board-zoom-in" type="button" title="放大 / Zoom in">+</button>
+    <div class="board-zoom-toolbar-wrap">
+      <div class="board-zoom-toolbar" role="group" aria-label="缩放 / Zoom">
+        <button class="board-zoom-out" type="button" title="缩小 / Zoom out">−</button>
+        <button class="board-zoom-level" type="button" title="重置缩放 / Reset zoom">${Math.round(scale * 100)}%</button>
+        <button class="board-zoom-in" type="button" title="放大 / Zoom in">+</button>
+      </div>
     </div>
     <div class="board-canvas-viewport" style="width:${Math.round(BOARD_STAGE_WIDTH * scale)}px; height:${Math.round(BOARD_STAGE_HEIGHT * scale)}px;">
       <div class="board-canvas-stage" style="transform:scale(${scale}); transform-origin:0 0;">
@@ -3045,7 +3067,7 @@ function renderBoardAssetTray() {
           (asset) => {
             const versionLabel = asset.version_status ? CARD_VERSION_STATUS_LABELS[asset.version_status] || asset.version_status : "";
             return `
-            <article class="board-asset-card" data-ref="${escapeHtml(asset.ref)}" title="${escapeHtml(asset.path || "")}">
+            <article class="board-asset-card" data-ref="${escapeHtml(asset.ref)}" title="双击预览大图；拖入画板建立节点 / Double-click to preview; drag into board · ${escapeHtml(asset.path || "")}">
               <img src="${escapeHtml(asset.url)}" alt="${escapeHtml(asset.asset_id || asset.path)}" draggable="false" />
               <strong>${escapeHtml(asset.asset_id || asset.role || asset.path)}</strong>
               <small>${escapeHtml(asset.scene_id || asset.act_id || "PROJECT")} · ${escapeHtml(kindLabel(asset.kind))}${versionLabel ? ` · ${escapeHtml(versionLabel)}` : ""}${escapeHtml(assetQaLabel(asset))}</small>
@@ -3061,133 +3083,226 @@ function renderBoardAssetTray() {
     : `<div class="empty-state">没有匹配图片 / No matching images.</div>`;
 }
 
+function startBoardLinkDrag(event, sourceId, moveEventName = "pointermove", upEventName = "pointerup") {
+  const canvas = $("referenceBoardCanvas");
+  const sourceCard = [...(canvas?.querySelectorAll(".board-node-card") || [])].find((card) => card.dataset.nodeId === sourceId);
+  if (!canvas || !sourceId || !sourceCard) return;
+  if (boardLinkDragActive) return;
+  boardLinkDragActive = true;
+  event.preventDefault();
+  event.stopPropagation();
+  let moved = false;
+  let targetCard = null;
+  const ghost = document.createElement("div");
+  ghost.className = "board-link-drag-ghost";
+  ghost.textContent = "↗";
+  document.body.appendChild(ghost);
+  document.body.classList.add("board-link-dragging");
+  sourceCard.classList.add("board-link-drag-source");
+  const setTarget = (card) => {
+    if (targetCard === card) return;
+    targetCard?.classList.remove("board-link-drop-target");
+    targetCard = card;
+    targetCard?.classList.add("board-link-drop-target");
+  };
+  const onMove = (moveEvent) => {
+    moved = true;
+    ghost.style.left = `${moveEvent.clientX}px`;
+    ghost.style.top = `${moveEvent.clientY}px`;
+    const card = document
+      .elementFromPoint(moveEvent.clientX, moveEvent.clientY)
+      ?.closest?.(".board-node-card");
+    setTarget(card && canvas.contains(card) && card.dataset.nodeId !== sourceId ? card : null);
+  };
+  const onUp = (upEvent) => {
+    document.removeEventListener(moveEventName, onMove);
+    document.removeEventListener(upEventName, onUp);
+    boardLinkDragActive = false;
+    ghost.remove();
+    document.body.classList.remove("board-link-dragging");
+    sourceCard.classList.remove("board-link-drag-source");
+    const dropCard = document
+      .elementFromPoint(upEvent.clientX, upEvent.clientY)
+      ?.closest?.(".board-node-card");
+    const targetId = dropCard && canvas.contains(dropCard) ? dropCard.dataset.nodeId || "" : "";
+    setTarget(null);
+    if (targetId && targetId !== sourceId) {
+      createBoardRelation(sourceId, targetId);
+    } else if (moved) {
+      toast("把指针拖到另一张卡片上建立关联 / Drop on another card to link");
+    }
+  };
+  document.addEventListener(moveEventName, onMove);
+  document.addEventListener(upEventName, onUp);
+}
+
 function bindBoardNodeDrag() {
-  $("referenceBoardCanvas")?.querySelectorAll(".board-node-card").forEach((card) => {
-    card.addEventListener("pointerdown", (event) => {
-      if (event.target?.closest?.("button, input, select, textarea, a, .board-node-image")) return;
-      const nodeId = card.dataset.nodeId || "";
-      const node = state.boardNodes.find((item) => item.id === nodeId);
-      const stage = $("referenceBoardCanvas")?.querySelector(".board-canvas-stage");
-      if (!node || !stage) return;
+  const canvas = $("referenceBoardCanvas");
+  if (!canvas) return;
+  canvas.onpointerdown = (event) => {
+    if (event.button !== 0) return;
+    const linkHandle = event.target?.closest?.(".board-link-drag");
+    if (linkHandle && canvas.contains(linkHandle)) {
+      startBoardLinkDrag(event, linkHandle.dataset.nodeId || "");
+      return;
+    }
+    const armedTargetCard = event.target?.closest?.(".board-node-card");
+    if (
+      state.boardLinkSourceId &&
+      armedTargetCard &&
+      canvas.contains(armedTargetCard) &&
+      !event.target?.closest?.("button, input, select, textarea, a") &&
+      armedTargetCard.dataset.nodeId !== state.boardLinkSourceId
+    ) {
       event.preventDefault();
-      card.setPointerCapture?.(event.pointerId);
-      const startX = event.clientX;
-      const startY = event.clientY;
-      const originalX = Number(node.x || 0);
-      const originalY = Number(node.y || 0);
-      const scale = boardScale();
-      const maxX = Math.max(12, BOARD_STAGE_WIDTH - BOARD_NODE_WIDTH - 20);
-      const maxY = Math.max(12, BOARD_STAGE_HEIGHT - 320);
-      const onMove = (moveEvent) => {
-        // Pointer travel is in screen pixels; divide by scale to move in stage units.
-        node.x = Math.round(clamp(originalX + (moveEvent.clientX - startX) / scale, 12, maxX));
-        node.y = Math.round(clamp(originalY + (moveEvent.clientY - startY) / scale, 12, maxY));
-        card.style.left = `${node.x}px`;
-        card.style.top = `${node.y}px`;
-      };
-      const onUp = () => {
-        document.removeEventListener("pointermove", onMove);
-        document.removeEventListener("pointerup", onUp);
-        saveBoardState();
-        renderReferenceBoard();
-      };
-      document.addEventListener("pointermove", onMove);
-      document.addEventListener("pointerup", onUp);
-    });
-  });
+      createBoardRelation(state.boardLinkSourceId, armedTargetCard.dataset.nodeId || "");
+      return;
+    }
+    if (event.target?.closest?.("button, input, select, textarea, a, .board-node-image")) return;
+    const card = event.target?.closest?.(".board-node-card");
+    if (!card || !canvas.contains(card)) return;
+    const nodeId = card.dataset.nodeId || "";
+    const node = state.boardNodes.find((item) => item.id === nodeId);
+    const stage = canvas.querySelector(".board-canvas-stage");
+    if (!node || !stage) return;
+    event.preventDefault();
+    card.setPointerCapture?.(event.pointerId);
+    const startX = event.clientX;
+    const startY = event.clientY;
+    const originalX = Number(node.x || 0);
+    const originalY = Number(node.y || 0);
+    const scale = boardScale();
+    const maxX = Math.max(12, BOARD_STAGE_WIDTH - BOARD_NODE_WIDTH - 20);
+    const maxY = Math.max(12, BOARD_STAGE_HEIGHT - 320);
+    const onMove = (moveEvent) => {
+      // Pointer travel is in screen pixels; divide by scale to move in stage units.
+      node.x = Math.round(clamp(originalX + (moveEvent.clientX - startX) / scale, 12, maxX));
+      node.y = Math.round(clamp(originalY + (moveEvent.clientY - startY) / scale, 12, maxY));
+      card.style.left = `${node.x}px`;
+      card.style.top = `${node.y}px`;
+    };
+    const onUp = () => {
+      document.removeEventListener("pointermove", onMove);
+      document.removeEventListener("pointerup", onUp);
+      saveBoardState();
+      renderReferenceBoard();
+    };
+    document.addEventListener("pointermove", onMove);
+    document.addEventListener("pointerup", onUp);
+  };
+  canvas.onmousedown = (event) => {
+    if (event.button !== 0) return;
+    const linkHandle = event.target?.closest?.(".board-link-drag");
+    if (!linkHandle || !canvas.contains(linkHandle)) return;
+    startBoardLinkDrag(event, linkHandle.dataset.nodeId || "", "mousemove", "mouseup");
+  };
 }
 
 function bindBoardAssetTrayEvents() {
-  $("boardAssetTray")?.querySelectorAll(".board-asset-card").forEach((card) => {
-    card.addEventListener("pointerdown", (event) => {
-      if (event.button !== 0) return;
-      if (event.target?.closest?.("a, button")) return;
-      const ref = card.dataset.ref || "";
-      const startX = event.clientX;
-      const startY = event.clientY;
-      let dragging = false;
-      let ghost = null;
-      const onMove = (moveEvent) => {
-        const moved = Math.hypot(moveEvent.clientX - startX, moveEvent.clientY - startY);
-        if (!dragging && moved < 8) return;
-        if (!dragging) {
-          dragging = true;
-          ghost = card.cloneNode(true);
-          ghost.classList.add("board-drag-ghost");
-          document.body.appendChild(ghost);
-          document.body.classList.add("board-dragging");
-        }
-        if (ghost) {
-          ghost.style.left = `${moveEvent.clientX}px`;
-          ghost.style.top = `${moveEvent.clientY}px`;
-        }
-      };
-      const onUp = (upEvent) => {
-        document.removeEventListener("pointermove", onMove);
-        document.removeEventListener("pointerup", onUp);
-        ghost?.remove();
-        document.body.classList.remove("board-dragging");
-        if (!dragging) return;
-        const canvas = $("referenceBoardCanvas");
-        const rect = canvas?.getBoundingClientRect();
-        const insideCanvas =
-          rect &&
-          upEvent.clientX >= rect.left &&
-          upEvent.clientX <= rect.right &&
-          upEvent.clientY >= rect.top &&
-          upEvent.clientY <= rect.bottom;
-        if (insideCanvas) addBoardNode(ref, boardCanvasPoint(upEvent));
-      };
-      document.addEventListener("pointermove", onMove);
-      document.addEventListener("pointerup", onUp);
-    });
-    card.addEventListener("dblclick", () => addBoardNode(card.dataset.ref || "", boardDefaultNodePoint()));
-  });
+  const tray = $("boardAssetTray");
+  if (!tray) return;
+  tray.onpointerdown = (event) => {
+    if (event.button !== 0) return;
+    if (event.target?.closest?.("a, button")) return;
+    const card = event.target?.closest?.(".board-asset-card");
+    if (!card || !tray.contains(card)) return;
+    const ref = card.dataset.ref || "";
+    const startX = event.clientX;
+    const startY = event.clientY;
+    let dragging = false;
+    let ghost = null;
+    const onMove = (moveEvent) => {
+      const moved = Math.hypot(moveEvent.clientX - startX, moveEvent.clientY - startY);
+      if (!dragging && moved < 8) return;
+      if (!dragging) {
+        dragging = true;
+        ghost = card.cloneNode(true);
+        ghost.classList.add("board-drag-ghost");
+        document.body.appendChild(ghost);
+        document.body.classList.add("board-dragging");
+      }
+      if (ghost) {
+        ghost.style.left = `${moveEvent.clientX}px`;
+        ghost.style.top = `${moveEvent.clientY}px`;
+      }
+    };
+    const onUp = (upEvent) => {
+      document.removeEventListener("pointermove", onMove);
+      document.removeEventListener("pointerup", onUp);
+      ghost?.remove();
+      document.body.classList.remove("board-dragging");
+      if (!dragging) return;
+      const canvas = $("referenceBoardCanvas");
+      const rect = canvas?.getBoundingClientRect();
+      const insideCanvas =
+        rect &&
+        upEvent.clientX >= rect.left &&
+        upEvent.clientX <= rect.right &&
+        upEvent.clientY >= rect.top &&
+        upEvent.clientY <= rect.bottom;
+      if (insideCanvas) addBoardNode(ref, boardCanvasPoint(upEvent));
+    };
+    document.addEventListener("pointermove", onMove);
+    document.addEventListener("pointerup", onUp);
+  };
+  tray.ondblclick = (event) => {
+    const card = event.target?.closest?.(".board-asset-card");
+    if (!card || !tray.contains(card)) return;
+    event.preventDefault();
+    openBoardAssetLightbox(card.dataset.ref || "");
+  };
 }
 
 function bindBoardHandoffEvents() {
-  $("boardHandoffDock")?.querySelector(".board-toggle-handoffs")?.addEventListener("click", (event) => {
-    event.preventDefault();
-    toggleBoardHandoffDock();
-  });
-  $("boardHandoffDock")?.querySelector(".board-clear-handoffs")?.addEventListener("click", (event) => {
-    event.preventDefault();
-    clearBoardHandoffs();
-    toast("已清空交接卡 / Handoff cards cleared");
-  });
-  $("boardHandoffDock")?.querySelectorAll(".board-handoff-card").forEach((card) => {
-    card.addEventListener("dragstart", (event) => {
-      const handoff = state.boardHandoffs.find((item) => item.id === card.dataset.handoffId);
-      if (!handoff) return;
-      event.dataTransfer?.setData("text/plain", handoff.text || "");
-      event.dataTransfer?.setData("text/markdown", handoff.text || "");
-      event.dataTransfer?.setData("text/codex-handoff-id", handoff.id);
-      event.dataTransfer.effectAllowed = "copy";
-    });
-  });
-  $("boardHandoffDock")?.querySelectorAll(".board-copy-handoff").forEach((button) => {
-    button.addEventListener("click", async (event) => {
+  const dock = $("boardHandoffDock");
+  if (!dock) return;
+  dock.ondragstart = (event) => {
+    const card = event.target?.closest?.(".board-handoff-card");
+    if (!card || !dock.contains(card)) return;
+    const handoff = state.boardHandoffs.find((item) => item.id === card.dataset.handoffId);
+    if (!handoff) return;
+    event.dataTransfer?.setData("text/plain", handoff.text || "");
+    event.dataTransfer?.setData("text/markdown", handoff.text || "");
+    event.dataTransfer?.setData("text/codex-handoff-id", handoff.id);
+    event.dataTransfer.effectAllowed = "copy";
+  };
+  dock.onclick = async (event) => {
+    const toggleButton = event.target?.closest?.(".board-toggle-handoffs");
+    if (toggleButton && dock.contains(toggleButton)) {
+      event.preventDefault();
+      toggleBoardHandoffDock();
+      return;
+    }
+    const clearButton = event.target?.closest?.(".board-clear-handoffs");
+    if (clearButton && dock.contains(clearButton)) {
+      event.preventDefault();
+      clearBoardHandoffs();
+      toast("已清空交接卡 / Handoff cards cleared");
+      return;
+    }
+    const copyButton = event.target?.closest?.(".board-copy-handoff");
+    if (copyButton && dock.contains(copyButton)) {
       event.stopPropagation();
-      const handoff = state.boardHandoffs.find((item) => item.id === button.dataset.handoffId);
+      const handoff = state.boardHandoffs.find((item) => item.id === copyButton.dataset.handoffId);
       if (!handoff) return;
       try {
         await navigator.clipboard.writeText(handoff.text || "");
         toast("已复制 Codex 资料包 / Handoff copied");
       } catch {
-        const textarea = button.closest(".board-handoff-card")?.querySelector("textarea");
+        const textarea = copyButton.closest(".board-handoff-card")?.querySelector("textarea");
         textarea?.select?.();
         const copied = document.execCommand?.("copy");
         toast(copied ? "已复制 Codex 资料包 / Handoff copied" : "复制失败，可展开文本手动复制 / Copy failed; expand text and copy manually");
       }
-    });
-  });
-  $("boardHandoffDock")?.querySelectorAll(".board-delete-handoff").forEach((button) => {
-    button.addEventListener("click", (event) => {
+      return;
+    }
+    const deleteButton = event.target?.closest?.(".board-delete-handoff");
+    if (deleteButton && dock.contains(deleteButton)) {
       event.preventDefault();
       event.stopPropagation();
-      removeBoardHandoff(button.dataset.handoffId || "");
-    });
-  });
+      removeBoardHandoff(deleteButton.dataset.handoffId || "");
+    }
+  };
 }
 
 function bindReferenceBoardEvents() {
@@ -3207,53 +3322,54 @@ function bindReferenceBoardEvents() {
   if (searchInput) searchInput.oninput = (event) => {
     setImageLibraryFilters({ query: event.target.value }, allBoardImageAssets());
     renderBoardAssetTray();
-    bindBoardAssetTrayEvents();
   };
-  $("referenceBoardCanvas")?.querySelectorAll(".board-node-role").forEach((select) => {
-    select.addEventListener("change", () => {
-      const node = state.boardNodes.find((item) => item.id === select.dataset.nodeId);
-      if (node) node.role = select.value === "main" ? "main" : "reference";
-      saveBoardState();
-      renderReferenceBoard();
-    });
-  });
-  $("referenceBoardCanvas")?.querySelectorAll(".board-node-note").forEach((textarea) => {
-    textarea.addEventListener("input", () => {
-      const node = state.boardNodes.find((item) => item.id === textarea.dataset.nodeId);
-      if (node) node.note = textarea.value;
-      saveBoardState();
-    });
-  });
-  $("referenceBoardCanvas")?.querySelectorAll(".board-output-scope").forEach((select) => {
-    select.addEventListener("change", () => {
-      const node = state.boardNodes.find((item) => item.id === select.dataset.nodeId);
-      if (node) node.outputScope = select.value || "";
-      saveBoardState();
-    });
-  });
-  $("referenceBoardCanvas")?.querySelectorAll(".board-output-kind").forEach((select) => {
-    select.addEventListener("change", () => {
-      const node = state.boardNodes.find((item) => item.id === select.dataset.nodeId);
-      if (node) node.outputKind = select.value || "";
-      saveBoardState();
-    });
-  });
-  $("referenceBoardCanvas")?.querySelectorAll(".board-output-note").forEach((input) => {
-    input.addEventListener("input", () => {
-      const node = state.boardNodes.find((item) => item.id === input.dataset.nodeId);
-      if (node) node.outputNote = input.value;
-      saveBoardState();
-    });
-  });
-  $("referenceBoardCanvas")?.querySelectorAll(".board-edge-note").forEach((textarea) => {
-    textarea.addEventListener("input", () => {
-      const edge = state.boardEdges.find((item) => item.id === textarea.dataset.edgeId);
-      if (edge) edge.note = textarea.value;
-      saveBoardState();
-    });
-  });
   const canvas = $("referenceBoardCanvas");
   if (canvas) {
+    canvas.onchange = (event) => {
+      const roleSelect = event.target?.closest?.(".board-node-role");
+      if (roleSelect && canvas.contains(roleSelect)) {
+        const node = state.boardNodes.find((item) => item.id === roleSelect.dataset.nodeId);
+        if (node) node.role = roleSelect.value === "main" ? "main" : "reference";
+        saveBoardState();
+        renderReferenceBoard();
+        return;
+      }
+      const outputScope = event.target?.closest?.(".board-output-scope");
+      if (outputScope && canvas.contains(outputScope)) {
+        const node = state.boardNodes.find((item) => item.id === outputScope.dataset.nodeId);
+        if (node) node.outputScope = outputScope.value || "";
+        saveBoardState();
+        return;
+      }
+      const outputKind = event.target?.closest?.(".board-output-kind");
+      if (outputKind && canvas.contains(outputKind)) {
+        const node = state.boardNodes.find((item) => item.id === outputKind.dataset.nodeId);
+        if (node) node.outputKind = outputKind.value || "";
+        saveBoardState();
+      }
+    };
+    canvas.oninput = (event) => {
+      const nodeNote = event.target?.closest?.(".board-node-note");
+      if (nodeNote && canvas.contains(nodeNote)) {
+        const node = state.boardNodes.find((item) => item.id === nodeNote.dataset.nodeId);
+        if (node) node.note = nodeNote.value;
+        saveBoardState();
+        return;
+      }
+      const outputNote = event.target?.closest?.(".board-output-note");
+      if (outputNote && canvas.contains(outputNote)) {
+        const node = state.boardNodes.find((item) => item.id === outputNote.dataset.nodeId);
+        if (node) node.outputNote = outputNote.value;
+        saveBoardState();
+        return;
+      }
+      const edgeNote = event.target?.closest?.(".board-edge-note");
+      if (edgeNote && canvas.contains(edgeNote)) {
+        const edge = state.boardEdges.find((item) => item.id === edgeNote.dataset.edgeId);
+        if (edge) edge.note = edgeNote.value;
+        saveBoardState();
+      }
+    };
     canvas.ondblclick = (event) => {
       const image = event.target?.closest?.(".board-node-image");
       if (!image) return;
@@ -3266,6 +3382,30 @@ function bindReferenceBoardEvents() {
       event.preventDefault();
       const factor = Math.exp(-event.deltaY * 0.01);
       setBoardScale(boardScale() * factor, event);
+    };
+    canvas.ondragstart = (event) => {
+      const linkHandle = event.target?.closest?.(".board-link-drag");
+      if (!linkHandle || !canvas.contains(linkHandle)) return;
+      event.dataTransfer?.setData("application/x-board-link-node", linkHandle.dataset.nodeId || "");
+      event.dataTransfer?.setData("text/plain", `board-link:${linkHandle.dataset.nodeId || ""}`);
+      event.dataTransfer.effectAllowed = "link";
+    };
+    canvas.ondragover = (event) => {
+      const types = [...(event.dataTransfer?.types || [])];
+      if (!types.includes("application/x-board-link-node")) return;
+      const card = event.target?.closest?.(".board-node-card");
+      if (!card || !canvas.contains(card)) return;
+      event.preventDefault();
+      event.dataTransfer.dropEffect = "link";
+    };
+    canvas.ondrop = (event) => {
+      const sourceId = event.dataTransfer?.getData("application/x-board-link-node") || "";
+      if (!sourceId) return;
+      const card = event.target?.closest?.(".board-node-card");
+      const targetId = card && canvas.contains(card) ? card.dataset.nodeId || "" : "";
+      if (!targetId || targetId === sourceId) return;
+      event.preventDefault();
+      createBoardRelation(sourceId, targetId);
     };
     canvas.onclick = (event) => {
       const zoomIn = event.target?.closest?.(".board-zoom-in");
@@ -3293,10 +3433,29 @@ function bindReferenceBoardEvents() {
         renderReferenceBoard();
         return;
       }
+      const linkHandle = event.target?.closest?.(".board-link-drag");
+      if (linkHandle) {
+        event.preventDefault();
+        state.boardLinkSourceId = state.boardLinkSourceId === linkHandle.dataset.nodeId ? "" : linkHandle.dataset.nodeId || "";
+        renderReferenceBoard();
+        return;
+      }
       const targetButton = event.target?.closest?.(".board-link-target");
       if (targetButton) {
         event.preventDefault();
-        createBoardEdge(state.boardLinkSourceId, targetButton.dataset.nodeId || "");
+        createBoardRelation(state.boardLinkSourceId, targetButton.dataset.nodeId || "");
+        return;
+      }
+      const armedTargetCard = event.target?.closest?.(".board-node-card");
+      if (
+        state.boardLinkSourceId &&
+        armedTargetCard &&
+        canvas.contains(armedTargetCard) &&
+        !event.target?.closest?.("button, input, select, textarea, a") &&
+        armedTargetCard.dataset.nodeId !== state.boardLinkSourceId
+      ) {
+        event.preventDefault();
+        createBoardRelation(state.boardLinkSourceId, armedTargetCard.dataset.nodeId || "");
         return;
       }
       const removeButton = event.target?.closest?.(".board-node-remove");

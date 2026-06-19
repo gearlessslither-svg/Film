@@ -5949,6 +5949,7 @@ def send_static(handler: BaseHTTPRequestHandler, path: str) -> None:
     handler.send_response(200)
     handler.send_header("Content-Type", content_type)
     handler.send_header("Content-Length", str(len(body)))
+    handler.send_header("Cache-Control", "no-store")
     add_auth_cookie_header(handler)
     handler.end_headers()
     handler.wfile.write(body)
