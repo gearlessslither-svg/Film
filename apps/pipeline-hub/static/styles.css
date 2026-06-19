@@ -912,6 +912,15 @@ textarea:focus {
   cursor: grabbing;
 }
 
+[data-external-image-drag="true"] {
+  cursor: grab;
+}
+
+[data-external-image-drag="true"]:active,
+.external-image-dragging [data-external-image-drag="true"] {
+  cursor: grabbing;
+}
+
 .idea-ref-chip {
   border: 1px solid var(--line);
   border-radius: 999px;
@@ -3595,18 +3604,18 @@ th {
 
 .board-node-card {
   position: absolute;
-  width: 280px;
+  width: 420px;
   max-width: calc(100vw - 40px);
   box-sizing: border-box;
   border: 1px solid var(--line);
   border-radius: 8px;
   background: var(--surface);
   box-shadow: var(--shadow);
-  padding: 8px;
+  padding: 10px;
   display: grid;
-  gap: 8px;
+  gap: 10px;
   user-select: none;
-  overflow: hidden;
+  overflow: visible;
 }
 
 /* Cards are absolutely positioned and stack by DOM order; lift the one under the
@@ -3635,21 +3644,34 @@ th {
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.14), var(--shadow);
 }
 
-.board-node-card header {
+.board-node-card header,
+.board-node-header {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 30px;
+  gap: 6px;
+}
+
+.board-node-role-row,
+.board-node-link-row {
+  display: grid;
   gap: 6px;
   align-items: center;
 }
 
+.board-node-role-row {
+  grid-template-columns: minmax(0, 1fr) 34px;
+}
+
+.board-node-link-row {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
 .board-node-role {
-  grid-column: 1 / 3;
-  min-height: 30px;
+  min-height: 34px;
   width: 100%;
   min-width: 0;
   max-width: none;
   padding: 0 6px;
-  font-size: 11px;
+  font-size: 13px;
 }
 
 .board-node-card .mini-command {
@@ -3664,20 +3686,23 @@ th {
 }
 
 .board-node-card .icon-button {
-  grid-column: 3;
-  grid-row: 1;
-  width: 30px;
-  min-height: 30px;
+  width: 34px;
+  min-width: 34px;
+  min-height: 34px;
   font-size: 16px;
 }
 
 .board-node-card img {
   width: 100%;
   aspect-ratio: 16 / 9;
-  object-fit: cover;
+  object-fit: contain;
   border: 1px solid var(--line);
   border-radius: 8px;
-  background: #edf2ef;
+  background:
+    linear-gradient(45deg, rgba(31, 41, 38, 0.04) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(31, 41, 38, 0.04) 25%, transparent 25%),
+    #edf2ef;
+  background-size: 16px 16px;
   cursor: zoom-in;
 }
 
@@ -3689,6 +3714,8 @@ th {
 .board-node-meta strong {
   font-size: 12px;
   line-height: 1.25;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .board-node-meta small {
@@ -3755,7 +3782,7 @@ th {
 
 .board-node-card footer {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(108px, auto);
+  grid-template-columns: minmax(0, 1fr) auto;
   gap: 8px;
   align-items: center;
 }
@@ -3766,6 +3793,8 @@ th {
 }
 
 .board-node-card footer .command-button {
+  grid-column: 1 / -1;
+  width: 100%;
   min-height: 32px;
   padding: 0 10px;
   font-size: 12px;
@@ -4061,8 +4090,12 @@ th {
   width: 100%;
   aspect-ratio: 16 / 9;
   border-radius: 6px;
-  object-fit: cover;
-  background: #edf2ef;
+  object-fit: contain;
+  background:
+    linear-gradient(45deg, rgba(31, 41, 38, 0.04) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(31, 41, 38, 0.04) 25%, transparent 25%),
+    #edf2ef;
+  background-size: 14px 14px;
 }
 
 .board-asset-card strong {
@@ -4080,6 +4113,33 @@ th {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.board-asset-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.board-download-link {
+  color: var(--accent);
+  font-size: 10px;
+  font-weight: 750;
+  text-decoration: none;
+}
+
+.board-download-link:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 760px) {
+  .board-node-card {
+    width: min(420px, calc(100vw - 40px));
+  }
+
+  .board-output-routing,
+  .board-node-link-row {
+    grid-template-columns: 1fr;
+  }
 }
 
 .board-card-target {

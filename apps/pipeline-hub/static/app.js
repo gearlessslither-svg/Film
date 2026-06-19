@@ -239,6 +239,7 @@ const CARD_FILTER_OPTIONS = [
 
 const $ = (id) => document.getElementById(id);
 const NATURAL_COLLATOR = new Intl.Collator(["zh-Hans-CN", "en"], { numeric: true, sensitivity: "base" });
+const externalImageDragCache = new Map();
 
 function escapeHtml(value) {
   return String(value ?? "")
@@ -259,6 +260,156 @@ function toast(message) {
   node.classList.add("show");
   clearTimeout(node._timer);
   node._timer = setTimeout(() => node.classList.remove("show"), 2800);
+}
+
+function imageMimeFromPath(path = "") {
+  const lower = String(path || "").toLowerCase();
+  if (lower.endsWith(".jpg") || lower.endsWith(".jpeg")) return "image/jpeg";
+  if (lower.endsWith(".webp")) return "image/webp";
+  if (lower.endsWith(".gif")) return "image/gif";
+  return "image/png";
+}
+
+function imageFileNameFromPath(path = "", fallback = "pipeline-image.png") {
+  const clean = String(path || "").split("?")[0].split("#")[0];
+  const name = clean.split("/").filter(Boolean).pop() || fallback;
+  if (/\.(png|jpe?g|webp|gif)$/i.test(name)) return name;
+  return `${name.replace(/\.+$/, "") || "pipeline-image"}.png`;
+}
+
+function absoluteAssetUrl(url = "") {
+  if (!url) return "";
+  try {
+    return new URL(url, window.location.href).href;
+  } catch {
+    return url;
+  }
+}
+
+function externalImageDragAttrs(url, path, name = "", options = {}) {
+  if (!url || !isImagePath(path || url)) return "";
+  const fileName = imageFileNameFromPath(path || name || url, name || "pipeline-image.png");
+  const draggable = options.draggable === false ? "" : 'draggable="true"';
+  return [
+    'data-external-image-drag="true"',
+    `data-drag-image-url="${escapeHtml(url)}"`,
+    `data-drag-image-path="${escapeHtml(path || "")}"`,
+    `data-drag-image-name="${escapeHtml(fileName)}"`,
+    draggable,
+  ].join(" ");
+}
+
+function downloadImageAttrs(url, path, name = "") {
+  if (!url || !isImagePath(path || url)) return "";
+  return `href="${escapeHtml(url)}" download="${escapeHtml(imageFileNameFromPath(path || name || url, name || "pipeline-image.png"))}"`;
+}
+
+async function preloadExternalImageDrag(element) {
+  const url = element?.dataset?.dragImageUrl || "";
+  if (!url) return null;
+  const absoluteUrl = absoluteAssetUrl(url);
+  const cached = externalImageDragCache.get(absoluteUrl);
+  if (cached?.file) return cached.file;
+  if (cached?.promise) return cached.promise;
+  const path = element.dataset.dragImagePath || "";
+  const name = element.dataset.dragImageName || imageFileNameFromPath(path || absoluteUrl);
+  const promise = fetch(absoluteUrl)
+    .then((response) => {
+      if (!response.ok) throw new Error(response.statusText || `HTTP ${response.status}`);
+      return response.blob();
+    })
+    .then((blob) => {
+      const file = new File([blob], name, { type: blob.type || imageMimeFromPath(path || name) });
+      externalImageDragCache.set(absoluteUrl, { file });
+      return file;
+    })
+    .catch((error) => {
+      externalImageDragCache.delete(absoluteUrl);
+      throw error;
+    });
+  externalImageDragCache.set(absoluteUrl, { promise });
+  return promise;
+}
+
+function blobFromDataUrl(dataUrl) {
+  const [meta = "", data = ""] = dataUrl.split(",");
+  const mime = meta.match(/data:([^;]+)/)?.[1] || "image/png";
+  const binary = atob(data);
+  const bytes = new Uint8Array(binary.length);
+  for (let index = 0; index < binary.length; index += 1) bytes[index] = binary.charCodeAt(index);
+  return new Blob([bytes], { type: mime });
+}
+
+function fileFromLoadedImage(element) {
+  const img = element.matches?.("img") ? element : element.querySelector?.("img");
+  if (!img?.complete || !img.naturalWidth || !img.naturalHeight) return null;
+  const path = element.dataset.dragImagePath || "";
+  const name = element.dataset.dragImageName || imageFileNameFromPath(path || img.currentSrc || img.src);
+  const mime = imageMimeFromPath(path || name);
+  try {
+    const canvas = document.createElement("canvas");
+    canvas.width = img.naturalWidth;
+    canvas.height = img.naturalHeight;
+    const context = canvas.getContext("2d");
+    context.drawImage(img, 0, 0);
+    const dataUrl = canvas.toDataURL(mime, 0.96);
+    const blob = blobFromDataUrl(dataUrl);
+    return new File([blob], name, { type: blob.type || mime });
+  } catch {
+    return null;
+  }
+}
+
+function attachExternalImageDragData(event, element) {
+  const transfer = event.dataTransfer;
+  if (!transfer || !element) return;
+  const url = element.dataset.dragImageUrl || "";
+  const path = element.dataset.dragImagePath || "";
+  const name = element.dataset.dragImageName || imageFileNameFromPath(path || url);
+  const absoluteUrl = absoluteAssetUrl(url);
+  let addedFile = false;
+  const cached = externalImageDragCache.get(absoluteUrl);
+  const file = cached?.file || fileFromLoadedImage(element);
+  if (file && transfer.items?.add) {
+    try {
+      transfer.items.add(file);
+      addedFile = true;
+    } catch {
+      addedFile = false;
+    }
+  }
+  transfer.setData("text/plain", absoluteUrl || path);
+  transfer.setData("text/uri-list", absoluteUrl || path);
+  transfer.setData("DownloadURL", `${file?.type || imageMimeFromPath(path || name)}:${name}:${absoluteUrl}`);
+  transfer.effectAllowed = "copy";
+  if (!addedFile) {
+    preloadExternalImageDrag(element).catch(() => {});
+    toast("正在准备可拖拽文件；如果外站没接住，请再拖一次 / Preparing file drag; try again if needed");
+  }
+}
+
+function installExternalImageDrag() {
+  const dragSelector = "[data-external-image-drag='true']";
+  const warm = (target) => {
+    const element = target?.closest?.(dragSelector);
+    if (element) preloadExternalImageDrag(element).catch(() => {});
+  };
+  document.addEventListener("pointerdown", (event) => warm(event.target), { capture: true });
+  document.addEventListener("mouseover", (event) => warm(event.target), { passive: true });
+  document.addEventListener("touchstart", (event) => warm(event.target), { passive: true, capture: true });
+  document.addEventListener(
+    "dragstart",
+    (event) => {
+      const element = event.target?.closest?.(dragSelector);
+      if (!element) return;
+      attachExternalImageDragData(event, element);
+      document.body.classList.add("external-image-dragging");
+    },
+    { capture: true },
+  );
+  document.addEventListener("dragend", () => {
+    document.body.classList.remove("external-image-dragging");
+  });
 }
 
 async function requestJson(url, options = {}) {
@@ -591,8 +742,8 @@ function renderPreviewTile(item) {
     `;
   }
   return `
-    <a class="preview-tile" href="${escapeHtml(item.url)}" target="_blank" title="${title}">
-      <img src="${escapeHtml(item.url)}" alt="${escapeHtml(item.name)}" loading="lazy" />
+    <a class="preview-tile" href="${escapeHtml(item.url)}" target="_blank" title="${title}" ${externalImageDragAttrs(item.url, item.path, item.name)}>
+      <img src="${escapeHtml(item.url)}" alt="${escapeHtml(item.name)}" loading="lazy" ${externalImageDragAttrs(item.url, item.path, item.name)} />
       <span>${escapeHtml(item.name)}</span>
       <small>${escapeHtml(assetSummary(item))}</small>
       ${annotationBadge(item)}
@@ -602,7 +753,7 @@ function renderPreviewTile(item) {
 
 function renderSceneLockThumb(item, label = "场景 / Scene") {
   if (item?.url && item.previewable && !item.lfs_missing) {
-    return `<img src="${escapeHtml(item.url)}" alt="${escapeHtml(label)}" loading="lazy" />`;
+    return `<img src="${escapeHtml(item.url)}" alt="${escapeHtml(label)}" loading="lazy" ${externalImageDragAttrs(item.url, item.path, item.name || label)} />`;
   }
   return `<span class="scene-lock-placeholder ${item?.lfs_missing ? "warning" : ""}" title="${item?.lfs_missing ? "需 git lfs pull 下载 / run git lfs pull" : ""}">${escapeHtml(item?.lfs_missing ? "未下载 / not downloaded" : label)}</span>`;
 }
@@ -631,8 +782,8 @@ function renderSceneLocks() {
 
   if (overview?.url && overview.previewable && !overview.lfs_missing) {
     $("sceneLockOverview").innerHTML = `
-      <a class="scene-overview-link" href="${escapeHtml(overview.url)}" target="_blank" title="${escapeHtml(overview.path)}">
-        <img src="${escapeHtml(overview.url)}" alt="${escapeHtml(overview.name)}" loading="lazy" />
+      <a class="scene-overview-link" href="${escapeHtml(overview.url)}" target="_blank" title="${escapeHtml(overview.path)}" ${externalImageDragAttrs(overview.url, overview.path, overview.name)}>
+        <img src="${escapeHtml(overview.url)}" alt="${escapeHtml(overview.name)}" loading="lazy" ${externalImageDragAttrs(overview.url, overview.path, overview.name)} />
       </a>
     `;
   } else if (overview?.lfs_missing) {
@@ -798,7 +949,7 @@ function filteredAssets() {
 function renderResourceThumb(item) {
   if (item.category === "image") {
     if (item.previewable && !item.lfs_missing) {
-      return `<a class="resource-thumb" href="${escapeHtml(item.url)}" target="_blank"><img src="${escapeHtml(item.url)}" alt="${escapeHtml(item.name)}" loading="lazy" /></a>`;
+      return `<a class="resource-thumb" href="${escapeHtml(item.url)}" target="_blank" ${externalImageDragAttrs(item.url, item.path, item.name)}><img src="${escapeHtml(item.url)}" alt="${escapeHtml(item.name)}" loading="lazy" ${externalImageDragAttrs(item.url, item.path, item.name)} /></a>`;
     }
     return `<div class="resource-thumb">${renderLfsPlaceholder(item.lfs_missing ? "未下载 / missing" : "不可预览 / no preview")}</div>`;
   }
@@ -1045,7 +1196,7 @@ async function openAssetPreview(asset) {
   modal.hidden = false;
   document.body.classList.add("modal-open");
   if (isImagePath(path)) {
-    body.innerHTML = `<img class="asset-preview-image" src="${escapeHtml(asset.url)}" alt="${escapeHtml(title.textContent)}" />`;
+    body.innerHTML = `<img class="asset-preview-image" src="${escapeHtml(asset.url)}" alt="${escapeHtml(title.textContent)}" ${externalImageDragAttrs(asset.url, path, asset.asset_id || asset.role || path)} />`;
     return;
   }
   if (VIDEO_PREVIEW_EXTENSIONS.test(path)) {
@@ -1391,6 +1542,8 @@ const BOARD_MIN_SCALE = 0.3;
 const BOARD_MAX_SCALE = 3;
 const BOARD_STAGE_WIDTH = 2400;
 const BOARD_STAGE_HEIGHT = 1500;
+const BOARD_NODE_WIDTH = 420;
+const BOARD_NODE_HEIGHT_FOR_LINKS = 280;
 
 function boardStorageKey() {
   return state.selectedSlug ? `pipeline-board:${state.selectedSlug}` : "pipeline-board";
@@ -1893,6 +2046,11 @@ function openBoardImageLightbox(nodeId) {
   if (!asset?.url || !modal || !img) return;
   img.src = asset.url;
   img.alt = asset.asset_id || asset.path || "Board image";
+  img.dataset.externalImageDrag = "true";
+  img.dataset.dragImageUrl = asset.url || "";
+  img.dataset.dragImagePath = asset.path || "";
+  img.dataset.dragImageName = imageFileNameFromPath(asset.path || asset.asset_id || "");
+  img.draggable = true;
   modal.hidden = false;
   document.body.classList.add("modal-open");
 }
@@ -2036,7 +2194,7 @@ function boardNodeOutgoingEdges(nodeId) {
 }
 
 function boardNodeCenter(node) {
-  return { x: Number(node.x || 0) + 140, y: Number(node.y || 0) + 126 };
+  return { x: Number(node.x || 0) + BOARD_NODE_WIDTH / 2, y: Number(node.y || 0) + BOARD_NODE_HEIGHT_FOR_LINKS / 2 };
 }
 
 function boardCanvasPoint(event) {
@@ -2046,7 +2204,7 @@ function boardCanvasPoint(event) {
   // rect is the post-transform (scaled) box, so divide back into the stage's logical coordinates.
   const scale = boardScale();
   return {
-    x: clamp((event.clientX - rect.left) / scale - 140, 12, Math.max(12, BOARD_STAGE_WIDTH - 300)),
+    x: clamp((event.clientX - rect.left) / scale - BOARD_NODE_WIDTH / 2, 12, Math.max(12, BOARD_STAGE_WIDTH - BOARD_NODE_WIDTH - 20)),
     y: clamp((event.clientY - rect.top) / scale - 80, 12, Math.max(12, BOARD_STAGE_HEIGHT - 260)),
   };
 }
@@ -2054,7 +2212,7 @@ function boardCanvasPoint(event) {
 function boardDefaultNodePoint() {
   const lastNode = state.boardNodes[state.boardNodes.length - 1];
   if (lastNode) {
-    const nextX = Number(lastNode.x || 0) + 340;
+    const nextX = Number(lastNode.x || 0) + BOARD_NODE_WIDTH + 60;
     if (nextX <= 1600) return { x: nextX, y: Number(lastNode.y || 0) };
     return { x: 40, y: Number(lastNode.y || 0) + 380 };
   }
@@ -2708,16 +2866,20 @@ function renderBoardNode(node) {
   const cardTargetLabel = boardTargetCardLabel(cardTarget);
   return `
     <article class="board-node-card ${escapeHtml(node.role || "reference")} ${activeLink ? "linking" : ""} ${activeGeneration ? "generating" : ""}" data-node-id="${escapeHtml(node.id)}" style="left:${Number(node.x || 0)}px; top:${Number(node.y || 0)}px;">
-      <header>
-        <select class="board-node-role" data-node-id="${escapeHtml(node.id)}">
-          <option value="main" ${node.role === "main" ? "selected" : ""}>主图 / Main</option>
-          <option value="reference" ${node.role !== "main" ? "selected" : ""}>关联图 / Reference</option>
-        </select>
-        <button class="mini-command board-link-source" data-help="从这张图发起一条关系线。通常主图用它连接到人物、白模、道具等关联图。" data-node-id="${escapeHtml(node.id)}" type="button" title="从这张图发起关联线 / Link from this image">${activeLink ? "等待 / Linking" : "主图线 / From"}</button>
-        <button class="mini-command board-link-target" data-help="把这张图接到上一张主图线上，作为参考元素参与重生成。" data-node-id="${escapeHtml(node.id)}" type="button" title="把这张图连为关联图 / Link this as a reference">关联 / To</button>
-        <button class="icon-button board-node-remove" data-node-id="${escapeHtml(node.id)}" type="button" title="移除 / Remove">×</button>
+      <header class="board-node-header">
+        <div class="board-node-role-row">
+          <select class="board-node-role" data-node-id="${escapeHtml(node.id)}">
+            <option value="main" ${node.role === "main" ? "selected" : ""}>主图 / Main</option>
+            <option value="reference" ${node.role !== "main" ? "selected" : ""}>关联图 / Reference</option>
+          </select>
+          <button class="icon-button board-node-remove" data-node-id="${escapeHtml(node.id)}" type="button" title="移除 / Remove">×</button>
+        </div>
+        <div class="board-node-link-row">
+          <button class="mini-command board-link-source" data-help="从这张图发起一条关系线。通常主图用它连接到人物、白模、道具等关联图。" data-node-id="${escapeHtml(node.id)}" type="button" title="从这张图发起关联线 / Link from this image">${activeLink ? "等待 / Linking" : "主图线 / From"}</button>
+          <button class="mini-command board-link-target" data-help="把这张图接到上一张主图线上，作为参考元素参与重生成。" data-node-id="${escapeHtml(node.id)}" type="button" title="把这张图连为关联图 / Link this as a reference">关联 / To</button>
+        </div>
       </header>
-      <img class="board-node-image" data-node-id="${escapeHtml(node.id)}" src="${escapeHtml(asset.url)}" alt="${escapeHtml(asset.asset_id || asset.path)}" draggable="false" title="双击预览大图 / Double-click to preview" />
+      <img class="board-node-image" data-node-id="${escapeHtml(node.id)}" src="${escapeHtml(asset.url)}" alt="${escapeHtml(asset.asset_id || asset.path)}" title="双击预览大图；也可拖到外部上传区 / Double-click to preview; drag to external upload" ${externalImageDragAttrs(asset.url, asset.path, asset.asset_id || asset.path)} />
       <div class="board-node-meta">
         <strong>${escapeHtml(asset.asset_id || asset.role || asset.path)}</strong>
         <small>${escapeHtml(asset.scene_id || "PROJECT")} · ${escapeHtml(kindLabel(asset.kind))} · ${escapeHtml(asset.path || "")}</small>
@@ -2756,6 +2918,7 @@ function renderBoardNode(node) {
       }
       <footer>
         <span>${outgoingCount} 关联 / refs</span>
+        <a class="board-download-link" ${downloadImageAttrs(asset.url, asset.path, asset.asset_id || asset.path)}>下载原图</a>
         <button class="command-button primary board-generate-node" data-help="${cardTarget ? "把当前主图、关联图和画布备注整理成单卡精修包，生成后默认回填到目标卡片。" : "汇总主图、关联图、连线说明和备注，生成可交给 Codex 处理的图片任务包。"}" data-node-id="${escapeHtml(node.id)}" type="button" ${state.busy ? "disabled" : ""}>${activeGeneration ? `生成中 ${progress}%` : cardTarget ? "精修入卡 / Revise Card" : "生成 / Generate"}</button>
       </footer>
       ${
@@ -2887,6 +3050,9 @@ function renderBoardAssetTray() {
               <strong>${escapeHtml(asset.asset_id || asset.role || asset.path)}</strong>
               <small>${escapeHtml(asset.scene_id || asset.act_id || "PROJECT")} · ${escapeHtml(kindLabel(asset.kind))}${versionLabel ? ` · ${escapeHtml(versionLabel)}` : ""}${escapeHtml(assetQaLabel(asset))}</small>
               ${asset.card_id ? `<small>${escapeHtml(asset.card_id)}${asset.card_title ? ` · ${escapeHtml(asset.card_title)}` : ""}</small>` : ""}
+              <div class="board-asset-actions">
+                <a class="board-download-link" ${downloadImageAttrs(asset.url, asset.path, asset.asset_id || asset.path)}>下载</a>
+              </div>
             </article>
           `;
           },
@@ -2910,7 +3076,7 @@ function bindBoardNodeDrag() {
       const originalX = Number(node.x || 0);
       const originalY = Number(node.y || 0);
       const scale = boardScale();
-      const maxX = Math.max(12, BOARD_STAGE_WIDTH - 300);
+      const maxX = Math.max(12, BOARD_STAGE_WIDTH - BOARD_NODE_WIDTH - 20);
       const maxY = Math.max(12, BOARD_STAGE_HEIGHT - 320);
       const onMove = (moveEvent) => {
         // Pointer travel is in screen pixels; divide by scale to move in stage units.
@@ -2935,6 +3101,7 @@ function bindBoardAssetTrayEvents() {
   $("boardAssetTray")?.querySelectorAll(".board-asset-card").forEach((card) => {
     card.addEventListener("pointerdown", (event) => {
       if (event.button !== 0) return;
+      if (event.target?.closest?.("a, button")) return;
       const ref = card.dataset.ref || "";
       const startX = event.clientX;
       const startY = event.clientY;
@@ -4894,8 +5061,8 @@ function renderCardVersionPreview(cardOrRow, label = "版本 / Versions") {
   return `
     <div class="card-version-panel">
       <div class="card-version-latest">
-        <a href="${escapeHtml(sceneAssetUrl(current.output_path || ""))}" target="_blank">
-          <img src="${escapeHtml(sceneAssetUrl(current.output_path || ""))}" alt="${escapeHtml(current.version_id || "current")}" loading="lazy" />
+        <a href="${escapeHtml(sceneAssetUrl(current.output_path || ""))}" target="_blank" ${externalImageDragAttrs(sceneAssetUrl(current.output_path || ""), current.output_path || "", current.version_id || "current")}>
+          <img src="${escapeHtml(sceneAssetUrl(current.output_path || ""))}" alt="${escapeHtml(current.version_id || "current")}" loading="lazy" ${externalImageDragAttrs(sceneAssetUrl(current.output_path || ""), current.output_path || "", current.version_id || "current")} />
         </a>
         <div>
           <strong>${escapeHtml(label)}</strong>
@@ -4913,8 +5080,8 @@ function renderCardVersionPreview(cardOrRow, label = "版本 / Versions") {
           .map(
             (version) => `
               <div class="card-version-thumb ${escapeHtml(version.status || "candidate")}" title="${escapeHtml(version.notes || version.output_path || "")}">
-                <a href="${escapeHtml(sceneAssetUrl(version.output_path || ""))}" target="_blank">
-                  <img src="${escapeHtml(sceneAssetUrl(version.output_path || ""))}" alt="${escapeHtml(version.version_id || "version")}" loading="lazy" />
+                <a href="${escapeHtml(sceneAssetUrl(version.output_path || ""))}" target="_blank" ${externalImageDragAttrs(sceneAssetUrl(version.output_path || ""), version.output_path || "", version.version_id || "version")}>
+                  <img src="${escapeHtml(sceneAssetUrl(version.output_path || ""))}" alt="${escapeHtml(version.version_id || "version")}" loading="lazy" ${externalImageDragAttrs(sceneAssetUrl(version.output_path || ""), version.output_path || "", version.version_id || "version")} />
                   <span>${escapeHtml(versionLabel(version))}</span>
                 </a>
                 <small>${escapeHtml(statusLabel(version.status))}</small>
@@ -8218,6 +8385,7 @@ function bindEvents() {
   bindResourceFilters();
   bindKeyboardShortcuts();
   installButtonHelpObserver();
+  installExternalImageDrag();
 }
 
 bindEvents();
