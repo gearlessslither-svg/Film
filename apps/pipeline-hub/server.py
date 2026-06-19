@@ -2042,7 +2042,7 @@ def normalize_idea_references(value: object) -> list[dict[str, object]]:
 
 
 def normalize_concept_card_versions(value: object) -> list[dict[str, object]]:
-    allowed_statuses = {"candidate", "current", "reference", "rejected"}
+    allowed_statuses = {"candidate", "current", "final", "reference", "rejected"}
     versions: list[dict[str, object]] = []
     if isinstance(value, list):
         for index, version in enumerate(value, start=1):
@@ -2121,6 +2121,21 @@ def normalize_idea_acts(value: object) -> list[dict[str, object]]:
             if isinstance(act, dict):
                 acts.append(normalize_idea_act(act, index))
     return acts
+
+
+def normalize_idea_act_inputs(value: object) -> dict[str, dict[str, str]]:
+    inputs: dict[str, dict[str, str]] = {}
+    if isinstance(value, dict):
+        for raw_act_id, raw_input in value.items():
+            act_id = safe_file_stem(raw_act_id)
+            if not act_id or not isinstance(raw_input, dict):
+                continue
+            inputs[act_id] = {
+                "idea": str(raw_input.get("idea", "") or "").strip(),
+                "story_title": str(raw_input.get("story_title", "") or "").strip(),
+                "logline": str(raw_input.get("logline", "") or "").strip(),
+            }
+    return inputs
 
 
 def normalize_project_bible_card(card: dict[str, object], index: int) -> dict[str, object]:
@@ -2207,10 +2222,12 @@ def normalize_idea_row(row: dict[str, object], index: int) -> dict[str, object]:
         "beat": str(row.get("beat", "") or "").strip(),
         "shot_type": str(row.get("shot_type", "") or "").strip(),
         "frame_description": str(row.get("frame_description", "") or "").strip(),
+        "spatial_logic": str(row.get("spatial_logic") or row.get("blocking_logic") or row.get("continuity_logic") or "").strip(),
         "image_prompt": str(row.get("image_prompt", "") or "").strip(),
         "video_prompt": str(row.get("video_prompt", "") or "").strip(),
         "notes": str(row.get("notes", "") or "").strip(),
         "revision_note": str(row.get("revision_note", "") or "").strip(),
+        "sort_after": str(row.get("sort_after") or row.get("insert_after") or row.get("after") or "").strip(),
         "selected": bool_from_payload(row.get("selected"), True),
         "status": str(row.get("status", "draft") or "draft").strip(),
         "output_path": str(row.get("output_path", "") or "").strip(),
@@ -2221,6 +2238,92 @@ def normalize_idea_row(row: dict[str, object], index: int) -> dict[str, object]:
     }
 
 
+def normalized_sort_anchor(value: object) -> str:
+    text = str(value or "").strip()
+    if "=" in text:
+        text = text.rsplit("=", 1)[-1].strip()
+    return safe_file_stem(text).lower()
+
+
+def row_matches_sort_anchor(row: dict[str, object], index: int, anchor: str) -> bool:
+    if not anchor:
+        return False
+    if anchor.isdigit():
+        number = int(anchor)
+        if number == index + 1:
+            return True
+        padded = f"{number:03d}"
+        if str(row.get("item_id", "") or "").lower().endswith(padded):
+            return True
+        if f"msb{padded}" in str(row.get("beat", "") or "").lower():
+            return True
+    haystack = " ".join(
+        str(row.get(key, "") or "")
+        for key in ("item_id", "beat", "shot_type", "frame_description", "notes")
+    )
+    return anchor in safe_file_stem(haystack).lower()
+
+
+def apply_idea_row_sorting(rows: list[dict[str, object]]) -> list[dict[str, object]]:
+    ordered = list(rows)
+    for row in list(rows):
+        anchor = normalized_sort_anchor(row.get("sort_after", ""))
+        if not anchor or row not in ordered:
+            continue
+        current_index = ordered.index(row)
+        target_index = next(
+            (
+                index
+                for index, candidate in enumerate(ordered)
+                if candidate is not row and row_matches_sort_anchor(candidate, index, anchor)
+            ),
+            None,
+        )
+        if target_index is None:
+            continue
+        ordered.pop(current_index)
+        if current_index < target_index:
+            target_index -= 1
+        ordered.insert(target_index + 1, row)
+    return ordered
+
+
+def normalize_completed_handoff_ids(value: object) -> list[str]:
+    if not isinstance(value, list):
+        return []
+    ids: list[str] = []
+    seen: set[str] = set()
+    for item in value:
+        handoff_id = str(item or "").strip()
+        if not handoff_id or handoff_id in seen:
+            continue
+        seen.add(handoff_id)
+        ids.append(handoff_id)
+    return ids
+
+
+def completed_handoff_ids_from_payload(payload: dict[str, object]) -> list[str]:
+    ids = normalize_completed_handoff_ids(payload.get("completed_handoff_ids", []))
+    seen = set(ids)
+    for key in ("completed_handoff_id", "codex_handoff_id", "handoff_id"):
+        handoff_id = str(payload.get(key, "") or "").strip()
+        if handoff_id and handoff_id not in seen:
+            seen.add(handoff_id)
+            ids.append(handoff_id)
+    return ids
+
+
+def merge_completed_handoff_ids(board: dict[str, object], payload: dict[str, object]) -> list[str]:
+    ids = normalize_completed_handoff_ids(board.get("completed_handoff_ids", []))
+    seen = set(ids)
+    for handoff_id in completed_handoff_ids_from_payload(payload):
+        if handoff_id and handoff_id not in seen:
+            seen.add(handoff_id)
+            ids.append(handoff_id)
+    board["completed_handoff_ids"] = ids
+    return ids
+
+
 def normalize_idea_board(slug: str, payload: dict[str, object]) -> dict[str, object]:
     rows_payload = payload.get("rows", [])
     rows = []
@@ -2228,6 +2331,7 @@ def normalize_idea_board(slug: str, payload: dict[str, object]) -> dict[str, obj
         for index, row in enumerate(rows_payload, start=1):
             if isinstance(row, dict):
                 rows.append(normalize_idea_row(row, index))
+    rows = apply_idea_row_sorting(rows)
     return {
         "schema_version": 1,
         "project_slug": slug,
@@ -2237,10 +2341,12 @@ def normalize_idea_board(slug: str, payload: dict[str, object]) -> dict[str, obj
         "logline": str(payload.get("logline", "") or "").strip(),
         "story_outline": str(payload.get("story_outline", "") or "").strip(),
         "style_notes": str(payload.get("style_notes", "") or "").strip(),
+        "act_inputs": normalize_idea_act_inputs(payload.get("act_inputs", {})),
         "acts": normalize_idea_acts(payload.get("acts", [])),
         "project_bible": normalize_project_bible(payload.get("project_bible", [])),
         "global_references": normalize_idea_references(payload.get("global_references", [])),
         "rows": rows,
+        "completed_handoff_ids": normalize_completed_handoff_ids(payload.get("completed_handoff_ids", [])),
     }
 
 
@@ -2262,8 +2368,31 @@ def idea_board_to_markdown(board: dict[str, object]) -> str:
         "## Style Notes / 风格备注",
         str(board.get("style_notes", "") or ""),
         "",
-        "## Acts / 幕结构",
+        "## Act Inputs / 按幕输入草稿",
     ]
+    act_inputs = board.get("act_inputs", {})
+    if isinstance(act_inputs, dict) and act_inputs:
+        for act_id, item in act_inputs.items():
+            if not isinstance(item, dict):
+                continue
+            lines.extend(
+                [
+                    "",
+                    f"### {act_id}",
+                    f"- Story title / 片名: {item.get('story_title', '')}",
+                    f"- Logline / 一句话: {item.get('logline', '')}",
+                    "",
+                    str(item.get("idea", "") or ""),
+                ]
+            )
+    else:
+        lines.append("- None")
+    lines.extend(
+        [
+            "",
+            "## Acts / 幕结构",
+        ]
+    )
     acts = board.get("acts", [])
     if isinstance(acts, list) and acts:
         for index, act in enumerate(acts, start=1):
@@ -2356,11 +2485,15 @@ def idea_board_to_markdown(board: dict[str, object]) -> str:
                     f"- Scene / 场戏: {row.get('scene_id', '')}",
                     f"- Beat / 剧情点: {row.get('beat', '')}",
                     f"- Shot type / 镜头: {row.get('shot_type', '')}",
+                    f"- Sort after / 放在之后: {row.get('sort_after', '')}",
                     f"- Selected / 选中: {row.get('selected', True)}",
                     f"- Status / 状态: {row.get('status', '')}",
                     "",
                     "Frame description / 画面描述:",
                     str(row.get("frame_description", "") or ""),
+                    "",
+                    "Spatial logic / 空间逻辑:",
+                    str(row.get("spatial_logic", "") or ""),
                     "",
                     "Image prompt / 图片提示词:",
                     str(row.get("image_prompt", "") or ""),
@@ -2396,10 +2529,12 @@ def write_idea_board_files(path: Path, board: dict[str, object]) -> None:
         "beat",
         "shot_type",
         "frame_description",
+        "spatial_logic",
         "image_prompt",
         "video_prompt",
         "notes",
         "revision_note",
+        "sort_after",
         "selected",
         "status",
         "output_path",
@@ -2429,10 +2564,12 @@ def load_idea_board(path: Path, slug: str) -> dict[str, object]:
             "logline": "",
             "story_outline": "",
             "style_notes": "",
+            "act_inputs": {},
             "acts": [],
             "project_bible": [],
             "global_references": [],
             "rows": [],
+            "completed_handoff_ids": [],
         }
     board = normalize_idea_board(slug, data)
     board["updated_at"] = str(data.get("updated_at", board.get("updated_at", "")) or "")
@@ -2443,10 +2580,11 @@ def update_idea_board(slug: str, payload: dict[str, object]) -> dict[str, object
     path = project_path(slug)
     existing = load_idea_board(path, slug)
     merged = {**existing, **payload}
-    for key in ("acts", "project_bible", "global_references", "rows"):
+    for key in ("act_inputs", "acts", "project_bible", "global_references", "rows", "completed_handoff_ids"):
         if key not in payload:
-            merged[key] = existing.get(key, [])
+            merged[key] = existing.get(key, {} if key == "act_inputs" else [])
     board = normalize_idea_board(slug, merged)
+    merge_completed_handoff_ids(board, payload)
     write_idea_board_files(path, board)
     return {"ok": True, "idea_board": load_idea_board(path, slug), "project": project_detail(slug)}
 
@@ -2647,6 +2785,8 @@ def update_idea_image_output(slug: str, payload: dict[str, object]) -> dict[str,
             row["versions"] = versions
             row["status"] = "image_ready"
             updated += 1
+    if updated > 0:
+        merge_completed_handoff_ids(board, payload)
     board["updated_at"] = now_iso()
     write_idea_board_files(path, board)
     return {"ok": True, "updated": updated, "idea_board": load_idea_board(path, slug), "project": project_detail(slug)}
@@ -2657,12 +2797,14 @@ def scene_context_for_row(path: Path, board: dict[str, object], row: dict[str, o
     scene_data = load_scene_workbench(path)
     scenes = [scene for scene in scene_data.get("scenes", []) if isinstance(scene, dict)]
     scene = next((item for item in scenes if item.get("scene_id") == scene_id), {})
-    act_id = str(scene.get("act_id", "") or "")
+    act_id = str(row.get("act_id", "") or "") or str(scene.get("act_id", "") or "")
     scene_ids = {
         str(item.get("scene_id", "") or "")
         for item in scenes
         if act_id and str(item.get("act_id", "") or "") == act_id
     }
+    if scene_id:
+        scene_ids.add(scene_id)
     rows = board.get("rows", [])
     if not isinstance(rows, list):
         rows = []
@@ -2671,8 +2813,9 @@ def scene_context_for_row(path: Path, board: dict[str, object], row: dict[str, o
         for item in rows
         if isinstance(item, dict)
         and (
-            str(item.get("scene_id", "") or "") == scene_id
-            or (scene_ids and str(item.get("scene_id", "") or "") in scene_ids)
+            (act_id and str(item.get("act_id", "") or "") == act_id)
+            or (not act_id and str(item.get("scene_id", "") or "") == scene_id)
+            or (scene_ids and not str(item.get("act_id", "") or "") and str(item.get("scene_id", "") or "") in scene_ids)
         )
     ]
     related_assets: list[dict[str, object]] = []
@@ -2715,6 +2858,7 @@ def scene_context_for_row(path: Path, board: dict[str, object], row: dict[str, o
                 "beat": item.get("beat", ""),
                 "shot_type": item.get("shot_type", ""),
                 "frame_description": item.get("frame_description", ""),
+                "spatial_logic": item.get("spatial_logic", ""),
                 "image_prompt": item.get("image_prompt", ""),
                 "notes": item.get("notes", ""),
                 "revision_note": item.get("revision_note", ""),
@@ -2802,6 +2946,7 @@ def concept_card_context(path: Path, board: dict[str, object], card: dict[str, o
                 "beat": row.get("beat", ""),
                 "shot_type": row.get("shot_type", ""),
                 "frame_description": row.get("frame_description", ""),
+                "spatial_logic": row.get("spatial_logic", ""),
                 "image_prompt": row.get("image_prompt", ""),
                 "notes": row.get("notes", ""),
                 "output_path": row.get("output_path", ""),
@@ -2836,6 +2981,80 @@ def card_generation_context(path: Path, board: dict[str, object], card_type: str
     }
 
 
+def storyboard_spatial_logic_checks(row: dict[str, object]) -> list[dict[str, object]]:
+    core_text = " ".join(
+        str(row.get(key, "") or "")
+        for key in (
+            "item_id",
+            "beat",
+            "shot_type",
+            "frame_description",
+            "spatial_logic",
+            "video_prompt",
+            "notes",
+        )
+    ).lower()
+    text = " ".join(
+        [
+            core_text,
+            str(row.get("image_prompt", "") or "").lower(),
+            str(row.get("revision_note", "") or "").lower(),
+        ]
+    )
+    checks: list[dict[str, object]] = []
+    explicit = str(row.get("spatial_logic", "") or "").strip()
+    if explicit:
+        checks.append(
+            {
+                "check_id": "explicit_spatial_logic",
+                "priority": "hard",
+                "rule": explicit,
+            }
+        )
+
+    def add(check_id: str, rule: str, priority: str = "hard") -> None:
+        if not any(item.get("check_id") == check_id for item in checks):
+            checks.append({"check_id": check_id, "priority": priority, "rule": rule})
+
+    if any(token in core_text for token in ("开门", "门缝", "进门", "进入", "入口", "door", "entrance")):
+        add(
+            "door_axis_and_eyeline",
+            "门内空间必须位于门打开后的正前方；孩子的脸、身体和视线方向要朝向门内/游戏厅内部，不要让他们看向与门内空间相反的方向。",
+        )
+    if any(token in core_text for token in ("刚进入", "进室内", "进入游戏厅", "入场", "entering", "inside the arcade")):
+        add(
+            "entry_rear_to_reaction_sequence",
+            "入场镜头优先建立方向：先从三个孩子后脑勺/背影看向游戏厅全景，屏幕和人群在他们正前方；随后才可切到或转到孩子表情。",
+        )
+    if any(token in core_text for token in ("后脑", "背后", "rear", "behind the heads", "from behind")):
+        add(
+            "rear_camera_axis",
+            "后脑机位必须从人物背后拍摄；应看到后脑、肩膀和他们面前的目标物，人物不要回头看镜头。",
+        )
+    if any(token in core_text for token in ("街机", "crt", "screen", "屏幕", "投币", "摇杆", "按钮", "游戏机")):
+        add(
+            "arcade_prop_geometry",
+            "街机结构保持一致：同一台旧CRT双人街机，单一屏幕、左右并排操作位、宽控制面板、两组摇杆按钮、中央投币口和两个低凳。",
+        )
+    if any(token in core_text for token in ("黄毛", "对战", "挑战", "副操作位", "two-player", "duel")):
+        add(
+            "two_player_screen_facing",
+            "哥哥和黄毛只能并排坐/半坐在同一台街机前，头、胸口、手和视线都朝同一块屏幕；禁止面对面、互相正面瞪视、回头看镜头或站成对峙。",
+        )
+    if any(token in core_text for token in ("屏幕特写", "screen insert", "crt screen", "像素格斗")):
+        add(
+            "screen_insert_legibility",
+            "屏幕特写只表现泛化90年代像素格斗画面、扫描线和玻璃反光；不要真实游戏logo、可读文字、现代UI或高清3D画面。",
+        )
+    if any(token in core_text for token in ("围观", "人群", "crowd", "spectator")):
+        add(
+            "spectator_age_and_blocking",
+            "围观者以本地少年、中学生和年轻小青年为主，压迫感来自肩膀、后脑勺和站位，不要把画面变成中年成人江湖场。",
+            "medium",
+        )
+    return checks
+
+
 def build_card_image_packet_text(
     slug: str,
     path: Path,
@@ -2855,8 +3074,10 @@ def build_card_image_packet_text(
             "- 目标是卡片级生成：如果 Tasks 里只有 1 张卡，就只生成 1 张；有多张才批量生成。",
             "- 生成前可做电影级提示词优化，强化构图、光影、材质、角色连续性和负面约束。",
             "- revision_note 是本轮精修意见，优先级高于长期 notes/prompt_notes；不要把一次性修改写死成永久设定。",
+            "- spatial_logic 和 spatial_logic_checks 是硬性空间检查；生成提示词前先核对门内外方向、人物视线、屏幕位置、机位轴线和道具结构。若情绪描述与空间逻辑冲突，空间逻辑优先。",
             "- Concept task 的 scope/act_id/act_context 决定它是全项目设定还是某一幕设定；幕级概念只继承并服务对应 act 的上下文。",
             "- Context cards、global references、nearby storyboard cards、related assets 只用于风格和连续性参考，不是生成目标。",
+            "- 每个 task 的 inherited_references/all_references 是必须读取的继承参考；全局人设、设定参考和单卡参考都要纳入生成提示。",
             "- 默认回传全部：除非用户明确要求先挑选，否则你生成的每一张候选图都要保存并回填，不要只回传其中一张。",
             "- 编号记录规则：分镜号/卡片号、版本号、候选号只能写入文件名、version_id、candidate_id 和回填 JSON；绝对不要画进图片像素里。",
             "- 画面必须干净：不要在图上加分镜号、版本号、候选编号、字幕、水印、标签、随机文字或 UI 标记。",
@@ -2964,6 +3185,7 @@ def create_card_image_packet(slug: str, payload: dict[str, object]) -> dict[str,
                 candidate["output_absolute_path"] = str(path / str(candidate["output_path"]))
             generation_context = card_generation_context(path, board, "concept", card)
             card_refs = generation_context["target_references"]
+            inherited_refs = [*generation_context["global_references"], *generation_context["context_references"]]
             whitebox_guidance = generation_context["whitebox_guidance"]
             task = {
                 "task_id": f"{packet_id}_{index:03d}",
@@ -2979,6 +3201,8 @@ def create_card_image_packet(slug: str, payload: dict[str, object]) -> dict[str,
                 "revision_note": card.get("revision_note", ""),
                 "negative_prompt": card.get("negative_prompt", ""),
                 "target_references": card_refs,
+                "inherited_references": inherited_refs,
+                "all_references": [*inherited_refs, *card_refs],
                 "existing_versions": versions,
                 "act_context": generation_context["target_context"],
                 "generation_context": generation_context,
@@ -3007,6 +3231,7 @@ def create_card_image_packet(slug: str, payload: dict[str, object]) -> dict[str,
                 candidate["output_absolute_path"] = str(path / str(candidate["output_path"]))
             generation_context = card_generation_context(path, board, "storyboard", row)
             row_refs = generation_context["target_references"]
+            inherited_refs = [*generation_context["global_references"], *generation_context["context_references"]]
             whitebox_guidance = generation_context["whitebox_guidance"]
             task = {
                 "task_id": f"{packet_id}_{index:03d}",
@@ -3016,11 +3241,15 @@ def create_card_image_packet(slug: str, payload: dict[str, object]) -> dict[str,
                 "beat": row.get("beat", ""),
                 "shot_type": row.get("shot_type", ""),
                 "frame_description": row.get("frame_description", ""),
+                "spatial_logic": row.get("spatial_logic", ""),
                 "image_prompt": row.get("image_prompt", ""),
                 "video_prompt": row.get("video_prompt", ""),
                 "notes": row.get("notes", ""),
                 "revision_note": row.get("revision_note", ""),
+                "spatial_logic_checks": storyboard_spatial_logic_checks(row),
                 "target_references": row_refs,
+                "inherited_references": inherited_refs,
+                "all_references": [*inherited_refs, *row_refs],
                 "existing_output_path": row.get("output_path", ""),
                 "existing_versions": versions,
                 "nearby_context": generation_context["target_context"],
@@ -3097,9 +3326,35 @@ def update_card_image_output(slug: str, payload: dict[str, object]) -> dict[str,
             updated += 1
         elif card_type == "storyboard":
             item_id = safe_file_stem(output.get("item_id", "") or output.get("card_id", ""))
+            if not item_id:
+                raw_path = normalize_project_rel_path(str(output.get("output_path", "") or ""))
+                item_id = safe_file_stem(Path(raw_path).stem) if raw_path else ""
+            if not item_id:
+                item_id = f"EMOTION_CARD_{len(row_by_id) + 1:03d}"
             row = row_by_id.get(item_id)
             if not row:
-                continue
+                row = normalize_idea_row(
+                    {
+                        "item_id": item_id,
+                        "act_id": output.get("act_id", ""),
+                        "scene_id": output.get("scene_id", ""),
+                        "beat": output.get("beat") or output.get("title") or f"{item_id} · 情绪卡 / Emotion card",
+                        "shot_type": output.get("shot_type", "情绪卡 / Emotion card"),
+                        "frame_description": output.get("frame_description", ""),
+                        "image_prompt": output.get("image_prompt", ""),
+                        "video_prompt": output.get("video_prompt", ""),
+                        "notes": output.get("notes") or "Auto-created during image output callback because no existing storyboard card matched this image.",
+                        "revision_note": output.get("revision_note", ""),
+                        "sort_after": output.get("sort_after") or output.get("insert_after") or output.get("after") or "",
+                        "selected": True,
+                        "status": "draft",
+                        "references": output.get("references", []),
+                    },
+                    len(rows) + 1,
+                )
+                if isinstance(rows, list):
+                    rows.append(row)
+                    row_by_id[item_id] = row
             versions = normalize_concept_card_versions(row.get("versions", []))
             version_id = safe_file_stem(output.get("version_id") or f"v{len(versions) + 1:03d}")
             versions = append_current_card_version(versions, version_id, output_path, notes, metadata)
@@ -3109,6 +3364,10 @@ def update_card_image_output(slug: str, payload: dict[str, object]) -> dict[str,
             row["output_attached_at"] = now_iso()
             row["status"] = "image_ready"
             updated += 1
+    if updated > 0:
+        if isinstance(rows, list):
+            board["rows"] = apply_idea_row_sorting([row for row in rows if isinstance(row, dict)])
+        merge_completed_handoff_ids(board, payload)
     board["updated_at"] = now_iso()
     write_idea_board_files(path, board)
     return {"ok": True, "updated": updated, "idea_board": load_idea_board(path, slug), "project": project_detail(slug)}
@@ -3606,7 +3865,7 @@ def collect_video_reference_entries(slug: str, path: Path, board: dict[str, obje
         if not isinstance(card, dict) or not bool_from_payload(card.get("selected"), True):
             continue
         for version in version_entries_for_output(card, "preview_path"):
-            if version.get("status") not in {"current", "reference"}:
+            if version.get("status") not in {"final", "reference"}:
                 continue
             output_path = str(version.get("output_path", "") or "")
             if not output_path:
@@ -3639,8 +3898,10 @@ def collect_video_reference_entries(slug: str, path: Path, board: dict[str, obje
         if not isinstance(row, dict):
             continue
         scene = scene_by_id.get(str(row.get("scene_id", "") or ""), {})
+        row_act_id = str(row.get("act_id", "") or "") or str(scene.get("act_id", "") or "")
+        row_act_title = act_title_for_id(board, scenes, row_act_id) if row_act_id else str(scene.get("act_title", "") or "")
         for version in version_entries_for_output(row, "output_path"):
-            if version.get("status") not in {"current", "reference"}:
+            if version.get("status") not in {"final", "reference"}:
                 continue
             output_path = str(version.get("output_path", "") or "")
             if not output_path:
@@ -3654,8 +3915,8 @@ def collect_video_reference_entries(slug: str, path: Path, board: dict[str, obje
                     "kind": "storyboard_keyframe",
                     "scene_id": row.get("scene_id", ""),
                     "scene_title": scene.get("title", ""),
-                    "act_id": scene.get("act_id", ""),
-                    "act_title": scene.get("act_title", ""),
+                    "act_id": row_act_id,
+                    "act_title": row_act_title,
                     "version_id": version.get("version_id", ""),
                     "version_status": version.get("status", ""),
                     "output_path": output_path,
@@ -3717,10 +3978,10 @@ def video_reference_quality_gate(qa_summary: dict[str, object]) -> dict[str, obj
     reference_issues = reference_warn + reference_risk + reference_unscored
     if current_risk or current_unscored:
         status = "blocked"
-        label = "采用图未达视频参考门槛 / Current assets need QA before video"
+        label = "Final 图未达视频参考门槛 / Final assets need QA before video"
     elif current_warn:
         status = "review"
-        label = "采用图需导演复核 / Current assets need review"
+        label = "Final 图需导演复核 / Final assets need review"
     elif reference_risk or reference_unscored or reference_warn:
         status = "reference_review"
         label = "辅助参考需复核 / Reference assets need review"
@@ -3756,8 +4017,8 @@ def build_video_reference_package_text(package: dict[str, object]) -> str:
     lines = [
         "# Video Reference Package / 视频参考图包",
         "",
-        "这个包汇总文字界面中已标记为采用或参考的图片版本，用于交给视频模型或后续 Codex 生成视频任务。",
-        "This package collects current/reference image versions for video-model handoff.",
+        "这个包汇总文字界面中已标记为 Final 或参考的图片版本，用于交给视频模型或后续 Codex 生成视频任务。",
+        "This package collects final/reference image versions for video-model handoff.",
         "",
         "## Project / 项目",
         f"- Project slug: {package.get('project_slug', '')}",
@@ -3767,9 +4028,9 @@ def build_video_reference_package_text(package: dict[str, object]) -> str:
         f"- Created at: {package.get('created_at', '')}",
         "",
         "## Use Rules / 使用规则",
-        "- Current assets 是主参考图；优先作为视频模型的画面/角色/场景参考。",
+        "- Final assets 是主参考图；优先作为视频模型的画面/角色/场景参考。",
         "- Reference assets 是辅助参考；只按 notes 或 prompt_context 借用元素。",
-        "- 不要使用 rejected/candidate 图，除非导演另行指定。",
+        "- 不要使用 current/candidate/rejected 图，除非导演另行指定。",
         "- 保持角色身份、场景空间、年代质感、构图和光线连续性。",
         "",
         "## Quality Gate / 质量门槛",
@@ -3778,7 +4039,7 @@ def build_video_reference_package_text(package: dict[str, object]) -> str:
         f"- Reference assets: {reference_qa.get('ok', 0)} 合格 / OK · {reference_qa.get('warn', 0)} 需检查 / warn · {reference_qa.get('risk', 0)} 低分风险 / risk · {reference_qa.get('unscored', 0)} 未质检 / unscored",
         "- 建议只有 current assets 全部达到 QA OK 或经导演确认后，再交给视频模型。",
         "",
-        "## Current QA Warnings / 采用图警示",
+        "## Final QA Warnings / Final 图警示",
     ]
     if current_warnings:
         for item in current_warnings:
@@ -3787,7 +4048,7 @@ def build_video_reference_package_text(package: dict[str, object]) -> str:
             lines.append(f"- {item.get('card_id', '')} {item.get('title', '')}: {label} · {item.get('output_path', '')}")
     else:
         lines.append("- None")
-    lines.extend(["", f"## Current Assets / 采用图 ({len(current_assets)})"])
+    lines.extend(["", f"## Final Assets / Final 图 ({len(current_assets)})"])
     if current_assets:
         for index, item in enumerate(current_assets, start=1):
             lines.extend(
@@ -3846,7 +4107,7 @@ def create_current_version_package(slug: str, payload: dict[str, object]) -> dic
         and bool(context_act_id)
         and entry.get("act_id") == context_act_id
         and entry not in scoped_entries
-        and entry.get("version_status") in {"current", "reference"}
+        and entry.get("version_status") in {"final", "reference"}
     ]
     global_context = [
         entry
@@ -3854,15 +4115,15 @@ def create_current_version_package(slug: str, payload: dict[str, object]) -> dic
         if entry.get("card_type") == "concept"
         and not entry.get("act_id")
         and entry not in scoped_entries
-        and entry.get("version_status") in {"current", "reference"}
+        and entry.get("version_status") in {"final", "reference"}
     ]
-    current_assets = [entry for entry in scoped_entries if entry.get("version_status") == "current"]
+    current_assets = [entry for entry in scoped_entries if entry.get("version_status") == "final"]
     reference_assets = [entry for entry in scoped_entries if entry.get("version_status") == "reference"]
     if scope not in {"all", "global"}:
         append_reference_context(reference_assets, act_context, "same_act_context", current_assets)
         append_reference_context(reference_assets, global_context, "global_context", current_assets)
     if not current_assets and not reference_assets:
-        raise ValueError("当前范围没有采用或参考版本图 / No current or reference image versions in this scope.")
+        raise ValueError("当前范围没有 Final 或参考版本图 / No final or reference image versions in this scope.")
     qa_summary = video_reference_qa_summary(current_assets, reference_assets)
     quality_gate = video_reference_quality_gate(qa_summary)
     package_id = f"VRP_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
@@ -3952,8 +4213,10 @@ def whitebox_interpretation_for_job(job: dict[str, object]) -> dict[str, object]
     tags = job.get("tags", [])
     if not isinstance(tags, list):
         tags = []
+    fidelity_level = str(job.get("fidelity_level", "") or job.get("whitebox_fidelity", "") or "spatial_blocking").strip()
     return {
         "mode": "spatial_control_only",
+        "fidelity_level": fidelity_level,
         "source_asset_id": str(source.get("asset_id", "") or ""),
         "source_path": str(source.get("path", "") or ""),
         "replica_note": str(job.get("replica_note", "") or ""),
@@ -3977,6 +4240,11 @@ def whitebox_interpretation_for_job(job: dict[str, object]) -> dict[str, object]
             "unfinished low-poly geometry",
             "plain studio-white lighting unless the shot explicitly asks for it",
         ],
+        "fidelity_contract": [
+            "spatial_blocking: lock camera axis, scale, sightlines, blocking, major props, and occlusion, but not exact surface detail",
+            "prop_1to1: lock prop silhouette, usable dimensions, controls, openings, and interaction points",
+            "shot_1to1: lock composition against a source frame as closely as practical before image generation",
+        ],
         "prompt_bridge": (
             "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；"
             "不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。"
@@ -3995,6 +4263,7 @@ def whitebox_generation_guidance(job_or_ref: dict[str, object]) -> str:
     header = "Whitebox guidance / 白模读取说明"
     lines = [
         f"{header}:",
+        f"- Fidelity level / 精度层级: {interpretation.get('fidelity_level', 'spatial_blocking')}.",
         "- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.",
         "- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.",
         "- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.",
@@ -4532,6 +4801,7 @@ def create_whitebox_job(slug: str, payload: dict[str, object]) -> dict[str, obje
         "created_at": now_iso(),
         "status": "packet_ready",
         "source_asset": source_norm,
+        "fidelity_level": str(payload.get("fidelity_level") or payload.get("whitebox_fidelity") or "shot_1to1").strip(),
         "tags": [str(item).strip() for item in payload.get("tags", []) if str(item).strip()] if isinstance(payload.get("tags", []), list) else [],
         "replica_note": str(payload.get("replica_note", "") or "").strip(),
         "target_item_ids": [safe_file_stem(item.get("item_id", "")) for item in targets],
@@ -4675,6 +4945,11 @@ class PipelineHubHandler(BaseHTTPRequestHandler):
             return
         if len(parts) == 5 and parts[:2] == ["api", "projects"] and parts[3] == "codex-card-handoff" and parts[4] == "latest":
             send_json(self, latest_codex_card_handoff(parts[2], parsed.query))
+            return
+        if len(parts) == 5 and parts[:2] == ["api", "projects"] and parts[3] == "idea-handoffs" and parts[4] == "completed":
+            path = project_path(parts[2])
+            board = load_idea_board(path, parts[2])
+            send_json(self, {"completed_handoff_ids": board.get("completed_handoff_ids", [])})
             return
         send_text(self, "未找到 / Not found", status=404)
 

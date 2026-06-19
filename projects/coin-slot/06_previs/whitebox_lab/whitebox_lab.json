@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-06-18T12:18:17+08:00",
+  "updated_at": "2026-06-19T13:24:42.865399+08:00",
   "blender_available": true,
   "blender_executable": "/Applications/Blender.app/Contents/MacOS/Blender",
   "jobs": [
@@ -81,6 +81,91 @@
         "prompt_bridge": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。"
       },
       "generation_guidance": "Whitebox guidance / 白模读取说明:\n- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.\n- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.\n- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.\n- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.\n- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.\n- Source whitebox replica seed: ACT1_SHOT_003_SOURCE_KEYFRAME.\n- Replica intent / 复刻意图: 以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。"
+    },
+    {
+      "job_id": "WBX_ARCADE_PROP_20260619_131654",
+      "created_at": "2026-06-19T13:24:42.865399+08:00",
+      "status": "rendered",
+      "source_asset": {
+        "asset_ref": "project:08_generation/jobs/CARD_IMG_20260619_130748/outputs/001_BIBLE_PROP_ARCADE_CABINET_LOCK_v001_c03.png",
+        "asset_id": "BIBLE_PROP_ARCADE_CABINET_LOCK_v001_c03",
+        "path": "08_generation/jobs/CARD_IMG_20260619_130748/outputs/001_BIBLE_PROP_ARCADE_CABINET_LOCK_v001_c03.png",
+        "origin": "project",
+        "kind": "prop_ref",
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "act_id": "ACT02",
+        "act_title": "第二幕：真人快打挑战 / Mortal Kombat challenge"
+      },
+      "tags": [
+        "SCN_ARCADE",
+        "ACT02",
+        "arcade_cabinet",
+        "two_player_controls",
+        "rear_head_duel",
+        "prop_lock"
+      ],
+      "replica_note": "专用街机实体白模：固定单屏CRT、双操作位、双摇杆按钮、前投币口、双低凳、玩家并排朝向屏幕的空间关系。",
+      "target_item_ids": [
+        "ACT2_SHOT_005",
+        "ACT2_SHOT_005A_ARCADE_SCREEN_START",
+        "ACT2_SHOT_006",
+        "ACT2_SHOT_006A_ARCADE_SCREEN_COMBO",
+        "ACT2_SHOT_007",
+        "ACT2_SHOT_008",
+        "ACT2_SHOT_008A_BACK_HEAD_TWO_PLAYER",
+        "ACT2_SHOT_009",
+        "ACT2_SHOT_009A_ARCADE_SCREEN_WIN",
+        "ACT2_SHOT_009B_BACK_HEAD_DUEL_PRESSURE",
+        "ACT2_SHOT_010",
+        "ACT2_SHOT_011",
+        "ACT2_SHOT_012"
+      ],
+      "suggested_render_path": "06_previs/whitebox_lab/jobs/WBX_ARCADE_PROP_20260619_131654/renders/WBX_ARCADE_PROP_20260619_131654_arcade_cabinet_whitebox.png",
+      "suggested_blend_path": "06_previs/whitebox_lab/jobs/WBX_ARCADE_PROP_20260619_131654/blender/WBX_ARCADE_PROP_20260619_131654.blend",
+      "script_path": "06_previs/whitebox_lab/jobs/WBX_ARCADE_PROP_20260619_131654/blender/WBX_ARCADE_PROP_20260619_131654_generate_arcade_prop_whitebox.py",
+      "handoff_path": "06_previs/whitebox_lab/jobs/WBX_ARCADE_PROP_20260619_131654/outputs/WBX_ARCADE_PROP_20260619_131654_arcade_prop_whitebox_handoff.md",
+      "default_reference_note": "街机实体白模锁：固定街机结构、双操作位、双低凳和并排对战关系。",
+      "rendered_at": "2026-06-19T13:24:42.865399+08:00",
+      "blender_executed": true,
+      "render_quality_note": "Blender rendered locally; image shows complete CRT cabinet, single screen, two player control stations, two stools, coin panel, and head-position markers.",
+      "camera_model": "three-quarter prop lock view",
+      "output_role": "arcade_cabinet_prop_whitebox_reference",
+      "whitebox_interpretation": {
+        "mode": "arcade_cabinet_prop_lock",
+        "source_asset_id": "BIBLE_PROP_ARCADE_CABINET_LOCK_v001_c03",
+        "source_path": "08_generation/jobs/CARD_IMG_20260619_130748/outputs/001_BIBLE_PROP_ARCADE_CABINET_LOCK_v001_c03.png",
+        "replica_note": "专用街机实体白模：固定单屏CRT、双操作位、双摇杆按钮、前投币口、双低凳、玩家并排朝向屏幕的空间关系。",
+        "tags": [
+          "SCN_ARCADE",
+          "ACT02",
+          "arcade_cabinet",
+          "two_player_controls",
+          "rear_head_duel",
+          "prop_lock"
+        ],
+        "use_for": [
+          "fixed arcade cabinet proportions",
+          "screen/control panel/stool spatial relation",
+          "A Lei and yellow-haired punk side-by-side blocking",
+          "rear head camera shots",
+          "coin slot and screen inserts"
+        ],
+        "preserve": [
+          "single shared CRT screen",
+          "left/right side-by-side controls",
+          "two low stools",
+          "players face the same screen",
+          "front coin slot/control deck relation"
+        ],
+        "ignore": [
+          "white material",
+          "primitive geometry",
+          "unfinished render look"
+        ],
+        "prompt_bridge": "把白模只当作街机实体、屏幕/控制台/低凳比例、双人并排关系和后脑机位参考；最终图必须按90年代中国小城游戏厅材质重建。"
+      },
+      "generation_guidance": "Whitebox guidance / 白模读取说明\n- Use this whitebox as the fixed two-player arcade cabinet prop lock: one shared CRT screen, left/right control stations, wide control deck, front coin slot, and two low stools.\n- Preserve A Lei and the yellow-haired punk as side-by-side players facing the same screen; do not turn them face-to-face or toward camera in duel shots.\n- Preserve screen/control-panel/stool height relationships for rear-head shots and game-screen inserts.\n- Do not copy white material, primitive geometry, or clean test-render look; convert it into gritty 1990s Chinese arcade materials.\n- Negative constraint: no modern LCD, no esports setup, no readable logos, no cyberpunk arcade."
     }
   ]
 }

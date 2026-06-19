@@ -1,0 +1,2578 @@
+{
+  "task_id": "CARD_IMG_20260619_020051_006",
+  "card_type": "storyboard",
+  "item_id": "ACT2_SHOT_006",
+  "scene_id": "SCN_ARCADE",
+  "beat": "哥哥连胜，弟弟欢呼",
+  "shot_type": "中近景 / medium close shot",
+  "frame_description": "屏幕光照在哥哥脸上，他压着得意继续操作；两个弟弟在旁边兴奋地小声欢呼，周围开始有人回头。",
+  "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Medium close shot of older brother lit by CRT glow, focused and slightly smug while playing a fighting game, two younger brothers cheering quietly beside him, nearby teenagers turning their heads, smoky arcade background.",
+  "video_prompt": "The younger boys cheer under their breath as the older brother wins again; heads begin to turn.",
+  "notes": "情绪从震慑转为短暂胜利，哥哥不能过分夸张。",
+  "revision_note": "",
+  "target_references": [],
+  "inherited_references": [
+    {
+      "ref_id": "THREE_BROTHERS_turnaround_expression_contact_sheet_v001",
+      "asset_ref": "resource:media/01_AIGC/character_design_v2/THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+      "asset_id": "THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+      "path": "media/01_AIGC/character_design_v2/THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+      "origin": "resource",
+      "kind": "character_ref",
+      "role": "character_design_contact_sheet",
+      "note": "三个小朋友统一人设、三视图、表情和服装连续性参考 / Global reference for the three children character identity, turnaround, expressions, and wardrobe continuity.",
+      "version_id": "",
+      "version_status": "",
+      "card_type": "",
+      "card_id": "",
+      "card_title": ""
+    },
+    {
+      "ref_id": "CHR_BRO_A_late_scuffed_reference_v001.png",
+      "asset_ref": "resource:media/01_AIGC/character_design_v2/stage_variants/CHR_BRO_A_late_scuffed_reference_v001.png",
+      "asset_id": "CHR_BRO_A_late_scuffed_reference_v001.png",
+      "path": "media/01_AIGC/character_design_v2/stage_variants/CHR_BRO_A_late_scuffed_reference_v001.png",
+      "origin": "resource",
+      "kind": "image",
+      "role": "image",
+      "note": "给哥哥带一个眼镜",
+      "version_id": "",
+      "version_status": "",
+      "card_type": "",
+      "card_id": "",
+      "card_title": ""
+    },
+    {
+      "ref_id": "001_BIBLE_005_v001.png",
+      "asset_ref": "project:08_generation/jobs/CARD_IMG_20260618_221216/outputs/001_BIBLE_005_v001.png",
+      "asset_id": "001_BIBLE_005_v001.png",
+      "path": "08_generation/jobs/CARD_IMG_20260618_221216/outputs/001_BIBLE_005_v001.png",
+      "origin": "project",
+      "kind": "image",
+      "role": "image",
+      "note": "参考三个混混的设定，这一幕只出现黄毛",
+      "version_id": "v001",
+      "version_status": "current",
+      "card_type": "concept",
+      "card_id": "BIBLE_005",
+      "card_title": ""
+    },
+    {
+      "ref_id": "THREE_BROTHERS_turnaround_expression_contact_sheet_v001",
+      "asset_ref": "resource:media/01_AIGC/character_design_v2/THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+      "asset_id": "THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+      "path": "media/01_AIGC/character_design_v2/THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+      "origin": "resource",
+      "kind": "character_ref",
+      "role": "character_design_contact_sheet",
+      "note": "三个小朋友统一人设、三视图、表情和服装连续性参考 / Global reference for the three children character identity, turnaround, expressions, and wardrobe continuity.",
+      "version_id": "",
+      "version_status": "",
+      "card_type": "",
+      "card_id": "",
+      "card_title": ""
+    },
+    {
+      "ref_id": "CHR_BRO_A_late_scuffed_reference_v001.png",
+      "asset_ref": "resource:media/01_AIGC/character_design_v2/stage_variants/CHR_BRO_A_late_scuffed_reference_v001.png",
+      "asset_id": "CHR_BRO_A_late_scuffed_reference_v001.png",
+      "path": "media/01_AIGC/character_design_v2/stage_variants/CHR_BRO_A_late_scuffed_reference_v001.png",
+      "origin": "resource",
+      "kind": "image",
+      "role": "image",
+      "note": "给哥哥带一个眼镜",
+      "version_id": "",
+      "version_status": "",
+      "card_type": "",
+      "card_id": "",
+      "card_title": ""
+    },
+    {
+      "ref_id": "WBX_20260616_024949",
+      "asset_ref": "project:06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+      "asset_id": "WBX_20260616_024949",
+      "path": "06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+      "origin": "project",
+      "kind": "whitebox",
+      "role": "replica_whitebox",
+      "note": "隐藏游戏机房入口的空间、机位、旧墙、金属门、猫眼和三个孩子站位参考；作为场景与道具总概念的白模依据。",
+      "version_id": "",
+      "version_status": "",
+      "card_type": "",
+      "card_id": "",
+      "card_title": "",
+      "usage_note": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。",
+      "generation_guidance": "Whitebox guidance / 白模读取说明:\n- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.\n- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.\n- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.\n- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.\n- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.\n- Source whitebox replica seed: ACT1_SHOT_003_SOURCE_KEYFRAME.\n- Replica intent / 复刻意图: 以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+      "whitebox_interpretation": {
+        "mode": "spatial_control_only",
+        "source_asset_id": "ACT1_SHOT_003_SOURCE_KEYFRAME",
+        "source_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+        "replica_note": "以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+        "tags": [
+          "ACT01",
+          "SCN_COMPOUND",
+          "hidden_arcade_door",
+          "peephole",
+          "three_children",
+          "1to1_replica"
+        ],
+        "use_for": [
+          "camera framing and lens/composition",
+          "subject scale, blocking, pose, sightline, and depth order",
+          "major set anchors such as doors, windows, corridors, walls, props, and openings",
+          "main light direction, shadow rhythm, and scene readability"
+        ],
+        "preserve": [
+          "overall aspect ratio and camera angle",
+          "relative positions between characters and key set pieces",
+          "door/window/opening height and screen position when present",
+          "foreground/midground/background separation"
+        ],
+        "ignore": [
+          "gray clay material",
+          "primitive cube/sphere/cylinder shapes",
+          "mannequin or toy-like character appearance",
+          "unfinished low-poly geometry",
+          "plain studio-white lighting unless the shot explicitly asks for it"
+        ],
+        "prompt_bridge": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。"
+      }
+    },
+    {
+      "ref_id": "WBX_20260616_024949",
+      "asset_ref": "project:06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+      "asset_id": "WBX_20260616_024949",
+      "path": "06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+      "origin": "project",
+      "kind": "whitebox",
+      "role": "replica_whitebox",
+      "note": "隐藏游戏机房入口的空间、机位、旧墙、金属门、猫眼和三个孩子站位参考；作为场景与道具总概念的白模依据。",
+      "version_id": "",
+      "version_status": "",
+      "card_type": "",
+      "card_id": "",
+      "card_title": "",
+      "usage_note": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。",
+      "generation_guidance": "Whitebox guidance / 白模读取说明:\n- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.\n- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.\n- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.\n- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.\n- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.\n- Source whitebox replica seed: ACT1_SHOT_003_SOURCE_KEYFRAME.\n- Replica intent / 复刻意图: 以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+      "whitebox_interpretation": {
+        "mode": "spatial_control_only",
+        "source_asset_id": "ACT1_SHOT_003_SOURCE_KEYFRAME",
+        "source_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+        "replica_note": "以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+        "tags": [
+          "ACT01",
+          "SCN_COMPOUND",
+          "hidden_arcade_door",
+          "peephole",
+          "three_children",
+          "1to1_replica"
+        ],
+        "use_for": [
+          "camera framing and lens/composition",
+          "subject scale, blocking, pose, sightline, and depth order",
+          "major set anchors such as doors, windows, corridors, walls, props, and openings",
+          "main light direction, shadow rhythm, and scene readability"
+        ],
+        "preserve": [
+          "overall aspect ratio and camera angle",
+          "relative positions between characters and key set pieces",
+          "door/window/opening height and screen position when present",
+          "foreground/midground/background separation"
+        ],
+        "ignore": [
+          "gray clay material",
+          "primitive cube/sphere/cylinder shapes",
+          "mannequin or toy-like character appearance",
+          "unfinished low-poly geometry",
+          "plain studio-white lighting unless the shot explicitly asks for it"
+        ],
+        "prompt_bridge": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。"
+      }
+    }
+  ],
+  "all_references": [
+    {
+      "ref_id": "THREE_BROTHERS_turnaround_expression_contact_sheet_v001",
+      "asset_ref": "resource:media/01_AIGC/character_design_v2/THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+      "asset_id": "THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+      "path": "media/01_AIGC/character_design_v2/THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+      "origin": "resource",
+      "kind": "character_ref",
+      "role": "character_design_contact_sheet",
+      "note": "三个小朋友统一人设、三视图、表情和服装连续性参考 / Global reference for the three children character identity, turnaround, expressions, and wardrobe continuity.",
+      "version_id": "",
+      "version_status": "",
+      "card_type": "",
+      "card_id": "",
+      "card_title": ""
+    },
+    {
+      "ref_id": "CHR_BRO_A_late_scuffed_reference_v001.png",
+      "asset_ref": "resource:media/01_AIGC/character_design_v2/stage_variants/CHR_BRO_A_late_scuffed_reference_v001.png",
+      "asset_id": "CHR_BRO_A_late_scuffed_reference_v001.png",
+      "path": "media/01_AIGC/character_design_v2/stage_variants/CHR_BRO_A_late_scuffed_reference_v001.png",
+      "origin": "resource",
+      "kind": "image",
+      "role": "image",
+      "note": "给哥哥带一个眼镜",
+      "version_id": "",
+      "version_status": "",
+      "card_type": "",
+      "card_id": "",
+      "card_title": ""
+    },
+    {
+      "ref_id": "001_BIBLE_005_v001.png",
+      "asset_ref": "project:08_generation/jobs/CARD_IMG_20260618_221216/outputs/001_BIBLE_005_v001.png",
+      "asset_id": "001_BIBLE_005_v001.png",
+      "path": "08_generation/jobs/CARD_IMG_20260618_221216/outputs/001_BIBLE_005_v001.png",
+      "origin": "project",
+      "kind": "image",
+      "role": "image",
+      "note": "参考三个混混的设定，这一幕只出现黄毛",
+      "version_id": "v001",
+      "version_status": "current",
+      "card_type": "concept",
+      "card_id": "BIBLE_005",
+      "card_title": ""
+    },
+    {
+      "ref_id": "THREE_BROTHERS_turnaround_expression_contact_sheet_v001",
+      "asset_ref": "resource:media/01_AIGC/character_design_v2/THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+      "asset_id": "THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+      "path": "media/01_AIGC/character_design_v2/THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+      "origin": "resource",
+      "kind": "character_ref",
+      "role": "character_design_contact_sheet",
+      "note": "三个小朋友统一人设、三视图、表情和服装连续性参考 / Global reference for the three children character identity, turnaround, expressions, and wardrobe continuity.",
+      "version_id": "",
+      "version_status": "",
+      "card_type": "",
+      "card_id": "",
+      "card_title": ""
+    },
+    {
+      "ref_id": "CHR_BRO_A_late_scuffed_reference_v001.png",
+      "asset_ref": "resource:media/01_AIGC/character_design_v2/stage_variants/CHR_BRO_A_late_scuffed_reference_v001.png",
+      "asset_id": "CHR_BRO_A_late_scuffed_reference_v001.png",
+      "path": "media/01_AIGC/character_design_v2/stage_variants/CHR_BRO_A_late_scuffed_reference_v001.png",
+      "origin": "resource",
+      "kind": "image",
+      "role": "image",
+      "note": "给哥哥带一个眼镜",
+      "version_id": "",
+      "version_status": "",
+      "card_type": "",
+      "card_id": "",
+      "card_title": ""
+    },
+    {
+      "ref_id": "WBX_20260616_024949",
+      "asset_ref": "project:06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+      "asset_id": "WBX_20260616_024949",
+      "path": "06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+      "origin": "project",
+      "kind": "whitebox",
+      "role": "replica_whitebox",
+      "note": "隐藏游戏机房入口的空间、机位、旧墙、金属门、猫眼和三个孩子站位参考；作为场景与道具总概念的白模依据。",
+      "version_id": "",
+      "version_status": "",
+      "card_type": "",
+      "card_id": "",
+      "card_title": "",
+      "usage_note": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。",
+      "generation_guidance": "Whitebox guidance / 白模读取说明:\n- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.\n- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.\n- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.\n- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.\n- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.\n- Source whitebox replica seed: ACT1_SHOT_003_SOURCE_KEYFRAME.\n- Replica intent / 复刻意图: 以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+      "whitebox_interpretation": {
+        "mode": "spatial_control_only",
+        "source_asset_id": "ACT1_SHOT_003_SOURCE_KEYFRAME",
+        "source_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+        "replica_note": "以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+        "tags": [
+          "ACT01",
+          "SCN_COMPOUND",
+          "hidden_arcade_door",
+          "peephole",
+          "three_children",
+          "1to1_replica"
+        ],
+        "use_for": [
+          "camera framing and lens/composition",
+          "subject scale, blocking, pose, sightline, and depth order",
+          "major set anchors such as doors, windows, corridors, walls, props, and openings",
+          "main light direction, shadow rhythm, and scene readability"
+        ],
+        "preserve": [
+          "overall aspect ratio and camera angle",
+          "relative positions between characters and key set pieces",
+          "door/window/opening height and screen position when present",
+          "foreground/midground/background separation"
+        ],
+        "ignore": [
+          "gray clay material",
+          "primitive cube/sphere/cylinder shapes",
+          "mannequin or toy-like character appearance",
+          "unfinished low-poly geometry",
+          "plain studio-white lighting unless the shot explicitly asks for it"
+        ],
+        "prompt_bridge": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。"
+      }
+    },
+    {
+      "ref_id": "WBX_20260616_024949",
+      "asset_ref": "project:06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+      "asset_id": "WBX_20260616_024949",
+      "path": "06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+      "origin": "project",
+      "kind": "whitebox",
+      "role": "replica_whitebox",
+      "note": "隐藏游戏机房入口的空间、机位、旧墙、金属门、猫眼和三个孩子站位参考；作为场景与道具总概念的白模依据。",
+      "version_id": "",
+      "version_status": "",
+      "card_type": "",
+      "card_id": "",
+      "card_title": "",
+      "usage_note": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。",
+      "generation_guidance": "Whitebox guidance / 白模读取说明:\n- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.\n- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.\n- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.\n- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.\n- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.\n- Source whitebox replica seed: ACT1_SHOT_003_SOURCE_KEYFRAME.\n- Replica intent / 复刻意图: 以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+      "whitebox_interpretation": {
+        "mode": "spatial_control_only",
+        "source_asset_id": "ACT1_SHOT_003_SOURCE_KEYFRAME",
+        "source_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+        "replica_note": "以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+        "tags": [
+          "ACT01",
+          "SCN_COMPOUND",
+          "hidden_arcade_door",
+          "peephole",
+          "three_children",
+          "1to1_replica"
+        ],
+        "use_for": [
+          "camera framing and lens/composition",
+          "subject scale, blocking, pose, sightline, and depth order",
+          "major set anchors such as doors, windows, corridors, walls, props, and openings",
+          "main light direction, shadow rhythm, and scene readability"
+        ],
+        "preserve": [
+          "overall aspect ratio and camera angle",
+          "relative positions between characters and key set pieces",
+          "door/window/opening height and screen position when present",
+          "foreground/midground/background separation"
+        ],
+        "ignore": [
+          "gray clay material",
+          "primitive cube/sphere/cylinder shapes",
+          "mannequin or toy-like character appearance",
+          "unfinished low-poly geometry",
+          "plain studio-white lighting unless the shot explicitly asks for it"
+        ],
+        "prompt_bridge": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。"
+      }
+    }
+  ],
+  "existing_output_path": "",
+  "existing_versions": [],
+  "nearby_context": {
+    "scene": {
+      "scene_id": "SCN_ARCADE",
+      "title": "游戏厅 / Arcade play",
+      "act_id": "ACT02",
+      "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade"
+    },
+    "nearby_storyboard_cards": [
+      {
+        "item_id": "ACT2_SHOT_001",
+        "scene_id": "SCN_ARCADE",
+        "beat": "被游戏厅气氛震住",
+        "shot_type": "儿童视角中景 / child-height medium shot",
+        "frame_description": "三个孩子刚进入游戏厅内部，两个弟弟停住脚步，被烟雾、CRT屏幕光和混杂人群震住；哥哥故作镇定，侧身示意他们跟紧。",
+        "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Three Chinese schoolboys just inside the doorway; two younger boys frozen by smoke, CRT light and crowded silhouettes, older brother pretending to be mature and signaling them to follow, child-height perspective, blue-green light on faces.",
+        "notes": "承接第一幕进入室内，强调两个弟弟的震慑和哥哥的装成熟。",
+        "revision_note": "",
+        "output_path": "",
+        "versions": []
+      },
+      {
+        "item_id": "ACT2_SHOT_002",
+        "scene_id": "SCN_ARCADE",
+        "beat": "哥哥掏出一块钱",
+        "shot_type": "手部特写 / insert close-up",
+        "frame_description": "哥哥从口袋里掏出一张皱旧的一元人民币，纸币被手汗和年代痕迹压皱，背景是模糊的柜台和老板。",
+        "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Insert close-up of an older brother child hand pulling out a worn 1990s Chinese one-yuan banknote, wrinkled paper texture, sweaty fingers, blurred arcade counter and owner in background, authentic period detail.",
+        "notes": "钱必须真实、年代感强；避免可读文字过清导致模型乱字，可强调纸币质感和颜色。",
+        "revision_note": "",
+        "output_path": "",
+        "versions": []
+      },
+      {
+        "item_id": "ACT2_SHOT_003",
+        "scene_id": "SCN_ARCADE",
+        "beat": "三个游戏币落入掌心",
+        "shot_type": "道具特写 / prop insert",
+        "frame_description": "老板把三个粗糙的金属游戏币放到哥哥掌心，硬币边缘磨损，反射着绿色街机光。两个弟弟在虚焦里盯着。",
+        "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Close-up of three rough worn metal arcade tokens dropping into a schoolboy palm, chipped edges, green CRT reflections, younger brothers blurred in background watching eagerly, authentic 1990s Chinese arcade tokens.",
+        "notes": "游戏币是核心年代道具，要粗糙、廉价、被摸旧。",
+        "revision_note": "",
+        "output_path": "",
+        "versions": []
+      },
+      {
+        "item_id": "ACT2_SHOT_004",
+        "scene_id": "SCN_ARCADE",
+        "beat": "走向真人快打机",
+        "shot_type": "跟拍中景 / tracking medium shot",
+        "frame_description": "哥哥握着游戏币，驾轻就熟地穿过人群走向一台真人快打街机；两个弟弟紧跟在后面，眼睛被屏幕吸住。",
+        "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Tracking medium shot of older brother confidently leading two younger boys through crowded smoky arcade toward a Mortal Kombat-style old fighting game cabinet, tokens in hand, younger boys staring at screens, no readable logos.",
+        "notes": "街机可暗示真人快打，不要出现清晰商标文字。",
+        "revision_note": "",
+        "output_path": "",
+        "versions": []
+      },
+      {
+        "item_id": "ACT2_SHOT_005",
+        "scene_id": "SCN_ARCADE",
+        "beat": "哥哥投币开打",
+        "shot_type": "街机侧面近景 / side close shot",
+        "frame_description": "游戏币投入投币口，哥哥双手落在摇杆和按钮上，动作熟练；两个弟弟站在旁边，脸上是崇拜和紧张。",
+        "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Side close shot of a token entering an old arcade coin slot, older brother hands confidently on joystick and buttons, two younger brothers beside him watching with admiration and tension, CRT fighting game glow.",
+        "notes": "投币口、手、按钮、弟弟表情要一起服务哥哥“熟练”的形象。",
+        "revision_note": "",
+        "output_path": "",
+        "versions": []
+      },
+      {
+        "item_id": "ACT2_SHOT_006",
+        "scene_id": "SCN_ARCADE",
+        "beat": "哥哥连胜，弟弟欢呼",
+        "shot_type": "中近景 / medium close shot",
+        "frame_description": "屏幕光照在哥哥脸上，他压着得意继续操作；两个弟弟在旁边兴奋地小声欢呼，周围开始有人回头。",
+        "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Medium close shot of older brother lit by CRT glow, focused and slightly smug while playing a fighting game, two younger brothers cheering quietly beside him, nearby teenagers turning their heads, smoky arcade background.",
+        "notes": "情绪从震慑转为短暂胜利，哥哥不能过分夸张。",
+        "revision_note": "",
+        "output_path": "",
+        "versions": []
+      },
+      {
+        "item_id": "ACT2_SHOT_007",
+        "scene_id": "SCN_ARCADE",
+        "beat": "围观人群变多",
+        "shot_type": "广角压迫镜头 / crowded wide shot",
+        "frame_description": "街机周围的人越围越多，肩膀和后脑勺形成压迫感。三个孩子被挤在机器前，哥哥仍然站在中心。",
+        "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Crowded wide shot around an old fighting game cabinet, shoulders and backs forming pressure around three schoolboys, older brother centered at controls, smoky low ceiling, plastic stools, mixed teenagers and adults but no modern clothing.",
+        "notes": "围观是危险升温，不只是热闹。",
+        "revision_note": "",
+        "output_path": "",
+        "versions": []
+      },
+      {
+        "item_id": "ACT2_SHOT_008",
+        "scene_id": "SCN_ARCADE",
+        "beat": "黄毛插入副机位投币挑战",
+        "shot_type": "双人机位中景 / two-player medium shot",
+        "frame_description": "一个和哥哥年纪相仿的黄毛小痞子突然挤到副操作位，不说话直接投币。哥哥侧头愣了一下，两个弟弟也安静下来。",
+        "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Medium shot of a same-age teenage yellow-haired local punk boy pushing into the second player position and dropping a token without speaking, older brother surprised but composed, younger brothers suddenly quiet, old dual-control arcade cabinet.",
+        "notes": "黄毛必须是初中生小痞子，不是成年人；挑战动作要干脆。",
+        "revision_note": "",
+        "output_path": "",
+        "versions": []
+      },
+      {
+        "item_id": "ACT2_SHOT_009",
+        "scene_id": "SCN_ARCADE",
+        "beat": "哥哥应战并赢第一局",
+        "shot_type": "过肩对抗镜头 / over-the-shoulder duel shot",
+        "frame_description": "从黄毛肩后看哥哥操作，哥哥嘴角轻微一笑后快速按键，屏幕光把两人的脸分成冷暖两侧。",
+        "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Over-the-shoulder duel shot from behind the yellow-haired teen punk, older brother at opposite controls with a restrained smirk, fast hands on buttons, CRT light splitting their faces, tense arcade crowd around them.",
+        "notes": "强调哥哥的轻蔑和熟练，但仍保持孩子气。",
+        "revision_note": "",
+        "output_path": "",
+        "versions": []
+      },
+      {
+        "item_id": "ACT2_SHOT_010",
+        "scene_id": "SCN_ARCADE",
+        "beat": "黄毛骂骂咧咧再次投币",
+        "shot_type": "快速剪辑特写组 / montage inserts",
+        "frame_description": "黄毛不服气，嘴里骂着又掏游戏币。画面切到投币口、狰狞表情、按键手指和弟弟紧张的眼神。",
+        "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Rapid montage-style storyboard panel: yellow-haired teen punk angry and cursing, another token pushed into coin slot, grimacing face, aggressive fingers smashing arcade buttons, younger brothers watching nervously, gritty smoky arcade.",
+        "notes": "这条可以作为快剪提示；不要生成文字脏话。",
+        "revision_note": "",
+        "output_path": "",
+        "versions": []
+      },
+      {
+        "item_id": "ACT2_SHOT_011",
+        "scene_id": "SCN_ARCADE",
+        "beat": "黄毛连输后砸按钮",
+        "shot_type": "低角度近景 / low close shot",
+        "frame_description": "连续失败后，黄毛用拳头砸了一下按钮台，塑料按钮和金属面板震动。哥哥和弟弟都短暂僵住。",
+        "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Low close shot of yellow-haired teen punk slamming his fist onto an old arcade control panel after repeated losses, buttons shaking, older brother and younger boys frozen in background, tension under CRT glow.",
+        "notes": "这是危险第一次显形，控制力度，不要变成打斗。",
+        "revision_note": "",
+        "output_path": "",
+        "versions": []
+      },
+      {
+        "item_id": "ACT2_SHOT_012",
+        "scene_id": "SCN_ARCADE",
+        "beat": "黄毛离开前恶狠狠盯哥哥",
+        "shot_type": "凝视中近景 / tense medium close shot",
+        "frame_description": "黄毛转身离开前停了一下，恶狠狠地盯了哥哥一眼，没有说话。哥哥表面得意，两个弟弟的笑意收住。",
+        "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Tense medium close shot of same-age yellow-haired punk turning away but stopping to glare silently at the older brother, older brother trying to look proud, younger brothers’ smiles fading, smoky arcade crowd blurred behind, ominous but realistic.",
+        "notes": "第二幕收束在无声威胁，给后续冲突埋钩子。",
+        "revision_note": "",
+        "output_path": "",
+        "versions": []
+      }
+    ],
+    "related_assets": [
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "03_story",
+        "asset_id": "SCN_ARCADE_STORY_BEATS",
+        "kind": "",
+        "role": "beat_sheet",
+        "path": "03_story/beats/coin_slot_sample_beat_sheet.md"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "03_story",
+        "asset_id": "SCN_ARCADE_FULL_SHOT_LIST",
+        "kind": "",
+        "role": "full_shot_list",
+        "path": "07_shots/shot_list.csv"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "04_lookdev",
+        "asset_id": "SCN_ARCADE_LOOK_BIBLE",
+        "kind": "",
+        "role": "look_bible",
+        "path": "04_lookdev/references/coin_slot_look_bible_v001.md"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "04_lookdev",
+        "asset_id": "SCN_ARCADE_VISUAL_REFS",
+        "kind": "",
+        "role": "visual_references",
+        "path": "04_lookdev/references/coin_slot_visual_references.md"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "04_lookdev",
+        "asset_id": "SCN_ARCADE_SCENE_REFERENCE",
+        "kind": "",
+        "role": "scene_reference",
+        "path": "media/01_AIGC/scene_refs/SC_02_arcade_interior_v001.png"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "05_asset_bible",
+        "asset_id": "SCN_ARCADE_CHARACTER_STAGE_LOCKS",
+        "kind": "",
+        "role": "character_stage_locks",
+        "path": "05_asset_bible/character_stage_locks/coin_slot_character_stage_locks.md"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "05_asset_bible",
+        "asset_id": "SCN_ARCADE_LOCATION_BIBLE",
+        "kind": "",
+        "role": "location_bible",
+        "path": "05_asset_bible/locations/coin_slot_location_bible.md"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "05_asset_bible",
+        "asset_id": "SCN_ARCADE_CONTINUITY_LOCKS",
+        "kind": "",
+        "role": "continuity_locks",
+        "path": "05_asset_bible/continuity/coin_slot_continuity_locks.md"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "06_previs",
+        "asset_id": "SCN_ARCADE_SCENE_LOCK",
+        "kind": "",
+        "role": "scene_lock",
+        "path": "06_previs/scene_locks/scn-arcade/scene_lock.yaml"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "06_previs",
+        "asset_id": "SCN_ARCADE_CAMERA_MANIFEST",
+        "kind": "",
+        "role": "camera_manifest",
+        "path": "06_previs/scene_locks/scn-arcade/camera_manifest.csv"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "06_previs",
+        "asset_id": "SCN_ARCADE_REFERENCE_ASSETS",
+        "kind": "",
+        "role": "reference_assets",
+        "path": "06_previs/scene_locks/scn-arcade/reference_assets.md"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "06_previs",
+        "asset_id": "SCN_ARCADE_WHITEBOX_INDEX",
+        "kind": "",
+        "role": "whitebox_index",
+        "path": "06_previs/scene_locks/scn-arcade/whitebox_index.csv"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "06_previs",
+        "asset_id": "MSB019_WHITEBOX",
+        "kind": "",
+        "role": "whitebox",
+        "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_ARCADE_MSB019.png"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "06_previs",
+        "asset_id": "MSB020_WHITEBOX",
+        "kind": "",
+        "role": "whitebox",
+        "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_ARCADE_MSB020.png"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "06_previs",
+        "asset_id": "MSB021_WHITEBOX",
+        "kind": "",
+        "role": "whitebox",
+        "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_ARCADE_MSB021.png"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "06_previs",
+        "asset_id": "MSB022_WHITEBOX",
+        "kind": "",
+        "role": "whitebox",
+        "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_ARCADE_MSB022.png"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "06_previs",
+        "asset_id": "MSB023_WHITEBOX",
+        "kind": "",
+        "role": "whitebox",
+        "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_ARCADE_MSB023.png"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "06_previs",
+        "asset_id": "MSB024_WHITEBOX",
+        "kind": "",
+        "role": "whitebox",
+        "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_ARCADE_MSB024.png"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "06_previs",
+        "asset_id": "MSB025_WHITEBOX",
+        "kind": "",
+        "role": "whitebox",
+        "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_ARCADE_MSB025.png"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "06_previs",
+        "asset_id": "MSB026_WHITEBOX",
+        "kind": "",
+        "role": "whitebox",
+        "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_ARCADE_MSB026.png"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "06_previs",
+        "asset_id": "MSB027_WHITEBOX",
+        "kind": "",
+        "role": "whitebox",
+        "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_ARCADE_MSB027.png"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "06_previs",
+        "asset_id": "MSB028_WHITEBOX",
+        "kind": "",
+        "role": "whitebox",
+        "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_ARCADE_MSB028.png"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "06_previs",
+        "asset_id": "MSB029_WHITEBOX",
+        "kind": "",
+        "role": "whitebox",
+        "path": "media/01_AIGC/whitebox_renders_v2/B02/WB2_ARCADE_MSB029.png"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "06_previs",
+        "asset_id": "MSB030_WHITEBOX",
+        "kind": "",
+        "role": "whitebox",
+        "path": "media/01_AIGC/whitebox_renders_v2/B02/WB2_ARCADE_MSB030.png"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "06_previs",
+        "asset_id": "MSB031_WHITEBOX",
+        "kind": "",
+        "role": "whitebox",
+        "path": "media/01_AIGC/whitebox_renders_v2/B02/WB2_ARCADE_MSB031.png"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "06_previs",
+        "asset_id": "MSB032_WHITEBOX",
+        "kind": "",
+        "role": "whitebox",
+        "path": "media/01_AIGC/whitebox_renders_v2/B02/WB2_ARCADE_MSB032.png"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "06_previs",
+        "asset_id": "MSB033_WHITEBOX",
+        "kind": "",
+        "role": "whitebox",
+        "path": "media/01_AIGC/whitebox_renders_v2/B02/WB2_ARCADE_MSB033.png"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "06_previs",
+        "asset_id": "MSB034_WHITEBOX",
+        "kind": "",
+        "role": "whitebox",
+        "path": "media/01_AIGC/whitebox_renders_v2/B02/WB2_ARCADE_MSB034.png"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "06_previs",
+        "asset_id": "MSB035_WHITEBOX",
+        "kind": "",
+        "role": "whitebox",
+        "path": "media/01_AIGC/whitebox_renders_v2/B02/WB2_ARCADE_MSB035.png"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "06_previs",
+        "asset_id": "MSB036_WHITEBOX",
+        "kind": "",
+        "role": "whitebox",
+        "path": "media/01_AIGC/whitebox_renders_v2/B02/WB2_ARCADE_MSB036.png"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "06_previs",
+        "asset_id": "MSB037_WHITEBOX",
+        "kind": "",
+        "role": "whitebox",
+        "path": "media/01_AIGC/whitebox_renders_v2/B02/WB2_ARCADE_MSB037.png"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "06_previs",
+        "asset_id": "MSB038_WHITEBOX",
+        "kind": "",
+        "role": "whitebox",
+        "path": "media/01_AIGC/whitebox_renders_v2/B02/WB2_ARCADE_MSB038.png"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "06_previs",
+        "asset_id": "MSB039_WHITEBOX",
+        "kind": "",
+        "role": "whitebox",
+        "path": "media/01_AIGC/whitebox_renders_v2/B02/WB2_ARCADE_MSB039.png"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "06_previs",
+        "asset_id": "MSB040_WHITEBOX",
+        "kind": "",
+        "role": "whitebox",
+        "path": "media/01_AIGC/whitebox_renders_v2/B02/WB2_ARCADE_MSB040.png"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "06_previs",
+        "asset_id": "MSB041_WHITEBOX",
+        "kind": "",
+        "role": "whitebox",
+        "path": "media/01_AIGC/whitebox_renders_v2/B02/WB2_ARCADE_MSB041.png"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "06_previs",
+        "asset_id": "MSB042_WHITEBOX",
+        "kind": "",
+        "role": "whitebox",
+        "path": "media/01_AIGC/whitebox_renders_v2/B02/WB2_ARCADE_MSB042.png"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "06_previs",
+        "asset_id": "MSB043_WHITEBOX",
+        "kind": "",
+        "role": "whitebox",
+        "path": "media/01_AIGC/whitebox_renders_v2/B02/WB2_ARCADE_MSB043.png"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "06_previs",
+        "asset_id": "MSB044_WHITEBOX",
+        "kind": "",
+        "role": "whitebox",
+        "path": "media/01_AIGC/whitebox_renders_v2/B02/WB2_ARCADE_MSB044.png"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "06_previs",
+        "asset_id": "MSB045_WHITEBOX",
+        "kind": "",
+        "role": "whitebox",
+        "path": "media/01_AIGC/whitebox_renders_v2/B02/WB2_ARCADE_MSB045.png"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "06_previs",
+        "asset_id": "MSB046_WHITEBOX",
+        "kind": "",
+        "role": "whitebox",
+        "path": "media/01_AIGC/whitebox_renders_v2/B02/WB2_ARCADE_MSB046.png"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "06_previs",
+        "asset_id": "MSB047_WHITEBOX",
+        "kind": "",
+        "role": "whitebox",
+        "path": "media/01_AIGC/whitebox_renders_v2/B02/WB2_ARCADE_MSB047.png"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "06_previs",
+        "asset_id": "MSB048_WHITEBOX",
+        "kind": "",
+        "role": "whitebox",
+        "path": "media/01_AIGC/whitebox_renders_v2/B02/WB2_ARCADE_MSB048.png"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "06_previs",
+        "asset_id": "MSB049_WHITEBOX",
+        "kind": "",
+        "role": "whitebox",
+        "path": "media/01_AIGC/whitebox_renders_v2/B02/WB2_ARCADE_MSB049.png"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "06_previs",
+        "asset_id": "MSB050_WHITEBOX",
+        "kind": "",
+        "role": "whitebox",
+        "path": "media/01_AIGC/whitebox_renders_v2/B02/WB2_ARCADE_MSB050.png"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "06_previs",
+        "asset_id": "MSB051_WHITEBOX",
+        "kind": "",
+        "role": "whitebox",
+        "path": "media/01_AIGC/whitebox_renders_v2/B02/WB2_ARCADE_MSB051.png"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "06_previs",
+        "asset_id": "MSB052_WHITEBOX",
+        "kind": "",
+        "role": "whitebox",
+        "path": "media/01_AIGC/whitebox_renders_v2/B02/WB2_ARCADE_MSB052.png"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "06_previs",
+        "asset_id": "MSB053_WHITEBOX",
+        "kind": "",
+        "role": "whitebox",
+        "path": "media/01_AIGC/whitebox_renders_v2/B02/WB2_ARCADE_MSB053.png"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "06_previs",
+        "asset_id": "MSB054_WHITEBOX",
+        "kind": "",
+        "role": "whitebox",
+        "path": "media/01_AIGC/whitebox_renders_v2/B02/WB2_ARCADE_MSB054.png"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "06_previs",
+        "asset_id": "MSB055_WHITEBOX",
+        "kind": "",
+        "role": "whitebox",
+        "path": "media/01_AIGC/whitebox_renders_v2/B02/WB2_ARCADE_MSB055.png"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "06_previs",
+        "asset_id": "MSB056_WHITEBOX",
+        "kind": "",
+        "role": "whitebox",
+        "path": "media/01_AIGC/whitebox_renders_v2/B02/WB2_ARCADE_MSB056.png"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "06_previs",
+        "asset_id": "MSB057_WHITEBOX",
+        "kind": "",
+        "role": "whitebox",
+        "path": "media/01_AIGC/whitebox_renders_v2/B02/WB2_ARCADE_MSB057.png"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "07_shots",
+        "asset_id": "SCN_ARCADE_SHOT_LIST",
+        "kind": "",
+        "role": "shot_list",
+        "path": "07_shots/shot_list.csv"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "07_shots",
+        "asset_id": "MSB019_IMAGE_PROMPT",
+        "kind": "",
+        "role": "image_prompt",
+        "path": "07_shots/prompts/MSB019.md"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "07_shots",
+        "asset_id": "MSB020_IMAGE_PROMPT",
+        "kind": "",
+        "role": "image_prompt",
+        "path": "07_shots/prompts/MSB020.md"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "07_shots",
+        "asset_id": "MSB025_IMAGE_PROMPT",
+        "kind": "",
+        "role": "image_prompt",
+        "path": "07_shots/prompts/MSB025.md"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "07_shots",
+        "asset_id": "SCN_ARCADE_SHOT_INDEX_188",
+        "kind": "",
+        "role": "scene_shot_index",
+        "path": "07_shots/scene_slices/SCN_ARCADE_shot_index.csv"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "07_shots",
+        "asset_id": "SCN_ARCADE_PROMPT_PACK_188",
+        "kind": "",
+        "role": "scene_prompt_pack",
+        "path": "07_shots/scene_slices/SCN_ARCADE_prompt_pack.csv"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "07_shots",
+        "asset_id": "MSB019_VIDEO_PROMPT",
+        "kind": "",
+        "role": "video_prompt",
+        "path": "07_shots/video_prompts/MSB019.md"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "07_shots",
+        "asset_id": "MSB020_VIDEO_PROMPT",
+        "kind": "",
+        "role": "video_prompt",
+        "path": "07_shots/video_prompts/MSB020.md"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "07_shots",
+        "asset_id": "MSB025_VIDEO_PROMPT",
+        "kind": "",
+        "role": "video_prompt",
+        "path": "07_shots/video_prompts/MSB025.md"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "08_generation",
+        "asset_id": "SCN_ARCADE_IMAGE_OUTPUT_INDEX",
+        "kind": "",
+        "role": "image_outputs",
+        "path": "08_generation/outputs/images/coin_slot_image_outputs_index.md"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "08_generation",
+        "asset_id": "SCN_ARCADE_REJECT_LOG",
+        "kind": "",
+        "role": "rejects",
+        "path": "08_generation/rejects/coin_slot_reject_log.md"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "08_generation",
+        "asset_id": "SCN_ARCADE_STORYBOARD_IMAGE_INDEX",
+        "kind": "",
+        "role": "storyboard_image_index",
+        "path": "08_generation/outputs/images/SCN_ARCADE_storyboard_image_index.csv"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "08_generation",
+        "asset_id": "MSB019_PURE_KEYFRAME",
+        "kind": "",
+        "role": "storyboard_keyframe",
+        "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB019_v001.png"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "08_generation",
+        "asset_id": "MSB019_FINAL_STORYBOARD",
+        "kind": "",
+        "role": "final_storyboard_panel",
+        "path": "media/01_AIGC/final_storyboard_panels/B01/MSB019_final_storyboard_v002.jpg"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "08_generation",
+        "asset_id": "MSB020_PURE_KEYFRAME",
+        "kind": "",
+        "role": "storyboard_keyframe",
+        "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB020_v001.png"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "08_generation",
+        "asset_id": "MSB020_FINAL_STORYBOARD",
+        "kind": "",
+        "role": "final_storyboard_panel",
+        "path": "media/01_AIGC/final_storyboard_panels/B01/MSB020_final_storyboard_v002.jpg"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "08_generation",
+        "asset_id": "MSB021_PURE_KEYFRAME",
+        "kind": "",
+        "role": "storyboard_keyframe",
+        "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB021_v001.png"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "08_generation",
+        "asset_id": "MSB021_FINAL_STORYBOARD",
+        "kind": "",
+        "role": "final_storyboard_panel",
+        "path": "media/01_AIGC/final_storyboard_panels/B01/MSB021_final_storyboard_v002.jpg"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "08_generation",
+        "asset_id": "MSB022_PURE_KEYFRAME",
+        "kind": "",
+        "role": "storyboard_keyframe",
+        "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB022_v001.png"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "08_generation",
+        "asset_id": "MSB022_FINAL_STORYBOARD",
+        "kind": "",
+        "role": "final_storyboard_panel",
+        "path": "media/01_AIGC/final_storyboard_panels/B01/MSB022_final_storyboard_v002.jpg"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "08_generation",
+        "asset_id": "MSB023_PURE_KEYFRAME",
+        "kind": "",
+        "role": "storyboard_keyframe",
+        "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB023_v001.png"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "08_generation",
+        "asset_id": "MSB023_FINAL_STORYBOARD",
+        "kind": "",
+        "role": "final_storyboard_panel",
+        "path": "media/01_AIGC/final_storyboard_panels/B01/MSB023_final_storyboard_v002.jpg"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "08_generation",
+        "asset_id": "MSB024_PURE_KEYFRAME",
+        "kind": "",
+        "role": "storyboard_keyframe",
+        "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB024_v001.png"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "08_generation",
+        "asset_id": "MSB024_FINAL_STORYBOARD",
+        "kind": "",
+        "role": "final_storyboard_panel",
+        "path": "media/01_AIGC/final_storyboard_panels/B01/MSB024_final_storyboard_v002.jpg"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "08_generation",
+        "asset_id": "MSB025_PURE_KEYFRAME",
+        "kind": "",
+        "role": "storyboard_keyframe",
+        "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB025_v001.png"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "08_generation",
+        "asset_id": "MSB025_FINAL_STORYBOARD",
+        "kind": "",
+        "role": "final_storyboard_panel",
+        "path": "media/01_AIGC/final_storyboard_panels/B01/MSB025_final_storyboard_v002.jpg"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "08_generation",
+        "asset_id": "MSB026_PURE_KEYFRAME",
+        "kind": "",
+        "role": "storyboard_keyframe",
+        "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB026_v001.png"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "08_generation",
+        "asset_id": "MSB026_FINAL_STORYBOARD",
+        "kind": "",
+        "role": "final_storyboard_panel",
+        "path": "media/01_AIGC/final_storyboard_panels/B01/MSB026_final_storyboard_v002.jpg"
+      },
+      {
+        "scene_id": "SCN_ARCADE",
+        "scene_title": "游戏厅 / Arcade play",
+        "step": "08_generation",
+        "asset_id": "MSB027_PURE_KEYFRAME",
+        "kind": "",
+        "role": "storyboard_keyframe",
+        "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB027_v001.png"
+      }
+    ]
+  },
+  "generation_context": {
+    "global_references": [
+      {
+        "ref_id": "THREE_BROTHERS_turnaround_expression_contact_sheet_v001",
+        "asset_ref": "resource:media/01_AIGC/character_design_v2/THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+        "asset_id": "THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+        "path": "media/01_AIGC/character_design_v2/THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+        "origin": "resource",
+        "kind": "character_ref",
+        "role": "character_design_contact_sheet",
+        "note": "三个小朋友统一人设、三视图、表情和服装连续性参考 / Global reference for the three children character identity, turnaround, expressions, and wardrobe continuity.",
+        "version_id": "",
+        "version_status": "",
+        "card_type": "",
+        "card_id": "",
+        "card_title": ""
+      },
+      {
+        "ref_id": "CHR_BRO_A_late_scuffed_reference_v001.png",
+        "asset_ref": "resource:media/01_AIGC/character_design_v2/stage_variants/CHR_BRO_A_late_scuffed_reference_v001.png",
+        "asset_id": "CHR_BRO_A_late_scuffed_reference_v001.png",
+        "path": "media/01_AIGC/character_design_v2/stage_variants/CHR_BRO_A_late_scuffed_reference_v001.png",
+        "origin": "resource",
+        "kind": "image",
+        "role": "image",
+        "note": "给哥哥带一个眼镜",
+        "version_id": "",
+        "version_status": "",
+        "card_type": "",
+        "card_id": "",
+        "card_title": ""
+      },
+      {
+        "ref_id": "001_BIBLE_005_v001.png",
+        "asset_ref": "project:08_generation/jobs/CARD_IMG_20260618_221216/outputs/001_BIBLE_005_v001.png",
+        "asset_id": "001_BIBLE_005_v001.png",
+        "path": "08_generation/jobs/CARD_IMG_20260618_221216/outputs/001_BIBLE_005_v001.png",
+        "origin": "project",
+        "kind": "image",
+        "role": "image",
+        "note": "参考三个混混的设定，这一幕只出现黄毛",
+        "version_id": "v001",
+        "version_status": "current",
+        "card_type": "concept",
+        "card_id": "BIBLE_005",
+        "card_title": ""
+      }
+    ],
+    "context_cards": [
+      {
+        "card_id": "BIBLE_CHARACTER_001",
+        "scope": "project",
+        "act_id": "",
+        "category": "character",
+        "title": "三个小朋友 / Three children",
+        "summary": "第一幕的核心人物组：三个背书包的小学生，熟门熟路但仍然心虚，互相打掩护进入隐藏游戏机房。需要保持年龄、身高差、书包、发型、衣着年代感和表演气质连续。",
+        "visual_direction": "1990年代中国北方小城小学生：旧校服或朴素外套、磨旧书包、略脏鞋面、放学后的疲惫和兴奋并存；动作要小心、鬼祟、彼此贴近。",
+        "prompt_notes": "three Chinese school children in 1990s northern China, carrying worn schoolbags, cautious and sneaky after school, consistent faces, hairstyles, wardrobe and height differences, cinematic realism",
+        "revision_note": "",
+        "negative_prompt": "不要现代校服、智能手机、潮牌服饰、夸张动漫表情、年龄过大或过小、角色身份不一致。",
+        "selected": true,
+        "image_selected": true,
+        "status": "draft",
+        "references": [
+          {
+            "ref_id": "THREE_BROTHERS_turnaround_expression_contact_sheet_v001",
+            "asset_ref": "resource:media/01_AIGC/character_design_v2/THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+            "asset_id": "THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+            "path": "media/01_AIGC/character_design_v2/THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+            "origin": "resource",
+            "kind": "character_ref",
+            "role": "character_design_contact_sheet",
+            "note": "三个小朋友统一人设、三视图、表情和服装连续性参考 / Global reference for the three children character identity, turnaround, expressions, and wardrobe continuity.",
+            "version_id": "",
+            "version_status": "",
+            "card_type": "",
+            "card_id": "",
+            "card_title": ""
+          },
+          {
+            "ref_id": "CHR_BRO_A_late_scuffed_reference_v001.png",
+            "asset_ref": "resource:media/01_AIGC/character_design_v2/stage_variants/CHR_BRO_A_late_scuffed_reference_v001.png",
+            "asset_id": "CHR_BRO_A_late_scuffed_reference_v001.png",
+            "path": "media/01_AIGC/character_design_v2/stage_variants/CHR_BRO_A_late_scuffed_reference_v001.png",
+            "origin": "resource",
+            "kind": "image",
+            "role": "image",
+            "note": "给哥哥带一个眼镜",
+            "version_id": "",
+            "version_status": "",
+            "card_type": "",
+            "card_id": "",
+            "card_title": ""
+          }
+        ],
+        "preview_path": "",
+        "versions": []
+      },
+      {
+        "card_id": "BIBLE_LOCATION_001",
+        "scope": "project",
+        "act_id": "",
+        "category": "location",
+        "title": "破旧居民楼角落与隐藏游戏机房入口 / Compound corner arcade entrance",
+        "summary": "第一幕外部主场景：老居民楼侧面的不起眼角落，暗金属门藏在墙根或楼体边角处，门上有猫眼，老板从里面确认熟人后开门。",
+        "visual_direction": "潮湿水泥墙、掉皮涂料、锈迹铁门、暗窄入口、灰尘和旧广告痕迹；构图强调秘密入口、孩子压低身体靠近、门内外光线反差。",
+        "prompt_notes": "old residential compound corner in 1990s northern Chinese small city, hidden arcade room entrance, rusty dark metal door with peephole, peeling concrete wall, dim afternoon light, secretive composition",
+        "revision_note": "",
+        "negative_prompt": "不要现代商业街、霓虹招牌、干净新楼、豪华游戏厅门面、可读随机文字或过度赛博朋克。",
+        "selected": true,
+        "image_selected": true,
+        "status": "draft",
+        "references": [
+          {
+            "ref_id": "WBX_20260616_024949",
+            "asset_ref": "project:06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+            "asset_id": "WBX_20260616_024949",
+            "path": "06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+            "origin": "project",
+            "kind": "whitebox",
+            "role": "replica_whitebox",
+            "note": "隐藏游戏机房入口的空间、机位、旧墙、金属门、猫眼和三个孩子站位参考；作为场景与道具总概念的白模依据。",
+            "version_id": "",
+            "version_status": "",
+            "card_type": "",
+            "card_id": "",
+            "card_title": "",
+            "usage_note": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。",
+            "generation_guidance": "Whitebox guidance / 白模读取说明:\n- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.\n- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.\n- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.\n- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.\n- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.\n- Source whitebox replica seed: ACT1_SHOT_003_SOURCE_KEYFRAME.\n- Replica intent / 复刻意图: 以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+            "whitebox_interpretation": {
+              "mode": "spatial_control_only",
+              "source_asset_id": "ACT1_SHOT_003_SOURCE_KEYFRAME",
+              "source_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+              "replica_note": "以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+              "tags": [
+                "ACT01",
+                "SCN_COMPOUND",
+                "hidden_arcade_door",
+                "peephole",
+                "three_children",
+                "1to1_replica"
+              ],
+              "use_for": [
+                "camera framing and lens/composition",
+                "subject scale, blocking, pose, sightline, and depth order",
+                "major set anchors such as doors, windows, corridors, walls, props, and openings",
+                "main light direction, shadow rhythm, and scene readability"
+              ],
+              "preserve": [
+                "overall aspect ratio and camera angle",
+                "relative positions between characters and key set pieces",
+                "door/window/opening height and screen position when present",
+                "foreground/midground/background separation"
+              ],
+              "ignore": [
+                "gray clay material",
+                "primitive cube/sphere/cylinder shapes",
+                "mannequin or toy-like character appearance",
+                "unfinished low-poly geometry",
+                "plain studio-white lighting unless the shot explicitly asks for it"
+              ],
+              "prompt_bridge": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。"
+            }
+          }
+        ],
+        "preview_path": "",
+        "versions": []
+      },
+      {
+        "card_id": "BIBLE_LOOKDEV_001",
+        "scope": "project",
+        "act_id": "",
+        "category": "lookdev",
+        "title": "90年代北方小城写实质感 / 1990s northern small-city realism",
+        "summary": "全片视觉底色：纪实电影感、低饱和、颗粒但不脏、旧胶片/早期DV记忆感，强调冬春交界或阴天里的灰冷空气。",
+        "visual_direction": "冷灰水泥、褪色红黄广告纸、旧木门和铁门、混浊室内烟雾、钨丝灯与街面自然光混合；摄影机克制，少用夸张广角。",
+        "prompt_notes": "cinematic realism, 1990s northern Chinese small town, muted colors, natural film grain, smoky interiors, mixed tungsten and overcast daylight, grounded documentary texture",
+        "revision_note": "",
+        "negative_prompt": "不要过度磨皮、塑料感、CG感、现代高清广告片、过饱和网红色调、随机英文霓虹和水印。",
+        "selected": true,
+        "image_selected": true,
+        "status": "draft",
+        "references": [],
+        "preview_path": "",
+        "versions": []
+      },
+      {
+        "card_id": "BIBLE_PROP_001",
+        "scope": "project",
+        "act_id": "",
+        "category": "prop",
+        "title": "旧金属门、猫眼与游戏机房道具 / Door, peephole and arcade props",
+        "summary": "关键道具承担叙事信息：猫眼说明老板识别熟人，旧门说明游戏厅隐蔽，室内街机、烟灰缸、硬币和杂乱桌椅说明地下游戏机房生态。",
+        "visual_direction": "门要厚重、旧、暗、带磨损把手和猫眼；室内道具应杂乱但有时代感，街机屏幕亮度压住烟雾，不出现现代 LCD 大屏。",
+        "prompt_notes": "rusty metal door with peephole, worn handle, 1990s arcade machines, coin slot, smoke haze, ashtrays, cluttered stools and cables, period-correct props",
+        "revision_note": "",
+        "negative_prompt": "不要现代网吧、电竞椅、液晶显示器、智能门锁、干净商场电玩、随机品牌文字。",
+        "selected": true,
+        "image_selected": true,
+        "status": "draft",
+        "references": [
+          {
+            "ref_id": "WBX_20260616_024949",
+            "asset_ref": "project:06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+            "asset_id": "WBX_20260616_024949",
+            "path": "06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+            "origin": "project",
+            "kind": "whitebox",
+            "role": "replica_whitebox",
+            "note": "隐藏游戏机房入口的空间、机位、旧墙、金属门、猫眼和三个孩子站位参考；作为场景与道具总概念的白模依据。",
+            "version_id": "",
+            "version_status": "",
+            "card_type": "",
+            "card_id": "",
+            "card_title": "",
+            "usage_note": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。",
+            "generation_guidance": "Whitebox guidance / 白模读取说明:\n- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.\n- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.\n- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.\n- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.\n- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.\n- Source whitebox replica seed: ACT1_SHOT_003_SOURCE_KEYFRAME.\n- Replica intent / 复刻意图: 以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+            "whitebox_interpretation": {
+              "mode": "spatial_control_only",
+              "source_asset_id": "ACT1_SHOT_003_SOURCE_KEYFRAME",
+              "source_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+              "replica_note": "以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+              "tags": [
+                "ACT01",
+                "SCN_COMPOUND",
+                "hidden_arcade_door",
+                "peephole",
+                "three_children",
+                "1to1_replica"
+              ],
+              "use_for": [
+                "camera framing and lens/composition",
+                "subject scale, blocking, pose, sightline, and depth order",
+                "major set anchors such as doors, windows, corridors, walls, props, and openings",
+                "main light direction, shadow rhythm, and scene readability"
+              ],
+              "preserve": [
+                "overall aspect ratio and camera angle",
+                "relative positions between characters and key set pieces",
+                "door/window/opening height and screen position when present",
+                "foreground/midground/background separation"
+              ],
+              "ignore": [
+                "gray clay material",
+                "primitive cube/sphere/cylinder shapes",
+                "mannequin or toy-like character appearance",
+                "unfinished low-poly geometry",
+                "plain studio-white lighting unless the shot explicitly asks for it"
+              ],
+              "prompt_bridge": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。"
+            }
+          }
+        ],
+        "preview_path": "",
+        "versions": []
+      },
+      {
+        "card_id": "BIBLE_005",
+        "scope": "project",
+        "act_id": "",
+        "category": "lookdev",
+        "title": "",
+        "summary": "街机厅混混三人组，都是和哥哥同龄的年轻人，但社会痕迹明显，学生气少\n老大，矮个子，黄毛，长相凶狠，耳朵后夹着烟，爱打游戏\n老二，瘦高个，嚣张，穿个白色背心\n老三，胖子，又肥又壮，有点憨憨的",
+        "visual_direction": "",
+        "prompt_notes": "",
+        "revision_note": "",
+        "negative_prompt": "",
+        "selected": true,
+        "image_selected": true,
+        "status": "image_ready",
+        "references": [],
+        "preview_path": "08_generation/jobs/CARD_IMG_20260618_221216/outputs/001_BIBLE_005_v001.png",
+        "versions": [
+          {
+            "version_id": "v001",
+            "output_path": "08_generation/jobs/CARD_IMG_20260618_221216/outputs/001_BIBLE_005_v001.png",
+            "notes": "电影触发生成；用户确认使用第二张。方向：14-15岁初中小痞子，街机厅混混三人组，作为全局人设/氛围参考。",
+            "created_at": "2026-06-18T22:31:50+08:00",
+            "status": "current",
+            "candidate_id": "",
+            "task_id": "",
+            "packet_id": "",
+            "qa": {}
+          }
+        ]
+      }
+    ],
+    "context_references": [
+      {
+        "ref_id": "THREE_BROTHERS_turnaround_expression_contact_sheet_v001",
+        "asset_ref": "resource:media/01_AIGC/character_design_v2/THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+        "asset_id": "THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+        "path": "media/01_AIGC/character_design_v2/THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+        "origin": "resource",
+        "kind": "character_ref",
+        "role": "character_design_contact_sheet",
+        "note": "三个小朋友统一人设、三视图、表情和服装连续性参考 / Global reference for the three children character identity, turnaround, expressions, and wardrobe continuity.",
+        "version_id": "",
+        "version_status": "",
+        "card_type": "",
+        "card_id": "",
+        "card_title": ""
+      },
+      {
+        "ref_id": "CHR_BRO_A_late_scuffed_reference_v001.png",
+        "asset_ref": "resource:media/01_AIGC/character_design_v2/stage_variants/CHR_BRO_A_late_scuffed_reference_v001.png",
+        "asset_id": "CHR_BRO_A_late_scuffed_reference_v001.png",
+        "path": "media/01_AIGC/character_design_v2/stage_variants/CHR_BRO_A_late_scuffed_reference_v001.png",
+        "origin": "resource",
+        "kind": "image",
+        "role": "image",
+        "note": "给哥哥带一个眼镜",
+        "version_id": "",
+        "version_status": "",
+        "card_type": "",
+        "card_id": "",
+        "card_title": ""
+      },
+      {
+        "ref_id": "WBX_20260616_024949",
+        "asset_ref": "project:06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+        "asset_id": "WBX_20260616_024949",
+        "path": "06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+        "origin": "project",
+        "kind": "whitebox",
+        "role": "replica_whitebox",
+        "note": "隐藏游戏机房入口的空间、机位、旧墙、金属门、猫眼和三个孩子站位参考；作为场景与道具总概念的白模依据。",
+        "version_id": "",
+        "version_status": "",
+        "card_type": "",
+        "card_id": "",
+        "card_title": "",
+        "usage_note": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。",
+        "generation_guidance": "Whitebox guidance / 白模读取说明:\n- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.\n- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.\n- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.\n- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.\n- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.\n- Source whitebox replica seed: ACT1_SHOT_003_SOURCE_KEYFRAME.\n- Replica intent / 复刻意图: 以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+        "whitebox_interpretation": {
+          "mode": "spatial_control_only",
+          "source_asset_id": "ACT1_SHOT_003_SOURCE_KEYFRAME",
+          "source_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+          "replica_note": "以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+          "tags": [
+            "ACT01",
+            "SCN_COMPOUND",
+            "hidden_arcade_door",
+            "peephole",
+            "three_children",
+            "1to1_replica"
+          ],
+          "use_for": [
+            "camera framing and lens/composition",
+            "subject scale, blocking, pose, sightline, and depth order",
+            "major set anchors such as doors, windows, corridors, walls, props, and openings",
+            "main light direction, shadow rhythm, and scene readability"
+          ],
+          "preserve": [
+            "overall aspect ratio and camera angle",
+            "relative positions between characters and key set pieces",
+            "door/window/opening height and screen position when present",
+            "foreground/midground/background separation"
+          ],
+          "ignore": [
+            "gray clay material",
+            "primitive cube/sphere/cylinder shapes",
+            "mannequin or toy-like character appearance",
+            "unfinished low-poly geometry",
+            "plain studio-white lighting unless the shot explicitly asks for it"
+          ],
+          "prompt_bridge": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。"
+        }
+      },
+      {
+        "ref_id": "WBX_20260616_024949",
+        "asset_ref": "project:06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+        "asset_id": "WBX_20260616_024949",
+        "path": "06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+        "origin": "project",
+        "kind": "whitebox",
+        "role": "replica_whitebox",
+        "note": "隐藏游戏机房入口的空间、机位、旧墙、金属门、猫眼和三个孩子站位参考；作为场景与道具总概念的白模依据。",
+        "version_id": "",
+        "version_status": "",
+        "card_type": "",
+        "card_id": "",
+        "card_title": "",
+        "usage_note": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。",
+        "generation_guidance": "Whitebox guidance / 白模读取说明:\n- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.\n- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.\n- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.\n- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.\n- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.\n- Source whitebox replica seed: ACT1_SHOT_003_SOURCE_KEYFRAME.\n- Replica intent / 复刻意图: 以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+        "whitebox_interpretation": {
+          "mode": "spatial_control_only",
+          "source_asset_id": "ACT1_SHOT_003_SOURCE_KEYFRAME",
+          "source_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+          "replica_note": "以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+          "tags": [
+            "ACT01",
+            "SCN_COMPOUND",
+            "hidden_arcade_door",
+            "peephole",
+            "three_children",
+            "1to1_replica"
+          ],
+          "use_for": [
+            "camera framing and lens/composition",
+            "subject scale, blocking, pose, sightline, and depth order",
+            "major set anchors such as doors, windows, corridors, walls, props, and openings",
+            "main light direction, shadow rhythm, and scene readability"
+          ],
+          "preserve": [
+            "overall aspect ratio and camera angle",
+            "relative positions between characters and key set pieces",
+            "door/window/opening height and screen position when present",
+            "foreground/midground/background separation"
+          ],
+          "ignore": [
+            "gray clay material",
+            "primitive cube/sphere/cylinder shapes",
+            "mannequin or toy-like character appearance",
+            "unfinished low-poly geometry",
+            "plain studio-white lighting unless the shot explicitly asks for it"
+          ],
+          "prompt_bridge": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。"
+        }
+      }
+    ],
+    "target_references": [],
+    "target_context": {
+      "scene": {
+        "scene_id": "SCN_ARCADE",
+        "title": "游戏厅 / Arcade play",
+        "act_id": "ACT02",
+        "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade"
+      },
+      "nearby_storyboard_cards": [
+        {
+          "item_id": "ACT2_SHOT_001",
+          "scene_id": "SCN_ARCADE",
+          "beat": "被游戏厅气氛震住",
+          "shot_type": "儿童视角中景 / child-height medium shot",
+          "frame_description": "三个孩子刚进入游戏厅内部，两个弟弟停住脚步，被烟雾、CRT屏幕光和混杂人群震住；哥哥故作镇定，侧身示意他们跟紧。",
+          "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Three Chinese schoolboys just inside the doorway; two younger boys frozen by smoke, CRT light and crowded silhouettes, older brother pretending to be mature and signaling them to follow, child-height perspective, blue-green light on faces.",
+          "notes": "承接第一幕进入室内，强调两个弟弟的震慑和哥哥的装成熟。",
+          "revision_note": "",
+          "output_path": "",
+          "versions": []
+        },
+        {
+          "item_id": "ACT2_SHOT_002",
+          "scene_id": "SCN_ARCADE",
+          "beat": "哥哥掏出一块钱",
+          "shot_type": "手部特写 / insert close-up",
+          "frame_description": "哥哥从口袋里掏出一张皱旧的一元人民币，纸币被手汗和年代痕迹压皱，背景是模糊的柜台和老板。",
+          "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Insert close-up of an older brother child hand pulling out a worn 1990s Chinese one-yuan banknote, wrinkled paper texture, sweaty fingers, blurred arcade counter and owner in background, authentic period detail.",
+          "notes": "钱必须真实、年代感强；避免可读文字过清导致模型乱字，可强调纸币质感和颜色。",
+          "revision_note": "",
+          "output_path": "",
+          "versions": []
+        },
+        {
+          "item_id": "ACT2_SHOT_003",
+          "scene_id": "SCN_ARCADE",
+          "beat": "三个游戏币落入掌心",
+          "shot_type": "道具特写 / prop insert",
+          "frame_description": "老板把三个粗糙的金属游戏币放到哥哥掌心，硬币边缘磨损，反射着绿色街机光。两个弟弟在虚焦里盯着。",
+          "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Close-up of three rough worn metal arcade tokens dropping into a schoolboy palm, chipped edges, green CRT reflections, younger brothers blurred in background watching eagerly, authentic 1990s Chinese arcade tokens.",
+          "notes": "游戏币是核心年代道具，要粗糙、廉价、被摸旧。",
+          "revision_note": "",
+          "output_path": "",
+          "versions": []
+        },
+        {
+          "item_id": "ACT2_SHOT_004",
+          "scene_id": "SCN_ARCADE",
+          "beat": "走向真人快打机",
+          "shot_type": "跟拍中景 / tracking medium shot",
+          "frame_description": "哥哥握着游戏币，驾轻就熟地穿过人群走向一台真人快打街机；两个弟弟紧跟在后面，眼睛被屏幕吸住。",
+          "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Tracking medium shot of older brother confidently leading two younger boys through crowded smoky arcade toward a Mortal Kombat-style old fighting game cabinet, tokens in hand, younger boys staring at screens, no readable logos.",
+          "notes": "街机可暗示真人快打，不要出现清晰商标文字。",
+          "revision_note": "",
+          "output_path": "",
+          "versions": []
+        },
+        {
+          "item_id": "ACT2_SHOT_005",
+          "scene_id": "SCN_ARCADE",
+          "beat": "哥哥投币开打",
+          "shot_type": "街机侧面近景 / side close shot",
+          "frame_description": "游戏币投入投币口，哥哥双手落在摇杆和按钮上，动作熟练；两个弟弟站在旁边，脸上是崇拜和紧张。",
+          "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Side close shot of a token entering an old arcade coin slot, older brother hands confidently on joystick and buttons, two younger brothers beside him watching with admiration and tension, CRT fighting game glow.",
+          "notes": "投币口、手、按钮、弟弟表情要一起服务哥哥“熟练”的形象。",
+          "revision_note": "",
+          "output_path": "",
+          "versions": []
+        },
+        {
+          "item_id": "ACT2_SHOT_006",
+          "scene_id": "SCN_ARCADE",
+          "beat": "哥哥连胜，弟弟欢呼",
+          "shot_type": "中近景 / medium close shot",
+          "frame_description": "屏幕光照在哥哥脸上，他压着得意继续操作；两个弟弟在旁边兴奋地小声欢呼，周围开始有人回头。",
+          "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Medium close shot of older brother lit by CRT glow, focused and slightly smug while playing a fighting game, two younger brothers cheering quietly beside him, nearby teenagers turning their heads, smoky arcade background.",
+          "notes": "情绪从震慑转为短暂胜利，哥哥不能过分夸张。",
+          "revision_note": "",
+          "output_path": "",
+          "versions": []
+        },
+        {
+          "item_id": "ACT2_SHOT_007",
+          "scene_id": "SCN_ARCADE",
+          "beat": "围观人群变多",
+          "shot_type": "广角压迫镜头 / crowded wide shot",
+          "frame_description": "街机周围的人越围越多，肩膀和后脑勺形成压迫感。三个孩子被挤在机器前，哥哥仍然站在中心。",
+          "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Crowded wide shot around an old fighting game cabinet, shoulders and backs forming pressure around three schoolboys, older brother centered at controls, smoky low ceiling, plastic stools, mixed teenagers and adults but no modern clothing.",
+          "notes": "围观是危险升温，不只是热闹。",
+          "revision_note": "",
+          "output_path": "",
+          "versions": []
+        },
+        {
+          "item_id": "ACT2_SHOT_008",
+          "scene_id": "SCN_ARCADE",
+          "beat": "黄毛插入副机位投币挑战",
+          "shot_type": "双人机位中景 / two-player medium shot",
+          "frame_description": "一个和哥哥年纪相仿的黄毛小痞子突然挤到副操作位，不说话直接投币。哥哥侧头愣了一下，两个弟弟也安静下来。",
+          "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Medium shot of a same-age teenage yellow-haired local punk boy pushing into the second player position and dropping a token without speaking, older brother surprised but composed, younger brothers suddenly quiet, old dual-control arcade cabinet.",
+          "notes": "黄毛必须是初中生小痞子，不是成年人；挑战动作要干脆。",
+          "revision_note": "",
+          "output_path": "",
+          "versions": []
+        },
+        {
+          "item_id": "ACT2_SHOT_009",
+          "scene_id": "SCN_ARCADE",
+          "beat": "哥哥应战并赢第一局",
+          "shot_type": "过肩对抗镜头 / over-the-shoulder duel shot",
+          "frame_description": "从黄毛肩后看哥哥操作，哥哥嘴角轻微一笑后快速按键，屏幕光把两人的脸分成冷暖两侧。",
+          "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Over-the-shoulder duel shot from behind the yellow-haired teen punk, older brother at opposite controls with a restrained smirk, fast hands on buttons, CRT light splitting their faces, tense arcade crowd around them.",
+          "notes": "强调哥哥的轻蔑和熟练，但仍保持孩子气。",
+          "revision_note": "",
+          "output_path": "",
+          "versions": []
+        },
+        {
+          "item_id": "ACT2_SHOT_010",
+          "scene_id": "SCN_ARCADE",
+          "beat": "黄毛骂骂咧咧再次投币",
+          "shot_type": "快速剪辑特写组 / montage inserts",
+          "frame_description": "黄毛不服气，嘴里骂着又掏游戏币。画面切到投币口、狰狞表情、按键手指和弟弟紧张的眼神。",
+          "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Rapid montage-style storyboard panel: yellow-haired teen punk angry and cursing, another token pushed into coin slot, grimacing face, aggressive fingers smashing arcade buttons, younger brothers watching nervously, gritty smoky arcade.",
+          "notes": "这条可以作为快剪提示；不要生成文字脏话。",
+          "revision_note": "",
+          "output_path": "",
+          "versions": []
+        },
+        {
+          "item_id": "ACT2_SHOT_011",
+          "scene_id": "SCN_ARCADE",
+          "beat": "黄毛连输后砸按钮",
+          "shot_type": "低角度近景 / low close shot",
+          "frame_description": "连续失败后，黄毛用拳头砸了一下按钮台，塑料按钮和金属面板震动。哥哥和弟弟都短暂僵住。",
+          "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Low close shot of yellow-haired teen punk slamming his fist onto an old arcade control panel after repeated losses, buttons shaking, older brother and younger boys frozen in background, tension under CRT glow.",
+          "notes": "这是危险第一次显形，控制力度，不要变成打斗。",
+          "revision_note": "",
+          "output_path": "",
+          "versions": []
+        },
+        {
+          "item_id": "ACT2_SHOT_012",
+          "scene_id": "SCN_ARCADE",
+          "beat": "黄毛离开前恶狠狠盯哥哥",
+          "shot_type": "凝视中近景 / tense medium close shot",
+          "frame_description": "黄毛转身离开前停了一下，恶狠狠地盯了哥哥一眼，没有说话。哥哥表面得意，两个弟弟的笑意收住。",
+          "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Tense medium close shot of same-age yellow-haired punk turning away but stopping to glare silently at the older brother, older brother trying to look proud, younger brothers’ smiles fading, smoky arcade crowd blurred behind, ominous but realistic.",
+          "notes": "第二幕收束在无声威胁，给后续冲突埋钩子。",
+          "revision_note": "",
+          "output_path": "",
+          "versions": []
+        }
+      ],
+      "related_assets": [
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "03_story",
+          "asset_id": "SCN_ARCADE_STORY_BEATS",
+          "kind": "",
+          "role": "beat_sheet",
+          "path": "03_story/beats/coin_slot_sample_beat_sheet.md"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "03_story",
+          "asset_id": "SCN_ARCADE_FULL_SHOT_LIST",
+          "kind": "",
+          "role": "full_shot_list",
+          "path": "07_shots/shot_list.csv"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "04_lookdev",
+          "asset_id": "SCN_ARCADE_LOOK_BIBLE",
+          "kind": "",
+          "role": "look_bible",
+          "path": "04_lookdev/references/coin_slot_look_bible_v001.md"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "04_lookdev",
+          "asset_id": "SCN_ARCADE_VISUAL_REFS",
+          "kind": "",
+          "role": "visual_references",
+          "path": "04_lookdev/references/coin_slot_visual_references.md"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "04_lookdev",
+          "asset_id": "SCN_ARCADE_SCENE_REFERENCE",
+          "kind": "",
+          "role": "scene_reference",
+          "path": "media/01_AIGC/scene_refs/SC_02_arcade_interior_v001.png"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "05_asset_bible",
+          "asset_id": "SCN_ARCADE_CHARACTER_STAGE_LOCKS",
+          "kind": "",
+          "role": "character_stage_locks",
+          "path": "05_asset_bible/character_stage_locks/coin_slot_character_stage_locks.md"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "05_asset_bible",
+          "asset_id": "SCN_ARCADE_LOCATION_BIBLE",
+          "kind": "",
+          "role": "location_bible",
+          "path": "05_asset_bible/locations/coin_slot_location_bible.md"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "05_asset_bible",
+          "asset_id": "SCN_ARCADE_CONTINUITY_LOCKS",
+          "kind": "",
+          "role": "continuity_locks",
+          "path": "05_asset_bible/continuity/coin_slot_continuity_locks.md"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "06_previs",
+          "asset_id": "SCN_ARCADE_SCENE_LOCK",
+          "kind": "",
+          "role": "scene_lock",
+          "path": "06_previs/scene_locks/scn-arcade/scene_lock.yaml"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "06_previs",
+          "asset_id": "SCN_ARCADE_CAMERA_MANIFEST",
+          "kind": "",
+          "role": "camera_manifest",
+          "path": "06_previs/scene_locks/scn-arcade/camera_manifest.csv"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "06_previs",
+          "asset_id": "SCN_ARCADE_REFERENCE_ASSETS",
+          "kind": "",
+          "role": "reference_assets",
+          "path": "06_previs/scene_locks/scn-arcade/reference_assets.md"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "06_previs",
+          "asset_id": "SCN_ARCADE_WHITEBOX_INDEX",
+          "kind": "",
+          "role": "whitebox_index",
+          "path": "06_previs/scene_locks/scn-arcade/whitebox_index.csv"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "06_previs",
+          "asset_id": "MSB019_WHITEBOX",
+          "kind": "",
+          "role": "whitebox",
+          "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_ARCADE_MSB019.png"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "06_previs",
+          "asset_id": "MSB020_WHITEBOX",
+          "kind": "",
+          "role": "whitebox",
+          "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_ARCADE_MSB020.png"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "06_previs",
+          "asset_id": "MSB021_WHITEBOX",
+          "kind": "",
+          "role": "whitebox",
+          "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_ARCADE_MSB021.png"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "06_previs",
+          "asset_id": "MSB022_WHITEBOX",
+          "kind": "",
+          "role": "whitebox",
+          "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_ARCADE_MSB022.png"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "06_previs",
+          "asset_id": "MSB023_WHITEBOX",
+          "kind": "",
+          "role": "whitebox",
+          "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_ARCADE_MSB023.png"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "06_previs",
+          "asset_id": "MSB024_WHITEBOX",
+          "kind": "",
+          "role": "whitebox",
+          "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_ARCADE_MSB024.png"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "06_previs",
+          "asset_id": "MSB025_WHITEBOX",
+          "kind": "",
+          "role": "whitebox",
+          "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_ARCADE_MSB025.png"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "06_previs",
+          "asset_id": "MSB026_WHITEBOX",
+          "kind": "",
+          "role": "whitebox",
+          "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_ARCADE_MSB026.png"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "06_previs",
+          "asset_id": "MSB027_WHITEBOX",
+          "kind": "",
+          "role": "whitebox",
+          "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_ARCADE_MSB027.png"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "06_previs",
+          "asset_id": "MSB028_WHITEBOX",
+          "kind": "",
+          "role": "whitebox",
+          "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_ARCADE_MSB028.png"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "06_previs",
+          "asset_id": "MSB029_WHITEBOX",
+          "kind": "",
+          "role": "whitebox",
+          "path": "media/01_AIGC/whitebox_renders_v2/B02/WB2_ARCADE_MSB029.png"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "06_previs",
+          "asset_id": "MSB030_WHITEBOX",
+          "kind": "",
+          "role": "whitebox",
+          "path": "media/01_AIGC/whitebox_renders_v2/B02/WB2_ARCADE_MSB030.png"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "06_previs",
+          "asset_id": "MSB031_WHITEBOX",
+          "kind": "",
+          "role": "whitebox",
+          "path": "media/01_AIGC/whitebox_renders_v2/B02/WB2_ARCADE_MSB031.png"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "06_previs",
+          "asset_id": "MSB032_WHITEBOX",
+          "kind": "",
+          "role": "whitebox",
+          "path": "media/01_AIGC/whitebox_renders_v2/B02/WB2_ARCADE_MSB032.png"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "06_previs",
+          "asset_id": "MSB033_WHITEBOX",
+          "kind": "",
+          "role": "whitebox",
+          "path": "media/01_AIGC/whitebox_renders_v2/B02/WB2_ARCADE_MSB033.png"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "06_previs",
+          "asset_id": "MSB034_WHITEBOX",
+          "kind": "",
+          "role": "whitebox",
+          "path": "media/01_AIGC/whitebox_renders_v2/B02/WB2_ARCADE_MSB034.png"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "06_previs",
+          "asset_id": "MSB035_WHITEBOX",
+          "kind": "",
+          "role": "whitebox",
+          "path": "media/01_AIGC/whitebox_renders_v2/B02/WB2_ARCADE_MSB035.png"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "06_previs",
+          "asset_id": "MSB036_WHITEBOX",
+          "kind": "",
+          "role": "whitebox",
+          "path": "media/01_AIGC/whitebox_renders_v2/B02/WB2_ARCADE_MSB036.png"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "06_previs",
+          "asset_id": "MSB037_WHITEBOX",
+          "kind": "",
+          "role": "whitebox",
+          "path": "media/01_AIGC/whitebox_renders_v2/B02/WB2_ARCADE_MSB037.png"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "06_previs",
+          "asset_id": "MSB038_WHITEBOX",
+          "kind": "",
+          "role": "whitebox",
+          "path": "media/01_AIGC/whitebox_renders_v2/B02/WB2_ARCADE_MSB038.png"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "06_previs",
+          "asset_id": "MSB039_WHITEBOX",
+          "kind": "",
+          "role": "whitebox",
+          "path": "media/01_AIGC/whitebox_renders_v2/B02/WB2_ARCADE_MSB039.png"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "06_previs",
+          "asset_id": "MSB040_WHITEBOX",
+          "kind": "",
+          "role": "whitebox",
+          "path": "media/01_AIGC/whitebox_renders_v2/B02/WB2_ARCADE_MSB040.png"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "06_previs",
+          "asset_id": "MSB041_WHITEBOX",
+          "kind": "",
+          "role": "whitebox",
+          "path": "media/01_AIGC/whitebox_renders_v2/B02/WB2_ARCADE_MSB041.png"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "06_previs",
+          "asset_id": "MSB042_WHITEBOX",
+          "kind": "",
+          "role": "whitebox",
+          "path": "media/01_AIGC/whitebox_renders_v2/B02/WB2_ARCADE_MSB042.png"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "06_previs",
+          "asset_id": "MSB043_WHITEBOX",
+          "kind": "",
+          "role": "whitebox",
+          "path": "media/01_AIGC/whitebox_renders_v2/B02/WB2_ARCADE_MSB043.png"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "06_previs",
+          "asset_id": "MSB044_WHITEBOX",
+          "kind": "",
+          "role": "whitebox",
+          "path": "media/01_AIGC/whitebox_renders_v2/B02/WB2_ARCADE_MSB044.png"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "06_previs",
+          "asset_id": "MSB045_WHITEBOX",
+          "kind": "",
+          "role": "whitebox",
+          "path": "media/01_AIGC/whitebox_renders_v2/B02/WB2_ARCADE_MSB045.png"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "06_previs",
+          "asset_id": "MSB046_WHITEBOX",
+          "kind": "",
+          "role": "whitebox",
+          "path": "media/01_AIGC/whitebox_renders_v2/B02/WB2_ARCADE_MSB046.png"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "06_previs",
+          "asset_id": "MSB047_WHITEBOX",
+          "kind": "",
+          "role": "whitebox",
+          "path": "media/01_AIGC/whitebox_renders_v2/B02/WB2_ARCADE_MSB047.png"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "06_previs",
+          "asset_id": "MSB048_WHITEBOX",
+          "kind": "",
+          "role": "whitebox",
+          "path": "media/01_AIGC/whitebox_renders_v2/B02/WB2_ARCADE_MSB048.png"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "06_previs",
+          "asset_id": "MSB049_WHITEBOX",
+          "kind": "",
+          "role": "whitebox",
+          "path": "media/01_AIGC/whitebox_renders_v2/B02/WB2_ARCADE_MSB049.png"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "06_previs",
+          "asset_id": "MSB050_WHITEBOX",
+          "kind": "",
+          "role": "whitebox",
+          "path": "media/01_AIGC/whitebox_renders_v2/B02/WB2_ARCADE_MSB050.png"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "06_previs",
+          "asset_id": "MSB051_WHITEBOX",
+          "kind": "",
+          "role": "whitebox",
+          "path": "media/01_AIGC/whitebox_renders_v2/B02/WB2_ARCADE_MSB051.png"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "06_previs",
+          "asset_id": "MSB052_WHITEBOX",
+          "kind": "",
+          "role": "whitebox",
+          "path": "media/01_AIGC/whitebox_renders_v2/B02/WB2_ARCADE_MSB052.png"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "06_previs",
+          "asset_id": "MSB053_WHITEBOX",
+          "kind": "",
+          "role": "whitebox",
+          "path": "media/01_AIGC/whitebox_renders_v2/B02/WB2_ARCADE_MSB053.png"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "06_previs",
+          "asset_id": "MSB054_WHITEBOX",
+          "kind": "",
+          "role": "whitebox",
+          "path": "media/01_AIGC/whitebox_renders_v2/B02/WB2_ARCADE_MSB054.png"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "06_previs",
+          "asset_id": "MSB055_WHITEBOX",
+          "kind": "",
+          "role": "whitebox",
+          "path": "media/01_AIGC/whitebox_renders_v2/B02/WB2_ARCADE_MSB055.png"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "06_previs",
+          "asset_id": "MSB056_WHITEBOX",
+          "kind": "",
+          "role": "whitebox",
+          "path": "media/01_AIGC/whitebox_renders_v2/B02/WB2_ARCADE_MSB056.png"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "06_previs",
+          "asset_id": "MSB057_WHITEBOX",
+          "kind": "",
+          "role": "whitebox",
+          "path": "media/01_AIGC/whitebox_renders_v2/B02/WB2_ARCADE_MSB057.png"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "07_shots",
+          "asset_id": "SCN_ARCADE_SHOT_LIST",
+          "kind": "",
+          "role": "shot_list",
+          "path": "07_shots/shot_list.csv"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "07_shots",
+          "asset_id": "MSB019_IMAGE_PROMPT",
+          "kind": "",
+          "role": "image_prompt",
+          "path": "07_shots/prompts/MSB019.md"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "07_shots",
+          "asset_id": "MSB020_IMAGE_PROMPT",
+          "kind": "",
+          "role": "image_prompt",
+          "path": "07_shots/prompts/MSB020.md"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "07_shots",
+          "asset_id": "MSB025_IMAGE_PROMPT",
+          "kind": "",
+          "role": "image_prompt",
+          "path": "07_shots/prompts/MSB025.md"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "07_shots",
+          "asset_id": "SCN_ARCADE_SHOT_INDEX_188",
+          "kind": "",
+          "role": "scene_shot_index",
+          "path": "07_shots/scene_slices/SCN_ARCADE_shot_index.csv"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "07_shots",
+          "asset_id": "SCN_ARCADE_PROMPT_PACK_188",
+          "kind": "",
+          "role": "scene_prompt_pack",
+          "path": "07_shots/scene_slices/SCN_ARCADE_prompt_pack.csv"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "07_shots",
+          "asset_id": "MSB019_VIDEO_PROMPT",
+          "kind": "",
+          "role": "video_prompt",
+          "path": "07_shots/video_prompts/MSB019.md"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "07_shots",
+          "asset_id": "MSB020_VIDEO_PROMPT",
+          "kind": "",
+          "role": "video_prompt",
+          "path": "07_shots/video_prompts/MSB020.md"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "07_shots",
+          "asset_id": "MSB025_VIDEO_PROMPT",
+          "kind": "",
+          "role": "video_prompt",
+          "path": "07_shots/video_prompts/MSB025.md"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "08_generation",
+          "asset_id": "SCN_ARCADE_IMAGE_OUTPUT_INDEX",
+          "kind": "",
+          "role": "image_outputs",
+          "path": "08_generation/outputs/images/coin_slot_image_outputs_index.md"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "08_generation",
+          "asset_id": "SCN_ARCADE_REJECT_LOG",
+          "kind": "",
+          "role": "rejects",
+          "path": "08_generation/rejects/coin_slot_reject_log.md"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "08_generation",
+          "asset_id": "SCN_ARCADE_STORYBOARD_IMAGE_INDEX",
+          "kind": "",
+          "role": "storyboard_image_index",
+          "path": "08_generation/outputs/images/SCN_ARCADE_storyboard_image_index.csv"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "08_generation",
+          "asset_id": "MSB019_PURE_KEYFRAME",
+          "kind": "",
+          "role": "storyboard_keyframe",
+          "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB019_v001.png"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "08_generation",
+          "asset_id": "MSB019_FINAL_STORYBOARD",
+          "kind": "",
+          "role": "final_storyboard_panel",
+          "path": "media/01_AIGC/final_storyboard_panels/B01/MSB019_final_storyboard_v002.jpg"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "08_generation",
+          "asset_id": "MSB020_PURE_KEYFRAME",
+          "kind": "",
+          "role": "storyboard_keyframe",
+          "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB020_v001.png"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "08_generation",
+          "asset_id": "MSB020_FINAL_STORYBOARD",
+          "kind": "",
+          "role": "final_storyboard_panel",
+          "path": "media/01_AIGC/final_storyboard_panels/B01/MSB020_final_storyboard_v002.jpg"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "08_generation",
+          "asset_id": "MSB021_PURE_KEYFRAME",
+          "kind": "",
+          "role": "storyboard_keyframe",
+          "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB021_v001.png"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "08_generation",
+          "asset_id": "MSB021_FINAL_STORYBOARD",
+          "kind": "",
+          "role": "final_storyboard_panel",
+          "path": "media/01_AIGC/final_storyboard_panels/B01/MSB021_final_storyboard_v002.jpg"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "08_generation",
+          "asset_id": "MSB022_PURE_KEYFRAME",
+          "kind": "",
+          "role": "storyboard_keyframe",
+          "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB022_v001.png"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "08_generation",
+          "asset_id": "MSB022_FINAL_STORYBOARD",
+          "kind": "",
+          "role": "final_storyboard_panel",
+          "path": "media/01_AIGC/final_storyboard_panels/B01/MSB022_final_storyboard_v002.jpg"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "08_generation",
+          "asset_id": "MSB023_PURE_KEYFRAME",
+          "kind": "",
+          "role": "storyboard_keyframe",
+          "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB023_v001.png"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "08_generation",
+          "asset_id": "MSB023_FINAL_STORYBOARD",
+          "kind": "",
+          "role": "final_storyboard_panel",
+          "path": "media/01_AIGC/final_storyboard_panels/B01/MSB023_final_storyboard_v002.jpg"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "08_generation",
+          "asset_id": "MSB024_PURE_KEYFRAME",
+          "kind": "",
+          "role": "storyboard_keyframe",
+          "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB024_v001.png"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "08_generation",
+          "asset_id": "MSB024_FINAL_STORYBOARD",
+          "kind": "",
+          "role": "final_storyboard_panel",
+          "path": "media/01_AIGC/final_storyboard_panels/B01/MSB024_final_storyboard_v002.jpg"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "08_generation",
+          "asset_id": "MSB025_PURE_KEYFRAME",
+          "kind": "",
+          "role": "storyboard_keyframe",
+          "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB025_v001.png"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "08_generation",
+          "asset_id": "MSB025_FINAL_STORYBOARD",
+          "kind": "",
+          "role": "final_storyboard_panel",
+          "path": "media/01_AIGC/final_storyboard_panels/B01/MSB025_final_storyboard_v002.jpg"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "08_generation",
+          "asset_id": "MSB026_PURE_KEYFRAME",
+          "kind": "",
+          "role": "storyboard_keyframe",
+          "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB026_v001.png"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "08_generation",
+          "asset_id": "MSB026_FINAL_STORYBOARD",
+          "kind": "",
+          "role": "final_storyboard_panel",
+          "path": "media/01_AIGC/final_storyboard_panels/B01/MSB026_final_storyboard_v002.jpg"
+        },
+        {
+          "scene_id": "SCN_ARCADE",
+          "scene_title": "游戏厅 / Arcade play",
+          "step": "08_generation",
+          "asset_id": "MSB027_PURE_KEYFRAME",
+          "kind": "",
+          "role": "storyboard_keyframe",
+          "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB027_v001.png"
+        }
+      ]
+    },
+    "whitebox_guidance": [
+      "Whitebox guidance / 白模读取说明:\n- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.\n- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.\n- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.\n- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.\n- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.\n- Source whitebox replica seed: ACT1_SHOT_003_SOURCE_KEYFRAME.\n- Replica intent / 复刻意图: 以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。"
+    ]
+  },
+  "whitebox_guidance": [
+    "Whitebox guidance / 白模读取说明:\n- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.\n- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.\n- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.\n- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.\n- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.\n- Source whitebox replica seed: ACT1_SHOT_003_SOURCE_KEYFRAME.\n- Replica intent / 复刻意图: 以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。"
+  ],
+  "suggested_version_id": "v001",
+  "suggested_candidate_outputs": [
+    {
+      "candidate_id": "c01",
+      "version_id": "v001_c01",
+      "output_path": "08_generation/jobs/CARD_IMG_20260619_020051/outputs/006_ACT2_SHOT_006_v001_c01.png",
+      "output_absolute_path": "/Users/jaychoupp/Desktop/Story/Film/projects/coin-slot/08_generation/jobs/CARD_IMG_20260619_020051/outputs/006_ACT2_SHOT_006_v001_c01.png"
+    },
+    {
+      "candidate_id": "c02",
+      "version_id": "v001_c02",
+      "output_path": "08_generation/jobs/CARD_IMG_20260619_020051/outputs/006_ACT2_SHOT_006_v001_c02.png",
+      "output_absolute_path": "/Users/jaychoupp/Desktop/Story/Film/projects/coin-slot/08_generation/jobs/CARD_IMG_20260619_020051/outputs/006_ACT2_SHOT_006_v001_c02.png"
+    },
+    {
+      "candidate_id": "c03",
+      "version_id": "v001_c03",
+      "output_path": "08_generation/jobs/CARD_IMG_20260619_020051/outputs/006_ACT2_SHOT_006_v001_c03.png",
+      "output_absolute_path": "/Users/jaychoupp/Desktop/Story/Film/projects/coin-slot/08_generation/jobs/CARD_IMG_20260619_020051/outputs/006_ACT2_SHOT_006_v001_c03.png"
+    }
+  ],
+  "suggested_output_path": "08_generation/jobs/CARD_IMG_20260619_020051/outputs/006_ACT2_SHOT_006_v001_c01.png",
+  "suggested_output_absolute_path": "/Users/jaychoupp/Desktop/Story/Film/projects/coin-slot/08_generation/jobs/CARD_IMG_20260619_020051/outputs/006_ACT2_SHOT_006_v001_c01.png"
+}

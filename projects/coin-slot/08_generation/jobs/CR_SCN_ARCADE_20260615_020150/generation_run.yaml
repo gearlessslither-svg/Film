@@ -1,0 +1,10 @@
+{
+  "adapter": "manual_packet",
+  "adapter_type": "manual_packet",
+  "status": "review_ready",
+  "started_at": "2026-06-15T02:01:51+08:00",
+  "completed_at": "2026-06-15T02:01:51+08:00",
+  "item_count": 1,
+  "failed_count": 0,
+  "notes": ""
+}

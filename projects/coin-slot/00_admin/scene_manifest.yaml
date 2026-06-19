@@ -2,7 +2,7 @@
   "schema_version": 1,
   "project_slug": "coin-slot",
   "source": "resources/examples/coin-slot/csv/micro_storyboard_pure_image_prompts.csv",
-  "updated_at": "2026-06-14T15:53:58+08:00",
+  "updated_at": "2026-06-18T21:56:08+08:00",
   "acts": [
     {
       "act_id": "ACT01",
@@ -17,7 +17,7 @@
           "story_stages": [
             "S0_START_CLEAN"
           ],
-          "status": "in_progress",
+          "status": "review_ready",
           "shot_ids": [
             "MSB001",
             "MSB002",
@@ -64,7 +64,9 @@
             "09_edit",
             "10_qa",
             "11_delivery"
-          ]
+          ],
+          "last_reviewed_at": "2026-06-18T21:56:08+08:00",
+          "last_review_note": "Board generation request / 画布生成请求\n\nScene / 场戏: SCN_COMPOUND 居民楼角落 / Compound corner\nMain image / 主图: MSB001_PURE_KEYFRAME\nMain path / 主图路径: media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB001_v001.png\nOutput routing / 出图归档: SCN_COMPOUND · 居民楼角落 / Compound corner · 分镜关键帧 / Storyboard keyframe\nOutput routing note / 归档备注: Use this routing when saving and cataloging the generated image.\n\nMain brief / 主图备注:\n游戏厅加一道关着的门，门上有个猫眼，三个小孩子出现在画面左侧，有点鬼鬼祟祟的样子，注意，三个小孩子各自有各自的动作，神态和走位，不要太接近，但整体是要描述他们偷偷摸摸的想要去这个门这里的场景\n\nReference stack / 关联素材:\n- Reference / 关联图: character_s0_clean_v002_contact_sheet_ascii.jpg\n  Path: media/01_AIGC/contact_sheets/character_s0_clean_v002_contact_sheet_ascii.jpg\n  Relation note / 连线说明: Use selected visual element from this reference.\n  Reference note / 关联图备注: 三个少年的人设\n\nOutput goal / 输出目标:\n- Generate a clean, stable, high-quality key image suitable for downstream video AIGC.\n- Preserve the main composition unless the note explicitly changes it.\n- Integrate reference elements only according to relation notes.\n- Before generating, optimize the brief like a film keyframe: sharpen staging, lighting, lens language, character continuity, and negative constraints.\n- Avoid noise, distorted anatomy, inconsistent character identity, unreadable composition, watermarks, random text, and unwanted new props."
         },
         {
           "scene_id": "SCN_ARCADE",
@@ -74,7 +76,7 @@
           "story_stages": [
             "S1_ARCADE_PLAY"
           ],
-          "status": "in_progress",
+          "status": "review_ready",
           "shot_ids": [
             "MSB019",
             "MSB020",
@@ -156,7 +158,9 @@
             "09_edit",
             "10_qa",
             "11_delivery"
-          ]
+          ],
+          "last_reviewed_at": "2026-06-15T02:01:51+08:00",
+          "last_review_note": "Board generation request / 画布生成请求\n\nScene / 场戏: SCN_ARCADE 游戏厅 / Arcade play\nMain image / 主图: MSB020_FINAL_STORYBOARD\nMain path / 主图路径: media/01_AIGC/final_storyboard_panels/B01/MSB020_final_storyboard_v002.jpg\n\nMain brief / 主图备注:\n门外的景色是黑夜，且游戏机房应该是人满为患的\n\nReference stack / 关联素材:\n- No linked references. Use only the main image and note.\n\nOutput goal / 输出目标:\n- Generate a clean, stable, high-quality key image suitable for downstream video AIGC.\n- Preserve the main composition unless the note explicitly changes it.\n- Integrate reference elements only according to relation notes.\n- Avoid noise, distorted anatomy, inconsistent character identity, unreadable composition, watermarks, random text, and unwanted new props."
         }
       ]
     },

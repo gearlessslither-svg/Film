@@ -1,0 +1,20 @@
+{
+  "change_request_id": "CR_SCN_COMPOUND_20260615_024139",
+  "queue": [
+    {
+      "queue_id": "GEN_CR_SCN_COMPOUND_20260615_024139_001",
+      "asset_id": "MSB001_PURE_KEYFRAME",
+      "stage_id": "08_generation",
+      "target_version": "v002",
+      "action": "modify",
+      "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB001_v001.png",
+      "result_path": "08_generation/jobs/CR_SCN_COMPOUND_20260615_024139/outputs/GEN_CR_SCN_COMPOUND_20260615_024139_001_MSB001_PURE_KEYFRAME_v002.md",
+      "status": "review_ready",
+      "started_at": "2026-06-15T02:41:39+08:00",
+      "packet_path": "08_generation/jobs/CR_SCN_COMPOUND_20260615_024139/outputs/GEN_CR_SCN_COMPOUND_20260615_024139_001_MSB001_PURE_KEYFRAME_v002.md",
+      "task_path": "08_generation/jobs/CR_SCN_COMPOUND_20260615_024139/tasks/GEN_CR_SCN_COMPOUND_20260615_024139_001_MSB001_PURE_KEYFRAME_v002.json",
+      "adapter": "manual_packet",
+      "completed_at": "2026-06-15T02:41:39+08:00"
+    }
+  ]
+}

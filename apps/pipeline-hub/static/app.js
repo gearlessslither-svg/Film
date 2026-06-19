@@ -61,6 +61,7 @@ const state = {
   },
   recreate: null,
   activeChangeRequest: null,
+  ideaHandoffPollTimer: null,
   filters: {
     stage: "all",
     kind: "all",
@@ -70,6 +71,8 @@ const state = {
 };
 
 const PROJECT_BIBLE_SCENE_ID = "__PROJECT_BIBLE__";
+const IDEA_ACT_SCENE_PREFIX = "__IDEA_ACT__:";
+const IDEA_HANDOFF_ID_PLACEHOLDER = "__IDEA_HANDOFF_ID__";
 const PROJECT_BIBLE_SCOPE_OPTIONS = [
   { value: "project", label: "全项目 / Project" },
   { value: "act", label: "单幕 / Act" },
@@ -86,6 +89,7 @@ const PROJECT_BIBLE_CATEGORY_OPTIONS = [
 const CARD_VERSION_STATUS_LABELS = {
   candidate: "候选 / Candidate",
   current: "采用 / Current",
+  final: "Final / 最终",
   reference: "参考 / Reference",
   rejected: "淘汰 / Rejected",
 };
@@ -189,6 +193,7 @@ const BOARD_TAG_OPTIONS = [
   { value: "keyframe", label: "关键帧 / Keyframe" },
   { value: "lookdev", label: "风格 / Lookdev" },
   { value: "version_current", label: "采用版本 / Current version" },
+  { value: "version_final", label: "Final 版本 / Final version" },
   { value: "version_candidate", label: "候选版本 / Candidate version" },
   { value: "version_reference", label: "参考版本 / Reference version" },
   { value: "version_rejected", label: "淘汰版本 / Rejected version" },
@@ -216,6 +221,7 @@ const CARD_FILTER_OPTIONS = [
   { value: "no_image", label: "未出图 / No image" },
   { value: "has_image", label: "已有图 / Has image" },
   { value: "current", label: "有采用版本 / Has current" },
+  { value: "final", label: "有 Final 版本 / Has final" },
   { value: "reference", label: "有参考版本 / Has reference" },
   { value: "candidate", label: "有候选版本 / Has candidate" },
   { value: "rejected", label: "有淘汰版本 / Has rejected" },
@@ -297,53 +303,60 @@ function renderSidebarSceneNavigator() {
   const root = $("sidebarSceneNavigator");
   if (!root) return;
   const scenes = state.detail?.scene_workbench?.scenes || [];
-  if (!state.detail || !scenes.length) {
+  const board = currentIdeaBoard();
+  const acts = storyActEntries(board);
+  if (!state.detail || !acts.length) {
     root.innerHTML = "";
     return;
   }
+  const activeActId = activeStoryActId();
   const scene = selectedScene();
-  const grouped = new Map();
-  scenes.forEach((item) => {
-    const key = `${item.act_id || "ACT"}|${item.act_title || "未分幕 / No act"}`;
-    if (!grouped.has(key)) grouped.set(key, []);
-    grouped.get(key).push(item);
-  });
+  const selectedIdeaActId = selectedIdeaActIdFromState();
   root.innerHTML = `
     <section class="sidebar-scene-panel">
       <div class="sidebar-scene-header">
-        <span>场戏 / Scenes</span>
-        <small>${scenes.length}</small>
+        <span>工程结构 / Structure</span>
+        <small>${acts.length} 幕</small>
       </div>
       <button class="sidebar-scene-button project-bible ${isProjectBibleSelected() ? "active" : ""}" data-project-bible="true" type="button">
-        <span>总概念 / Project Bible</span>
-        <small>人物 · 场景 · 道具 · 美术 · 氛围</small>
+        <span>设定 / Settings</span>
+        <small>人物 · 道具 · 场景风格 · 视觉圣经</small>
       </button>
-      ${[...grouped.entries()]
-        .map(([key, actScenes]) => {
-          const [, actTitle] = key.split("|");
-          return `
-            <section class="sidebar-act">
-              <strong>${escapeHtml(actTitle)}</strong>
-              ${actScenes
-                .map(
-                  (item) => `
-                    <button class="sidebar-scene-button ${item.scene_id === scene?.scene_id ? "active" : ""}" data-scene-id="${escapeHtml(item.scene_id)}" type="button">
-                      <span>${escapeHtml(item.title || item.scene_id)}</span>
-                      <small>${escapeHtml(item.scene_id)} · ${(item.shot_ids || []).length} 镜头 · ${escapeHtml(sceneStatusLabel(item.status))}</small>
-                    </button>
-                  `,
-                )
-                .join("")}
-            </section>
-          `;
-        })
-        .join("")}
+      <section class="sidebar-act primary-acts">
+        <div class="sidebar-act-title">
+          <strong>幕 / Acts</strong>
+          <button class="mini-command sidebar-add-act" type="button">新增幕</button>
+        </div>
+        ${acts
+          .map((act) => {
+            const actId = act.act_id || "";
+            const rowCount = (board.rows || []).filter((row) => rowMatchesStoryAct(row, actId, board)).length;
+            const active = act.scene_id ? act.scene_id === scene?.scene_id : selectedIdeaActId === actId;
+            return `
+              <button class="sidebar-scene-button idea-act-button ${active ? "active" : ""}" ${act.scene_id ? `data-scene-id="${escapeHtml(act.scene_id)}"` : `data-idea-act-id="${escapeHtml(actId)}"`} type="button">
+                <span>${escapeHtml(act.title || actId)}</span>
+                <small>${escapeHtml(actId)} · ${rowCount} 分镜卡 · ${escapeHtml(sceneStatusLabel(act.status))}</small>
+              </button>
+            `;
+          })
+          .join("")}
+      </section>
     </section>
   `;
+  root.querySelector(".sidebar-add-act")?.addEventListener("click", (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    addIdeaAct();
+  });
   root.querySelectorAll(".sidebar-scene-button").forEach((button) => {
     button.addEventListener("click", () => {
       if (button.dataset.projectBible === "true") {
         selectProjectBible();
+        renderAll();
+        return;
+      }
+      if (button.dataset.ideaActId) {
+        selectIdeaAct(button.dataset.ideaActId || activeActId || "");
         renderAll();
         return;
       }
@@ -870,7 +883,7 @@ function sceneAssetRef(asset) {
 }
 
 function selectedScene() {
-  if (isConceptWorkspaceSelected()) return null;
+  if (isConceptWorkspaceSelected() || isIdeaActSelected()) return null;
   const scenes = state.detail?.scene_workbench?.scenes || [];
   if (!scenes.length) return null;
   if (!state.selectedSceneId || !scenes.some((scene) => scene.scene_id === state.selectedSceneId)) {
@@ -883,26 +896,54 @@ function isProjectBibleSelected() {
   return state.selectedSceneId === PROJECT_BIBLE_SCENE_ID;
 }
 
+function ideaActWorkspaceId(actId) {
+  return `${IDEA_ACT_SCENE_PREFIX}${encodeURIComponent(actId || "")}`;
+}
+
+function isIdeaActSelected() {
+  return String(state.selectedSceneId || "").startsWith(IDEA_ACT_SCENE_PREFIX);
+}
+
+function selectedIdeaActIdFromState() {
+  if (!isIdeaActSelected()) return "";
+  return decodeURIComponent(String(state.selectedSceneId || "").slice(IDEA_ACT_SCENE_PREFIX.length));
+}
+
 function isConceptWorkspaceSelected() {
   return isProjectBibleSelected();
 }
 
 function selectProjectBible() {
+  cacheIdeaBoardFromDom();
   state.selectedSceneId = PROJECT_BIBLE_SCENE_ID;
   state.selectedFrameRef = "";
   state.activeChangeRequest = null;
   state.recreate = null;
   state.ideaBatchRows = [];
-  if (!state.cardFilters.scope || state.cardFilters.scope === "current_scene") state.cardFilters.scope = "all";
+  if (!state.cardFilters.scope || state.cardFilters.scope === "current_scene" || state.cardFilters.scope === "current_act") state.cardFilters.scope = "all";
+}
+
+function selectIdeaAct(actId) {
+  cacheIdeaBoardFromDom();
+  state.selectedSceneId = ideaActWorkspaceId(actId || "");
+  state.selectedFrameRef = "";
+  state.activeChangeRequest = null;
+  state.recreate = null;
+  state.ideaBatchRows = [];
+  if (!state.cardFilters.scope || state.cardFilters.scope === "all" || state.cardFilters.scope === "current_scene") {
+    state.cardFilters.scope = "current_act";
+  }
+  ensureIdeaActiveRowForScene(currentIdeaBoard());
 }
 
 function selectScene(sceneId) {
-  const fromConceptWorkspace = isProjectBibleSelected();
+  cacheIdeaBoardFromDom();
+  const fromConceptWorkspace = isProjectBibleSelected() || isIdeaActSelected();
   state.selectedSceneId = sceneId || "";
   state.selectedFrameRef = "";
   state.activeChangeRequest = null;
   state.recreate = null;
-  if (fromConceptWorkspace && (!state.cardFilters.scope || state.cardFilters.scope === "all")) state.cardFilters.scope = "current_scene";
+  if (fromConceptWorkspace && (!state.cardFilters.scope || state.cardFilters.scope === "all" || state.cardFilters.scope === "current_act")) state.cardFilters.scope = "current_scene";
   ensureIdeaActiveRowForScene(currentIdeaBoard());
 }
 
@@ -1129,7 +1170,7 @@ function finalStoryboardFrames(scene) {
   const board = currentIdeaBoard();
   return storyboardRowsForAct(scene, board)
     .map(({ row, index }) => {
-      const current = [...cardVersionEntries(row)].reverse().find((version) => version.status === "current");
+      const current = [...cardVersionEntries(row)].reverse().find((version) => version.status === "final" || version.final === true);
       const path = current?.output_path || "";
       if (!isImagePath(path)) return null;
       const rowScene = sceneForIdeaRow(row);
@@ -1151,7 +1192,7 @@ function finalStoryboardFrames(scene) {
         asset_order: index,
         sort_text: [row.item_id, row.beat, current?.version_id, path].filter(Boolean).join(" "),
         version_id: current?.version_id || "",
-        version_status: "current",
+        version_status: "final",
         card_type: "storyboard",
         card_id: row.item_id || "",
         card_scope: rowActId ? "act" : "scene",
@@ -1160,7 +1201,7 @@ function finalStoryboardFrames(scene) {
         card_title: row.beat || row.item_id || "",
         card_category: "storyboard",
         card_summary: row.frame_description || "",
-        card_prompt: [row.image_prompt, row.video_prompt, row.revision_note, row.notes].filter(Boolean).join(" "),
+        card_prompt: [row.spatial_logic, row.image_prompt, row.video_prompt, row.revision_note, row.notes].filter(Boolean).join(" "),
         qa_score: current?.qa?.score ?? null,
         is_final_storyboard_frame: true,
         row_index: index,
@@ -1491,7 +1532,7 @@ function cardVersionImageAssets() {
         kind,
         stage: "08_generation",
         scene_id: "",
-        scene_title: "总概念 / Project Bible",
+        scene_title: "设定 / Settings",
         scene_slug: "",
         act_id: card.act_id || "",
         act_title: cardActLabel,
@@ -1548,7 +1589,7 @@ function cardVersionImageAssets() {
         card_title: row.beat || row.item_id || "",
         card_category: "storyboard",
         card_summary: row.frame_description || "",
-        card_prompt: [row.image_prompt, row.revision_note, row.notes].filter(Boolean).join(" "),
+        card_prompt: [row.spatial_logic, row.image_prompt, row.revision_note, row.notes].filter(Boolean).join(" "),
         qa_score: version.qa?.score ?? null,
       });
     });
@@ -1628,11 +1669,13 @@ function imageLibraryScopeOptions(assets) {
   const countFor = (scope) => assets.filter((asset) => imageAssetMatchesScope(asset, scope)).length;
   const options = [{ value: "all", label: `全部图片 / All images (${assets.length})` }];
   const scene = selectedScene();
+  const activeActId = activeStoryActId();
+  const activeAct = storyActEntryForId(currentIdeaBoard(), activeActId);
   if (scene?.scene_id) {
     options.push({ value: "current_scene", label: `当前场戏 / Current scene (${scene.scene_id}) (${countFor("current_scene")})` });
   }
-  if (scene?.act_id) {
-    options.push({ value: "current_act", label: `当前幕 / Current act (${scene.act_title || scene.act_id}) (${countFor("current_act")})` });
+  if (activeActId) {
+    options.push({ value: "current_act", label: `当前幕 / Current act (${activeAct?.title || activeActId}) (${countFor("current_act")})` });
   }
   options.push({ value: "global", label: `全局/未绑定 / Global (${countFor("global")})` });
   const acts = new Map();
@@ -1662,10 +1705,16 @@ function normalizedImageScope(scope) {
 function imageAssetMatchesScope(asset, scope) {
   const value = normalizedImageScope(scope);
   const scene = selectedScene();
+  const activeActId = activeStoryActId();
+  const activeAct = storyActEntryForId(currentIdeaBoard(), activeActId);
   if (value === "all") return true;
   if (value === "global") return !asset.scene_id && !asset.act_id;
   if (value === "current_scene") return Boolean(scene?.scene_id) && asset.scene_id === scene.scene_id;
-  if (value === "current_act") return Boolean(scene?.act_id) && asset.act_id === scene.act_id;
+  if (value === "current_act") {
+    if (!activeActId) return false;
+    if (activeAct?.scene_id) return asset.scene_id === activeAct.scene_id;
+    return asset.act_id === activeActId;
+  }
   if (value.startsWith("act:")) return asset.act_id === value.slice(4);
   if (value.startsWith("scene:")) return asset.scene_id === value.slice(6);
   return true;
@@ -3027,7 +3076,7 @@ function whiteboxTargetRowsForSource(source) {
   const words = [...new Set([...sourceWords, ...queryWords])];
   return rows
     .map((row, index) => {
-      const text = [row.item_id, row.scene_id, row.beat, row.shot_type, row.frame_description, row.image_prompt, row.notes].join(" ").toLowerCase();
+      const text = [row.item_id, row.scene_id, row.beat, row.shot_type, row.frame_description, row.spatial_logic, row.image_prompt, row.notes].join(" ").toLowerCase();
       const sameScene = source.scene_id && row.scene_id === source.scene_id;
       const score = (sameScene ? 8 : 0) + words.filter((word) => text.includes(word)).length;
       return { row, index, score, sameScene };
@@ -3291,9 +3340,79 @@ function saveIdeaHandoffs() {
   }
 }
 
+function normalizeIdeaHandoffIds(value) {
+  if (!Array.isArray(value)) return [];
+  return [...new Set(value.map((item) => String(item || "").trim()).filter(Boolean))];
+}
+
+function ideaHandoffCompletionNote(handoffId = IDEA_HANDOFF_ID_PLACEHOLDER) {
+  return [
+    "## Codex Analysis Card Metadata / Codex 分析卡元数据",
+    `- codex_handoff_id: ${handoffId}`,
+    "- 完成本卡要求的分析、生成或回填后，必须在 callback JSON body 顶层带上 completed_handoff_id。",
+    `- Example: "completed_handoff_id": "${handoffId}"`,
+    "- App 会用这个 id 自动删除已经完成的本地 Codex 分析卡；不要删除项目里的设定、幕、分镜或图片数据。",
+  ].join("\n");
+}
+
+function withIdeaHandoffCompletionNote(text, handoffId) {
+  const body = String(text || "");
+  const note = ideaHandoffCompletionNote(handoffId);
+  if (!body.trim()) return note;
+  if (body.includes("codex_handoff_id:")) {
+    return body.replaceAll(IDEA_HANDOFF_ID_PLACEHOLDER, handoffId);
+  }
+  return `${note}\n\n${body.replaceAll(IDEA_HANDOFF_ID_PLACEHOLDER, handoffId)}`;
+}
+
+function pruneCompletedIdeaHandoffs(completedIds) {
+  const idSet = new Set(normalizeIdeaHandoffIds(completedIds));
+  if (!idSet.size || !state.ideaHandoffs.length) return 0;
+  const before = state.ideaHandoffs.length;
+  state.ideaHandoffs = state.ideaHandoffs.filter((handoff) => !idSet.has(handoff.id));
+  const removed = before - state.ideaHandoffs.length;
+  if (removed > 0) saveIdeaHandoffs();
+  return removed;
+}
+
+function stopIdeaHandoffCompletionPolling() {
+  if (!state.ideaHandoffPollTimer) return;
+  window.clearInterval(state.ideaHandoffPollTimer);
+  state.ideaHandoffPollTimer = null;
+}
+
+async function pollIdeaHandoffCompletions() {
+  if (!state.selectedSlug || !state.ideaHandoffs.length) {
+    stopIdeaHandoffCompletionPolling();
+    return;
+  }
+  try {
+    const payload = await requestJson(`/api/projects/${encodeURIComponent(state.selectedSlug)}/idea-handoffs/completed`);
+    const removed = pruneCompletedIdeaHandoffs(payload.completed_handoff_ids || []);
+    if (removed > 0) {
+      renderIdeaLab();
+      toast(`已自动删除 ${removed} 张完成的 Codex 分析卡 / Completed cards removed`);
+    }
+  } catch {
+    // Completion cleanup is best-effort; manual delete stays available.
+  }
+  if (!state.ideaHandoffs.length) stopIdeaHandoffCompletionPolling();
+}
+
+function syncIdeaHandoffCompletionPolling() {
+  if (!state.selectedSlug || !state.ideaHandoffs.length) {
+    stopIdeaHandoffCompletionPolling();
+    return;
+  }
+  if (!state.ideaHandoffPollTimer) {
+    state.ideaHandoffPollTimer = window.setInterval(pollIdeaHandoffCompletions, 5000);
+  }
+}
+
 function clearIdeaHandoffs() {
   state.ideaHandoffs = [];
   saveIdeaHandoffs();
+  stopIdeaHandoffCompletionPolling();
   renderIdeaLab();
 }
 
@@ -3307,10 +3426,12 @@ function currentIdeaBoard() {
     logline: board.logline || "",
     story_outline: board.story_outline || "",
     style_notes: board.style_notes || "",
+    act_inputs: board.act_inputs && typeof board.act_inputs === "object" ? board.act_inputs : {},
     acts: Array.isArray(board.acts) ? board.acts : [],
     project_bible: Array.isArray(board.project_bible) ? board.project_bible : [],
     global_references: Array.isArray(board.global_references) ? board.global_references : [],
     rows: Array.isArray(board.rows) ? board.rows : [],
+    completed_handoff_ids: normalizeIdeaHandoffIds(board.completed_handoff_ids || []),
   };
 }
 
@@ -3319,12 +3440,133 @@ function nextIdeaItemId(rows) {
   return `IDEA_SHOT_${String(count).padStart(3, "0")}`;
 }
 
+function nextIdeaItemIdForAct(rows, actId) {
+  if (!actId) return nextIdeaItemId(rows);
+  const scopedBoard = { ...currentIdeaBoard(), rows: rows || [] };
+  const count = (rows || []).filter((row) => rowMatchesStoryAct(row, actId, scopedBoard)).length + 1;
+  return `${actId}_SHOT_${String(count).padStart(3, "0")}`;
+}
+
 function nextIdeaActId(acts) {
-  return `ACT${String((acts || []).length + 1).padStart(2, "0")}`;
+  const count = Math.max(storyActEntries().length, (acts || []).length) + 1;
+  return `ACT${String(count).padStart(2, "0")}`;
 }
 
 function nextProjectBibleCardId(cards) {
   return `BIBLE_${String((cards || []).length + 1).padStart(3, "0")}`;
+}
+
+function sceneDerivedStoryAct(scene, index = 0, boardAct = {}) {
+  const clipSummary = Array.isArray(scene?.clip_summary) ? scene.clip_summary : [];
+  const clipText = clipSummary
+    .map((clip) => [clip.clip, clip.title, clip.shot_count ? `${clip.shot_count} 镜头` : ""].filter(Boolean).join(" · "))
+    .join("\n");
+  const shotIds = Array.isArray(scene?.shot_ids) ? scene.shot_ids : [];
+  return {
+    source: "scene",
+    scene_id: scene?.scene_id || "",
+    act_id: scene?.scene_id || `ACT${String(index + 1).padStart(2, "0")}`,
+    title: boardAct.title || scene?.title || scene?.scene_id || "",
+    summary: boardAct.summary || clipText || scene?.story_stage || "",
+    dramatic_purpose: boardAct.dramatic_purpose || scene?.act_title || "",
+    key_beats: boardAct.key_beats || shotIds.join(", "),
+    status: boardAct.status || scene?.status || "draft",
+  };
+}
+
+function storyActEntries(board = currentIdeaBoard()) {
+  const scenes = state.detail?.scene_workbench?.scenes || [];
+  const sceneIds = new Set(scenes.map((scene) => scene.scene_id).filter(Boolean));
+  const manifestGroupActIds = new Set(scenes.map((scene) => scene.act_id).filter(Boolean));
+  const boardActs = Array.isArray(board.acts) ? board.acts : [];
+  const sceneEntries = scenes.map((scene, index) => {
+    const boardAct = boardActs.find((act) => (act.act_id || "") === (scene.scene_id || "")) || {};
+    return sceneDerivedStoryAct(scene, index, boardAct);
+  });
+  const customEntries = boardActs
+    .filter((act) => {
+      const actId = act.act_id || "";
+      if (!actId) return false;
+      if (sceneIds.has(actId)) return false;
+      if (manifestGroupActIds.has(actId)) return false;
+      return true;
+    })
+    .map((act) => ({ ...act, source: "custom", scene_id: "" }));
+  return [...sceneEntries, ...customEntries];
+}
+
+function storyActEntryForId(board = currentIdeaBoard(), actId = activeStoryActId()) {
+  return storyActEntries(board).find((act) => (act.act_id || "") === actId) || null;
+}
+
+function activeStoryActId() {
+  if (isConceptWorkspaceSelected()) return "";
+  const customActId = selectedIdeaActIdFromState();
+  if (customActId) {
+    if (storyActEntries(currentIdeaBoard()).some((act) => (act.act_id || "") === customActId)) return customActId;
+    const firstSceneId = state.detail?.scene_workbench?.scenes?.[0]?.scene_id || "";
+    if (firstSceneId) {
+      state.selectedSceneId = firstSceneId;
+      return firstSceneId;
+    }
+    return "";
+  }
+  const scene = selectedScene();
+  return scene?.scene_id || "";
+}
+
+function rowMatchesStoryAct(row, actId = activeStoryActId(), board = currentIdeaBoard()) {
+  if (!actId) return true;
+  const entry = storyActEntryForId(board, actId);
+  if (entry?.scene_id) return (row.scene_id || "") === entry.scene_id;
+  return (row.act_id || "") === actId;
+}
+
+function activeIdeaActId() {
+  if (isConceptWorkspaceSelected()) return "";
+  const selectedActId = selectedIdeaActIdFromState();
+  if (selectedActId) return selectedActId;
+  const scope = state.cardFilters?.scope || "";
+  if (scope.startsWith("act:")) return scope.slice(4);
+  const scene = selectedScene();
+  return scene?.act_id || "";
+}
+
+function defaultSceneIdForAct(board = currentIdeaBoard(), actId = activeStoryActId()) {
+  if (!actId) return selectedScene()?.scene_id || "";
+  if ((state.detail?.scene_workbench?.scenes || []).some((scene) => scene.scene_id === actId)) return actId;
+  const rowScene = (board.rows || []).find((row) => (row.act_id || "") === actId && row.scene_id)?.scene_id || "";
+  if (rowScene) return rowScene;
+  return (state.detail?.scene_workbench?.scenes || []).find((scene) => (scene.act_id || "") === actId)?.scene_id || "";
+}
+
+function activeIdeaInputs(board = currentIdeaBoard()) {
+  const actId = activeStoryActId();
+  if (!actId) {
+    return {
+      idea: board.idea || "",
+      story_title: board.story_title || "",
+      logline: board.logline || "",
+    };
+  }
+  const scoped = board.act_inputs?.[actId] || {};
+  return {
+    idea: scoped.idea || "",
+    story_title: scoped.story_title || "",
+    logline: scoped.logline || "",
+  };
+}
+
+function boardWithActiveIdeaInputs(board = currentIdeaBoard()) {
+  return {
+    ...board,
+    ...activeIdeaInputs(board),
+  };
+}
+
+function cacheIdeaBoardFromDom() {
+  if (!state.detail || !$("ideaSeedInput")) return;
+  setIdeaBoardLocal(collectIdeaBoardFromDom());
 }
 
 function ensureIdeaActiveBibleForScope(board = currentIdeaBoard()) {
@@ -3349,17 +3591,26 @@ function ensureProjectBibleActiveForFilteredCards(board = currentIdeaBoard()) {
 function collectIdeaActsFromDom(current) {
   const root = $("ideaActList");
   if (!root) return current.acts || [];
-  return Array.from(root.querySelectorAll(".idea-act-row")).map((row, index) => {
+  const acts = Array.isArray(current.acts) ? [...current.acts] : [];
+  Array.from(root.querySelectorAll(".idea-act-row")).forEach((row, index) => {
     const value = (field) => row.querySelector(`[data-idea-act-field="${field}"]`)?.value || "";
-    return {
-      act_id: value("act_id") || `ACT${String(index + 1).padStart(2, "0")}`,
+    const originalId = row.dataset.ideaActId || "";
+    const next = {
+      act_id: value("act_id") || originalId || `ACT${String(index + 1).padStart(2, "0")}`,
       title: value("title"),
       summary: value("summary"),
       dramatic_purpose: value("dramatic_purpose"),
       key_beats: value("key_beats"),
       status: value("status") || "draft",
     };
+    const targetIndex = acts.findIndex((act) => (act.act_id || "") === originalId || (act.act_id || "") === next.act_id);
+    if (targetIndex >= 0) {
+      acts[targetIndex] = { ...acts[targetIndex], ...next };
+    } else {
+      acts.push(next);
+    }
   });
+  return acts;
 }
 
 function collectProjectBibleFromDom(current) {
@@ -3396,15 +3647,10 @@ function collectProjectBibleFromDom(current) {
 function ideaRowEntriesForCurrentScene(board = currentIdeaBoard()) {
   if (isConceptWorkspaceSelected()) return [];
   const rows = board.rows || [];
-  const scene = selectedScene();
-  const sceneId = scene?.scene_id || "";
-  const actId = scene?.act_id || "";
+  const activeActId = activeStoryActId();
   const entries = rows.map((row, index) => ({ row, index }));
-  if (!sceneId) return entries;
-  return entries.filter(({ row }) => {
-    if ((row.scene_id || "") === sceneId) return true;
-    return Boolean(actId) && (row.act_id || "") === actId;
-  });
+  if (!activeActId) return entries;
+  return entries.filter(({ row }) => rowMatchesStoryAct(row, activeActId, board));
 }
 
 function ensureIdeaActiveRowForScene(board = currentIdeaBoard()) {
@@ -3418,12 +3664,12 @@ function ensureIdeaActiveRowForScene(board = currentIdeaBoard()) {
 }
 
 function ideaSceneSummary(board = currentIdeaBoard()) {
-  const scene = selectedScene();
-  const sceneId = scene?.scene_id || "";
+  const activeActId = activeStoryActId();
+  const activeAct = storyActEntryForId(board, activeActId);
   const visibleCount = ideaRowEntriesForCurrentScene(board).length;
   const totalCount = (board.rows || []).length;
-  if (!sceneId) return `${totalCount} 条分镜文本 / storyboard prompt rows`;
-  return `${sceneId} · ${escapeHtml(scene?.title || "")} · ${visibleCount}/${totalCount} 条分镜文本`;
+  if (!activeActId) return `${totalCount} 条分镜文本 / storyboard prompt rows`;
+  return `${activeActId} · ${escapeHtml(activeAct?.title || "")} · ${visibleCount}/${totalCount} 条分镜文本`;
 }
 
 function compactProjectSceneContext() {
@@ -3455,10 +3701,12 @@ function collectIdeaBoardFromDom() {
       beat: value("beat"),
       shot_type: value("shot_type"),
       frame_description: value("frame_description"),
+      spatial_logic: value("spatial_logic"),
       image_prompt: value("image_prompt"),
       video_prompt: value("video_prompt"),
       notes: value("notes"),
       revision_note: value("revision_note"),
+      sort_after: value("sort_after"),
       selected: row.querySelector('[data-idea-field="selected"]')?.checked ?? true,
       status: value("status") || "draft",
       output_path: value("output_path"),
@@ -3474,16 +3722,33 @@ function collectIdeaBoardFromDom() {
     .sort(([a], [b]) => a - b)
     .forEach(([, row]) => rows.push(row));
   const board = {
-    idea: $("ideaSeedInput")?.value || "",
-    story_title: $("ideaStoryTitle")?.value || "",
-    logline: $("ideaLogline")?.value || "",
+    idea: current.idea || "",
+    story_title: current.story_title || "",
+    logline: current.logline || "",
     story_outline: $("ideaOutline")?.value || "",
     style_notes: $("ideaStyleNotes")?.value || "",
+    act_inputs: { ...(current.act_inputs || {}) },
     acts: collectIdeaActsFromDom(current),
     project_bible: collectProjectBibleFromDom(current),
     global_references: current.global_references,
     rows,
   };
+  const textInputs = {
+    idea: $("ideaSeedInput")?.value || "",
+    story_title: $("ideaStoryTitle")?.value || "",
+    logline: $("ideaLogline")?.value || "",
+  };
+  const actId = activeStoryActId();
+  if (actId) {
+    board.act_inputs[actId] = {
+      ...(board.act_inputs[actId] || {}),
+      ...textInputs,
+    };
+  } else {
+    board.idea = textInputs.idea;
+    board.story_title = textInputs.story_title;
+    board.logline = textInputs.logline;
+  }
   syncIdeaReferenceNotesFromDom(board);
   return board;
 }
@@ -3656,7 +3921,7 @@ function addIdeaReference(scope, assetRef, rowIndexes = null) {
   renderIdeaLab();
   if (count) {
     if (scope === "global") toast("已加入全局参考 / Added to global refs");
-    else if (scope === "bible") toast("已加入总概念卡 / Added to Project Bible card");
+    else if (scope === "bible") toast("已加入设定卡 / Added to settings card");
     else toast(`已绑定到 ${count} 条分镜 / Added to ${count} rows`);
   }
   else if (scope === "batch") toast("请先勾选同步参考条目 / Select rows to sync refs");
@@ -3813,7 +4078,7 @@ function renderIdeaReferenceMapping(board, entries = filteredIdeaRowEntriesForCu
                   `;
                 })
                 .join("")
-            : `<div class="empty-state">当前场戏暂无分镜条目 / No storyboard rows for this scene.</div>`
+            : `<div class="empty-state">当前范围暂无分镜条目 / No storyboard rows for this scope.</div>`
         }
       </div>
     </details>
@@ -3865,7 +4130,7 @@ function renderIdeaReferencePanel(board) {
                   `,
                     )
                     .join("")
-                : `<span class="muted-inline">当前场戏暂无可批量绑定的条目。</span>`}
+                : `<span class="muted-inline">当前范围暂无可批量绑定的条目。</span>`}
             </div>
           </div>
         </div>
@@ -3886,195 +4151,60 @@ function renderIdeaReferencePanel(board) {
   `;
 }
 
-function buildIdeaAnalysisHandoff(board) {
-  const idea = board.idea || "";
+function buildIdeaActsHandoff(board) {
   const apiUrl = `${location.origin}/api/projects/${state.selectedSlug}/idea-board`;
-  const schema = {
-    idea,
-    story_title: "短片片名",
-    logline: "一句话故事",
-    story_outline: "只展开用户这次 idea 明确写到的剧情范围；如果用户只写第一幕，就只写第一幕大纲",
-    style_notes: "影像风格、镜头语言、角色/场景连续性、负面约束",
-    acts: [
-      {
-        act_id: "ACT01",
-        title: "第一幕标题",
-        summary: "这一幕表达什么，以及从哪里开始到哪里结束",
-        dramatic_purpose: "这一幕在整部短片里的戏剧功能",
-        key_beats: "这一幕的关键剧情点，逗号或短句分隔",
-        status: "draft",
-      },
-    ],
-    project_bible: [
-      {
-        card_id: "BIBLE_CHARACTER_001",
-        scope: "project",
-        act_id: "",
-        category: "character",
-        title: "人物设定",
-        summary: "人物身份、年龄、气质、关系和连续性",
-        visual_direction: "服装、发型、体态、表演方向",
-        prompt_notes: "可直接加入图片提示词的人物描述",
-        revision_note: "本轮生成或精修时要重点改变什么；留空则按长期设定生成",
-        negative_prompt: "不要出现的时代错位、造型偏差或风格偏差",
-        references: [],
-        selected: true,
-        image_selected: true,
-        preview_path: "",
-        versions: [],
-        status: "draft",
-      },
-    ],
-    global_references: [
-      {
-        asset_ref: "project:path-or-resource:path",
-        asset_id: "统一作用于全部分镜的人设/场景/道具",
-        path: "reference image path",
-        origin: "project or resource",
-        kind: "character_ref / scene_ref / prop / lookdev / image",
-        note: "说明要借用什么元素",
-      },
-    ],
-    rows: [
-      {
-        item_id: "IDEA_SHOT_001",
-        act_id: "ACT01",
-        scene_id: "SCN_EXAMPLE",
-        beat: "剧情点",
-        shot_type: "远景/中景/近景/特写/运动镜头等",
-        frame_description: "这一帧看到什么，谁在哪里，情绪和动作是什么",
-        image_prompt: "可直接用于生成高质量分镜关键帧的图片提示词",
-        video_prompt: "后续视频生成提示词，可选",
-        notes: "导演备注、连续性、参考资产需求",
-        revision_note: "本轮生成或精修时要重点改变什么；留空则按长期设定生成",
-        references: [
-          {
-            asset_ref: "project:path-or-resource:path",
-            asset_id: "只作用于当前分镜的参考图",
-            path: "reference image path",
-            origin: "project or resource",
-            kind: "image",
-            note: "说明当前分镜要借用什么元素",
-          },
-        ],
-        selected: true,
-        versions: [],
-        status: "draft",
-      },
-    ],
-  };
-  return [
-    "# Codex Idea Development Handoff / Codex 创意开发交接包",
-    "",
-    "请解析这个创意，调用当前聊天里的远程推理能力，产出剧本大纲、关键分镜、图片提示词和视频提示词。完成后调用回填接口，把 JSON 写回网页的 Idea 模块。",
-    "",
-    "## Codex Run Mode / 执行模式",
-    "- 严格遵守用户这次 idea 的范围；不要因为项目里有后续场景就自动续写第二幕、第三幕。",
-    "- 如果只有故事大纲，先判断应该拆成多少幕，并填入 acts；再决定是否需要生成 rows。",
-    "- 先分析当前范围的故事结构，再输出可执行的分镜文本，不要只写概念。",
-    "- 以电影制作角度优化：人物动机、场景递进、镜头节奏、可生成性、角色/场景连续性。",
-    "- 输出条目要能直接变成图片生成任务；每条必须有清晰 image_prompt。",
-    "- 回填成功后，只汇报条目数量和关键建议，不要长篇复述全部 JSON。",
-    "",
-    "## Project / 项目",
-    `- Project slug: ${state.selectedSlug || ""}`,
-    `- Project root: ${state.detail?.path || ""}`,
-    `- Callback: POST ${apiUrl}`,
-    "",
-    "## Existing Scene Context / 现有场戏上下文（仅作可选参考，不代表本次必须展开）",
-    compactProjectSceneContext(),
-    "",
-    "## User Idea / 用户创意",
-    idea || "- 在这里填入故事 idea",
-    "",
-    "## Required JSON Schema / 必须回填的 JSON 结构",
-    "```json",
-    JSON.stringify(schema, null, 2),
-    "```",
-    "",
-    "## Callback Instruction / 回填说明",
-    `POST ${apiUrl}`,
-    "Content-Type: application/json",
-    "Body must match the schema above. Keep Chinese text readable, with optional English prompt terms where useful.",
-  ].join("\n");
-}
-
-function buildIdeaActAnalysisHandoff(board) {
-  const apiUrl = `${location.origin}/api/projects/${state.selectedSlug}/idea-board`;
-  const scene = selectedScene();
-  const targetScope = {
-    selected_scene_id: scene?.scene_id || "",
-    selected_scene_title: scene?.title || "",
-    selected_act_id: scene?.act_id || "",
-    selected_act_title: scene?.act_title || "",
-    card_filter_scope: normalizedCardFilters("storyboard", board).scope,
-  };
   const schema = {
     idea: board.idea || "",
     story_title: board.story_title || "短片片名",
     logline: board.logline || "一句话故事",
-    story_outline: board.story_outline || "剧本大纲",
-    style_notes: board.style_notes || "风格与连续性",
+    story_outline: board.story_outline || "完整故事大纲",
+    style_notes: board.style_notes || "整体风格与连续性，所有幕共用",
+    act_inputs: {
+      ACT01: {
+        idea: "第一幕独立故事草稿",
+        story_title: "",
+        logline: "",
+      },
+      ACT02: {
+        idea: "第二幕独立故事草稿",
+        story_title: "",
+        logline: "",
+      },
+    },
     acts: [
       {
         act_id: "ACT01",
         title: "幕标题",
-        summary: "这一幕表达什么，以及从哪里开始到哪里结束",
-        dramatic_purpose: "这一幕承担的情绪、冲突、人物转变或信息揭示功能",
+        summary: "这一幕从哪里开始到哪里结束",
+        dramatic_purpose: "这一幕承担的戏剧功能",
         key_beats: "关键剧情点",
         status: "draft",
       },
     ],
     project_bible: board.project_bible || [],
     global_references: board.global_references || [],
-    rows: (board.rows || []).length
-      ? board.rows || []
-      : [
-          {
-            item_id: "IDEA_SHOT_001",
-            act_id: targetScope.selected_act_id || "ACT01",
-            scene_id: targetScope.selected_scene_id || "SCN_EXAMPLE",
-            beat: "剧情点",
-            shot_type: "远景/中景/近景/特写/运动镜头等",
-            frame_description: "这一帧看到什么，谁在哪里，情绪和动作是什么",
-            image_prompt: "可直接用于生成高质量分镜关键帧的图片提示词",
-            video_prompt: "后续视频生成提示词，可选",
-            notes: "导演备注、连续性、参考资产需求",
-            revision_note: "",
-            references: [],
-            selected: true,
-            versions: [],
-            status: "draft",
-          },
-        ],
+    rows: board.rows || [],
+    completed_handoff_ids: [IDEA_HANDOFF_ID_PLACEHOLDER],
   };
   return [
-    "# Codex Act Structure Handoff / Codex 幕结构分析交接包",
+    "# Codex Build Acts Handoff / Codex 生成幕交接包",
     "",
-    "请根据当前 story idea、logline 和 story_outline，先判断幕结构，再把用户这次明确写到的剧本范围拆成可执行分镜文字卡，并回填 Idea Board。",
+    "请根据完整故事大纲，把故事扩展成一幕幕独立的戏。这个动作只负责生成或更新幕结构，不生成分镜卡。",
     "",
     "## Codex Run Mode / 执行模式",
-    "- 这是从 idea/大纲产出剧本与分镜卡的第一步：必须先更新 acts，再产出或更新 rows。",
-    "- 如果用户这次只写了某一幕，例如第二幕，就只拆这一幕；不要自动续写其他幕。",
-    "- 如果当前 UI 选中了某一场戏或某一幕，优先把新 rows 映射到该 scene_id/act_id；无法确定时再新建合理 scene_id。",
-    "- 保留不属于本次范围的既有 rows、global_references、project_bible 和已生成版本；只替换或新增本次明确范围内的分镜卡。",
-    "- 按电影制作角度判断：情绪递进、人物动机、冲突升级、场景承载能力、AIGC 可生成性、角色/场景连续性。",
-    "- 每一幕都要说明：起点、终点、戏剧功能、关键剧情点。",
-    "- 每条 row 必须有清晰 beat、shot_type、frame_description、image_prompt；image_prompt 要能直接进入生图。",
-    "- 如果当前故事只够一幕，就明确只输出一幕，不要为了三幕结构强行扩写。",
-    "- 回填成功后，只汇报幕数量、分镜条目数量和最关键的结构建议。",
+    "- “设定”和“幕”是平行结构：project_bible/global_references 是设定；acts/act_inputs 是一幕幕独立的戏。",
+    "- 只根据 story_outline、title、logline 和已有设定拆分 acts，并为每一幕写入 act_inputs[act_id].idea。",
+    "- style_notes 是整体风格与连续性，所有幕共用；不要把它拆散到单幕。",
+    "- project_bible、global_references、rows、已有 versions 必须保留；不要新增、删除或重写 rows。",
+    "- 每一幕要有明确起点、终点、戏剧功能和关键剧情点。",
+    "- 回填成功后只汇报幕数量、每幕一句话和是否保留了既有分镜卡。",
     "",
     "## Project / 项目",
     `- Project slug: ${state.selectedSlug || ""}`,
     `- Project root: ${state.detail?.path || ""}`,
     `- Callback: POST ${apiUrl}`,
     "",
-    "## Current UI Target Scope / 当前界面目标范围",
-    "```json",
-    JSON.stringify(targetScope, null, 2),
-    "```",
-    "",
-    "## Existing Scene Context / 现有场戏上下文（仅作参考，不代表必须沿用）",
+    "## Existing Scene Context / 现有场景资源（仅作参考，不决定幕结构）",
     compactProjectSceneContext(),
     "",
     "## Current Idea Board / 当前内容",
@@ -4085,7 +4215,95 @@ function buildIdeaActAnalysisHandoff(board) {
     "## Required Callback / 必须回填",
     `POST ${apiUrl}`,
     "Content-Type: application/json",
-    "Body must include the full board shape above. Preserve unrelated rows/global_references/project_bible/versions. Keep Chinese readable.",
+    "Body must include the full board shape above and completed_handoff_ids containing the codex_handoff_id above. Update only acts and act_inputs unless the user explicitly asked otherwise. Preserve project_bible/global_references/rows/versions.",
+  ].join("\n");
+}
+
+function buildIdeaStoryboardCardsHandoff(board) {
+  const apiUrl = `${location.origin}/api/projects/${state.selectedSlug}/idea-board`;
+  const actId = activeStoryActId();
+  const targetAct = storyActEntryForId(board, actId) || {};
+  const actInput = board.act_inputs?.[actId] || {};
+  const scene = selectedScene();
+  const sceneId = targetAct.scene_id || scene?.scene_id || defaultSceneIdForAct(board, actId);
+  const targetRows = (board.rows || []).filter((row) => rowMatchesStoryAct(row, actId, board));
+  const targetScope = {
+    selected_act_id: actId,
+    selected_act_title: targetAct.title || actId,
+    selected_scene_id: sceneId || "",
+    default_scene_id: sceneId || "",
+    existing_rows_for_act: targetRows.map((row) => row.item_id || ""),
+    card_filter_scope: normalizedCardFilters("storyboard", board).scope,
+  };
+  const schema = {
+    idea: board.idea || actInput.idea || "",
+    story_title: board.story_title || actInput.story_title || "",
+    logline: board.logline || actInput.logline || "",
+    story_outline: board.story_outline || "",
+    style_notes: board.style_notes || "",
+    act_inputs: board.act_inputs || {},
+    acts: board.acts || [],
+    project_bible: board.project_bible || [],
+    global_references: board.global_references || [],
+    rows: board.rows || [
+      {
+        item_id: `${actId || "ACT"}_SHOT_001`,
+        act_id: scene?.act_id || actId || "ACT01",
+        scene_id: targetScope.default_scene_id || "",
+        beat: "剧情点",
+        shot_type: "远景/中景/近景/特写/运动镜头等",
+        frame_description: "这一帧看到什么，谁在哪里，情绪和动作是什么",
+        spatial_logic: "空间硬规则：门内外方向、人物视线、左右关系、屏幕位置、遮挡关系等",
+        image_prompt: "可直接用于生成高质量分镜关键帧的图片提示词",
+        video_prompt: "后续视频生成提示词，可选",
+        notes: "导演备注、连续性、参考资产需求",
+        revision_note: "",
+        references: [],
+        selected: true,
+        versions: [],
+        status: "draft",
+      },
+    ],
+    completed_handoff_ids: [IDEA_HANDOFF_ID_PLACEHOLDER],
+  };
+  return [
+    "# Codex Build Storyboard Cards Handoff / Codex 生成分镜卡交接包",
+    "",
+    "请只根据当前幕的故事内容，把这一幕拆成一张张分镜文字卡。这个动作不生成图片，只生成 rows。",
+    "",
+    "## Codex Run Mode / 执行模式",
+    "- 当前目标是单幕分镜卡：只处理 Target Act 对应的 rows。",
+    "- 如果 Target Act 有 selected_scene_id，只新增或替换 scene_id 等于 selected_scene_id 的 rows；否则只处理 act_id 等于 selected_act_id 的 rows。",
+    "- act_inputs[selected_act_id].idea 是当前幕独立故事内容；story_outline 只作为全局背景。",
+    "- project_bible/global_references/style_notes 是全局设定，必须继承到 image_prompt 的连续性里。",
+    "- 保留其他幕 rows、project_bible、global_references 和所有 versions；只新增或替换当前幕 rows。",
+    "- 每张分镜卡必须有 item_id、act_id、scene_id、beat、shot_type、frame_description、spatial_logic、image_prompt、video_prompt、notes。",
+    "- item_id 建议使用 ACTxx_SHOT_001 这种格式，必须跟当前幕编号一致。",
+    "- 如果当前幕已有 rows，可以按当前幕故事重排当前幕 rows，但不要碰其他幕。",
+    "- 回填成功后只汇报当前幕生成了多少张分镜卡和最关键的镜头节奏建议。",
+    "",
+    "## Project / 项目",
+    `- Project slug: ${state.selectedSlug || ""}`,
+    `- Project root: ${state.detail?.path || ""}`,
+    `- Callback: POST ${apiUrl}`,
+    "",
+    "## Target Act / 当前幕",
+    "```json",
+    JSON.stringify(targetScope, null, 2),
+    "```",
+    "",
+    "## Current Act Story / 当前幕故事",
+    actInput.idea || targetAct.summary || targetAct.key_beats || board.idea || "- 当前幕故事为空，请根据这一幕的 summary/key_beats 保守拆分。",
+    "",
+    "## Current Idea Board / 当前内容",
+    "```json",
+    JSON.stringify(schema, null, 2),
+    "```",
+    "",
+    "## Required Callback / 必须回填",
+    `POST ${apiUrl}`,
+    "Content-Type: application/json",
+    "Body must include the full board shape above and completed_handoff_ids containing the codex_handoff_id above. Modify only rows for the Target Act: if selected_scene_id is present, match rows by scene_id; otherwise match rows by selected_act_id. Preserve all unrelated rows, settings, references, and versions.",
   ].join("\n");
 }
 
@@ -4104,7 +4322,7 @@ function buildProjectBibleAnalysisHandoff(board) {
         scope: "project",
         act_id: "",
         category: "character / location / prop / lookdev / mood / period / constraint",
-        title: "总概念卡标题",
+        title: "设定卡标题",
         summary: "分析对象的核心设定，不写剧情分镜",
         visual_direction: "造型、材质、色彩、光线、年代细节和设计规则",
         prompt_notes: "可直接加入后续分镜图片提示词的稳定描述",
@@ -4117,7 +4335,7 @@ function buildProjectBibleAnalysisHandoff(board) {
             path: "reference image path",
             origin: "project or resource",
             kind: "character_ref / scene_ref / prop_ref / lookdev / image",
-            note: "说明这张参考图在总概念里的作用",
+            note: "说明这张参考图在设定里的作用",
           },
         ],
         selected: true,
@@ -4129,14 +4347,15 @@ function buildProjectBibleAnalysisHandoff(board) {
     ],
     global_references: board.global_references || [],
     rows: board.rows || [],
+    completed_handoff_ids: [IDEA_HANDOFF_ID_PLACEHOLDER],
   };
   return [
-    "# Codex Project Bible Handoff / Codex 总概念分析交接包",
+    "# Codex Settings Handoff / Codex 设定卡交接包",
     "",
-    "请解析当前项目资料，重点产出人物、美术、场景、道具、氛围、年代和负面约束卡片。不要扩写剧情分镜，除非 rows 已存在则原样保留。",
+    "请解析当前项目资料，重点产出人物、美术、场景、道具、氛围、年代和负面约束等设定卡。不要扩写剧情分镜，除非 rows 已存在则原样保留。",
     "",
     "## Codex Run Mode / 执行模式",
-    "- 分析目标不是故事推进，而是项目级视觉圣经：人物、场景、道具、美术、氛围、年代、统一负面约束。",
+    "- 分析目标不是故事推进，而是项目级设定：人物、场景、道具、美术、氛围、年代、统一负面约束。",
     "- 每张 concept card 都是独立可生成/可精修的卡片；scope=project 表示全片通用，scope=act 且 act_id 有值表示只服务某一幕。",
     "- 每张 project_bible 卡都要能直接服务后续图片生成；prompt_notes 必须可执行、稳定、具体。",
     "- references 和 global_references 要保留；可根据已有参考图 note 推断它属于人物、场景、道具或美术。",
@@ -4170,30 +4389,33 @@ function buildProjectBibleAnalysisHandoff(board) {
     "## Callback Instruction / 回填说明",
     `POST ${apiUrl}`,
     "Content-Type: application/json",
-    "Body must include the full board shape above. Preserve rows unless explicitly asked to change them.",
+    "Body must include the full board shape above and completed_handoff_ids containing the codex_handoff_id above. Preserve rows unless explicitly asked to change them.",
   ].join("\n");
 }
 
 function addIdeaHandoff(handoff) {
+  const id = `idea_handoff_${Date.now()}_${Math.random().toString(16).slice(2, 8)}`;
   const nextHandoff = {
-    id: `idea_handoff_${Date.now()}_${Math.random().toString(16).slice(2, 8)}`,
+    id,
     createdAt: new Date().toLocaleString(),
     autoCopy: true,
     ...handoff,
+    text: withIdeaHandoffCompletionNote(handoff.text || "", id),
   };
   state.ideaHandoffs = [nextHandoff, ...state.ideaHandoffs].slice(0, 12);
   saveIdeaHandoffs();
   autoCopyHandoffText(nextHandoff.text);
+  syncIdeaHandoffCompletionPolling();
 }
 
 function renderIdeaHandoffs() {
   if (!state.ideaHandoffs.length) {
-    return `<div class="idea-handoff-empty">生成的 Codex 交接卡会出现在这里，可以拖进聊天框。</div>`;
+    return `<div class="idea-handoff-empty">生成的 Codex 分析卡/交接卡会出现在这里，可以拖进聊天框。</div>`;
   }
   return `
     <div class="idea-handoff-toolbar">
-      <span>${state.ideaHandoffs.length} 张交接卡 · 处理完成后可清空</span>
-      <button class="mini-command idea-clear-handoffs" data-help="清掉本地显示的临时交接卡，不删除已经保存的分镜、图片和项目文件。" type="button">清空 / Clear</button>
+      <span>${state.ideaHandoffs.length} 张 Codex 分析卡 · 回填完成后会自动清除</span>
+      <button class="mini-command idea-clear-handoffs" data-help="清掉本地显示的临时 Codex 分析卡，不删除已经保存的分镜、图片和项目文件。" type="button">清空 / Clear</button>
     </div>
     <div class="idea-handoff-list">
       ${state.ideaHandoffs
@@ -4224,49 +4446,54 @@ function renderIdeaHandoffs() {
 }
 
 function renderIdeaActPlanner(board) {
-  const acts = board.acts || [];
+  const acts = storyActEntries(board);
+  const activeActId = activeStoryActId() || acts[0]?.act_id || "";
+  const activeAct = storyActEntryForId(board, activeActId) || acts[0] || null;
+  const activeIndex = activeAct ? acts.findIndex((act) => (act.act_id || "") === (activeAct.act_id || "")) : -1;
+  const boardActs = Array.isArray(board.acts) ? board.acts : [];
+  const boardIndex = activeAct ? boardActs.findIndex((act) => (act.act_id || "") === (activeAct.act_id || "")) : -1;
+  const writeIndex = boardIndex >= 0 ? boardIndex : boardActs.length;
   return `
     <details class="idea-act-panel" open>
       <summary>
-        <span>幕结构 / Acts</span>
-        <small>${acts.length} 幕 · 可先分析大纲，再按幕增删</small>
+        <span>当前幕结构 / Current Act</span>
+        <small>${activeAct ? `${activeIndex + 1}/${acts.length} · ${escapeHtml(activeAct.act_id || "")}` : "未选择幕 / No act selected"}</small>
       </summary>
+      <div class="idea-act-panel-actions">
+        <button class="mini-command idea-add-act" type="button">新增幕 / Add Act</button>
+      </div>
       <div id="ideaActList" class="idea-act-list">
         ${
-          acts.length
-            ? acts
-                .map(
-                  (act, index) => `
-                    <article class="idea-act-row" data-idea-act-index="${index}">
+          activeAct
+            ? `
+                    <article class="idea-act-row" data-idea-act-index="${writeIndex}" data-idea-act-id="${escapeHtml(activeAct.act_id || "")}">
                       <header>
-                        <label>幕编号 / Act ID <input data-idea-act-field="act_id" value="${escapeHtml(act.act_id || `ACT${String(index + 1).padStart(2, "0")}`)}" /></label>
-                        <label>标题 / Title <input data-idea-act-field="title" value="${escapeHtml(act.title || "")}" /></label>
-                        <label>状态 / Status <input data-idea-act-field="status" value="${escapeHtml(act.status || "draft")}" /></label>
-                        <button class="icon-button idea-delete-act" data-idea-act-index="${index}" type="button" title="删除这一幕 / Delete act">×</button>
+                        <label>幕编号 / Act ID <input data-idea-act-field="act_id" value="${escapeHtml(activeAct.act_id || "")}" /></label>
+                        <label>标题 / Title <input data-idea-act-field="title" value="${escapeHtml(activeAct.title || "")}" /></label>
+                        <label>状态 / Status <input data-idea-act-field="status" value="${escapeHtml(activeAct.status || "draft")}" /></label>
+                        <button class="icon-button idea-delete-act" data-idea-act-index="${boardIndex}" type="button" title="删除这一幕 / Delete act" ${boardIndex < 0 ? "disabled" : ""}>×</button>
                       </header>
                       <label>这一幕表达什么 / Act expression
-                        <textarea data-idea-act-field="summary" rows="3">${escapeHtml(act.summary || "")}</textarea>
+                        <textarea data-idea-act-field="summary" rows="3">${escapeHtml(activeAct.summary || "")}</textarea>
                       </label>
                       <label>戏剧功能 / Dramatic purpose
-                        <textarea data-idea-act-field="dramatic_purpose" rows="2">${escapeHtml(act.dramatic_purpose || "")}</textarea>
+                        <textarea data-idea-act-field="dramatic_purpose" rows="2">${escapeHtml(activeAct.dramatic_purpose || "")}</textarea>
                       </label>
                       <label>关键剧情点 / Key beats
-                        <textarea data-idea-act-field="key_beats" rows="2">${escapeHtml(act.key_beats || "")}</textarea>
+                        <textarea data-idea-act-field="key_beats" rows="2">${escapeHtml(activeAct.key_beats || "")}</textarea>
                       </label>
                     </article>
-                  `,
-                )
-                .join("")
-            : `<div class="empty-state">还没有幕结构。可以先点“分析幕结构卡”，让 Codex 仅凭故事 idea/大纲判断需要几幕。</div>`
+                  `
+            : `<div class="empty-state">还没有幕结构。可以先点“生成幕”，让 AI 根据故事大纲拆成一幕幕独立的戏。</div>`
         }
       </div>
-      <button id="ideaAddActBtn" class="mini-command" type="button">新增幕 / Add Act</button>
+      <button class="mini-command idea-add-act" type="button">新增幕 / Add Act</button>
     </details>
   `;
 }
 
 function projectBibleCategoryLabel(value) {
-  return PROJECT_BIBLE_CATEGORY_OPTIONS.find((option) => option.value === value)?.label || value || "总概念 / Concept";
+  return PROJECT_BIBLE_CATEGORY_OPTIONS.find((option) => option.value === value)?.label || value || "设定 / Settings";
 }
 
 function projectBibleScopeLabel(value) {
@@ -4290,7 +4517,7 @@ function renderProjectBibleScopeOptions(selected) {
 }
 
 function renderProjectBibleActOptions(board, selected) {
-  const acts = board.acts || [];
+  const acts = storyActEntries(board);
   const known = !selected || acts.some((act) => act.act_id === selected);
   const options = [
     { value: "", label: "全部幕 / All acts" },
@@ -4328,7 +4555,9 @@ function renderCardVersionPreview(cardOrRow, label = "版本 / Versions") {
   if (!versions.length) {
     return `<div class="card-version-empty">暂无图片版本 / No image versions yet.</div>`;
   }
-  const current = [...versions].reverse().find((version) => version.status === "current") || versions[versions.length - 1];
+  const current = [...versions].reverse().find((version) => version.status === "final")
+    || [...versions].reverse().find((version) => version.status === "current")
+    || versions[versions.length - 1];
   const statusLabel = (status) => CARD_VERSION_STATUS_LABELS[status || "candidate"] || CARD_VERSION_STATUS_LABELS.candidate;
   const versionLabel = (version) => [version.version_id || "current", version.candidate_id || ""].filter(Boolean).join(" · ");
   const qaBadge = (version) => {
@@ -4365,7 +4594,8 @@ function renderCardVersionPreview(cardOrRow, label = "版本 / Versions") {
                 <small>${escapeHtml(statusLabel(version.status))}</small>
                 ${qaBadge(version)}
                 <div class="card-version-mini-actions">
-                  <button class="mini-command card-version-status" data-help="设为最终采用图；按幕图片页的大图预览只展示这类版本。" data-version-id="${escapeHtml(version.version_id || "")}" data-version-path="${escapeHtml(version.output_path || "")}" data-version-status="current" type="button">采用</button>
+                  <button class="mini-command card-version-status" data-help="标记为最终分镜图；只有 Final 图会进入下方最终分镜 preview。" data-version-id="${escapeHtml(version.version_id || "")}" data-version-path="${escapeHtml(version.output_path || "")}" data-version-status="final" type="button">Final</button>
+                  <button class="mini-command card-version-status" data-help="设为当前采用候选；不会进入最终分镜 preview，除非再标记 Final。" data-version-id="${escapeHtml(version.version_id || "")}" data-version-path="${escapeHtml(version.output_path || "")}" data-version-status="current" type="button">采用</button>
                   <button class="mini-command card-version-status" data-help="保留为参考图；不会进入最终大图预览，但可在画板和参考包里使用。" data-version-id="${escapeHtml(version.version_id || "")}" data-version-path="${escapeHtml(version.output_path || "")}" data-version-status="reference" type="button">参考</button>
                   <button class="mini-command card-version-status" data-help="标记为不用；它会离开最终预览，留在待定/废图管理逻辑里。" data-version-id="${escapeHtml(version.version_id || "")}" data-version-path="${escapeHtml(version.output_path || "")}" data-version-status="rejected" type="button">淘汰</button>
                   <button class="mini-command card-version-qa-run" data-help="对这张版本图做技术评分。" data-version-id="${escapeHtml(version.version_id || "")}" data-version-path="${escapeHtml(version.output_path || "")}" type="button">质检</button>
@@ -4447,7 +4677,12 @@ function applyVersionStatusToCard(cardOrRow, versionId, versionPath, nextStatus,
   const target = findOrCreateCardVersion(cardOrRow, versionId, versionPath);
   const versions = cardOrRow.versions || [];
   if (!target) return false;
-  if (nextStatus === "current") {
+  if (nextStatus === "final") {
+    versions.forEach((version) => {
+      if (version.status === "final") version.status = "candidate";
+    });
+    target.status = "final";
+  } else if (nextStatus === "current") {
     versions.forEach((version) => {
       if (version.status === "current") version.status = "candidate";
     });
@@ -4476,7 +4711,7 @@ function applyVersionStatusToCard(cardOrRow, versionId, versionPath, nextStatus,
       cardOrRow.output_path = "";
       cardOrRow.output_notes = "";
     }
-  } else if (nextStatus === "current") {
+  } else if (nextStatus === "current" || nextStatus === "final") {
     if (cardType === "concept") {
       cardOrRow.preview_path = target.output_path;
       cardOrRow.status = "image_ready";
@@ -4565,7 +4800,8 @@ async function runCardVersionQa(button) {
 function currentVersionForQa(cardOrRow) {
   const versions = cardVersionEntries(cardOrRow);
   if (!versions.length) return null;
-  return [...versions].reverse().find((version) => version.status === "current")
+  return [...versions].reverse().find((version) => version.status === "final")
+    || [...versions].reverse().find((version) => version.status === "current")
     || [...versions].reverse().find((version) => version.status !== "rejected")
     || versions[versions.length - 1];
 }
@@ -4601,7 +4837,7 @@ function cardFilterAsset(card, cardType, board = currentIdeaBoard(), index = 0) 
       kind: projectBibleCategoryKind(card.category || ""),
       stage: "08_generation",
       scene_id: "",
-      scene_title: "总概念 / Project Bible",
+      scene_title: "设定 / Settings",
       act_id: card.act_id || "",
       act_title: actLabel,
       card_type: "concept",
@@ -4638,7 +4874,7 @@ function cardFilterAsset(card, cardType, board = currentIdeaBoard(), index = 0) 
     card_title: card.beat || card.item_id || "",
     card_category: "storyboard",
     card_summary: card.frame_description || "",
-    card_prompt: [card.image_prompt, card.video_prompt, card.revision_note, card.notes].filter(Boolean).join(" "),
+    card_prompt: [card.spatial_logic, card.image_prompt, card.video_prompt, card.revision_note, card.notes].filter(Boolean).join(" "),
   };
 }
 
@@ -4672,7 +4908,8 @@ function cardFilterAssets(board = currentIdeaBoard(), cardType = "storyboard") {
 }
 
 function defaultCardFilterScope(cardType) {
-  return cardType === "concept" ? "all" : "current_scene";
+  if (cardType === "concept") return "all";
+  return isIdeaActSelected() ? "current_act" : "current_scene";
 }
 
 function effectiveCardFilterScope(cardType, board = currentIdeaBoard()) {
@@ -4711,7 +4948,7 @@ function cardMatchesCardFilters(card, cardType, board = currentIdeaBoard(), inde
   if (mode === "unselected" && selected) return false;
   if (mode === "no_image" && hasImage) return false;
   if (mode === "has_image" && !hasImage) return false;
-  if (["current", "reference", "candidate", "rejected"].includes(mode) && !versions.some((version) => version.status === mode)) return false;
+  if (["current", "final", "reference", "candidate", "rejected"].includes(mode) && !versions.some((version) => version.status === mode)) return false;
   if (mode.startsWith("qa_") && cardQaBucket(card) !== mode) return false;
   const query = String(filters.query || "").trim().toLowerCase();
   if (!query) return true;
@@ -4733,6 +4970,7 @@ function cardMatchesCardFilters(card, cardType, board = currentIdeaBoard(), inde
     card.scene_id,
     card.shot_type,
     card.frame_description,
+    card.spatial_logic,
     card.image_prompt,
     card.video_prompt,
     card.notes,
@@ -4856,7 +5094,7 @@ function renderProjectBibleReferencePanel(board) {
   return `
     <details class="idea-reference-panel project-bible-reference-panel" open>
       <summary>
-        <span>总概念参考库 / Bible References</span>
+        <span>设定参考库 / Settings References</span>
         <small>${globalRefs.length} 全局 · ${cardRefs.length} 当前卡</small>
       </summary>
       <div class="idea-reference-content">
@@ -4875,7 +5113,7 @@ function renderProjectBibleReferencePanel(board) {
         </section>
         <section class="idea-ref-section">
           <strong>当前卡 / Current: ${escapeHtml(card?.title || card?.card_id || "无")}</strong>
-          <div class="idea-ref-list">${cardRefs.length ? cardRefs.map((ref) => renderIdeaReferenceEditor(ref, "bible")).join("") : `<span class="muted-inline">只影响当前总概念卡。</span>`}</div>
+          <div class="idea-ref-list">${cardRefs.length ? cardRefs.map((ref) => renderIdeaReferenceEditor(ref, "bible")).join("") : `<span class="muted-inline">只影响当前设定卡。</span>`}</div>
         </section>
         <div class="idea-ref-asset-grid">
           ${renderIdeaReferenceAssetGrid(card)}
@@ -4893,7 +5131,7 @@ function renderProjectBibleReferencePanel(board) {
                   `,
                 )
                 .join("")
-            : `<div class="empty-state">还没有总概念卡 / No Project Bible cards yet.</div>`}
+            : `<div class="empty-state">还没有设定卡 / No settings cards yet.</div>`}
         </div>
       </div>
     </details>
@@ -4903,10 +5141,10 @@ function renderProjectBibleReferencePanel(board) {
 function renderProjectBibleCards(board, entries = filteredProjectBibleEntries(board)) {
   const cards = board.project_bible || [];
   if (!cards.length) {
-    return `<div class="empty-state">还没有总概念卡。建议先新增人物、场景、道具、美术或氛围卡，再绑定参考图。</div>`;
+    return `<div class="empty-state">还没有设定卡。建议先新增人物、场景、道具、美术或氛围卡，再绑定参考图。</div>`;
   }
   if (!entries.length) {
-    return `<div class="empty-state">没有匹配的总概念卡 / No matching Project Bible cards.</div>`;
+    return `<div class="empty-state">没有匹配的设定卡 / No matching settings cards.</div>`;
   }
   return entries
     .map(
@@ -4934,7 +5172,7 @@ function renderProjectBibleCards(board, entries = filteredProjectBibleEntries(bo
             <label class="checkbox-label"><input data-bible-field="image_selected" type="checkbox" ${card.image_selected === false ? "" : "checked"} /> 本次生成</label>
             <button class="mini-command project-bible-focus ${state.ideaActiveBibleIndex === index ? "active" : ""}" data-help="把这张概念卡设为当前参考绑定目标，图库拖入的图片会挂到它身上。" data-bible-index="${index}" type="button">参考 / Refs</button>
             <button class="mini-command card-generate-one" data-help="只为这一张概念卡生成图片包，适合单独精修人物、场景或道具。" data-card-type="concept" data-card-id="${escapeHtml(card.card_id || "")}" type="button">只生成此卡</button>
-            <button class="icon-button project-bible-delete" data-bible-index="${index}" type="button" title="删除总概念卡 / Delete card">×</button>
+            <button class="icon-button project-bible-delete" data-bible-index="${index}" type="button" title="删除设定卡 / Delete card">×</button>
           </header>
           <div class="idea-row-ref-strip">
             <span>${(card.references || []).length} 当前参考 / refs · ${escapeHtml(projectBibleScopeLabel(card.scope))}${card.act_id ? ` · ${escapeHtml(projectBibleActLabel(board, card.act_id))}` : ""} · ${escapeHtml(projectBibleCategoryLabel(card.category))}</span>
@@ -4974,26 +5212,26 @@ function renderProjectBibleLab(board) {
   return `
     <div class="idea-header">
       <div>
-        <p class="eyebrow">Project Bible</p>
-        <h3>总概念 / Project Bible</h3>
+        <p class="eyebrow">Settings</p>
+        <h3>设定 / Settings</h3>
         <p>管理全项目人物、场景、道具、美术、氛围和负面约束；所有幕和分镜默认继承这里的设定。</p>
         <ol class="workflow-steps">
-          <li><strong>01</strong><span>写总设定</span></li>
-          <li><strong>02</strong><span>生成概念卡</span></li>
+          <li><strong>01</strong><span>写全局设定</span></li>
+          <li><strong>02</strong><span>生成设定卡</span></li>
           <li><strong>03</strong><span>出图并选采用版本</span></li>
           <li><strong>04</strong><span>进入分镜/画板复用</span></li>
         </ol>
       </div>
       <div class="idea-actions">
-        <button id="projectBibleBuildHandoffBtn" class="command-button primary" data-help="把当前总概念文字交给 Codex 扩展成人物、场景、道具、美术等概念卡。" type="button">生成总概念分析卡 / Bible Card</button>
-        <button id="cardBuildImagePacketBtn" class="command-button" data-help="只把当前范围里勾选的概念卡打包成图片生成任务，不会自动处理未勾选卡。" type="button">生成电影图片包 / Film Image Pack</button>
-        <button id="currentVersionPackageBtn" class="command-button" data-help="收集当前范围已经标为采用或参考的图片，做成后续视频生成参考包。" type="button">采用图包 / Current Pack</button>
+        <button id="projectBibleBuildHandoffBtn" class="command-button primary" data-help="把当前设定文字交给 Codex 扩展成人物、场景、道具、美术等设定卡。" type="button">生成设定卡 / Build Settings</button>
+        <button id="cardBuildImagePacketBtn" class="command-button" data-help="只把当前范围里勾选的概念卡打包成图片生成任务，不会自动处理未勾选卡。" type="button">生成图片包 / Image Pack</button>
+        <button id="currentVersionPackageBtn" class="command-button" data-help="收集当前范围已经标为 Final 或参考的图片，做成后续视频生成参考包。" type="button">Final图包 / Final Pack</button>
         <button id="batchVersionQaBtn" class="command-button" data-help="对当前可见卡片的采用图做技术质检，给出清晰度、噪点、曝光等分数。" type="button">批量质检 / Batch QA</button>
         <button id="qaRepairPacketBtn" class="command-button" data-help="把当前范围里低分或未质检的图片整理成修复生图包。" type="button">低分修复包 / QA Fix</button>
         <button id="cardSelectVisibleBtn" class="command-button" data-help="勾选当前筛选结果里的所有卡片，下一次图片包只处理这些可见卡。" type="button">全选当前 / Select All</button>
         <button id="cardClearVisibleBtn" class="command-button" data-help="取消当前筛选结果里的生成勾选，不删除卡片内容。" type="button">清空当前 / Clear</button>
         <button id="ideaSaveBtn" class="command-button" data-help="手动把当前文字、勾选、参考图和备注保存到项目文件。" type="button">手动保存 / Save now</button>
-        <button id="projectBibleAddCardBtn" class="command-button" data-help="新增一张总概念卡，用于单独描述人物、场景、道具或风格。" type="button">新增概念卡 / Add Card</button>
+        <button id="projectBibleAddCardBtn" class="command-button" data-help="新增一张设定卡，用于单独描述人物、场景、道具或风格。" type="button">新增设定卡 / Add Card</button>
       </div>
     </div>
     <div class="idea-layout project-bible-layout">
@@ -5017,7 +5255,7 @@ function renderProjectBibleLab(board) {
       <section class="idea-rows-panel project-bible-panel">
         <div class="idea-rows-header">
           <div class="idea-rows-title">
-            <strong>总概念卡 / ${enabledCount}/${cardCount} enabled</strong>
+            <strong>设定卡 / ${enabledCount}/${cardCount} enabled</strong>
             <span>人物、场景、道具、美术、氛围和年代设定；分镜局部备注优先级更高。</span>
           </div>
           ${renderCardFilterControls(scopeEntries.length, visibleEntries.length, "concept", board)}
@@ -5031,9 +5269,10 @@ function renderProjectBibleLab(board) {
 function renderIdeaRows(entries, allRows = currentIdeaBoard().rows || []) {
   if (!entries.length) {
     const scene = selectedScene();
+    const actId = activeStoryActId();
     const sceneTotal = ideaRowEntriesForCardScope(currentIdeaBoard()).length;
     if (sceneTotal) return `<div class="empty-state">没有匹配的分镜卡片 / No matching storyboard cards.</div>`;
-    return `<div class="empty-state">当前范围 ${escapeHtml(scene?.scene_id || "ALL")} 还没有分镜文本。点击“新增条目”会自动创建到当前场戏。</div>`;
+    return `<div class="empty-state">当前范围 ${escapeHtml(actId || scene?.scene_id || "ALL")} 还没有分镜文本。点击“新增条目”会自动创建到当前幕。</div>`;
   }
   const batchSet = ideaBatchRowSet({ rows: allRows });
   return entries
@@ -5061,6 +5300,9 @@ function renderIdeaRows(entries, allRows = currentIdeaBoard().rows || []) {
           <label>画面描述 / Frame description
             <textarea data-idea-field="frame_description" rows="3">${escapeHtml(row.frame_description || "")}</textarea>
           </label>
+          <label>空间逻辑 / Spatial logic
+            <textarea data-idea-field="spatial_logic" rows="2" placeholder="门内外方向、视线、左右关系、屏幕位置、遮挡关系等硬规则">${escapeHtml(row.spatial_logic || "")}</textarea>
+          </label>
           <label>图片提示词 / Image prompt
             <textarea data-idea-field="image_prompt" rows="4">${escapeHtml(row.image_prompt || "")}</textarea>
           </label>
@@ -5072,6 +5314,9 @@ function renderIdeaRows(entries, allRows = currentIdeaBoard().rows || []) {
           </label>
           <label>本次修图意见 / Revision note
             <textarea data-idea-field="revision_note" rows="2" placeholder="只写这一轮要改什么，例如：加一道关着的门，三个孩子更靠左，画面更干净">${escapeHtml(row.revision_note || "")}</textarea>
+          </label>
+          <label>排序 / 放在谁后面
+            <input data-idea-field="sort_after" value="${escapeHtml(row.sort_after || "")}" placeholder="例如：05、MSB058、ACT2_SHOT_006 或情绪卡名字" />
           </label>
           ${renderCardVersionPreview(row, "分镜图版本 / Storyboard image versions")}
           <footer>
@@ -5105,25 +5350,28 @@ function renderIdeaLab() {
   }
   const sceneEntries = ideaRowEntriesForCardScope(board);
   const visibleEntries = filteredIdeaRowEntriesForCurrentScene(board);
+  const activeInputs = activeIdeaInputs(board);
   ensureIdeaActiveRowForFilteredCards(board);
   root.innerHTML = `
     <div class="idea-header">
       <div>
         <p class="eyebrow">Idea Lab</p>
         <h3>创意到分镜 / Idea to Storyboard</h3>
-        <p>输入故事 idea，生成 Codex 分析卡；生成卡片前会自动保存文字、勾选、参考图和备注。</p>
+        <p>每一步都会生成对应的 Codex 分析卡：先用故事大纲生成幕，再按当前幕生成分镜卡，最后把勾选分镜卡打成图片包。</p>
         <ol class="workflow-steps">
-          <li><strong>01</strong><span>写大纲/选择幕</span></li>
-          <li><strong>02</strong><span>拆成分镜文字卡</span></li>
-          <li><strong>03</strong><span>勾选并生成图片包</span></li>
-          <li><strong>04</strong><span>采用版本进入图片页</span></li>
+          <li><strong>01</strong><span>故事大纲生成幕</span></li>
+          <li><strong>02</strong><span>当前幕生成分镜卡</span></li>
+          <li><strong>03</strong><span>白模锁定空间/道具/人物关系</span></li>
+          <li><strong>04</strong><span>分镜卡生成图片包</span></li>
+          <li><strong>05</strong><span>Final版本进入图片页</span></li>
         </ol>
       </div>
       <div class="idea-actions">
-        <button id="ideaBuildActCardBtn" class="command-button priority" data-help="用高级推理把当前大纲拆成幕结构和分镜文字卡；适合从故事进入正式分镜。" type="button">分析幕结构并拆分镜 / Build Acts</button>
-        <button id="ideaBuildHandoffBtn" class="command-button primary" data-help="把当前 idea 做成通用分析交接卡，适合需要重新扩写故事和提示词时使用。" type="button">生成分析卡 / Analysis Card</button>
-        <button id="cardBuildImagePacketBtn" class="command-button" data-help="把当前可见且勾选的分镜卡打包成图片生成任务。" type="button">生成电影图片包 / Film Image Pack</button>
-        <button id="currentVersionPackageBtn" class="command-button" data-help="收集当前幕/场景已采用或参考的图片，供视频生成阶段使用。" type="button">采用图包 / Current Pack</button>
+        <button id="ideaBuildActsBtn" class="command-button priority" data-help="故事只有大纲时使用：让 AI 把整体故事扩展成一幕幕独立的戏，只更新幕结构和每幕故事草稿。" type="button">生成幕 / Build Acts</button>
+        <button id="ideaBuildStoryboardCardsBtn" class="command-button primary" data-help="当前幕故事内容确定后使用：只按当前幕生成一张张分镜文字卡，不改其他幕。" type="button">生成分镜卡 / Build Cards</button>
+        <button id="ideaWhiteboxBtn" class="command-button" data-help="在最终出图前锁定复杂空间、核心道具和人物关系；适合街机、并排对战、背后机位和走位复杂镜头。" type="button">生成白模 / Whitebox</button>
+        <button id="cardBuildImagePacketBtn" class="command-button" data-help="把当前可见且勾选的分镜卡打包成图片生成任务。" type="button">生成图片包 / Image Pack</button>
+        <button id="currentVersionPackageBtn" class="command-button" data-help="收集当前幕/场景已标为 Final 或参考的图片，供视频生成阶段使用。" type="button">Final图包 / Final Pack</button>
         <button id="batchVersionQaBtn" class="command-button" data-help="批量检查当前可见分镜图的清晰度、噪点、曝光和对比。" type="button">批量质检 / Batch QA</button>
         <button id="qaRepairPacketBtn" class="command-button" data-help="把低分图片整理成修复包，便于集中重生成。" type="button">低分修复包 / QA Fix</button>
         <button id="cardSelectVisibleBtn" class="command-button" data-help="勾选当前筛选出来的分镜卡，下一步只生成这些卡。" type="button">全选当前 / Select All</button>
@@ -5134,12 +5382,12 @@ function renderIdeaLab() {
     </div>
     <div class="idea-layout">
       <section class="idea-seed-panel">
-        <label>故事 idea / Story idea
-          <textarea id="ideaSeedInput" rows="5" placeholder="例如：投币口，一个关于三个孩子、旧游戏厅和一次危险好奇心的短片">${escapeHtml(board.idea || "")}</textarea>
+        <label>当前幕故事 / Act story
+          <textarea id="ideaSeedInput" rows="5" placeholder="只写当前幕的故事内容；切换到其他幕会使用该幕自己的草稿 / Story for the current act only">${escapeHtml(activeInputs.idea || "")}</textarea>
         </label>
         <div class="idea-meta-grid">
-          <label>片名 / Title <input id="ideaStoryTitle" value="${escapeHtml(board.story_title || "")}" /></label>
-          <label>一句话 / Logline <input id="ideaLogline" value="${escapeHtml(board.logline || "")}" /></label>
+          <label>片名 / Title <input id="ideaStoryTitle" value="${escapeHtml(activeInputs.story_title || "")}" /></label>
+          <label>一句话 / Logline <input id="ideaLogline" value="${escapeHtml(activeInputs.logline || "")}" /></label>
         </div>
         <label>剧本大纲 / Story outline
           <textarea id="ideaOutline" rows="5">${escapeHtml(board.story_outline || "")}</textarea>
@@ -5184,54 +5432,60 @@ async function persistIdeaBoard(board, options = {}) {
   return result;
 }
 
-async function createIdeaAnalysisHandoff() {
+async function createIdeaActsHandoff() {
   if (!state.detail) return;
-  await runAction("生成分析卡 / Analysis card", async () => {
+  await runAction("生成幕 / Build acts", async () => {
     const board = collectIdeaBoardFromDom();
     const result = await persistIdeaBoard(board, { toast: false, render: false });
     const savedBoard = result?.idea_board || board;
     setIdeaBoardLocal(savedBoard);
     addIdeaHandoff({
-      kind: "idea_analysis",
-      title: `${savedBoard.story_title || "Story idea"} → Codex 分析`,
-      text: buildIdeaAnalysisHandoff(savedBoard),
+      kind: "build_acts",
+      title: `${savedBoard.story_title || "Story outline"} → 生成幕`,
+      text: buildIdeaActsHandoff(savedBoard),
     });
     renderIdeaLab();
-    toast("已自动保存并生成分析卡 / Saved and analysis handoff ready");
+    toast("已自动保存并生成幕交接卡 / Saved and build-acts handoff ready");
   });
 }
 
-async function createIdeaActAnalysisHandoff() {
+async function createIdeaStoryboardCardsHandoff() {
   if (!state.detail) return;
-  await runAction("分析幕结构卡 / Act card", async () => {
+  if (!activeStoryActId()) {
+    toast("请先在左侧选择一幕 / Select an act first");
+    return;
+  }
+  await runAction("生成分镜卡 / Build storyboard cards", async () => {
     const board = collectIdeaBoardFromDom();
     const result = await persistIdeaBoard(board, { toast: false, render: false });
     const savedBoard = result?.idea_board || board;
     setIdeaBoardLocal(savedBoard);
+    const activeBoard = boardWithActiveIdeaInputs(savedBoard);
+    const actId = activeStoryActId();
     addIdeaHandoff({
-      kind: "act_analysis",
-      title: `${savedBoard.story_title || "Story idea"} → 幕结构分析`,
-      text: buildIdeaActAnalysisHandoff(savedBoard),
+      kind: "build_storyboard_cards",
+      title: `${actId || "Act"} → 生成分镜卡`,
+      text: buildIdeaStoryboardCardsHandoff(activeBoard),
     });
     renderIdeaLab();
-    toast("已自动保存并生成幕结构分析卡 / Saved and act handoff ready");
+    toast("已自动保存并生成分镜卡交接卡 / Saved and storyboard-card handoff ready");
   });
 }
 
 async function createProjectBibleAnalysisHandoff() {
   if (!state.detail) return;
-  await runAction("总概念分析卡 / Project Bible card", async () => {
+  await runAction("生成设定卡 / Build settings cards", async () => {
     const board = collectIdeaBoardFromDom();
     const result = await persistIdeaBoard(board, { toast: false, render: false });
     const savedBoard = result?.idea_board || board;
     setIdeaBoardLocal(savedBoard);
     addIdeaHandoff({
       kind: "project_bible",
-      title: `${savedBoard.story_title || "Project"} → 总概念分析`,
+      title: `${savedBoard.story_title || "Project"} → 生成设定卡`,
       text: buildProjectBibleAnalysisHandoff(savedBoard),
     });
     renderIdeaLab();
-    toast("已自动保存并生成总概念分析卡 / Saved and Project Bible handoff ready");
+    toast("已自动保存并生成设定卡交接卡 / Saved and settings handoff ready");
   });
 }
 
@@ -5274,11 +5528,101 @@ function collectVisibleCardTargets() {
     .filter((target) => target.item_id);
 }
 
+function referenceLooksLikeWhitebox(ref) {
+  const text = [
+    ref?.kind,
+    ref?.role,
+    ref?.asset_id,
+    ref?.asset_ref,
+    ref?.path,
+    ref?.note,
+    ref?.generation_guidance,
+  ].join(" ").toLowerCase();
+  return text.includes("whitebox") || text.includes("白模") || text.includes("previs") || text.includes("blender");
+}
+
+function storyboardRowNeedsWhitebox(row) {
+  const text = [
+    row.item_id,
+    row.beat,
+    row.shot_type,
+    row.frame_description,
+    row.spatial_logic,
+    row.image_prompt,
+    row.video_prompt,
+    row.notes,
+    row.revision_note,
+  ].join(" ").toLowerCase();
+  const keywords = [
+    "街机",
+    "真人快打",
+    "游戏机",
+    "屏幕",
+    "操作位",
+    "投币",
+    "并排",
+    "背后",
+    "后脑",
+    "脑袋后",
+    "对战",
+    "围观",
+    "空间关系",
+    "机位",
+    "道具锁",
+    "arcade",
+    "cabinet",
+    "screen",
+    "coin slot",
+    "side-by-side",
+    "over-the-shoulder",
+    "behind the heads",
+    "spatial",
+  ];
+  return keywords.some((keyword) => text.includes(keyword));
+}
+
+function rowHasWhiteboxContext(row, board = currentIdeaBoard()) {
+  const rowRefs = Array.isArray(row.references) ? row.references : [];
+  const globalRefs = Array.isArray(board.global_references) ? board.global_references : [];
+  const bibleRefs = (board.project_bible || [])
+    .filter((card) => card?.selected !== false)
+    .flatMap((card) => Array.isArray(card.references) ? card.references : []);
+  return [...rowRefs, ...globalRefs, ...bibleRefs].some(referenceLooksLikeWhitebox);
+}
+
+function whiteboxPreflightIssues(board, targets) {
+  const targetIds = new Set(
+    targets
+      .filter((target) => (target.card_type || target.type) === "storyboard")
+      .map((target) => target.item_id || target.card_id || "")
+      .filter(Boolean),
+  );
+  if (!targetIds.size) return [];
+  return (board.rows || [])
+    .filter((row) => targetIds.has(row.item_id || ""))
+    .filter((row) => storyboardRowNeedsWhitebox(row) && !rowHasWhiteboxContext(row, board))
+    .map((row) => `${row.item_id || ""} ${row.beat || row.frame_description || ""}`.trim());
+}
+
 async function createCardImagePacket(singleTarget = null) {
   if (!state.selectedSlug || !state.detail) return;
   await runAction("生成电影卡片图片包 / Film card image packet", async () => {
     const board = collectIdeaBoardFromDom();
     const targets = singleTarget ? [singleTarget] : collectVisibleCardTargets();
+    const issues = whiteboxPreflightIssues(board, targets);
+    if (issues.length) {
+      const message = [
+        "这些镜头建议先补白模/道具锁，再生成最终图：",
+        ...issues.slice(0, 12).map((item) => `- ${item}`),
+        issues.length > 12 ? `...还有 ${issues.length - 12} 条` : "",
+        "",
+        "确定：继续跑探索图。取消：先打开白模入口。",
+      ].filter(Boolean).join("\n");
+      if (!window.confirm(message)) {
+        openWhiteboxLab();
+        return;
+      }
+    }
     await createCardImagePacketForTargets(board, targets, "card_image", "请先勾选要生成的卡片 / Select target cards first");
   });
 }
@@ -5299,7 +5643,7 @@ async function createCardImagePacketForTargets(board, targets, kind = "card_imag
     path: result.packet_path || "",
     text: result.handoff_text || "",
   });
-  toast("已自动保存并生成电影图片包 / Film image packet ready");
+  toast("已自动保存并生成图片包 / Image packet ready");
   renderAll();
   return result;
 }
@@ -5366,22 +5710,22 @@ function videoReferenceGateLabel(gate = {}) {
 function videoReferenceGateMessage(gate = {}) {
   const currentIssues = Number(gate.current_issues || 0);
   const referenceIssues = Number(gate.reference_issues || 0);
-  if (gate.status === "ready") return "采用图包已生成，当前采用图均达 QA OK / Current assets are QA OK";
+  if (gate.status === "ready") return "Final 图包已生成，Final 图均达 QA OK / Final assets are QA OK";
   if (gate.status === "blocked") {
-    return `采用图包已生成，但 ${currentIssues} 张采用图未质检或低分；建议先批量质检/低分修复 / ${currentIssues} current assets need QA or repair`;
+    return `Final 图包已生成，但 ${currentIssues} 张 Final 图未质检或低分；建议先批量质检/低分修复 / ${currentIssues} final assets need QA or repair`;
   }
   if (gate.status === "review") {
-    return `采用图包已生成，但 ${currentIssues} 张采用图需复核 / ${currentIssues} current assets need review`;
+    return `Final 图包已生成，但 ${currentIssues} 张 Final 图需复核 / ${currentIssues} final assets need review`;
   }
   if (gate.status === "reference_review") {
     return `采用图包已生成，${referenceIssues} 张辅助参考需复核 / ${referenceIssues} reference assets need review`;
   }
-  return "已生成采用图包 / Current version package ready";
+  return "已生成 Final 图包 / Final version package ready";
 }
 
 async function createCurrentVersionPackage() {
   if (!state.selectedSlug || !state.detail) return;
-  await runAction("生成采用图包 / Current version package", async () => {
+  await runAction("生成 Final 图包 / Final version package", async () => {
     const board = collectIdeaBoardFromDom();
     await persistIdeaBoard(board, { toast: false, render: false });
     const scene = selectedScene();
@@ -5391,7 +5735,7 @@ async function createCurrentVersionPackage() {
       body: JSON.stringify({
         scope,
         scene_id: scene?.scene_id || "",
-        act_id: scene?.act_id || "",
+        act_id: activeStoryActId() || scene?.act_id || "",
       }),
     });
     state.detail = result.project || state.detail;
@@ -5400,7 +5744,7 @@ async function createCurrentVersionPackage() {
       kind: "video_reference_package",
       status: gate.status || "",
       message: videoReferenceGateMessage(gate),
-      title: `${videoReferenceGateLabel(gate)} · ${result.current_count || 0} 采用 · ${result.reference_count || 0} 参考 → 视频参考图包`,
+      title: `${videoReferenceGateLabel(gate)} · ${result.current_count || 0} Final · ${result.reference_count || 0} 参考 → 视频参考图包`,
       path: result.package_path || "",
       text: result.handoff_text || "",
     });
@@ -5426,16 +5770,18 @@ function setVisibleCardSelection(checked) {
 function addIdeaAct() {
   const board = collectIdeaBoardFromDom();
   board.acts = Array.isArray(board.acts) ? board.acts : [];
-  board.acts.push({
+  const nextAct = {
     act_id: nextIdeaActId(board.acts),
     title: "",
     summary: "",
     dramatic_purpose: "",
     key_beats: "",
     status: "draft",
-  });
+  };
+  board.acts.push(nextAct);
   setIdeaBoardLocal(board);
-  renderIdeaLab();
+  selectIdeaAct(nextAct.act_id);
+  renderAll();
 }
 
 function deleteIdeaAct(index) {
@@ -5483,18 +5829,24 @@ function deleteProjectBibleCard(index) {
 
 function addIdeaRow() {
   const board = collectIdeaBoardFromDom();
+  const storyActId = activeStoryActId();
+  const storyAct = storyActEntryForId(board, storyActId);
   const scene = selectedScene();
+  const sceneId = storyAct?.scene_id || scene?.scene_id || defaultSceneIdForAct(board, storyActId) || "";
+  const rowActId = scene?.act_id || (storyAct?.source === "custom" ? storyActId : "") || storyActId || "";
   board.rows.push({
-    item_id: nextIdeaItemId(board.rows),
-    act_id: scene?.act_id || "",
-    scene_id: scene?.scene_id || "",
+    item_id: nextIdeaItemIdForAct(board.rows, storyActId || rowActId || ""),
+    act_id: rowActId,
+    scene_id: sceneId,
     beat: "",
     shot_type: "",
     frame_description: "",
+    spatial_logic: "",
     image_prompt: "",
     video_prompt: "",
     notes: "",
     revision_note: "",
+    sort_after: "",
     selected: true,
     status: "draft",
     output_path: "",
@@ -5529,6 +5881,7 @@ function bindIdeaHandoffEvents() {
       if (!handoff) return;
       event.dataTransfer?.setData("text/plain", handoff.text || "");
       event.dataTransfer?.setData("text/markdown", handoff.text || "");
+      event.dataTransfer?.setData("text/codex-handoff-id", handoff.id || "");
       event.dataTransfer.effectAllowed = "copy";
     });
   });
@@ -5554,6 +5907,7 @@ function bindIdeaHandoffEvents() {
       event.stopPropagation();
       state.ideaHandoffs = state.ideaHandoffs.filter((item) => item.id !== button.dataset.ideaHandoffId);
       saveIdeaHandoffs();
+      syncIdeaHandoffCompletionPolling();
       renderIdeaLab();
     });
   });
@@ -5603,10 +5957,11 @@ function bindIdeaLabEvents() {
     setIdeaBoardLocal(board);
     renderIdeaLab();
   });
-  $("ideaBuildActCardBtn")?.addEventListener("click", createIdeaActAnalysisHandoff);
-  $("ideaBuildHandoffBtn")?.addEventListener("click", createIdeaAnalysisHandoff);
+  $("ideaBuildActsBtn")?.addEventListener("click", createIdeaActsHandoff);
+  $("ideaBuildStoryboardCardsBtn")?.addEventListener("click", createIdeaStoryboardCardsHandoff);
+  $("ideaWhiteboxBtn")?.addEventListener("click", openWhiteboxLab);
   $("ideaSaveBtn")?.addEventListener("click", () => saveIdeaBoard());
-  $("ideaAddActBtn")?.addEventListener("click", addIdeaAct);
+  document.querySelectorAll(".idea-add-act").forEach((button) => button.addEventListener("click", addIdeaAct));
   $("ideaAddRowBtn")?.addEventListener("click", addIdeaRow);
   $("ideaBuildImagePacketBtn")?.addEventListener("click", createIdeaImagePacket);
   document.querySelectorAll(".card-version-to-board").forEach((button) => {
@@ -5971,7 +6326,26 @@ function renderStoryboardStudio() {
     root.innerHTML = `<div class="empty-state">还没有幕/场戏清单 / No act or scene manifest yet.</div>`;
     return;
   }
-  const scene = selectedScene();
+  let scene = selectedScene();
+  if (!scene && isIdeaActSelected()) {
+    const board = currentIdeaBoard();
+    const actId = activeStoryActId();
+    const actTitle = storyActEntryForId(board, actId)?.title || actId;
+    scene = {
+      scene_id: "",
+      scene_slug: "",
+      title: actTitle,
+      act_id: actId,
+      act_title: actTitle,
+      shot_ids: [],
+      primary_steps: [],
+      resource_manifest: {},
+      version_registry: {},
+      change_requests: [],
+      review_log: {},
+      snapshots: [],
+    };
+  }
   const stageOptions = storyboardStageOptions(scene);
   if (!stageOptions.some((option) => option.value === state.storyboardStage)) state.storyboardStage = "final";
   const { frame, frames } = selectedStoryboardFrame(scene);
@@ -6628,7 +7002,7 @@ function renderSceneWorkbench() {
   if (!scene) {
     $("sceneStepLanes").innerHTML = `
       <div class="empty-state">
-        当前正在编辑总概念 / Project Bible。场戏资源筛选会在选择具体幕或场戏后显示。
+        当前正在编辑设定 / Settings。场景资源筛选会在选择具体幕或场景后显示。
       </div>
     `;
     return;
@@ -7011,8 +7385,12 @@ async function loadDetail(slug) {
   state.storyboardStage = "final";
   state.referenceSelection = {};
   state.detail = await requestJson(`/api/projects/${encodeURIComponent(slug)}`);
+  const firstActId = currentIdeaBoard().acts?.[0]?.act_id || "";
+  state.selectedSceneId = firstActId ? ideaActWorkspaceId(firstActId) : "";
   loadBoardState();
   loadIdeaHandoffs();
+  pruneCompletedIdeaHandoffs(currentIdeaBoard().completed_handoff_ids || []);
+  syncIdeaHandoffCompletionPolling();
   renderAll();
 }
 

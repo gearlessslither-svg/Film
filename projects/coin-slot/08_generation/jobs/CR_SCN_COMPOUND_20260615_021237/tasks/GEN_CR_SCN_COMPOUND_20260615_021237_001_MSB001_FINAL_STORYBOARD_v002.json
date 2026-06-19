@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "project_slug": "coin-slot",
+  "scene_id": "SCN_COMPOUND",
+  "change_request_id": "CR_SCN_COMPOUND_20260615_021237",
+  "trigger_step": "08_generation",
+  "trigger_asset_id": "MSB001_FINAL_STORYBOARD",
+  "creative_direction": "Board generation request / 画布生成请求\n\nScene / 场戏: SCN_COMPOUND 居民楼角落 / Compound corner\nMain image / 主图: MSB001_FINAL_STORYBOARD\nMain path / 主图路径: media/01_AIGC/final_storyboard_panels/B01/MSB001_final_storyboard_v002.jpg\n\nMain brief / 主图备注:\n- Describe the complete new image to generate from this main image.\n\nReference stack / 关联素材:\n- No linked references. Use only the main image and note.\n\nOutput goal / 输出目标:\n- Generate a clean, stable, high-quality key image suitable for downstream video AIGC.\n- Preserve the main composition unless the note explicitly changes it.\n- Integrate reference elements only according to relation notes.\n- Avoid noise, distorted anatomy, inconsistent character identity, unreadable composition, watermarks, random text, and unwanted new props.",
+  "queue_id": "GEN_CR_SCN_COMPOUND_20260615_021237_001",
+  "asset_id": "MSB001_FINAL_STORYBOARD",
+  "stage_id": "08_generation",
+  "target_version": "v002",
+  "action": "modify",
+  "target_path": "media/01_AIGC/final_storyboard_panels/B01/MSB001_final_storyboard_v002.jpg",
+  "parent_version": "v001",
+  "packet_path": "08_generation/jobs/CR_SCN_COMPOUND_20260615_021237/outputs/GEN_CR_SCN_COMPOUND_20260615_021237_001_MSB001_FINAL_STORYBOARD_v002.md"
+}

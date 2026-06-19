@@ -1,114 +1,165 @@
-﻿# Pipeline Hub GUI Scope / Pipeline Hub 总控台范围
+# Pipeline Hub / AIGC 电影总控台
 
-`pipeline-hub` 是本地 AIGC 影视流程总控台。当前版本已经提供最小可用 GUI 和后端 API，用同一套项目结构、脚手架脚本、验证脚本和分析脚本驱动项目。
-`pipeline-hub` is the local control hub for the AIGC film pipeline. The current version ships a minimal usable GUI and a backend API that drive projects with one shared project structure, scaffolding scripts, validation scripts, and analysis scripts.
+`pipeline-hub` 是本地 AIGC 电影流程总控台。它管理一个电影项目从故事输入、设定拆解、分幕、分镜卡、白模、图片包、Final 选择到视频参考包的完整工作流。
 
-## Run / 启动
+这个工具的核心原则是：先把故事、设定、空间关系和参考图整理成 Codex 可解析的任务卡，再由 Codex 或外部生成工具产出结果并回填到项目。
 
-```powershell
-python apps/pipeline-hub/server.py --host 127.0.0.1 --port 8787
+## 启动
+
+```bash
+python3 apps/pipeline-hub/server.py --host 127.0.0.1 --port 8787
 ```
 
-打开 / Open:
+打开：
 
 ```text
 http://127.0.0.1:8787
 ```
 
-## First Screen / 首屏
+## 数据模型
 
-总控台打开后应直接进入项目工作台，而不是展示介绍页。
-On open, the hub goes straight to the project workspace rather than an intro page.
+一个工程分为两条平行线：
 
-核心入口 / Core entry points:
+- **设定 / Project Bible**：人物、道具、场景、风格、时代、负面约束、参考图。设定用于约束所有幕，但不要把单幕剧情写进全局设定。
+- **幕 / Acts**：由故事大纲拆出来的一幕幕独立戏。每一幕有自己的故事输入、分镜卡和生成结果。
 
-- 新建项目 / New project
-- 打开现有项目 / Open an existing project
-- 导入旧项目文件夹 / Import an old project folder
-- 预览剧本、故事文档、图片、视频、音频和 3D/Blender 资源 / Preview scripts, story docs, images, video, audio, and 3D/Blender assets
-- 分析当前项目 / Analyze the current project
-- 检查项目结构 / Check project structure
-- 查看阶段进度 / View stage progress
-- 进入镜头生产 / Enter shot production
+共享规则：
 
-## Minimum Useful Version / 最小可用版本
+- `style_notes` 是全片共享的整体风格和连续性。
+- 人物、道具、场景等可作为全局设定启用，也可限定到某一幕。
+- 除整体风格和明确启用的设定外，每一幕的故事文本、分镜、图片版本、白模引用都应独立。
+- 切换幕时，右侧分镜列表、幕故事输入、当前截图区域和待生成目标都必须跟随当前幕过滤。
 
-第一版 GUI 已覆盖这些事 / The first GUI version already covers:
+## 主要按钮
 
-1. 调用 `scripts/create_aigc_project.py` 创建新项目。/ Create a project via `scripts/create_aigc_project.py`.
-2. 读取 `projects/<slug>/project.yaml` 显示阶段进度。/ Read `projects/<slug>/project.yaml` to show stage progress.
-3. 读取和编辑 `assets_link_map.md`，把旧项目素材映射到标准阶段目录。/ Read and edit `assets_link_map.md` to map old assets into standard stage folders.
-4. 打开每个阶段文件夹，并显示该阶段的必需文件是否存在。/ Open each stage folder and show whether its required files exist.
-5. 读取 `07_shots/shot_list.csv`，显示镜头列表和状态。/ Read `07_shots/shot_list.csv` and show the shot list and status.
-6. 调用 `scripts/validate_aigc_project.py` 运行结构检查，提示缺失目录、缺失清单、大文件 Git LFS 风险、`.rar` 风险。/ Run `scripts/validate_aigc_project.py` for the structure check, flagging missing dirs, missing manifests, large-file Git LFS risk, and `.rar` risk.
-7. 调用 `scripts/analyze_aigc_project.py` 运行项目资产与审美体检，并打开 `10_qa/reports/project_audit_latest.md`。/ Run `scripts/analyze_aigc_project.py` for the asset/aesthetic review and open `10_qa/reports/project_audit_latest.md`.
-8. 读取 `projects/<slug>/` 和 `resource_root`，显示文档阅读器、视觉画廊、视频/音频预览和资源清单。/ Read `projects/<slug>/` and `resource_root` to show the doc reader, visual gallery, video/audio preview, and resource list.
+- **生成幕 / Generate Acts**：当只有故事大纲时，让 AI 把故事扩展成不同幕。
+- **生成分镜卡 / Build Cards**：当某一幕故事内容确定后，把当前幕拆成一张张分镜文字卡。
+- **生成白模 / Whitebox**：为复杂空间、特殊道具或人物关系创建 Blender 白模参考。
+- **生成图片包 / Image Pack**：按勾选的设定卡或分镜卡生成 Codex 可执行图片任务包。
+- **Final 图包 / Final Pack**：只收集标记为 `final` 的图片版本和参考图，作为后续视频/交付参考。
 
-## API Contract / API 约定
+## 分析卡工作流
 
-- `GET /api/projects`: 列出项目。/ List projects.
-- `POST /api/projects`: 创建项目。/ Create a project.
-- `GET /api/projects/<slug>`: 读取项目详情、阶段状态、镜头表、验证结果和分析报告。/ Read project detail, stage status, shot table, validation, and analysis report.
-- `GET /api/projects/<slug>/asset?origin=<project|resource>&path=<path>`: 在安全根目录内读取预览资源。/ Read a preview asset within the safe root.
-- `POST /api/projects/<slug>/validate`: 运行结构检查。/ Run the structure check.
-- `POST /api/projects/<slug>/analyze`: 运行项目资产与审美体检。/ Run the asset/aesthetic review.
-- `POST /api/projects/<slug>/autofill`: 运行受控自治补全，补齐安全本地产物，并按配置排队或执行 Codex/image2/Blender/plugin 适配器任务。/ Run controlled autofill for safe local artifacts and queue/execute Codex/image2/Blender/plugin adapter tasks per config.
-- `POST /api/projects/<slug>/links`: 更新旧项目目录和资源目录映射。/ Update the old-project and resource directory mapping.
+“分析卡”不是分镜卡，也不是最终图片。它是每一步交给 Codex 的机器可读任务包。
 
-## Analyze Current Project Button / "分析当前项目"按钮
+标准流程：
 
-按钮行为 / Button behavior:
+1. App 创建 Codex 可解析的 handoff/packet。
+2. Codex 读取任务包、参考图和空间逻辑。
+3. Codex 生成文字、白模、图片或 QA 结果。
+4. Codex 通过 API 回填到 app。
+5. 已完成的分析卡应被标记完成或从待处理区自动移除，避免重复处理。
 
-```powershell
-python scripts/analyze_aigc_project.py projects/<project-slug> --sample-size 24 --print-json
+图片任务包必须遵守：
+
+- 只生成 `Tasks` 中列出的目标卡。
+- `global_references`、`project_bible`、`nearby_storyboard_cards` 只作为上下文，不自动生成。
+- 默认每张卡生成 `c01/c02/c03` 三个候选，并全部回填。
+- 分镜号、版本号、候选号只能写入文件名和 JSON，不能画到图片像素里。
+
+## 分镜卡字段
+
+每张分镜卡至少包含：
+
+- `item_id`：稳定分镜编号。
+- `act_id`：所属幕。
+- `scene_id`：所属场戏。
+- `beat`：剧情点。
+- `shot_type`：镜头类型。
+- `frame_description`：这一帧看见什么。
+- `spatial_logic`：空间硬规则，例如门内外方向、人物视线、左右关系、屏幕位置、遮挡关系。
+- `image_prompt`：图片生成提示词。
+- `video_prompt`：后续视频提示词。
+- `notes`：导演备注、连续性和参考需求。
+- `sort_after`：排序锚点。可填 `05`、`ACT2_SHOT_006` 或任意情绪卡名称，把当前卡放到它后面。
+
+新增图片如果回填时找不到原分镜卡，app 会自动补一张分镜卡；如果无法判断故事顺序，先作为情绪卡放到末尾。
+
+## 空间逻辑检查
+
+`spatial_logic` 是硬约束，优先级高于情绪描述。生成图片包时，后端会自动生成 `spatial_logic_checks`，让 Codex 在生图前先检查结构关系。
+
+当前内置检查包括：
+
+- 开门/入口：门内空间必须位于孩子视线正前方。
+- 入场镜头：先用后脑/背影建立游戏厅全景，再转到孩子表情。
+- 后脑机位：必须从人物背后拍，看到后脑、肩膀和前方目标物。
+- 街机道具：同一台旧 CRT 双人街机，单一屏幕、左右并排操作位、宽控制面板、两组摇杆按钮、中央投币口和两个低凳。
+- 双人对战：哥哥和黄毛并排朝同一块屏幕，禁止面对面、回头看镜头或站成对峙。
+- 屏幕特写：只表现泛化 90 年代像素格斗画面，不出现真实 logo、可读文字、现代 UI 或高清 3D 画面。
+- 围观者：以本地少年、中学生和年轻小青年为主，压迫感来自站位和肩膀后脑，不要变成中年成人江湖场。
+
+## 白模策略
+
+白模不是越复杂越好。复杂度越高，主要增加的是建模、渲染、检查和维护成本，不是单纯 token 成本。
+
+推荐三层：
+
+- `spatial_blocking`：锁机位、比例、视线、遮挡、主道具位置。适合大多数镜头。
+- `prop_1to1`：锁关键道具外形、尺寸关系、控制点和交互点。适合街机、门、特殊装置。
+- `shot_1to1`：尽量贴近某张源图构图和空间。适合必须复刻的关键镜头。
+
+推荐流程：
+
+1. 少量探索图找视觉方向。
+2. 从可用图中选锚点图，做 1:1 道具或镜头白模。
+3. 根据分镜设计补关键镜头白模。
+4. 再批量生成剩余图片。
+
+普通情绪近景可跳过白模；街机结构、并排对战、后脑机位、门内外方向、复杂遮挡关系应先有白模或明确 `spatial_logic`。
+
+## 图片版本和 Final
+
+每张卡可有多个图片版本：
+
+- `candidate`：候选图。
+- `current`：当前采用候选，但不代表最终分镜。
+- `final`：导演确认可进入最终分镜 preview。
+- `reference`：只作参考，不进入最终分镜。
+
+下方 Final preview 只显示 `final` 图片。没有勾选 Final 的卡片在 preview 中留空，表示这张分镜还不完美。
+
+每张版本缩略图应提供：
+
+- `采用 / Current`：设为当前候选。
+- `Final / 最终`：设为最终分镜图。同一分镜只保留一个 Final。
+- `参考 / Reference`：作为后续生成参考。
+
+## 第二幕街机连续性锁
+
+当前 `coin-slot` 第二幕需要特别遵守：
+
+- 围观者年龄不要偏大，应以同龄或稍大的本地少年、中学生、年轻小青年为主。
+- 街机结构固定：单一 CRT 屏幕、左右两个操作位、两个低凳、中央投币口。
+- 哥哥阿磊戴眼镜，深蓝运动服；二弟蓝夹克红领巾；小弟偏胖、棕马甲。
+- 黄毛只在挑战/对战相关镜头中作为主要对手出现。
+- 哥哥和黄毛对战时永远并排面对屏幕，不要面对面。
+- 需要补充屏幕特写和后脑并排对战镜头，用来锁游戏画面和人物关系。
+
+## 常用 API
+
+- `GET /api/projects`：列出项目。
+- `GET /api/projects/<slug>`：读取项目详情。
+- `POST /api/projects/<slug>/idea-board`：保存故事板、设定、幕、分镜卡。
+- `POST /api/projects/<slug>/card-image-packet`：生成设定卡/分镜卡图片任务包。
+- `POST /api/projects/<slug>/card-image-output`：回填图片输出。
+- `POST /api/projects/<slug>/whitebox-jobs`：生成白模任务。
+- `GET /api/projects/<slug>/asset?origin=<project|resource>&path=<path>`：预览项目或资源文件。
+- `POST /api/projects/<slug>/video-reference-package`：生成 Final/参考图包。
+
+## 验证
+
+修改后至少运行：
+
+```bash
+python3 -m py_compile apps/pipeline-hub/server.py
+node --check apps/pipeline-hub/static/app.js
 ```
 
-输出 / Output:
+如果改了 UI，刷新浏览器并确认：
 
-- 机器可读摘要: 命令行 JSON。/ Machine-readable summary: stdout JSON.
-- 人类可读报告: `projects/<project-slug>/10_qa/reports/project_audit_latest.md`。/ Human-readable report at that path.
-- AI 审片入口: 使用 `$aigc-film-project-auditor` 读取报告并结合电影审美 Rubric 生成导演建议。/ AI review entry: `$aigc-film-project-auditor` reads the report and applies a cinematic rubric to produce director notes.
-
-## Autofill Button / "自治补全"按钮
-
-按钮行为 / Button behavior:
-
-```powershell
-python scripts/autofill_aigc_project.py projects/<project-slug> --max-rounds 3 --sample-size 24 --print-json
-```
-
-自治补全会循环执行 analyze -> fill -> analyze，直到确定性审计达到 `pass` 或达到轮次预算。默认只写安全本地产物：缺失文档、CSV、索引、提示词草稿、任务队列、配置、QA 记录和运行报告。Codex、image2、Blender 或 plugin install 只有在 `00_admin/autofill_config.yaml` 里启用，并且 GUI/API 请求允许时才会执行。
-Autofill loops analyze -> fill -> analyze until the deterministic audit reaches `pass` or the round budget is hit. By default it only writes safe local artifacts: missing docs, CSVs, indexes, prompt drafts, task queues, configs, QA records, and run reports. Codex, image2, Blender, or plugin install only run when enabled in `00_admin/autofill_config.yaml` and allowed by the GUI/API request.
-
-输出 / Output:
-
-- 机器摘要: 命令行 JSON。/ Machine summary: stdout JSON.
-- 运行报告: `projects/<project-slug>/10_qa/autofill_runs/autofill_latest.md`。/ Run report at that path.
-- 适配器任务提示词: `projects/<project-slug>/10_qa/autofill_runs/<run-id>/tasks/`。/ Adapter task prompts under that folder.
-- 项目日志记录: `00_admin/project_log.md`。/ Logged into `00_admin/project_log.md`.
-
-## Coin Slot Sample Seed / 投币口样板种子
-
-投币口样板可通过脚本重建 12 镜头标准批次 / The Coin Slot sample can rebuild a 12-shot standard batch:
-
-```powershell
-python scripts/seed_coin_slot_sample_project.py --force
-python scripts/analyze_aigc_project.py projects/coin-slot --sample-size 24
-```
-
-脚本会把链接资源库中的代表性 panels/prompts/stage maps 转成标准项目内的 story、lookdev、asset bible、previs、shots、generation、edit、QA 和 delivery 索引。
-The script turns representative panels/prompts/stage maps from the linked resource library into standard in-project indexes for story, lookdev, asset bible, previs, shots, generation, edit, QA, and delivery.
-
-## Later Modules / 后续模块
-
-- Intake Analyzer: 分析导演输入、截图、视频和参考图。/ Analyze director input, screenshots, video, and references.
-- Direction Board: 展示故事方向、美术方向、风格预览和导演确认状态。/ Show story/art directions, style tests, and approval status.
-- Asset Bible Manager: 管理角色、场景、道具、颜色、光照和连续性锁定。/ Manage characters, scenes, props, color, light, and continuity locks.
-- Previs Builder: 管理 Blender 白模、相机、控制层和空间关系 QA。/ Manage Blender whiteboxes, cameras, control layers, and spatial QA.
-- Shot Factory: 批量生成关键帧、图片提示词、视频提示词和模型任务。/ Batch-generate keyframes, image prompts, video prompts, and model jobs.
-- QA Console: 汇总角色一致性、空间一致性、白模匹配、交付完整性。/ Aggregate character consistency, spatial consistency, whitebox match, and delivery completeness.
-
-## Implementation Note / 实现说明
-
-GUI 应调用脚本或共享库，不要重新实现另一套项目结构规则。项目目录契约以 `docs/PROJECT_STRUCTURE.md` 和 `scripts/create_aigc_project.py` 为准。
-The GUI should call the scripts or a shared library, not reimplement another set of project-structure rules. The directory contract is defined by `docs/PROJECT_STRUCTURE.md` and `scripts/create_aigc_project.py`.
+- 分镜卡有明显边框和区分底色。
+- 当前幕过滤正确。
+- `空间逻辑 / Spatial logic` 字段能保存。
+- 图片版本有 `Final / 最终` 选项。
+- Final preview 只显示 Final 图片。

@@ -1,0 +1,20 @@
+{
+  "change_request_id": "CR_SCN_ARCADE_20260615_020150",
+  "queue": [
+    {
+      "queue_id": "GEN_CR_SCN_ARCADE_20260615_020150_001",
+      "asset_id": "MSB020_FINAL_STORYBOARD",
+      "stage_id": "08_generation",
+      "target_version": "v002",
+      "action": "modify",
+      "path": "media/01_AIGC/final_storyboard_panels/B01/MSB020_final_storyboard_v002.jpg",
+      "result_path": "08_generation/jobs/CR_SCN_ARCADE_20260615_020150/outputs/GEN_CR_SCN_ARCADE_20260615_020150_001_MSB020_FINAL_STORYBOARD_v002.md",
+      "status": "review_ready",
+      "started_at": "2026-06-15T02:01:51+08:00",
+      "packet_path": "08_generation/jobs/CR_SCN_ARCADE_20260615_020150/outputs/GEN_CR_SCN_ARCADE_20260615_020150_001_MSB020_FINAL_STORYBOARD_v002.md",
+      "task_path": "08_generation/jobs/CR_SCN_ARCADE_20260615_020150/tasks/GEN_CR_SCN_ARCADE_20260615_020150_001_MSB020_FINAL_STORYBOARD_v002.json",
+      "adapter": "manual_packet",
+      "completed_at": "2026-06-15T02:01:51+08:00"
+    }
+  ]
+}

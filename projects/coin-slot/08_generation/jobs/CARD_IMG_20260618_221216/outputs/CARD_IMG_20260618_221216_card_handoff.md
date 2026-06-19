@@ -1,0 +1,2765 @@
+# Codex Card Image Handoff / Codex 卡片图片生成包
+
+这是电影项目的概念/分镜卡片图片生成包，不是投资策略卡片。请调用当前聊天里的真实生图能力，只为 Tasks 中列出的目标电影卡片生成图片。不要因为上下文里有其他卡片，就自动生成它们。
+
+## Codex Run Mode / 执行模式
+- 目标是卡片级生成：如果 Tasks 里只有 1 张卡，就只生成 1 张；有多张才批量生成。
+- 生成前可做电影级提示词优化，强化构图、光影、材质、角色连续性和负面约束。
+- revision_note 是本轮精修意见，优先级高于长期 notes/prompt_notes；不要把一次性修改写死成永久设定。
+- Concept task 的 scope/act_id/act_context 决定它是全项目设定还是某一幕设定；幕级概念只继承并服务对应 act 的上下文。
+- Context cards、global references、nearby storyboard cards、related assets 只用于风格和连续性参考，不是生成目标。
+- 每个任务保存到 Suggested output path；完成后调用回填接口追加到对应卡片 versions，并更新当前预览。
+- 输出保持短：图片预览、保存路径、回填状态。
+
+## Project / 项目
+- Project slug: coin-slot
+- Project root: /Users/jaychoupp/Desktop/Story/Film/projects/coin-slot
+- Packet id: CARD_IMG_20260618_221216
+- Packet path: 08_generation/jobs/CARD_IMG_20260618_221216/outputs/CARD_IMG_20260618_221216_card_handoff.md
+
+## Story / 故事
+- Title: 投币口 / Coin Slot
+- Logline: 90年代北方小城里，三个放学后的孩子偷偷钻进居民楼角落的游戏机房，第一次跨进成人世界灰色而诱人的门缝。
+
+## Context Cards / 上下文概念卡
+这些卡片用于统一人物、场景、道具、美术、年代和负面约束；不要自动生成它们，除非它们也出现在 Tasks 里。
+```json
+[
+  {
+    "card_id": "BIBLE_CHARACTER_001",
+    "scope": "project",
+    "act_id": "",
+    "category": "character",
+    "title": "三个小朋友 / Three children",
+    "summary": "第一幕的核心人物组：三个背书包的小学生，熟门熟路但仍然心虚，互相打掩护进入隐藏游戏机房。需要保持年龄、身高差、书包、发型、衣着年代感和表演气质连续。",
+    "visual_direction": "1990年代中国北方小城小学生：旧校服或朴素外套、磨旧书包、略脏鞋面、放学后的疲惫和兴奋并存；动作要小心、鬼祟、彼此贴近。",
+    "prompt_notes": "three Chinese school children in 1990s northern China, carrying worn schoolbags, cautious and sneaky after school, consistent faces, hairstyles, wardrobe and height differences, cinematic realism",
+    "revision_note": "",
+    "negative_prompt": "不要现代校服、智能手机、潮牌服饰、夸张动漫表情、年龄过大或过小、角色身份不一致。",
+    "selected": true,
+    "image_selected": true,
+    "status": "draft",
+    "references": [
+      {
+        "ref_id": "THREE_BROTHERS_turnaround_expression_contact_sheet_v001",
+        "asset_ref": "resource:media/01_AIGC/character_design_v2/THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+        "asset_id": "THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+        "path": "media/01_AIGC/character_design_v2/THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+        "origin": "resource",
+        "kind": "character_ref",
+        "role": "character_design_contact_sheet",
+        "note": "三个小朋友统一人设、三视图、表情和服装连续性参考 / Global reference for the three children character identity, turnaround, expressions, and wardrobe continuity.",
+        "version_id": "",
+        "version_status": "",
+        "card_type": "",
+        "card_id": "",
+        "card_title": ""
+      },
+      {
+        "ref_id": "CHR_BRO_A_late_scuffed_reference_v001.png",
+        "asset_ref": "resource:media/01_AIGC/character_design_v2/stage_variants/CHR_BRO_A_late_scuffed_reference_v001.png",
+        "asset_id": "CHR_BRO_A_late_scuffed_reference_v001.png",
+        "path": "media/01_AIGC/character_design_v2/stage_variants/CHR_BRO_A_late_scuffed_reference_v001.png",
+        "origin": "resource",
+        "kind": "image",
+        "role": "image",
+        "note": "给哥哥带一个眼镜",
+        "version_id": "",
+        "version_status": "",
+        "card_type": "",
+        "card_id": "",
+        "card_title": ""
+      }
+    ],
+    "preview_path": "",
+    "versions": []
+  },
+  {
+    "card_id": "BIBLE_LOCATION_001",
+    "scope": "project",
+    "act_id": "",
+    "category": "location",
+    "title": "破旧居民楼角落与隐藏游戏机房入口 / Compound corner arcade entrance",
+    "summary": "第一幕外部主场景：老居民楼侧面的不起眼角落，暗金属门藏在墙根或楼体边角处，门上有猫眼，老板从里面确认熟人后开门。",
+    "visual_direction": "潮湿水泥墙、掉皮涂料、锈迹铁门、暗窄入口、灰尘和旧广告痕迹；构图强调秘密入口、孩子压低身体靠近、门内外光线反差。",
+    "prompt_notes": "old residential compound corner in 1990s northern Chinese small city, hidden arcade room entrance, rusty dark metal door with peephole, peeling concrete wall, dim afternoon light, secretive composition",
+    "revision_note": "",
+    "negative_prompt": "不要现代商业街、霓虹招牌、干净新楼、豪华游戏厅门面、可读随机文字或过度赛博朋克。",
+    "selected": true,
+    "image_selected": true,
+    "status": "draft",
+    "references": [
+      {
+        "ref_id": "WBX_20260616_024949",
+        "asset_ref": "project:06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+        "asset_id": "WBX_20260616_024949",
+        "path": "06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+        "origin": "project",
+        "kind": "whitebox",
+        "role": "replica_whitebox",
+        "note": "隐藏游戏机房入口的空间、机位、旧墙、金属门、猫眼和三个孩子站位参考；作为场景与道具总概念的白模依据。",
+        "version_id": "",
+        "version_status": "",
+        "card_type": "",
+        "card_id": "",
+        "card_title": "",
+        "usage_note": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。",
+        "generation_guidance": "Whitebox guidance / 白模读取说明:\n- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.\n- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.\n- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.\n- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.\n- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.\n- Source whitebox replica seed: ACT1_SHOT_003_SOURCE_KEYFRAME.\n- Replica intent / 复刻意图: 以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+        "whitebox_interpretation": {
+          "mode": "spatial_control_only",
+          "source_asset_id": "ACT1_SHOT_003_SOURCE_KEYFRAME",
+          "source_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+          "replica_note": "以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+          "tags": [
+            "ACT01",
+            "SCN_COMPOUND",
+            "hidden_arcade_door",
+            "peephole",
+            "three_children",
+            "1to1_replica"
+          ],
+          "use_for": [
+            "camera framing and lens/composition",
+            "subject scale, blocking, pose, sightline, and depth order",
+            "major set anchors such as doors, windows, corridors, walls, props, and openings",
+            "main light direction, shadow rhythm, and scene readability"
+          ],
+          "preserve": [
+            "overall aspect ratio and camera angle",
+            "relative positions between characters and key set pieces",
+            "door/window/opening height and screen position when present",
+            "foreground/midground/background separation"
+          ],
+          "ignore": [
+            "gray clay material",
+            "primitive cube/sphere/cylinder shapes",
+            "mannequin or toy-like character appearance",
+            "unfinished low-poly geometry",
+            "plain studio-white lighting unless the shot explicitly asks for it"
+          ],
+          "prompt_bridge": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。"
+        }
+      }
+    ],
+    "preview_path": "",
+    "versions": []
+  },
+  {
+    "card_id": "BIBLE_LOOKDEV_001",
+    "scope": "project",
+    "act_id": "",
+    "category": "lookdev",
+    "title": "90年代北方小城写实质感 / 1990s northern small-city realism",
+    "summary": "全片视觉底色：纪实电影感、低饱和、颗粒但不脏、旧胶片/早期DV记忆感，强调冬春交界或阴天里的灰冷空气。",
+    "visual_direction": "冷灰水泥、褪色红黄广告纸、旧木门和铁门、混浊室内烟雾、钨丝灯与街面自然光混合；摄影机克制，少用夸张广角。",
+    "prompt_notes": "cinematic realism, 1990s northern Chinese small town, muted colors, natural film grain, smoky interiors, mixed tungsten and overcast daylight, grounded documentary texture",
+    "revision_note": "",
+    "negative_prompt": "不要过度磨皮、塑料感、CG感、现代高清广告片、过饱和网红色调、随机英文霓虹和水印。",
+    "selected": true,
+    "image_selected": true,
+    "status": "draft",
+    "references": [],
+    "preview_path": "",
+    "versions": []
+  },
+  {
+    "card_id": "BIBLE_PROP_001",
+    "scope": "project",
+    "act_id": "",
+    "category": "prop",
+    "title": "旧金属门、猫眼与游戏机房道具 / Door, peephole and arcade props",
+    "summary": "关键道具承担叙事信息：猫眼说明老板识别熟人，旧门说明游戏厅隐蔽，室内街机、烟灰缸、硬币和杂乱桌椅说明地下游戏机房生态。",
+    "visual_direction": "门要厚重、旧、暗、带磨损把手和猫眼；室内道具应杂乱但有时代感，街机屏幕亮度压住烟雾，不出现现代 LCD 大屏。",
+    "prompt_notes": "rusty metal door with peephole, worn handle, 1990s arcade machines, coin slot, smoke haze, ashtrays, cluttered stools and cables, period-correct props",
+    "revision_note": "",
+    "negative_prompt": "不要现代网吧、电竞椅、液晶显示器、智能门锁、干净商场电玩、随机品牌文字。",
+    "selected": true,
+    "image_selected": true,
+    "status": "draft",
+    "references": [
+      {
+        "ref_id": "WBX_20260616_024949",
+        "asset_ref": "project:06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+        "asset_id": "WBX_20260616_024949",
+        "path": "06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+        "origin": "project",
+        "kind": "whitebox",
+        "role": "replica_whitebox",
+        "note": "隐藏游戏机房入口的空间、机位、旧墙、金属门、猫眼和三个孩子站位参考；作为场景与道具总概念的白模依据。",
+        "version_id": "",
+        "version_status": "",
+        "card_type": "",
+        "card_id": "",
+        "card_title": "",
+        "usage_note": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。",
+        "generation_guidance": "Whitebox guidance / 白模读取说明:\n- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.\n- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.\n- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.\n- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.\n- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.\n- Source whitebox replica seed: ACT1_SHOT_003_SOURCE_KEYFRAME.\n- Replica intent / 复刻意图: 以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+        "whitebox_interpretation": {
+          "mode": "spatial_control_only",
+          "source_asset_id": "ACT1_SHOT_003_SOURCE_KEYFRAME",
+          "source_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+          "replica_note": "以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+          "tags": [
+            "ACT01",
+            "SCN_COMPOUND",
+            "hidden_arcade_door",
+            "peephole",
+            "three_children",
+            "1to1_replica"
+          ],
+          "use_for": [
+            "camera framing and lens/composition",
+            "subject scale, blocking, pose, sightline, and depth order",
+            "major set anchors such as doors, windows, corridors, walls, props, and openings",
+            "main light direction, shadow rhythm, and scene readability"
+          ],
+          "preserve": [
+            "overall aspect ratio and camera angle",
+            "relative positions between characters and key set pieces",
+            "door/window/opening height and screen position when present",
+            "foreground/midground/background separation"
+          ],
+          "ignore": [
+            "gray clay material",
+            "primitive cube/sphere/cylinder shapes",
+            "mannequin or toy-like character appearance",
+            "unfinished low-poly geometry",
+            "plain studio-white lighting unless the shot explicitly asks for it"
+          ],
+          "prompt_bridge": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。"
+        }
+      }
+    ],
+    "preview_path": "",
+    "versions": []
+  },
+  {
+    "card_id": "BIBLE_005",
+    "scope": "project",
+    "act_id": "",
+    "category": "lookdev",
+    "title": "",
+    "summary": "街机厅混混三人组，都是和哥哥同龄的年轻人，但社会痕迹明显，学生气少\n老大，矮个子，黄毛，长相凶狠，耳朵后夹着烟，爱打游戏\n老二，瘦高个，嚣张，穿个白色背心\n老三，胖子，又肥又壮，有点憨憨的",
+    "visual_direction": "",
+    "prompt_notes": "",
+    "revision_note": "",
+    "negative_prompt": "",
+    "selected": true,
+    "image_selected": true,
+    "status": "draft",
+    "references": [],
+    "preview_path": "",
+    "versions": []
+  }
+]
+```
+
+## Global References / 全局参考
+```json
+[
+  {
+    "ref_id": "THREE_BROTHERS_turnaround_expression_contact_sheet_v001",
+    "asset_ref": "resource:media/01_AIGC/character_design_v2/THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+    "asset_id": "THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+    "path": "media/01_AIGC/character_design_v2/THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+    "origin": "resource",
+    "kind": "character_ref",
+    "role": "character_design_contact_sheet",
+    "note": "三个小朋友统一人设、三视图、表情和服装连续性参考 / Global reference for the three children character identity, turnaround, expressions, and wardrobe continuity.",
+    "version_id": "",
+    "version_status": "",
+    "card_type": "",
+    "card_id": "",
+    "card_title": ""
+  },
+  {
+    "ref_id": "CHR_BRO_A_late_scuffed_reference_v001.png",
+    "asset_ref": "resource:media/01_AIGC/character_design_v2/stage_variants/CHR_BRO_A_late_scuffed_reference_v001.png",
+    "asset_id": "CHR_BRO_A_late_scuffed_reference_v001.png",
+    "path": "media/01_AIGC/character_design_v2/stage_variants/CHR_BRO_A_late_scuffed_reference_v001.png",
+    "origin": "resource",
+    "kind": "image",
+    "role": "image",
+    "note": "给哥哥带一个眼镜",
+    "version_id": "",
+    "version_status": "",
+    "card_type": "",
+    "card_id": "",
+    "card_title": ""
+  }
+]
+```
+
+## Callback / 回填接口
+- POST: http://127.0.0.1:8787/api/projects/coin-slot/card-image-output
+- Body: {"outputs":[{"card_type":"storyboard|concept","item_id":"...","card_id":"...","output_path":"...","notes":"..."}]}
+
+## Tasks / 目标卡片任务
+```json
+{
+  "packet_id": "CARD_IMG_20260618_221216",
+  "tasks": [
+    {
+      "task_id": "CARD_IMG_20260618_221216_001",
+      "card_type": "concept",
+      "card_id": "BIBLE_005",
+      "scope": "project",
+      "act_id": "",
+      "category": "lookdev",
+      "title": "",
+      "summary": "街机厅混混三人组，都是和哥哥同龄的年轻人，但社会痕迹明显，学生气少\n老大，矮个子，黄毛，长相凶狠，耳朵后夹着烟，爱打游戏\n老二，瘦高个，嚣张，穿个白色背心\n老三，胖子，又肥又壮，有点憨憨的",
+      "visual_direction": "",
+      "prompt_notes": "",
+      "revision_note": "",
+      "negative_prompt": "",
+      "target_references": [],
+      "existing_versions": [],
+      "act_context": {
+        "scope": "project",
+        "act_id": "",
+        "act": {},
+        "scenes": [
+          {
+            "scene_id": "SCN_COMPOUND",
+            "title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade"
+          },
+          {
+            "scene_id": "SCN_ARCADE",
+            "title": "游戏厅 / Arcade play",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade"
+          },
+          {
+            "scene_id": "SCN_ARCADE_EXIT",
+            "title": "游戏厅出口 / Arcade exit",
+            "act_id": "ACT02",
+            "act_title": "第二幕：离场与巷道 / Act 2: Exit and alley"
+          },
+          {
+            "scene_id": "SCN_ALLEY",
+            "title": "偏僻小路 / Secluded alley",
+            "act_id": "ACT02",
+            "act_title": "第二幕：离场与巷道 / Act 2: Exit and alley"
+          },
+          {
+            "scene_id": "SCN_CORRIDOR",
+            "title": "废楼走廊 / Abandoned corridor",
+            "act_id": "ACT03",
+            "act_title": "第三幕：电话与转译 / Act 3: Phone and translation"
+          },
+          {
+            "scene_id": "SCN_PHONE",
+            "title": "电话亭 / Phone booth",
+            "act_id": "ACT03",
+            "act_title": "第三幕：电话与转译 / Act 3: Phone and translation"
+          },
+          {
+            "scene_id": "SCN_8BIT",
+            "title": "8-bit 关卡 / 8-bit stage",
+            "act_id": "ACT03",
+            "act_title": "第三幕：电话与转译 / Act 3: Phone and translation"
+          }
+        ],
+        "nearby_storyboard_cards": [
+          {
+            "item_id": "ACT1_SHOT_001",
+            "scene_id": "SCN_COMPOUND",
+            "beat": "放学后偏离大路",
+            "shot_type": "远景 / establishing wide shot",
+            "frame_description": "傍晚的北方小城，旧居民楼压在灰色街道边。三个背书包的小朋友从放学人流边缘脱离，避开大路，朝居民楼背面走去。",
+            "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small city after school, old concrete apartment blocks and dusty street, muted gray winter palette, three Chinese schoolchildren with worn backpacks quietly leaving the main road and heading toward the back corner of a residential building, cautious secretive body language, realistic film still, 35mm lens, natural dusk light, subtle film grain, clean composition, no modern cars, no smartphones, no readable text, no watermark",
+            "notes": "建立时代、地域和偷偷行动。游戏厅入口不要过早显眼，先让路线和氛围成立。",
+            "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/001_ACT1_SHOT_001.png",
+            "versions": []
+          },
+          {
+            "item_id": "ACT1_SHOT_002",
+            "scene_id": "SCN_COMPOUND",
+            "beat": "沿墙根靠近隐藏入口",
+            "shot_type": "中远景 / tracking medium-wide shot",
+            "frame_description": "三个孩子贴着居民楼墙根走，经过旧管道和剥落墙皮，互相用眼神确认没人注意，动作熟练又紧张。",
+            "image_prompt": "Cinematic film keyframe, three Chinese schoolchildren in 1990s school clothes sneaking along the wall of a shabby residential building, worn backpacks, old pipes, peeling paint, chipped concrete, one child glancing back nervously while another gestures to stay quiet, northern Chinese small-town realism, low handheld perspective, subdued colors, high-quality stable image, no modern objects, no random text, no watermark",
+            "notes": "鬼鬼祟祟但不要惊悚化，更像小孩去做一件不被允许却熟门熟路的事。",
+            "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/002_ACT1_SHOT_002.png",
+            "versions": []
+          },
+          {
+            "item_id": "ACT1_SHOT_003",
+            "scene_id": "SCN_COMPOUND",
+            "beat": "旧门和猫眼出现",
+            "shot_type": "中景 / medium shot",
+            "frame_description": "居民楼一楼角落有一扇不起眼的旧金属门，门上有猫眼，没有正式招牌。三个孩子停在门前，压低声音等待。",
+            "image_prompt": "Cinematic storyboard keyframe, hidden arcade entrance in the corner of an old Chinese residential building, 1990s northern small city, shabby closed metal door with a small peephole, no obvious signboard, three schoolchildren with backpacks standing on the left side whispering and looking secretive, cracked concrete wall, dim corridor shadow, realistic film still, strong readable composition, no modern signage, no readable text, no watermark",
+            "notes": "旧门+猫眼是第一幕核心视觉资产，门要普通、隐蔽、可信。",
+            "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+            "versions": []
+          },
+          {
+            "item_id": "ACT1_SHOT_004",
+            "scene_id": "SCN_COMPOUND",
+            "beat": "老板从猫眼确认熟人",
+            "shot_type": "猫眼特写 / peephole close-up",
+            "frame_description": "从门内猫眼视角看出去，三个孩子的脸被猫眼畸变压缩，紧张又期待。门内老板确认他们是熟客。",
+            "image_prompt": "Cinematic close-up keyframe from inside a closed door peephole, fisheye peephole distortion, three Chinese schoolchildren with worn backpacks visible outside in a shabby apartment corner, nervous excited faces, 1990s northern China, faint green-blue arcade light around the peephole edge, realistic film texture, suspenseful but not horror, clean image, no text, no watermark, no modern objects",
+            "notes": "用猫眼制造“被审查/被放行”的边界感。可后续关联孩子人设。",
+            "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/004_ACT1_SHOT_004.png",
+            "versions": []
+          },
+          {
+            "item_id": "ACT1_SHOT_005",
+            "scene_id": "SCN_COMPOUND",
+            "beat": "门缝打开，机房气息泄出",
+            "shot_type": "近景 / close medium shot",
+            "frame_description": "旧门打开一条缝，老板的半张脸和手出现在门后。蓝绿街机光、烟雾和嘈杂声从门缝先涌出来，孩子们身体微微前倾。",
+            "image_prompt": "Cinematic keyframe, shabby metal door opening a narrow crack, middle-aged Chinese arcade owner partly visible inside, hand holding the door, blue-green CRT arcade light and cigarette smoke leaking from the interior, three schoolchildren with backpacks waiting outside and leaning forward, 1990s northern Chinese residential building corner, realistic gritty atmosphere, clean film still, no readable text, no watermark, no modern elements",
+            "notes": "门缝是两个世界的边界，光、烟和声音比台词更重要。",
+            "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/005_ACT1_SHOT_005.png",
+            "versions": []
+          },
+          {
+            "item_id": "ACT1_SHOT_006",
+            "scene_id": "SCN_ARCADE",
+            "beat": "孩子进入乌烟瘴气的游戏厅",
+            "shot_type": "儿童视角中景 / child-height medium shot",
+            "frame_description": "三个孩子刚进室内，画面被烟雾、街机屏幕光和拥挤背影包围。他们像闯进另一个秩序混乱的世界。",
+            "image_prompt": "Cinematic storyboard keyframe inside a smoky 1990s Chinese underground arcade, three schoolchildren with worn backpacks entering from a doorway, blue and green CRT arcade cabinet glow, cigarette smoke hanging under a low ceiling, crowded silhouettes of adults and teenagers, gritty northern small-town atmosphere, child-height camera perspective, high-quality film still, no modern machines, no smartphone, no readable random text, no watermark",
+            "notes": "三人仍然是画面锚点，不能被杂乱人群完全吞掉。",
+            "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/006_ACT1_SHOT_006.png",
+            "versions": []
+          },
+          {
+            "item_id": "ACT1_SHOT_007",
+            "scene_id": "SCN_ARCADE",
+            "beat": "游戏厅鱼龙混杂全貌",
+            "shot_type": "广角全景 / wide interior shot",
+            "frame_description": "低矮拥挤的游戏厅里，一排排旧街机发出蓝绿光。成年人、少年和孩子混在一起，烟雾让空气显得浑浊。",
+            "image_prompt": "Wide cinematic interior keyframe of a crowded 1990s Chinese arcade hall, low ceiling, rows of old arcade cabinets, cigarette smoke, mixed crowd of adult men, teenagers, and children, three schoolchildren with backpacks visible near the entrance as small figures, blue-green CRT glow, gritty social realism, northern Chinese small-town underground game room, balanced composition, high image quality, no cyberpunk neon, no modern screens, no readable text, no watermark",
+            "notes": "这一条是游戏厅场景设定核心图，既要乱，又要构图可读。",
+            "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/007_ACT1_SHOT_007.png",
+            "versions": []
+          },
+          {
+            "item_id": "ACT1_SHOT_008",
+            "scene_id": "SCN_ARCADE",
+            "beat": "三个孩子站定，兴奋与不安并存",
+            "shot_type": "中近景 / medium close shot",
+            "frame_description": "三个孩子站在游戏厅内部，脸被街机光照亮。他们互相看一眼，兴奋和不安同时出现，第一幕停在正式进入灰色成人空间的瞬间。",
+            "image_prompt": "Cinematic medium close-up keyframe, three Chinese schoolchildren with worn backpacks standing inside a smoky 1990s underground arcade, CRT blue-green light on their faces, expressions mixed with excitement and unease, blurred crowded arcade background, cigarette smoke, gritty realistic film still, northern Chinese small-town atmosphere, strong character continuity, clean stable image, no distorted faces, no modern objects, no readable text, no watermark",
+            "notes": "第一幕收束图，情绪锚点。后续可接投币、游戏机或危险事件。",
+            "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/008_ACT1_SHOT_008.png",
+            "versions": []
+          }
+        ],
+        "related_assets": [
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "03_story",
+            "asset_id": "SCN_COMPOUND_STORY_BEATS",
+            "kind": "",
+            "role": "beat_sheet",
+            "path": "03_story/beats/coin_slot_sample_beat_sheet.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "03_story",
+            "asset_id": "SCN_COMPOUND_FULL_SHOT_LIST",
+            "kind": "",
+            "role": "full_shot_list",
+            "path": "07_shots/shot_list.csv"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "04_lookdev",
+            "asset_id": "SCN_COMPOUND_LOOK_BIBLE",
+            "kind": "",
+            "role": "look_bible",
+            "path": "04_lookdev/references/coin_slot_look_bible_v001.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "04_lookdev",
+            "asset_id": "SCN_COMPOUND_COLOR_SCRIPT",
+            "kind": "",
+            "role": "color_script",
+            "path": "04_lookdev/palettes/coin_slot_color_script.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "04_lookdev",
+            "asset_id": "SCN_COMPOUND_VISUAL_REFS",
+            "kind": "",
+            "role": "visual_references",
+            "path": "04_lookdev/references/coin_slot_visual_references.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "04_lookdev",
+            "asset_id": "SCN_COMPOUND_SCENE_REFERENCE",
+            "kind": "",
+            "role": "scene_reference",
+            "path": "media/01_AIGC/scene_refs/SC_01_compound_corner_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "05_asset_bible",
+            "asset_id": "SCN_COMPOUND_CHARACTER_STAGE_LOCKS",
+            "kind": "",
+            "role": "character_stage_locks",
+            "path": "05_asset_bible/character_stage_locks/coin_slot_character_stage_locks.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "05_asset_bible",
+            "asset_id": "SCN_COMPOUND_LOCATION_BIBLE",
+            "kind": "",
+            "role": "location_bible",
+            "path": "05_asset_bible/locations/coin_slot_location_bible.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "05_asset_bible",
+            "asset_id": "SCN_COMPOUND_CONTINUITY_LOCKS",
+            "kind": "",
+            "role": "continuity_locks",
+            "path": "05_asset_bible/continuity/coin_slot_continuity_locks.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "06_previs",
+            "asset_id": "SCN_COMPOUND_SCENE_LOCK",
+            "kind": "",
+            "role": "scene_lock",
+            "path": "06_previs/scene_locks/scn-compound/scene_lock.yaml"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "06_previs",
+            "asset_id": "SCN_COMPOUND_CAMERA_MANIFEST",
+            "kind": "",
+            "role": "camera_manifest",
+            "path": "06_previs/scene_locks/scn-compound/camera_manifest.csv"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "06_previs",
+            "asset_id": "SCN_COMPOUND_REFERENCE_ASSETS",
+            "kind": "",
+            "role": "reference_assets",
+            "path": "06_previs/scene_locks/scn-compound/reference_assets.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "06_previs",
+            "asset_id": "SCN_COMPOUND_WHITEBOX_INDEX",
+            "kind": "",
+            "role": "whitebox_index",
+            "path": "06_previs/scene_locks/scn-compound/whitebox_index.csv"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "06_previs",
+            "asset_id": "MSB001_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "06_previs",
+            "asset_id": "MSB002_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB002.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "06_previs",
+            "asset_id": "MSB003_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB003.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "06_previs",
+            "asset_id": "MSB004_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB004.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "06_previs",
+            "asset_id": "MSB005_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB005.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "06_previs",
+            "asset_id": "MSB006_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB006.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "06_previs",
+            "asset_id": "MSB007_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB007.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "06_previs",
+            "asset_id": "MSB008_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB008.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "06_previs",
+            "asset_id": "MSB009_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB009.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "06_previs",
+            "asset_id": "MSB010_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB010.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "06_previs",
+            "asset_id": "MSB011_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB011.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "06_previs",
+            "asset_id": "MSB012_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB012.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "06_previs",
+            "asset_id": "MSB013_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB013.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "06_previs",
+            "asset_id": "MSB014_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB014.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "06_previs",
+            "asset_id": "MSB015_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB015.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "06_previs",
+            "asset_id": "MSB016_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB016.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "06_previs",
+            "asset_id": "MSB017_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB017.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "06_previs",
+            "asset_id": "MSB018_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB018.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "07_shots",
+            "asset_id": "SCN_COMPOUND_SHOT_LIST",
+            "kind": "",
+            "role": "shot_list",
+            "path": "07_shots/shot_list.csv"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "07_shots",
+            "asset_id": "MSB001_IMAGE_PROMPT",
+            "kind": "",
+            "role": "image_prompt",
+            "path": "07_shots/prompts/MSB001.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "07_shots",
+            "asset_id": "MSB003_IMAGE_PROMPT",
+            "kind": "",
+            "role": "image_prompt",
+            "path": "07_shots/prompts/MSB003.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "07_shots",
+            "asset_id": "MSB006_IMAGE_PROMPT",
+            "kind": "",
+            "role": "image_prompt",
+            "path": "07_shots/prompts/MSB006.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "07_shots",
+            "asset_id": "MSB009_IMAGE_PROMPT",
+            "kind": "",
+            "role": "image_prompt",
+            "path": "07_shots/prompts/MSB009.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "07_shots",
+            "asset_id": "MSB012_IMAGE_PROMPT",
+            "kind": "",
+            "role": "image_prompt",
+            "path": "07_shots/prompts/MSB012.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "07_shots",
+            "asset_id": "SCN_COMPOUND_SHOT_INDEX_188",
+            "kind": "",
+            "role": "scene_shot_index",
+            "path": "07_shots/scene_slices/SCN_COMPOUND_shot_index.csv"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "07_shots",
+            "asset_id": "SCN_COMPOUND_PROMPT_PACK_188",
+            "kind": "",
+            "role": "scene_prompt_pack",
+            "path": "07_shots/scene_slices/SCN_COMPOUND_prompt_pack.csv"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "07_shots",
+            "asset_id": "MSB001_VIDEO_PROMPT",
+            "kind": "",
+            "role": "video_prompt",
+            "path": "07_shots/video_prompts/MSB001.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "07_shots",
+            "asset_id": "MSB003_VIDEO_PROMPT",
+            "kind": "",
+            "role": "video_prompt",
+            "path": "07_shots/video_prompts/MSB003.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "07_shots",
+            "asset_id": "MSB006_VIDEO_PROMPT",
+            "kind": "",
+            "role": "video_prompt",
+            "path": "07_shots/video_prompts/MSB006.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "07_shots",
+            "asset_id": "MSB009_VIDEO_PROMPT",
+            "kind": "",
+            "role": "video_prompt",
+            "path": "07_shots/video_prompts/MSB009.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "07_shots",
+            "asset_id": "MSB012_VIDEO_PROMPT",
+            "kind": "",
+            "role": "video_prompt",
+            "path": "07_shots/video_prompts/MSB012.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "08_generation",
+            "asset_id": "SCN_COMPOUND_IMAGE_OUTPUT_INDEX",
+            "kind": "",
+            "role": "image_outputs",
+            "path": "08_generation/outputs/images/coin_slot_image_outputs_index.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "08_generation",
+            "asset_id": "SCN_COMPOUND_REJECT_LOG",
+            "kind": "",
+            "role": "rejects",
+            "path": "08_generation/rejects/coin_slot_reject_log.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "08_generation",
+            "asset_id": "SCN_COMPOUND_STORYBOARD_IMAGE_INDEX",
+            "kind": "",
+            "role": "storyboard_image_index",
+            "path": "08_generation/outputs/images/SCN_COMPOUND_storyboard_image_index.csv"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "08_generation",
+            "asset_id": "MSB001_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB001_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "08_generation",
+            "asset_id": "MSB001_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB001_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "08_generation",
+            "asset_id": "MSB002_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB002_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "08_generation",
+            "asset_id": "MSB002_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB002_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "08_generation",
+            "asset_id": "MSB003_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB003_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "08_generation",
+            "asset_id": "MSB003_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB003_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "08_generation",
+            "asset_id": "MSB004_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB004_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "08_generation",
+            "asset_id": "MSB004_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB004_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "08_generation",
+            "asset_id": "MSB005_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB005_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "08_generation",
+            "asset_id": "MSB005_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB005_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "08_generation",
+            "asset_id": "MSB006_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB006_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "08_generation",
+            "asset_id": "MSB006_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB006_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "08_generation",
+            "asset_id": "MSB007_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB007_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "08_generation",
+            "asset_id": "MSB007_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB007_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "08_generation",
+            "asset_id": "MSB008_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB008_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "08_generation",
+            "asset_id": "MSB008_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB008_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "08_generation",
+            "asset_id": "MSB009_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB009_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "08_generation",
+            "asset_id": "MSB009_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB009_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "08_generation",
+            "asset_id": "MSB010_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB010_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "08_generation",
+            "asset_id": "MSB010_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB010_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "08_generation",
+            "asset_id": "MSB011_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB011_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "08_generation",
+            "asset_id": "MSB011_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB011_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "08_generation",
+            "asset_id": "MSB012_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB012_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "08_generation",
+            "asset_id": "MSB012_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB012_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "08_generation",
+            "asset_id": "MSB013_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB013_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "08_generation",
+            "asset_id": "MSB013_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB013_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "08_generation",
+            "asset_id": "MSB014_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB014_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "08_generation",
+            "asset_id": "MSB014_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB014_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "08_generation",
+            "asset_id": "MSB015_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB015_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "08_generation",
+            "asset_id": "MSB015_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB015_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "08_generation",
+            "asset_id": "MSB016_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB016_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "08_generation",
+            "asset_id": "MSB016_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB016_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+            "step": "08_generation",
+            "asset_id": "MSB017_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB017_v001.png"
+          }
+        ]
+      },
+      "generation_context": {
+        "global_references": [
+          {
+            "ref_id": "THREE_BROTHERS_turnaround_expression_contact_sheet_v001",
+            "asset_ref": "resource:media/01_AIGC/character_design_v2/THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+            "asset_id": "THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+            "path": "media/01_AIGC/character_design_v2/THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+            "origin": "resource",
+            "kind": "character_ref",
+            "role": "character_design_contact_sheet",
+            "note": "三个小朋友统一人设、三视图、表情和服装连续性参考 / Global reference for the three children character identity, turnaround, expressions, and wardrobe continuity.",
+            "version_id": "",
+            "version_status": "",
+            "card_type": "",
+            "card_id": "",
+            "card_title": ""
+          },
+          {
+            "ref_id": "CHR_BRO_A_late_scuffed_reference_v001.png",
+            "asset_ref": "resource:media/01_AIGC/character_design_v2/stage_variants/CHR_BRO_A_late_scuffed_reference_v001.png",
+            "asset_id": "CHR_BRO_A_late_scuffed_reference_v001.png",
+            "path": "media/01_AIGC/character_design_v2/stage_variants/CHR_BRO_A_late_scuffed_reference_v001.png",
+            "origin": "resource",
+            "kind": "image",
+            "role": "image",
+            "note": "给哥哥带一个眼镜",
+            "version_id": "",
+            "version_status": "",
+            "card_type": "",
+            "card_id": "",
+            "card_title": ""
+          }
+        ],
+        "context_cards": [
+          {
+            "card_id": "BIBLE_CHARACTER_001",
+            "scope": "project",
+            "act_id": "",
+            "category": "character",
+            "title": "三个小朋友 / Three children",
+            "summary": "第一幕的核心人物组：三个背书包的小学生，熟门熟路但仍然心虚，互相打掩护进入隐藏游戏机房。需要保持年龄、身高差、书包、发型、衣着年代感和表演气质连续。",
+            "visual_direction": "1990年代中国北方小城小学生：旧校服或朴素外套、磨旧书包、略脏鞋面、放学后的疲惫和兴奋并存；动作要小心、鬼祟、彼此贴近。",
+            "prompt_notes": "three Chinese school children in 1990s northern China, carrying worn schoolbags, cautious and sneaky after school, consistent faces, hairstyles, wardrobe and height differences, cinematic realism",
+            "revision_note": "",
+            "negative_prompt": "不要现代校服、智能手机、潮牌服饰、夸张动漫表情、年龄过大或过小、角色身份不一致。",
+            "selected": true,
+            "image_selected": true,
+            "status": "draft",
+            "references": [
+              {
+                "ref_id": "THREE_BROTHERS_turnaround_expression_contact_sheet_v001",
+                "asset_ref": "resource:media/01_AIGC/character_design_v2/THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+                "asset_id": "THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+                "path": "media/01_AIGC/character_design_v2/THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+                "origin": "resource",
+                "kind": "character_ref",
+                "role": "character_design_contact_sheet",
+                "note": "三个小朋友统一人设、三视图、表情和服装连续性参考 / Global reference for the three children character identity, turnaround, expressions, and wardrobe continuity.",
+                "version_id": "",
+                "version_status": "",
+                "card_type": "",
+                "card_id": "",
+                "card_title": ""
+              },
+              {
+                "ref_id": "CHR_BRO_A_late_scuffed_reference_v001.png",
+                "asset_ref": "resource:media/01_AIGC/character_design_v2/stage_variants/CHR_BRO_A_late_scuffed_reference_v001.png",
+                "asset_id": "CHR_BRO_A_late_scuffed_reference_v001.png",
+                "path": "media/01_AIGC/character_design_v2/stage_variants/CHR_BRO_A_late_scuffed_reference_v001.png",
+                "origin": "resource",
+                "kind": "image",
+                "role": "image",
+                "note": "给哥哥带一个眼镜",
+                "version_id": "",
+                "version_status": "",
+                "card_type": "",
+                "card_id": "",
+                "card_title": ""
+              }
+            ],
+            "preview_path": "",
+            "versions": []
+          },
+          {
+            "card_id": "BIBLE_LOCATION_001",
+            "scope": "project",
+            "act_id": "",
+            "category": "location",
+            "title": "破旧居民楼角落与隐藏游戏机房入口 / Compound corner arcade entrance",
+            "summary": "第一幕外部主场景：老居民楼侧面的不起眼角落，暗金属门藏在墙根或楼体边角处，门上有猫眼，老板从里面确认熟人后开门。",
+            "visual_direction": "潮湿水泥墙、掉皮涂料、锈迹铁门、暗窄入口、灰尘和旧广告痕迹；构图强调秘密入口、孩子压低身体靠近、门内外光线反差。",
+            "prompt_notes": "old residential compound corner in 1990s northern Chinese small city, hidden arcade room entrance, rusty dark metal door with peephole, peeling concrete wall, dim afternoon light, secretive composition",
+            "revision_note": "",
+            "negative_prompt": "不要现代商业街、霓虹招牌、干净新楼、豪华游戏厅门面、可读随机文字或过度赛博朋克。",
+            "selected": true,
+            "image_selected": true,
+            "status": "draft",
+            "references": [
+              {
+                "ref_id": "WBX_20260616_024949",
+                "asset_ref": "project:06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+                "asset_id": "WBX_20260616_024949",
+                "path": "06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+                "origin": "project",
+                "kind": "whitebox",
+                "role": "replica_whitebox",
+                "note": "隐藏游戏机房入口的空间、机位、旧墙、金属门、猫眼和三个孩子站位参考；作为场景与道具总概念的白模依据。",
+                "version_id": "",
+                "version_status": "",
+                "card_type": "",
+                "card_id": "",
+                "card_title": "",
+                "usage_note": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。",
+                "generation_guidance": "Whitebox guidance / 白模读取说明:\n- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.\n- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.\n- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.\n- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.\n- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.\n- Source whitebox replica seed: ACT1_SHOT_003_SOURCE_KEYFRAME.\n- Replica intent / 复刻意图: 以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+                "whitebox_interpretation": {
+                  "mode": "spatial_control_only",
+                  "source_asset_id": "ACT1_SHOT_003_SOURCE_KEYFRAME",
+                  "source_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+                  "replica_note": "以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+                  "tags": [
+                    "ACT01",
+                    "SCN_COMPOUND",
+                    "hidden_arcade_door",
+                    "peephole",
+                    "three_children",
+                    "1to1_replica"
+                  ],
+                  "use_for": [
+                    "camera framing and lens/composition",
+                    "subject scale, blocking, pose, sightline, and depth order",
+                    "major set anchors such as doors, windows, corridors, walls, props, and openings",
+                    "main light direction, shadow rhythm, and scene readability"
+                  ],
+                  "preserve": [
+                    "overall aspect ratio and camera angle",
+                    "relative positions between characters and key set pieces",
+                    "door/window/opening height and screen position when present",
+                    "foreground/midground/background separation"
+                  ],
+                  "ignore": [
+                    "gray clay material",
+                    "primitive cube/sphere/cylinder shapes",
+                    "mannequin or toy-like character appearance",
+                    "unfinished low-poly geometry",
+                    "plain studio-white lighting unless the shot explicitly asks for it"
+                  ],
+                  "prompt_bridge": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。"
+                }
+              }
+            ],
+            "preview_path": "",
+            "versions": []
+          },
+          {
+            "card_id": "BIBLE_LOOKDEV_001",
+            "scope": "project",
+            "act_id": "",
+            "category": "lookdev",
+            "title": "90年代北方小城写实质感 / 1990s northern small-city realism",
+            "summary": "全片视觉底色：纪实电影感、低饱和、颗粒但不脏、旧胶片/早期DV记忆感，强调冬春交界或阴天里的灰冷空气。",
+            "visual_direction": "冷灰水泥、褪色红黄广告纸、旧木门和铁门、混浊室内烟雾、钨丝灯与街面自然光混合；摄影机克制，少用夸张广角。",
+            "prompt_notes": "cinematic realism, 1990s northern Chinese small town, muted colors, natural film grain, smoky interiors, mixed tungsten and overcast daylight, grounded documentary texture",
+            "revision_note": "",
+            "negative_prompt": "不要过度磨皮、塑料感、CG感、现代高清广告片、过饱和网红色调、随机英文霓虹和水印。",
+            "selected": true,
+            "image_selected": true,
+            "status": "draft",
+            "references": [],
+            "preview_path": "",
+            "versions": []
+          },
+          {
+            "card_id": "BIBLE_PROP_001",
+            "scope": "project",
+            "act_id": "",
+            "category": "prop",
+            "title": "旧金属门、猫眼与游戏机房道具 / Door, peephole and arcade props",
+            "summary": "关键道具承担叙事信息：猫眼说明老板识别熟人，旧门说明游戏厅隐蔽，室内街机、烟灰缸、硬币和杂乱桌椅说明地下游戏机房生态。",
+            "visual_direction": "门要厚重、旧、暗、带磨损把手和猫眼；室内道具应杂乱但有时代感，街机屏幕亮度压住烟雾，不出现现代 LCD 大屏。",
+            "prompt_notes": "rusty metal door with peephole, worn handle, 1990s arcade machines, coin slot, smoke haze, ashtrays, cluttered stools and cables, period-correct props",
+            "revision_note": "",
+            "negative_prompt": "不要现代网吧、电竞椅、液晶显示器、智能门锁、干净商场电玩、随机品牌文字。",
+            "selected": true,
+            "image_selected": true,
+            "status": "draft",
+            "references": [
+              {
+                "ref_id": "WBX_20260616_024949",
+                "asset_ref": "project:06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+                "asset_id": "WBX_20260616_024949",
+                "path": "06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+                "origin": "project",
+                "kind": "whitebox",
+                "role": "replica_whitebox",
+                "note": "隐藏游戏机房入口的空间、机位、旧墙、金属门、猫眼和三个孩子站位参考；作为场景与道具总概念的白模依据。",
+                "version_id": "",
+                "version_status": "",
+                "card_type": "",
+                "card_id": "",
+                "card_title": "",
+                "usage_note": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。",
+                "generation_guidance": "Whitebox guidance / 白模读取说明:\n- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.\n- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.\n- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.\n- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.\n- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.\n- Source whitebox replica seed: ACT1_SHOT_003_SOURCE_KEYFRAME.\n- Replica intent / 复刻意图: 以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+                "whitebox_interpretation": {
+                  "mode": "spatial_control_only",
+                  "source_asset_id": "ACT1_SHOT_003_SOURCE_KEYFRAME",
+                  "source_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+                  "replica_note": "以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+                  "tags": [
+                    "ACT01",
+                    "SCN_COMPOUND",
+                    "hidden_arcade_door",
+                    "peephole",
+                    "three_children",
+                    "1to1_replica"
+                  ],
+                  "use_for": [
+                    "camera framing and lens/composition",
+                    "subject scale, blocking, pose, sightline, and depth order",
+                    "major set anchors such as doors, windows, corridors, walls, props, and openings",
+                    "main light direction, shadow rhythm, and scene readability"
+                  ],
+                  "preserve": [
+                    "overall aspect ratio and camera angle",
+                    "relative positions between characters and key set pieces",
+                    "door/window/opening height and screen position when present",
+                    "foreground/midground/background separation"
+                  ],
+                  "ignore": [
+                    "gray clay material",
+                    "primitive cube/sphere/cylinder shapes",
+                    "mannequin or toy-like character appearance",
+                    "unfinished low-poly geometry",
+                    "plain studio-white lighting unless the shot explicitly asks for it"
+                  ],
+                  "prompt_bridge": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。"
+                }
+              }
+            ],
+            "preview_path": "",
+            "versions": []
+          },
+          {
+            "card_id": "BIBLE_005",
+            "scope": "project",
+            "act_id": "",
+            "category": "lookdev",
+            "title": "",
+            "summary": "街机厅混混三人组，都是和哥哥同龄的年轻人，但社会痕迹明显，学生气少\n老大，矮个子，黄毛，长相凶狠，耳朵后夹着烟，爱打游戏\n老二，瘦高个，嚣张，穿个白色背心\n老三，胖子，又肥又壮，有点憨憨的",
+            "visual_direction": "",
+            "prompt_notes": "",
+            "revision_note": "",
+            "negative_prompt": "",
+            "selected": true,
+            "image_selected": true,
+            "status": "draft",
+            "references": [],
+            "preview_path": "",
+            "versions": []
+          }
+        ],
+        "context_references": [
+          {
+            "ref_id": "THREE_BROTHERS_turnaround_expression_contact_sheet_v001",
+            "asset_ref": "resource:media/01_AIGC/character_design_v2/THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+            "asset_id": "THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+            "path": "media/01_AIGC/character_design_v2/THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+            "origin": "resource",
+            "kind": "character_ref",
+            "role": "character_design_contact_sheet",
+            "note": "三个小朋友统一人设、三视图、表情和服装连续性参考 / Global reference for the three children character identity, turnaround, expressions, and wardrobe continuity.",
+            "version_id": "",
+            "version_status": "",
+            "card_type": "",
+            "card_id": "",
+            "card_title": ""
+          },
+          {
+            "ref_id": "CHR_BRO_A_late_scuffed_reference_v001.png",
+            "asset_ref": "resource:media/01_AIGC/character_design_v2/stage_variants/CHR_BRO_A_late_scuffed_reference_v001.png",
+            "asset_id": "CHR_BRO_A_late_scuffed_reference_v001.png",
+            "path": "media/01_AIGC/character_design_v2/stage_variants/CHR_BRO_A_late_scuffed_reference_v001.png",
+            "origin": "resource",
+            "kind": "image",
+            "role": "image",
+            "note": "给哥哥带一个眼镜",
+            "version_id": "",
+            "version_status": "",
+            "card_type": "",
+            "card_id": "",
+            "card_title": ""
+          },
+          {
+            "ref_id": "WBX_20260616_024949",
+            "asset_ref": "project:06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+            "asset_id": "WBX_20260616_024949",
+            "path": "06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+            "origin": "project",
+            "kind": "whitebox",
+            "role": "replica_whitebox",
+            "note": "隐藏游戏机房入口的空间、机位、旧墙、金属门、猫眼和三个孩子站位参考；作为场景与道具总概念的白模依据。",
+            "version_id": "",
+            "version_status": "",
+            "card_type": "",
+            "card_id": "",
+            "card_title": "",
+            "usage_note": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。",
+            "generation_guidance": "Whitebox guidance / 白模读取说明:\n- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.\n- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.\n- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.\n- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.\n- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.\n- Source whitebox replica seed: ACT1_SHOT_003_SOURCE_KEYFRAME.\n- Replica intent / 复刻意图: 以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+            "whitebox_interpretation": {
+              "mode": "spatial_control_only",
+              "source_asset_id": "ACT1_SHOT_003_SOURCE_KEYFRAME",
+              "source_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+              "replica_note": "以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+              "tags": [
+                "ACT01",
+                "SCN_COMPOUND",
+                "hidden_arcade_door",
+                "peephole",
+                "three_children",
+                "1to1_replica"
+              ],
+              "use_for": [
+                "camera framing and lens/composition",
+                "subject scale, blocking, pose, sightline, and depth order",
+                "major set anchors such as doors, windows, corridors, walls, props, and openings",
+                "main light direction, shadow rhythm, and scene readability"
+              ],
+              "preserve": [
+                "overall aspect ratio and camera angle",
+                "relative positions between characters and key set pieces",
+                "door/window/opening height and screen position when present",
+                "foreground/midground/background separation"
+              ],
+              "ignore": [
+                "gray clay material",
+                "primitive cube/sphere/cylinder shapes",
+                "mannequin or toy-like character appearance",
+                "unfinished low-poly geometry",
+                "plain studio-white lighting unless the shot explicitly asks for it"
+              ],
+              "prompt_bridge": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。"
+            }
+          },
+          {
+            "ref_id": "WBX_20260616_024949",
+            "asset_ref": "project:06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+            "asset_id": "WBX_20260616_024949",
+            "path": "06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+            "origin": "project",
+            "kind": "whitebox",
+            "role": "replica_whitebox",
+            "note": "隐藏游戏机房入口的空间、机位、旧墙、金属门、猫眼和三个孩子站位参考；作为场景与道具总概念的白模依据。",
+            "version_id": "",
+            "version_status": "",
+            "card_type": "",
+            "card_id": "",
+            "card_title": "",
+            "usage_note": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。",
+            "generation_guidance": "Whitebox guidance / 白模读取说明:\n- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.\n- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.\n- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.\n- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.\n- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.\n- Source whitebox replica seed: ACT1_SHOT_003_SOURCE_KEYFRAME.\n- Replica intent / 复刻意图: 以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+            "whitebox_interpretation": {
+              "mode": "spatial_control_only",
+              "source_asset_id": "ACT1_SHOT_003_SOURCE_KEYFRAME",
+              "source_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+              "replica_note": "以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+              "tags": [
+                "ACT01",
+                "SCN_COMPOUND",
+                "hidden_arcade_door",
+                "peephole",
+                "three_children",
+                "1to1_replica"
+              ],
+              "use_for": [
+                "camera framing and lens/composition",
+                "subject scale, blocking, pose, sightline, and depth order",
+                "major set anchors such as doors, windows, corridors, walls, props, and openings",
+                "main light direction, shadow rhythm, and scene readability"
+              ],
+              "preserve": [
+                "overall aspect ratio and camera angle",
+                "relative positions between characters and key set pieces",
+                "door/window/opening height and screen position when present",
+                "foreground/midground/background separation"
+              ],
+              "ignore": [
+                "gray clay material",
+                "primitive cube/sphere/cylinder shapes",
+                "mannequin or toy-like character appearance",
+                "unfinished low-poly geometry",
+                "plain studio-white lighting unless the shot explicitly asks for it"
+              ],
+              "prompt_bridge": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。"
+            }
+          }
+        ],
+        "target_references": [],
+        "target_context": {
+          "scope": "project",
+          "act_id": "",
+          "act": {},
+          "scenes": [
+            {
+              "scene_id": "SCN_COMPOUND",
+              "title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade"
+            },
+            {
+              "scene_id": "SCN_ARCADE",
+              "title": "游戏厅 / Arcade play",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade"
+            },
+            {
+              "scene_id": "SCN_ARCADE_EXIT",
+              "title": "游戏厅出口 / Arcade exit",
+              "act_id": "ACT02",
+              "act_title": "第二幕：离场与巷道 / Act 2: Exit and alley"
+            },
+            {
+              "scene_id": "SCN_ALLEY",
+              "title": "偏僻小路 / Secluded alley",
+              "act_id": "ACT02",
+              "act_title": "第二幕：离场与巷道 / Act 2: Exit and alley"
+            },
+            {
+              "scene_id": "SCN_CORRIDOR",
+              "title": "废楼走廊 / Abandoned corridor",
+              "act_id": "ACT03",
+              "act_title": "第三幕：电话与转译 / Act 3: Phone and translation"
+            },
+            {
+              "scene_id": "SCN_PHONE",
+              "title": "电话亭 / Phone booth",
+              "act_id": "ACT03",
+              "act_title": "第三幕：电话与转译 / Act 3: Phone and translation"
+            },
+            {
+              "scene_id": "SCN_8BIT",
+              "title": "8-bit 关卡 / 8-bit stage",
+              "act_id": "ACT03",
+              "act_title": "第三幕：电话与转译 / Act 3: Phone and translation"
+            }
+          ],
+          "nearby_storyboard_cards": [
+            {
+              "item_id": "ACT1_SHOT_001",
+              "scene_id": "SCN_COMPOUND",
+              "beat": "放学后偏离大路",
+              "shot_type": "远景 / establishing wide shot",
+              "frame_description": "傍晚的北方小城，旧居民楼压在灰色街道边。三个背书包的小朋友从放学人流边缘脱离，避开大路，朝居民楼背面走去。",
+              "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small city after school, old concrete apartment blocks and dusty street, muted gray winter palette, three Chinese schoolchildren with worn backpacks quietly leaving the main road and heading toward the back corner of a residential building, cautious secretive body language, realistic film still, 35mm lens, natural dusk light, subtle film grain, clean composition, no modern cars, no smartphones, no readable text, no watermark",
+              "notes": "建立时代、地域和偷偷行动。游戏厅入口不要过早显眼，先让路线和氛围成立。",
+              "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/001_ACT1_SHOT_001.png",
+              "versions": []
+            },
+            {
+              "item_id": "ACT1_SHOT_002",
+              "scene_id": "SCN_COMPOUND",
+              "beat": "沿墙根靠近隐藏入口",
+              "shot_type": "中远景 / tracking medium-wide shot",
+              "frame_description": "三个孩子贴着居民楼墙根走，经过旧管道和剥落墙皮，互相用眼神确认没人注意，动作熟练又紧张。",
+              "image_prompt": "Cinematic film keyframe, three Chinese schoolchildren in 1990s school clothes sneaking along the wall of a shabby residential building, worn backpacks, old pipes, peeling paint, chipped concrete, one child glancing back nervously while another gestures to stay quiet, northern Chinese small-town realism, low handheld perspective, subdued colors, high-quality stable image, no modern objects, no random text, no watermark",
+              "notes": "鬼鬼祟祟但不要惊悚化，更像小孩去做一件不被允许却熟门熟路的事。",
+              "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/002_ACT1_SHOT_002.png",
+              "versions": []
+            },
+            {
+              "item_id": "ACT1_SHOT_003",
+              "scene_id": "SCN_COMPOUND",
+              "beat": "旧门和猫眼出现",
+              "shot_type": "中景 / medium shot",
+              "frame_description": "居民楼一楼角落有一扇不起眼的旧金属门，门上有猫眼，没有正式招牌。三个孩子停在门前，压低声音等待。",
+              "image_prompt": "Cinematic storyboard keyframe, hidden arcade entrance in the corner of an old Chinese residential building, 1990s northern small city, shabby closed metal door with a small peephole, no obvious signboard, three schoolchildren with backpacks standing on the left side whispering and looking secretive, cracked concrete wall, dim corridor shadow, realistic film still, strong readable composition, no modern signage, no readable text, no watermark",
+              "notes": "旧门+猫眼是第一幕核心视觉资产，门要普通、隐蔽、可信。",
+              "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+              "versions": []
+            },
+            {
+              "item_id": "ACT1_SHOT_004",
+              "scene_id": "SCN_COMPOUND",
+              "beat": "老板从猫眼确认熟人",
+              "shot_type": "猫眼特写 / peephole close-up",
+              "frame_description": "从门内猫眼视角看出去，三个孩子的脸被猫眼畸变压缩，紧张又期待。门内老板确认他们是熟客。",
+              "image_prompt": "Cinematic close-up keyframe from inside a closed door peephole, fisheye peephole distortion, three Chinese schoolchildren with worn backpacks visible outside in a shabby apartment corner, nervous excited faces, 1990s northern China, faint green-blue arcade light around the peephole edge, realistic film texture, suspenseful but not horror, clean image, no text, no watermark, no modern objects",
+              "notes": "用猫眼制造“被审查/被放行”的边界感。可后续关联孩子人设。",
+              "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/004_ACT1_SHOT_004.png",
+              "versions": []
+            },
+            {
+              "item_id": "ACT1_SHOT_005",
+              "scene_id": "SCN_COMPOUND",
+              "beat": "门缝打开，机房气息泄出",
+              "shot_type": "近景 / close medium shot",
+              "frame_description": "旧门打开一条缝，老板的半张脸和手出现在门后。蓝绿街机光、烟雾和嘈杂声从门缝先涌出来，孩子们身体微微前倾。",
+              "image_prompt": "Cinematic keyframe, shabby metal door opening a narrow crack, middle-aged Chinese arcade owner partly visible inside, hand holding the door, blue-green CRT arcade light and cigarette smoke leaking from the interior, three schoolchildren with backpacks waiting outside and leaning forward, 1990s northern Chinese residential building corner, realistic gritty atmosphere, clean film still, no readable text, no watermark, no modern elements",
+              "notes": "门缝是两个世界的边界，光、烟和声音比台词更重要。",
+              "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/005_ACT1_SHOT_005.png",
+              "versions": []
+            },
+            {
+              "item_id": "ACT1_SHOT_006",
+              "scene_id": "SCN_ARCADE",
+              "beat": "孩子进入乌烟瘴气的游戏厅",
+              "shot_type": "儿童视角中景 / child-height medium shot",
+              "frame_description": "三个孩子刚进室内，画面被烟雾、街机屏幕光和拥挤背影包围。他们像闯进另一个秩序混乱的世界。",
+              "image_prompt": "Cinematic storyboard keyframe inside a smoky 1990s Chinese underground arcade, three schoolchildren with worn backpacks entering from a doorway, blue and green CRT arcade cabinet glow, cigarette smoke hanging under a low ceiling, crowded silhouettes of adults and teenagers, gritty northern small-town atmosphere, child-height camera perspective, high-quality film still, no modern machines, no smartphone, no readable random text, no watermark",
+              "notes": "三人仍然是画面锚点，不能被杂乱人群完全吞掉。",
+              "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/006_ACT1_SHOT_006.png",
+              "versions": []
+            },
+            {
+              "item_id": "ACT1_SHOT_007",
+              "scene_id": "SCN_ARCADE",
+              "beat": "游戏厅鱼龙混杂全貌",
+              "shot_type": "广角全景 / wide interior shot",
+              "frame_description": "低矮拥挤的游戏厅里，一排排旧街机发出蓝绿光。成年人、少年和孩子混在一起，烟雾让空气显得浑浊。",
+              "image_prompt": "Wide cinematic interior keyframe of a crowded 1990s Chinese arcade hall, low ceiling, rows of old arcade cabinets, cigarette smoke, mixed crowd of adult men, teenagers, and children, three schoolchildren with backpacks visible near the entrance as small figures, blue-green CRT glow, gritty social realism, northern Chinese small-town underground game room, balanced composition, high image quality, no cyberpunk neon, no modern screens, no readable text, no watermark",
+              "notes": "这一条是游戏厅场景设定核心图，既要乱，又要构图可读。",
+              "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/007_ACT1_SHOT_007.png",
+              "versions": []
+            },
+            {
+              "item_id": "ACT1_SHOT_008",
+              "scene_id": "SCN_ARCADE",
+              "beat": "三个孩子站定，兴奋与不安并存",
+              "shot_type": "中近景 / medium close shot",
+              "frame_description": "三个孩子站在游戏厅内部，脸被街机光照亮。他们互相看一眼，兴奋和不安同时出现，第一幕停在正式进入灰色成人空间的瞬间。",
+              "image_prompt": "Cinematic medium close-up keyframe, three Chinese schoolchildren with worn backpacks standing inside a smoky 1990s underground arcade, CRT blue-green light on their faces, expressions mixed with excitement and unease, blurred crowded arcade background, cigarette smoke, gritty realistic film still, northern Chinese small-town atmosphere, strong character continuity, clean stable image, no distorted faces, no modern objects, no readable text, no watermark",
+              "notes": "第一幕收束图，情绪锚点。后续可接投币、游戏机或危险事件。",
+              "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/008_ACT1_SHOT_008.png",
+              "versions": []
+            }
+          ],
+          "related_assets": [
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "03_story",
+              "asset_id": "SCN_COMPOUND_STORY_BEATS",
+              "kind": "",
+              "role": "beat_sheet",
+              "path": "03_story/beats/coin_slot_sample_beat_sheet.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "03_story",
+              "asset_id": "SCN_COMPOUND_FULL_SHOT_LIST",
+              "kind": "",
+              "role": "full_shot_list",
+              "path": "07_shots/shot_list.csv"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "04_lookdev",
+              "asset_id": "SCN_COMPOUND_LOOK_BIBLE",
+              "kind": "",
+              "role": "look_bible",
+              "path": "04_lookdev/references/coin_slot_look_bible_v001.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "04_lookdev",
+              "asset_id": "SCN_COMPOUND_COLOR_SCRIPT",
+              "kind": "",
+              "role": "color_script",
+              "path": "04_lookdev/palettes/coin_slot_color_script.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "04_lookdev",
+              "asset_id": "SCN_COMPOUND_VISUAL_REFS",
+              "kind": "",
+              "role": "visual_references",
+              "path": "04_lookdev/references/coin_slot_visual_references.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "04_lookdev",
+              "asset_id": "SCN_COMPOUND_SCENE_REFERENCE",
+              "kind": "",
+              "role": "scene_reference",
+              "path": "media/01_AIGC/scene_refs/SC_01_compound_corner_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "05_asset_bible",
+              "asset_id": "SCN_COMPOUND_CHARACTER_STAGE_LOCKS",
+              "kind": "",
+              "role": "character_stage_locks",
+              "path": "05_asset_bible/character_stage_locks/coin_slot_character_stage_locks.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "05_asset_bible",
+              "asset_id": "SCN_COMPOUND_LOCATION_BIBLE",
+              "kind": "",
+              "role": "location_bible",
+              "path": "05_asset_bible/locations/coin_slot_location_bible.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "05_asset_bible",
+              "asset_id": "SCN_COMPOUND_CONTINUITY_LOCKS",
+              "kind": "",
+              "role": "continuity_locks",
+              "path": "05_asset_bible/continuity/coin_slot_continuity_locks.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "06_previs",
+              "asset_id": "SCN_COMPOUND_SCENE_LOCK",
+              "kind": "",
+              "role": "scene_lock",
+              "path": "06_previs/scene_locks/scn-compound/scene_lock.yaml"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "06_previs",
+              "asset_id": "SCN_COMPOUND_CAMERA_MANIFEST",
+              "kind": "",
+              "role": "camera_manifest",
+              "path": "06_previs/scene_locks/scn-compound/camera_manifest.csv"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "06_previs",
+              "asset_id": "SCN_COMPOUND_REFERENCE_ASSETS",
+              "kind": "",
+              "role": "reference_assets",
+              "path": "06_previs/scene_locks/scn-compound/reference_assets.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "06_previs",
+              "asset_id": "SCN_COMPOUND_WHITEBOX_INDEX",
+              "kind": "",
+              "role": "whitebox_index",
+              "path": "06_previs/scene_locks/scn-compound/whitebox_index.csv"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "06_previs",
+              "asset_id": "MSB001_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "06_previs",
+              "asset_id": "MSB002_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB002.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "06_previs",
+              "asset_id": "MSB003_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB003.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "06_previs",
+              "asset_id": "MSB004_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB004.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "06_previs",
+              "asset_id": "MSB005_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB005.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "06_previs",
+              "asset_id": "MSB006_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB006.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "06_previs",
+              "asset_id": "MSB007_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB007.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "06_previs",
+              "asset_id": "MSB008_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB008.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "06_previs",
+              "asset_id": "MSB009_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB009.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "06_previs",
+              "asset_id": "MSB010_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB010.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "06_previs",
+              "asset_id": "MSB011_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB011.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "06_previs",
+              "asset_id": "MSB012_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB012.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "06_previs",
+              "asset_id": "MSB013_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB013.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "06_previs",
+              "asset_id": "MSB014_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB014.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "06_previs",
+              "asset_id": "MSB015_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB015.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "06_previs",
+              "asset_id": "MSB016_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB016.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "06_previs",
+              "asset_id": "MSB017_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB017.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "06_previs",
+              "asset_id": "MSB018_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB018.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "07_shots",
+              "asset_id": "SCN_COMPOUND_SHOT_LIST",
+              "kind": "",
+              "role": "shot_list",
+              "path": "07_shots/shot_list.csv"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "07_shots",
+              "asset_id": "MSB001_IMAGE_PROMPT",
+              "kind": "",
+              "role": "image_prompt",
+              "path": "07_shots/prompts/MSB001.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "07_shots",
+              "asset_id": "MSB003_IMAGE_PROMPT",
+              "kind": "",
+              "role": "image_prompt",
+              "path": "07_shots/prompts/MSB003.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "07_shots",
+              "asset_id": "MSB006_IMAGE_PROMPT",
+              "kind": "",
+              "role": "image_prompt",
+              "path": "07_shots/prompts/MSB006.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "07_shots",
+              "asset_id": "MSB009_IMAGE_PROMPT",
+              "kind": "",
+              "role": "image_prompt",
+              "path": "07_shots/prompts/MSB009.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "07_shots",
+              "asset_id": "MSB012_IMAGE_PROMPT",
+              "kind": "",
+              "role": "image_prompt",
+              "path": "07_shots/prompts/MSB012.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "07_shots",
+              "asset_id": "SCN_COMPOUND_SHOT_INDEX_188",
+              "kind": "",
+              "role": "scene_shot_index",
+              "path": "07_shots/scene_slices/SCN_COMPOUND_shot_index.csv"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "07_shots",
+              "asset_id": "SCN_COMPOUND_PROMPT_PACK_188",
+              "kind": "",
+              "role": "scene_prompt_pack",
+              "path": "07_shots/scene_slices/SCN_COMPOUND_prompt_pack.csv"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "07_shots",
+              "asset_id": "MSB001_VIDEO_PROMPT",
+              "kind": "",
+              "role": "video_prompt",
+              "path": "07_shots/video_prompts/MSB001.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "07_shots",
+              "asset_id": "MSB003_VIDEO_PROMPT",
+              "kind": "",
+              "role": "video_prompt",
+              "path": "07_shots/video_prompts/MSB003.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "07_shots",
+              "asset_id": "MSB006_VIDEO_PROMPT",
+              "kind": "",
+              "role": "video_prompt",
+              "path": "07_shots/video_prompts/MSB006.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "07_shots",
+              "asset_id": "MSB009_VIDEO_PROMPT",
+              "kind": "",
+              "role": "video_prompt",
+              "path": "07_shots/video_prompts/MSB009.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "07_shots",
+              "asset_id": "MSB012_VIDEO_PROMPT",
+              "kind": "",
+              "role": "video_prompt",
+              "path": "07_shots/video_prompts/MSB012.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "08_generation",
+              "asset_id": "SCN_COMPOUND_IMAGE_OUTPUT_INDEX",
+              "kind": "",
+              "role": "image_outputs",
+              "path": "08_generation/outputs/images/coin_slot_image_outputs_index.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "08_generation",
+              "asset_id": "SCN_COMPOUND_REJECT_LOG",
+              "kind": "",
+              "role": "rejects",
+              "path": "08_generation/rejects/coin_slot_reject_log.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "08_generation",
+              "asset_id": "SCN_COMPOUND_STORYBOARD_IMAGE_INDEX",
+              "kind": "",
+              "role": "storyboard_image_index",
+              "path": "08_generation/outputs/images/SCN_COMPOUND_storyboard_image_index.csv"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "08_generation",
+              "asset_id": "MSB001_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB001_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "08_generation",
+              "asset_id": "MSB001_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB001_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "08_generation",
+              "asset_id": "MSB002_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB002_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "08_generation",
+              "asset_id": "MSB002_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB002_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "08_generation",
+              "asset_id": "MSB003_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB003_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "08_generation",
+              "asset_id": "MSB003_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB003_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "08_generation",
+              "asset_id": "MSB004_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB004_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "08_generation",
+              "asset_id": "MSB004_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB004_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "08_generation",
+              "asset_id": "MSB005_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB005_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "08_generation",
+              "asset_id": "MSB005_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB005_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "08_generation",
+              "asset_id": "MSB006_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB006_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "08_generation",
+              "asset_id": "MSB006_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB006_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "08_generation",
+              "asset_id": "MSB007_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB007_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "08_generation",
+              "asset_id": "MSB007_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB007_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "08_generation",
+              "asset_id": "MSB008_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB008_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "08_generation",
+              "asset_id": "MSB008_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB008_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "08_generation",
+              "asset_id": "MSB009_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB009_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "08_generation",
+              "asset_id": "MSB009_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB009_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "08_generation",
+              "asset_id": "MSB010_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB010_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "08_generation",
+              "asset_id": "MSB010_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB010_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "08_generation",
+              "asset_id": "MSB011_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB011_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "08_generation",
+              "asset_id": "MSB011_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB011_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "08_generation",
+              "asset_id": "MSB012_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB012_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "08_generation",
+              "asset_id": "MSB012_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB012_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "08_generation",
+              "asset_id": "MSB013_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB013_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "08_generation",
+              "asset_id": "MSB013_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB013_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "08_generation",
+              "asset_id": "MSB014_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB014_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "08_generation",
+              "asset_id": "MSB014_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB014_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "08_generation",
+              "asset_id": "MSB015_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB015_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "08_generation",
+              "asset_id": "MSB015_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB015_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "08_generation",
+              "asset_id": "MSB016_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB016_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "08_generation",
+              "asset_id": "MSB016_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB016_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "act_id": "ACT01",
+              "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade",
+              "step": "08_generation",
+              "asset_id": "MSB017_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB017_v001.png"
+            }
+          ]
+        },
+        "whitebox_guidance": [
+          "Whitebox guidance / 白模读取说明:\n- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.\n- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.\n- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.\n- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.\n- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.\n- Source whitebox replica seed: ACT1_SHOT_003_SOURCE_KEYFRAME.\n- Replica intent / 复刻意图: 以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。"
+        ]
+      },
+      "whitebox_guidance": [
+        "Whitebox guidance / 白模读取说明:\n- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.\n- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.\n- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.\n- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.\n- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.\n- Source whitebox replica seed: ACT1_SHOT_003_SOURCE_KEYFRAME.\n- Replica intent / 复刻意图: 以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。"
+      ],
+      "suggested_output_path": "08_generation/jobs/CARD_IMG_20260618_221216/outputs/001_BIBLE_005_v001.png",
+      "suggested_output_absolute_path": "/Users/jaychoupp/Desktop/Story/Film/projects/coin-slot/08_generation/jobs/CARD_IMG_20260618_221216/outputs/001_BIBLE_005_v001.png"
+    }
+  ]
+}
+```

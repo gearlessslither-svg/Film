@@ -1,0 +1,13033 @@
+# Codex Card Image Handoff / Codex 卡片图片生成包
+
+这是电影项目的概念/分镜卡片图片生成包，不是投资策略卡片。请调用当前聊天里的真实生图能力，只为 Tasks 中列出的目标电影卡片生成图片。不要因为上下文里有其他卡片，就自动生成它们。
+
+## Codex Run Mode / 执行模式
+- 目标是卡片级生成：如果 Tasks 里只有 1 张卡，就只生成 1 张；有多张才批量生成。
+- 生成前可做电影级提示词优化，强化构图、光影、材质、角色连续性和负面约束。
+- revision_note 是本轮精修意见，优先级高于长期 notes/prompt_notes；不要把一次性修改写死成永久设定。
+- Concept task 的 scope/act_id/act_context 决定它是全项目设定还是某一幕设定；幕级概念只继承并服务对应 act 的上下文。
+- Context cards、global references、nearby storyboard cards、related assets 只用于风格和连续性参考，不是生成目标。
+- 默认回传全部：除非用户明确要求先挑选，否则你生成的每一张候选图都要保存并回填，不要只回传其中一张。
+- 编号记录规则：分镜号/卡片号、版本号、候选号只能写入文件名、version_id、candidate_id 和回填 JSON；绝对不要画进图片像素里。
+- 画面必须干净：不要在图上加分镜号、版本号、候选编号、字幕、水印、标签、随机文字或 UI 标记。
+- 如果只生成一张图，保存到 suggested_candidate_outputs[0] 或 Suggested output path；如果生成多张候选，按 c01/c02/c03 保存并全部回填。
+- 输出保持短：图片预览、保存路径、回填状态。
+
+## Project / 项目
+- Project slug: coin-slot
+- Project root: /Users/jaychoupp/Desktop/Story/Film/projects/coin-slot
+- Packet id: CARD_IMG_20260619_004223
+- Packet path: 08_generation/jobs/CARD_IMG_20260619_004223/outputs/CARD_IMG_20260619_004223_card_handoff.md
+
+## Story / 故事
+- Title: 投币口 / Coin Slot
+- Logline: 90年代北方小城里，三个放学后的孩子偷偷钻进居民楼角落的游戏机房，第一次跨进成人世界灰色而诱人的门缝。
+
+## Context Cards / 上下文概念卡
+这些卡片用于统一人物、场景、道具、美术、年代和负面约束；不要自动生成它们，除非它们也出现在 Tasks 里。
+```json
+[
+  {
+    "card_id": "BIBLE_CHARACTER_001",
+    "scope": "project",
+    "act_id": "",
+    "category": "character",
+    "title": "三个小朋友 / Three children",
+    "summary": "第一幕的核心人物组：三个背书包的小学生，熟门熟路但仍然心虚，互相打掩护进入隐藏游戏机房。需要保持年龄、身高差、书包、发型、衣着年代感和表演气质连续。",
+    "visual_direction": "1990年代中国北方小城小学生：旧校服或朴素外套、磨旧书包、略脏鞋面、放学后的疲惫和兴奋并存；动作要小心、鬼祟、彼此贴近。",
+    "prompt_notes": "three Chinese school children in 1990s northern China, carrying worn schoolbags, cautious and sneaky after school, consistent faces, hairstyles, wardrobe and height differences, cinematic realism",
+    "revision_note": "",
+    "negative_prompt": "不要现代校服、智能手机、潮牌服饰、夸张动漫表情、年龄过大或过小、角色身份不一致。",
+    "selected": true,
+    "image_selected": true,
+    "status": "draft",
+    "references": [
+      {
+        "ref_id": "THREE_BROTHERS_turnaround_expression_contact_sheet_v001",
+        "asset_ref": "resource:media/01_AIGC/character_design_v2/THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+        "asset_id": "THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+        "path": "media/01_AIGC/character_design_v2/THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+        "origin": "resource",
+        "kind": "character_ref",
+        "role": "character_design_contact_sheet",
+        "note": "三个小朋友统一人设、三视图、表情和服装连续性参考 / Global reference for the three children character identity, turnaround, expressions, and wardrobe continuity.",
+        "version_id": "",
+        "version_status": "",
+        "card_type": "",
+        "card_id": "",
+        "card_title": ""
+      },
+      {
+        "ref_id": "CHR_BRO_A_late_scuffed_reference_v001.png",
+        "asset_ref": "resource:media/01_AIGC/character_design_v2/stage_variants/CHR_BRO_A_late_scuffed_reference_v001.png",
+        "asset_id": "CHR_BRO_A_late_scuffed_reference_v001.png",
+        "path": "media/01_AIGC/character_design_v2/stage_variants/CHR_BRO_A_late_scuffed_reference_v001.png",
+        "origin": "resource",
+        "kind": "image",
+        "role": "image",
+        "note": "给哥哥带一个眼镜",
+        "version_id": "",
+        "version_status": "",
+        "card_type": "",
+        "card_id": "",
+        "card_title": ""
+      }
+    ],
+    "preview_path": "",
+    "versions": []
+  },
+  {
+    "card_id": "BIBLE_LOCATION_001",
+    "scope": "project",
+    "act_id": "",
+    "category": "location",
+    "title": "破旧居民楼角落与隐藏游戏机房入口 / Compound corner arcade entrance",
+    "summary": "第一幕外部主场景：老居民楼侧面的不起眼角落，暗金属门藏在墙根或楼体边角处，门上有猫眼，老板从里面确认熟人后开门。",
+    "visual_direction": "潮湿水泥墙、掉皮涂料、锈迹铁门、暗窄入口、灰尘和旧广告痕迹；构图强调秘密入口、孩子压低身体靠近、门内外光线反差。",
+    "prompt_notes": "old residential compound corner in 1990s northern Chinese small city, hidden arcade room entrance, rusty dark metal door with peephole, peeling concrete wall, dim afternoon light, secretive composition",
+    "revision_note": "",
+    "negative_prompt": "不要现代商业街、霓虹招牌、干净新楼、豪华游戏厅门面、可读随机文字或过度赛博朋克。",
+    "selected": true,
+    "image_selected": true,
+    "status": "draft",
+    "references": [
+      {
+        "ref_id": "WBX_20260616_024949",
+        "asset_ref": "project:06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+        "asset_id": "WBX_20260616_024949",
+        "path": "06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+        "origin": "project",
+        "kind": "whitebox",
+        "role": "replica_whitebox",
+        "note": "隐藏游戏机房入口的空间、机位、旧墙、金属门、猫眼和三个孩子站位参考；作为场景与道具总概念的白模依据。",
+        "version_id": "",
+        "version_status": "",
+        "card_type": "",
+        "card_id": "",
+        "card_title": "",
+        "usage_note": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。",
+        "generation_guidance": "Whitebox guidance / 白模读取说明:\n- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.\n- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.\n- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.\n- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.\n- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.\n- Source whitebox replica seed: ACT1_SHOT_003_SOURCE_KEYFRAME.\n- Replica intent / 复刻意图: 以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+        "whitebox_interpretation": {
+          "mode": "spatial_control_only",
+          "source_asset_id": "ACT1_SHOT_003_SOURCE_KEYFRAME",
+          "source_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+          "replica_note": "以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+          "tags": [
+            "ACT01",
+            "SCN_COMPOUND",
+            "hidden_arcade_door",
+            "peephole",
+            "three_children",
+            "1to1_replica"
+          ],
+          "use_for": [
+            "camera framing and lens/composition",
+            "subject scale, blocking, pose, sightline, and depth order",
+            "major set anchors such as doors, windows, corridors, walls, props, and openings",
+            "main light direction, shadow rhythm, and scene readability"
+          ],
+          "preserve": [
+            "overall aspect ratio and camera angle",
+            "relative positions between characters and key set pieces",
+            "door/window/opening height and screen position when present",
+            "foreground/midground/background separation"
+          ],
+          "ignore": [
+            "gray clay material",
+            "primitive cube/sphere/cylinder shapes",
+            "mannequin or toy-like character appearance",
+            "unfinished low-poly geometry",
+            "plain studio-white lighting unless the shot explicitly asks for it"
+          ],
+          "prompt_bridge": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。"
+        }
+      }
+    ],
+    "preview_path": "",
+    "versions": []
+  },
+  {
+    "card_id": "BIBLE_LOOKDEV_001",
+    "scope": "project",
+    "act_id": "",
+    "category": "lookdev",
+    "title": "90年代北方小城写实质感 / 1990s northern small-city realism",
+    "summary": "全片视觉底色：纪实电影感、低饱和、颗粒但不脏、旧胶片/早期DV记忆感，强调冬春交界或阴天里的灰冷空气。",
+    "visual_direction": "冷灰水泥、褪色红黄广告纸、旧木门和铁门、混浊室内烟雾、钨丝灯与街面自然光混合；摄影机克制，少用夸张广角。",
+    "prompt_notes": "cinematic realism, 1990s northern Chinese small town, muted colors, natural film grain, smoky interiors, mixed tungsten and overcast daylight, grounded documentary texture",
+    "revision_note": "",
+    "negative_prompt": "不要过度磨皮、塑料感、CG感、现代高清广告片、过饱和网红色调、随机英文霓虹和水印。",
+    "selected": true,
+    "image_selected": true,
+    "status": "draft",
+    "references": [],
+    "preview_path": "",
+    "versions": []
+  },
+  {
+    "card_id": "BIBLE_PROP_001",
+    "scope": "project",
+    "act_id": "",
+    "category": "prop",
+    "title": "旧金属门、猫眼与游戏机房道具 / Door, peephole and arcade props",
+    "summary": "关键道具承担叙事信息：猫眼说明老板识别熟人，旧门说明游戏厅隐蔽，室内街机、烟灰缸、硬币和杂乱桌椅说明地下游戏机房生态。",
+    "visual_direction": "门要厚重、旧、暗、带磨损把手和猫眼；室内道具应杂乱但有时代感，街机屏幕亮度压住烟雾，不出现现代 LCD 大屏。",
+    "prompt_notes": "rusty metal door with peephole, worn handle, 1990s arcade machines, coin slot, smoke haze, ashtrays, cluttered stools and cables, period-correct props",
+    "revision_note": "",
+    "negative_prompt": "不要现代网吧、电竞椅、液晶显示器、智能门锁、干净商场电玩、随机品牌文字。",
+    "selected": true,
+    "image_selected": true,
+    "status": "draft",
+    "references": [
+      {
+        "ref_id": "WBX_20260616_024949",
+        "asset_ref": "project:06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+        "asset_id": "WBX_20260616_024949",
+        "path": "06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+        "origin": "project",
+        "kind": "whitebox",
+        "role": "replica_whitebox",
+        "note": "隐藏游戏机房入口的空间、机位、旧墙、金属门、猫眼和三个孩子站位参考；作为场景与道具总概念的白模依据。",
+        "version_id": "",
+        "version_status": "",
+        "card_type": "",
+        "card_id": "",
+        "card_title": "",
+        "usage_note": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。",
+        "generation_guidance": "Whitebox guidance / 白模读取说明:\n- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.\n- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.\n- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.\n- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.\n- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.\n- Source whitebox replica seed: ACT1_SHOT_003_SOURCE_KEYFRAME.\n- Replica intent / 复刻意图: 以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+        "whitebox_interpretation": {
+          "mode": "spatial_control_only",
+          "source_asset_id": "ACT1_SHOT_003_SOURCE_KEYFRAME",
+          "source_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+          "replica_note": "以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+          "tags": [
+            "ACT01",
+            "SCN_COMPOUND",
+            "hidden_arcade_door",
+            "peephole",
+            "three_children",
+            "1to1_replica"
+          ],
+          "use_for": [
+            "camera framing and lens/composition",
+            "subject scale, blocking, pose, sightline, and depth order",
+            "major set anchors such as doors, windows, corridors, walls, props, and openings",
+            "main light direction, shadow rhythm, and scene readability"
+          ],
+          "preserve": [
+            "overall aspect ratio and camera angle",
+            "relative positions between characters and key set pieces",
+            "door/window/opening height and screen position when present",
+            "foreground/midground/background separation"
+          ],
+          "ignore": [
+            "gray clay material",
+            "primitive cube/sphere/cylinder shapes",
+            "mannequin or toy-like character appearance",
+            "unfinished low-poly geometry",
+            "plain studio-white lighting unless the shot explicitly asks for it"
+          ],
+          "prompt_bridge": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。"
+        }
+      }
+    ],
+    "preview_path": "",
+    "versions": []
+  },
+  {
+    "card_id": "BIBLE_005",
+    "scope": "project",
+    "act_id": "",
+    "category": "lookdev",
+    "title": "",
+    "summary": "街机厅混混三人组，都是和哥哥同龄的年轻人，但社会痕迹明显，学生气少\n老大，矮个子，黄毛，长相凶狠，耳朵后夹着烟，爱打游戏\n老二，瘦高个，嚣张，穿个白色背心\n老三，胖子，又肥又壮，有点憨憨的",
+    "visual_direction": "",
+    "prompt_notes": "",
+    "revision_note": "",
+    "negative_prompt": "",
+    "selected": true,
+    "image_selected": true,
+    "status": "image_ready",
+    "references": [],
+    "preview_path": "08_generation/jobs/CARD_IMG_20260618_221216/outputs/001_BIBLE_005_v001.png",
+    "versions": [
+      {
+        "version_id": "v001",
+        "output_path": "08_generation/jobs/CARD_IMG_20260618_221216/outputs/001_BIBLE_005_v001.png",
+        "notes": "电影触发生成；用户确认使用第二张。方向：14-15岁初中小痞子，街机厅混混三人组，作为全局人设/氛围参考。",
+        "created_at": "2026-06-18T22:31:50+08:00",
+        "status": "current",
+        "candidate_id": "",
+        "task_id": "",
+        "packet_id": "",
+        "qa": {}
+      }
+    ]
+  }
+]
+```
+
+## Global References / 全局参考
+```json
+[
+  {
+    "ref_id": "THREE_BROTHERS_turnaround_expression_contact_sheet_v001",
+    "asset_ref": "resource:media/01_AIGC/character_design_v2/THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+    "asset_id": "THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+    "path": "media/01_AIGC/character_design_v2/THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+    "origin": "resource",
+    "kind": "character_ref",
+    "role": "character_design_contact_sheet",
+    "note": "三个小朋友统一人设、三视图、表情和服装连续性参考 / Global reference for the three children character identity, turnaround, expressions, and wardrobe continuity.",
+    "version_id": "",
+    "version_status": "",
+    "card_type": "",
+    "card_id": "",
+    "card_title": ""
+  },
+  {
+    "ref_id": "CHR_BRO_A_late_scuffed_reference_v001.png",
+    "asset_ref": "resource:media/01_AIGC/character_design_v2/stage_variants/CHR_BRO_A_late_scuffed_reference_v001.png",
+    "asset_id": "CHR_BRO_A_late_scuffed_reference_v001.png",
+    "path": "media/01_AIGC/character_design_v2/stage_variants/CHR_BRO_A_late_scuffed_reference_v001.png",
+    "origin": "resource",
+    "kind": "image",
+    "role": "image",
+    "note": "给哥哥带一个眼镜",
+    "version_id": "",
+    "version_status": "",
+    "card_type": "",
+    "card_id": "",
+    "card_title": ""
+  },
+  {
+    "ref_id": "001_BIBLE_005_v001.png",
+    "asset_ref": "project:08_generation/jobs/CARD_IMG_20260618_221216/outputs/001_BIBLE_005_v001.png",
+    "asset_id": "001_BIBLE_005_v001.png",
+    "path": "08_generation/jobs/CARD_IMG_20260618_221216/outputs/001_BIBLE_005_v001.png",
+    "origin": "project",
+    "kind": "image",
+    "role": "image",
+    "note": "参考三个混混的设定，这一幕只出现黄毛",
+    "version_id": "v001",
+    "version_status": "current",
+    "card_type": "concept",
+    "card_id": "BIBLE_005",
+    "card_title": ""
+  }
+]
+```
+
+## Callback / 回填接口
+- POST: http://127.0.0.1:8787/api/projects/coin-slot/card-image-output
+- Body: {"outputs":[{"card_type":"storyboard|concept","item_id":"...","card_id":"...","version_id":"v001_c01","candidate_id":"c01","task_id":"...","packet_id":"...","output_path":"...","notes":"..."}]}
+
+## Tasks / 目标卡片任务
+```json
+{
+  "packet_id": "CARD_IMG_20260619_004223",
+  "tasks": [
+    {
+      "task_id": "CARD_IMG_20260619_004223_001",
+      "card_type": "storyboard",
+      "item_id": "ACT1_SHOT_001",
+      "scene_id": "SCN_COMPOUND",
+      "beat": "放学后偏离大路",
+      "shot_type": "远景 / establishing wide shot",
+      "frame_description": "傍晚的北方小城，旧居民楼压在灰色街道边。三个背书包的小朋友从放学人流边缘脱离，避开大路，朝居民楼背面走去。",
+      "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small city after school, old concrete apartment blocks and dusty street, muted gray winter palette, three Chinese schoolchildren with worn backpacks quietly leaving the main road and heading toward the back corner of a residential building, cautious secretive body language, realistic film still, 35mm lens, natural dusk light, subtle film grain, clean composition, no modern cars, no smartphones, no readable text, no watermark",
+      "video_prompt": "Wide observational shot: the school crowd thins out as three children peel away from the main road and move toward the old apartment corner, restrained suspense and everyday realism.",
+      "notes": "建立时代、地域和偷偷行动。游戏厅入口不要过早显眼，先让路线和氛围成立。",
+      "revision_note": "",
+      "target_references": [
+        {
+          "ref_id": "WBX_20260616_024949",
+          "asset_ref": "project:06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+          "asset_id": "WBX_20260616_024949",
+          "path": "06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+          "origin": "project",
+          "kind": "whitebox",
+          "role": "replica_whitebox",
+          "note": "高精度白模复刻：默认作为该分镜空间、机位、光照和人物动作参考 / high-fidelity replica whitebox for blocking, camera, lighting, and pose.",
+          "version_id": "",
+          "version_status": "",
+          "card_type": "",
+          "card_id": "",
+          "card_title": "",
+          "usage_note": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。",
+          "generation_guidance": "Whitebox guidance / 白模读取说明:\n- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.\n- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.\n- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.\n- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.\n- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.\n- Source whitebox replica seed: ACT1_SHOT_003_SOURCE_KEYFRAME.\n- Replica intent / 复刻意图: 以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+          "whitebox_interpretation": {
+            "mode": "spatial_control_only",
+            "source_asset_id": "ACT1_SHOT_003_SOURCE_KEYFRAME",
+            "source_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+            "replica_note": "以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+            "tags": [
+              "ACT01",
+              "SCN_COMPOUND",
+              "hidden_arcade_door",
+              "peephole",
+              "three_children",
+              "1to1_replica"
+            ],
+            "use_for": [
+              "camera framing and lens/composition",
+              "subject scale, blocking, pose, sightline, and depth order",
+              "major set anchors such as doors, windows, corridors, walls, props, and openings",
+              "main light direction, shadow rhythm, and scene readability"
+            ],
+            "preserve": [
+              "overall aspect ratio and camera angle",
+              "relative positions between characters and key set pieces",
+              "door/window/opening height and screen position when present",
+              "foreground/midground/background separation"
+            ],
+            "ignore": [
+              "gray clay material",
+              "primitive cube/sphere/cylinder shapes",
+              "mannequin or toy-like character appearance",
+              "unfinished low-poly geometry",
+              "plain studio-white lighting unless the shot explicitly asks for it"
+            ],
+            "prompt_bridge": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。"
+          }
+        }
+      ],
+      "existing_output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/001_ACT1_SHOT_001.png",
+      "existing_versions": [],
+      "nearby_context": {
+        "scene": {
+          "scene_id": "SCN_COMPOUND",
+          "title": "居民楼角落 / Compound corner",
+          "act_id": "ACT01",
+          "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade"
+        },
+        "nearby_storyboard_cards": [
+          {
+            "item_id": "ACT1_SHOT_001",
+            "scene_id": "SCN_COMPOUND",
+            "beat": "放学后偏离大路",
+            "shot_type": "远景 / establishing wide shot",
+            "frame_description": "傍晚的北方小城，旧居民楼压在灰色街道边。三个背书包的小朋友从放学人流边缘脱离，避开大路，朝居民楼背面走去。",
+            "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small city after school, old concrete apartment blocks and dusty street, muted gray winter palette, three Chinese schoolchildren with worn backpacks quietly leaving the main road and heading toward the back corner of a residential building, cautious secretive body language, realistic film still, 35mm lens, natural dusk light, subtle film grain, clean composition, no modern cars, no smartphones, no readable text, no watermark",
+            "notes": "建立时代、地域和偷偷行动。游戏厅入口不要过早显眼，先让路线和氛围成立。",
+            "revision_note": "",
+            "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/001_ACT1_SHOT_001.png",
+            "versions": []
+          },
+          {
+            "item_id": "ACT1_SHOT_002",
+            "scene_id": "SCN_COMPOUND",
+            "beat": "沿墙根靠近隐藏入口",
+            "shot_type": "中远景 / tracking medium-wide shot",
+            "frame_description": "三个孩子贴着居民楼墙根走，经过旧管道和剥落墙皮，互相用眼神确认没人注意，动作熟练又紧张。",
+            "image_prompt": "Cinematic film keyframe, three Chinese schoolchildren in 1990s school clothes sneaking along the wall of a shabby residential building, worn backpacks, old pipes, peeling paint, chipped concrete, one child glancing back nervously while another gestures to stay quiet, northern Chinese small-town realism, low handheld perspective, subdued colors, high-quality stable image, no modern objects, no random text, no watermark",
+            "notes": "鬼鬼祟祟但不要惊悚化，表情里要带着窃喜，哥哥在给弟弟讲游戏有多好玩，弟弟全神贯注的听着",
+            "revision_note": "",
+            "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/002_ACT1_SHOT_002.png",
+            "versions": []
+          },
+          {
+            "item_id": "ACT1_SHOT_003",
+            "scene_id": "SCN_COMPOUND",
+            "beat": "旧门和猫眼出现",
+            "shot_type": "中景 / medium shot",
+            "frame_description": "居民楼一楼角落有一扇不起眼的旧金属门，门上有猫眼，没有正式招牌。三个孩子停在门前，压低声音等待。",
+            "image_prompt": "Cinematic storyboard keyframe, hidden arcade entrance in the corner of an old Chinese residential building, 1990s northern small city, shabby closed metal door with a small peephole, no obvious signboard, three schoolchildren with backpacks standing on the left side whispering and looking secretive, cracked concrete wall, dim corridor shadow, realistic film still, strong readable composition, no modern signage, no readable text, no watermark",
+            "notes": "旧门+猫眼是第一幕核心视觉资产，门要普通、隐蔽、可信。",
+            "revision_note": "这个门不太像是游戏厅的门",
+            "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+            "versions": []
+          },
+          {
+            "item_id": "ACT1_SHOT_004",
+            "scene_id": "SCN_COMPOUND",
+            "beat": "老板从猫眼确认熟人",
+            "shot_type": "猫眼特写 / peephole close-up",
+            "frame_description": "从门内猫眼视角看出去，三个孩子的脸被猫眼畸变压缩，紧张又期待。门内老板确认他们是熟客。",
+            "image_prompt": "Cinematic close-up keyframe from inside a closed door peephole, fisheye peephole distortion, three Chinese schoolchildren with worn backpacks visible outside in a shabby apartment corner, nervous excited faces, 1990s northern China, faint green-blue arcade light around the peephole edge, realistic film texture, suspenseful but not horror, clean image, no text, no watermark, no modern objects",
+            "notes": "用猫眼制造“被审查/被放行”的边界感。可后续关联孩子人设。",
+            "revision_note": "",
+            "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/004_ACT1_SHOT_004.png",
+            "versions": []
+          },
+          {
+            "item_id": "ACT1_SHOT_005",
+            "scene_id": "SCN_COMPOUND",
+            "beat": "门缝打开，机房气息泄出",
+            "shot_type": "近景 / close medium shot",
+            "frame_description": "旧门打开一条缝，老板的半张脸和手出现在门后。蓝绿街机光、烟雾和嘈杂声从门缝先涌出来，孩子们身体微微前倾。",
+            "image_prompt": "Cinematic keyframe, shabby metal door opening a narrow crack, middle-aged Chinese arcade owner partly visible inside, hand holding the door, blue-green CRT arcade light and cigarette smoke leaking from the interior, three schoolchildren with backpacks waiting outside and leaning forward, 1990s northern Chinese residential building corner, realistic gritty atmosphere, clean film still, no readable text, no watermark, no modern elements",
+            "notes": "门缝是两个世界的边界，光、烟和声音比台词更重要。",
+            "revision_note": "",
+            "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/005_ACT1_SHOT_005.png",
+            "versions": []
+          },
+          {
+            "item_id": "ACT1_SHOT_006",
+            "scene_id": "SCN_ARCADE",
+            "beat": "孩子进入乌烟瘴气的游戏厅",
+            "shot_type": "儿童视角中景 / child-height medium shot",
+            "frame_description": "三个孩子刚进室内，画面被烟雾、街机屏幕光和拥挤背影包围。他们像闯进另一个秩序混乱的世界。",
+            "image_prompt": "Cinematic storyboard keyframe inside a smoky 1990s Chinese underground arcade, three schoolchildren with worn backpacks entering from a doorway, blue and green CRT arcade cabinet glow, cigarette smoke hanging under a low ceiling, crowded silhouettes of adults and teenagers, gritty northern small-town atmosphere, child-height camera perspective, high-quality film still, no modern machines, no smartphone, no readable random text, no watermark",
+            "notes": "三人仍然是画面锚点，不能被杂乱人群完全吞掉。",
+            "revision_note": "",
+            "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/006_ACT1_SHOT_006.png",
+            "versions": []
+          },
+          {
+            "item_id": "ACT1_SHOT_007",
+            "scene_id": "SCN_ARCADE",
+            "beat": "游戏厅鱼龙混杂全貌",
+            "shot_type": "广角全景 / wide interior shot",
+            "frame_description": "低矮拥挤的游戏厅里，一排排旧街机发出蓝绿光。成年人、少年和孩子混在一起，烟雾让空气显得浑浊。",
+            "image_prompt": "Wide cinematic interior keyframe of a crowded 1990s Chinese arcade hall, low ceiling, rows of old arcade cabinets, cigarette smoke, mixed crowd of adult men, teenagers, and children, three schoolchildren with backpacks visible near the entrance as small figures, blue-green CRT glow, gritty social realism, northern Chinese small-town underground game room, balanced composition, high image quality, no cyberpunk neon, no modern screens, no readable text, no watermark",
+            "notes": "这一条是游戏厅场景设定核心图，既要乱，又要构图可读。",
+            "revision_note": "",
+            "output_path": "",
+            "versions": [
+              {
+                "version_id": "current",
+                "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/007_ACT1_SHOT_007.png",
+                "notes": "",
+                "created_at": "",
+                "status": "rejected",
+                "candidate_id": "",
+                "task_id": "",
+                "packet_id": "",
+                "qa": {}
+              }
+            ]
+          },
+          {
+            "item_id": "ACT1_SHOT_008",
+            "scene_id": "SCN_ARCADE",
+            "beat": "三个孩子站定，兴奋与不安并存",
+            "shot_type": "中近景 / medium close shot",
+            "frame_description": "三个孩子站在游戏厅内部，脸被街机光照亮。他们互相看一眼，兴奋和不安同时出现，第一幕停在正式进入灰色成人空间的瞬间。",
+            "image_prompt": "Cinematic medium close-up keyframe, three Chinese schoolchildren with worn backpacks standing inside a smoky 1990s underground arcade, CRT blue-green light on their faces, expressions mixed with excitement and unease, blurred crowded arcade background, cigarette smoke, gritty realistic film still, northern Chinese small-town atmosphere, strong character continuity, clean stable image, no distorted faces, no modern objects, no readable text, no watermark",
+            "notes": "第一幕收束图，情绪锚点。后续可接投币、游戏机或危险事件。",
+            "revision_note": "",
+            "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/008_ACT1_SHOT_008.png",
+            "versions": []
+          },
+          {
+            "item_id": "ACT2_SHOT_001",
+            "scene_id": "SCN_ARCADE",
+            "beat": "被游戏厅气氛震住",
+            "shot_type": "儿童视角中景 / child-height medium shot",
+            "frame_description": "三个孩子刚进入游戏厅内部，两个弟弟停住脚步，被烟雾、CRT屏幕光和混杂人群震住；哥哥故作镇定，侧身示意他们跟紧。",
+            "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Three Chinese schoolboys just inside the doorway; two younger boys frozen by smoke, CRT light and crowded silhouettes, older brother pretending to be mature and signaling them to follow, child-height perspective, blue-green light on faces.",
+            "notes": "承接第一幕进入室内，强调两个弟弟的震慑和哥哥的装成熟。",
+            "revision_note": "",
+            "output_path": "",
+            "versions": []
+          },
+          {
+            "item_id": "ACT2_SHOT_002",
+            "scene_id": "SCN_ARCADE",
+            "beat": "哥哥掏出一块钱",
+            "shot_type": "手部特写 / insert close-up",
+            "frame_description": "哥哥从口袋里掏出一张皱旧的一元人民币，纸币被手汗和年代痕迹压皱，背景是模糊的柜台和老板。",
+            "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Insert close-up of an older brother child hand pulling out a worn 1990s Chinese one-yuan banknote, wrinkled paper texture, sweaty fingers, blurred arcade counter and owner in background, authentic period detail.",
+            "notes": "钱必须真实、年代感强；避免可读文字过清导致模型乱字，可强调纸币质感和颜色。",
+            "revision_note": "",
+            "output_path": "",
+            "versions": []
+          },
+          {
+            "item_id": "ACT2_SHOT_003",
+            "scene_id": "SCN_ARCADE",
+            "beat": "三个游戏币落入掌心",
+            "shot_type": "道具特写 / prop insert",
+            "frame_description": "老板把三个粗糙的金属游戏币放到哥哥掌心，硬币边缘磨损，反射着绿色街机光。两个弟弟在虚焦里盯着。",
+            "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Close-up of three rough worn metal arcade tokens dropping into a schoolboy palm, chipped edges, green CRT reflections, younger brothers blurred in background watching eagerly, authentic 1990s Chinese arcade tokens.",
+            "notes": "游戏币是核心年代道具，要粗糙、廉价、被摸旧。",
+            "revision_note": "",
+            "output_path": "",
+            "versions": []
+          },
+          {
+            "item_id": "ACT2_SHOT_004",
+            "scene_id": "SCN_ARCADE",
+            "beat": "走向真人快打机",
+            "shot_type": "跟拍中景 / tracking medium shot",
+            "frame_description": "哥哥握着游戏币，驾轻就熟地穿过人群走向一台真人快打街机；两个弟弟紧跟在后面，眼睛被屏幕吸住。",
+            "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Tracking medium shot of older brother confidently leading two younger boys through crowded smoky arcade toward a Mortal Kombat-style old fighting game cabinet, tokens in hand, younger boys staring at screens, no readable logos.",
+            "notes": "街机可暗示真人快打，不要出现清晰商标文字。",
+            "revision_note": "",
+            "output_path": "",
+            "versions": []
+          },
+          {
+            "item_id": "ACT2_SHOT_005",
+            "scene_id": "SCN_ARCADE",
+            "beat": "哥哥投币开打",
+            "shot_type": "街机侧面近景 / side close shot",
+            "frame_description": "游戏币投入投币口，哥哥双手落在摇杆和按钮上，动作熟练；两个弟弟站在旁边，脸上是崇拜和紧张。",
+            "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Side close shot of a token entering an old arcade coin slot, older brother hands confidently on joystick and buttons, two younger brothers beside him watching with admiration and tension, CRT fighting game glow.",
+            "notes": "投币口、手、按钮、弟弟表情要一起服务哥哥“熟练”的形象。",
+            "revision_note": "",
+            "output_path": "",
+            "versions": []
+          },
+          {
+            "item_id": "ACT2_SHOT_006",
+            "scene_id": "SCN_ARCADE",
+            "beat": "哥哥连胜，弟弟欢呼",
+            "shot_type": "中近景 / medium close shot",
+            "frame_description": "屏幕光照在哥哥脸上，他压着得意继续操作；两个弟弟在旁边兴奋地小声欢呼，周围开始有人回头。",
+            "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Medium close shot of older brother lit by CRT glow, focused and slightly smug while playing a fighting game, two younger brothers cheering quietly beside him, nearby teenagers turning their heads, smoky arcade background.",
+            "notes": "情绪从震慑转为短暂胜利，哥哥不能过分夸张。",
+            "revision_note": "",
+            "output_path": "",
+            "versions": []
+          },
+          {
+            "item_id": "ACT2_SHOT_007",
+            "scene_id": "SCN_ARCADE",
+            "beat": "围观人群变多",
+            "shot_type": "广角压迫镜头 / crowded wide shot",
+            "frame_description": "街机周围的人越围越多，肩膀和后脑勺形成压迫感。三个孩子被挤在机器前，哥哥仍然站在中心。",
+            "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Crowded wide shot around an old fighting game cabinet, shoulders and backs forming pressure around three schoolboys, older brother centered at controls, smoky low ceiling, plastic stools, mixed teenagers and adults but no modern clothing.",
+            "notes": "围观是危险升温，不只是热闹。",
+            "revision_note": "",
+            "output_path": "",
+            "versions": []
+          },
+          {
+            "item_id": "ACT2_SHOT_008",
+            "scene_id": "SCN_ARCADE",
+            "beat": "黄毛插入副机位投币挑战",
+            "shot_type": "双人机位中景 / two-player medium shot",
+            "frame_description": "一个和哥哥年纪相仿的黄毛小痞子突然挤到副操作位，不说话直接投币。哥哥侧头愣了一下，两个弟弟也安静下来。",
+            "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Medium shot of a same-age teenage yellow-haired local punk boy pushing into the second player position and dropping a token without speaking, older brother surprised but composed, younger brothers suddenly quiet, old dual-control arcade cabinet.",
+            "notes": "黄毛必须是初中生小痞子，不是成年人；挑战动作要干脆。",
+            "revision_note": "",
+            "output_path": "",
+            "versions": []
+          },
+          {
+            "item_id": "ACT2_SHOT_009",
+            "scene_id": "SCN_ARCADE",
+            "beat": "哥哥应战并赢第一局",
+            "shot_type": "过肩对抗镜头 / over-the-shoulder duel shot",
+            "frame_description": "从黄毛肩后看哥哥操作，哥哥嘴角轻微一笑后快速按键，屏幕光把两人的脸分成冷暖两侧。",
+            "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Over-the-shoulder duel shot from behind the yellow-haired teen punk, older brother at opposite controls with a restrained smirk, fast hands on buttons, CRT light splitting their faces, tense arcade crowd around them.",
+            "notes": "强调哥哥的轻蔑和熟练，但仍保持孩子气。",
+            "revision_note": "",
+            "output_path": "",
+            "versions": []
+          },
+          {
+            "item_id": "ACT2_SHOT_010",
+            "scene_id": "SCN_ARCADE",
+            "beat": "黄毛骂骂咧咧再次投币",
+            "shot_type": "快速剪辑特写组 / montage inserts",
+            "frame_description": "黄毛不服气，嘴里骂着又掏游戏币。画面切到投币口、狰狞表情、按键手指和弟弟紧张的眼神。",
+            "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Rapid montage-style storyboard panel: yellow-haired teen punk angry and cursing, another token pushed into coin slot, grimacing face, aggressive fingers smashing arcade buttons, younger brothers watching nervously, gritty smoky arcade.",
+            "notes": "这条可以作为快剪提示；不要生成文字脏话。",
+            "revision_note": "",
+            "output_path": "",
+            "versions": []
+          },
+          {
+            "item_id": "ACT2_SHOT_011",
+            "scene_id": "SCN_ARCADE",
+            "beat": "黄毛连输后砸按钮",
+            "shot_type": "低角度近景 / low close shot",
+            "frame_description": "连续失败后，黄毛用拳头砸了一下按钮台，塑料按钮和金属面板震动。哥哥和弟弟都短暂僵住。",
+            "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Low close shot of yellow-haired teen punk slamming his fist onto an old arcade control panel after repeated losses, buttons shaking, older brother and younger boys frozen in background, tension under CRT glow.",
+            "notes": "这是危险第一次显形，控制力度，不要变成打斗。",
+            "revision_note": "",
+            "output_path": "",
+            "versions": []
+          },
+          {
+            "item_id": "ACT2_SHOT_012",
+            "scene_id": "SCN_ARCADE",
+            "beat": "黄毛离开前恶狠狠盯哥哥",
+            "shot_type": "凝视中近景 / tense medium close shot",
+            "frame_description": "黄毛转身离开前停了一下，恶狠狠地盯了哥哥一眼，没有说话。哥哥表面得意，两个弟弟的笑意收住。",
+            "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Tense medium close shot of same-age yellow-haired punk turning away but stopping to glare silently at the older brother, older brother trying to look proud, younger brothers’ smiles fading, smoky arcade crowd blurred behind, ominous but realistic.",
+            "notes": "第二幕收束在无声威胁，给后续冲突埋钩子。",
+            "revision_note": "",
+            "output_path": "",
+            "versions": []
+          }
+        ],
+        "related_assets": [
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "03_story",
+            "asset_id": "SCN_COMPOUND_STORY_BEATS",
+            "kind": "",
+            "role": "beat_sheet",
+            "path": "03_story/beats/coin_slot_sample_beat_sheet.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "03_story",
+            "asset_id": "SCN_COMPOUND_FULL_SHOT_LIST",
+            "kind": "",
+            "role": "full_shot_list",
+            "path": "07_shots/shot_list.csv"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "04_lookdev",
+            "asset_id": "SCN_COMPOUND_LOOK_BIBLE",
+            "kind": "",
+            "role": "look_bible",
+            "path": "04_lookdev/references/coin_slot_look_bible_v001.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "04_lookdev",
+            "asset_id": "SCN_COMPOUND_COLOR_SCRIPT",
+            "kind": "",
+            "role": "color_script",
+            "path": "04_lookdev/palettes/coin_slot_color_script.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "04_lookdev",
+            "asset_id": "SCN_COMPOUND_VISUAL_REFS",
+            "kind": "",
+            "role": "visual_references",
+            "path": "04_lookdev/references/coin_slot_visual_references.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "04_lookdev",
+            "asset_id": "SCN_COMPOUND_SCENE_REFERENCE",
+            "kind": "",
+            "role": "scene_reference",
+            "path": "media/01_AIGC/scene_refs/SC_01_compound_corner_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "05_asset_bible",
+            "asset_id": "SCN_COMPOUND_CHARACTER_STAGE_LOCKS",
+            "kind": "",
+            "role": "character_stage_locks",
+            "path": "05_asset_bible/character_stage_locks/coin_slot_character_stage_locks.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "05_asset_bible",
+            "asset_id": "SCN_COMPOUND_LOCATION_BIBLE",
+            "kind": "",
+            "role": "location_bible",
+            "path": "05_asset_bible/locations/coin_slot_location_bible.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "05_asset_bible",
+            "asset_id": "SCN_COMPOUND_CONTINUITY_LOCKS",
+            "kind": "",
+            "role": "continuity_locks",
+            "path": "05_asset_bible/continuity/coin_slot_continuity_locks.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "SCN_COMPOUND_SCENE_LOCK",
+            "kind": "",
+            "role": "scene_lock",
+            "path": "06_previs/scene_locks/scn-compound/scene_lock.yaml"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "SCN_COMPOUND_CAMERA_MANIFEST",
+            "kind": "",
+            "role": "camera_manifest",
+            "path": "06_previs/scene_locks/scn-compound/camera_manifest.csv"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "SCN_COMPOUND_REFERENCE_ASSETS",
+            "kind": "",
+            "role": "reference_assets",
+            "path": "06_previs/scene_locks/scn-compound/reference_assets.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "SCN_COMPOUND_WHITEBOX_INDEX",
+            "kind": "",
+            "role": "whitebox_index",
+            "path": "06_previs/scene_locks/scn-compound/whitebox_index.csv"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB001_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB002_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB002.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB003_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB003.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB004_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB004.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB005_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB005.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB006_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB006.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB007_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB007.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB008_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB008.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB009_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB009.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB010_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB010.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB011_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB011.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB012_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB012.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB013_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB013.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB014_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB014.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB015_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB015.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB016_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB016.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB017_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB017.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB018_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB018.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "07_shots",
+            "asset_id": "SCN_COMPOUND_SHOT_LIST",
+            "kind": "",
+            "role": "shot_list",
+            "path": "07_shots/shot_list.csv"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "07_shots",
+            "asset_id": "MSB001_IMAGE_PROMPT",
+            "kind": "",
+            "role": "image_prompt",
+            "path": "07_shots/prompts/MSB001.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "07_shots",
+            "asset_id": "MSB003_IMAGE_PROMPT",
+            "kind": "",
+            "role": "image_prompt",
+            "path": "07_shots/prompts/MSB003.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "07_shots",
+            "asset_id": "MSB006_IMAGE_PROMPT",
+            "kind": "",
+            "role": "image_prompt",
+            "path": "07_shots/prompts/MSB006.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "07_shots",
+            "asset_id": "MSB009_IMAGE_PROMPT",
+            "kind": "",
+            "role": "image_prompt",
+            "path": "07_shots/prompts/MSB009.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "07_shots",
+            "asset_id": "MSB012_IMAGE_PROMPT",
+            "kind": "",
+            "role": "image_prompt",
+            "path": "07_shots/prompts/MSB012.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "07_shots",
+            "asset_id": "SCN_COMPOUND_SHOT_INDEX_188",
+            "kind": "",
+            "role": "scene_shot_index",
+            "path": "07_shots/scene_slices/SCN_COMPOUND_shot_index.csv"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "07_shots",
+            "asset_id": "SCN_COMPOUND_PROMPT_PACK_188",
+            "kind": "",
+            "role": "scene_prompt_pack",
+            "path": "07_shots/scene_slices/SCN_COMPOUND_prompt_pack.csv"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "07_shots",
+            "asset_id": "MSB001_VIDEO_PROMPT",
+            "kind": "",
+            "role": "video_prompt",
+            "path": "07_shots/video_prompts/MSB001.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "07_shots",
+            "asset_id": "MSB003_VIDEO_PROMPT",
+            "kind": "",
+            "role": "video_prompt",
+            "path": "07_shots/video_prompts/MSB003.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "07_shots",
+            "asset_id": "MSB006_VIDEO_PROMPT",
+            "kind": "",
+            "role": "video_prompt",
+            "path": "07_shots/video_prompts/MSB006.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "07_shots",
+            "asset_id": "MSB009_VIDEO_PROMPT",
+            "kind": "",
+            "role": "video_prompt",
+            "path": "07_shots/video_prompts/MSB009.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "07_shots",
+            "asset_id": "MSB012_VIDEO_PROMPT",
+            "kind": "",
+            "role": "video_prompt",
+            "path": "07_shots/video_prompts/MSB012.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "SCN_COMPOUND_IMAGE_OUTPUT_INDEX",
+            "kind": "",
+            "role": "image_outputs",
+            "path": "08_generation/outputs/images/coin_slot_image_outputs_index.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "SCN_COMPOUND_REJECT_LOG",
+            "kind": "",
+            "role": "rejects",
+            "path": "08_generation/rejects/coin_slot_reject_log.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "SCN_COMPOUND_STORYBOARD_IMAGE_INDEX",
+            "kind": "",
+            "role": "storyboard_image_index",
+            "path": "08_generation/outputs/images/SCN_COMPOUND_storyboard_image_index.csv"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB001_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB001_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB001_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB001_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB002_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB002_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB002_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB002_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB003_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB003_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB003_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB003_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB004_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB004_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB004_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB004_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB005_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB005_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB005_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB005_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB006_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB006_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB006_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB006_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB007_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB007_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB007_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB007_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB008_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB008_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB008_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB008_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB009_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB009_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB009_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB009_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB010_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB010_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB010_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB010_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB011_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB011_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB011_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB011_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB012_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB012_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB012_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB012_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB013_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB013_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB013_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB013_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB014_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB014_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB014_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB014_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB015_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB015_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB015_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB015_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB016_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB016_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB016_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB016_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB017_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB017_v001.png"
+          }
+        ]
+      },
+      "generation_context": {
+        "global_references": [
+          {
+            "ref_id": "THREE_BROTHERS_turnaround_expression_contact_sheet_v001",
+            "asset_ref": "resource:media/01_AIGC/character_design_v2/THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+            "asset_id": "THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+            "path": "media/01_AIGC/character_design_v2/THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+            "origin": "resource",
+            "kind": "character_ref",
+            "role": "character_design_contact_sheet",
+            "note": "三个小朋友统一人设、三视图、表情和服装连续性参考 / Global reference for the three children character identity, turnaround, expressions, and wardrobe continuity.",
+            "version_id": "",
+            "version_status": "",
+            "card_type": "",
+            "card_id": "",
+            "card_title": ""
+          },
+          {
+            "ref_id": "CHR_BRO_A_late_scuffed_reference_v001.png",
+            "asset_ref": "resource:media/01_AIGC/character_design_v2/stage_variants/CHR_BRO_A_late_scuffed_reference_v001.png",
+            "asset_id": "CHR_BRO_A_late_scuffed_reference_v001.png",
+            "path": "media/01_AIGC/character_design_v2/stage_variants/CHR_BRO_A_late_scuffed_reference_v001.png",
+            "origin": "resource",
+            "kind": "image",
+            "role": "image",
+            "note": "给哥哥带一个眼镜",
+            "version_id": "",
+            "version_status": "",
+            "card_type": "",
+            "card_id": "",
+            "card_title": ""
+          },
+          {
+            "ref_id": "001_BIBLE_005_v001.png",
+            "asset_ref": "project:08_generation/jobs/CARD_IMG_20260618_221216/outputs/001_BIBLE_005_v001.png",
+            "asset_id": "001_BIBLE_005_v001.png",
+            "path": "08_generation/jobs/CARD_IMG_20260618_221216/outputs/001_BIBLE_005_v001.png",
+            "origin": "project",
+            "kind": "image",
+            "role": "image",
+            "note": "参考三个混混的设定，这一幕只出现黄毛",
+            "version_id": "v001",
+            "version_status": "current",
+            "card_type": "concept",
+            "card_id": "BIBLE_005",
+            "card_title": ""
+          }
+        ],
+        "context_cards": [
+          {
+            "card_id": "BIBLE_CHARACTER_001",
+            "scope": "project",
+            "act_id": "",
+            "category": "character",
+            "title": "三个小朋友 / Three children",
+            "summary": "第一幕的核心人物组：三个背书包的小学生，熟门熟路但仍然心虚，互相打掩护进入隐藏游戏机房。需要保持年龄、身高差、书包、发型、衣着年代感和表演气质连续。",
+            "visual_direction": "1990年代中国北方小城小学生：旧校服或朴素外套、磨旧书包、略脏鞋面、放学后的疲惫和兴奋并存；动作要小心、鬼祟、彼此贴近。",
+            "prompt_notes": "three Chinese school children in 1990s northern China, carrying worn schoolbags, cautious and sneaky after school, consistent faces, hairstyles, wardrobe and height differences, cinematic realism",
+            "revision_note": "",
+            "negative_prompt": "不要现代校服、智能手机、潮牌服饰、夸张动漫表情、年龄过大或过小、角色身份不一致。",
+            "selected": true,
+            "image_selected": true,
+            "status": "draft",
+            "references": [
+              {
+                "ref_id": "THREE_BROTHERS_turnaround_expression_contact_sheet_v001",
+                "asset_ref": "resource:media/01_AIGC/character_design_v2/THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+                "asset_id": "THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+                "path": "media/01_AIGC/character_design_v2/THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+                "origin": "resource",
+                "kind": "character_ref",
+                "role": "character_design_contact_sheet",
+                "note": "三个小朋友统一人设、三视图、表情和服装连续性参考 / Global reference for the three children character identity, turnaround, expressions, and wardrobe continuity.",
+                "version_id": "",
+                "version_status": "",
+                "card_type": "",
+                "card_id": "",
+                "card_title": ""
+              },
+              {
+                "ref_id": "CHR_BRO_A_late_scuffed_reference_v001.png",
+                "asset_ref": "resource:media/01_AIGC/character_design_v2/stage_variants/CHR_BRO_A_late_scuffed_reference_v001.png",
+                "asset_id": "CHR_BRO_A_late_scuffed_reference_v001.png",
+                "path": "media/01_AIGC/character_design_v2/stage_variants/CHR_BRO_A_late_scuffed_reference_v001.png",
+                "origin": "resource",
+                "kind": "image",
+                "role": "image",
+                "note": "给哥哥带一个眼镜",
+                "version_id": "",
+                "version_status": "",
+                "card_type": "",
+                "card_id": "",
+                "card_title": ""
+              }
+            ],
+            "preview_path": "",
+            "versions": []
+          },
+          {
+            "card_id": "BIBLE_LOCATION_001",
+            "scope": "project",
+            "act_id": "",
+            "category": "location",
+            "title": "破旧居民楼角落与隐藏游戏机房入口 / Compound corner arcade entrance",
+            "summary": "第一幕外部主场景：老居民楼侧面的不起眼角落，暗金属门藏在墙根或楼体边角处，门上有猫眼，老板从里面确认熟人后开门。",
+            "visual_direction": "潮湿水泥墙、掉皮涂料、锈迹铁门、暗窄入口、灰尘和旧广告痕迹；构图强调秘密入口、孩子压低身体靠近、门内外光线反差。",
+            "prompt_notes": "old residential compound corner in 1990s northern Chinese small city, hidden arcade room entrance, rusty dark metal door with peephole, peeling concrete wall, dim afternoon light, secretive composition",
+            "revision_note": "",
+            "negative_prompt": "不要现代商业街、霓虹招牌、干净新楼、豪华游戏厅门面、可读随机文字或过度赛博朋克。",
+            "selected": true,
+            "image_selected": true,
+            "status": "draft",
+            "references": [
+              {
+                "ref_id": "WBX_20260616_024949",
+                "asset_ref": "project:06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+                "asset_id": "WBX_20260616_024949",
+                "path": "06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+                "origin": "project",
+                "kind": "whitebox",
+                "role": "replica_whitebox",
+                "note": "隐藏游戏机房入口的空间、机位、旧墙、金属门、猫眼和三个孩子站位参考；作为场景与道具总概念的白模依据。",
+                "version_id": "",
+                "version_status": "",
+                "card_type": "",
+                "card_id": "",
+                "card_title": "",
+                "usage_note": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。",
+                "generation_guidance": "Whitebox guidance / 白模读取说明:\n- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.\n- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.\n- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.\n- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.\n- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.\n- Source whitebox replica seed: ACT1_SHOT_003_SOURCE_KEYFRAME.\n- Replica intent / 复刻意图: 以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+                "whitebox_interpretation": {
+                  "mode": "spatial_control_only",
+                  "source_asset_id": "ACT1_SHOT_003_SOURCE_KEYFRAME",
+                  "source_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+                  "replica_note": "以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+                  "tags": [
+                    "ACT01",
+                    "SCN_COMPOUND",
+                    "hidden_arcade_door",
+                    "peephole",
+                    "three_children",
+                    "1to1_replica"
+                  ],
+                  "use_for": [
+                    "camera framing and lens/composition",
+                    "subject scale, blocking, pose, sightline, and depth order",
+                    "major set anchors such as doors, windows, corridors, walls, props, and openings",
+                    "main light direction, shadow rhythm, and scene readability"
+                  ],
+                  "preserve": [
+                    "overall aspect ratio and camera angle",
+                    "relative positions between characters and key set pieces",
+                    "door/window/opening height and screen position when present",
+                    "foreground/midground/background separation"
+                  ],
+                  "ignore": [
+                    "gray clay material",
+                    "primitive cube/sphere/cylinder shapes",
+                    "mannequin or toy-like character appearance",
+                    "unfinished low-poly geometry",
+                    "plain studio-white lighting unless the shot explicitly asks for it"
+                  ],
+                  "prompt_bridge": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。"
+                }
+              }
+            ],
+            "preview_path": "",
+            "versions": []
+          },
+          {
+            "card_id": "BIBLE_LOOKDEV_001",
+            "scope": "project",
+            "act_id": "",
+            "category": "lookdev",
+            "title": "90年代北方小城写实质感 / 1990s northern small-city realism",
+            "summary": "全片视觉底色：纪实电影感、低饱和、颗粒但不脏、旧胶片/早期DV记忆感，强调冬春交界或阴天里的灰冷空气。",
+            "visual_direction": "冷灰水泥、褪色红黄广告纸、旧木门和铁门、混浊室内烟雾、钨丝灯与街面自然光混合；摄影机克制，少用夸张广角。",
+            "prompt_notes": "cinematic realism, 1990s northern Chinese small town, muted colors, natural film grain, smoky interiors, mixed tungsten and overcast daylight, grounded documentary texture",
+            "revision_note": "",
+            "negative_prompt": "不要过度磨皮、塑料感、CG感、现代高清广告片、过饱和网红色调、随机英文霓虹和水印。",
+            "selected": true,
+            "image_selected": true,
+            "status": "draft",
+            "references": [],
+            "preview_path": "",
+            "versions": []
+          },
+          {
+            "card_id": "BIBLE_PROP_001",
+            "scope": "project",
+            "act_id": "",
+            "category": "prop",
+            "title": "旧金属门、猫眼与游戏机房道具 / Door, peephole and arcade props",
+            "summary": "关键道具承担叙事信息：猫眼说明老板识别熟人，旧门说明游戏厅隐蔽，室内街机、烟灰缸、硬币和杂乱桌椅说明地下游戏机房生态。",
+            "visual_direction": "门要厚重、旧、暗、带磨损把手和猫眼；室内道具应杂乱但有时代感，街机屏幕亮度压住烟雾，不出现现代 LCD 大屏。",
+            "prompt_notes": "rusty metal door with peephole, worn handle, 1990s arcade machines, coin slot, smoke haze, ashtrays, cluttered stools and cables, period-correct props",
+            "revision_note": "",
+            "negative_prompt": "不要现代网吧、电竞椅、液晶显示器、智能门锁、干净商场电玩、随机品牌文字。",
+            "selected": true,
+            "image_selected": true,
+            "status": "draft",
+            "references": [
+              {
+                "ref_id": "WBX_20260616_024949",
+                "asset_ref": "project:06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+                "asset_id": "WBX_20260616_024949",
+                "path": "06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+                "origin": "project",
+                "kind": "whitebox",
+                "role": "replica_whitebox",
+                "note": "隐藏游戏机房入口的空间、机位、旧墙、金属门、猫眼和三个孩子站位参考；作为场景与道具总概念的白模依据。",
+                "version_id": "",
+                "version_status": "",
+                "card_type": "",
+                "card_id": "",
+                "card_title": "",
+                "usage_note": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。",
+                "generation_guidance": "Whitebox guidance / 白模读取说明:\n- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.\n- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.\n- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.\n- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.\n- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.\n- Source whitebox replica seed: ACT1_SHOT_003_SOURCE_KEYFRAME.\n- Replica intent / 复刻意图: 以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+                "whitebox_interpretation": {
+                  "mode": "spatial_control_only",
+                  "source_asset_id": "ACT1_SHOT_003_SOURCE_KEYFRAME",
+                  "source_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+                  "replica_note": "以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+                  "tags": [
+                    "ACT01",
+                    "SCN_COMPOUND",
+                    "hidden_arcade_door",
+                    "peephole",
+                    "three_children",
+                    "1to1_replica"
+                  ],
+                  "use_for": [
+                    "camera framing and lens/composition",
+                    "subject scale, blocking, pose, sightline, and depth order",
+                    "major set anchors such as doors, windows, corridors, walls, props, and openings",
+                    "main light direction, shadow rhythm, and scene readability"
+                  ],
+                  "preserve": [
+                    "overall aspect ratio and camera angle",
+                    "relative positions between characters and key set pieces",
+                    "door/window/opening height and screen position when present",
+                    "foreground/midground/background separation"
+                  ],
+                  "ignore": [
+                    "gray clay material",
+                    "primitive cube/sphere/cylinder shapes",
+                    "mannequin or toy-like character appearance",
+                    "unfinished low-poly geometry",
+                    "plain studio-white lighting unless the shot explicitly asks for it"
+                  ],
+                  "prompt_bridge": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。"
+                }
+              }
+            ],
+            "preview_path": "",
+            "versions": []
+          },
+          {
+            "card_id": "BIBLE_005",
+            "scope": "project",
+            "act_id": "",
+            "category": "lookdev",
+            "title": "",
+            "summary": "街机厅混混三人组，都是和哥哥同龄的年轻人，但社会痕迹明显，学生气少\n老大，矮个子，黄毛，长相凶狠，耳朵后夹着烟，爱打游戏\n老二，瘦高个，嚣张，穿个白色背心\n老三，胖子，又肥又壮，有点憨憨的",
+            "visual_direction": "",
+            "prompt_notes": "",
+            "revision_note": "",
+            "negative_prompt": "",
+            "selected": true,
+            "image_selected": true,
+            "status": "image_ready",
+            "references": [],
+            "preview_path": "08_generation/jobs/CARD_IMG_20260618_221216/outputs/001_BIBLE_005_v001.png",
+            "versions": [
+              {
+                "version_id": "v001",
+                "output_path": "08_generation/jobs/CARD_IMG_20260618_221216/outputs/001_BIBLE_005_v001.png",
+                "notes": "电影触发生成；用户确认使用第二张。方向：14-15岁初中小痞子，街机厅混混三人组，作为全局人设/氛围参考。",
+                "created_at": "2026-06-18T22:31:50+08:00",
+                "status": "current",
+                "candidate_id": "",
+                "task_id": "",
+                "packet_id": "",
+                "qa": {}
+              }
+            ]
+          }
+        ],
+        "context_references": [
+          {
+            "ref_id": "THREE_BROTHERS_turnaround_expression_contact_sheet_v001",
+            "asset_ref": "resource:media/01_AIGC/character_design_v2/THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+            "asset_id": "THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+            "path": "media/01_AIGC/character_design_v2/THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+            "origin": "resource",
+            "kind": "character_ref",
+            "role": "character_design_contact_sheet",
+            "note": "三个小朋友统一人设、三视图、表情和服装连续性参考 / Global reference for the three children character identity, turnaround, expressions, and wardrobe continuity.",
+            "version_id": "",
+            "version_status": "",
+            "card_type": "",
+            "card_id": "",
+            "card_title": ""
+          },
+          {
+            "ref_id": "CHR_BRO_A_late_scuffed_reference_v001.png",
+            "asset_ref": "resource:media/01_AIGC/character_design_v2/stage_variants/CHR_BRO_A_late_scuffed_reference_v001.png",
+            "asset_id": "CHR_BRO_A_late_scuffed_reference_v001.png",
+            "path": "media/01_AIGC/character_design_v2/stage_variants/CHR_BRO_A_late_scuffed_reference_v001.png",
+            "origin": "resource",
+            "kind": "image",
+            "role": "image",
+            "note": "给哥哥带一个眼镜",
+            "version_id": "",
+            "version_status": "",
+            "card_type": "",
+            "card_id": "",
+            "card_title": ""
+          },
+          {
+            "ref_id": "WBX_20260616_024949",
+            "asset_ref": "project:06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+            "asset_id": "WBX_20260616_024949",
+            "path": "06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+            "origin": "project",
+            "kind": "whitebox",
+            "role": "replica_whitebox",
+            "note": "隐藏游戏机房入口的空间、机位、旧墙、金属门、猫眼和三个孩子站位参考；作为场景与道具总概念的白模依据。",
+            "version_id": "",
+            "version_status": "",
+            "card_type": "",
+            "card_id": "",
+            "card_title": "",
+            "usage_note": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。",
+            "generation_guidance": "Whitebox guidance / 白模读取说明:\n- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.\n- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.\n- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.\n- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.\n- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.\n- Source whitebox replica seed: ACT1_SHOT_003_SOURCE_KEYFRAME.\n- Replica intent / 复刻意图: 以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+            "whitebox_interpretation": {
+              "mode": "spatial_control_only",
+              "source_asset_id": "ACT1_SHOT_003_SOURCE_KEYFRAME",
+              "source_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+              "replica_note": "以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+              "tags": [
+                "ACT01",
+                "SCN_COMPOUND",
+                "hidden_arcade_door",
+                "peephole",
+                "three_children",
+                "1to1_replica"
+              ],
+              "use_for": [
+                "camera framing and lens/composition",
+                "subject scale, blocking, pose, sightline, and depth order",
+                "major set anchors such as doors, windows, corridors, walls, props, and openings",
+                "main light direction, shadow rhythm, and scene readability"
+              ],
+              "preserve": [
+                "overall aspect ratio and camera angle",
+                "relative positions between characters and key set pieces",
+                "door/window/opening height and screen position when present",
+                "foreground/midground/background separation"
+              ],
+              "ignore": [
+                "gray clay material",
+                "primitive cube/sphere/cylinder shapes",
+                "mannequin or toy-like character appearance",
+                "unfinished low-poly geometry",
+                "plain studio-white lighting unless the shot explicitly asks for it"
+              ],
+              "prompt_bridge": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。"
+            }
+          },
+          {
+            "ref_id": "WBX_20260616_024949",
+            "asset_ref": "project:06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+            "asset_id": "WBX_20260616_024949",
+            "path": "06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+            "origin": "project",
+            "kind": "whitebox",
+            "role": "replica_whitebox",
+            "note": "隐藏游戏机房入口的空间、机位、旧墙、金属门、猫眼和三个孩子站位参考；作为场景与道具总概念的白模依据。",
+            "version_id": "",
+            "version_status": "",
+            "card_type": "",
+            "card_id": "",
+            "card_title": "",
+            "usage_note": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。",
+            "generation_guidance": "Whitebox guidance / 白模读取说明:\n- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.\n- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.\n- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.\n- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.\n- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.\n- Source whitebox replica seed: ACT1_SHOT_003_SOURCE_KEYFRAME.\n- Replica intent / 复刻意图: 以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+            "whitebox_interpretation": {
+              "mode": "spatial_control_only",
+              "source_asset_id": "ACT1_SHOT_003_SOURCE_KEYFRAME",
+              "source_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+              "replica_note": "以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+              "tags": [
+                "ACT01",
+                "SCN_COMPOUND",
+                "hidden_arcade_door",
+                "peephole",
+                "three_children",
+                "1to1_replica"
+              ],
+              "use_for": [
+                "camera framing and lens/composition",
+                "subject scale, blocking, pose, sightline, and depth order",
+                "major set anchors such as doors, windows, corridors, walls, props, and openings",
+                "main light direction, shadow rhythm, and scene readability"
+              ],
+              "preserve": [
+                "overall aspect ratio and camera angle",
+                "relative positions between characters and key set pieces",
+                "door/window/opening height and screen position when present",
+                "foreground/midground/background separation"
+              ],
+              "ignore": [
+                "gray clay material",
+                "primitive cube/sphere/cylinder shapes",
+                "mannequin or toy-like character appearance",
+                "unfinished low-poly geometry",
+                "plain studio-white lighting unless the shot explicitly asks for it"
+              ],
+              "prompt_bridge": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。"
+            }
+          }
+        ],
+        "target_references": [
+          {
+            "ref_id": "WBX_20260616_024949",
+            "asset_ref": "project:06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+            "asset_id": "WBX_20260616_024949",
+            "path": "06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+            "origin": "project",
+            "kind": "whitebox",
+            "role": "replica_whitebox",
+            "note": "高精度白模复刻：默认作为该分镜空间、机位、光照和人物动作参考 / high-fidelity replica whitebox for blocking, camera, lighting, and pose.",
+            "version_id": "",
+            "version_status": "",
+            "card_type": "",
+            "card_id": "",
+            "card_title": "",
+            "usage_note": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。",
+            "generation_guidance": "Whitebox guidance / 白模读取说明:\n- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.\n- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.\n- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.\n- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.\n- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.\n- Source whitebox replica seed: ACT1_SHOT_003_SOURCE_KEYFRAME.\n- Replica intent / 复刻意图: 以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+            "whitebox_interpretation": {
+              "mode": "spatial_control_only",
+              "source_asset_id": "ACT1_SHOT_003_SOURCE_KEYFRAME",
+              "source_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+              "replica_note": "以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+              "tags": [
+                "ACT01",
+                "SCN_COMPOUND",
+                "hidden_arcade_door",
+                "peephole",
+                "three_children",
+                "1to1_replica"
+              ],
+              "use_for": [
+                "camera framing and lens/composition",
+                "subject scale, blocking, pose, sightline, and depth order",
+                "major set anchors such as doors, windows, corridors, walls, props, and openings",
+                "main light direction, shadow rhythm, and scene readability"
+              ],
+              "preserve": [
+                "overall aspect ratio and camera angle",
+                "relative positions between characters and key set pieces",
+                "door/window/opening height and screen position when present",
+                "foreground/midground/background separation"
+              ],
+              "ignore": [
+                "gray clay material",
+                "primitive cube/sphere/cylinder shapes",
+                "mannequin or toy-like character appearance",
+                "unfinished low-poly geometry",
+                "plain studio-white lighting unless the shot explicitly asks for it"
+              ],
+              "prompt_bridge": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。"
+            }
+          }
+        ],
+        "target_context": {
+          "scene": {
+            "scene_id": "SCN_COMPOUND",
+            "title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade"
+          },
+          "nearby_storyboard_cards": [
+            {
+              "item_id": "ACT1_SHOT_001",
+              "scene_id": "SCN_COMPOUND",
+              "beat": "放学后偏离大路",
+              "shot_type": "远景 / establishing wide shot",
+              "frame_description": "傍晚的北方小城，旧居民楼压在灰色街道边。三个背书包的小朋友从放学人流边缘脱离，避开大路，朝居民楼背面走去。",
+              "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small city after school, old concrete apartment blocks and dusty street, muted gray winter palette, three Chinese schoolchildren with worn backpacks quietly leaving the main road and heading toward the back corner of a residential building, cautious secretive body language, realistic film still, 35mm lens, natural dusk light, subtle film grain, clean composition, no modern cars, no smartphones, no readable text, no watermark",
+              "notes": "建立时代、地域和偷偷行动。游戏厅入口不要过早显眼，先让路线和氛围成立。",
+              "revision_note": "",
+              "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/001_ACT1_SHOT_001.png",
+              "versions": []
+            },
+            {
+              "item_id": "ACT1_SHOT_002",
+              "scene_id": "SCN_COMPOUND",
+              "beat": "沿墙根靠近隐藏入口",
+              "shot_type": "中远景 / tracking medium-wide shot",
+              "frame_description": "三个孩子贴着居民楼墙根走，经过旧管道和剥落墙皮，互相用眼神确认没人注意，动作熟练又紧张。",
+              "image_prompt": "Cinematic film keyframe, three Chinese schoolchildren in 1990s school clothes sneaking along the wall of a shabby residential building, worn backpacks, old pipes, peeling paint, chipped concrete, one child glancing back nervously while another gestures to stay quiet, northern Chinese small-town realism, low handheld perspective, subdued colors, high-quality stable image, no modern objects, no random text, no watermark",
+              "notes": "鬼鬼祟祟但不要惊悚化，表情里要带着窃喜，哥哥在给弟弟讲游戏有多好玩，弟弟全神贯注的听着",
+              "revision_note": "",
+              "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/002_ACT1_SHOT_002.png",
+              "versions": []
+            },
+            {
+              "item_id": "ACT1_SHOT_003",
+              "scene_id": "SCN_COMPOUND",
+              "beat": "旧门和猫眼出现",
+              "shot_type": "中景 / medium shot",
+              "frame_description": "居民楼一楼角落有一扇不起眼的旧金属门，门上有猫眼，没有正式招牌。三个孩子停在门前，压低声音等待。",
+              "image_prompt": "Cinematic storyboard keyframe, hidden arcade entrance in the corner of an old Chinese residential building, 1990s northern small city, shabby closed metal door with a small peephole, no obvious signboard, three schoolchildren with backpacks standing on the left side whispering and looking secretive, cracked concrete wall, dim corridor shadow, realistic film still, strong readable composition, no modern signage, no readable text, no watermark",
+              "notes": "旧门+猫眼是第一幕核心视觉资产，门要普通、隐蔽、可信。",
+              "revision_note": "这个门不太像是游戏厅的门",
+              "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+              "versions": []
+            },
+            {
+              "item_id": "ACT1_SHOT_004",
+              "scene_id": "SCN_COMPOUND",
+              "beat": "老板从猫眼确认熟人",
+              "shot_type": "猫眼特写 / peephole close-up",
+              "frame_description": "从门内猫眼视角看出去，三个孩子的脸被猫眼畸变压缩，紧张又期待。门内老板确认他们是熟客。",
+              "image_prompt": "Cinematic close-up keyframe from inside a closed door peephole, fisheye peephole distortion, three Chinese schoolchildren with worn backpacks visible outside in a shabby apartment corner, nervous excited faces, 1990s northern China, faint green-blue arcade light around the peephole edge, realistic film texture, suspenseful but not horror, clean image, no text, no watermark, no modern objects",
+              "notes": "用猫眼制造“被审查/被放行”的边界感。可后续关联孩子人设。",
+              "revision_note": "",
+              "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/004_ACT1_SHOT_004.png",
+              "versions": []
+            },
+            {
+              "item_id": "ACT1_SHOT_005",
+              "scene_id": "SCN_COMPOUND",
+              "beat": "门缝打开，机房气息泄出",
+              "shot_type": "近景 / close medium shot",
+              "frame_description": "旧门打开一条缝，老板的半张脸和手出现在门后。蓝绿街机光、烟雾和嘈杂声从门缝先涌出来，孩子们身体微微前倾。",
+              "image_prompt": "Cinematic keyframe, shabby metal door opening a narrow crack, middle-aged Chinese arcade owner partly visible inside, hand holding the door, blue-green CRT arcade light and cigarette smoke leaking from the interior, three schoolchildren with backpacks waiting outside and leaning forward, 1990s northern Chinese residential building corner, realistic gritty atmosphere, clean film still, no readable text, no watermark, no modern elements",
+              "notes": "门缝是两个世界的边界，光、烟和声音比台词更重要。",
+              "revision_note": "",
+              "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/005_ACT1_SHOT_005.png",
+              "versions": []
+            },
+            {
+              "item_id": "ACT1_SHOT_006",
+              "scene_id": "SCN_ARCADE",
+              "beat": "孩子进入乌烟瘴气的游戏厅",
+              "shot_type": "儿童视角中景 / child-height medium shot",
+              "frame_description": "三个孩子刚进室内，画面被烟雾、街机屏幕光和拥挤背影包围。他们像闯进另一个秩序混乱的世界。",
+              "image_prompt": "Cinematic storyboard keyframe inside a smoky 1990s Chinese underground arcade, three schoolchildren with worn backpacks entering from a doorway, blue and green CRT arcade cabinet glow, cigarette smoke hanging under a low ceiling, crowded silhouettes of adults and teenagers, gritty northern small-town atmosphere, child-height camera perspective, high-quality film still, no modern machines, no smartphone, no readable random text, no watermark",
+              "notes": "三人仍然是画面锚点，不能被杂乱人群完全吞掉。",
+              "revision_note": "",
+              "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/006_ACT1_SHOT_006.png",
+              "versions": []
+            },
+            {
+              "item_id": "ACT1_SHOT_007",
+              "scene_id": "SCN_ARCADE",
+              "beat": "游戏厅鱼龙混杂全貌",
+              "shot_type": "广角全景 / wide interior shot",
+              "frame_description": "低矮拥挤的游戏厅里，一排排旧街机发出蓝绿光。成年人、少年和孩子混在一起，烟雾让空气显得浑浊。",
+              "image_prompt": "Wide cinematic interior keyframe of a crowded 1990s Chinese arcade hall, low ceiling, rows of old arcade cabinets, cigarette smoke, mixed crowd of adult men, teenagers, and children, three schoolchildren with backpacks visible near the entrance as small figures, blue-green CRT glow, gritty social realism, northern Chinese small-town underground game room, balanced composition, high image quality, no cyberpunk neon, no modern screens, no readable text, no watermark",
+              "notes": "这一条是游戏厅场景设定核心图，既要乱，又要构图可读。",
+              "revision_note": "",
+              "output_path": "",
+              "versions": [
+                {
+                  "version_id": "current",
+                  "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/007_ACT1_SHOT_007.png",
+                  "notes": "",
+                  "created_at": "",
+                  "status": "rejected",
+                  "candidate_id": "",
+                  "task_id": "",
+                  "packet_id": "",
+                  "qa": {}
+                }
+              ]
+            },
+            {
+              "item_id": "ACT1_SHOT_008",
+              "scene_id": "SCN_ARCADE",
+              "beat": "三个孩子站定，兴奋与不安并存",
+              "shot_type": "中近景 / medium close shot",
+              "frame_description": "三个孩子站在游戏厅内部，脸被街机光照亮。他们互相看一眼，兴奋和不安同时出现，第一幕停在正式进入灰色成人空间的瞬间。",
+              "image_prompt": "Cinematic medium close-up keyframe, three Chinese schoolchildren with worn backpacks standing inside a smoky 1990s underground arcade, CRT blue-green light on their faces, expressions mixed with excitement and unease, blurred crowded arcade background, cigarette smoke, gritty realistic film still, northern Chinese small-town atmosphere, strong character continuity, clean stable image, no distorted faces, no modern objects, no readable text, no watermark",
+              "notes": "第一幕收束图，情绪锚点。后续可接投币、游戏机或危险事件。",
+              "revision_note": "",
+              "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/008_ACT1_SHOT_008.png",
+              "versions": []
+            },
+            {
+              "item_id": "ACT2_SHOT_001",
+              "scene_id": "SCN_ARCADE",
+              "beat": "被游戏厅气氛震住",
+              "shot_type": "儿童视角中景 / child-height medium shot",
+              "frame_description": "三个孩子刚进入游戏厅内部，两个弟弟停住脚步，被烟雾、CRT屏幕光和混杂人群震住；哥哥故作镇定，侧身示意他们跟紧。",
+              "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Three Chinese schoolboys just inside the doorway; two younger boys frozen by smoke, CRT light and crowded silhouettes, older brother pretending to be mature and signaling them to follow, child-height perspective, blue-green light on faces.",
+              "notes": "承接第一幕进入室内，强调两个弟弟的震慑和哥哥的装成熟。",
+              "revision_note": "",
+              "output_path": "",
+              "versions": []
+            },
+            {
+              "item_id": "ACT2_SHOT_002",
+              "scene_id": "SCN_ARCADE",
+              "beat": "哥哥掏出一块钱",
+              "shot_type": "手部特写 / insert close-up",
+              "frame_description": "哥哥从口袋里掏出一张皱旧的一元人民币，纸币被手汗和年代痕迹压皱，背景是模糊的柜台和老板。",
+              "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Insert close-up of an older brother child hand pulling out a worn 1990s Chinese one-yuan banknote, wrinkled paper texture, sweaty fingers, blurred arcade counter and owner in background, authentic period detail.",
+              "notes": "钱必须真实、年代感强；避免可读文字过清导致模型乱字，可强调纸币质感和颜色。",
+              "revision_note": "",
+              "output_path": "",
+              "versions": []
+            },
+            {
+              "item_id": "ACT2_SHOT_003",
+              "scene_id": "SCN_ARCADE",
+              "beat": "三个游戏币落入掌心",
+              "shot_type": "道具特写 / prop insert",
+              "frame_description": "老板把三个粗糙的金属游戏币放到哥哥掌心，硬币边缘磨损，反射着绿色街机光。两个弟弟在虚焦里盯着。",
+              "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Close-up of three rough worn metal arcade tokens dropping into a schoolboy palm, chipped edges, green CRT reflections, younger brothers blurred in background watching eagerly, authentic 1990s Chinese arcade tokens.",
+              "notes": "游戏币是核心年代道具，要粗糙、廉价、被摸旧。",
+              "revision_note": "",
+              "output_path": "",
+              "versions": []
+            },
+            {
+              "item_id": "ACT2_SHOT_004",
+              "scene_id": "SCN_ARCADE",
+              "beat": "走向真人快打机",
+              "shot_type": "跟拍中景 / tracking medium shot",
+              "frame_description": "哥哥握着游戏币，驾轻就熟地穿过人群走向一台真人快打街机；两个弟弟紧跟在后面，眼睛被屏幕吸住。",
+              "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Tracking medium shot of older brother confidently leading two younger boys through crowded smoky arcade toward a Mortal Kombat-style old fighting game cabinet, tokens in hand, younger boys staring at screens, no readable logos.",
+              "notes": "街机可暗示真人快打，不要出现清晰商标文字。",
+              "revision_note": "",
+              "output_path": "",
+              "versions": []
+            },
+            {
+              "item_id": "ACT2_SHOT_005",
+              "scene_id": "SCN_ARCADE",
+              "beat": "哥哥投币开打",
+              "shot_type": "街机侧面近景 / side close shot",
+              "frame_description": "游戏币投入投币口，哥哥双手落在摇杆和按钮上，动作熟练；两个弟弟站在旁边，脸上是崇拜和紧张。",
+              "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Side close shot of a token entering an old arcade coin slot, older brother hands confidently on joystick and buttons, two younger brothers beside him watching with admiration and tension, CRT fighting game glow.",
+              "notes": "投币口、手、按钮、弟弟表情要一起服务哥哥“熟练”的形象。",
+              "revision_note": "",
+              "output_path": "",
+              "versions": []
+            },
+            {
+              "item_id": "ACT2_SHOT_006",
+              "scene_id": "SCN_ARCADE",
+              "beat": "哥哥连胜，弟弟欢呼",
+              "shot_type": "中近景 / medium close shot",
+              "frame_description": "屏幕光照在哥哥脸上，他压着得意继续操作；两个弟弟在旁边兴奋地小声欢呼，周围开始有人回头。",
+              "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Medium close shot of older brother lit by CRT glow, focused and slightly smug while playing a fighting game, two younger brothers cheering quietly beside him, nearby teenagers turning their heads, smoky arcade background.",
+              "notes": "情绪从震慑转为短暂胜利，哥哥不能过分夸张。",
+              "revision_note": "",
+              "output_path": "",
+              "versions": []
+            },
+            {
+              "item_id": "ACT2_SHOT_007",
+              "scene_id": "SCN_ARCADE",
+              "beat": "围观人群变多",
+              "shot_type": "广角压迫镜头 / crowded wide shot",
+              "frame_description": "街机周围的人越围越多，肩膀和后脑勺形成压迫感。三个孩子被挤在机器前，哥哥仍然站在中心。",
+              "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Crowded wide shot around an old fighting game cabinet, shoulders and backs forming pressure around three schoolboys, older brother centered at controls, smoky low ceiling, plastic stools, mixed teenagers and adults but no modern clothing.",
+              "notes": "围观是危险升温，不只是热闹。",
+              "revision_note": "",
+              "output_path": "",
+              "versions": []
+            },
+            {
+              "item_id": "ACT2_SHOT_008",
+              "scene_id": "SCN_ARCADE",
+              "beat": "黄毛插入副机位投币挑战",
+              "shot_type": "双人机位中景 / two-player medium shot",
+              "frame_description": "一个和哥哥年纪相仿的黄毛小痞子突然挤到副操作位，不说话直接投币。哥哥侧头愣了一下，两个弟弟也安静下来。",
+              "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Medium shot of a same-age teenage yellow-haired local punk boy pushing into the second player position and dropping a token without speaking, older brother surprised but composed, younger brothers suddenly quiet, old dual-control arcade cabinet.",
+              "notes": "黄毛必须是初中生小痞子，不是成年人；挑战动作要干脆。",
+              "revision_note": "",
+              "output_path": "",
+              "versions": []
+            },
+            {
+              "item_id": "ACT2_SHOT_009",
+              "scene_id": "SCN_ARCADE",
+              "beat": "哥哥应战并赢第一局",
+              "shot_type": "过肩对抗镜头 / over-the-shoulder duel shot",
+              "frame_description": "从黄毛肩后看哥哥操作，哥哥嘴角轻微一笑后快速按键，屏幕光把两人的脸分成冷暖两侧。",
+              "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Over-the-shoulder duel shot from behind the yellow-haired teen punk, older brother at opposite controls with a restrained smirk, fast hands on buttons, CRT light splitting their faces, tense arcade crowd around them.",
+              "notes": "强调哥哥的轻蔑和熟练，但仍保持孩子气。",
+              "revision_note": "",
+              "output_path": "",
+              "versions": []
+            },
+            {
+              "item_id": "ACT2_SHOT_010",
+              "scene_id": "SCN_ARCADE",
+              "beat": "黄毛骂骂咧咧再次投币",
+              "shot_type": "快速剪辑特写组 / montage inserts",
+              "frame_description": "黄毛不服气，嘴里骂着又掏游戏币。画面切到投币口、狰狞表情、按键手指和弟弟紧张的眼神。",
+              "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Rapid montage-style storyboard panel: yellow-haired teen punk angry and cursing, another token pushed into coin slot, grimacing face, aggressive fingers smashing arcade buttons, younger brothers watching nervously, gritty smoky arcade.",
+              "notes": "这条可以作为快剪提示；不要生成文字脏话。",
+              "revision_note": "",
+              "output_path": "",
+              "versions": []
+            },
+            {
+              "item_id": "ACT2_SHOT_011",
+              "scene_id": "SCN_ARCADE",
+              "beat": "黄毛连输后砸按钮",
+              "shot_type": "低角度近景 / low close shot",
+              "frame_description": "连续失败后，黄毛用拳头砸了一下按钮台，塑料按钮和金属面板震动。哥哥和弟弟都短暂僵住。",
+              "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Low close shot of yellow-haired teen punk slamming his fist onto an old arcade control panel after repeated losses, buttons shaking, older brother and younger boys frozen in background, tension under CRT glow.",
+              "notes": "这是危险第一次显形，控制力度，不要变成打斗。",
+              "revision_note": "",
+              "output_path": "",
+              "versions": []
+            },
+            {
+              "item_id": "ACT2_SHOT_012",
+              "scene_id": "SCN_ARCADE",
+              "beat": "黄毛离开前恶狠狠盯哥哥",
+              "shot_type": "凝视中近景 / tense medium close shot",
+              "frame_description": "黄毛转身离开前停了一下，恶狠狠地盯了哥哥一眼，没有说话。哥哥表面得意，两个弟弟的笑意收住。",
+              "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Tense medium close shot of same-age yellow-haired punk turning away but stopping to glare silently at the older brother, older brother trying to look proud, younger brothers’ smiles fading, smoky arcade crowd blurred behind, ominous but realistic.",
+              "notes": "第二幕收束在无声威胁，给后续冲突埋钩子。",
+              "revision_note": "",
+              "output_path": "",
+              "versions": []
+            }
+          ],
+          "related_assets": [
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "03_story",
+              "asset_id": "SCN_COMPOUND_STORY_BEATS",
+              "kind": "",
+              "role": "beat_sheet",
+              "path": "03_story/beats/coin_slot_sample_beat_sheet.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "03_story",
+              "asset_id": "SCN_COMPOUND_FULL_SHOT_LIST",
+              "kind": "",
+              "role": "full_shot_list",
+              "path": "07_shots/shot_list.csv"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "04_lookdev",
+              "asset_id": "SCN_COMPOUND_LOOK_BIBLE",
+              "kind": "",
+              "role": "look_bible",
+              "path": "04_lookdev/references/coin_slot_look_bible_v001.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "04_lookdev",
+              "asset_id": "SCN_COMPOUND_COLOR_SCRIPT",
+              "kind": "",
+              "role": "color_script",
+              "path": "04_lookdev/palettes/coin_slot_color_script.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "04_lookdev",
+              "asset_id": "SCN_COMPOUND_VISUAL_REFS",
+              "kind": "",
+              "role": "visual_references",
+              "path": "04_lookdev/references/coin_slot_visual_references.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "04_lookdev",
+              "asset_id": "SCN_COMPOUND_SCENE_REFERENCE",
+              "kind": "",
+              "role": "scene_reference",
+              "path": "media/01_AIGC/scene_refs/SC_01_compound_corner_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "05_asset_bible",
+              "asset_id": "SCN_COMPOUND_CHARACTER_STAGE_LOCKS",
+              "kind": "",
+              "role": "character_stage_locks",
+              "path": "05_asset_bible/character_stage_locks/coin_slot_character_stage_locks.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "05_asset_bible",
+              "asset_id": "SCN_COMPOUND_LOCATION_BIBLE",
+              "kind": "",
+              "role": "location_bible",
+              "path": "05_asset_bible/locations/coin_slot_location_bible.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "05_asset_bible",
+              "asset_id": "SCN_COMPOUND_CONTINUITY_LOCKS",
+              "kind": "",
+              "role": "continuity_locks",
+              "path": "05_asset_bible/continuity/coin_slot_continuity_locks.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "SCN_COMPOUND_SCENE_LOCK",
+              "kind": "",
+              "role": "scene_lock",
+              "path": "06_previs/scene_locks/scn-compound/scene_lock.yaml"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "SCN_COMPOUND_CAMERA_MANIFEST",
+              "kind": "",
+              "role": "camera_manifest",
+              "path": "06_previs/scene_locks/scn-compound/camera_manifest.csv"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "SCN_COMPOUND_REFERENCE_ASSETS",
+              "kind": "",
+              "role": "reference_assets",
+              "path": "06_previs/scene_locks/scn-compound/reference_assets.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "SCN_COMPOUND_WHITEBOX_INDEX",
+              "kind": "",
+              "role": "whitebox_index",
+              "path": "06_previs/scene_locks/scn-compound/whitebox_index.csv"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB001_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB002_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB002.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB003_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB003.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB004_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB004.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB005_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB005.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB006_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB006.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB007_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB007.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB008_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB008.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB009_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB009.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB010_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB010.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB011_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB011.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB012_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB012.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB013_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB013.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB014_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB014.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB015_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB015.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB016_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB016.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB017_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB017.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB018_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB018.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "07_shots",
+              "asset_id": "SCN_COMPOUND_SHOT_LIST",
+              "kind": "",
+              "role": "shot_list",
+              "path": "07_shots/shot_list.csv"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "07_shots",
+              "asset_id": "MSB001_IMAGE_PROMPT",
+              "kind": "",
+              "role": "image_prompt",
+              "path": "07_shots/prompts/MSB001.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "07_shots",
+              "asset_id": "MSB003_IMAGE_PROMPT",
+              "kind": "",
+              "role": "image_prompt",
+              "path": "07_shots/prompts/MSB003.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "07_shots",
+              "asset_id": "MSB006_IMAGE_PROMPT",
+              "kind": "",
+              "role": "image_prompt",
+              "path": "07_shots/prompts/MSB006.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "07_shots",
+              "asset_id": "MSB009_IMAGE_PROMPT",
+              "kind": "",
+              "role": "image_prompt",
+              "path": "07_shots/prompts/MSB009.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "07_shots",
+              "asset_id": "MSB012_IMAGE_PROMPT",
+              "kind": "",
+              "role": "image_prompt",
+              "path": "07_shots/prompts/MSB012.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "07_shots",
+              "asset_id": "SCN_COMPOUND_SHOT_INDEX_188",
+              "kind": "",
+              "role": "scene_shot_index",
+              "path": "07_shots/scene_slices/SCN_COMPOUND_shot_index.csv"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "07_shots",
+              "asset_id": "SCN_COMPOUND_PROMPT_PACK_188",
+              "kind": "",
+              "role": "scene_prompt_pack",
+              "path": "07_shots/scene_slices/SCN_COMPOUND_prompt_pack.csv"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "07_shots",
+              "asset_id": "MSB001_VIDEO_PROMPT",
+              "kind": "",
+              "role": "video_prompt",
+              "path": "07_shots/video_prompts/MSB001.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "07_shots",
+              "asset_id": "MSB003_VIDEO_PROMPT",
+              "kind": "",
+              "role": "video_prompt",
+              "path": "07_shots/video_prompts/MSB003.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "07_shots",
+              "asset_id": "MSB006_VIDEO_PROMPT",
+              "kind": "",
+              "role": "video_prompt",
+              "path": "07_shots/video_prompts/MSB006.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "07_shots",
+              "asset_id": "MSB009_VIDEO_PROMPT",
+              "kind": "",
+              "role": "video_prompt",
+              "path": "07_shots/video_prompts/MSB009.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "07_shots",
+              "asset_id": "MSB012_VIDEO_PROMPT",
+              "kind": "",
+              "role": "video_prompt",
+              "path": "07_shots/video_prompts/MSB012.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "SCN_COMPOUND_IMAGE_OUTPUT_INDEX",
+              "kind": "",
+              "role": "image_outputs",
+              "path": "08_generation/outputs/images/coin_slot_image_outputs_index.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "SCN_COMPOUND_REJECT_LOG",
+              "kind": "",
+              "role": "rejects",
+              "path": "08_generation/rejects/coin_slot_reject_log.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "SCN_COMPOUND_STORYBOARD_IMAGE_INDEX",
+              "kind": "",
+              "role": "storyboard_image_index",
+              "path": "08_generation/outputs/images/SCN_COMPOUND_storyboard_image_index.csv"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB001_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB001_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB001_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB001_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB002_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB002_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB002_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB002_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB003_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB003_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB003_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB003_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB004_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB004_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB004_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB004_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB005_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB005_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB005_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB005_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB006_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB006_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB006_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB006_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB007_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB007_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB007_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB007_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB008_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB008_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB008_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB008_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB009_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB009_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB009_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB009_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB010_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB010_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB010_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB010_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB011_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB011_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB011_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB011_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB012_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB012_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB012_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB012_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB013_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB013_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB013_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB013_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB014_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB014_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB014_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB014_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB015_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB015_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB015_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB015_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB016_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB016_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB016_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB016_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB017_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB017_v001.png"
+            }
+          ]
+        },
+        "whitebox_guidance": [
+          "Whitebox guidance / 白模读取说明:\n- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.\n- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.\n- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.\n- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.\n- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.\n- Source whitebox replica seed: ACT1_SHOT_003_SOURCE_KEYFRAME.\n- Replica intent / 复刻意图: 以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。"
+        ]
+      },
+      "whitebox_guidance": [
+        "Whitebox guidance / 白模读取说明:\n- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.\n- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.\n- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.\n- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.\n- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.\n- Source whitebox replica seed: ACT1_SHOT_003_SOURCE_KEYFRAME.\n- Replica intent / 复刻意图: 以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。"
+      ],
+      "suggested_version_id": "v001",
+      "suggested_candidate_outputs": [
+        {
+          "candidate_id": "c01",
+          "version_id": "v001_c01",
+          "output_path": "08_generation/jobs/CARD_IMG_20260619_004223/outputs/001_ACT1_SHOT_001_v001_c01.png",
+          "output_absolute_path": "/Users/jaychoupp/Desktop/Story/Film/projects/coin-slot/08_generation/jobs/CARD_IMG_20260619_004223/outputs/001_ACT1_SHOT_001_v001_c01.png"
+        },
+        {
+          "candidate_id": "c02",
+          "version_id": "v001_c02",
+          "output_path": "08_generation/jobs/CARD_IMG_20260619_004223/outputs/001_ACT1_SHOT_001_v001_c02.png",
+          "output_absolute_path": "/Users/jaychoupp/Desktop/Story/Film/projects/coin-slot/08_generation/jobs/CARD_IMG_20260619_004223/outputs/001_ACT1_SHOT_001_v001_c02.png"
+        },
+        {
+          "candidate_id": "c03",
+          "version_id": "v001_c03",
+          "output_path": "08_generation/jobs/CARD_IMG_20260619_004223/outputs/001_ACT1_SHOT_001_v001_c03.png",
+          "output_absolute_path": "/Users/jaychoupp/Desktop/Story/Film/projects/coin-slot/08_generation/jobs/CARD_IMG_20260619_004223/outputs/001_ACT1_SHOT_001_v001_c03.png"
+        }
+      ],
+      "suggested_output_path": "08_generation/jobs/CARD_IMG_20260619_004223/outputs/001_ACT1_SHOT_001_v001_c01.png",
+      "suggested_output_absolute_path": "/Users/jaychoupp/Desktop/Story/Film/projects/coin-slot/08_generation/jobs/CARD_IMG_20260619_004223/outputs/001_ACT1_SHOT_001_v001_c01.png"
+    },
+    {
+      "task_id": "CARD_IMG_20260619_004223_002",
+      "card_type": "storyboard",
+      "item_id": "ACT1_SHOT_002",
+      "scene_id": "SCN_COMPOUND",
+      "beat": "沿墙根靠近隐藏入口",
+      "shot_type": "中远景 / tracking medium-wide shot",
+      "frame_description": "三个孩子贴着居民楼墙根走，经过旧管道和剥落墙皮，互相用眼神确认没人注意，动作熟练又紧张。",
+      "image_prompt": "Cinematic film keyframe, three Chinese schoolchildren in 1990s school clothes sneaking along the wall of a shabby residential building, worn backpacks, old pipes, peeling paint, chipped concrete, one child glancing back nervously while another gestures to stay quiet, northern Chinese small-town realism, low handheld perspective, subdued colors, high-quality stable image, no modern objects, no random text, no watermark",
+      "video_prompt": "Low tracking shot follows the children along the wall; one looks back, another hushes him, their footsteps small against the concrete.",
+      "notes": "鬼鬼祟祟但不要惊悚化，表情里要带着窃喜，哥哥在给弟弟讲游戏有多好玩，弟弟全神贯注的听着",
+      "revision_note": "",
+      "target_references": [
+        {
+          "ref_id": "WBX_20260616_024949",
+          "asset_ref": "project:06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+          "asset_id": "WBX_20260616_024949",
+          "path": "06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+          "origin": "project",
+          "kind": "whitebox",
+          "role": "replica_whitebox",
+          "note": "高精度白模复刻：默认作为该分镜空间、机位、光照和人物动作参考 / high-fidelity replica whitebox for blocking, camera, lighting, and pose.",
+          "version_id": "",
+          "version_status": "",
+          "card_type": "",
+          "card_id": "",
+          "card_title": "",
+          "usage_note": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。",
+          "generation_guidance": "Whitebox guidance / 白模读取说明:\n- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.\n- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.\n- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.\n- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.\n- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.\n- Source whitebox replica seed: ACT1_SHOT_003_SOURCE_KEYFRAME.\n- Replica intent / 复刻意图: 以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+          "whitebox_interpretation": {
+            "mode": "spatial_control_only",
+            "source_asset_id": "ACT1_SHOT_003_SOURCE_KEYFRAME",
+            "source_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+            "replica_note": "以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+            "tags": [
+              "ACT01",
+              "SCN_COMPOUND",
+              "hidden_arcade_door",
+              "peephole",
+              "three_children",
+              "1to1_replica"
+            ],
+            "use_for": [
+              "camera framing and lens/composition",
+              "subject scale, blocking, pose, sightline, and depth order",
+              "major set anchors such as doors, windows, corridors, walls, props, and openings",
+              "main light direction, shadow rhythm, and scene readability"
+            ],
+            "preserve": [
+              "overall aspect ratio and camera angle",
+              "relative positions between characters and key set pieces",
+              "door/window/opening height and screen position when present",
+              "foreground/midground/background separation"
+            ],
+            "ignore": [
+              "gray clay material",
+              "primitive cube/sphere/cylinder shapes",
+              "mannequin or toy-like character appearance",
+              "unfinished low-poly geometry",
+              "plain studio-white lighting unless the shot explicitly asks for it"
+            ],
+            "prompt_bridge": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。"
+          }
+        }
+      ],
+      "existing_output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/002_ACT1_SHOT_002.png",
+      "existing_versions": [],
+      "nearby_context": {
+        "scene": {
+          "scene_id": "SCN_COMPOUND",
+          "title": "居民楼角落 / Compound corner",
+          "act_id": "ACT01",
+          "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade"
+        },
+        "nearby_storyboard_cards": [
+          {
+            "item_id": "ACT1_SHOT_001",
+            "scene_id": "SCN_COMPOUND",
+            "beat": "放学后偏离大路",
+            "shot_type": "远景 / establishing wide shot",
+            "frame_description": "傍晚的北方小城，旧居民楼压在灰色街道边。三个背书包的小朋友从放学人流边缘脱离，避开大路，朝居民楼背面走去。",
+            "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small city after school, old concrete apartment blocks and dusty street, muted gray winter palette, three Chinese schoolchildren with worn backpacks quietly leaving the main road and heading toward the back corner of a residential building, cautious secretive body language, realistic film still, 35mm lens, natural dusk light, subtle film grain, clean composition, no modern cars, no smartphones, no readable text, no watermark",
+            "notes": "建立时代、地域和偷偷行动。游戏厅入口不要过早显眼，先让路线和氛围成立。",
+            "revision_note": "",
+            "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/001_ACT1_SHOT_001.png",
+            "versions": []
+          },
+          {
+            "item_id": "ACT1_SHOT_002",
+            "scene_id": "SCN_COMPOUND",
+            "beat": "沿墙根靠近隐藏入口",
+            "shot_type": "中远景 / tracking medium-wide shot",
+            "frame_description": "三个孩子贴着居民楼墙根走，经过旧管道和剥落墙皮，互相用眼神确认没人注意，动作熟练又紧张。",
+            "image_prompt": "Cinematic film keyframe, three Chinese schoolchildren in 1990s school clothes sneaking along the wall of a shabby residential building, worn backpacks, old pipes, peeling paint, chipped concrete, one child glancing back nervously while another gestures to stay quiet, northern Chinese small-town realism, low handheld perspective, subdued colors, high-quality stable image, no modern objects, no random text, no watermark",
+            "notes": "鬼鬼祟祟但不要惊悚化，表情里要带着窃喜，哥哥在给弟弟讲游戏有多好玩，弟弟全神贯注的听着",
+            "revision_note": "",
+            "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/002_ACT1_SHOT_002.png",
+            "versions": []
+          },
+          {
+            "item_id": "ACT1_SHOT_003",
+            "scene_id": "SCN_COMPOUND",
+            "beat": "旧门和猫眼出现",
+            "shot_type": "中景 / medium shot",
+            "frame_description": "居民楼一楼角落有一扇不起眼的旧金属门，门上有猫眼，没有正式招牌。三个孩子停在门前，压低声音等待。",
+            "image_prompt": "Cinematic storyboard keyframe, hidden arcade entrance in the corner of an old Chinese residential building, 1990s northern small city, shabby closed metal door with a small peephole, no obvious signboard, three schoolchildren with backpacks standing on the left side whispering and looking secretive, cracked concrete wall, dim corridor shadow, realistic film still, strong readable composition, no modern signage, no readable text, no watermark",
+            "notes": "旧门+猫眼是第一幕核心视觉资产，门要普通、隐蔽、可信。",
+            "revision_note": "这个门不太像是游戏厅的门",
+            "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+            "versions": []
+          },
+          {
+            "item_id": "ACT1_SHOT_004",
+            "scene_id": "SCN_COMPOUND",
+            "beat": "老板从猫眼确认熟人",
+            "shot_type": "猫眼特写 / peephole close-up",
+            "frame_description": "从门内猫眼视角看出去，三个孩子的脸被猫眼畸变压缩，紧张又期待。门内老板确认他们是熟客。",
+            "image_prompt": "Cinematic close-up keyframe from inside a closed door peephole, fisheye peephole distortion, three Chinese schoolchildren with worn backpacks visible outside in a shabby apartment corner, nervous excited faces, 1990s northern China, faint green-blue arcade light around the peephole edge, realistic film texture, suspenseful but not horror, clean image, no text, no watermark, no modern objects",
+            "notes": "用猫眼制造“被审查/被放行”的边界感。可后续关联孩子人设。",
+            "revision_note": "",
+            "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/004_ACT1_SHOT_004.png",
+            "versions": []
+          },
+          {
+            "item_id": "ACT1_SHOT_005",
+            "scene_id": "SCN_COMPOUND",
+            "beat": "门缝打开，机房气息泄出",
+            "shot_type": "近景 / close medium shot",
+            "frame_description": "旧门打开一条缝，老板的半张脸和手出现在门后。蓝绿街机光、烟雾和嘈杂声从门缝先涌出来，孩子们身体微微前倾。",
+            "image_prompt": "Cinematic keyframe, shabby metal door opening a narrow crack, middle-aged Chinese arcade owner partly visible inside, hand holding the door, blue-green CRT arcade light and cigarette smoke leaking from the interior, three schoolchildren with backpacks waiting outside and leaning forward, 1990s northern Chinese residential building corner, realistic gritty atmosphere, clean film still, no readable text, no watermark, no modern elements",
+            "notes": "门缝是两个世界的边界，光、烟和声音比台词更重要。",
+            "revision_note": "",
+            "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/005_ACT1_SHOT_005.png",
+            "versions": []
+          },
+          {
+            "item_id": "ACT1_SHOT_006",
+            "scene_id": "SCN_ARCADE",
+            "beat": "孩子进入乌烟瘴气的游戏厅",
+            "shot_type": "儿童视角中景 / child-height medium shot",
+            "frame_description": "三个孩子刚进室内，画面被烟雾、街机屏幕光和拥挤背影包围。他们像闯进另一个秩序混乱的世界。",
+            "image_prompt": "Cinematic storyboard keyframe inside a smoky 1990s Chinese underground arcade, three schoolchildren with worn backpacks entering from a doorway, blue and green CRT arcade cabinet glow, cigarette smoke hanging under a low ceiling, crowded silhouettes of adults and teenagers, gritty northern small-town atmosphere, child-height camera perspective, high-quality film still, no modern machines, no smartphone, no readable random text, no watermark",
+            "notes": "三人仍然是画面锚点，不能被杂乱人群完全吞掉。",
+            "revision_note": "",
+            "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/006_ACT1_SHOT_006.png",
+            "versions": []
+          },
+          {
+            "item_id": "ACT1_SHOT_007",
+            "scene_id": "SCN_ARCADE",
+            "beat": "游戏厅鱼龙混杂全貌",
+            "shot_type": "广角全景 / wide interior shot",
+            "frame_description": "低矮拥挤的游戏厅里，一排排旧街机发出蓝绿光。成年人、少年和孩子混在一起，烟雾让空气显得浑浊。",
+            "image_prompt": "Wide cinematic interior keyframe of a crowded 1990s Chinese arcade hall, low ceiling, rows of old arcade cabinets, cigarette smoke, mixed crowd of adult men, teenagers, and children, three schoolchildren with backpacks visible near the entrance as small figures, blue-green CRT glow, gritty social realism, northern Chinese small-town underground game room, balanced composition, high image quality, no cyberpunk neon, no modern screens, no readable text, no watermark",
+            "notes": "这一条是游戏厅场景设定核心图，既要乱，又要构图可读。",
+            "revision_note": "",
+            "output_path": "",
+            "versions": [
+              {
+                "version_id": "current",
+                "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/007_ACT1_SHOT_007.png",
+                "notes": "",
+                "created_at": "",
+                "status": "rejected",
+                "candidate_id": "",
+                "task_id": "",
+                "packet_id": "",
+                "qa": {}
+              }
+            ]
+          },
+          {
+            "item_id": "ACT1_SHOT_008",
+            "scene_id": "SCN_ARCADE",
+            "beat": "三个孩子站定，兴奋与不安并存",
+            "shot_type": "中近景 / medium close shot",
+            "frame_description": "三个孩子站在游戏厅内部，脸被街机光照亮。他们互相看一眼，兴奋和不安同时出现，第一幕停在正式进入灰色成人空间的瞬间。",
+            "image_prompt": "Cinematic medium close-up keyframe, three Chinese schoolchildren with worn backpacks standing inside a smoky 1990s underground arcade, CRT blue-green light on their faces, expressions mixed with excitement and unease, blurred crowded arcade background, cigarette smoke, gritty realistic film still, northern Chinese small-town atmosphere, strong character continuity, clean stable image, no distorted faces, no modern objects, no readable text, no watermark",
+            "notes": "第一幕收束图，情绪锚点。后续可接投币、游戏机或危险事件。",
+            "revision_note": "",
+            "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/008_ACT1_SHOT_008.png",
+            "versions": []
+          },
+          {
+            "item_id": "ACT2_SHOT_001",
+            "scene_id": "SCN_ARCADE",
+            "beat": "被游戏厅气氛震住",
+            "shot_type": "儿童视角中景 / child-height medium shot",
+            "frame_description": "三个孩子刚进入游戏厅内部，两个弟弟停住脚步，被烟雾、CRT屏幕光和混杂人群震住；哥哥故作镇定，侧身示意他们跟紧。",
+            "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Three Chinese schoolboys just inside the doorway; two younger boys frozen by smoke, CRT light and crowded silhouettes, older brother pretending to be mature and signaling them to follow, child-height perspective, blue-green light on faces.",
+            "notes": "承接第一幕进入室内，强调两个弟弟的震慑和哥哥的装成熟。",
+            "revision_note": "",
+            "output_path": "",
+            "versions": []
+          },
+          {
+            "item_id": "ACT2_SHOT_002",
+            "scene_id": "SCN_ARCADE",
+            "beat": "哥哥掏出一块钱",
+            "shot_type": "手部特写 / insert close-up",
+            "frame_description": "哥哥从口袋里掏出一张皱旧的一元人民币，纸币被手汗和年代痕迹压皱，背景是模糊的柜台和老板。",
+            "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Insert close-up of an older brother child hand pulling out a worn 1990s Chinese one-yuan banknote, wrinkled paper texture, sweaty fingers, blurred arcade counter and owner in background, authentic period detail.",
+            "notes": "钱必须真实、年代感强；避免可读文字过清导致模型乱字，可强调纸币质感和颜色。",
+            "revision_note": "",
+            "output_path": "",
+            "versions": []
+          },
+          {
+            "item_id": "ACT2_SHOT_003",
+            "scene_id": "SCN_ARCADE",
+            "beat": "三个游戏币落入掌心",
+            "shot_type": "道具特写 / prop insert",
+            "frame_description": "老板把三个粗糙的金属游戏币放到哥哥掌心，硬币边缘磨损，反射着绿色街机光。两个弟弟在虚焦里盯着。",
+            "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Close-up of three rough worn metal arcade tokens dropping into a schoolboy palm, chipped edges, green CRT reflections, younger brothers blurred in background watching eagerly, authentic 1990s Chinese arcade tokens.",
+            "notes": "游戏币是核心年代道具，要粗糙、廉价、被摸旧。",
+            "revision_note": "",
+            "output_path": "",
+            "versions": []
+          },
+          {
+            "item_id": "ACT2_SHOT_004",
+            "scene_id": "SCN_ARCADE",
+            "beat": "走向真人快打机",
+            "shot_type": "跟拍中景 / tracking medium shot",
+            "frame_description": "哥哥握着游戏币，驾轻就熟地穿过人群走向一台真人快打街机；两个弟弟紧跟在后面，眼睛被屏幕吸住。",
+            "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Tracking medium shot of older brother confidently leading two younger boys through crowded smoky arcade toward a Mortal Kombat-style old fighting game cabinet, tokens in hand, younger boys staring at screens, no readable logos.",
+            "notes": "街机可暗示真人快打，不要出现清晰商标文字。",
+            "revision_note": "",
+            "output_path": "",
+            "versions": []
+          },
+          {
+            "item_id": "ACT2_SHOT_005",
+            "scene_id": "SCN_ARCADE",
+            "beat": "哥哥投币开打",
+            "shot_type": "街机侧面近景 / side close shot",
+            "frame_description": "游戏币投入投币口，哥哥双手落在摇杆和按钮上，动作熟练；两个弟弟站在旁边，脸上是崇拜和紧张。",
+            "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Side close shot of a token entering an old arcade coin slot, older brother hands confidently on joystick and buttons, two younger brothers beside him watching with admiration and tension, CRT fighting game glow.",
+            "notes": "投币口、手、按钮、弟弟表情要一起服务哥哥“熟练”的形象。",
+            "revision_note": "",
+            "output_path": "",
+            "versions": []
+          },
+          {
+            "item_id": "ACT2_SHOT_006",
+            "scene_id": "SCN_ARCADE",
+            "beat": "哥哥连胜，弟弟欢呼",
+            "shot_type": "中近景 / medium close shot",
+            "frame_description": "屏幕光照在哥哥脸上，他压着得意继续操作；两个弟弟在旁边兴奋地小声欢呼，周围开始有人回头。",
+            "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Medium close shot of older brother lit by CRT glow, focused and slightly smug while playing a fighting game, two younger brothers cheering quietly beside him, nearby teenagers turning their heads, smoky arcade background.",
+            "notes": "情绪从震慑转为短暂胜利，哥哥不能过分夸张。",
+            "revision_note": "",
+            "output_path": "",
+            "versions": []
+          },
+          {
+            "item_id": "ACT2_SHOT_007",
+            "scene_id": "SCN_ARCADE",
+            "beat": "围观人群变多",
+            "shot_type": "广角压迫镜头 / crowded wide shot",
+            "frame_description": "街机周围的人越围越多，肩膀和后脑勺形成压迫感。三个孩子被挤在机器前，哥哥仍然站在中心。",
+            "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Crowded wide shot around an old fighting game cabinet, shoulders and backs forming pressure around three schoolboys, older brother centered at controls, smoky low ceiling, plastic stools, mixed teenagers and adults but no modern clothing.",
+            "notes": "围观是危险升温，不只是热闹。",
+            "revision_note": "",
+            "output_path": "",
+            "versions": []
+          },
+          {
+            "item_id": "ACT2_SHOT_008",
+            "scene_id": "SCN_ARCADE",
+            "beat": "黄毛插入副机位投币挑战",
+            "shot_type": "双人机位中景 / two-player medium shot",
+            "frame_description": "一个和哥哥年纪相仿的黄毛小痞子突然挤到副操作位，不说话直接投币。哥哥侧头愣了一下，两个弟弟也安静下来。",
+            "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Medium shot of a same-age teenage yellow-haired local punk boy pushing into the second player position and dropping a token without speaking, older brother surprised but composed, younger brothers suddenly quiet, old dual-control arcade cabinet.",
+            "notes": "黄毛必须是初中生小痞子，不是成年人；挑战动作要干脆。",
+            "revision_note": "",
+            "output_path": "",
+            "versions": []
+          },
+          {
+            "item_id": "ACT2_SHOT_009",
+            "scene_id": "SCN_ARCADE",
+            "beat": "哥哥应战并赢第一局",
+            "shot_type": "过肩对抗镜头 / over-the-shoulder duel shot",
+            "frame_description": "从黄毛肩后看哥哥操作，哥哥嘴角轻微一笑后快速按键，屏幕光把两人的脸分成冷暖两侧。",
+            "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Over-the-shoulder duel shot from behind the yellow-haired teen punk, older brother at opposite controls with a restrained smirk, fast hands on buttons, CRT light splitting their faces, tense arcade crowd around them.",
+            "notes": "强调哥哥的轻蔑和熟练，但仍保持孩子气。",
+            "revision_note": "",
+            "output_path": "",
+            "versions": []
+          },
+          {
+            "item_id": "ACT2_SHOT_010",
+            "scene_id": "SCN_ARCADE",
+            "beat": "黄毛骂骂咧咧再次投币",
+            "shot_type": "快速剪辑特写组 / montage inserts",
+            "frame_description": "黄毛不服气，嘴里骂着又掏游戏币。画面切到投币口、狰狞表情、按键手指和弟弟紧张的眼神。",
+            "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Rapid montage-style storyboard panel: yellow-haired teen punk angry and cursing, another token pushed into coin slot, grimacing face, aggressive fingers smashing arcade buttons, younger brothers watching nervously, gritty smoky arcade.",
+            "notes": "这条可以作为快剪提示；不要生成文字脏话。",
+            "revision_note": "",
+            "output_path": "",
+            "versions": []
+          },
+          {
+            "item_id": "ACT2_SHOT_011",
+            "scene_id": "SCN_ARCADE",
+            "beat": "黄毛连输后砸按钮",
+            "shot_type": "低角度近景 / low close shot",
+            "frame_description": "连续失败后，黄毛用拳头砸了一下按钮台，塑料按钮和金属面板震动。哥哥和弟弟都短暂僵住。",
+            "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Low close shot of yellow-haired teen punk slamming his fist onto an old arcade control panel after repeated losses, buttons shaking, older brother and younger boys frozen in background, tension under CRT glow.",
+            "notes": "这是危险第一次显形，控制力度，不要变成打斗。",
+            "revision_note": "",
+            "output_path": "",
+            "versions": []
+          },
+          {
+            "item_id": "ACT2_SHOT_012",
+            "scene_id": "SCN_ARCADE",
+            "beat": "黄毛离开前恶狠狠盯哥哥",
+            "shot_type": "凝视中近景 / tense medium close shot",
+            "frame_description": "黄毛转身离开前停了一下，恶狠狠地盯了哥哥一眼，没有说话。哥哥表面得意，两个弟弟的笑意收住。",
+            "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Tense medium close shot of same-age yellow-haired punk turning away but stopping to glare silently at the older brother, older brother trying to look proud, younger brothers’ smiles fading, smoky arcade crowd blurred behind, ominous but realistic.",
+            "notes": "第二幕收束在无声威胁，给后续冲突埋钩子。",
+            "revision_note": "",
+            "output_path": "",
+            "versions": []
+          }
+        ],
+        "related_assets": [
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "03_story",
+            "asset_id": "SCN_COMPOUND_STORY_BEATS",
+            "kind": "",
+            "role": "beat_sheet",
+            "path": "03_story/beats/coin_slot_sample_beat_sheet.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "03_story",
+            "asset_id": "SCN_COMPOUND_FULL_SHOT_LIST",
+            "kind": "",
+            "role": "full_shot_list",
+            "path": "07_shots/shot_list.csv"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "04_lookdev",
+            "asset_id": "SCN_COMPOUND_LOOK_BIBLE",
+            "kind": "",
+            "role": "look_bible",
+            "path": "04_lookdev/references/coin_slot_look_bible_v001.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "04_lookdev",
+            "asset_id": "SCN_COMPOUND_COLOR_SCRIPT",
+            "kind": "",
+            "role": "color_script",
+            "path": "04_lookdev/palettes/coin_slot_color_script.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "04_lookdev",
+            "asset_id": "SCN_COMPOUND_VISUAL_REFS",
+            "kind": "",
+            "role": "visual_references",
+            "path": "04_lookdev/references/coin_slot_visual_references.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "04_lookdev",
+            "asset_id": "SCN_COMPOUND_SCENE_REFERENCE",
+            "kind": "",
+            "role": "scene_reference",
+            "path": "media/01_AIGC/scene_refs/SC_01_compound_corner_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "05_asset_bible",
+            "asset_id": "SCN_COMPOUND_CHARACTER_STAGE_LOCKS",
+            "kind": "",
+            "role": "character_stage_locks",
+            "path": "05_asset_bible/character_stage_locks/coin_slot_character_stage_locks.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "05_asset_bible",
+            "asset_id": "SCN_COMPOUND_LOCATION_BIBLE",
+            "kind": "",
+            "role": "location_bible",
+            "path": "05_asset_bible/locations/coin_slot_location_bible.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "05_asset_bible",
+            "asset_id": "SCN_COMPOUND_CONTINUITY_LOCKS",
+            "kind": "",
+            "role": "continuity_locks",
+            "path": "05_asset_bible/continuity/coin_slot_continuity_locks.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "SCN_COMPOUND_SCENE_LOCK",
+            "kind": "",
+            "role": "scene_lock",
+            "path": "06_previs/scene_locks/scn-compound/scene_lock.yaml"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "SCN_COMPOUND_CAMERA_MANIFEST",
+            "kind": "",
+            "role": "camera_manifest",
+            "path": "06_previs/scene_locks/scn-compound/camera_manifest.csv"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "SCN_COMPOUND_REFERENCE_ASSETS",
+            "kind": "",
+            "role": "reference_assets",
+            "path": "06_previs/scene_locks/scn-compound/reference_assets.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "SCN_COMPOUND_WHITEBOX_INDEX",
+            "kind": "",
+            "role": "whitebox_index",
+            "path": "06_previs/scene_locks/scn-compound/whitebox_index.csv"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB001_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB002_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB002.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB003_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB003.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB004_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB004.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB005_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB005.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB006_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB006.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB007_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB007.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB008_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB008.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB009_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB009.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB010_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB010.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB011_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB011.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB012_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB012.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB013_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB013.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB014_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB014.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB015_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB015.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB016_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB016.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB017_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB017.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB018_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB018.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "07_shots",
+            "asset_id": "SCN_COMPOUND_SHOT_LIST",
+            "kind": "",
+            "role": "shot_list",
+            "path": "07_shots/shot_list.csv"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "07_shots",
+            "asset_id": "MSB001_IMAGE_PROMPT",
+            "kind": "",
+            "role": "image_prompt",
+            "path": "07_shots/prompts/MSB001.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "07_shots",
+            "asset_id": "MSB003_IMAGE_PROMPT",
+            "kind": "",
+            "role": "image_prompt",
+            "path": "07_shots/prompts/MSB003.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "07_shots",
+            "asset_id": "MSB006_IMAGE_PROMPT",
+            "kind": "",
+            "role": "image_prompt",
+            "path": "07_shots/prompts/MSB006.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "07_shots",
+            "asset_id": "MSB009_IMAGE_PROMPT",
+            "kind": "",
+            "role": "image_prompt",
+            "path": "07_shots/prompts/MSB009.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "07_shots",
+            "asset_id": "MSB012_IMAGE_PROMPT",
+            "kind": "",
+            "role": "image_prompt",
+            "path": "07_shots/prompts/MSB012.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "07_shots",
+            "asset_id": "SCN_COMPOUND_SHOT_INDEX_188",
+            "kind": "",
+            "role": "scene_shot_index",
+            "path": "07_shots/scene_slices/SCN_COMPOUND_shot_index.csv"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "07_shots",
+            "asset_id": "SCN_COMPOUND_PROMPT_PACK_188",
+            "kind": "",
+            "role": "scene_prompt_pack",
+            "path": "07_shots/scene_slices/SCN_COMPOUND_prompt_pack.csv"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "07_shots",
+            "asset_id": "MSB001_VIDEO_PROMPT",
+            "kind": "",
+            "role": "video_prompt",
+            "path": "07_shots/video_prompts/MSB001.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "07_shots",
+            "asset_id": "MSB003_VIDEO_PROMPT",
+            "kind": "",
+            "role": "video_prompt",
+            "path": "07_shots/video_prompts/MSB003.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "07_shots",
+            "asset_id": "MSB006_VIDEO_PROMPT",
+            "kind": "",
+            "role": "video_prompt",
+            "path": "07_shots/video_prompts/MSB006.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "07_shots",
+            "asset_id": "MSB009_VIDEO_PROMPT",
+            "kind": "",
+            "role": "video_prompt",
+            "path": "07_shots/video_prompts/MSB009.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "07_shots",
+            "asset_id": "MSB012_VIDEO_PROMPT",
+            "kind": "",
+            "role": "video_prompt",
+            "path": "07_shots/video_prompts/MSB012.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "SCN_COMPOUND_IMAGE_OUTPUT_INDEX",
+            "kind": "",
+            "role": "image_outputs",
+            "path": "08_generation/outputs/images/coin_slot_image_outputs_index.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "SCN_COMPOUND_REJECT_LOG",
+            "kind": "",
+            "role": "rejects",
+            "path": "08_generation/rejects/coin_slot_reject_log.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "SCN_COMPOUND_STORYBOARD_IMAGE_INDEX",
+            "kind": "",
+            "role": "storyboard_image_index",
+            "path": "08_generation/outputs/images/SCN_COMPOUND_storyboard_image_index.csv"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB001_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB001_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB001_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB001_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB002_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB002_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB002_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB002_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB003_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB003_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB003_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB003_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB004_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB004_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB004_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB004_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB005_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB005_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB005_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB005_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB006_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB006_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB006_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB006_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB007_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB007_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB007_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB007_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB008_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB008_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB008_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB008_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB009_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB009_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB009_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB009_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB010_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB010_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB010_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB010_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB011_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB011_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB011_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB011_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB012_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB012_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB012_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB012_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB013_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB013_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB013_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB013_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB014_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB014_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB014_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB014_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB015_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB015_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB015_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB015_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB016_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB016_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB016_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB016_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB017_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB017_v001.png"
+          }
+        ]
+      },
+      "generation_context": {
+        "global_references": [
+          {
+            "ref_id": "THREE_BROTHERS_turnaround_expression_contact_sheet_v001",
+            "asset_ref": "resource:media/01_AIGC/character_design_v2/THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+            "asset_id": "THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+            "path": "media/01_AIGC/character_design_v2/THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+            "origin": "resource",
+            "kind": "character_ref",
+            "role": "character_design_contact_sheet",
+            "note": "三个小朋友统一人设、三视图、表情和服装连续性参考 / Global reference for the three children character identity, turnaround, expressions, and wardrobe continuity.",
+            "version_id": "",
+            "version_status": "",
+            "card_type": "",
+            "card_id": "",
+            "card_title": ""
+          },
+          {
+            "ref_id": "CHR_BRO_A_late_scuffed_reference_v001.png",
+            "asset_ref": "resource:media/01_AIGC/character_design_v2/stage_variants/CHR_BRO_A_late_scuffed_reference_v001.png",
+            "asset_id": "CHR_BRO_A_late_scuffed_reference_v001.png",
+            "path": "media/01_AIGC/character_design_v2/stage_variants/CHR_BRO_A_late_scuffed_reference_v001.png",
+            "origin": "resource",
+            "kind": "image",
+            "role": "image",
+            "note": "给哥哥带一个眼镜",
+            "version_id": "",
+            "version_status": "",
+            "card_type": "",
+            "card_id": "",
+            "card_title": ""
+          },
+          {
+            "ref_id": "001_BIBLE_005_v001.png",
+            "asset_ref": "project:08_generation/jobs/CARD_IMG_20260618_221216/outputs/001_BIBLE_005_v001.png",
+            "asset_id": "001_BIBLE_005_v001.png",
+            "path": "08_generation/jobs/CARD_IMG_20260618_221216/outputs/001_BIBLE_005_v001.png",
+            "origin": "project",
+            "kind": "image",
+            "role": "image",
+            "note": "参考三个混混的设定，这一幕只出现黄毛",
+            "version_id": "v001",
+            "version_status": "current",
+            "card_type": "concept",
+            "card_id": "BIBLE_005",
+            "card_title": ""
+          }
+        ],
+        "context_cards": [
+          {
+            "card_id": "BIBLE_CHARACTER_001",
+            "scope": "project",
+            "act_id": "",
+            "category": "character",
+            "title": "三个小朋友 / Three children",
+            "summary": "第一幕的核心人物组：三个背书包的小学生，熟门熟路但仍然心虚，互相打掩护进入隐藏游戏机房。需要保持年龄、身高差、书包、发型、衣着年代感和表演气质连续。",
+            "visual_direction": "1990年代中国北方小城小学生：旧校服或朴素外套、磨旧书包、略脏鞋面、放学后的疲惫和兴奋并存；动作要小心、鬼祟、彼此贴近。",
+            "prompt_notes": "three Chinese school children in 1990s northern China, carrying worn schoolbags, cautious and sneaky after school, consistent faces, hairstyles, wardrobe and height differences, cinematic realism",
+            "revision_note": "",
+            "negative_prompt": "不要现代校服、智能手机、潮牌服饰、夸张动漫表情、年龄过大或过小、角色身份不一致。",
+            "selected": true,
+            "image_selected": true,
+            "status": "draft",
+            "references": [
+              {
+                "ref_id": "THREE_BROTHERS_turnaround_expression_contact_sheet_v001",
+                "asset_ref": "resource:media/01_AIGC/character_design_v2/THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+                "asset_id": "THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+                "path": "media/01_AIGC/character_design_v2/THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+                "origin": "resource",
+                "kind": "character_ref",
+                "role": "character_design_contact_sheet",
+                "note": "三个小朋友统一人设、三视图、表情和服装连续性参考 / Global reference for the three children character identity, turnaround, expressions, and wardrobe continuity.",
+                "version_id": "",
+                "version_status": "",
+                "card_type": "",
+                "card_id": "",
+                "card_title": ""
+              },
+              {
+                "ref_id": "CHR_BRO_A_late_scuffed_reference_v001.png",
+                "asset_ref": "resource:media/01_AIGC/character_design_v2/stage_variants/CHR_BRO_A_late_scuffed_reference_v001.png",
+                "asset_id": "CHR_BRO_A_late_scuffed_reference_v001.png",
+                "path": "media/01_AIGC/character_design_v2/stage_variants/CHR_BRO_A_late_scuffed_reference_v001.png",
+                "origin": "resource",
+                "kind": "image",
+                "role": "image",
+                "note": "给哥哥带一个眼镜",
+                "version_id": "",
+                "version_status": "",
+                "card_type": "",
+                "card_id": "",
+                "card_title": ""
+              }
+            ],
+            "preview_path": "",
+            "versions": []
+          },
+          {
+            "card_id": "BIBLE_LOCATION_001",
+            "scope": "project",
+            "act_id": "",
+            "category": "location",
+            "title": "破旧居民楼角落与隐藏游戏机房入口 / Compound corner arcade entrance",
+            "summary": "第一幕外部主场景：老居民楼侧面的不起眼角落，暗金属门藏在墙根或楼体边角处，门上有猫眼，老板从里面确认熟人后开门。",
+            "visual_direction": "潮湿水泥墙、掉皮涂料、锈迹铁门、暗窄入口、灰尘和旧广告痕迹；构图强调秘密入口、孩子压低身体靠近、门内外光线反差。",
+            "prompt_notes": "old residential compound corner in 1990s northern Chinese small city, hidden arcade room entrance, rusty dark metal door with peephole, peeling concrete wall, dim afternoon light, secretive composition",
+            "revision_note": "",
+            "negative_prompt": "不要现代商业街、霓虹招牌、干净新楼、豪华游戏厅门面、可读随机文字或过度赛博朋克。",
+            "selected": true,
+            "image_selected": true,
+            "status": "draft",
+            "references": [
+              {
+                "ref_id": "WBX_20260616_024949",
+                "asset_ref": "project:06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+                "asset_id": "WBX_20260616_024949",
+                "path": "06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+                "origin": "project",
+                "kind": "whitebox",
+                "role": "replica_whitebox",
+                "note": "隐藏游戏机房入口的空间、机位、旧墙、金属门、猫眼和三个孩子站位参考；作为场景与道具总概念的白模依据。",
+                "version_id": "",
+                "version_status": "",
+                "card_type": "",
+                "card_id": "",
+                "card_title": "",
+                "usage_note": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。",
+                "generation_guidance": "Whitebox guidance / 白模读取说明:\n- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.\n- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.\n- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.\n- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.\n- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.\n- Source whitebox replica seed: ACT1_SHOT_003_SOURCE_KEYFRAME.\n- Replica intent / 复刻意图: 以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+                "whitebox_interpretation": {
+                  "mode": "spatial_control_only",
+                  "source_asset_id": "ACT1_SHOT_003_SOURCE_KEYFRAME",
+                  "source_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+                  "replica_note": "以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+                  "tags": [
+                    "ACT01",
+                    "SCN_COMPOUND",
+                    "hidden_arcade_door",
+                    "peephole",
+                    "three_children",
+                    "1to1_replica"
+                  ],
+                  "use_for": [
+                    "camera framing and lens/composition",
+                    "subject scale, blocking, pose, sightline, and depth order",
+                    "major set anchors such as doors, windows, corridors, walls, props, and openings",
+                    "main light direction, shadow rhythm, and scene readability"
+                  ],
+                  "preserve": [
+                    "overall aspect ratio and camera angle",
+                    "relative positions between characters and key set pieces",
+                    "door/window/opening height and screen position when present",
+                    "foreground/midground/background separation"
+                  ],
+                  "ignore": [
+                    "gray clay material",
+                    "primitive cube/sphere/cylinder shapes",
+                    "mannequin or toy-like character appearance",
+                    "unfinished low-poly geometry",
+                    "plain studio-white lighting unless the shot explicitly asks for it"
+                  ],
+                  "prompt_bridge": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。"
+                }
+              }
+            ],
+            "preview_path": "",
+            "versions": []
+          },
+          {
+            "card_id": "BIBLE_LOOKDEV_001",
+            "scope": "project",
+            "act_id": "",
+            "category": "lookdev",
+            "title": "90年代北方小城写实质感 / 1990s northern small-city realism",
+            "summary": "全片视觉底色：纪实电影感、低饱和、颗粒但不脏、旧胶片/早期DV记忆感，强调冬春交界或阴天里的灰冷空气。",
+            "visual_direction": "冷灰水泥、褪色红黄广告纸、旧木门和铁门、混浊室内烟雾、钨丝灯与街面自然光混合；摄影机克制，少用夸张广角。",
+            "prompt_notes": "cinematic realism, 1990s northern Chinese small town, muted colors, natural film grain, smoky interiors, mixed tungsten and overcast daylight, grounded documentary texture",
+            "revision_note": "",
+            "negative_prompt": "不要过度磨皮、塑料感、CG感、现代高清广告片、过饱和网红色调、随机英文霓虹和水印。",
+            "selected": true,
+            "image_selected": true,
+            "status": "draft",
+            "references": [],
+            "preview_path": "",
+            "versions": []
+          },
+          {
+            "card_id": "BIBLE_PROP_001",
+            "scope": "project",
+            "act_id": "",
+            "category": "prop",
+            "title": "旧金属门、猫眼与游戏机房道具 / Door, peephole and arcade props",
+            "summary": "关键道具承担叙事信息：猫眼说明老板识别熟人，旧门说明游戏厅隐蔽，室内街机、烟灰缸、硬币和杂乱桌椅说明地下游戏机房生态。",
+            "visual_direction": "门要厚重、旧、暗、带磨损把手和猫眼；室内道具应杂乱但有时代感，街机屏幕亮度压住烟雾，不出现现代 LCD 大屏。",
+            "prompt_notes": "rusty metal door with peephole, worn handle, 1990s arcade machines, coin slot, smoke haze, ashtrays, cluttered stools and cables, period-correct props",
+            "revision_note": "",
+            "negative_prompt": "不要现代网吧、电竞椅、液晶显示器、智能门锁、干净商场电玩、随机品牌文字。",
+            "selected": true,
+            "image_selected": true,
+            "status": "draft",
+            "references": [
+              {
+                "ref_id": "WBX_20260616_024949",
+                "asset_ref": "project:06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+                "asset_id": "WBX_20260616_024949",
+                "path": "06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+                "origin": "project",
+                "kind": "whitebox",
+                "role": "replica_whitebox",
+                "note": "隐藏游戏机房入口的空间、机位、旧墙、金属门、猫眼和三个孩子站位参考；作为场景与道具总概念的白模依据。",
+                "version_id": "",
+                "version_status": "",
+                "card_type": "",
+                "card_id": "",
+                "card_title": "",
+                "usage_note": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。",
+                "generation_guidance": "Whitebox guidance / 白模读取说明:\n- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.\n- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.\n- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.\n- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.\n- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.\n- Source whitebox replica seed: ACT1_SHOT_003_SOURCE_KEYFRAME.\n- Replica intent / 复刻意图: 以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+                "whitebox_interpretation": {
+                  "mode": "spatial_control_only",
+                  "source_asset_id": "ACT1_SHOT_003_SOURCE_KEYFRAME",
+                  "source_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+                  "replica_note": "以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+                  "tags": [
+                    "ACT01",
+                    "SCN_COMPOUND",
+                    "hidden_arcade_door",
+                    "peephole",
+                    "three_children",
+                    "1to1_replica"
+                  ],
+                  "use_for": [
+                    "camera framing and lens/composition",
+                    "subject scale, blocking, pose, sightline, and depth order",
+                    "major set anchors such as doors, windows, corridors, walls, props, and openings",
+                    "main light direction, shadow rhythm, and scene readability"
+                  ],
+                  "preserve": [
+                    "overall aspect ratio and camera angle",
+                    "relative positions between characters and key set pieces",
+                    "door/window/opening height and screen position when present",
+                    "foreground/midground/background separation"
+                  ],
+                  "ignore": [
+                    "gray clay material",
+                    "primitive cube/sphere/cylinder shapes",
+                    "mannequin or toy-like character appearance",
+                    "unfinished low-poly geometry",
+                    "plain studio-white lighting unless the shot explicitly asks for it"
+                  ],
+                  "prompt_bridge": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。"
+                }
+              }
+            ],
+            "preview_path": "",
+            "versions": []
+          },
+          {
+            "card_id": "BIBLE_005",
+            "scope": "project",
+            "act_id": "",
+            "category": "lookdev",
+            "title": "",
+            "summary": "街机厅混混三人组，都是和哥哥同龄的年轻人，但社会痕迹明显，学生气少\n老大，矮个子，黄毛，长相凶狠，耳朵后夹着烟，爱打游戏\n老二，瘦高个，嚣张，穿个白色背心\n老三，胖子，又肥又壮，有点憨憨的",
+            "visual_direction": "",
+            "prompt_notes": "",
+            "revision_note": "",
+            "negative_prompt": "",
+            "selected": true,
+            "image_selected": true,
+            "status": "image_ready",
+            "references": [],
+            "preview_path": "08_generation/jobs/CARD_IMG_20260618_221216/outputs/001_BIBLE_005_v001.png",
+            "versions": [
+              {
+                "version_id": "v001",
+                "output_path": "08_generation/jobs/CARD_IMG_20260618_221216/outputs/001_BIBLE_005_v001.png",
+                "notes": "电影触发生成；用户确认使用第二张。方向：14-15岁初中小痞子，街机厅混混三人组，作为全局人设/氛围参考。",
+                "created_at": "2026-06-18T22:31:50+08:00",
+                "status": "current",
+                "candidate_id": "",
+                "task_id": "",
+                "packet_id": "",
+                "qa": {}
+              }
+            ]
+          }
+        ],
+        "context_references": [
+          {
+            "ref_id": "THREE_BROTHERS_turnaround_expression_contact_sheet_v001",
+            "asset_ref": "resource:media/01_AIGC/character_design_v2/THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+            "asset_id": "THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+            "path": "media/01_AIGC/character_design_v2/THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+            "origin": "resource",
+            "kind": "character_ref",
+            "role": "character_design_contact_sheet",
+            "note": "三个小朋友统一人设、三视图、表情和服装连续性参考 / Global reference for the three children character identity, turnaround, expressions, and wardrobe continuity.",
+            "version_id": "",
+            "version_status": "",
+            "card_type": "",
+            "card_id": "",
+            "card_title": ""
+          },
+          {
+            "ref_id": "CHR_BRO_A_late_scuffed_reference_v001.png",
+            "asset_ref": "resource:media/01_AIGC/character_design_v2/stage_variants/CHR_BRO_A_late_scuffed_reference_v001.png",
+            "asset_id": "CHR_BRO_A_late_scuffed_reference_v001.png",
+            "path": "media/01_AIGC/character_design_v2/stage_variants/CHR_BRO_A_late_scuffed_reference_v001.png",
+            "origin": "resource",
+            "kind": "image",
+            "role": "image",
+            "note": "给哥哥带一个眼镜",
+            "version_id": "",
+            "version_status": "",
+            "card_type": "",
+            "card_id": "",
+            "card_title": ""
+          },
+          {
+            "ref_id": "WBX_20260616_024949",
+            "asset_ref": "project:06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+            "asset_id": "WBX_20260616_024949",
+            "path": "06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+            "origin": "project",
+            "kind": "whitebox",
+            "role": "replica_whitebox",
+            "note": "隐藏游戏机房入口的空间、机位、旧墙、金属门、猫眼和三个孩子站位参考；作为场景与道具总概念的白模依据。",
+            "version_id": "",
+            "version_status": "",
+            "card_type": "",
+            "card_id": "",
+            "card_title": "",
+            "usage_note": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。",
+            "generation_guidance": "Whitebox guidance / 白模读取说明:\n- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.\n- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.\n- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.\n- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.\n- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.\n- Source whitebox replica seed: ACT1_SHOT_003_SOURCE_KEYFRAME.\n- Replica intent / 复刻意图: 以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+            "whitebox_interpretation": {
+              "mode": "spatial_control_only",
+              "source_asset_id": "ACT1_SHOT_003_SOURCE_KEYFRAME",
+              "source_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+              "replica_note": "以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+              "tags": [
+                "ACT01",
+                "SCN_COMPOUND",
+                "hidden_arcade_door",
+                "peephole",
+                "three_children",
+                "1to1_replica"
+              ],
+              "use_for": [
+                "camera framing and lens/composition",
+                "subject scale, blocking, pose, sightline, and depth order",
+                "major set anchors such as doors, windows, corridors, walls, props, and openings",
+                "main light direction, shadow rhythm, and scene readability"
+              ],
+              "preserve": [
+                "overall aspect ratio and camera angle",
+                "relative positions between characters and key set pieces",
+                "door/window/opening height and screen position when present",
+                "foreground/midground/background separation"
+              ],
+              "ignore": [
+                "gray clay material",
+                "primitive cube/sphere/cylinder shapes",
+                "mannequin or toy-like character appearance",
+                "unfinished low-poly geometry",
+                "plain studio-white lighting unless the shot explicitly asks for it"
+              ],
+              "prompt_bridge": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。"
+            }
+          },
+          {
+            "ref_id": "WBX_20260616_024949",
+            "asset_ref": "project:06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+            "asset_id": "WBX_20260616_024949",
+            "path": "06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+            "origin": "project",
+            "kind": "whitebox",
+            "role": "replica_whitebox",
+            "note": "隐藏游戏机房入口的空间、机位、旧墙、金属门、猫眼和三个孩子站位参考；作为场景与道具总概念的白模依据。",
+            "version_id": "",
+            "version_status": "",
+            "card_type": "",
+            "card_id": "",
+            "card_title": "",
+            "usage_note": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。",
+            "generation_guidance": "Whitebox guidance / 白模读取说明:\n- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.\n- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.\n- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.\n- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.\n- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.\n- Source whitebox replica seed: ACT1_SHOT_003_SOURCE_KEYFRAME.\n- Replica intent / 复刻意图: 以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+            "whitebox_interpretation": {
+              "mode": "spatial_control_only",
+              "source_asset_id": "ACT1_SHOT_003_SOURCE_KEYFRAME",
+              "source_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+              "replica_note": "以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+              "tags": [
+                "ACT01",
+                "SCN_COMPOUND",
+                "hidden_arcade_door",
+                "peephole",
+                "three_children",
+                "1to1_replica"
+              ],
+              "use_for": [
+                "camera framing and lens/composition",
+                "subject scale, blocking, pose, sightline, and depth order",
+                "major set anchors such as doors, windows, corridors, walls, props, and openings",
+                "main light direction, shadow rhythm, and scene readability"
+              ],
+              "preserve": [
+                "overall aspect ratio and camera angle",
+                "relative positions between characters and key set pieces",
+                "door/window/opening height and screen position when present",
+                "foreground/midground/background separation"
+              ],
+              "ignore": [
+                "gray clay material",
+                "primitive cube/sphere/cylinder shapes",
+                "mannequin or toy-like character appearance",
+                "unfinished low-poly geometry",
+                "plain studio-white lighting unless the shot explicitly asks for it"
+              ],
+              "prompt_bridge": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。"
+            }
+          }
+        ],
+        "target_references": [
+          {
+            "ref_id": "WBX_20260616_024949",
+            "asset_ref": "project:06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+            "asset_id": "WBX_20260616_024949",
+            "path": "06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+            "origin": "project",
+            "kind": "whitebox",
+            "role": "replica_whitebox",
+            "note": "高精度白模复刻：默认作为该分镜空间、机位、光照和人物动作参考 / high-fidelity replica whitebox for blocking, camera, lighting, and pose.",
+            "version_id": "",
+            "version_status": "",
+            "card_type": "",
+            "card_id": "",
+            "card_title": "",
+            "usage_note": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。",
+            "generation_guidance": "Whitebox guidance / 白模读取说明:\n- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.\n- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.\n- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.\n- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.\n- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.\n- Source whitebox replica seed: ACT1_SHOT_003_SOURCE_KEYFRAME.\n- Replica intent / 复刻意图: 以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+            "whitebox_interpretation": {
+              "mode": "spatial_control_only",
+              "source_asset_id": "ACT1_SHOT_003_SOURCE_KEYFRAME",
+              "source_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+              "replica_note": "以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+              "tags": [
+                "ACT01",
+                "SCN_COMPOUND",
+                "hidden_arcade_door",
+                "peephole",
+                "three_children",
+                "1to1_replica"
+              ],
+              "use_for": [
+                "camera framing and lens/composition",
+                "subject scale, blocking, pose, sightline, and depth order",
+                "major set anchors such as doors, windows, corridors, walls, props, and openings",
+                "main light direction, shadow rhythm, and scene readability"
+              ],
+              "preserve": [
+                "overall aspect ratio and camera angle",
+                "relative positions between characters and key set pieces",
+                "door/window/opening height and screen position when present",
+                "foreground/midground/background separation"
+              ],
+              "ignore": [
+                "gray clay material",
+                "primitive cube/sphere/cylinder shapes",
+                "mannequin or toy-like character appearance",
+                "unfinished low-poly geometry",
+                "plain studio-white lighting unless the shot explicitly asks for it"
+              ],
+              "prompt_bridge": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。"
+            }
+          }
+        ],
+        "target_context": {
+          "scene": {
+            "scene_id": "SCN_COMPOUND",
+            "title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade"
+          },
+          "nearby_storyboard_cards": [
+            {
+              "item_id": "ACT1_SHOT_001",
+              "scene_id": "SCN_COMPOUND",
+              "beat": "放学后偏离大路",
+              "shot_type": "远景 / establishing wide shot",
+              "frame_description": "傍晚的北方小城，旧居民楼压在灰色街道边。三个背书包的小朋友从放学人流边缘脱离，避开大路，朝居民楼背面走去。",
+              "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small city after school, old concrete apartment blocks and dusty street, muted gray winter palette, three Chinese schoolchildren with worn backpacks quietly leaving the main road and heading toward the back corner of a residential building, cautious secretive body language, realistic film still, 35mm lens, natural dusk light, subtle film grain, clean composition, no modern cars, no smartphones, no readable text, no watermark",
+              "notes": "建立时代、地域和偷偷行动。游戏厅入口不要过早显眼，先让路线和氛围成立。",
+              "revision_note": "",
+              "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/001_ACT1_SHOT_001.png",
+              "versions": []
+            },
+            {
+              "item_id": "ACT1_SHOT_002",
+              "scene_id": "SCN_COMPOUND",
+              "beat": "沿墙根靠近隐藏入口",
+              "shot_type": "中远景 / tracking medium-wide shot",
+              "frame_description": "三个孩子贴着居民楼墙根走，经过旧管道和剥落墙皮，互相用眼神确认没人注意，动作熟练又紧张。",
+              "image_prompt": "Cinematic film keyframe, three Chinese schoolchildren in 1990s school clothes sneaking along the wall of a shabby residential building, worn backpacks, old pipes, peeling paint, chipped concrete, one child glancing back nervously while another gestures to stay quiet, northern Chinese small-town realism, low handheld perspective, subdued colors, high-quality stable image, no modern objects, no random text, no watermark",
+              "notes": "鬼鬼祟祟但不要惊悚化，表情里要带着窃喜，哥哥在给弟弟讲游戏有多好玩，弟弟全神贯注的听着",
+              "revision_note": "",
+              "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/002_ACT1_SHOT_002.png",
+              "versions": []
+            },
+            {
+              "item_id": "ACT1_SHOT_003",
+              "scene_id": "SCN_COMPOUND",
+              "beat": "旧门和猫眼出现",
+              "shot_type": "中景 / medium shot",
+              "frame_description": "居民楼一楼角落有一扇不起眼的旧金属门，门上有猫眼，没有正式招牌。三个孩子停在门前，压低声音等待。",
+              "image_prompt": "Cinematic storyboard keyframe, hidden arcade entrance in the corner of an old Chinese residential building, 1990s northern small city, shabby closed metal door with a small peephole, no obvious signboard, three schoolchildren with backpacks standing on the left side whispering and looking secretive, cracked concrete wall, dim corridor shadow, realistic film still, strong readable composition, no modern signage, no readable text, no watermark",
+              "notes": "旧门+猫眼是第一幕核心视觉资产，门要普通、隐蔽、可信。",
+              "revision_note": "这个门不太像是游戏厅的门",
+              "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+              "versions": []
+            },
+            {
+              "item_id": "ACT1_SHOT_004",
+              "scene_id": "SCN_COMPOUND",
+              "beat": "老板从猫眼确认熟人",
+              "shot_type": "猫眼特写 / peephole close-up",
+              "frame_description": "从门内猫眼视角看出去，三个孩子的脸被猫眼畸变压缩，紧张又期待。门内老板确认他们是熟客。",
+              "image_prompt": "Cinematic close-up keyframe from inside a closed door peephole, fisheye peephole distortion, three Chinese schoolchildren with worn backpacks visible outside in a shabby apartment corner, nervous excited faces, 1990s northern China, faint green-blue arcade light around the peephole edge, realistic film texture, suspenseful but not horror, clean image, no text, no watermark, no modern objects",
+              "notes": "用猫眼制造“被审查/被放行”的边界感。可后续关联孩子人设。",
+              "revision_note": "",
+              "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/004_ACT1_SHOT_004.png",
+              "versions": []
+            },
+            {
+              "item_id": "ACT1_SHOT_005",
+              "scene_id": "SCN_COMPOUND",
+              "beat": "门缝打开，机房气息泄出",
+              "shot_type": "近景 / close medium shot",
+              "frame_description": "旧门打开一条缝，老板的半张脸和手出现在门后。蓝绿街机光、烟雾和嘈杂声从门缝先涌出来，孩子们身体微微前倾。",
+              "image_prompt": "Cinematic keyframe, shabby metal door opening a narrow crack, middle-aged Chinese arcade owner partly visible inside, hand holding the door, blue-green CRT arcade light and cigarette smoke leaking from the interior, three schoolchildren with backpacks waiting outside and leaning forward, 1990s northern Chinese residential building corner, realistic gritty atmosphere, clean film still, no readable text, no watermark, no modern elements",
+              "notes": "门缝是两个世界的边界，光、烟和声音比台词更重要。",
+              "revision_note": "",
+              "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/005_ACT1_SHOT_005.png",
+              "versions": []
+            },
+            {
+              "item_id": "ACT1_SHOT_006",
+              "scene_id": "SCN_ARCADE",
+              "beat": "孩子进入乌烟瘴气的游戏厅",
+              "shot_type": "儿童视角中景 / child-height medium shot",
+              "frame_description": "三个孩子刚进室内，画面被烟雾、街机屏幕光和拥挤背影包围。他们像闯进另一个秩序混乱的世界。",
+              "image_prompt": "Cinematic storyboard keyframe inside a smoky 1990s Chinese underground arcade, three schoolchildren with worn backpacks entering from a doorway, blue and green CRT arcade cabinet glow, cigarette smoke hanging under a low ceiling, crowded silhouettes of adults and teenagers, gritty northern small-town atmosphere, child-height camera perspective, high-quality film still, no modern machines, no smartphone, no readable random text, no watermark",
+              "notes": "三人仍然是画面锚点，不能被杂乱人群完全吞掉。",
+              "revision_note": "",
+              "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/006_ACT1_SHOT_006.png",
+              "versions": []
+            },
+            {
+              "item_id": "ACT1_SHOT_007",
+              "scene_id": "SCN_ARCADE",
+              "beat": "游戏厅鱼龙混杂全貌",
+              "shot_type": "广角全景 / wide interior shot",
+              "frame_description": "低矮拥挤的游戏厅里，一排排旧街机发出蓝绿光。成年人、少年和孩子混在一起，烟雾让空气显得浑浊。",
+              "image_prompt": "Wide cinematic interior keyframe of a crowded 1990s Chinese arcade hall, low ceiling, rows of old arcade cabinets, cigarette smoke, mixed crowd of adult men, teenagers, and children, three schoolchildren with backpacks visible near the entrance as small figures, blue-green CRT glow, gritty social realism, northern Chinese small-town underground game room, balanced composition, high image quality, no cyberpunk neon, no modern screens, no readable text, no watermark",
+              "notes": "这一条是游戏厅场景设定核心图，既要乱，又要构图可读。",
+              "revision_note": "",
+              "output_path": "",
+              "versions": [
+                {
+                  "version_id": "current",
+                  "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/007_ACT1_SHOT_007.png",
+                  "notes": "",
+                  "created_at": "",
+                  "status": "rejected",
+                  "candidate_id": "",
+                  "task_id": "",
+                  "packet_id": "",
+                  "qa": {}
+                }
+              ]
+            },
+            {
+              "item_id": "ACT1_SHOT_008",
+              "scene_id": "SCN_ARCADE",
+              "beat": "三个孩子站定，兴奋与不安并存",
+              "shot_type": "中近景 / medium close shot",
+              "frame_description": "三个孩子站在游戏厅内部，脸被街机光照亮。他们互相看一眼，兴奋和不安同时出现，第一幕停在正式进入灰色成人空间的瞬间。",
+              "image_prompt": "Cinematic medium close-up keyframe, three Chinese schoolchildren with worn backpacks standing inside a smoky 1990s underground arcade, CRT blue-green light on their faces, expressions mixed with excitement and unease, blurred crowded arcade background, cigarette smoke, gritty realistic film still, northern Chinese small-town atmosphere, strong character continuity, clean stable image, no distorted faces, no modern objects, no readable text, no watermark",
+              "notes": "第一幕收束图，情绪锚点。后续可接投币、游戏机或危险事件。",
+              "revision_note": "",
+              "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/008_ACT1_SHOT_008.png",
+              "versions": []
+            },
+            {
+              "item_id": "ACT2_SHOT_001",
+              "scene_id": "SCN_ARCADE",
+              "beat": "被游戏厅气氛震住",
+              "shot_type": "儿童视角中景 / child-height medium shot",
+              "frame_description": "三个孩子刚进入游戏厅内部，两个弟弟停住脚步，被烟雾、CRT屏幕光和混杂人群震住；哥哥故作镇定，侧身示意他们跟紧。",
+              "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Three Chinese schoolboys just inside the doorway; two younger boys frozen by smoke, CRT light and crowded silhouettes, older brother pretending to be mature and signaling them to follow, child-height perspective, blue-green light on faces.",
+              "notes": "承接第一幕进入室内，强调两个弟弟的震慑和哥哥的装成熟。",
+              "revision_note": "",
+              "output_path": "",
+              "versions": []
+            },
+            {
+              "item_id": "ACT2_SHOT_002",
+              "scene_id": "SCN_ARCADE",
+              "beat": "哥哥掏出一块钱",
+              "shot_type": "手部特写 / insert close-up",
+              "frame_description": "哥哥从口袋里掏出一张皱旧的一元人民币，纸币被手汗和年代痕迹压皱，背景是模糊的柜台和老板。",
+              "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Insert close-up of an older brother child hand pulling out a worn 1990s Chinese one-yuan banknote, wrinkled paper texture, sweaty fingers, blurred arcade counter and owner in background, authentic period detail.",
+              "notes": "钱必须真实、年代感强；避免可读文字过清导致模型乱字，可强调纸币质感和颜色。",
+              "revision_note": "",
+              "output_path": "",
+              "versions": []
+            },
+            {
+              "item_id": "ACT2_SHOT_003",
+              "scene_id": "SCN_ARCADE",
+              "beat": "三个游戏币落入掌心",
+              "shot_type": "道具特写 / prop insert",
+              "frame_description": "老板把三个粗糙的金属游戏币放到哥哥掌心，硬币边缘磨损，反射着绿色街机光。两个弟弟在虚焦里盯着。",
+              "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Close-up of three rough worn metal arcade tokens dropping into a schoolboy palm, chipped edges, green CRT reflections, younger brothers blurred in background watching eagerly, authentic 1990s Chinese arcade tokens.",
+              "notes": "游戏币是核心年代道具，要粗糙、廉价、被摸旧。",
+              "revision_note": "",
+              "output_path": "",
+              "versions": []
+            },
+            {
+              "item_id": "ACT2_SHOT_004",
+              "scene_id": "SCN_ARCADE",
+              "beat": "走向真人快打机",
+              "shot_type": "跟拍中景 / tracking medium shot",
+              "frame_description": "哥哥握着游戏币，驾轻就熟地穿过人群走向一台真人快打街机；两个弟弟紧跟在后面，眼睛被屏幕吸住。",
+              "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Tracking medium shot of older brother confidently leading two younger boys through crowded smoky arcade toward a Mortal Kombat-style old fighting game cabinet, tokens in hand, younger boys staring at screens, no readable logos.",
+              "notes": "街机可暗示真人快打，不要出现清晰商标文字。",
+              "revision_note": "",
+              "output_path": "",
+              "versions": []
+            },
+            {
+              "item_id": "ACT2_SHOT_005",
+              "scene_id": "SCN_ARCADE",
+              "beat": "哥哥投币开打",
+              "shot_type": "街机侧面近景 / side close shot",
+              "frame_description": "游戏币投入投币口，哥哥双手落在摇杆和按钮上，动作熟练；两个弟弟站在旁边，脸上是崇拜和紧张。",
+              "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Side close shot of a token entering an old arcade coin slot, older brother hands confidently on joystick and buttons, two younger brothers beside him watching with admiration and tension, CRT fighting game glow.",
+              "notes": "投币口、手、按钮、弟弟表情要一起服务哥哥“熟练”的形象。",
+              "revision_note": "",
+              "output_path": "",
+              "versions": []
+            },
+            {
+              "item_id": "ACT2_SHOT_006",
+              "scene_id": "SCN_ARCADE",
+              "beat": "哥哥连胜，弟弟欢呼",
+              "shot_type": "中近景 / medium close shot",
+              "frame_description": "屏幕光照在哥哥脸上，他压着得意继续操作；两个弟弟在旁边兴奋地小声欢呼，周围开始有人回头。",
+              "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Medium close shot of older brother lit by CRT glow, focused and slightly smug while playing a fighting game, two younger brothers cheering quietly beside him, nearby teenagers turning their heads, smoky arcade background.",
+              "notes": "情绪从震慑转为短暂胜利，哥哥不能过分夸张。",
+              "revision_note": "",
+              "output_path": "",
+              "versions": []
+            },
+            {
+              "item_id": "ACT2_SHOT_007",
+              "scene_id": "SCN_ARCADE",
+              "beat": "围观人群变多",
+              "shot_type": "广角压迫镜头 / crowded wide shot",
+              "frame_description": "街机周围的人越围越多，肩膀和后脑勺形成压迫感。三个孩子被挤在机器前，哥哥仍然站在中心。",
+              "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Crowded wide shot around an old fighting game cabinet, shoulders and backs forming pressure around three schoolboys, older brother centered at controls, smoky low ceiling, plastic stools, mixed teenagers and adults but no modern clothing.",
+              "notes": "围观是危险升温，不只是热闹。",
+              "revision_note": "",
+              "output_path": "",
+              "versions": []
+            },
+            {
+              "item_id": "ACT2_SHOT_008",
+              "scene_id": "SCN_ARCADE",
+              "beat": "黄毛插入副机位投币挑战",
+              "shot_type": "双人机位中景 / two-player medium shot",
+              "frame_description": "一个和哥哥年纪相仿的黄毛小痞子突然挤到副操作位，不说话直接投币。哥哥侧头愣了一下，两个弟弟也安静下来。",
+              "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Medium shot of a same-age teenage yellow-haired local punk boy pushing into the second player position and dropping a token without speaking, older brother surprised but composed, younger brothers suddenly quiet, old dual-control arcade cabinet.",
+              "notes": "黄毛必须是初中生小痞子，不是成年人；挑战动作要干脆。",
+              "revision_note": "",
+              "output_path": "",
+              "versions": []
+            },
+            {
+              "item_id": "ACT2_SHOT_009",
+              "scene_id": "SCN_ARCADE",
+              "beat": "哥哥应战并赢第一局",
+              "shot_type": "过肩对抗镜头 / over-the-shoulder duel shot",
+              "frame_description": "从黄毛肩后看哥哥操作，哥哥嘴角轻微一笑后快速按键，屏幕光把两人的脸分成冷暖两侧。",
+              "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Over-the-shoulder duel shot from behind the yellow-haired teen punk, older brother at opposite controls with a restrained smirk, fast hands on buttons, CRT light splitting their faces, tense arcade crowd around them.",
+              "notes": "强调哥哥的轻蔑和熟练，但仍保持孩子气。",
+              "revision_note": "",
+              "output_path": "",
+              "versions": []
+            },
+            {
+              "item_id": "ACT2_SHOT_010",
+              "scene_id": "SCN_ARCADE",
+              "beat": "黄毛骂骂咧咧再次投币",
+              "shot_type": "快速剪辑特写组 / montage inserts",
+              "frame_description": "黄毛不服气，嘴里骂着又掏游戏币。画面切到投币口、狰狞表情、按键手指和弟弟紧张的眼神。",
+              "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Rapid montage-style storyboard panel: yellow-haired teen punk angry and cursing, another token pushed into coin slot, grimacing face, aggressive fingers smashing arcade buttons, younger brothers watching nervously, gritty smoky arcade.",
+              "notes": "这条可以作为快剪提示；不要生成文字脏话。",
+              "revision_note": "",
+              "output_path": "",
+              "versions": []
+            },
+            {
+              "item_id": "ACT2_SHOT_011",
+              "scene_id": "SCN_ARCADE",
+              "beat": "黄毛连输后砸按钮",
+              "shot_type": "低角度近景 / low close shot",
+              "frame_description": "连续失败后，黄毛用拳头砸了一下按钮台，塑料按钮和金属面板震动。哥哥和弟弟都短暂僵住。",
+              "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Low close shot of yellow-haired teen punk slamming his fist onto an old arcade control panel after repeated losses, buttons shaking, older brother and younger boys frozen in background, tension under CRT glow.",
+              "notes": "这是危险第一次显形，控制力度，不要变成打斗。",
+              "revision_note": "",
+              "output_path": "",
+              "versions": []
+            },
+            {
+              "item_id": "ACT2_SHOT_012",
+              "scene_id": "SCN_ARCADE",
+              "beat": "黄毛离开前恶狠狠盯哥哥",
+              "shot_type": "凝视中近景 / tense medium close shot",
+              "frame_description": "黄毛转身离开前停了一下，恶狠狠地盯了哥哥一眼，没有说话。哥哥表面得意，两个弟弟的笑意收住。",
+              "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Tense medium close shot of same-age yellow-haired punk turning away but stopping to glare silently at the older brother, older brother trying to look proud, younger brothers’ smiles fading, smoky arcade crowd blurred behind, ominous but realistic.",
+              "notes": "第二幕收束在无声威胁，给后续冲突埋钩子。",
+              "revision_note": "",
+              "output_path": "",
+              "versions": []
+            }
+          ],
+          "related_assets": [
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "03_story",
+              "asset_id": "SCN_COMPOUND_STORY_BEATS",
+              "kind": "",
+              "role": "beat_sheet",
+              "path": "03_story/beats/coin_slot_sample_beat_sheet.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "03_story",
+              "asset_id": "SCN_COMPOUND_FULL_SHOT_LIST",
+              "kind": "",
+              "role": "full_shot_list",
+              "path": "07_shots/shot_list.csv"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "04_lookdev",
+              "asset_id": "SCN_COMPOUND_LOOK_BIBLE",
+              "kind": "",
+              "role": "look_bible",
+              "path": "04_lookdev/references/coin_slot_look_bible_v001.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "04_lookdev",
+              "asset_id": "SCN_COMPOUND_COLOR_SCRIPT",
+              "kind": "",
+              "role": "color_script",
+              "path": "04_lookdev/palettes/coin_slot_color_script.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "04_lookdev",
+              "asset_id": "SCN_COMPOUND_VISUAL_REFS",
+              "kind": "",
+              "role": "visual_references",
+              "path": "04_lookdev/references/coin_slot_visual_references.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "04_lookdev",
+              "asset_id": "SCN_COMPOUND_SCENE_REFERENCE",
+              "kind": "",
+              "role": "scene_reference",
+              "path": "media/01_AIGC/scene_refs/SC_01_compound_corner_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "05_asset_bible",
+              "asset_id": "SCN_COMPOUND_CHARACTER_STAGE_LOCKS",
+              "kind": "",
+              "role": "character_stage_locks",
+              "path": "05_asset_bible/character_stage_locks/coin_slot_character_stage_locks.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "05_asset_bible",
+              "asset_id": "SCN_COMPOUND_LOCATION_BIBLE",
+              "kind": "",
+              "role": "location_bible",
+              "path": "05_asset_bible/locations/coin_slot_location_bible.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "05_asset_bible",
+              "asset_id": "SCN_COMPOUND_CONTINUITY_LOCKS",
+              "kind": "",
+              "role": "continuity_locks",
+              "path": "05_asset_bible/continuity/coin_slot_continuity_locks.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "SCN_COMPOUND_SCENE_LOCK",
+              "kind": "",
+              "role": "scene_lock",
+              "path": "06_previs/scene_locks/scn-compound/scene_lock.yaml"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "SCN_COMPOUND_CAMERA_MANIFEST",
+              "kind": "",
+              "role": "camera_manifest",
+              "path": "06_previs/scene_locks/scn-compound/camera_manifest.csv"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "SCN_COMPOUND_REFERENCE_ASSETS",
+              "kind": "",
+              "role": "reference_assets",
+              "path": "06_previs/scene_locks/scn-compound/reference_assets.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "SCN_COMPOUND_WHITEBOX_INDEX",
+              "kind": "",
+              "role": "whitebox_index",
+              "path": "06_previs/scene_locks/scn-compound/whitebox_index.csv"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB001_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB002_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB002.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB003_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB003.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB004_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB004.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB005_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB005.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB006_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB006.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB007_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB007.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB008_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB008.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB009_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB009.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB010_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB010.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB011_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB011.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB012_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB012.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB013_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB013.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB014_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB014.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB015_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB015.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB016_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB016.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB017_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB017.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB018_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB018.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "07_shots",
+              "asset_id": "SCN_COMPOUND_SHOT_LIST",
+              "kind": "",
+              "role": "shot_list",
+              "path": "07_shots/shot_list.csv"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "07_shots",
+              "asset_id": "MSB001_IMAGE_PROMPT",
+              "kind": "",
+              "role": "image_prompt",
+              "path": "07_shots/prompts/MSB001.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "07_shots",
+              "asset_id": "MSB003_IMAGE_PROMPT",
+              "kind": "",
+              "role": "image_prompt",
+              "path": "07_shots/prompts/MSB003.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "07_shots",
+              "asset_id": "MSB006_IMAGE_PROMPT",
+              "kind": "",
+              "role": "image_prompt",
+              "path": "07_shots/prompts/MSB006.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "07_shots",
+              "asset_id": "MSB009_IMAGE_PROMPT",
+              "kind": "",
+              "role": "image_prompt",
+              "path": "07_shots/prompts/MSB009.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "07_shots",
+              "asset_id": "MSB012_IMAGE_PROMPT",
+              "kind": "",
+              "role": "image_prompt",
+              "path": "07_shots/prompts/MSB012.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "07_shots",
+              "asset_id": "SCN_COMPOUND_SHOT_INDEX_188",
+              "kind": "",
+              "role": "scene_shot_index",
+              "path": "07_shots/scene_slices/SCN_COMPOUND_shot_index.csv"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "07_shots",
+              "asset_id": "SCN_COMPOUND_PROMPT_PACK_188",
+              "kind": "",
+              "role": "scene_prompt_pack",
+              "path": "07_shots/scene_slices/SCN_COMPOUND_prompt_pack.csv"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "07_shots",
+              "asset_id": "MSB001_VIDEO_PROMPT",
+              "kind": "",
+              "role": "video_prompt",
+              "path": "07_shots/video_prompts/MSB001.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "07_shots",
+              "asset_id": "MSB003_VIDEO_PROMPT",
+              "kind": "",
+              "role": "video_prompt",
+              "path": "07_shots/video_prompts/MSB003.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "07_shots",
+              "asset_id": "MSB006_VIDEO_PROMPT",
+              "kind": "",
+              "role": "video_prompt",
+              "path": "07_shots/video_prompts/MSB006.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "07_shots",
+              "asset_id": "MSB009_VIDEO_PROMPT",
+              "kind": "",
+              "role": "video_prompt",
+              "path": "07_shots/video_prompts/MSB009.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "07_shots",
+              "asset_id": "MSB012_VIDEO_PROMPT",
+              "kind": "",
+              "role": "video_prompt",
+              "path": "07_shots/video_prompts/MSB012.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "SCN_COMPOUND_IMAGE_OUTPUT_INDEX",
+              "kind": "",
+              "role": "image_outputs",
+              "path": "08_generation/outputs/images/coin_slot_image_outputs_index.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "SCN_COMPOUND_REJECT_LOG",
+              "kind": "",
+              "role": "rejects",
+              "path": "08_generation/rejects/coin_slot_reject_log.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "SCN_COMPOUND_STORYBOARD_IMAGE_INDEX",
+              "kind": "",
+              "role": "storyboard_image_index",
+              "path": "08_generation/outputs/images/SCN_COMPOUND_storyboard_image_index.csv"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB001_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB001_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB001_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB001_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB002_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB002_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB002_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB002_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB003_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB003_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB003_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB003_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB004_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB004_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB004_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB004_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB005_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB005_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB005_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB005_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB006_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB006_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB006_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB006_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB007_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB007_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB007_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB007_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB008_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB008_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB008_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB008_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB009_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB009_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB009_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB009_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB010_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB010_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB010_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB010_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB011_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB011_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB011_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB011_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB012_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB012_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB012_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB012_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB013_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB013_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB013_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB013_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB014_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB014_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB014_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB014_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB015_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB015_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB015_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB015_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB016_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB016_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB016_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB016_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB017_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB017_v001.png"
+            }
+          ]
+        },
+        "whitebox_guidance": [
+          "Whitebox guidance / 白模读取说明:\n- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.\n- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.\n- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.\n- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.\n- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.\n- Source whitebox replica seed: ACT1_SHOT_003_SOURCE_KEYFRAME.\n- Replica intent / 复刻意图: 以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。"
+        ]
+      },
+      "whitebox_guidance": [
+        "Whitebox guidance / 白模读取说明:\n- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.\n- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.\n- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.\n- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.\n- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.\n- Source whitebox replica seed: ACT1_SHOT_003_SOURCE_KEYFRAME.\n- Replica intent / 复刻意图: 以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。"
+      ],
+      "suggested_version_id": "v001",
+      "suggested_candidate_outputs": [
+        {
+          "candidate_id": "c01",
+          "version_id": "v001_c01",
+          "output_path": "08_generation/jobs/CARD_IMG_20260619_004223/outputs/002_ACT1_SHOT_002_v001_c01.png",
+          "output_absolute_path": "/Users/jaychoupp/Desktop/Story/Film/projects/coin-slot/08_generation/jobs/CARD_IMG_20260619_004223/outputs/002_ACT1_SHOT_002_v001_c01.png"
+        },
+        {
+          "candidate_id": "c02",
+          "version_id": "v001_c02",
+          "output_path": "08_generation/jobs/CARD_IMG_20260619_004223/outputs/002_ACT1_SHOT_002_v001_c02.png",
+          "output_absolute_path": "/Users/jaychoupp/Desktop/Story/Film/projects/coin-slot/08_generation/jobs/CARD_IMG_20260619_004223/outputs/002_ACT1_SHOT_002_v001_c02.png"
+        },
+        {
+          "candidate_id": "c03",
+          "version_id": "v001_c03",
+          "output_path": "08_generation/jobs/CARD_IMG_20260619_004223/outputs/002_ACT1_SHOT_002_v001_c03.png",
+          "output_absolute_path": "/Users/jaychoupp/Desktop/Story/Film/projects/coin-slot/08_generation/jobs/CARD_IMG_20260619_004223/outputs/002_ACT1_SHOT_002_v001_c03.png"
+        }
+      ],
+      "suggested_output_path": "08_generation/jobs/CARD_IMG_20260619_004223/outputs/002_ACT1_SHOT_002_v001_c01.png",
+      "suggested_output_absolute_path": "/Users/jaychoupp/Desktop/Story/Film/projects/coin-slot/08_generation/jobs/CARD_IMG_20260619_004223/outputs/002_ACT1_SHOT_002_v001_c01.png"
+    },
+    {
+      "task_id": "CARD_IMG_20260619_004223_003",
+      "card_type": "storyboard",
+      "item_id": "ACT1_SHOT_003",
+      "scene_id": "SCN_COMPOUND",
+      "beat": "旧门和猫眼出现",
+      "shot_type": "中景 / medium shot",
+      "frame_description": "居民楼一楼角落有一扇不起眼的旧金属门，门上有猫眼，没有正式招牌。三个孩子停在门前，压低声音等待。",
+      "image_prompt": "Cinematic storyboard keyframe, hidden arcade entrance in the corner of an old Chinese residential building, 1990s northern small city, shabby closed metal door with a small peephole, no obvious signboard, three schoolchildren with backpacks standing on the left side whispering and looking secretive, cracked concrete wall, dim corridor shadow, realistic film still, strong readable composition, no modern signage, no readable text, no watermark",
+      "video_prompt": "The children stop at the closed metal door; the camera settles on the small peephole while muffled arcade sounds barely leak through.",
+      "notes": "旧门+猫眼是第一幕核心视觉资产，门要普通、隐蔽、可信。",
+      "revision_note": "这个门不太像是游戏厅的门",
+      "target_references": [
+        {
+          "ref_id": "WBX_20260616_024949",
+          "asset_ref": "project:06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+          "asset_id": "WBX_20260616_024949",
+          "path": "06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+          "origin": "project",
+          "kind": "whitebox",
+          "role": "replica_whitebox",
+          "note": "高精度白模复刻：默认作为该分镜空间、机位、光照和人物动作参考 / high-fidelity replica whitebox for blocking, camera, lighting, and pose.",
+          "version_id": "",
+          "version_status": "",
+          "card_type": "",
+          "card_id": "",
+          "card_title": "",
+          "usage_note": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。",
+          "generation_guidance": "Whitebox guidance / 白模读取说明:\n- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.\n- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.\n- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.\n- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.\n- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.\n- Source whitebox replica seed: ACT1_SHOT_003_SOURCE_KEYFRAME.\n- Replica intent / 复刻意图: 以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+          "whitebox_interpretation": {
+            "mode": "spatial_control_only",
+            "source_asset_id": "ACT1_SHOT_003_SOURCE_KEYFRAME",
+            "source_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+            "replica_note": "以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+            "tags": [
+              "ACT01",
+              "SCN_COMPOUND",
+              "hidden_arcade_door",
+              "peephole",
+              "three_children",
+              "1to1_replica"
+            ],
+            "use_for": [
+              "camera framing and lens/composition",
+              "subject scale, blocking, pose, sightline, and depth order",
+              "major set anchors such as doors, windows, corridors, walls, props, and openings",
+              "main light direction, shadow rhythm, and scene readability"
+            ],
+            "preserve": [
+              "overall aspect ratio and camera angle",
+              "relative positions between characters and key set pieces",
+              "door/window/opening height and screen position when present",
+              "foreground/midground/background separation"
+            ],
+            "ignore": [
+              "gray clay material",
+              "primitive cube/sphere/cylinder shapes",
+              "mannequin or toy-like character appearance",
+              "unfinished low-poly geometry",
+              "plain studio-white lighting unless the shot explicitly asks for it"
+            ],
+            "prompt_bridge": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。"
+          }
+        }
+      ],
+      "existing_output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+      "existing_versions": [],
+      "nearby_context": {
+        "scene": {
+          "scene_id": "SCN_COMPOUND",
+          "title": "居民楼角落 / Compound corner",
+          "act_id": "ACT01",
+          "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade"
+        },
+        "nearby_storyboard_cards": [
+          {
+            "item_id": "ACT1_SHOT_001",
+            "scene_id": "SCN_COMPOUND",
+            "beat": "放学后偏离大路",
+            "shot_type": "远景 / establishing wide shot",
+            "frame_description": "傍晚的北方小城，旧居民楼压在灰色街道边。三个背书包的小朋友从放学人流边缘脱离，避开大路，朝居民楼背面走去。",
+            "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small city after school, old concrete apartment blocks and dusty street, muted gray winter palette, three Chinese schoolchildren with worn backpacks quietly leaving the main road and heading toward the back corner of a residential building, cautious secretive body language, realistic film still, 35mm lens, natural dusk light, subtle film grain, clean composition, no modern cars, no smartphones, no readable text, no watermark",
+            "notes": "建立时代、地域和偷偷行动。游戏厅入口不要过早显眼，先让路线和氛围成立。",
+            "revision_note": "",
+            "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/001_ACT1_SHOT_001.png",
+            "versions": []
+          },
+          {
+            "item_id": "ACT1_SHOT_002",
+            "scene_id": "SCN_COMPOUND",
+            "beat": "沿墙根靠近隐藏入口",
+            "shot_type": "中远景 / tracking medium-wide shot",
+            "frame_description": "三个孩子贴着居民楼墙根走，经过旧管道和剥落墙皮，互相用眼神确认没人注意，动作熟练又紧张。",
+            "image_prompt": "Cinematic film keyframe, three Chinese schoolchildren in 1990s school clothes sneaking along the wall of a shabby residential building, worn backpacks, old pipes, peeling paint, chipped concrete, one child glancing back nervously while another gestures to stay quiet, northern Chinese small-town realism, low handheld perspective, subdued colors, high-quality stable image, no modern objects, no random text, no watermark",
+            "notes": "鬼鬼祟祟但不要惊悚化，表情里要带着窃喜，哥哥在给弟弟讲游戏有多好玩，弟弟全神贯注的听着",
+            "revision_note": "",
+            "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/002_ACT1_SHOT_002.png",
+            "versions": []
+          },
+          {
+            "item_id": "ACT1_SHOT_003",
+            "scene_id": "SCN_COMPOUND",
+            "beat": "旧门和猫眼出现",
+            "shot_type": "中景 / medium shot",
+            "frame_description": "居民楼一楼角落有一扇不起眼的旧金属门，门上有猫眼，没有正式招牌。三个孩子停在门前，压低声音等待。",
+            "image_prompt": "Cinematic storyboard keyframe, hidden arcade entrance in the corner of an old Chinese residential building, 1990s northern small city, shabby closed metal door with a small peephole, no obvious signboard, three schoolchildren with backpacks standing on the left side whispering and looking secretive, cracked concrete wall, dim corridor shadow, realistic film still, strong readable composition, no modern signage, no readable text, no watermark",
+            "notes": "旧门+猫眼是第一幕核心视觉资产，门要普通、隐蔽、可信。",
+            "revision_note": "这个门不太像是游戏厅的门",
+            "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+            "versions": []
+          },
+          {
+            "item_id": "ACT1_SHOT_004",
+            "scene_id": "SCN_COMPOUND",
+            "beat": "老板从猫眼确认熟人",
+            "shot_type": "猫眼特写 / peephole close-up",
+            "frame_description": "从门内猫眼视角看出去，三个孩子的脸被猫眼畸变压缩，紧张又期待。门内老板确认他们是熟客。",
+            "image_prompt": "Cinematic close-up keyframe from inside a closed door peephole, fisheye peephole distortion, three Chinese schoolchildren with worn backpacks visible outside in a shabby apartment corner, nervous excited faces, 1990s northern China, faint green-blue arcade light around the peephole edge, realistic film texture, suspenseful but not horror, clean image, no text, no watermark, no modern objects",
+            "notes": "用猫眼制造“被审查/被放行”的边界感。可后续关联孩子人设。",
+            "revision_note": "",
+            "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/004_ACT1_SHOT_004.png",
+            "versions": []
+          },
+          {
+            "item_id": "ACT1_SHOT_005",
+            "scene_id": "SCN_COMPOUND",
+            "beat": "门缝打开，机房气息泄出",
+            "shot_type": "近景 / close medium shot",
+            "frame_description": "旧门打开一条缝，老板的半张脸和手出现在门后。蓝绿街机光、烟雾和嘈杂声从门缝先涌出来，孩子们身体微微前倾。",
+            "image_prompt": "Cinematic keyframe, shabby metal door opening a narrow crack, middle-aged Chinese arcade owner partly visible inside, hand holding the door, blue-green CRT arcade light and cigarette smoke leaking from the interior, three schoolchildren with backpacks waiting outside and leaning forward, 1990s northern Chinese residential building corner, realistic gritty atmosphere, clean film still, no readable text, no watermark, no modern elements",
+            "notes": "门缝是两个世界的边界，光、烟和声音比台词更重要。",
+            "revision_note": "",
+            "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/005_ACT1_SHOT_005.png",
+            "versions": []
+          },
+          {
+            "item_id": "ACT1_SHOT_006",
+            "scene_id": "SCN_ARCADE",
+            "beat": "孩子进入乌烟瘴气的游戏厅",
+            "shot_type": "儿童视角中景 / child-height medium shot",
+            "frame_description": "三个孩子刚进室内，画面被烟雾、街机屏幕光和拥挤背影包围。他们像闯进另一个秩序混乱的世界。",
+            "image_prompt": "Cinematic storyboard keyframe inside a smoky 1990s Chinese underground arcade, three schoolchildren with worn backpacks entering from a doorway, blue and green CRT arcade cabinet glow, cigarette smoke hanging under a low ceiling, crowded silhouettes of adults and teenagers, gritty northern small-town atmosphere, child-height camera perspective, high-quality film still, no modern machines, no smartphone, no readable random text, no watermark",
+            "notes": "三人仍然是画面锚点，不能被杂乱人群完全吞掉。",
+            "revision_note": "",
+            "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/006_ACT1_SHOT_006.png",
+            "versions": []
+          },
+          {
+            "item_id": "ACT1_SHOT_007",
+            "scene_id": "SCN_ARCADE",
+            "beat": "游戏厅鱼龙混杂全貌",
+            "shot_type": "广角全景 / wide interior shot",
+            "frame_description": "低矮拥挤的游戏厅里，一排排旧街机发出蓝绿光。成年人、少年和孩子混在一起，烟雾让空气显得浑浊。",
+            "image_prompt": "Wide cinematic interior keyframe of a crowded 1990s Chinese arcade hall, low ceiling, rows of old arcade cabinets, cigarette smoke, mixed crowd of adult men, teenagers, and children, three schoolchildren with backpacks visible near the entrance as small figures, blue-green CRT glow, gritty social realism, northern Chinese small-town underground game room, balanced composition, high image quality, no cyberpunk neon, no modern screens, no readable text, no watermark",
+            "notes": "这一条是游戏厅场景设定核心图，既要乱，又要构图可读。",
+            "revision_note": "",
+            "output_path": "",
+            "versions": [
+              {
+                "version_id": "current",
+                "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/007_ACT1_SHOT_007.png",
+                "notes": "",
+                "created_at": "",
+                "status": "rejected",
+                "candidate_id": "",
+                "task_id": "",
+                "packet_id": "",
+                "qa": {}
+              }
+            ]
+          },
+          {
+            "item_id": "ACT1_SHOT_008",
+            "scene_id": "SCN_ARCADE",
+            "beat": "三个孩子站定，兴奋与不安并存",
+            "shot_type": "中近景 / medium close shot",
+            "frame_description": "三个孩子站在游戏厅内部，脸被街机光照亮。他们互相看一眼，兴奋和不安同时出现，第一幕停在正式进入灰色成人空间的瞬间。",
+            "image_prompt": "Cinematic medium close-up keyframe, three Chinese schoolchildren with worn backpacks standing inside a smoky 1990s underground arcade, CRT blue-green light on their faces, expressions mixed with excitement and unease, blurred crowded arcade background, cigarette smoke, gritty realistic film still, northern Chinese small-town atmosphere, strong character continuity, clean stable image, no distorted faces, no modern objects, no readable text, no watermark",
+            "notes": "第一幕收束图，情绪锚点。后续可接投币、游戏机或危险事件。",
+            "revision_note": "",
+            "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/008_ACT1_SHOT_008.png",
+            "versions": []
+          },
+          {
+            "item_id": "ACT2_SHOT_001",
+            "scene_id": "SCN_ARCADE",
+            "beat": "被游戏厅气氛震住",
+            "shot_type": "儿童视角中景 / child-height medium shot",
+            "frame_description": "三个孩子刚进入游戏厅内部，两个弟弟停住脚步，被烟雾、CRT屏幕光和混杂人群震住；哥哥故作镇定，侧身示意他们跟紧。",
+            "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Three Chinese schoolboys just inside the doorway; two younger boys frozen by smoke, CRT light and crowded silhouettes, older brother pretending to be mature and signaling them to follow, child-height perspective, blue-green light on faces.",
+            "notes": "承接第一幕进入室内，强调两个弟弟的震慑和哥哥的装成熟。",
+            "revision_note": "",
+            "output_path": "",
+            "versions": []
+          },
+          {
+            "item_id": "ACT2_SHOT_002",
+            "scene_id": "SCN_ARCADE",
+            "beat": "哥哥掏出一块钱",
+            "shot_type": "手部特写 / insert close-up",
+            "frame_description": "哥哥从口袋里掏出一张皱旧的一元人民币，纸币被手汗和年代痕迹压皱，背景是模糊的柜台和老板。",
+            "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Insert close-up of an older brother child hand pulling out a worn 1990s Chinese one-yuan banknote, wrinkled paper texture, sweaty fingers, blurred arcade counter and owner in background, authentic period detail.",
+            "notes": "钱必须真实、年代感强；避免可读文字过清导致模型乱字，可强调纸币质感和颜色。",
+            "revision_note": "",
+            "output_path": "",
+            "versions": []
+          },
+          {
+            "item_id": "ACT2_SHOT_003",
+            "scene_id": "SCN_ARCADE",
+            "beat": "三个游戏币落入掌心",
+            "shot_type": "道具特写 / prop insert",
+            "frame_description": "老板把三个粗糙的金属游戏币放到哥哥掌心，硬币边缘磨损，反射着绿色街机光。两个弟弟在虚焦里盯着。",
+            "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Close-up of three rough worn metal arcade tokens dropping into a schoolboy palm, chipped edges, green CRT reflections, younger brothers blurred in background watching eagerly, authentic 1990s Chinese arcade tokens.",
+            "notes": "游戏币是核心年代道具，要粗糙、廉价、被摸旧。",
+            "revision_note": "",
+            "output_path": "",
+            "versions": []
+          },
+          {
+            "item_id": "ACT2_SHOT_004",
+            "scene_id": "SCN_ARCADE",
+            "beat": "走向真人快打机",
+            "shot_type": "跟拍中景 / tracking medium shot",
+            "frame_description": "哥哥握着游戏币，驾轻就熟地穿过人群走向一台真人快打街机；两个弟弟紧跟在后面，眼睛被屏幕吸住。",
+            "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Tracking medium shot of older brother confidently leading two younger boys through crowded smoky arcade toward a Mortal Kombat-style old fighting game cabinet, tokens in hand, younger boys staring at screens, no readable logos.",
+            "notes": "街机可暗示真人快打，不要出现清晰商标文字。",
+            "revision_note": "",
+            "output_path": "",
+            "versions": []
+          },
+          {
+            "item_id": "ACT2_SHOT_005",
+            "scene_id": "SCN_ARCADE",
+            "beat": "哥哥投币开打",
+            "shot_type": "街机侧面近景 / side close shot",
+            "frame_description": "游戏币投入投币口，哥哥双手落在摇杆和按钮上，动作熟练；两个弟弟站在旁边，脸上是崇拜和紧张。",
+            "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Side close shot of a token entering an old arcade coin slot, older brother hands confidently on joystick and buttons, two younger brothers beside him watching with admiration and tension, CRT fighting game glow.",
+            "notes": "投币口、手、按钮、弟弟表情要一起服务哥哥“熟练”的形象。",
+            "revision_note": "",
+            "output_path": "",
+            "versions": []
+          },
+          {
+            "item_id": "ACT2_SHOT_006",
+            "scene_id": "SCN_ARCADE",
+            "beat": "哥哥连胜，弟弟欢呼",
+            "shot_type": "中近景 / medium close shot",
+            "frame_description": "屏幕光照在哥哥脸上，他压着得意继续操作；两个弟弟在旁边兴奋地小声欢呼，周围开始有人回头。",
+            "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Medium close shot of older brother lit by CRT glow, focused and slightly smug while playing a fighting game, two younger brothers cheering quietly beside him, nearby teenagers turning their heads, smoky arcade background.",
+            "notes": "情绪从震慑转为短暂胜利，哥哥不能过分夸张。",
+            "revision_note": "",
+            "output_path": "",
+            "versions": []
+          },
+          {
+            "item_id": "ACT2_SHOT_007",
+            "scene_id": "SCN_ARCADE",
+            "beat": "围观人群变多",
+            "shot_type": "广角压迫镜头 / crowded wide shot",
+            "frame_description": "街机周围的人越围越多，肩膀和后脑勺形成压迫感。三个孩子被挤在机器前，哥哥仍然站在中心。",
+            "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Crowded wide shot around an old fighting game cabinet, shoulders and backs forming pressure around three schoolboys, older brother centered at controls, smoky low ceiling, plastic stools, mixed teenagers and adults but no modern clothing.",
+            "notes": "围观是危险升温，不只是热闹。",
+            "revision_note": "",
+            "output_path": "",
+            "versions": []
+          },
+          {
+            "item_id": "ACT2_SHOT_008",
+            "scene_id": "SCN_ARCADE",
+            "beat": "黄毛插入副机位投币挑战",
+            "shot_type": "双人机位中景 / two-player medium shot",
+            "frame_description": "一个和哥哥年纪相仿的黄毛小痞子突然挤到副操作位，不说话直接投币。哥哥侧头愣了一下，两个弟弟也安静下来。",
+            "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Medium shot of a same-age teenage yellow-haired local punk boy pushing into the second player position and dropping a token without speaking, older brother surprised but composed, younger brothers suddenly quiet, old dual-control arcade cabinet.",
+            "notes": "黄毛必须是初中生小痞子，不是成年人；挑战动作要干脆。",
+            "revision_note": "",
+            "output_path": "",
+            "versions": []
+          },
+          {
+            "item_id": "ACT2_SHOT_009",
+            "scene_id": "SCN_ARCADE",
+            "beat": "哥哥应战并赢第一局",
+            "shot_type": "过肩对抗镜头 / over-the-shoulder duel shot",
+            "frame_description": "从黄毛肩后看哥哥操作，哥哥嘴角轻微一笑后快速按键，屏幕光把两人的脸分成冷暖两侧。",
+            "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Over-the-shoulder duel shot from behind the yellow-haired teen punk, older brother at opposite controls with a restrained smirk, fast hands on buttons, CRT light splitting their faces, tense arcade crowd around them.",
+            "notes": "强调哥哥的轻蔑和熟练，但仍保持孩子气。",
+            "revision_note": "",
+            "output_path": "",
+            "versions": []
+          },
+          {
+            "item_id": "ACT2_SHOT_010",
+            "scene_id": "SCN_ARCADE",
+            "beat": "黄毛骂骂咧咧再次投币",
+            "shot_type": "快速剪辑特写组 / montage inserts",
+            "frame_description": "黄毛不服气，嘴里骂着又掏游戏币。画面切到投币口、狰狞表情、按键手指和弟弟紧张的眼神。",
+            "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Rapid montage-style storyboard panel: yellow-haired teen punk angry and cursing, another token pushed into coin slot, grimacing face, aggressive fingers smashing arcade buttons, younger brothers watching nervously, gritty smoky arcade.",
+            "notes": "这条可以作为快剪提示；不要生成文字脏话。",
+            "revision_note": "",
+            "output_path": "",
+            "versions": []
+          },
+          {
+            "item_id": "ACT2_SHOT_011",
+            "scene_id": "SCN_ARCADE",
+            "beat": "黄毛连输后砸按钮",
+            "shot_type": "低角度近景 / low close shot",
+            "frame_description": "连续失败后，黄毛用拳头砸了一下按钮台，塑料按钮和金属面板震动。哥哥和弟弟都短暂僵住。",
+            "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Low close shot of yellow-haired teen punk slamming his fist onto an old arcade control panel after repeated losses, buttons shaking, older brother and younger boys frozen in background, tension under CRT glow.",
+            "notes": "这是危险第一次显形，控制力度，不要变成打斗。",
+            "revision_note": "",
+            "output_path": "",
+            "versions": []
+          },
+          {
+            "item_id": "ACT2_SHOT_012",
+            "scene_id": "SCN_ARCADE",
+            "beat": "黄毛离开前恶狠狠盯哥哥",
+            "shot_type": "凝视中近景 / tense medium close shot",
+            "frame_description": "黄毛转身离开前停了一下，恶狠狠地盯了哥哥一眼，没有说话。哥哥表面得意，两个弟弟的笑意收住。",
+            "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Tense medium close shot of same-age yellow-haired punk turning away but stopping to glare silently at the older brother, older brother trying to look proud, younger brothers’ smiles fading, smoky arcade crowd blurred behind, ominous but realistic.",
+            "notes": "第二幕收束在无声威胁，给后续冲突埋钩子。",
+            "revision_note": "",
+            "output_path": "",
+            "versions": []
+          }
+        ],
+        "related_assets": [
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "03_story",
+            "asset_id": "SCN_COMPOUND_STORY_BEATS",
+            "kind": "",
+            "role": "beat_sheet",
+            "path": "03_story/beats/coin_slot_sample_beat_sheet.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "03_story",
+            "asset_id": "SCN_COMPOUND_FULL_SHOT_LIST",
+            "kind": "",
+            "role": "full_shot_list",
+            "path": "07_shots/shot_list.csv"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "04_lookdev",
+            "asset_id": "SCN_COMPOUND_LOOK_BIBLE",
+            "kind": "",
+            "role": "look_bible",
+            "path": "04_lookdev/references/coin_slot_look_bible_v001.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "04_lookdev",
+            "asset_id": "SCN_COMPOUND_COLOR_SCRIPT",
+            "kind": "",
+            "role": "color_script",
+            "path": "04_lookdev/palettes/coin_slot_color_script.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "04_lookdev",
+            "asset_id": "SCN_COMPOUND_VISUAL_REFS",
+            "kind": "",
+            "role": "visual_references",
+            "path": "04_lookdev/references/coin_slot_visual_references.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "04_lookdev",
+            "asset_id": "SCN_COMPOUND_SCENE_REFERENCE",
+            "kind": "",
+            "role": "scene_reference",
+            "path": "media/01_AIGC/scene_refs/SC_01_compound_corner_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "05_asset_bible",
+            "asset_id": "SCN_COMPOUND_CHARACTER_STAGE_LOCKS",
+            "kind": "",
+            "role": "character_stage_locks",
+            "path": "05_asset_bible/character_stage_locks/coin_slot_character_stage_locks.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "05_asset_bible",
+            "asset_id": "SCN_COMPOUND_LOCATION_BIBLE",
+            "kind": "",
+            "role": "location_bible",
+            "path": "05_asset_bible/locations/coin_slot_location_bible.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "05_asset_bible",
+            "asset_id": "SCN_COMPOUND_CONTINUITY_LOCKS",
+            "kind": "",
+            "role": "continuity_locks",
+            "path": "05_asset_bible/continuity/coin_slot_continuity_locks.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "SCN_COMPOUND_SCENE_LOCK",
+            "kind": "",
+            "role": "scene_lock",
+            "path": "06_previs/scene_locks/scn-compound/scene_lock.yaml"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "SCN_COMPOUND_CAMERA_MANIFEST",
+            "kind": "",
+            "role": "camera_manifest",
+            "path": "06_previs/scene_locks/scn-compound/camera_manifest.csv"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "SCN_COMPOUND_REFERENCE_ASSETS",
+            "kind": "",
+            "role": "reference_assets",
+            "path": "06_previs/scene_locks/scn-compound/reference_assets.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "SCN_COMPOUND_WHITEBOX_INDEX",
+            "kind": "",
+            "role": "whitebox_index",
+            "path": "06_previs/scene_locks/scn-compound/whitebox_index.csv"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB001_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB002_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB002.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB003_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB003.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB004_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB004.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB005_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB005.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB006_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB006.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB007_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB007.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB008_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB008.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB009_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB009.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB010_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB010.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB011_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB011.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB012_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB012.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB013_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB013.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB014_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB014.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB015_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB015.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB016_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB016.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB017_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB017.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB018_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB018.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "07_shots",
+            "asset_id": "SCN_COMPOUND_SHOT_LIST",
+            "kind": "",
+            "role": "shot_list",
+            "path": "07_shots/shot_list.csv"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "07_shots",
+            "asset_id": "MSB001_IMAGE_PROMPT",
+            "kind": "",
+            "role": "image_prompt",
+            "path": "07_shots/prompts/MSB001.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "07_shots",
+            "asset_id": "MSB003_IMAGE_PROMPT",
+            "kind": "",
+            "role": "image_prompt",
+            "path": "07_shots/prompts/MSB003.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "07_shots",
+            "asset_id": "MSB006_IMAGE_PROMPT",
+            "kind": "",
+            "role": "image_prompt",
+            "path": "07_shots/prompts/MSB006.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "07_shots",
+            "asset_id": "MSB009_IMAGE_PROMPT",
+            "kind": "",
+            "role": "image_prompt",
+            "path": "07_shots/prompts/MSB009.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "07_shots",
+            "asset_id": "MSB012_IMAGE_PROMPT",
+            "kind": "",
+            "role": "image_prompt",
+            "path": "07_shots/prompts/MSB012.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "07_shots",
+            "asset_id": "SCN_COMPOUND_SHOT_INDEX_188",
+            "kind": "",
+            "role": "scene_shot_index",
+            "path": "07_shots/scene_slices/SCN_COMPOUND_shot_index.csv"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "07_shots",
+            "asset_id": "SCN_COMPOUND_PROMPT_PACK_188",
+            "kind": "",
+            "role": "scene_prompt_pack",
+            "path": "07_shots/scene_slices/SCN_COMPOUND_prompt_pack.csv"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "07_shots",
+            "asset_id": "MSB001_VIDEO_PROMPT",
+            "kind": "",
+            "role": "video_prompt",
+            "path": "07_shots/video_prompts/MSB001.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "07_shots",
+            "asset_id": "MSB003_VIDEO_PROMPT",
+            "kind": "",
+            "role": "video_prompt",
+            "path": "07_shots/video_prompts/MSB003.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "07_shots",
+            "asset_id": "MSB006_VIDEO_PROMPT",
+            "kind": "",
+            "role": "video_prompt",
+            "path": "07_shots/video_prompts/MSB006.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "07_shots",
+            "asset_id": "MSB009_VIDEO_PROMPT",
+            "kind": "",
+            "role": "video_prompt",
+            "path": "07_shots/video_prompts/MSB009.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "07_shots",
+            "asset_id": "MSB012_VIDEO_PROMPT",
+            "kind": "",
+            "role": "video_prompt",
+            "path": "07_shots/video_prompts/MSB012.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "SCN_COMPOUND_IMAGE_OUTPUT_INDEX",
+            "kind": "",
+            "role": "image_outputs",
+            "path": "08_generation/outputs/images/coin_slot_image_outputs_index.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "SCN_COMPOUND_REJECT_LOG",
+            "kind": "",
+            "role": "rejects",
+            "path": "08_generation/rejects/coin_slot_reject_log.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "SCN_COMPOUND_STORYBOARD_IMAGE_INDEX",
+            "kind": "",
+            "role": "storyboard_image_index",
+            "path": "08_generation/outputs/images/SCN_COMPOUND_storyboard_image_index.csv"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB001_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB001_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB001_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB001_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB002_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB002_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB002_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB002_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB003_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB003_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB003_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB003_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB004_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB004_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB004_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB004_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB005_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB005_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB005_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB005_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB006_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB006_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB006_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB006_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB007_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB007_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB007_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB007_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB008_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB008_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB008_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB008_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB009_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB009_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB009_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB009_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB010_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB010_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB010_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB010_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB011_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB011_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB011_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB011_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB012_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB012_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB012_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB012_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB013_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB013_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB013_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB013_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB014_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB014_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB014_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB014_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB015_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB015_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB015_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB015_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB016_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB016_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB016_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB016_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB017_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB017_v001.png"
+          }
+        ]
+      },
+      "generation_context": {
+        "global_references": [
+          {
+            "ref_id": "THREE_BROTHERS_turnaround_expression_contact_sheet_v001",
+            "asset_ref": "resource:media/01_AIGC/character_design_v2/THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+            "asset_id": "THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+            "path": "media/01_AIGC/character_design_v2/THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+            "origin": "resource",
+            "kind": "character_ref",
+            "role": "character_design_contact_sheet",
+            "note": "三个小朋友统一人设、三视图、表情和服装连续性参考 / Global reference for the three children character identity, turnaround, expressions, and wardrobe continuity.",
+            "version_id": "",
+            "version_status": "",
+            "card_type": "",
+            "card_id": "",
+            "card_title": ""
+          },
+          {
+            "ref_id": "CHR_BRO_A_late_scuffed_reference_v001.png",
+            "asset_ref": "resource:media/01_AIGC/character_design_v2/stage_variants/CHR_BRO_A_late_scuffed_reference_v001.png",
+            "asset_id": "CHR_BRO_A_late_scuffed_reference_v001.png",
+            "path": "media/01_AIGC/character_design_v2/stage_variants/CHR_BRO_A_late_scuffed_reference_v001.png",
+            "origin": "resource",
+            "kind": "image",
+            "role": "image",
+            "note": "给哥哥带一个眼镜",
+            "version_id": "",
+            "version_status": "",
+            "card_type": "",
+            "card_id": "",
+            "card_title": ""
+          },
+          {
+            "ref_id": "001_BIBLE_005_v001.png",
+            "asset_ref": "project:08_generation/jobs/CARD_IMG_20260618_221216/outputs/001_BIBLE_005_v001.png",
+            "asset_id": "001_BIBLE_005_v001.png",
+            "path": "08_generation/jobs/CARD_IMG_20260618_221216/outputs/001_BIBLE_005_v001.png",
+            "origin": "project",
+            "kind": "image",
+            "role": "image",
+            "note": "参考三个混混的设定，这一幕只出现黄毛",
+            "version_id": "v001",
+            "version_status": "current",
+            "card_type": "concept",
+            "card_id": "BIBLE_005",
+            "card_title": ""
+          }
+        ],
+        "context_cards": [
+          {
+            "card_id": "BIBLE_CHARACTER_001",
+            "scope": "project",
+            "act_id": "",
+            "category": "character",
+            "title": "三个小朋友 / Three children",
+            "summary": "第一幕的核心人物组：三个背书包的小学生，熟门熟路但仍然心虚，互相打掩护进入隐藏游戏机房。需要保持年龄、身高差、书包、发型、衣着年代感和表演气质连续。",
+            "visual_direction": "1990年代中国北方小城小学生：旧校服或朴素外套、磨旧书包、略脏鞋面、放学后的疲惫和兴奋并存；动作要小心、鬼祟、彼此贴近。",
+            "prompt_notes": "three Chinese school children in 1990s northern China, carrying worn schoolbags, cautious and sneaky after school, consistent faces, hairstyles, wardrobe and height differences, cinematic realism",
+            "revision_note": "",
+            "negative_prompt": "不要现代校服、智能手机、潮牌服饰、夸张动漫表情、年龄过大或过小、角色身份不一致。",
+            "selected": true,
+            "image_selected": true,
+            "status": "draft",
+            "references": [
+              {
+                "ref_id": "THREE_BROTHERS_turnaround_expression_contact_sheet_v001",
+                "asset_ref": "resource:media/01_AIGC/character_design_v2/THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+                "asset_id": "THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+                "path": "media/01_AIGC/character_design_v2/THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+                "origin": "resource",
+                "kind": "character_ref",
+                "role": "character_design_contact_sheet",
+                "note": "三个小朋友统一人设、三视图、表情和服装连续性参考 / Global reference for the three children character identity, turnaround, expressions, and wardrobe continuity.",
+                "version_id": "",
+                "version_status": "",
+                "card_type": "",
+                "card_id": "",
+                "card_title": ""
+              },
+              {
+                "ref_id": "CHR_BRO_A_late_scuffed_reference_v001.png",
+                "asset_ref": "resource:media/01_AIGC/character_design_v2/stage_variants/CHR_BRO_A_late_scuffed_reference_v001.png",
+                "asset_id": "CHR_BRO_A_late_scuffed_reference_v001.png",
+                "path": "media/01_AIGC/character_design_v2/stage_variants/CHR_BRO_A_late_scuffed_reference_v001.png",
+                "origin": "resource",
+                "kind": "image",
+                "role": "image",
+                "note": "给哥哥带一个眼镜",
+                "version_id": "",
+                "version_status": "",
+                "card_type": "",
+                "card_id": "",
+                "card_title": ""
+              }
+            ],
+            "preview_path": "",
+            "versions": []
+          },
+          {
+            "card_id": "BIBLE_LOCATION_001",
+            "scope": "project",
+            "act_id": "",
+            "category": "location",
+            "title": "破旧居民楼角落与隐藏游戏机房入口 / Compound corner arcade entrance",
+            "summary": "第一幕外部主场景：老居民楼侧面的不起眼角落，暗金属门藏在墙根或楼体边角处，门上有猫眼，老板从里面确认熟人后开门。",
+            "visual_direction": "潮湿水泥墙、掉皮涂料、锈迹铁门、暗窄入口、灰尘和旧广告痕迹；构图强调秘密入口、孩子压低身体靠近、门内外光线反差。",
+            "prompt_notes": "old residential compound corner in 1990s northern Chinese small city, hidden arcade room entrance, rusty dark metal door with peephole, peeling concrete wall, dim afternoon light, secretive composition",
+            "revision_note": "",
+            "negative_prompt": "不要现代商业街、霓虹招牌、干净新楼、豪华游戏厅门面、可读随机文字或过度赛博朋克。",
+            "selected": true,
+            "image_selected": true,
+            "status": "draft",
+            "references": [
+              {
+                "ref_id": "WBX_20260616_024949",
+                "asset_ref": "project:06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+                "asset_id": "WBX_20260616_024949",
+                "path": "06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+                "origin": "project",
+                "kind": "whitebox",
+                "role": "replica_whitebox",
+                "note": "隐藏游戏机房入口的空间、机位、旧墙、金属门、猫眼和三个孩子站位参考；作为场景与道具总概念的白模依据。",
+                "version_id": "",
+                "version_status": "",
+                "card_type": "",
+                "card_id": "",
+                "card_title": "",
+                "usage_note": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。",
+                "generation_guidance": "Whitebox guidance / 白模读取说明:\n- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.\n- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.\n- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.\n- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.\n- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.\n- Source whitebox replica seed: ACT1_SHOT_003_SOURCE_KEYFRAME.\n- Replica intent / 复刻意图: 以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+                "whitebox_interpretation": {
+                  "mode": "spatial_control_only",
+                  "source_asset_id": "ACT1_SHOT_003_SOURCE_KEYFRAME",
+                  "source_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+                  "replica_note": "以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+                  "tags": [
+                    "ACT01",
+                    "SCN_COMPOUND",
+                    "hidden_arcade_door",
+                    "peephole",
+                    "three_children",
+                    "1to1_replica"
+                  ],
+                  "use_for": [
+                    "camera framing and lens/composition",
+                    "subject scale, blocking, pose, sightline, and depth order",
+                    "major set anchors such as doors, windows, corridors, walls, props, and openings",
+                    "main light direction, shadow rhythm, and scene readability"
+                  ],
+                  "preserve": [
+                    "overall aspect ratio and camera angle",
+                    "relative positions between characters and key set pieces",
+                    "door/window/opening height and screen position when present",
+                    "foreground/midground/background separation"
+                  ],
+                  "ignore": [
+                    "gray clay material",
+                    "primitive cube/sphere/cylinder shapes",
+                    "mannequin or toy-like character appearance",
+                    "unfinished low-poly geometry",
+                    "plain studio-white lighting unless the shot explicitly asks for it"
+                  ],
+                  "prompt_bridge": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。"
+                }
+              }
+            ],
+            "preview_path": "",
+            "versions": []
+          },
+          {
+            "card_id": "BIBLE_LOOKDEV_001",
+            "scope": "project",
+            "act_id": "",
+            "category": "lookdev",
+            "title": "90年代北方小城写实质感 / 1990s northern small-city realism",
+            "summary": "全片视觉底色：纪实电影感、低饱和、颗粒但不脏、旧胶片/早期DV记忆感，强调冬春交界或阴天里的灰冷空气。",
+            "visual_direction": "冷灰水泥、褪色红黄广告纸、旧木门和铁门、混浊室内烟雾、钨丝灯与街面自然光混合；摄影机克制，少用夸张广角。",
+            "prompt_notes": "cinematic realism, 1990s northern Chinese small town, muted colors, natural film grain, smoky interiors, mixed tungsten and overcast daylight, grounded documentary texture",
+            "revision_note": "",
+            "negative_prompt": "不要过度磨皮、塑料感、CG感、现代高清广告片、过饱和网红色调、随机英文霓虹和水印。",
+            "selected": true,
+            "image_selected": true,
+            "status": "draft",
+            "references": [],
+            "preview_path": "",
+            "versions": []
+          },
+          {
+            "card_id": "BIBLE_PROP_001",
+            "scope": "project",
+            "act_id": "",
+            "category": "prop",
+            "title": "旧金属门、猫眼与游戏机房道具 / Door, peephole and arcade props",
+            "summary": "关键道具承担叙事信息：猫眼说明老板识别熟人，旧门说明游戏厅隐蔽，室内街机、烟灰缸、硬币和杂乱桌椅说明地下游戏机房生态。",
+            "visual_direction": "门要厚重、旧、暗、带磨损把手和猫眼；室内道具应杂乱但有时代感，街机屏幕亮度压住烟雾，不出现现代 LCD 大屏。",
+            "prompt_notes": "rusty metal door with peephole, worn handle, 1990s arcade machines, coin slot, smoke haze, ashtrays, cluttered stools and cables, period-correct props",
+            "revision_note": "",
+            "negative_prompt": "不要现代网吧、电竞椅、液晶显示器、智能门锁、干净商场电玩、随机品牌文字。",
+            "selected": true,
+            "image_selected": true,
+            "status": "draft",
+            "references": [
+              {
+                "ref_id": "WBX_20260616_024949",
+                "asset_ref": "project:06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+                "asset_id": "WBX_20260616_024949",
+                "path": "06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+                "origin": "project",
+                "kind": "whitebox",
+                "role": "replica_whitebox",
+                "note": "隐藏游戏机房入口的空间、机位、旧墙、金属门、猫眼和三个孩子站位参考；作为场景与道具总概念的白模依据。",
+                "version_id": "",
+                "version_status": "",
+                "card_type": "",
+                "card_id": "",
+                "card_title": "",
+                "usage_note": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。",
+                "generation_guidance": "Whitebox guidance / 白模读取说明:\n- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.\n- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.\n- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.\n- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.\n- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.\n- Source whitebox replica seed: ACT1_SHOT_003_SOURCE_KEYFRAME.\n- Replica intent / 复刻意图: 以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+                "whitebox_interpretation": {
+                  "mode": "spatial_control_only",
+                  "source_asset_id": "ACT1_SHOT_003_SOURCE_KEYFRAME",
+                  "source_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+                  "replica_note": "以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+                  "tags": [
+                    "ACT01",
+                    "SCN_COMPOUND",
+                    "hidden_arcade_door",
+                    "peephole",
+                    "three_children",
+                    "1to1_replica"
+                  ],
+                  "use_for": [
+                    "camera framing and lens/composition",
+                    "subject scale, blocking, pose, sightline, and depth order",
+                    "major set anchors such as doors, windows, corridors, walls, props, and openings",
+                    "main light direction, shadow rhythm, and scene readability"
+                  ],
+                  "preserve": [
+                    "overall aspect ratio and camera angle",
+                    "relative positions between characters and key set pieces",
+                    "door/window/opening height and screen position when present",
+                    "foreground/midground/background separation"
+                  ],
+                  "ignore": [
+                    "gray clay material",
+                    "primitive cube/sphere/cylinder shapes",
+                    "mannequin or toy-like character appearance",
+                    "unfinished low-poly geometry",
+                    "plain studio-white lighting unless the shot explicitly asks for it"
+                  ],
+                  "prompt_bridge": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。"
+                }
+              }
+            ],
+            "preview_path": "",
+            "versions": []
+          },
+          {
+            "card_id": "BIBLE_005",
+            "scope": "project",
+            "act_id": "",
+            "category": "lookdev",
+            "title": "",
+            "summary": "街机厅混混三人组，都是和哥哥同龄的年轻人，但社会痕迹明显，学生气少\n老大，矮个子，黄毛，长相凶狠，耳朵后夹着烟，爱打游戏\n老二，瘦高个，嚣张，穿个白色背心\n老三，胖子，又肥又壮，有点憨憨的",
+            "visual_direction": "",
+            "prompt_notes": "",
+            "revision_note": "",
+            "negative_prompt": "",
+            "selected": true,
+            "image_selected": true,
+            "status": "image_ready",
+            "references": [],
+            "preview_path": "08_generation/jobs/CARD_IMG_20260618_221216/outputs/001_BIBLE_005_v001.png",
+            "versions": [
+              {
+                "version_id": "v001",
+                "output_path": "08_generation/jobs/CARD_IMG_20260618_221216/outputs/001_BIBLE_005_v001.png",
+                "notes": "电影触发生成；用户确认使用第二张。方向：14-15岁初中小痞子，街机厅混混三人组，作为全局人设/氛围参考。",
+                "created_at": "2026-06-18T22:31:50+08:00",
+                "status": "current",
+                "candidate_id": "",
+                "task_id": "",
+                "packet_id": "",
+                "qa": {}
+              }
+            ]
+          }
+        ],
+        "context_references": [
+          {
+            "ref_id": "THREE_BROTHERS_turnaround_expression_contact_sheet_v001",
+            "asset_ref": "resource:media/01_AIGC/character_design_v2/THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+            "asset_id": "THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+            "path": "media/01_AIGC/character_design_v2/THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+            "origin": "resource",
+            "kind": "character_ref",
+            "role": "character_design_contact_sheet",
+            "note": "三个小朋友统一人设、三视图、表情和服装连续性参考 / Global reference for the three children character identity, turnaround, expressions, and wardrobe continuity.",
+            "version_id": "",
+            "version_status": "",
+            "card_type": "",
+            "card_id": "",
+            "card_title": ""
+          },
+          {
+            "ref_id": "CHR_BRO_A_late_scuffed_reference_v001.png",
+            "asset_ref": "resource:media/01_AIGC/character_design_v2/stage_variants/CHR_BRO_A_late_scuffed_reference_v001.png",
+            "asset_id": "CHR_BRO_A_late_scuffed_reference_v001.png",
+            "path": "media/01_AIGC/character_design_v2/stage_variants/CHR_BRO_A_late_scuffed_reference_v001.png",
+            "origin": "resource",
+            "kind": "image",
+            "role": "image",
+            "note": "给哥哥带一个眼镜",
+            "version_id": "",
+            "version_status": "",
+            "card_type": "",
+            "card_id": "",
+            "card_title": ""
+          },
+          {
+            "ref_id": "WBX_20260616_024949",
+            "asset_ref": "project:06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+            "asset_id": "WBX_20260616_024949",
+            "path": "06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+            "origin": "project",
+            "kind": "whitebox",
+            "role": "replica_whitebox",
+            "note": "隐藏游戏机房入口的空间、机位、旧墙、金属门、猫眼和三个孩子站位参考；作为场景与道具总概念的白模依据。",
+            "version_id": "",
+            "version_status": "",
+            "card_type": "",
+            "card_id": "",
+            "card_title": "",
+            "usage_note": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。",
+            "generation_guidance": "Whitebox guidance / 白模读取说明:\n- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.\n- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.\n- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.\n- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.\n- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.\n- Source whitebox replica seed: ACT1_SHOT_003_SOURCE_KEYFRAME.\n- Replica intent / 复刻意图: 以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+            "whitebox_interpretation": {
+              "mode": "spatial_control_only",
+              "source_asset_id": "ACT1_SHOT_003_SOURCE_KEYFRAME",
+              "source_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+              "replica_note": "以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+              "tags": [
+                "ACT01",
+                "SCN_COMPOUND",
+                "hidden_arcade_door",
+                "peephole",
+                "three_children",
+                "1to1_replica"
+              ],
+              "use_for": [
+                "camera framing and lens/composition",
+                "subject scale, blocking, pose, sightline, and depth order",
+                "major set anchors such as doors, windows, corridors, walls, props, and openings",
+                "main light direction, shadow rhythm, and scene readability"
+              ],
+              "preserve": [
+                "overall aspect ratio and camera angle",
+                "relative positions between characters and key set pieces",
+                "door/window/opening height and screen position when present",
+                "foreground/midground/background separation"
+              ],
+              "ignore": [
+                "gray clay material",
+                "primitive cube/sphere/cylinder shapes",
+                "mannequin or toy-like character appearance",
+                "unfinished low-poly geometry",
+                "plain studio-white lighting unless the shot explicitly asks for it"
+              ],
+              "prompt_bridge": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。"
+            }
+          },
+          {
+            "ref_id": "WBX_20260616_024949",
+            "asset_ref": "project:06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+            "asset_id": "WBX_20260616_024949",
+            "path": "06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+            "origin": "project",
+            "kind": "whitebox",
+            "role": "replica_whitebox",
+            "note": "隐藏游戏机房入口的空间、机位、旧墙、金属门、猫眼和三个孩子站位参考；作为场景与道具总概念的白模依据。",
+            "version_id": "",
+            "version_status": "",
+            "card_type": "",
+            "card_id": "",
+            "card_title": "",
+            "usage_note": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。",
+            "generation_guidance": "Whitebox guidance / 白模读取说明:\n- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.\n- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.\n- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.\n- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.\n- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.\n- Source whitebox replica seed: ACT1_SHOT_003_SOURCE_KEYFRAME.\n- Replica intent / 复刻意图: 以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+            "whitebox_interpretation": {
+              "mode": "spatial_control_only",
+              "source_asset_id": "ACT1_SHOT_003_SOURCE_KEYFRAME",
+              "source_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+              "replica_note": "以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+              "tags": [
+                "ACT01",
+                "SCN_COMPOUND",
+                "hidden_arcade_door",
+                "peephole",
+                "three_children",
+                "1to1_replica"
+              ],
+              "use_for": [
+                "camera framing and lens/composition",
+                "subject scale, blocking, pose, sightline, and depth order",
+                "major set anchors such as doors, windows, corridors, walls, props, and openings",
+                "main light direction, shadow rhythm, and scene readability"
+              ],
+              "preserve": [
+                "overall aspect ratio and camera angle",
+                "relative positions between characters and key set pieces",
+                "door/window/opening height and screen position when present",
+                "foreground/midground/background separation"
+              ],
+              "ignore": [
+                "gray clay material",
+                "primitive cube/sphere/cylinder shapes",
+                "mannequin or toy-like character appearance",
+                "unfinished low-poly geometry",
+                "plain studio-white lighting unless the shot explicitly asks for it"
+              ],
+              "prompt_bridge": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。"
+            }
+          }
+        ],
+        "target_references": [
+          {
+            "ref_id": "WBX_20260616_024949",
+            "asset_ref": "project:06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+            "asset_id": "WBX_20260616_024949",
+            "path": "06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+            "origin": "project",
+            "kind": "whitebox",
+            "role": "replica_whitebox",
+            "note": "高精度白模复刻：默认作为该分镜空间、机位、光照和人物动作参考 / high-fidelity replica whitebox for blocking, camera, lighting, and pose.",
+            "version_id": "",
+            "version_status": "",
+            "card_type": "",
+            "card_id": "",
+            "card_title": "",
+            "usage_note": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。",
+            "generation_guidance": "Whitebox guidance / 白模读取说明:\n- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.\n- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.\n- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.\n- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.\n- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.\n- Source whitebox replica seed: ACT1_SHOT_003_SOURCE_KEYFRAME.\n- Replica intent / 复刻意图: 以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+            "whitebox_interpretation": {
+              "mode": "spatial_control_only",
+              "source_asset_id": "ACT1_SHOT_003_SOURCE_KEYFRAME",
+              "source_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+              "replica_note": "以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+              "tags": [
+                "ACT01",
+                "SCN_COMPOUND",
+                "hidden_arcade_door",
+                "peephole",
+                "three_children",
+                "1to1_replica"
+              ],
+              "use_for": [
+                "camera framing and lens/composition",
+                "subject scale, blocking, pose, sightline, and depth order",
+                "major set anchors such as doors, windows, corridors, walls, props, and openings",
+                "main light direction, shadow rhythm, and scene readability"
+              ],
+              "preserve": [
+                "overall aspect ratio and camera angle",
+                "relative positions between characters and key set pieces",
+                "door/window/opening height and screen position when present",
+                "foreground/midground/background separation"
+              ],
+              "ignore": [
+                "gray clay material",
+                "primitive cube/sphere/cylinder shapes",
+                "mannequin or toy-like character appearance",
+                "unfinished low-poly geometry",
+                "plain studio-white lighting unless the shot explicitly asks for it"
+              ],
+              "prompt_bridge": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。"
+            }
+          }
+        ],
+        "target_context": {
+          "scene": {
+            "scene_id": "SCN_COMPOUND",
+            "title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade"
+          },
+          "nearby_storyboard_cards": [
+            {
+              "item_id": "ACT1_SHOT_001",
+              "scene_id": "SCN_COMPOUND",
+              "beat": "放学后偏离大路",
+              "shot_type": "远景 / establishing wide shot",
+              "frame_description": "傍晚的北方小城，旧居民楼压在灰色街道边。三个背书包的小朋友从放学人流边缘脱离，避开大路，朝居民楼背面走去。",
+              "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small city after school, old concrete apartment blocks and dusty street, muted gray winter palette, three Chinese schoolchildren with worn backpacks quietly leaving the main road and heading toward the back corner of a residential building, cautious secretive body language, realistic film still, 35mm lens, natural dusk light, subtle film grain, clean composition, no modern cars, no smartphones, no readable text, no watermark",
+              "notes": "建立时代、地域和偷偷行动。游戏厅入口不要过早显眼，先让路线和氛围成立。",
+              "revision_note": "",
+              "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/001_ACT1_SHOT_001.png",
+              "versions": []
+            },
+            {
+              "item_id": "ACT1_SHOT_002",
+              "scene_id": "SCN_COMPOUND",
+              "beat": "沿墙根靠近隐藏入口",
+              "shot_type": "中远景 / tracking medium-wide shot",
+              "frame_description": "三个孩子贴着居民楼墙根走，经过旧管道和剥落墙皮，互相用眼神确认没人注意，动作熟练又紧张。",
+              "image_prompt": "Cinematic film keyframe, three Chinese schoolchildren in 1990s school clothes sneaking along the wall of a shabby residential building, worn backpacks, old pipes, peeling paint, chipped concrete, one child glancing back nervously while another gestures to stay quiet, northern Chinese small-town realism, low handheld perspective, subdued colors, high-quality stable image, no modern objects, no random text, no watermark",
+              "notes": "鬼鬼祟祟但不要惊悚化，表情里要带着窃喜，哥哥在给弟弟讲游戏有多好玩，弟弟全神贯注的听着",
+              "revision_note": "",
+              "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/002_ACT1_SHOT_002.png",
+              "versions": []
+            },
+            {
+              "item_id": "ACT1_SHOT_003",
+              "scene_id": "SCN_COMPOUND",
+              "beat": "旧门和猫眼出现",
+              "shot_type": "中景 / medium shot",
+              "frame_description": "居民楼一楼角落有一扇不起眼的旧金属门，门上有猫眼，没有正式招牌。三个孩子停在门前，压低声音等待。",
+              "image_prompt": "Cinematic storyboard keyframe, hidden arcade entrance in the corner of an old Chinese residential building, 1990s northern small city, shabby closed metal door with a small peephole, no obvious signboard, three schoolchildren with backpacks standing on the left side whispering and looking secretive, cracked concrete wall, dim corridor shadow, realistic film still, strong readable composition, no modern signage, no readable text, no watermark",
+              "notes": "旧门+猫眼是第一幕核心视觉资产，门要普通、隐蔽、可信。",
+              "revision_note": "这个门不太像是游戏厅的门",
+              "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+              "versions": []
+            },
+            {
+              "item_id": "ACT1_SHOT_004",
+              "scene_id": "SCN_COMPOUND",
+              "beat": "老板从猫眼确认熟人",
+              "shot_type": "猫眼特写 / peephole close-up",
+              "frame_description": "从门内猫眼视角看出去，三个孩子的脸被猫眼畸变压缩，紧张又期待。门内老板确认他们是熟客。",
+              "image_prompt": "Cinematic close-up keyframe from inside a closed door peephole, fisheye peephole distortion, three Chinese schoolchildren with worn backpacks visible outside in a shabby apartment corner, nervous excited faces, 1990s northern China, faint green-blue arcade light around the peephole edge, realistic film texture, suspenseful but not horror, clean image, no text, no watermark, no modern objects",
+              "notes": "用猫眼制造“被审查/被放行”的边界感。可后续关联孩子人设。",
+              "revision_note": "",
+              "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/004_ACT1_SHOT_004.png",
+              "versions": []
+            },
+            {
+              "item_id": "ACT1_SHOT_005",
+              "scene_id": "SCN_COMPOUND",
+              "beat": "门缝打开，机房气息泄出",
+              "shot_type": "近景 / close medium shot",
+              "frame_description": "旧门打开一条缝，老板的半张脸和手出现在门后。蓝绿街机光、烟雾和嘈杂声从门缝先涌出来，孩子们身体微微前倾。",
+              "image_prompt": "Cinematic keyframe, shabby metal door opening a narrow crack, middle-aged Chinese arcade owner partly visible inside, hand holding the door, blue-green CRT arcade light and cigarette smoke leaking from the interior, three schoolchildren with backpacks waiting outside and leaning forward, 1990s northern Chinese residential building corner, realistic gritty atmosphere, clean film still, no readable text, no watermark, no modern elements",
+              "notes": "门缝是两个世界的边界，光、烟和声音比台词更重要。",
+              "revision_note": "",
+              "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/005_ACT1_SHOT_005.png",
+              "versions": []
+            },
+            {
+              "item_id": "ACT1_SHOT_006",
+              "scene_id": "SCN_ARCADE",
+              "beat": "孩子进入乌烟瘴气的游戏厅",
+              "shot_type": "儿童视角中景 / child-height medium shot",
+              "frame_description": "三个孩子刚进室内，画面被烟雾、街机屏幕光和拥挤背影包围。他们像闯进另一个秩序混乱的世界。",
+              "image_prompt": "Cinematic storyboard keyframe inside a smoky 1990s Chinese underground arcade, three schoolchildren with worn backpacks entering from a doorway, blue and green CRT arcade cabinet glow, cigarette smoke hanging under a low ceiling, crowded silhouettes of adults and teenagers, gritty northern small-town atmosphere, child-height camera perspective, high-quality film still, no modern machines, no smartphone, no readable random text, no watermark",
+              "notes": "三人仍然是画面锚点，不能被杂乱人群完全吞掉。",
+              "revision_note": "",
+              "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/006_ACT1_SHOT_006.png",
+              "versions": []
+            },
+            {
+              "item_id": "ACT1_SHOT_007",
+              "scene_id": "SCN_ARCADE",
+              "beat": "游戏厅鱼龙混杂全貌",
+              "shot_type": "广角全景 / wide interior shot",
+              "frame_description": "低矮拥挤的游戏厅里，一排排旧街机发出蓝绿光。成年人、少年和孩子混在一起，烟雾让空气显得浑浊。",
+              "image_prompt": "Wide cinematic interior keyframe of a crowded 1990s Chinese arcade hall, low ceiling, rows of old arcade cabinets, cigarette smoke, mixed crowd of adult men, teenagers, and children, three schoolchildren with backpacks visible near the entrance as small figures, blue-green CRT glow, gritty social realism, northern Chinese small-town underground game room, balanced composition, high image quality, no cyberpunk neon, no modern screens, no readable text, no watermark",
+              "notes": "这一条是游戏厅场景设定核心图，既要乱，又要构图可读。",
+              "revision_note": "",
+              "output_path": "",
+              "versions": [
+                {
+                  "version_id": "current",
+                  "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/007_ACT1_SHOT_007.png",
+                  "notes": "",
+                  "created_at": "",
+                  "status": "rejected",
+                  "candidate_id": "",
+                  "task_id": "",
+                  "packet_id": "",
+                  "qa": {}
+                }
+              ]
+            },
+            {
+              "item_id": "ACT1_SHOT_008",
+              "scene_id": "SCN_ARCADE",
+              "beat": "三个孩子站定，兴奋与不安并存",
+              "shot_type": "中近景 / medium close shot",
+              "frame_description": "三个孩子站在游戏厅内部，脸被街机光照亮。他们互相看一眼，兴奋和不安同时出现，第一幕停在正式进入灰色成人空间的瞬间。",
+              "image_prompt": "Cinematic medium close-up keyframe, three Chinese schoolchildren with worn backpacks standing inside a smoky 1990s underground arcade, CRT blue-green light on their faces, expressions mixed with excitement and unease, blurred crowded arcade background, cigarette smoke, gritty realistic film still, northern Chinese small-town atmosphere, strong character continuity, clean stable image, no distorted faces, no modern objects, no readable text, no watermark",
+              "notes": "第一幕收束图，情绪锚点。后续可接投币、游戏机或危险事件。",
+              "revision_note": "",
+              "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/008_ACT1_SHOT_008.png",
+              "versions": []
+            },
+            {
+              "item_id": "ACT2_SHOT_001",
+              "scene_id": "SCN_ARCADE",
+              "beat": "被游戏厅气氛震住",
+              "shot_type": "儿童视角中景 / child-height medium shot",
+              "frame_description": "三个孩子刚进入游戏厅内部，两个弟弟停住脚步，被烟雾、CRT屏幕光和混杂人群震住；哥哥故作镇定，侧身示意他们跟紧。",
+              "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Three Chinese schoolboys just inside the doorway; two younger boys frozen by smoke, CRT light and crowded silhouettes, older brother pretending to be mature and signaling them to follow, child-height perspective, blue-green light on faces.",
+              "notes": "承接第一幕进入室内，强调两个弟弟的震慑和哥哥的装成熟。",
+              "revision_note": "",
+              "output_path": "",
+              "versions": []
+            },
+            {
+              "item_id": "ACT2_SHOT_002",
+              "scene_id": "SCN_ARCADE",
+              "beat": "哥哥掏出一块钱",
+              "shot_type": "手部特写 / insert close-up",
+              "frame_description": "哥哥从口袋里掏出一张皱旧的一元人民币，纸币被手汗和年代痕迹压皱，背景是模糊的柜台和老板。",
+              "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Insert close-up of an older brother child hand pulling out a worn 1990s Chinese one-yuan banknote, wrinkled paper texture, sweaty fingers, blurred arcade counter and owner in background, authentic period detail.",
+              "notes": "钱必须真实、年代感强；避免可读文字过清导致模型乱字，可强调纸币质感和颜色。",
+              "revision_note": "",
+              "output_path": "",
+              "versions": []
+            },
+            {
+              "item_id": "ACT2_SHOT_003",
+              "scene_id": "SCN_ARCADE",
+              "beat": "三个游戏币落入掌心",
+              "shot_type": "道具特写 / prop insert",
+              "frame_description": "老板把三个粗糙的金属游戏币放到哥哥掌心，硬币边缘磨损，反射着绿色街机光。两个弟弟在虚焦里盯着。",
+              "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Close-up of three rough worn metal arcade tokens dropping into a schoolboy palm, chipped edges, green CRT reflections, younger brothers blurred in background watching eagerly, authentic 1990s Chinese arcade tokens.",
+              "notes": "游戏币是核心年代道具，要粗糙、廉价、被摸旧。",
+              "revision_note": "",
+              "output_path": "",
+              "versions": []
+            },
+            {
+              "item_id": "ACT2_SHOT_004",
+              "scene_id": "SCN_ARCADE",
+              "beat": "走向真人快打机",
+              "shot_type": "跟拍中景 / tracking medium shot",
+              "frame_description": "哥哥握着游戏币，驾轻就熟地穿过人群走向一台真人快打街机；两个弟弟紧跟在后面，眼睛被屏幕吸住。",
+              "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Tracking medium shot of older brother confidently leading two younger boys through crowded smoky arcade toward a Mortal Kombat-style old fighting game cabinet, tokens in hand, younger boys staring at screens, no readable logos.",
+              "notes": "街机可暗示真人快打，不要出现清晰商标文字。",
+              "revision_note": "",
+              "output_path": "",
+              "versions": []
+            },
+            {
+              "item_id": "ACT2_SHOT_005",
+              "scene_id": "SCN_ARCADE",
+              "beat": "哥哥投币开打",
+              "shot_type": "街机侧面近景 / side close shot",
+              "frame_description": "游戏币投入投币口，哥哥双手落在摇杆和按钮上，动作熟练；两个弟弟站在旁边，脸上是崇拜和紧张。",
+              "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Side close shot of a token entering an old arcade coin slot, older brother hands confidently on joystick and buttons, two younger brothers beside him watching with admiration and tension, CRT fighting game glow.",
+              "notes": "投币口、手、按钮、弟弟表情要一起服务哥哥“熟练”的形象。",
+              "revision_note": "",
+              "output_path": "",
+              "versions": []
+            },
+            {
+              "item_id": "ACT2_SHOT_006",
+              "scene_id": "SCN_ARCADE",
+              "beat": "哥哥连胜，弟弟欢呼",
+              "shot_type": "中近景 / medium close shot",
+              "frame_description": "屏幕光照在哥哥脸上，他压着得意继续操作；两个弟弟在旁边兴奋地小声欢呼，周围开始有人回头。",
+              "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Medium close shot of older brother lit by CRT glow, focused and slightly smug while playing a fighting game, two younger brothers cheering quietly beside him, nearby teenagers turning their heads, smoky arcade background.",
+              "notes": "情绪从震慑转为短暂胜利，哥哥不能过分夸张。",
+              "revision_note": "",
+              "output_path": "",
+              "versions": []
+            },
+            {
+              "item_id": "ACT2_SHOT_007",
+              "scene_id": "SCN_ARCADE",
+              "beat": "围观人群变多",
+              "shot_type": "广角压迫镜头 / crowded wide shot",
+              "frame_description": "街机周围的人越围越多，肩膀和后脑勺形成压迫感。三个孩子被挤在机器前，哥哥仍然站在中心。",
+              "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Crowded wide shot around an old fighting game cabinet, shoulders and backs forming pressure around three schoolboys, older brother centered at controls, smoky low ceiling, plastic stools, mixed teenagers and adults but no modern clothing.",
+              "notes": "围观是危险升温，不只是热闹。",
+              "revision_note": "",
+              "output_path": "",
+              "versions": []
+            },
+            {
+              "item_id": "ACT2_SHOT_008",
+              "scene_id": "SCN_ARCADE",
+              "beat": "黄毛插入副机位投币挑战",
+              "shot_type": "双人机位中景 / two-player medium shot",
+              "frame_description": "一个和哥哥年纪相仿的黄毛小痞子突然挤到副操作位，不说话直接投币。哥哥侧头愣了一下，两个弟弟也安静下来。",
+              "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Medium shot of a same-age teenage yellow-haired local punk boy pushing into the second player position and dropping a token without speaking, older brother surprised but composed, younger brothers suddenly quiet, old dual-control arcade cabinet.",
+              "notes": "黄毛必须是初中生小痞子，不是成年人；挑战动作要干脆。",
+              "revision_note": "",
+              "output_path": "",
+              "versions": []
+            },
+            {
+              "item_id": "ACT2_SHOT_009",
+              "scene_id": "SCN_ARCADE",
+              "beat": "哥哥应战并赢第一局",
+              "shot_type": "过肩对抗镜头 / over-the-shoulder duel shot",
+              "frame_description": "从黄毛肩后看哥哥操作，哥哥嘴角轻微一笑后快速按键，屏幕光把两人的脸分成冷暖两侧。",
+              "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Over-the-shoulder duel shot from behind the yellow-haired teen punk, older brother at opposite controls with a restrained smirk, fast hands on buttons, CRT light splitting their faces, tense arcade crowd around them.",
+              "notes": "强调哥哥的轻蔑和熟练，但仍保持孩子气。",
+              "revision_note": "",
+              "output_path": "",
+              "versions": []
+            },
+            {
+              "item_id": "ACT2_SHOT_010",
+              "scene_id": "SCN_ARCADE",
+              "beat": "黄毛骂骂咧咧再次投币",
+              "shot_type": "快速剪辑特写组 / montage inserts",
+              "frame_description": "黄毛不服气，嘴里骂着又掏游戏币。画面切到投币口、狰狞表情、按键手指和弟弟紧张的眼神。",
+              "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Rapid montage-style storyboard panel: yellow-haired teen punk angry and cursing, another token pushed into coin slot, grimacing face, aggressive fingers smashing arcade buttons, younger brothers watching nervously, gritty smoky arcade.",
+              "notes": "这条可以作为快剪提示；不要生成文字脏话。",
+              "revision_note": "",
+              "output_path": "",
+              "versions": []
+            },
+            {
+              "item_id": "ACT2_SHOT_011",
+              "scene_id": "SCN_ARCADE",
+              "beat": "黄毛连输后砸按钮",
+              "shot_type": "低角度近景 / low close shot",
+              "frame_description": "连续失败后，黄毛用拳头砸了一下按钮台，塑料按钮和金属面板震动。哥哥和弟弟都短暂僵住。",
+              "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Low close shot of yellow-haired teen punk slamming his fist onto an old arcade control panel after repeated losses, buttons shaking, older brother and younger boys frozen in background, tension under CRT glow.",
+              "notes": "这是危险第一次显形，控制力度，不要变成打斗。",
+              "revision_note": "",
+              "output_path": "",
+              "versions": []
+            },
+            {
+              "item_id": "ACT2_SHOT_012",
+              "scene_id": "SCN_ARCADE",
+              "beat": "黄毛离开前恶狠狠盯哥哥",
+              "shot_type": "凝视中近景 / tense medium close shot",
+              "frame_description": "黄毛转身离开前停了一下，恶狠狠地盯了哥哥一眼，没有说话。哥哥表面得意，两个弟弟的笑意收住。",
+              "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Tense medium close shot of same-age yellow-haired punk turning away but stopping to glare silently at the older brother, older brother trying to look proud, younger brothers’ smiles fading, smoky arcade crowd blurred behind, ominous but realistic.",
+              "notes": "第二幕收束在无声威胁，给后续冲突埋钩子。",
+              "revision_note": "",
+              "output_path": "",
+              "versions": []
+            }
+          ],
+          "related_assets": [
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "03_story",
+              "asset_id": "SCN_COMPOUND_STORY_BEATS",
+              "kind": "",
+              "role": "beat_sheet",
+              "path": "03_story/beats/coin_slot_sample_beat_sheet.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "03_story",
+              "asset_id": "SCN_COMPOUND_FULL_SHOT_LIST",
+              "kind": "",
+              "role": "full_shot_list",
+              "path": "07_shots/shot_list.csv"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "04_lookdev",
+              "asset_id": "SCN_COMPOUND_LOOK_BIBLE",
+              "kind": "",
+              "role": "look_bible",
+              "path": "04_lookdev/references/coin_slot_look_bible_v001.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "04_lookdev",
+              "asset_id": "SCN_COMPOUND_COLOR_SCRIPT",
+              "kind": "",
+              "role": "color_script",
+              "path": "04_lookdev/palettes/coin_slot_color_script.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "04_lookdev",
+              "asset_id": "SCN_COMPOUND_VISUAL_REFS",
+              "kind": "",
+              "role": "visual_references",
+              "path": "04_lookdev/references/coin_slot_visual_references.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "04_lookdev",
+              "asset_id": "SCN_COMPOUND_SCENE_REFERENCE",
+              "kind": "",
+              "role": "scene_reference",
+              "path": "media/01_AIGC/scene_refs/SC_01_compound_corner_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "05_asset_bible",
+              "asset_id": "SCN_COMPOUND_CHARACTER_STAGE_LOCKS",
+              "kind": "",
+              "role": "character_stage_locks",
+              "path": "05_asset_bible/character_stage_locks/coin_slot_character_stage_locks.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "05_asset_bible",
+              "asset_id": "SCN_COMPOUND_LOCATION_BIBLE",
+              "kind": "",
+              "role": "location_bible",
+              "path": "05_asset_bible/locations/coin_slot_location_bible.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "05_asset_bible",
+              "asset_id": "SCN_COMPOUND_CONTINUITY_LOCKS",
+              "kind": "",
+              "role": "continuity_locks",
+              "path": "05_asset_bible/continuity/coin_slot_continuity_locks.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "SCN_COMPOUND_SCENE_LOCK",
+              "kind": "",
+              "role": "scene_lock",
+              "path": "06_previs/scene_locks/scn-compound/scene_lock.yaml"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "SCN_COMPOUND_CAMERA_MANIFEST",
+              "kind": "",
+              "role": "camera_manifest",
+              "path": "06_previs/scene_locks/scn-compound/camera_manifest.csv"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "SCN_COMPOUND_REFERENCE_ASSETS",
+              "kind": "",
+              "role": "reference_assets",
+              "path": "06_previs/scene_locks/scn-compound/reference_assets.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "SCN_COMPOUND_WHITEBOX_INDEX",
+              "kind": "",
+              "role": "whitebox_index",
+              "path": "06_previs/scene_locks/scn-compound/whitebox_index.csv"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB001_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB002_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB002.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB003_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB003.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB004_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB004.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB005_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB005.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB006_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB006.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB007_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB007.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB008_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB008.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB009_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB009.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB010_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB010.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB011_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB011.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB012_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB012.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB013_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB013.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB014_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB014.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB015_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB015.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB016_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB016.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB017_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB017.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB018_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB018.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "07_shots",
+              "asset_id": "SCN_COMPOUND_SHOT_LIST",
+              "kind": "",
+              "role": "shot_list",
+              "path": "07_shots/shot_list.csv"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "07_shots",
+              "asset_id": "MSB001_IMAGE_PROMPT",
+              "kind": "",
+              "role": "image_prompt",
+              "path": "07_shots/prompts/MSB001.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "07_shots",
+              "asset_id": "MSB003_IMAGE_PROMPT",
+              "kind": "",
+              "role": "image_prompt",
+              "path": "07_shots/prompts/MSB003.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "07_shots",
+              "asset_id": "MSB006_IMAGE_PROMPT",
+              "kind": "",
+              "role": "image_prompt",
+              "path": "07_shots/prompts/MSB006.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "07_shots",
+              "asset_id": "MSB009_IMAGE_PROMPT",
+              "kind": "",
+              "role": "image_prompt",
+              "path": "07_shots/prompts/MSB009.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "07_shots",
+              "asset_id": "MSB012_IMAGE_PROMPT",
+              "kind": "",
+              "role": "image_prompt",
+              "path": "07_shots/prompts/MSB012.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "07_shots",
+              "asset_id": "SCN_COMPOUND_SHOT_INDEX_188",
+              "kind": "",
+              "role": "scene_shot_index",
+              "path": "07_shots/scene_slices/SCN_COMPOUND_shot_index.csv"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "07_shots",
+              "asset_id": "SCN_COMPOUND_PROMPT_PACK_188",
+              "kind": "",
+              "role": "scene_prompt_pack",
+              "path": "07_shots/scene_slices/SCN_COMPOUND_prompt_pack.csv"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "07_shots",
+              "asset_id": "MSB001_VIDEO_PROMPT",
+              "kind": "",
+              "role": "video_prompt",
+              "path": "07_shots/video_prompts/MSB001.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "07_shots",
+              "asset_id": "MSB003_VIDEO_PROMPT",
+              "kind": "",
+              "role": "video_prompt",
+              "path": "07_shots/video_prompts/MSB003.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "07_shots",
+              "asset_id": "MSB006_VIDEO_PROMPT",
+              "kind": "",
+              "role": "video_prompt",
+              "path": "07_shots/video_prompts/MSB006.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "07_shots",
+              "asset_id": "MSB009_VIDEO_PROMPT",
+              "kind": "",
+              "role": "video_prompt",
+              "path": "07_shots/video_prompts/MSB009.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "07_shots",
+              "asset_id": "MSB012_VIDEO_PROMPT",
+              "kind": "",
+              "role": "video_prompt",
+              "path": "07_shots/video_prompts/MSB012.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "SCN_COMPOUND_IMAGE_OUTPUT_INDEX",
+              "kind": "",
+              "role": "image_outputs",
+              "path": "08_generation/outputs/images/coin_slot_image_outputs_index.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "SCN_COMPOUND_REJECT_LOG",
+              "kind": "",
+              "role": "rejects",
+              "path": "08_generation/rejects/coin_slot_reject_log.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "SCN_COMPOUND_STORYBOARD_IMAGE_INDEX",
+              "kind": "",
+              "role": "storyboard_image_index",
+              "path": "08_generation/outputs/images/SCN_COMPOUND_storyboard_image_index.csv"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB001_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB001_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB001_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB001_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB002_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB002_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB002_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB002_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB003_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB003_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB003_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB003_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB004_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB004_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB004_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB004_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB005_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB005_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB005_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB005_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB006_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB006_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB006_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB006_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB007_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB007_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB007_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB007_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB008_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB008_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB008_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB008_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB009_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB009_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB009_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB009_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB010_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB010_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB010_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB010_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB011_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB011_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB011_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB011_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB012_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB012_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB012_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB012_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB013_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB013_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB013_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB013_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB014_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB014_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB014_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB014_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB015_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB015_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB015_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB015_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB016_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB016_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB016_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB016_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB017_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB017_v001.png"
+            }
+          ]
+        },
+        "whitebox_guidance": [
+          "Whitebox guidance / 白模读取说明:\n- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.\n- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.\n- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.\n- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.\n- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.\n- Source whitebox replica seed: ACT1_SHOT_003_SOURCE_KEYFRAME.\n- Replica intent / 复刻意图: 以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。"
+        ]
+      },
+      "whitebox_guidance": [
+        "Whitebox guidance / 白模读取说明:\n- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.\n- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.\n- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.\n- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.\n- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.\n- Source whitebox replica seed: ACT1_SHOT_003_SOURCE_KEYFRAME.\n- Replica intent / 复刻意图: 以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。"
+      ],
+      "suggested_version_id": "v001",
+      "suggested_candidate_outputs": [
+        {
+          "candidate_id": "c01",
+          "version_id": "v001_c01",
+          "output_path": "08_generation/jobs/CARD_IMG_20260619_004223/outputs/003_ACT1_SHOT_003_v001_c01.png",
+          "output_absolute_path": "/Users/jaychoupp/Desktop/Story/Film/projects/coin-slot/08_generation/jobs/CARD_IMG_20260619_004223/outputs/003_ACT1_SHOT_003_v001_c01.png"
+        },
+        {
+          "candidate_id": "c02",
+          "version_id": "v001_c02",
+          "output_path": "08_generation/jobs/CARD_IMG_20260619_004223/outputs/003_ACT1_SHOT_003_v001_c02.png",
+          "output_absolute_path": "/Users/jaychoupp/Desktop/Story/Film/projects/coin-slot/08_generation/jobs/CARD_IMG_20260619_004223/outputs/003_ACT1_SHOT_003_v001_c02.png"
+        },
+        {
+          "candidate_id": "c03",
+          "version_id": "v001_c03",
+          "output_path": "08_generation/jobs/CARD_IMG_20260619_004223/outputs/003_ACT1_SHOT_003_v001_c03.png",
+          "output_absolute_path": "/Users/jaychoupp/Desktop/Story/Film/projects/coin-slot/08_generation/jobs/CARD_IMG_20260619_004223/outputs/003_ACT1_SHOT_003_v001_c03.png"
+        }
+      ],
+      "suggested_output_path": "08_generation/jobs/CARD_IMG_20260619_004223/outputs/003_ACT1_SHOT_003_v001_c01.png",
+      "suggested_output_absolute_path": "/Users/jaychoupp/Desktop/Story/Film/projects/coin-slot/08_generation/jobs/CARD_IMG_20260619_004223/outputs/003_ACT1_SHOT_003_v001_c01.png"
+    },
+    {
+      "task_id": "CARD_IMG_20260619_004223_004",
+      "card_type": "storyboard",
+      "item_id": "ACT1_SHOT_004",
+      "scene_id": "SCN_COMPOUND",
+      "beat": "老板从猫眼确认熟人",
+      "shot_type": "猫眼特写 / peephole close-up",
+      "frame_description": "从门内猫眼视角看出去，三个孩子的脸被猫眼畸变压缩，紧张又期待。门内老板确认他们是熟客。",
+      "image_prompt": "Cinematic close-up keyframe from inside a closed door peephole, fisheye peephole distortion, three Chinese schoolchildren with worn backpacks visible outside in a shabby apartment corner, nervous excited faces, 1990s northern China, faint green-blue arcade light around the peephole edge, realistic film texture, suspenseful but not horror, clean image, no text, no watermark, no modern objects",
+      "video_prompt": "Peephole POV: the children shift slightly as they wait; muffled arcade noise grows behind the door, then a lock clicks.",
+      "notes": "用猫眼制造“被审查/被放行”的边界感。可后续关联孩子人设。",
+      "revision_note": "",
+      "target_references": [
+        {
+          "ref_id": "WBX_20260616_024949",
+          "asset_ref": "project:06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+          "asset_id": "WBX_20260616_024949",
+          "path": "06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+          "origin": "project",
+          "kind": "whitebox",
+          "role": "replica_whitebox",
+          "note": "高精度白模复刻：默认作为该分镜空间、机位、光照和人物动作参考 / high-fidelity replica whitebox for blocking, camera, lighting, and pose.",
+          "version_id": "",
+          "version_status": "",
+          "card_type": "",
+          "card_id": "",
+          "card_title": "",
+          "usage_note": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。",
+          "generation_guidance": "Whitebox guidance / 白模读取说明:\n- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.\n- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.\n- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.\n- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.\n- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.\n- Source whitebox replica seed: ACT1_SHOT_003_SOURCE_KEYFRAME.\n- Replica intent / 复刻意图: 以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+          "whitebox_interpretation": {
+            "mode": "spatial_control_only",
+            "source_asset_id": "ACT1_SHOT_003_SOURCE_KEYFRAME",
+            "source_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+            "replica_note": "以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+            "tags": [
+              "ACT01",
+              "SCN_COMPOUND",
+              "hidden_arcade_door",
+              "peephole",
+              "three_children",
+              "1to1_replica"
+            ],
+            "use_for": [
+              "camera framing and lens/composition",
+              "subject scale, blocking, pose, sightline, and depth order",
+              "major set anchors such as doors, windows, corridors, walls, props, and openings",
+              "main light direction, shadow rhythm, and scene readability"
+            ],
+            "preserve": [
+              "overall aspect ratio and camera angle",
+              "relative positions between characters and key set pieces",
+              "door/window/opening height and screen position when present",
+              "foreground/midground/background separation"
+            ],
+            "ignore": [
+              "gray clay material",
+              "primitive cube/sphere/cylinder shapes",
+              "mannequin or toy-like character appearance",
+              "unfinished low-poly geometry",
+              "plain studio-white lighting unless the shot explicitly asks for it"
+            ],
+            "prompt_bridge": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。"
+          }
+        }
+      ],
+      "existing_output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/004_ACT1_SHOT_004.png",
+      "existing_versions": [],
+      "nearby_context": {
+        "scene": {
+          "scene_id": "SCN_COMPOUND",
+          "title": "居民楼角落 / Compound corner",
+          "act_id": "ACT01",
+          "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade"
+        },
+        "nearby_storyboard_cards": [
+          {
+            "item_id": "ACT1_SHOT_001",
+            "scene_id": "SCN_COMPOUND",
+            "beat": "放学后偏离大路",
+            "shot_type": "远景 / establishing wide shot",
+            "frame_description": "傍晚的北方小城，旧居民楼压在灰色街道边。三个背书包的小朋友从放学人流边缘脱离，避开大路，朝居民楼背面走去。",
+            "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small city after school, old concrete apartment blocks and dusty street, muted gray winter palette, three Chinese schoolchildren with worn backpacks quietly leaving the main road and heading toward the back corner of a residential building, cautious secretive body language, realistic film still, 35mm lens, natural dusk light, subtle film grain, clean composition, no modern cars, no smartphones, no readable text, no watermark",
+            "notes": "建立时代、地域和偷偷行动。游戏厅入口不要过早显眼，先让路线和氛围成立。",
+            "revision_note": "",
+            "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/001_ACT1_SHOT_001.png",
+            "versions": []
+          },
+          {
+            "item_id": "ACT1_SHOT_002",
+            "scene_id": "SCN_COMPOUND",
+            "beat": "沿墙根靠近隐藏入口",
+            "shot_type": "中远景 / tracking medium-wide shot",
+            "frame_description": "三个孩子贴着居民楼墙根走，经过旧管道和剥落墙皮，互相用眼神确认没人注意，动作熟练又紧张。",
+            "image_prompt": "Cinematic film keyframe, three Chinese schoolchildren in 1990s school clothes sneaking along the wall of a shabby residential building, worn backpacks, old pipes, peeling paint, chipped concrete, one child glancing back nervously while another gestures to stay quiet, northern Chinese small-town realism, low handheld perspective, subdued colors, high-quality stable image, no modern objects, no random text, no watermark",
+            "notes": "鬼鬼祟祟但不要惊悚化，表情里要带着窃喜，哥哥在给弟弟讲游戏有多好玩，弟弟全神贯注的听着",
+            "revision_note": "",
+            "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/002_ACT1_SHOT_002.png",
+            "versions": []
+          },
+          {
+            "item_id": "ACT1_SHOT_003",
+            "scene_id": "SCN_COMPOUND",
+            "beat": "旧门和猫眼出现",
+            "shot_type": "中景 / medium shot",
+            "frame_description": "居民楼一楼角落有一扇不起眼的旧金属门，门上有猫眼，没有正式招牌。三个孩子停在门前，压低声音等待。",
+            "image_prompt": "Cinematic storyboard keyframe, hidden arcade entrance in the corner of an old Chinese residential building, 1990s northern small city, shabby closed metal door with a small peephole, no obvious signboard, three schoolchildren with backpacks standing on the left side whispering and looking secretive, cracked concrete wall, dim corridor shadow, realistic film still, strong readable composition, no modern signage, no readable text, no watermark",
+            "notes": "旧门+猫眼是第一幕核心视觉资产，门要普通、隐蔽、可信。",
+            "revision_note": "这个门不太像是游戏厅的门",
+            "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+            "versions": []
+          },
+          {
+            "item_id": "ACT1_SHOT_004",
+            "scene_id": "SCN_COMPOUND",
+            "beat": "老板从猫眼确认熟人",
+            "shot_type": "猫眼特写 / peephole close-up",
+            "frame_description": "从门内猫眼视角看出去，三个孩子的脸被猫眼畸变压缩，紧张又期待。门内老板确认他们是熟客。",
+            "image_prompt": "Cinematic close-up keyframe from inside a closed door peephole, fisheye peephole distortion, three Chinese schoolchildren with worn backpacks visible outside in a shabby apartment corner, nervous excited faces, 1990s northern China, faint green-blue arcade light around the peephole edge, realistic film texture, suspenseful but not horror, clean image, no text, no watermark, no modern objects",
+            "notes": "用猫眼制造“被审查/被放行”的边界感。可后续关联孩子人设。",
+            "revision_note": "",
+            "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/004_ACT1_SHOT_004.png",
+            "versions": []
+          },
+          {
+            "item_id": "ACT1_SHOT_005",
+            "scene_id": "SCN_COMPOUND",
+            "beat": "门缝打开，机房气息泄出",
+            "shot_type": "近景 / close medium shot",
+            "frame_description": "旧门打开一条缝，老板的半张脸和手出现在门后。蓝绿街机光、烟雾和嘈杂声从门缝先涌出来，孩子们身体微微前倾。",
+            "image_prompt": "Cinematic keyframe, shabby metal door opening a narrow crack, middle-aged Chinese arcade owner partly visible inside, hand holding the door, blue-green CRT arcade light and cigarette smoke leaking from the interior, three schoolchildren with backpacks waiting outside and leaning forward, 1990s northern Chinese residential building corner, realistic gritty atmosphere, clean film still, no readable text, no watermark, no modern elements",
+            "notes": "门缝是两个世界的边界，光、烟和声音比台词更重要。",
+            "revision_note": "",
+            "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/005_ACT1_SHOT_005.png",
+            "versions": []
+          },
+          {
+            "item_id": "ACT1_SHOT_006",
+            "scene_id": "SCN_ARCADE",
+            "beat": "孩子进入乌烟瘴气的游戏厅",
+            "shot_type": "儿童视角中景 / child-height medium shot",
+            "frame_description": "三个孩子刚进室内，画面被烟雾、街机屏幕光和拥挤背影包围。他们像闯进另一个秩序混乱的世界。",
+            "image_prompt": "Cinematic storyboard keyframe inside a smoky 1990s Chinese underground arcade, three schoolchildren with worn backpacks entering from a doorway, blue and green CRT arcade cabinet glow, cigarette smoke hanging under a low ceiling, crowded silhouettes of adults and teenagers, gritty northern small-town atmosphere, child-height camera perspective, high-quality film still, no modern machines, no smartphone, no readable random text, no watermark",
+            "notes": "三人仍然是画面锚点，不能被杂乱人群完全吞掉。",
+            "revision_note": "",
+            "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/006_ACT1_SHOT_006.png",
+            "versions": []
+          },
+          {
+            "item_id": "ACT1_SHOT_007",
+            "scene_id": "SCN_ARCADE",
+            "beat": "游戏厅鱼龙混杂全貌",
+            "shot_type": "广角全景 / wide interior shot",
+            "frame_description": "低矮拥挤的游戏厅里，一排排旧街机发出蓝绿光。成年人、少年和孩子混在一起，烟雾让空气显得浑浊。",
+            "image_prompt": "Wide cinematic interior keyframe of a crowded 1990s Chinese arcade hall, low ceiling, rows of old arcade cabinets, cigarette smoke, mixed crowd of adult men, teenagers, and children, three schoolchildren with backpacks visible near the entrance as small figures, blue-green CRT glow, gritty social realism, northern Chinese small-town underground game room, balanced composition, high image quality, no cyberpunk neon, no modern screens, no readable text, no watermark",
+            "notes": "这一条是游戏厅场景设定核心图，既要乱，又要构图可读。",
+            "revision_note": "",
+            "output_path": "",
+            "versions": [
+              {
+                "version_id": "current",
+                "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/007_ACT1_SHOT_007.png",
+                "notes": "",
+                "created_at": "",
+                "status": "rejected",
+                "candidate_id": "",
+                "task_id": "",
+                "packet_id": "",
+                "qa": {}
+              }
+            ]
+          },
+          {
+            "item_id": "ACT1_SHOT_008",
+            "scene_id": "SCN_ARCADE",
+            "beat": "三个孩子站定，兴奋与不安并存",
+            "shot_type": "中近景 / medium close shot",
+            "frame_description": "三个孩子站在游戏厅内部，脸被街机光照亮。他们互相看一眼，兴奋和不安同时出现，第一幕停在正式进入灰色成人空间的瞬间。",
+            "image_prompt": "Cinematic medium close-up keyframe, three Chinese schoolchildren with worn backpacks standing inside a smoky 1990s underground arcade, CRT blue-green light on their faces, expressions mixed with excitement and unease, blurred crowded arcade background, cigarette smoke, gritty realistic film still, northern Chinese small-town atmosphere, strong character continuity, clean stable image, no distorted faces, no modern objects, no readable text, no watermark",
+            "notes": "第一幕收束图，情绪锚点。后续可接投币、游戏机或危险事件。",
+            "revision_note": "",
+            "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/008_ACT1_SHOT_008.png",
+            "versions": []
+          },
+          {
+            "item_id": "ACT2_SHOT_001",
+            "scene_id": "SCN_ARCADE",
+            "beat": "被游戏厅气氛震住",
+            "shot_type": "儿童视角中景 / child-height medium shot",
+            "frame_description": "三个孩子刚进入游戏厅内部，两个弟弟停住脚步，被烟雾、CRT屏幕光和混杂人群震住；哥哥故作镇定，侧身示意他们跟紧。",
+            "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Three Chinese schoolboys just inside the doorway; two younger boys frozen by smoke, CRT light and crowded silhouettes, older brother pretending to be mature and signaling them to follow, child-height perspective, blue-green light on faces.",
+            "notes": "承接第一幕进入室内，强调两个弟弟的震慑和哥哥的装成熟。",
+            "revision_note": "",
+            "output_path": "",
+            "versions": []
+          },
+          {
+            "item_id": "ACT2_SHOT_002",
+            "scene_id": "SCN_ARCADE",
+            "beat": "哥哥掏出一块钱",
+            "shot_type": "手部特写 / insert close-up",
+            "frame_description": "哥哥从口袋里掏出一张皱旧的一元人民币，纸币被手汗和年代痕迹压皱，背景是模糊的柜台和老板。",
+            "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Insert close-up of an older brother child hand pulling out a worn 1990s Chinese one-yuan banknote, wrinkled paper texture, sweaty fingers, blurred arcade counter and owner in background, authentic period detail.",
+            "notes": "钱必须真实、年代感强；避免可读文字过清导致模型乱字，可强调纸币质感和颜色。",
+            "revision_note": "",
+            "output_path": "",
+            "versions": []
+          },
+          {
+            "item_id": "ACT2_SHOT_003",
+            "scene_id": "SCN_ARCADE",
+            "beat": "三个游戏币落入掌心",
+            "shot_type": "道具特写 / prop insert",
+            "frame_description": "老板把三个粗糙的金属游戏币放到哥哥掌心，硬币边缘磨损，反射着绿色街机光。两个弟弟在虚焦里盯着。",
+            "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Close-up of three rough worn metal arcade tokens dropping into a schoolboy palm, chipped edges, green CRT reflections, younger brothers blurred in background watching eagerly, authentic 1990s Chinese arcade tokens.",
+            "notes": "游戏币是核心年代道具，要粗糙、廉价、被摸旧。",
+            "revision_note": "",
+            "output_path": "",
+            "versions": []
+          },
+          {
+            "item_id": "ACT2_SHOT_004",
+            "scene_id": "SCN_ARCADE",
+            "beat": "走向真人快打机",
+            "shot_type": "跟拍中景 / tracking medium shot",
+            "frame_description": "哥哥握着游戏币，驾轻就熟地穿过人群走向一台真人快打街机；两个弟弟紧跟在后面，眼睛被屏幕吸住。",
+            "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Tracking medium shot of older brother confidently leading two younger boys through crowded smoky arcade toward a Mortal Kombat-style old fighting game cabinet, tokens in hand, younger boys staring at screens, no readable logos.",
+            "notes": "街机可暗示真人快打，不要出现清晰商标文字。",
+            "revision_note": "",
+            "output_path": "",
+            "versions": []
+          },
+          {
+            "item_id": "ACT2_SHOT_005",
+            "scene_id": "SCN_ARCADE",
+            "beat": "哥哥投币开打",
+            "shot_type": "街机侧面近景 / side close shot",
+            "frame_description": "游戏币投入投币口，哥哥双手落在摇杆和按钮上，动作熟练；两个弟弟站在旁边，脸上是崇拜和紧张。",
+            "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Side close shot of a token entering an old arcade coin slot, older brother hands confidently on joystick and buttons, two younger brothers beside him watching with admiration and tension, CRT fighting game glow.",
+            "notes": "投币口、手、按钮、弟弟表情要一起服务哥哥“熟练”的形象。",
+            "revision_note": "",
+            "output_path": "",
+            "versions": []
+          },
+          {
+            "item_id": "ACT2_SHOT_006",
+            "scene_id": "SCN_ARCADE",
+            "beat": "哥哥连胜，弟弟欢呼",
+            "shot_type": "中近景 / medium close shot",
+            "frame_description": "屏幕光照在哥哥脸上，他压着得意继续操作；两个弟弟在旁边兴奋地小声欢呼，周围开始有人回头。",
+            "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Medium close shot of older brother lit by CRT glow, focused and slightly smug while playing a fighting game, two younger brothers cheering quietly beside him, nearby teenagers turning their heads, smoky arcade background.",
+            "notes": "情绪从震慑转为短暂胜利，哥哥不能过分夸张。",
+            "revision_note": "",
+            "output_path": "",
+            "versions": []
+          },
+          {
+            "item_id": "ACT2_SHOT_007",
+            "scene_id": "SCN_ARCADE",
+            "beat": "围观人群变多",
+            "shot_type": "广角压迫镜头 / crowded wide shot",
+            "frame_description": "街机周围的人越围越多，肩膀和后脑勺形成压迫感。三个孩子被挤在机器前，哥哥仍然站在中心。",
+            "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Crowded wide shot around an old fighting game cabinet, shoulders and backs forming pressure around three schoolboys, older brother centered at controls, smoky low ceiling, plastic stools, mixed teenagers and adults but no modern clothing.",
+            "notes": "围观是危险升温，不只是热闹。",
+            "revision_note": "",
+            "output_path": "",
+            "versions": []
+          },
+          {
+            "item_id": "ACT2_SHOT_008",
+            "scene_id": "SCN_ARCADE",
+            "beat": "黄毛插入副机位投币挑战",
+            "shot_type": "双人机位中景 / two-player medium shot",
+            "frame_description": "一个和哥哥年纪相仿的黄毛小痞子突然挤到副操作位，不说话直接投币。哥哥侧头愣了一下，两个弟弟也安静下来。",
+            "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Medium shot of a same-age teenage yellow-haired local punk boy pushing into the second player position and dropping a token without speaking, older brother surprised but composed, younger brothers suddenly quiet, old dual-control arcade cabinet.",
+            "notes": "黄毛必须是初中生小痞子，不是成年人；挑战动作要干脆。",
+            "revision_note": "",
+            "output_path": "",
+            "versions": []
+          },
+          {
+            "item_id": "ACT2_SHOT_009",
+            "scene_id": "SCN_ARCADE",
+            "beat": "哥哥应战并赢第一局",
+            "shot_type": "过肩对抗镜头 / over-the-shoulder duel shot",
+            "frame_description": "从黄毛肩后看哥哥操作，哥哥嘴角轻微一笑后快速按键，屏幕光把两人的脸分成冷暖两侧。",
+            "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Over-the-shoulder duel shot from behind the yellow-haired teen punk, older brother at opposite controls with a restrained smirk, fast hands on buttons, CRT light splitting their faces, tense arcade crowd around them.",
+            "notes": "强调哥哥的轻蔑和熟练，但仍保持孩子气。",
+            "revision_note": "",
+            "output_path": "",
+            "versions": []
+          },
+          {
+            "item_id": "ACT2_SHOT_010",
+            "scene_id": "SCN_ARCADE",
+            "beat": "黄毛骂骂咧咧再次投币",
+            "shot_type": "快速剪辑特写组 / montage inserts",
+            "frame_description": "黄毛不服气，嘴里骂着又掏游戏币。画面切到投币口、狰狞表情、按键手指和弟弟紧张的眼神。",
+            "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Rapid montage-style storyboard panel: yellow-haired teen punk angry and cursing, another token pushed into coin slot, grimacing face, aggressive fingers smashing arcade buttons, younger brothers watching nervously, gritty smoky arcade.",
+            "notes": "这条可以作为快剪提示；不要生成文字脏话。",
+            "revision_note": "",
+            "output_path": "",
+            "versions": []
+          },
+          {
+            "item_id": "ACT2_SHOT_011",
+            "scene_id": "SCN_ARCADE",
+            "beat": "黄毛连输后砸按钮",
+            "shot_type": "低角度近景 / low close shot",
+            "frame_description": "连续失败后，黄毛用拳头砸了一下按钮台，塑料按钮和金属面板震动。哥哥和弟弟都短暂僵住。",
+            "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Low close shot of yellow-haired teen punk slamming his fist onto an old arcade control panel after repeated losses, buttons shaking, older brother and younger boys frozen in background, tension under CRT glow.",
+            "notes": "这是危险第一次显形，控制力度，不要变成打斗。",
+            "revision_note": "",
+            "output_path": "",
+            "versions": []
+          },
+          {
+            "item_id": "ACT2_SHOT_012",
+            "scene_id": "SCN_ARCADE",
+            "beat": "黄毛离开前恶狠狠盯哥哥",
+            "shot_type": "凝视中近景 / tense medium close shot",
+            "frame_description": "黄毛转身离开前停了一下，恶狠狠地盯了哥哥一眼，没有说话。哥哥表面得意，两个弟弟的笑意收住。",
+            "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Tense medium close shot of same-age yellow-haired punk turning away but stopping to glare silently at the older brother, older brother trying to look proud, younger brothers’ smiles fading, smoky arcade crowd blurred behind, ominous but realistic.",
+            "notes": "第二幕收束在无声威胁，给后续冲突埋钩子。",
+            "revision_note": "",
+            "output_path": "",
+            "versions": []
+          }
+        ],
+        "related_assets": [
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "03_story",
+            "asset_id": "SCN_COMPOUND_STORY_BEATS",
+            "kind": "",
+            "role": "beat_sheet",
+            "path": "03_story/beats/coin_slot_sample_beat_sheet.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "03_story",
+            "asset_id": "SCN_COMPOUND_FULL_SHOT_LIST",
+            "kind": "",
+            "role": "full_shot_list",
+            "path": "07_shots/shot_list.csv"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "04_lookdev",
+            "asset_id": "SCN_COMPOUND_LOOK_BIBLE",
+            "kind": "",
+            "role": "look_bible",
+            "path": "04_lookdev/references/coin_slot_look_bible_v001.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "04_lookdev",
+            "asset_id": "SCN_COMPOUND_COLOR_SCRIPT",
+            "kind": "",
+            "role": "color_script",
+            "path": "04_lookdev/palettes/coin_slot_color_script.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "04_lookdev",
+            "asset_id": "SCN_COMPOUND_VISUAL_REFS",
+            "kind": "",
+            "role": "visual_references",
+            "path": "04_lookdev/references/coin_slot_visual_references.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "04_lookdev",
+            "asset_id": "SCN_COMPOUND_SCENE_REFERENCE",
+            "kind": "",
+            "role": "scene_reference",
+            "path": "media/01_AIGC/scene_refs/SC_01_compound_corner_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "05_asset_bible",
+            "asset_id": "SCN_COMPOUND_CHARACTER_STAGE_LOCKS",
+            "kind": "",
+            "role": "character_stage_locks",
+            "path": "05_asset_bible/character_stage_locks/coin_slot_character_stage_locks.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "05_asset_bible",
+            "asset_id": "SCN_COMPOUND_LOCATION_BIBLE",
+            "kind": "",
+            "role": "location_bible",
+            "path": "05_asset_bible/locations/coin_slot_location_bible.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "05_asset_bible",
+            "asset_id": "SCN_COMPOUND_CONTINUITY_LOCKS",
+            "kind": "",
+            "role": "continuity_locks",
+            "path": "05_asset_bible/continuity/coin_slot_continuity_locks.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "SCN_COMPOUND_SCENE_LOCK",
+            "kind": "",
+            "role": "scene_lock",
+            "path": "06_previs/scene_locks/scn-compound/scene_lock.yaml"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "SCN_COMPOUND_CAMERA_MANIFEST",
+            "kind": "",
+            "role": "camera_manifest",
+            "path": "06_previs/scene_locks/scn-compound/camera_manifest.csv"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "SCN_COMPOUND_REFERENCE_ASSETS",
+            "kind": "",
+            "role": "reference_assets",
+            "path": "06_previs/scene_locks/scn-compound/reference_assets.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "SCN_COMPOUND_WHITEBOX_INDEX",
+            "kind": "",
+            "role": "whitebox_index",
+            "path": "06_previs/scene_locks/scn-compound/whitebox_index.csv"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB001_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB002_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB002.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB003_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB003.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB004_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB004.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB005_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB005.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB006_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB006.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB007_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB007.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB008_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB008.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB009_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB009.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB010_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB010.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB011_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB011.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB012_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB012.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB013_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB013.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB014_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB014.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB015_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB015.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB016_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB016.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB017_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB017.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB018_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB018.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "07_shots",
+            "asset_id": "SCN_COMPOUND_SHOT_LIST",
+            "kind": "",
+            "role": "shot_list",
+            "path": "07_shots/shot_list.csv"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "07_shots",
+            "asset_id": "MSB001_IMAGE_PROMPT",
+            "kind": "",
+            "role": "image_prompt",
+            "path": "07_shots/prompts/MSB001.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "07_shots",
+            "asset_id": "MSB003_IMAGE_PROMPT",
+            "kind": "",
+            "role": "image_prompt",
+            "path": "07_shots/prompts/MSB003.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "07_shots",
+            "asset_id": "MSB006_IMAGE_PROMPT",
+            "kind": "",
+            "role": "image_prompt",
+            "path": "07_shots/prompts/MSB006.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "07_shots",
+            "asset_id": "MSB009_IMAGE_PROMPT",
+            "kind": "",
+            "role": "image_prompt",
+            "path": "07_shots/prompts/MSB009.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "07_shots",
+            "asset_id": "MSB012_IMAGE_PROMPT",
+            "kind": "",
+            "role": "image_prompt",
+            "path": "07_shots/prompts/MSB012.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "07_shots",
+            "asset_id": "SCN_COMPOUND_SHOT_INDEX_188",
+            "kind": "",
+            "role": "scene_shot_index",
+            "path": "07_shots/scene_slices/SCN_COMPOUND_shot_index.csv"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "07_shots",
+            "asset_id": "SCN_COMPOUND_PROMPT_PACK_188",
+            "kind": "",
+            "role": "scene_prompt_pack",
+            "path": "07_shots/scene_slices/SCN_COMPOUND_prompt_pack.csv"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "07_shots",
+            "asset_id": "MSB001_VIDEO_PROMPT",
+            "kind": "",
+            "role": "video_prompt",
+            "path": "07_shots/video_prompts/MSB001.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "07_shots",
+            "asset_id": "MSB003_VIDEO_PROMPT",
+            "kind": "",
+            "role": "video_prompt",
+            "path": "07_shots/video_prompts/MSB003.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "07_shots",
+            "asset_id": "MSB006_VIDEO_PROMPT",
+            "kind": "",
+            "role": "video_prompt",
+            "path": "07_shots/video_prompts/MSB006.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "07_shots",
+            "asset_id": "MSB009_VIDEO_PROMPT",
+            "kind": "",
+            "role": "video_prompt",
+            "path": "07_shots/video_prompts/MSB009.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "07_shots",
+            "asset_id": "MSB012_VIDEO_PROMPT",
+            "kind": "",
+            "role": "video_prompt",
+            "path": "07_shots/video_prompts/MSB012.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "SCN_COMPOUND_IMAGE_OUTPUT_INDEX",
+            "kind": "",
+            "role": "image_outputs",
+            "path": "08_generation/outputs/images/coin_slot_image_outputs_index.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "SCN_COMPOUND_REJECT_LOG",
+            "kind": "",
+            "role": "rejects",
+            "path": "08_generation/rejects/coin_slot_reject_log.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "SCN_COMPOUND_STORYBOARD_IMAGE_INDEX",
+            "kind": "",
+            "role": "storyboard_image_index",
+            "path": "08_generation/outputs/images/SCN_COMPOUND_storyboard_image_index.csv"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB001_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB001_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB001_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB001_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB002_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB002_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB002_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB002_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB003_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB003_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB003_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB003_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB004_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB004_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB004_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB004_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB005_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB005_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB005_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB005_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB006_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB006_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB006_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB006_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB007_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB007_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB007_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB007_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB008_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB008_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB008_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB008_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB009_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB009_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB009_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB009_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB010_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB010_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB010_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB010_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB011_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB011_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB011_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB011_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB012_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB012_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB012_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB012_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB013_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB013_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB013_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB013_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB014_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB014_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB014_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB014_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB015_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB015_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB015_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB015_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB016_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB016_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB016_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB016_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB017_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB017_v001.png"
+          }
+        ]
+      },
+      "generation_context": {
+        "global_references": [
+          {
+            "ref_id": "THREE_BROTHERS_turnaround_expression_contact_sheet_v001",
+            "asset_ref": "resource:media/01_AIGC/character_design_v2/THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+            "asset_id": "THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+            "path": "media/01_AIGC/character_design_v2/THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+            "origin": "resource",
+            "kind": "character_ref",
+            "role": "character_design_contact_sheet",
+            "note": "三个小朋友统一人设、三视图、表情和服装连续性参考 / Global reference for the three children character identity, turnaround, expressions, and wardrobe continuity.",
+            "version_id": "",
+            "version_status": "",
+            "card_type": "",
+            "card_id": "",
+            "card_title": ""
+          },
+          {
+            "ref_id": "CHR_BRO_A_late_scuffed_reference_v001.png",
+            "asset_ref": "resource:media/01_AIGC/character_design_v2/stage_variants/CHR_BRO_A_late_scuffed_reference_v001.png",
+            "asset_id": "CHR_BRO_A_late_scuffed_reference_v001.png",
+            "path": "media/01_AIGC/character_design_v2/stage_variants/CHR_BRO_A_late_scuffed_reference_v001.png",
+            "origin": "resource",
+            "kind": "image",
+            "role": "image",
+            "note": "给哥哥带一个眼镜",
+            "version_id": "",
+            "version_status": "",
+            "card_type": "",
+            "card_id": "",
+            "card_title": ""
+          },
+          {
+            "ref_id": "001_BIBLE_005_v001.png",
+            "asset_ref": "project:08_generation/jobs/CARD_IMG_20260618_221216/outputs/001_BIBLE_005_v001.png",
+            "asset_id": "001_BIBLE_005_v001.png",
+            "path": "08_generation/jobs/CARD_IMG_20260618_221216/outputs/001_BIBLE_005_v001.png",
+            "origin": "project",
+            "kind": "image",
+            "role": "image",
+            "note": "参考三个混混的设定，这一幕只出现黄毛",
+            "version_id": "v001",
+            "version_status": "current",
+            "card_type": "concept",
+            "card_id": "BIBLE_005",
+            "card_title": ""
+          }
+        ],
+        "context_cards": [
+          {
+            "card_id": "BIBLE_CHARACTER_001",
+            "scope": "project",
+            "act_id": "",
+            "category": "character",
+            "title": "三个小朋友 / Three children",
+            "summary": "第一幕的核心人物组：三个背书包的小学生，熟门熟路但仍然心虚，互相打掩护进入隐藏游戏机房。需要保持年龄、身高差、书包、发型、衣着年代感和表演气质连续。",
+            "visual_direction": "1990年代中国北方小城小学生：旧校服或朴素外套、磨旧书包、略脏鞋面、放学后的疲惫和兴奋并存；动作要小心、鬼祟、彼此贴近。",
+            "prompt_notes": "three Chinese school children in 1990s northern China, carrying worn schoolbags, cautious and sneaky after school, consistent faces, hairstyles, wardrobe and height differences, cinematic realism",
+            "revision_note": "",
+            "negative_prompt": "不要现代校服、智能手机、潮牌服饰、夸张动漫表情、年龄过大或过小、角色身份不一致。",
+            "selected": true,
+            "image_selected": true,
+            "status": "draft",
+            "references": [
+              {
+                "ref_id": "THREE_BROTHERS_turnaround_expression_contact_sheet_v001",
+                "asset_ref": "resource:media/01_AIGC/character_design_v2/THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+                "asset_id": "THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+                "path": "media/01_AIGC/character_design_v2/THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+                "origin": "resource",
+                "kind": "character_ref",
+                "role": "character_design_contact_sheet",
+                "note": "三个小朋友统一人设、三视图、表情和服装连续性参考 / Global reference for the three children character identity, turnaround, expressions, and wardrobe continuity.",
+                "version_id": "",
+                "version_status": "",
+                "card_type": "",
+                "card_id": "",
+                "card_title": ""
+              },
+              {
+                "ref_id": "CHR_BRO_A_late_scuffed_reference_v001.png",
+                "asset_ref": "resource:media/01_AIGC/character_design_v2/stage_variants/CHR_BRO_A_late_scuffed_reference_v001.png",
+                "asset_id": "CHR_BRO_A_late_scuffed_reference_v001.png",
+                "path": "media/01_AIGC/character_design_v2/stage_variants/CHR_BRO_A_late_scuffed_reference_v001.png",
+                "origin": "resource",
+                "kind": "image",
+                "role": "image",
+                "note": "给哥哥带一个眼镜",
+                "version_id": "",
+                "version_status": "",
+                "card_type": "",
+                "card_id": "",
+                "card_title": ""
+              }
+            ],
+            "preview_path": "",
+            "versions": []
+          },
+          {
+            "card_id": "BIBLE_LOCATION_001",
+            "scope": "project",
+            "act_id": "",
+            "category": "location",
+            "title": "破旧居民楼角落与隐藏游戏机房入口 / Compound corner arcade entrance",
+            "summary": "第一幕外部主场景：老居民楼侧面的不起眼角落，暗金属门藏在墙根或楼体边角处，门上有猫眼，老板从里面确认熟人后开门。",
+            "visual_direction": "潮湿水泥墙、掉皮涂料、锈迹铁门、暗窄入口、灰尘和旧广告痕迹；构图强调秘密入口、孩子压低身体靠近、门内外光线反差。",
+            "prompt_notes": "old residential compound corner in 1990s northern Chinese small city, hidden arcade room entrance, rusty dark metal door with peephole, peeling concrete wall, dim afternoon light, secretive composition",
+            "revision_note": "",
+            "negative_prompt": "不要现代商业街、霓虹招牌、干净新楼、豪华游戏厅门面、可读随机文字或过度赛博朋克。",
+            "selected": true,
+            "image_selected": true,
+            "status": "draft",
+            "references": [
+              {
+                "ref_id": "WBX_20260616_024949",
+                "asset_ref": "project:06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+                "asset_id": "WBX_20260616_024949",
+                "path": "06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+                "origin": "project",
+                "kind": "whitebox",
+                "role": "replica_whitebox",
+                "note": "隐藏游戏机房入口的空间、机位、旧墙、金属门、猫眼和三个孩子站位参考；作为场景与道具总概念的白模依据。",
+                "version_id": "",
+                "version_status": "",
+                "card_type": "",
+                "card_id": "",
+                "card_title": "",
+                "usage_note": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。",
+                "generation_guidance": "Whitebox guidance / 白模读取说明:\n- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.\n- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.\n- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.\n- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.\n- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.\n- Source whitebox replica seed: ACT1_SHOT_003_SOURCE_KEYFRAME.\n- Replica intent / 复刻意图: 以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+                "whitebox_interpretation": {
+                  "mode": "spatial_control_only",
+                  "source_asset_id": "ACT1_SHOT_003_SOURCE_KEYFRAME",
+                  "source_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+                  "replica_note": "以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+                  "tags": [
+                    "ACT01",
+                    "SCN_COMPOUND",
+                    "hidden_arcade_door",
+                    "peephole",
+                    "three_children",
+                    "1to1_replica"
+                  ],
+                  "use_for": [
+                    "camera framing and lens/composition",
+                    "subject scale, blocking, pose, sightline, and depth order",
+                    "major set anchors such as doors, windows, corridors, walls, props, and openings",
+                    "main light direction, shadow rhythm, and scene readability"
+                  ],
+                  "preserve": [
+                    "overall aspect ratio and camera angle",
+                    "relative positions between characters and key set pieces",
+                    "door/window/opening height and screen position when present",
+                    "foreground/midground/background separation"
+                  ],
+                  "ignore": [
+                    "gray clay material",
+                    "primitive cube/sphere/cylinder shapes",
+                    "mannequin or toy-like character appearance",
+                    "unfinished low-poly geometry",
+                    "plain studio-white lighting unless the shot explicitly asks for it"
+                  ],
+                  "prompt_bridge": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。"
+                }
+              }
+            ],
+            "preview_path": "",
+            "versions": []
+          },
+          {
+            "card_id": "BIBLE_LOOKDEV_001",
+            "scope": "project",
+            "act_id": "",
+            "category": "lookdev",
+            "title": "90年代北方小城写实质感 / 1990s northern small-city realism",
+            "summary": "全片视觉底色：纪实电影感、低饱和、颗粒但不脏、旧胶片/早期DV记忆感，强调冬春交界或阴天里的灰冷空气。",
+            "visual_direction": "冷灰水泥、褪色红黄广告纸、旧木门和铁门、混浊室内烟雾、钨丝灯与街面自然光混合；摄影机克制，少用夸张广角。",
+            "prompt_notes": "cinematic realism, 1990s northern Chinese small town, muted colors, natural film grain, smoky interiors, mixed tungsten and overcast daylight, grounded documentary texture",
+            "revision_note": "",
+            "negative_prompt": "不要过度磨皮、塑料感、CG感、现代高清广告片、过饱和网红色调、随机英文霓虹和水印。",
+            "selected": true,
+            "image_selected": true,
+            "status": "draft",
+            "references": [],
+            "preview_path": "",
+            "versions": []
+          },
+          {
+            "card_id": "BIBLE_PROP_001",
+            "scope": "project",
+            "act_id": "",
+            "category": "prop",
+            "title": "旧金属门、猫眼与游戏机房道具 / Door, peephole and arcade props",
+            "summary": "关键道具承担叙事信息：猫眼说明老板识别熟人，旧门说明游戏厅隐蔽，室内街机、烟灰缸、硬币和杂乱桌椅说明地下游戏机房生态。",
+            "visual_direction": "门要厚重、旧、暗、带磨损把手和猫眼；室内道具应杂乱但有时代感，街机屏幕亮度压住烟雾，不出现现代 LCD 大屏。",
+            "prompt_notes": "rusty metal door with peephole, worn handle, 1990s arcade machines, coin slot, smoke haze, ashtrays, cluttered stools and cables, period-correct props",
+            "revision_note": "",
+            "negative_prompt": "不要现代网吧、电竞椅、液晶显示器、智能门锁、干净商场电玩、随机品牌文字。",
+            "selected": true,
+            "image_selected": true,
+            "status": "draft",
+            "references": [
+              {
+                "ref_id": "WBX_20260616_024949",
+                "asset_ref": "project:06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+                "asset_id": "WBX_20260616_024949",
+                "path": "06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+                "origin": "project",
+                "kind": "whitebox",
+                "role": "replica_whitebox",
+                "note": "隐藏游戏机房入口的空间、机位、旧墙、金属门、猫眼和三个孩子站位参考；作为场景与道具总概念的白模依据。",
+                "version_id": "",
+                "version_status": "",
+                "card_type": "",
+                "card_id": "",
+                "card_title": "",
+                "usage_note": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。",
+                "generation_guidance": "Whitebox guidance / 白模读取说明:\n- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.\n- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.\n- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.\n- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.\n- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.\n- Source whitebox replica seed: ACT1_SHOT_003_SOURCE_KEYFRAME.\n- Replica intent / 复刻意图: 以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+                "whitebox_interpretation": {
+                  "mode": "spatial_control_only",
+                  "source_asset_id": "ACT1_SHOT_003_SOURCE_KEYFRAME",
+                  "source_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+                  "replica_note": "以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+                  "tags": [
+                    "ACT01",
+                    "SCN_COMPOUND",
+                    "hidden_arcade_door",
+                    "peephole",
+                    "three_children",
+                    "1to1_replica"
+                  ],
+                  "use_for": [
+                    "camera framing and lens/composition",
+                    "subject scale, blocking, pose, sightline, and depth order",
+                    "major set anchors such as doors, windows, corridors, walls, props, and openings",
+                    "main light direction, shadow rhythm, and scene readability"
+                  ],
+                  "preserve": [
+                    "overall aspect ratio and camera angle",
+                    "relative positions between characters and key set pieces",
+                    "door/window/opening height and screen position when present",
+                    "foreground/midground/background separation"
+                  ],
+                  "ignore": [
+                    "gray clay material",
+                    "primitive cube/sphere/cylinder shapes",
+                    "mannequin or toy-like character appearance",
+                    "unfinished low-poly geometry",
+                    "plain studio-white lighting unless the shot explicitly asks for it"
+                  ],
+                  "prompt_bridge": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。"
+                }
+              }
+            ],
+            "preview_path": "",
+            "versions": []
+          },
+          {
+            "card_id": "BIBLE_005",
+            "scope": "project",
+            "act_id": "",
+            "category": "lookdev",
+            "title": "",
+            "summary": "街机厅混混三人组，都是和哥哥同龄的年轻人，但社会痕迹明显，学生气少\n老大，矮个子，黄毛，长相凶狠，耳朵后夹着烟，爱打游戏\n老二，瘦高个，嚣张，穿个白色背心\n老三，胖子，又肥又壮，有点憨憨的",
+            "visual_direction": "",
+            "prompt_notes": "",
+            "revision_note": "",
+            "negative_prompt": "",
+            "selected": true,
+            "image_selected": true,
+            "status": "image_ready",
+            "references": [],
+            "preview_path": "08_generation/jobs/CARD_IMG_20260618_221216/outputs/001_BIBLE_005_v001.png",
+            "versions": [
+              {
+                "version_id": "v001",
+                "output_path": "08_generation/jobs/CARD_IMG_20260618_221216/outputs/001_BIBLE_005_v001.png",
+                "notes": "电影触发生成；用户确认使用第二张。方向：14-15岁初中小痞子，街机厅混混三人组，作为全局人设/氛围参考。",
+                "created_at": "2026-06-18T22:31:50+08:00",
+                "status": "current",
+                "candidate_id": "",
+                "task_id": "",
+                "packet_id": "",
+                "qa": {}
+              }
+            ]
+          }
+        ],
+        "context_references": [
+          {
+            "ref_id": "THREE_BROTHERS_turnaround_expression_contact_sheet_v001",
+            "asset_ref": "resource:media/01_AIGC/character_design_v2/THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+            "asset_id": "THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+            "path": "media/01_AIGC/character_design_v2/THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+            "origin": "resource",
+            "kind": "character_ref",
+            "role": "character_design_contact_sheet",
+            "note": "三个小朋友统一人设、三视图、表情和服装连续性参考 / Global reference for the three children character identity, turnaround, expressions, and wardrobe continuity.",
+            "version_id": "",
+            "version_status": "",
+            "card_type": "",
+            "card_id": "",
+            "card_title": ""
+          },
+          {
+            "ref_id": "CHR_BRO_A_late_scuffed_reference_v001.png",
+            "asset_ref": "resource:media/01_AIGC/character_design_v2/stage_variants/CHR_BRO_A_late_scuffed_reference_v001.png",
+            "asset_id": "CHR_BRO_A_late_scuffed_reference_v001.png",
+            "path": "media/01_AIGC/character_design_v2/stage_variants/CHR_BRO_A_late_scuffed_reference_v001.png",
+            "origin": "resource",
+            "kind": "image",
+            "role": "image",
+            "note": "给哥哥带一个眼镜",
+            "version_id": "",
+            "version_status": "",
+            "card_type": "",
+            "card_id": "",
+            "card_title": ""
+          },
+          {
+            "ref_id": "WBX_20260616_024949",
+            "asset_ref": "project:06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+            "asset_id": "WBX_20260616_024949",
+            "path": "06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+            "origin": "project",
+            "kind": "whitebox",
+            "role": "replica_whitebox",
+            "note": "隐藏游戏机房入口的空间、机位、旧墙、金属门、猫眼和三个孩子站位参考；作为场景与道具总概念的白模依据。",
+            "version_id": "",
+            "version_status": "",
+            "card_type": "",
+            "card_id": "",
+            "card_title": "",
+            "usage_note": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。",
+            "generation_guidance": "Whitebox guidance / 白模读取说明:\n- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.\n- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.\n- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.\n- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.\n- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.\n- Source whitebox replica seed: ACT1_SHOT_003_SOURCE_KEYFRAME.\n- Replica intent / 复刻意图: 以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+            "whitebox_interpretation": {
+              "mode": "spatial_control_only",
+              "source_asset_id": "ACT1_SHOT_003_SOURCE_KEYFRAME",
+              "source_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+              "replica_note": "以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+              "tags": [
+                "ACT01",
+                "SCN_COMPOUND",
+                "hidden_arcade_door",
+                "peephole",
+                "three_children",
+                "1to1_replica"
+              ],
+              "use_for": [
+                "camera framing and lens/composition",
+                "subject scale, blocking, pose, sightline, and depth order",
+                "major set anchors such as doors, windows, corridors, walls, props, and openings",
+                "main light direction, shadow rhythm, and scene readability"
+              ],
+              "preserve": [
+                "overall aspect ratio and camera angle",
+                "relative positions between characters and key set pieces",
+                "door/window/opening height and screen position when present",
+                "foreground/midground/background separation"
+              ],
+              "ignore": [
+                "gray clay material",
+                "primitive cube/sphere/cylinder shapes",
+                "mannequin or toy-like character appearance",
+                "unfinished low-poly geometry",
+                "plain studio-white lighting unless the shot explicitly asks for it"
+              ],
+              "prompt_bridge": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。"
+            }
+          },
+          {
+            "ref_id": "WBX_20260616_024949",
+            "asset_ref": "project:06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+            "asset_id": "WBX_20260616_024949",
+            "path": "06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+            "origin": "project",
+            "kind": "whitebox",
+            "role": "replica_whitebox",
+            "note": "隐藏游戏机房入口的空间、机位、旧墙、金属门、猫眼和三个孩子站位参考；作为场景与道具总概念的白模依据。",
+            "version_id": "",
+            "version_status": "",
+            "card_type": "",
+            "card_id": "",
+            "card_title": "",
+            "usage_note": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。",
+            "generation_guidance": "Whitebox guidance / 白模读取说明:\n- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.\n- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.\n- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.\n- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.\n- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.\n- Source whitebox replica seed: ACT1_SHOT_003_SOURCE_KEYFRAME.\n- Replica intent / 复刻意图: 以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+            "whitebox_interpretation": {
+              "mode": "spatial_control_only",
+              "source_asset_id": "ACT1_SHOT_003_SOURCE_KEYFRAME",
+              "source_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+              "replica_note": "以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+              "tags": [
+                "ACT01",
+                "SCN_COMPOUND",
+                "hidden_arcade_door",
+                "peephole",
+                "three_children",
+                "1to1_replica"
+              ],
+              "use_for": [
+                "camera framing and lens/composition",
+                "subject scale, blocking, pose, sightline, and depth order",
+                "major set anchors such as doors, windows, corridors, walls, props, and openings",
+                "main light direction, shadow rhythm, and scene readability"
+              ],
+              "preserve": [
+                "overall aspect ratio and camera angle",
+                "relative positions between characters and key set pieces",
+                "door/window/opening height and screen position when present",
+                "foreground/midground/background separation"
+              ],
+              "ignore": [
+                "gray clay material",
+                "primitive cube/sphere/cylinder shapes",
+                "mannequin or toy-like character appearance",
+                "unfinished low-poly geometry",
+                "plain studio-white lighting unless the shot explicitly asks for it"
+              ],
+              "prompt_bridge": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。"
+            }
+          }
+        ],
+        "target_references": [
+          {
+            "ref_id": "WBX_20260616_024949",
+            "asset_ref": "project:06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+            "asset_id": "WBX_20260616_024949",
+            "path": "06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+            "origin": "project",
+            "kind": "whitebox",
+            "role": "replica_whitebox",
+            "note": "高精度白模复刻：默认作为该分镜空间、机位、光照和人物动作参考 / high-fidelity replica whitebox for blocking, camera, lighting, and pose.",
+            "version_id": "",
+            "version_status": "",
+            "card_type": "",
+            "card_id": "",
+            "card_title": "",
+            "usage_note": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。",
+            "generation_guidance": "Whitebox guidance / 白模读取说明:\n- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.\n- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.\n- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.\n- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.\n- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.\n- Source whitebox replica seed: ACT1_SHOT_003_SOURCE_KEYFRAME.\n- Replica intent / 复刻意图: 以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+            "whitebox_interpretation": {
+              "mode": "spatial_control_only",
+              "source_asset_id": "ACT1_SHOT_003_SOURCE_KEYFRAME",
+              "source_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+              "replica_note": "以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+              "tags": [
+                "ACT01",
+                "SCN_COMPOUND",
+                "hidden_arcade_door",
+                "peephole",
+                "three_children",
+                "1to1_replica"
+              ],
+              "use_for": [
+                "camera framing and lens/composition",
+                "subject scale, blocking, pose, sightline, and depth order",
+                "major set anchors such as doors, windows, corridors, walls, props, and openings",
+                "main light direction, shadow rhythm, and scene readability"
+              ],
+              "preserve": [
+                "overall aspect ratio and camera angle",
+                "relative positions between characters and key set pieces",
+                "door/window/opening height and screen position when present",
+                "foreground/midground/background separation"
+              ],
+              "ignore": [
+                "gray clay material",
+                "primitive cube/sphere/cylinder shapes",
+                "mannequin or toy-like character appearance",
+                "unfinished low-poly geometry",
+                "plain studio-white lighting unless the shot explicitly asks for it"
+              ],
+              "prompt_bridge": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。"
+            }
+          }
+        ],
+        "target_context": {
+          "scene": {
+            "scene_id": "SCN_COMPOUND",
+            "title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade"
+          },
+          "nearby_storyboard_cards": [
+            {
+              "item_id": "ACT1_SHOT_001",
+              "scene_id": "SCN_COMPOUND",
+              "beat": "放学后偏离大路",
+              "shot_type": "远景 / establishing wide shot",
+              "frame_description": "傍晚的北方小城，旧居民楼压在灰色街道边。三个背书包的小朋友从放学人流边缘脱离，避开大路，朝居民楼背面走去。",
+              "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small city after school, old concrete apartment blocks and dusty street, muted gray winter palette, three Chinese schoolchildren with worn backpacks quietly leaving the main road and heading toward the back corner of a residential building, cautious secretive body language, realistic film still, 35mm lens, natural dusk light, subtle film grain, clean composition, no modern cars, no smartphones, no readable text, no watermark",
+              "notes": "建立时代、地域和偷偷行动。游戏厅入口不要过早显眼，先让路线和氛围成立。",
+              "revision_note": "",
+              "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/001_ACT1_SHOT_001.png",
+              "versions": []
+            },
+            {
+              "item_id": "ACT1_SHOT_002",
+              "scene_id": "SCN_COMPOUND",
+              "beat": "沿墙根靠近隐藏入口",
+              "shot_type": "中远景 / tracking medium-wide shot",
+              "frame_description": "三个孩子贴着居民楼墙根走，经过旧管道和剥落墙皮，互相用眼神确认没人注意，动作熟练又紧张。",
+              "image_prompt": "Cinematic film keyframe, three Chinese schoolchildren in 1990s school clothes sneaking along the wall of a shabby residential building, worn backpacks, old pipes, peeling paint, chipped concrete, one child glancing back nervously while another gestures to stay quiet, northern Chinese small-town realism, low handheld perspective, subdued colors, high-quality stable image, no modern objects, no random text, no watermark",
+              "notes": "鬼鬼祟祟但不要惊悚化，表情里要带着窃喜，哥哥在给弟弟讲游戏有多好玩，弟弟全神贯注的听着",
+              "revision_note": "",
+              "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/002_ACT1_SHOT_002.png",
+              "versions": []
+            },
+            {
+              "item_id": "ACT1_SHOT_003",
+              "scene_id": "SCN_COMPOUND",
+              "beat": "旧门和猫眼出现",
+              "shot_type": "中景 / medium shot",
+              "frame_description": "居民楼一楼角落有一扇不起眼的旧金属门，门上有猫眼，没有正式招牌。三个孩子停在门前，压低声音等待。",
+              "image_prompt": "Cinematic storyboard keyframe, hidden arcade entrance in the corner of an old Chinese residential building, 1990s northern small city, shabby closed metal door with a small peephole, no obvious signboard, three schoolchildren with backpacks standing on the left side whispering and looking secretive, cracked concrete wall, dim corridor shadow, realistic film still, strong readable composition, no modern signage, no readable text, no watermark",
+              "notes": "旧门+猫眼是第一幕核心视觉资产，门要普通、隐蔽、可信。",
+              "revision_note": "这个门不太像是游戏厅的门",
+              "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+              "versions": []
+            },
+            {
+              "item_id": "ACT1_SHOT_004",
+              "scene_id": "SCN_COMPOUND",
+              "beat": "老板从猫眼确认熟人",
+              "shot_type": "猫眼特写 / peephole close-up",
+              "frame_description": "从门内猫眼视角看出去，三个孩子的脸被猫眼畸变压缩，紧张又期待。门内老板确认他们是熟客。",
+              "image_prompt": "Cinematic close-up keyframe from inside a closed door peephole, fisheye peephole distortion, three Chinese schoolchildren with worn backpacks visible outside in a shabby apartment corner, nervous excited faces, 1990s northern China, faint green-blue arcade light around the peephole edge, realistic film texture, suspenseful but not horror, clean image, no text, no watermark, no modern objects",
+              "notes": "用猫眼制造“被审查/被放行”的边界感。可后续关联孩子人设。",
+              "revision_note": "",
+              "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/004_ACT1_SHOT_004.png",
+              "versions": []
+            },
+            {
+              "item_id": "ACT1_SHOT_005",
+              "scene_id": "SCN_COMPOUND",
+              "beat": "门缝打开，机房气息泄出",
+              "shot_type": "近景 / close medium shot",
+              "frame_description": "旧门打开一条缝，老板的半张脸和手出现在门后。蓝绿街机光、烟雾和嘈杂声从门缝先涌出来，孩子们身体微微前倾。",
+              "image_prompt": "Cinematic keyframe, shabby metal door opening a narrow crack, middle-aged Chinese arcade owner partly visible inside, hand holding the door, blue-green CRT arcade light and cigarette smoke leaking from the interior, three schoolchildren with backpacks waiting outside and leaning forward, 1990s northern Chinese residential building corner, realistic gritty atmosphere, clean film still, no readable text, no watermark, no modern elements",
+              "notes": "门缝是两个世界的边界，光、烟和声音比台词更重要。",
+              "revision_note": "",
+              "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/005_ACT1_SHOT_005.png",
+              "versions": []
+            },
+            {
+              "item_id": "ACT1_SHOT_006",
+              "scene_id": "SCN_ARCADE",
+              "beat": "孩子进入乌烟瘴气的游戏厅",
+              "shot_type": "儿童视角中景 / child-height medium shot",
+              "frame_description": "三个孩子刚进室内，画面被烟雾、街机屏幕光和拥挤背影包围。他们像闯进另一个秩序混乱的世界。",
+              "image_prompt": "Cinematic storyboard keyframe inside a smoky 1990s Chinese underground arcade, three schoolchildren with worn backpacks entering from a doorway, blue and green CRT arcade cabinet glow, cigarette smoke hanging under a low ceiling, crowded silhouettes of adults and teenagers, gritty northern small-town atmosphere, child-height camera perspective, high-quality film still, no modern machines, no smartphone, no readable random text, no watermark",
+              "notes": "三人仍然是画面锚点，不能被杂乱人群完全吞掉。",
+              "revision_note": "",
+              "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/006_ACT1_SHOT_006.png",
+              "versions": []
+            },
+            {
+              "item_id": "ACT1_SHOT_007",
+              "scene_id": "SCN_ARCADE",
+              "beat": "游戏厅鱼龙混杂全貌",
+              "shot_type": "广角全景 / wide interior shot",
+              "frame_description": "低矮拥挤的游戏厅里，一排排旧街机发出蓝绿光。成年人、少年和孩子混在一起，烟雾让空气显得浑浊。",
+              "image_prompt": "Wide cinematic interior keyframe of a crowded 1990s Chinese arcade hall, low ceiling, rows of old arcade cabinets, cigarette smoke, mixed crowd of adult men, teenagers, and children, three schoolchildren with backpacks visible near the entrance as small figures, blue-green CRT glow, gritty social realism, northern Chinese small-town underground game room, balanced composition, high image quality, no cyberpunk neon, no modern screens, no readable text, no watermark",
+              "notes": "这一条是游戏厅场景设定核心图，既要乱，又要构图可读。",
+              "revision_note": "",
+              "output_path": "",
+              "versions": [
+                {
+                  "version_id": "current",
+                  "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/007_ACT1_SHOT_007.png",
+                  "notes": "",
+                  "created_at": "",
+                  "status": "rejected",
+                  "candidate_id": "",
+                  "task_id": "",
+                  "packet_id": "",
+                  "qa": {}
+                }
+              ]
+            },
+            {
+              "item_id": "ACT1_SHOT_008",
+              "scene_id": "SCN_ARCADE",
+              "beat": "三个孩子站定，兴奋与不安并存",
+              "shot_type": "中近景 / medium close shot",
+              "frame_description": "三个孩子站在游戏厅内部，脸被街机光照亮。他们互相看一眼，兴奋和不安同时出现，第一幕停在正式进入灰色成人空间的瞬间。",
+              "image_prompt": "Cinematic medium close-up keyframe, three Chinese schoolchildren with worn backpacks standing inside a smoky 1990s underground arcade, CRT blue-green light on their faces, expressions mixed with excitement and unease, blurred crowded arcade background, cigarette smoke, gritty realistic film still, northern Chinese small-town atmosphere, strong character continuity, clean stable image, no distorted faces, no modern objects, no readable text, no watermark",
+              "notes": "第一幕收束图，情绪锚点。后续可接投币、游戏机或危险事件。",
+              "revision_note": "",
+              "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/008_ACT1_SHOT_008.png",
+              "versions": []
+            },
+            {
+              "item_id": "ACT2_SHOT_001",
+              "scene_id": "SCN_ARCADE",
+              "beat": "被游戏厅气氛震住",
+              "shot_type": "儿童视角中景 / child-height medium shot",
+              "frame_description": "三个孩子刚进入游戏厅内部，两个弟弟停住脚步，被烟雾、CRT屏幕光和混杂人群震住；哥哥故作镇定，侧身示意他们跟紧。",
+              "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Three Chinese schoolboys just inside the doorway; two younger boys frozen by smoke, CRT light and crowded silhouettes, older brother pretending to be mature and signaling them to follow, child-height perspective, blue-green light on faces.",
+              "notes": "承接第一幕进入室内，强调两个弟弟的震慑和哥哥的装成熟。",
+              "revision_note": "",
+              "output_path": "",
+              "versions": []
+            },
+            {
+              "item_id": "ACT2_SHOT_002",
+              "scene_id": "SCN_ARCADE",
+              "beat": "哥哥掏出一块钱",
+              "shot_type": "手部特写 / insert close-up",
+              "frame_description": "哥哥从口袋里掏出一张皱旧的一元人民币，纸币被手汗和年代痕迹压皱，背景是模糊的柜台和老板。",
+              "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Insert close-up of an older brother child hand pulling out a worn 1990s Chinese one-yuan banknote, wrinkled paper texture, sweaty fingers, blurred arcade counter and owner in background, authentic period detail.",
+              "notes": "钱必须真实、年代感强；避免可读文字过清导致模型乱字，可强调纸币质感和颜色。",
+              "revision_note": "",
+              "output_path": "",
+              "versions": []
+            },
+            {
+              "item_id": "ACT2_SHOT_003",
+              "scene_id": "SCN_ARCADE",
+              "beat": "三个游戏币落入掌心",
+              "shot_type": "道具特写 / prop insert",
+              "frame_description": "老板把三个粗糙的金属游戏币放到哥哥掌心，硬币边缘磨损，反射着绿色街机光。两个弟弟在虚焦里盯着。",
+              "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Close-up of three rough worn metal arcade tokens dropping into a schoolboy palm, chipped edges, green CRT reflections, younger brothers blurred in background watching eagerly, authentic 1990s Chinese arcade tokens.",
+              "notes": "游戏币是核心年代道具，要粗糙、廉价、被摸旧。",
+              "revision_note": "",
+              "output_path": "",
+              "versions": []
+            },
+            {
+              "item_id": "ACT2_SHOT_004",
+              "scene_id": "SCN_ARCADE",
+              "beat": "走向真人快打机",
+              "shot_type": "跟拍中景 / tracking medium shot",
+              "frame_description": "哥哥握着游戏币，驾轻就熟地穿过人群走向一台真人快打街机；两个弟弟紧跟在后面，眼睛被屏幕吸住。",
+              "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Tracking medium shot of older brother confidently leading two younger boys through crowded smoky arcade toward a Mortal Kombat-style old fighting game cabinet, tokens in hand, younger boys staring at screens, no readable logos.",
+              "notes": "街机可暗示真人快打，不要出现清晰商标文字。",
+              "revision_note": "",
+              "output_path": "",
+              "versions": []
+            },
+            {
+              "item_id": "ACT2_SHOT_005",
+              "scene_id": "SCN_ARCADE",
+              "beat": "哥哥投币开打",
+              "shot_type": "街机侧面近景 / side close shot",
+              "frame_description": "游戏币投入投币口，哥哥双手落在摇杆和按钮上，动作熟练；两个弟弟站在旁边，脸上是崇拜和紧张。",
+              "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Side close shot of a token entering an old arcade coin slot, older brother hands confidently on joystick and buttons, two younger brothers beside him watching with admiration and tension, CRT fighting game glow.",
+              "notes": "投币口、手、按钮、弟弟表情要一起服务哥哥“熟练”的形象。",
+              "revision_note": "",
+              "output_path": "",
+              "versions": []
+            },
+            {
+              "item_id": "ACT2_SHOT_006",
+              "scene_id": "SCN_ARCADE",
+              "beat": "哥哥连胜，弟弟欢呼",
+              "shot_type": "中近景 / medium close shot",
+              "frame_description": "屏幕光照在哥哥脸上，他压着得意继续操作；两个弟弟在旁边兴奋地小声欢呼，周围开始有人回头。",
+              "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Medium close shot of older brother lit by CRT glow, focused and slightly smug while playing a fighting game, two younger brothers cheering quietly beside him, nearby teenagers turning their heads, smoky arcade background.",
+              "notes": "情绪从震慑转为短暂胜利，哥哥不能过分夸张。",
+              "revision_note": "",
+              "output_path": "",
+              "versions": []
+            },
+            {
+              "item_id": "ACT2_SHOT_007",
+              "scene_id": "SCN_ARCADE",
+              "beat": "围观人群变多",
+              "shot_type": "广角压迫镜头 / crowded wide shot",
+              "frame_description": "街机周围的人越围越多，肩膀和后脑勺形成压迫感。三个孩子被挤在机器前，哥哥仍然站在中心。",
+              "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Crowded wide shot around an old fighting game cabinet, shoulders and backs forming pressure around three schoolboys, older brother centered at controls, smoky low ceiling, plastic stools, mixed teenagers and adults but no modern clothing.",
+              "notes": "围观是危险升温，不只是热闹。",
+              "revision_note": "",
+              "output_path": "",
+              "versions": []
+            },
+            {
+              "item_id": "ACT2_SHOT_008",
+              "scene_id": "SCN_ARCADE",
+              "beat": "黄毛插入副机位投币挑战",
+              "shot_type": "双人机位中景 / two-player medium shot",
+              "frame_description": "一个和哥哥年纪相仿的黄毛小痞子突然挤到副操作位，不说话直接投币。哥哥侧头愣了一下，两个弟弟也安静下来。",
+              "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Medium shot of a same-age teenage yellow-haired local punk boy pushing into the second player position and dropping a token without speaking, older brother surprised but composed, younger brothers suddenly quiet, old dual-control arcade cabinet.",
+              "notes": "黄毛必须是初中生小痞子，不是成年人；挑战动作要干脆。",
+              "revision_note": "",
+              "output_path": "",
+              "versions": []
+            },
+            {
+              "item_id": "ACT2_SHOT_009",
+              "scene_id": "SCN_ARCADE",
+              "beat": "哥哥应战并赢第一局",
+              "shot_type": "过肩对抗镜头 / over-the-shoulder duel shot",
+              "frame_description": "从黄毛肩后看哥哥操作，哥哥嘴角轻微一笑后快速按键，屏幕光把两人的脸分成冷暖两侧。",
+              "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Over-the-shoulder duel shot from behind the yellow-haired teen punk, older brother at opposite controls with a restrained smirk, fast hands on buttons, CRT light splitting their faces, tense arcade crowd around them.",
+              "notes": "强调哥哥的轻蔑和熟练，但仍保持孩子气。",
+              "revision_note": "",
+              "output_path": "",
+              "versions": []
+            },
+            {
+              "item_id": "ACT2_SHOT_010",
+              "scene_id": "SCN_ARCADE",
+              "beat": "黄毛骂骂咧咧再次投币",
+              "shot_type": "快速剪辑特写组 / montage inserts",
+              "frame_description": "黄毛不服气，嘴里骂着又掏游戏币。画面切到投币口、狰狞表情、按键手指和弟弟紧张的眼神。",
+              "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Rapid montage-style storyboard panel: yellow-haired teen punk angry and cursing, another token pushed into coin slot, grimacing face, aggressive fingers smashing arcade buttons, younger brothers watching nervously, gritty smoky arcade.",
+              "notes": "这条可以作为快剪提示；不要生成文字脏话。",
+              "revision_note": "",
+              "output_path": "",
+              "versions": []
+            },
+            {
+              "item_id": "ACT2_SHOT_011",
+              "scene_id": "SCN_ARCADE",
+              "beat": "黄毛连输后砸按钮",
+              "shot_type": "低角度近景 / low close shot",
+              "frame_description": "连续失败后，黄毛用拳头砸了一下按钮台，塑料按钮和金属面板震动。哥哥和弟弟都短暂僵住。",
+              "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Low close shot of yellow-haired teen punk slamming his fist onto an old arcade control panel after repeated losses, buttons shaking, older brother and younger boys frozen in background, tension under CRT glow.",
+              "notes": "这是危险第一次显形，控制力度，不要变成打斗。",
+              "revision_note": "",
+              "output_path": "",
+              "versions": []
+            },
+            {
+              "item_id": "ACT2_SHOT_012",
+              "scene_id": "SCN_ARCADE",
+              "beat": "黄毛离开前恶狠狠盯哥哥",
+              "shot_type": "凝视中近景 / tense medium close shot",
+              "frame_description": "黄毛转身离开前停了一下，恶狠狠地盯了哥哥一眼，没有说话。哥哥表面得意，两个弟弟的笑意收住。",
+              "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Tense medium close shot of same-age yellow-haired punk turning away but stopping to glare silently at the older brother, older brother trying to look proud, younger brothers’ smiles fading, smoky arcade crowd blurred behind, ominous but realistic.",
+              "notes": "第二幕收束在无声威胁，给后续冲突埋钩子。",
+              "revision_note": "",
+              "output_path": "",
+              "versions": []
+            }
+          ],
+          "related_assets": [
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "03_story",
+              "asset_id": "SCN_COMPOUND_STORY_BEATS",
+              "kind": "",
+              "role": "beat_sheet",
+              "path": "03_story/beats/coin_slot_sample_beat_sheet.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "03_story",
+              "asset_id": "SCN_COMPOUND_FULL_SHOT_LIST",
+              "kind": "",
+              "role": "full_shot_list",
+              "path": "07_shots/shot_list.csv"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "04_lookdev",
+              "asset_id": "SCN_COMPOUND_LOOK_BIBLE",
+              "kind": "",
+              "role": "look_bible",
+              "path": "04_lookdev/references/coin_slot_look_bible_v001.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "04_lookdev",
+              "asset_id": "SCN_COMPOUND_COLOR_SCRIPT",
+              "kind": "",
+              "role": "color_script",
+              "path": "04_lookdev/palettes/coin_slot_color_script.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "04_lookdev",
+              "asset_id": "SCN_COMPOUND_VISUAL_REFS",
+              "kind": "",
+              "role": "visual_references",
+              "path": "04_lookdev/references/coin_slot_visual_references.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "04_lookdev",
+              "asset_id": "SCN_COMPOUND_SCENE_REFERENCE",
+              "kind": "",
+              "role": "scene_reference",
+              "path": "media/01_AIGC/scene_refs/SC_01_compound_corner_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "05_asset_bible",
+              "asset_id": "SCN_COMPOUND_CHARACTER_STAGE_LOCKS",
+              "kind": "",
+              "role": "character_stage_locks",
+              "path": "05_asset_bible/character_stage_locks/coin_slot_character_stage_locks.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "05_asset_bible",
+              "asset_id": "SCN_COMPOUND_LOCATION_BIBLE",
+              "kind": "",
+              "role": "location_bible",
+              "path": "05_asset_bible/locations/coin_slot_location_bible.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "05_asset_bible",
+              "asset_id": "SCN_COMPOUND_CONTINUITY_LOCKS",
+              "kind": "",
+              "role": "continuity_locks",
+              "path": "05_asset_bible/continuity/coin_slot_continuity_locks.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "SCN_COMPOUND_SCENE_LOCK",
+              "kind": "",
+              "role": "scene_lock",
+              "path": "06_previs/scene_locks/scn-compound/scene_lock.yaml"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "SCN_COMPOUND_CAMERA_MANIFEST",
+              "kind": "",
+              "role": "camera_manifest",
+              "path": "06_previs/scene_locks/scn-compound/camera_manifest.csv"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "SCN_COMPOUND_REFERENCE_ASSETS",
+              "kind": "",
+              "role": "reference_assets",
+              "path": "06_previs/scene_locks/scn-compound/reference_assets.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "SCN_COMPOUND_WHITEBOX_INDEX",
+              "kind": "",
+              "role": "whitebox_index",
+              "path": "06_previs/scene_locks/scn-compound/whitebox_index.csv"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB001_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB002_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB002.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB003_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB003.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB004_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB004.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB005_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB005.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB006_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB006.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB007_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB007.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB008_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB008.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB009_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB009.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB010_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB010.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB011_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB011.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB012_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB012.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB013_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB013.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB014_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB014.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB015_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB015.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB016_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB016.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB017_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB017.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB018_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB018.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "07_shots",
+              "asset_id": "SCN_COMPOUND_SHOT_LIST",
+              "kind": "",
+              "role": "shot_list",
+              "path": "07_shots/shot_list.csv"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "07_shots",
+              "asset_id": "MSB001_IMAGE_PROMPT",
+              "kind": "",
+              "role": "image_prompt",
+              "path": "07_shots/prompts/MSB001.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "07_shots",
+              "asset_id": "MSB003_IMAGE_PROMPT",
+              "kind": "",
+              "role": "image_prompt",
+              "path": "07_shots/prompts/MSB003.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "07_shots",
+              "asset_id": "MSB006_IMAGE_PROMPT",
+              "kind": "",
+              "role": "image_prompt",
+              "path": "07_shots/prompts/MSB006.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "07_shots",
+              "asset_id": "MSB009_IMAGE_PROMPT",
+              "kind": "",
+              "role": "image_prompt",
+              "path": "07_shots/prompts/MSB009.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "07_shots",
+              "asset_id": "MSB012_IMAGE_PROMPT",
+              "kind": "",
+              "role": "image_prompt",
+              "path": "07_shots/prompts/MSB012.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "07_shots",
+              "asset_id": "SCN_COMPOUND_SHOT_INDEX_188",
+              "kind": "",
+              "role": "scene_shot_index",
+              "path": "07_shots/scene_slices/SCN_COMPOUND_shot_index.csv"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "07_shots",
+              "asset_id": "SCN_COMPOUND_PROMPT_PACK_188",
+              "kind": "",
+              "role": "scene_prompt_pack",
+              "path": "07_shots/scene_slices/SCN_COMPOUND_prompt_pack.csv"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "07_shots",
+              "asset_id": "MSB001_VIDEO_PROMPT",
+              "kind": "",
+              "role": "video_prompt",
+              "path": "07_shots/video_prompts/MSB001.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "07_shots",
+              "asset_id": "MSB003_VIDEO_PROMPT",
+              "kind": "",
+              "role": "video_prompt",
+              "path": "07_shots/video_prompts/MSB003.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "07_shots",
+              "asset_id": "MSB006_VIDEO_PROMPT",
+              "kind": "",
+              "role": "video_prompt",
+              "path": "07_shots/video_prompts/MSB006.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "07_shots",
+              "asset_id": "MSB009_VIDEO_PROMPT",
+              "kind": "",
+              "role": "video_prompt",
+              "path": "07_shots/video_prompts/MSB009.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "07_shots",
+              "asset_id": "MSB012_VIDEO_PROMPT",
+              "kind": "",
+              "role": "video_prompt",
+              "path": "07_shots/video_prompts/MSB012.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "SCN_COMPOUND_IMAGE_OUTPUT_INDEX",
+              "kind": "",
+              "role": "image_outputs",
+              "path": "08_generation/outputs/images/coin_slot_image_outputs_index.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "SCN_COMPOUND_REJECT_LOG",
+              "kind": "",
+              "role": "rejects",
+              "path": "08_generation/rejects/coin_slot_reject_log.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "SCN_COMPOUND_STORYBOARD_IMAGE_INDEX",
+              "kind": "",
+              "role": "storyboard_image_index",
+              "path": "08_generation/outputs/images/SCN_COMPOUND_storyboard_image_index.csv"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB001_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB001_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB001_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB001_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB002_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB002_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB002_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB002_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB003_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB003_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB003_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB003_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB004_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB004_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB004_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB004_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB005_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB005_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB005_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB005_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB006_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB006_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB006_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB006_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB007_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB007_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB007_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB007_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB008_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB008_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB008_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB008_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB009_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB009_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB009_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB009_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB010_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB010_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB010_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB010_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB011_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB011_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB011_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB011_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB012_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB012_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB012_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB012_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB013_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB013_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB013_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB013_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB014_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB014_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB014_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB014_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB015_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB015_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB015_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB015_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB016_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB016_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB016_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB016_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB017_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB017_v001.png"
+            }
+          ]
+        },
+        "whitebox_guidance": [
+          "Whitebox guidance / 白模读取说明:\n- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.\n- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.\n- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.\n- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.\n- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.\n- Source whitebox replica seed: ACT1_SHOT_003_SOURCE_KEYFRAME.\n- Replica intent / 复刻意图: 以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。"
+        ]
+      },
+      "whitebox_guidance": [
+        "Whitebox guidance / 白模读取说明:\n- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.\n- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.\n- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.\n- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.\n- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.\n- Source whitebox replica seed: ACT1_SHOT_003_SOURCE_KEYFRAME.\n- Replica intent / 复刻意图: 以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。"
+      ],
+      "suggested_version_id": "v001",
+      "suggested_candidate_outputs": [
+        {
+          "candidate_id": "c01",
+          "version_id": "v001_c01",
+          "output_path": "08_generation/jobs/CARD_IMG_20260619_004223/outputs/004_ACT1_SHOT_004_v001_c01.png",
+          "output_absolute_path": "/Users/jaychoupp/Desktop/Story/Film/projects/coin-slot/08_generation/jobs/CARD_IMG_20260619_004223/outputs/004_ACT1_SHOT_004_v001_c01.png"
+        },
+        {
+          "candidate_id": "c02",
+          "version_id": "v001_c02",
+          "output_path": "08_generation/jobs/CARD_IMG_20260619_004223/outputs/004_ACT1_SHOT_004_v001_c02.png",
+          "output_absolute_path": "/Users/jaychoupp/Desktop/Story/Film/projects/coin-slot/08_generation/jobs/CARD_IMG_20260619_004223/outputs/004_ACT1_SHOT_004_v001_c02.png"
+        },
+        {
+          "candidate_id": "c03",
+          "version_id": "v001_c03",
+          "output_path": "08_generation/jobs/CARD_IMG_20260619_004223/outputs/004_ACT1_SHOT_004_v001_c03.png",
+          "output_absolute_path": "/Users/jaychoupp/Desktop/Story/Film/projects/coin-slot/08_generation/jobs/CARD_IMG_20260619_004223/outputs/004_ACT1_SHOT_004_v001_c03.png"
+        }
+      ],
+      "suggested_output_path": "08_generation/jobs/CARD_IMG_20260619_004223/outputs/004_ACT1_SHOT_004_v001_c01.png",
+      "suggested_output_absolute_path": "/Users/jaychoupp/Desktop/Story/Film/projects/coin-slot/08_generation/jobs/CARD_IMG_20260619_004223/outputs/004_ACT1_SHOT_004_v001_c01.png"
+    },
+    {
+      "task_id": "CARD_IMG_20260619_004223_005",
+      "card_type": "storyboard",
+      "item_id": "ACT1_SHOT_005",
+      "scene_id": "SCN_COMPOUND",
+      "beat": "门缝打开，机房气息泄出",
+      "shot_type": "近景 / close medium shot",
+      "frame_description": "旧门打开一条缝，老板的半张脸和手出现在门后。蓝绿街机光、烟雾和嘈杂声从门缝先涌出来，孩子们身体微微前倾。",
+      "image_prompt": "Cinematic keyframe, shabby metal door opening a narrow crack, middle-aged Chinese arcade owner partly visible inside, hand holding the door, blue-green CRT arcade light and cigarette smoke leaking from the interior, three schoolchildren with backpacks waiting outside and leaning forward, 1990s northern Chinese residential building corner, realistic gritty atmosphere, clean film still, no readable text, no watermark, no modern elements",
+      "video_prompt": "The lock turns, the door cracks open, smoke and arcade light spill out first; the children lean in before stepping through.",
+      "notes": "门缝是两个世界的边界，光、烟和声音比台词更重要。",
+      "revision_note": "",
+      "target_references": [
+        {
+          "ref_id": "WBX_20260616_024949",
+          "asset_ref": "project:06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+          "asset_id": "WBX_20260616_024949",
+          "path": "06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+          "origin": "project",
+          "kind": "whitebox",
+          "role": "replica_whitebox",
+          "note": "高精度白模复刻：默认作为该分镜空间、机位、光照和人物动作参考 / high-fidelity replica whitebox for blocking, camera, lighting, and pose.",
+          "version_id": "",
+          "version_status": "",
+          "card_type": "",
+          "card_id": "",
+          "card_title": "",
+          "usage_note": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。",
+          "generation_guidance": "Whitebox guidance / 白模读取说明:\n- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.\n- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.\n- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.\n- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.\n- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.\n- Source whitebox replica seed: ACT1_SHOT_003_SOURCE_KEYFRAME.\n- Replica intent / 复刻意图: 以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+          "whitebox_interpretation": {
+            "mode": "spatial_control_only",
+            "source_asset_id": "ACT1_SHOT_003_SOURCE_KEYFRAME",
+            "source_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+            "replica_note": "以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+            "tags": [
+              "ACT01",
+              "SCN_COMPOUND",
+              "hidden_arcade_door",
+              "peephole",
+              "three_children",
+              "1to1_replica"
+            ],
+            "use_for": [
+              "camera framing and lens/composition",
+              "subject scale, blocking, pose, sightline, and depth order",
+              "major set anchors such as doors, windows, corridors, walls, props, and openings",
+              "main light direction, shadow rhythm, and scene readability"
+            ],
+            "preserve": [
+              "overall aspect ratio and camera angle",
+              "relative positions between characters and key set pieces",
+              "door/window/opening height and screen position when present",
+              "foreground/midground/background separation"
+            ],
+            "ignore": [
+              "gray clay material",
+              "primitive cube/sphere/cylinder shapes",
+              "mannequin or toy-like character appearance",
+              "unfinished low-poly geometry",
+              "plain studio-white lighting unless the shot explicitly asks for it"
+            ],
+            "prompt_bridge": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。"
+          }
+        }
+      ],
+      "existing_output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/005_ACT1_SHOT_005.png",
+      "existing_versions": [],
+      "nearby_context": {
+        "scene": {
+          "scene_id": "SCN_COMPOUND",
+          "title": "居民楼角落 / Compound corner",
+          "act_id": "ACT01",
+          "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade"
+        },
+        "nearby_storyboard_cards": [
+          {
+            "item_id": "ACT1_SHOT_001",
+            "scene_id": "SCN_COMPOUND",
+            "beat": "放学后偏离大路",
+            "shot_type": "远景 / establishing wide shot",
+            "frame_description": "傍晚的北方小城，旧居民楼压在灰色街道边。三个背书包的小朋友从放学人流边缘脱离，避开大路，朝居民楼背面走去。",
+            "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small city after school, old concrete apartment blocks and dusty street, muted gray winter palette, three Chinese schoolchildren with worn backpacks quietly leaving the main road and heading toward the back corner of a residential building, cautious secretive body language, realistic film still, 35mm lens, natural dusk light, subtle film grain, clean composition, no modern cars, no smartphones, no readable text, no watermark",
+            "notes": "建立时代、地域和偷偷行动。游戏厅入口不要过早显眼，先让路线和氛围成立。",
+            "revision_note": "",
+            "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/001_ACT1_SHOT_001.png",
+            "versions": []
+          },
+          {
+            "item_id": "ACT1_SHOT_002",
+            "scene_id": "SCN_COMPOUND",
+            "beat": "沿墙根靠近隐藏入口",
+            "shot_type": "中远景 / tracking medium-wide shot",
+            "frame_description": "三个孩子贴着居民楼墙根走，经过旧管道和剥落墙皮，互相用眼神确认没人注意，动作熟练又紧张。",
+            "image_prompt": "Cinematic film keyframe, three Chinese schoolchildren in 1990s school clothes sneaking along the wall of a shabby residential building, worn backpacks, old pipes, peeling paint, chipped concrete, one child glancing back nervously while another gestures to stay quiet, northern Chinese small-town realism, low handheld perspective, subdued colors, high-quality stable image, no modern objects, no random text, no watermark",
+            "notes": "鬼鬼祟祟但不要惊悚化，表情里要带着窃喜，哥哥在给弟弟讲游戏有多好玩，弟弟全神贯注的听着",
+            "revision_note": "",
+            "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/002_ACT1_SHOT_002.png",
+            "versions": []
+          },
+          {
+            "item_id": "ACT1_SHOT_003",
+            "scene_id": "SCN_COMPOUND",
+            "beat": "旧门和猫眼出现",
+            "shot_type": "中景 / medium shot",
+            "frame_description": "居民楼一楼角落有一扇不起眼的旧金属门，门上有猫眼，没有正式招牌。三个孩子停在门前，压低声音等待。",
+            "image_prompt": "Cinematic storyboard keyframe, hidden arcade entrance in the corner of an old Chinese residential building, 1990s northern small city, shabby closed metal door with a small peephole, no obvious signboard, three schoolchildren with backpacks standing on the left side whispering and looking secretive, cracked concrete wall, dim corridor shadow, realistic film still, strong readable composition, no modern signage, no readable text, no watermark",
+            "notes": "旧门+猫眼是第一幕核心视觉资产，门要普通、隐蔽、可信。",
+            "revision_note": "这个门不太像是游戏厅的门",
+            "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+            "versions": []
+          },
+          {
+            "item_id": "ACT1_SHOT_004",
+            "scene_id": "SCN_COMPOUND",
+            "beat": "老板从猫眼确认熟人",
+            "shot_type": "猫眼特写 / peephole close-up",
+            "frame_description": "从门内猫眼视角看出去，三个孩子的脸被猫眼畸变压缩，紧张又期待。门内老板确认他们是熟客。",
+            "image_prompt": "Cinematic close-up keyframe from inside a closed door peephole, fisheye peephole distortion, three Chinese schoolchildren with worn backpacks visible outside in a shabby apartment corner, nervous excited faces, 1990s northern China, faint green-blue arcade light around the peephole edge, realistic film texture, suspenseful but not horror, clean image, no text, no watermark, no modern objects",
+            "notes": "用猫眼制造“被审查/被放行”的边界感。可后续关联孩子人设。",
+            "revision_note": "",
+            "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/004_ACT1_SHOT_004.png",
+            "versions": []
+          },
+          {
+            "item_id": "ACT1_SHOT_005",
+            "scene_id": "SCN_COMPOUND",
+            "beat": "门缝打开，机房气息泄出",
+            "shot_type": "近景 / close medium shot",
+            "frame_description": "旧门打开一条缝，老板的半张脸和手出现在门后。蓝绿街机光、烟雾和嘈杂声从门缝先涌出来，孩子们身体微微前倾。",
+            "image_prompt": "Cinematic keyframe, shabby metal door opening a narrow crack, middle-aged Chinese arcade owner partly visible inside, hand holding the door, blue-green CRT arcade light and cigarette smoke leaking from the interior, three schoolchildren with backpacks waiting outside and leaning forward, 1990s northern Chinese residential building corner, realistic gritty atmosphere, clean film still, no readable text, no watermark, no modern elements",
+            "notes": "门缝是两个世界的边界，光、烟和声音比台词更重要。",
+            "revision_note": "",
+            "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/005_ACT1_SHOT_005.png",
+            "versions": []
+          },
+          {
+            "item_id": "ACT1_SHOT_006",
+            "scene_id": "SCN_ARCADE",
+            "beat": "孩子进入乌烟瘴气的游戏厅",
+            "shot_type": "儿童视角中景 / child-height medium shot",
+            "frame_description": "三个孩子刚进室内，画面被烟雾、街机屏幕光和拥挤背影包围。他们像闯进另一个秩序混乱的世界。",
+            "image_prompt": "Cinematic storyboard keyframe inside a smoky 1990s Chinese underground arcade, three schoolchildren with worn backpacks entering from a doorway, blue and green CRT arcade cabinet glow, cigarette smoke hanging under a low ceiling, crowded silhouettes of adults and teenagers, gritty northern small-town atmosphere, child-height camera perspective, high-quality film still, no modern machines, no smartphone, no readable random text, no watermark",
+            "notes": "三人仍然是画面锚点，不能被杂乱人群完全吞掉。",
+            "revision_note": "",
+            "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/006_ACT1_SHOT_006.png",
+            "versions": []
+          },
+          {
+            "item_id": "ACT1_SHOT_007",
+            "scene_id": "SCN_ARCADE",
+            "beat": "游戏厅鱼龙混杂全貌",
+            "shot_type": "广角全景 / wide interior shot",
+            "frame_description": "低矮拥挤的游戏厅里，一排排旧街机发出蓝绿光。成年人、少年和孩子混在一起，烟雾让空气显得浑浊。",
+            "image_prompt": "Wide cinematic interior keyframe of a crowded 1990s Chinese arcade hall, low ceiling, rows of old arcade cabinets, cigarette smoke, mixed crowd of adult men, teenagers, and children, three schoolchildren with backpacks visible near the entrance as small figures, blue-green CRT glow, gritty social realism, northern Chinese small-town underground game room, balanced composition, high image quality, no cyberpunk neon, no modern screens, no readable text, no watermark",
+            "notes": "这一条是游戏厅场景设定核心图，既要乱，又要构图可读。",
+            "revision_note": "",
+            "output_path": "",
+            "versions": [
+              {
+                "version_id": "current",
+                "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/007_ACT1_SHOT_007.png",
+                "notes": "",
+                "created_at": "",
+                "status": "rejected",
+                "candidate_id": "",
+                "task_id": "",
+                "packet_id": "",
+                "qa": {}
+              }
+            ]
+          },
+          {
+            "item_id": "ACT1_SHOT_008",
+            "scene_id": "SCN_ARCADE",
+            "beat": "三个孩子站定，兴奋与不安并存",
+            "shot_type": "中近景 / medium close shot",
+            "frame_description": "三个孩子站在游戏厅内部，脸被街机光照亮。他们互相看一眼，兴奋和不安同时出现，第一幕停在正式进入灰色成人空间的瞬间。",
+            "image_prompt": "Cinematic medium close-up keyframe, three Chinese schoolchildren with worn backpacks standing inside a smoky 1990s underground arcade, CRT blue-green light on their faces, expressions mixed with excitement and unease, blurred crowded arcade background, cigarette smoke, gritty realistic film still, northern Chinese small-town atmosphere, strong character continuity, clean stable image, no distorted faces, no modern objects, no readable text, no watermark",
+            "notes": "第一幕收束图，情绪锚点。后续可接投币、游戏机或危险事件。",
+            "revision_note": "",
+            "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/008_ACT1_SHOT_008.png",
+            "versions": []
+          },
+          {
+            "item_id": "ACT2_SHOT_001",
+            "scene_id": "SCN_ARCADE",
+            "beat": "被游戏厅气氛震住",
+            "shot_type": "儿童视角中景 / child-height medium shot",
+            "frame_description": "三个孩子刚进入游戏厅内部，两个弟弟停住脚步，被烟雾、CRT屏幕光和混杂人群震住；哥哥故作镇定，侧身示意他们跟紧。",
+            "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Three Chinese schoolboys just inside the doorway; two younger boys frozen by smoke, CRT light and crowded silhouettes, older brother pretending to be mature and signaling them to follow, child-height perspective, blue-green light on faces.",
+            "notes": "承接第一幕进入室内，强调两个弟弟的震慑和哥哥的装成熟。",
+            "revision_note": "",
+            "output_path": "",
+            "versions": []
+          },
+          {
+            "item_id": "ACT2_SHOT_002",
+            "scene_id": "SCN_ARCADE",
+            "beat": "哥哥掏出一块钱",
+            "shot_type": "手部特写 / insert close-up",
+            "frame_description": "哥哥从口袋里掏出一张皱旧的一元人民币，纸币被手汗和年代痕迹压皱，背景是模糊的柜台和老板。",
+            "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Insert close-up of an older brother child hand pulling out a worn 1990s Chinese one-yuan banknote, wrinkled paper texture, sweaty fingers, blurred arcade counter and owner in background, authentic period detail.",
+            "notes": "钱必须真实、年代感强；避免可读文字过清导致模型乱字，可强调纸币质感和颜色。",
+            "revision_note": "",
+            "output_path": "",
+            "versions": []
+          },
+          {
+            "item_id": "ACT2_SHOT_003",
+            "scene_id": "SCN_ARCADE",
+            "beat": "三个游戏币落入掌心",
+            "shot_type": "道具特写 / prop insert",
+            "frame_description": "老板把三个粗糙的金属游戏币放到哥哥掌心，硬币边缘磨损，反射着绿色街机光。两个弟弟在虚焦里盯着。",
+            "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Close-up of three rough worn metal arcade tokens dropping into a schoolboy palm, chipped edges, green CRT reflections, younger brothers blurred in background watching eagerly, authentic 1990s Chinese arcade tokens.",
+            "notes": "游戏币是核心年代道具，要粗糙、廉价、被摸旧。",
+            "revision_note": "",
+            "output_path": "",
+            "versions": []
+          },
+          {
+            "item_id": "ACT2_SHOT_004",
+            "scene_id": "SCN_ARCADE",
+            "beat": "走向真人快打机",
+            "shot_type": "跟拍中景 / tracking medium shot",
+            "frame_description": "哥哥握着游戏币，驾轻就熟地穿过人群走向一台真人快打街机；两个弟弟紧跟在后面，眼睛被屏幕吸住。",
+            "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Tracking medium shot of older brother confidently leading two younger boys through crowded smoky arcade toward a Mortal Kombat-style old fighting game cabinet, tokens in hand, younger boys staring at screens, no readable logos.",
+            "notes": "街机可暗示真人快打，不要出现清晰商标文字。",
+            "revision_note": "",
+            "output_path": "",
+            "versions": []
+          },
+          {
+            "item_id": "ACT2_SHOT_005",
+            "scene_id": "SCN_ARCADE",
+            "beat": "哥哥投币开打",
+            "shot_type": "街机侧面近景 / side close shot",
+            "frame_description": "游戏币投入投币口，哥哥双手落在摇杆和按钮上，动作熟练；两个弟弟站在旁边，脸上是崇拜和紧张。",
+            "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Side close shot of a token entering an old arcade coin slot, older brother hands confidently on joystick and buttons, two younger brothers beside him watching with admiration and tension, CRT fighting game glow.",
+            "notes": "投币口、手、按钮、弟弟表情要一起服务哥哥“熟练”的形象。",
+            "revision_note": "",
+            "output_path": "",
+            "versions": []
+          },
+          {
+            "item_id": "ACT2_SHOT_006",
+            "scene_id": "SCN_ARCADE",
+            "beat": "哥哥连胜，弟弟欢呼",
+            "shot_type": "中近景 / medium close shot",
+            "frame_description": "屏幕光照在哥哥脸上，他压着得意继续操作；两个弟弟在旁边兴奋地小声欢呼，周围开始有人回头。",
+            "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Medium close shot of older brother lit by CRT glow, focused and slightly smug while playing a fighting game, two younger brothers cheering quietly beside him, nearby teenagers turning their heads, smoky arcade background.",
+            "notes": "情绪从震慑转为短暂胜利，哥哥不能过分夸张。",
+            "revision_note": "",
+            "output_path": "",
+            "versions": []
+          },
+          {
+            "item_id": "ACT2_SHOT_007",
+            "scene_id": "SCN_ARCADE",
+            "beat": "围观人群变多",
+            "shot_type": "广角压迫镜头 / crowded wide shot",
+            "frame_description": "街机周围的人越围越多，肩膀和后脑勺形成压迫感。三个孩子被挤在机器前，哥哥仍然站在中心。",
+            "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Crowded wide shot around an old fighting game cabinet, shoulders and backs forming pressure around three schoolboys, older brother centered at controls, smoky low ceiling, plastic stools, mixed teenagers and adults but no modern clothing.",
+            "notes": "围观是危险升温，不只是热闹。",
+            "revision_note": "",
+            "output_path": "",
+            "versions": []
+          },
+          {
+            "item_id": "ACT2_SHOT_008",
+            "scene_id": "SCN_ARCADE",
+            "beat": "黄毛插入副机位投币挑战",
+            "shot_type": "双人机位中景 / two-player medium shot",
+            "frame_description": "一个和哥哥年纪相仿的黄毛小痞子突然挤到副操作位，不说话直接投币。哥哥侧头愣了一下，两个弟弟也安静下来。",
+            "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Medium shot of a same-age teenage yellow-haired local punk boy pushing into the second player position and dropping a token without speaking, older brother surprised but composed, younger brothers suddenly quiet, old dual-control arcade cabinet.",
+            "notes": "黄毛必须是初中生小痞子，不是成年人；挑战动作要干脆。",
+            "revision_note": "",
+            "output_path": "",
+            "versions": []
+          },
+          {
+            "item_id": "ACT2_SHOT_009",
+            "scene_id": "SCN_ARCADE",
+            "beat": "哥哥应战并赢第一局",
+            "shot_type": "过肩对抗镜头 / over-the-shoulder duel shot",
+            "frame_description": "从黄毛肩后看哥哥操作，哥哥嘴角轻微一笑后快速按键，屏幕光把两人的脸分成冷暖两侧。",
+            "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Over-the-shoulder duel shot from behind the yellow-haired teen punk, older brother at opposite controls with a restrained smirk, fast hands on buttons, CRT light splitting their faces, tense arcade crowd around them.",
+            "notes": "强调哥哥的轻蔑和熟练，但仍保持孩子气。",
+            "revision_note": "",
+            "output_path": "",
+            "versions": []
+          },
+          {
+            "item_id": "ACT2_SHOT_010",
+            "scene_id": "SCN_ARCADE",
+            "beat": "黄毛骂骂咧咧再次投币",
+            "shot_type": "快速剪辑特写组 / montage inserts",
+            "frame_description": "黄毛不服气，嘴里骂着又掏游戏币。画面切到投币口、狰狞表情、按键手指和弟弟紧张的眼神。",
+            "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Rapid montage-style storyboard panel: yellow-haired teen punk angry and cursing, another token pushed into coin slot, grimacing face, aggressive fingers smashing arcade buttons, younger brothers watching nervously, gritty smoky arcade.",
+            "notes": "这条可以作为快剪提示；不要生成文字脏话。",
+            "revision_note": "",
+            "output_path": "",
+            "versions": []
+          },
+          {
+            "item_id": "ACT2_SHOT_011",
+            "scene_id": "SCN_ARCADE",
+            "beat": "黄毛连输后砸按钮",
+            "shot_type": "低角度近景 / low close shot",
+            "frame_description": "连续失败后，黄毛用拳头砸了一下按钮台，塑料按钮和金属面板震动。哥哥和弟弟都短暂僵住。",
+            "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Low close shot of yellow-haired teen punk slamming his fist onto an old arcade control panel after repeated losses, buttons shaking, older brother and younger boys frozen in background, tension under CRT glow.",
+            "notes": "这是危险第一次显形，控制力度，不要变成打斗。",
+            "revision_note": "",
+            "output_path": "",
+            "versions": []
+          },
+          {
+            "item_id": "ACT2_SHOT_012",
+            "scene_id": "SCN_ARCADE",
+            "beat": "黄毛离开前恶狠狠盯哥哥",
+            "shot_type": "凝视中近景 / tense medium close shot",
+            "frame_description": "黄毛转身离开前停了一下，恶狠狠地盯了哥哥一眼，没有说话。哥哥表面得意，两个弟弟的笑意收住。",
+            "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Tense medium close shot of same-age yellow-haired punk turning away but stopping to glare silently at the older brother, older brother trying to look proud, younger brothers’ smiles fading, smoky arcade crowd blurred behind, ominous but realistic.",
+            "notes": "第二幕收束在无声威胁，给后续冲突埋钩子。",
+            "revision_note": "",
+            "output_path": "",
+            "versions": []
+          }
+        ],
+        "related_assets": [
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "03_story",
+            "asset_id": "SCN_COMPOUND_STORY_BEATS",
+            "kind": "",
+            "role": "beat_sheet",
+            "path": "03_story/beats/coin_slot_sample_beat_sheet.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "03_story",
+            "asset_id": "SCN_COMPOUND_FULL_SHOT_LIST",
+            "kind": "",
+            "role": "full_shot_list",
+            "path": "07_shots/shot_list.csv"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "04_lookdev",
+            "asset_id": "SCN_COMPOUND_LOOK_BIBLE",
+            "kind": "",
+            "role": "look_bible",
+            "path": "04_lookdev/references/coin_slot_look_bible_v001.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "04_lookdev",
+            "asset_id": "SCN_COMPOUND_COLOR_SCRIPT",
+            "kind": "",
+            "role": "color_script",
+            "path": "04_lookdev/palettes/coin_slot_color_script.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "04_lookdev",
+            "asset_id": "SCN_COMPOUND_VISUAL_REFS",
+            "kind": "",
+            "role": "visual_references",
+            "path": "04_lookdev/references/coin_slot_visual_references.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "04_lookdev",
+            "asset_id": "SCN_COMPOUND_SCENE_REFERENCE",
+            "kind": "",
+            "role": "scene_reference",
+            "path": "media/01_AIGC/scene_refs/SC_01_compound_corner_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "05_asset_bible",
+            "asset_id": "SCN_COMPOUND_CHARACTER_STAGE_LOCKS",
+            "kind": "",
+            "role": "character_stage_locks",
+            "path": "05_asset_bible/character_stage_locks/coin_slot_character_stage_locks.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "05_asset_bible",
+            "asset_id": "SCN_COMPOUND_LOCATION_BIBLE",
+            "kind": "",
+            "role": "location_bible",
+            "path": "05_asset_bible/locations/coin_slot_location_bible.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "05_asset_bible",
+            "asset_id": "SCN_COMPOUND_CONTINUITY_LOCKS",
+            "kind": "",
+            "role": "continuity_locks",
+            "path": "05_asset_bible/continuity/coin_slot_continuity_locks.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "SCN_COMPOUND_SCENE_LOCK",
+            "kind": "",
+            "role": "scene_lock",
+            "path": "06_previs/scene_locks/scn-compound/scene_lock.yaml"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "SCN_COMPOUND_CAMERA_MANIFEST",
+            "kind": "",
+            "role": "camera_manifest",
+            "path": "06_previs/scene_locks/scn-compound/camera_manifest.csv"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "SCN_COMPOUND_REFERENCE_ASSETS",
+            "kind": "",
+            "role": "reference_assets",
+            "path": "06_previs/scene_locks/scn-compound/reference_assets.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "SCN_COMPOUND_WHITEBOX_INDEX",
+            "kind": "",
+            "role": "whitebox_index",
+            "path": "06_previs/scene_locks/scn-compound/whitebox_index.csv"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB001_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB002_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB002.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB003_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB003.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB004_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB004.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB005_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB005.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB006_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB006.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB007_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB007.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB008_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB008.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB009_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB009.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB010_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB010.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB011_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB011.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB012_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB012.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB013_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB013.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB014_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB014.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB015_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB015.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB016_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB016.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB017_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB017.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "06_previs",
+            "asset_id": "MSB018_WHITEBOX",
+            "kind": "",
+            "role": "whitebox",
+            "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB018.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "07_shots",
+            "asset_id": "SCN_COMPOUND_SHOT_LIST",
+            "kind": "",
+            "role": "shot_list",
+            "path": "07_shots/shot_list.csv"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "07_shots",
+            "asset_id": "MSB001_IMAGE_PROMPT",
+            "kind": "",
+            "role": "image_prompt",
+            "path": "07_shots/prompts/MSB001.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "07_shots",
+            "asset_id": "MSB003_IMAGE_PROMPT",
+            "kind": "",
+            "role": "image_prompt",
+            "path": "07_shots/prompts/MSB003.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "07_shots",
+            "asset_id": "MSB006_IMAGE_PROMPT",
+            "kind": "",
+            "role": "image_prompt",
+            "path": "07_shots/prompts/MSB006.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "07_shots",
+            "asset_id": "MSB009_IMAGE_PROMPT",
+            "kind": "",
+            "role": "image_prompt",
+            "path": "07_shots/prompts/MSB009.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "07_shots",
+            "asset_id": "MSB012_IMAGE_PROMPT",
+            "kind": "",
+            "role": "image_prompt",
+            "path": "07_shots/prompts/MSB012.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "07_shots",
+            "asset_id": "SCN_COMPOUND_SHOT_INDEX_188",
+            "kind": "",
+            "role": "scene_shot_index",
+            "path": "07_shots/scene_slices/SCN_COMPOUND_shot_index.csv"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "07_shots",
+            "asset_id": "SCN_COMPOUND_PROMPT_PACK_188",
+            "kind": "",
+            "role": "scene_prompt_pack",
+            "path": "07_shots/scene_slices/SCN_COMPOUND_prompt_pack.csv"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "07_shots",
+            "asset_id": "MSB001_VIDEO_PROMPT",
+            "kind": "",
+            "role": "video_prompt",
+            "path": "07_shots/video_prompts/MSB001.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "07_shots",
+            "asset_id": "MSB003_VIDEO_PROMPT",
+            "kind": "",
+            "role": "video_prompt",
+            "path": "07_shots/video_prompts/MSB003.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "07_shots",
+            "asset_id": "MSB006_VIDEO_PROMPT",
+            "kind": "",
+            "role": "video_prompt",
+            "path": "07_shots/video_prompts/MSB006.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "07_shots",
+            "asset_id": "MSB009_VIDEO_PROMPT",
+            "kind": "",
+            "role": "video_prompt",
+            "path": "07_shots/video_prompts/MSB009.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "07_shots",
+            "asset_id": "MSB012_VIDEO_PROMPT",
+            "kind": "",
+            "role": "video_prompt",
+            "path": "07_shots/video_prompts/MSB012.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "SCN_COMPOUND_IMAGE_OUTPUT_INDEX",
+            "kind": "",
+            "role": "image_outputs",
+            "path": "08_generation/outputs/images/coin_slot_image_outputs_index.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "SCN_COMPOUND_REJECT_LOG",
+            "kind": "",
+            "role": "rejects",
+            "path": "08_generation/rejects/coin_slot_reject_log.md"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "SCN_COMPOUND_STORYBOARD_IMAGE_INDEX",
+            "kind": "",
+            "role": "storyboard_image_index",
+            "path": "08_generation/outputs/images/SCN_COMPOUND_storyboard_image_index.csv"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB001_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB001_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB001_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB001_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB002_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB002_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB002_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB002_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB003_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB003_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB003_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB003_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB004_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB004_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB004_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB004_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB005_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB005_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB005_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB005_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB006_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB006_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB006_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB006_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB007_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB007_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB007_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB007_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB008_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB008_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB008_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB008_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB009_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB009_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB009_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB009_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB010_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB010_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB010_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB010_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB011_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB011_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB011_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB011_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB012_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB012_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB012_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB012_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB013_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB013_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB013_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB013_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB014_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB014_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB014_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB014_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB015_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB015_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB015_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB015_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB016_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB016_v001.png"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB016_FINAL_STORYBOARD",
+            "kind": "",
+            "role": "final_storyboard_panel",
+            "path": "media/01_AIGC/final_storyboard_panels/B01/MSB016_final_storyboard_v002.jpg"
+          },
+          {
+            "scene_id": "SCN_COMPOUND",
+            "scene_title": "居民楼角落 / Compound corner",
+            "step": "08_generation",
+            "asset_id": "MSB017_PURE_KEYFRAME",
+            "kind": "",
+            "role": "storyboard_keyframe",
+            "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB017_v001.png"
+          }
+        ]
+      },
+      "generation_context": {
+        "global_references": [
+          {
+            "ref_id": "THREE_BROTHERS_turnaround_expression_contact_sheet_v001",
+            "asset_ref": "resource:media/01_AIGC/character_design_v2/THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+            "asset_id": "THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+            "path": "media/01_AIGC/character_design_v2/THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+            "origin": "resource",
+            "kind": "character_ref",
+            "role": "character_design_contact_sheet",
+            "note": "三个小朋友统一人设、三视图、表情和服装连续性参考 / Global reference for the three children character identity, turnaround, expressions, and wardrobe continuity.",
+            "version_id": "",
+            "version_status": "",
+            "card_type": "",
+            "card_id": "",
+            "card_title": ""
+          },
+          {
+            "ref_id": "CHR_BRO_A_late_scuffed_reference_v001.png",
+            "asset_ref": "resource:media/01_AIGC/character_design_v2/stage_variants/CHR_BRO_A_late_scuffed_reference_v001.png",
+            "asset_id": "CHR_BRO_A_late_scuffed_reference_v001.png",
+            "path": "media/01_AIGC/character_design_v2/stage_variants/CHR_BRO_A_late_scuffed_reference_v001.png",
+            "origin": "resource",
+            "kind": "image",
+            "role": "image",
+            "note": "给哥哥带一个眼镜",
+            "version_id": "",
+            "version_status": "",
+            "card_type": "",
+            "card_id": "",
+            "card_title": ""
+          },
+          {
+            "ref_id": "001_BIBLE_005_v001.png",
+            "asset_ref": "project:08_generation/jobs/CARD_IMG_20260618_221216/outputs/001_BIBLE_005_v001.png",
+            "asset_id": "001_BIBLE_005_v001.png",
+            "path": "08_generation/jobs/CARD_IMG_20260618_221216/outputs/001_BIBLE_005_v001.png",
+            "origin": "project",
+            "kind": "image",
+            "role": "image",
+            "note": "参考三个混混的设定，这一幕只出现黄毛",
+            "version_id": "v001",
+            "version_status": "current",
+            "card_type": "concept",
+            "card_id": "BIBLE_005",
+            "card_title": ""
+          }
+        ],
+        "context_cards": [
+          {
+            "card_id": "BIBLE_CHARACTER_001",
+            "scope": "project",
+            "act_id": "",
+            "category": "character",
+            "title": "三个小朋友 / Three children",
+            "summary": "第一幕的核心人物组：三个背书包的小学生，熟门熟路但仍然心虚，互相打掩护进入隐藏游戏机房。需要保持年龄、身高差、书包、发型、衣着年代感和表演气质连续。",
+            "visual_direction": "1990年代中国北方小城小学生：旧校服或朴素外套、磨旧书包、略脏鞋面、放学后的疲惫和兴奋并存；动作要小心、鬼祟、彼此贴近。",
+            "prompt_notes": "three Chinese school children in 1990s northern China, carrying worn schoolbags, cautious and sneaky after school, consistent faces, hairstyles, wardrobe and height differences, cinematic realism",
+            "revision_note": "",
+            "negative_prompt": "不要现代校服、智能手机、潮牌服饰、夸张动漫表情、年龄过大或过小、角色身份不一致。",
+            "selected": true,
+            "image_selected": true,
+            "status": "draft",
+            "references": [
+              {
+                "ref_id": "THREE_BROTHERS_turnaround_expression_contact_sheet_v001",
+                "asset_ref": "resource:media/01_AIGC/character_design_v2/THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+                "asset_id": "THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+                "path": "media/01_AIGC/character_design_v2/THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+                "origin": "resource",
+                "kind": "character_ref",
+                "role": "character_design_contact_sheet",
+                "note": "三个小朋友统一人设、三视图、表情和服装连续性参考 / Global reference for the three children character identity, turnaround, expressions, and wardrobe continuity.",
+                "version_id": "",
+                "version_status": "",
+                "card_type": "",
+                "card_id": "",
+                "card_title": ""
+              },
+              {
+                "ref_id": "CHR_BRO_A_late_scuffed_reference_v001.png",
+                "asset_ref": "resource:media/01_AIGC/character_design_v2/stage_variants/CHR_BRO_A_late_scuffed_reference_v001.png",
+                "asset_id": "CHR_BRO_A_late_scuffed_reference_v001.png",
+                "path": "media/01_AIGC/character_design_v2/stage_variants/CHR_BRO_A_late_scuffed_reference_v001.png",
+                "origin": "resource",
+                "kind": "image",
+                "role": "image",
+                "note": "给哥哥带一个眼镜",
+                "version_id": "",
+                "version_status": "",
+                "card_type": "",
+                "card_id": "",
+                "card_title": ""
+              }
+            ],
+            "preview_path": "",
+            "versions": []
+          },
+          {
+            "card_id": "BIBLE_LOCATION_001",
+            "scope": "project",
+            "act_id": "",
+            "category": "location",
+            "title": "破旧居民楼角落与隐藏游戏机房入口 / Compound corner arcade entrance",
+            "summary": "第一幕外部主场景：老居民楼侧面的不起眼角落，暗金属门藏在墙根或楼体边角处，门上有猫眼，老板从里面确认熟人后开门。",
+            "visual_direction": "潮湿水泥墙、掉皮涂料、锈迹铁门、暗窄入口、灰尘和旧广告痕迹；构图强调秘密入口、孩子压低身体靠近、门内外光线反差。",
+            "prompt_notes": "old residential compound corner in 1990s northern Chinese small city, hidden arcade room entrance, rusty dark metal door with peephole, peeling concrete wall, dim afternoon light, secretive composition",
+            "revision_note": "",
+            "negative_prompt": "不要现代商业街、霓虹招牌、干净新楼、豪华游戏厅门面、可读随机文字或过度赛博朋克。",
+            "selected": true,
+            "image_selected": true,
+            "status": "draft",
+            "references": [
+              {
+                "ref_id": "WBX_20260616_024949",
+                "asset_ref": "project:06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+                "asset_id": "WBX_20260616_024949",
+                "path": "06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+                "origin": "project",
+                "kind": "whitebox",
+                "role": "replica_whitebox",
+                "note": "隐藏游戏机房入口的空间、机位、旧墙、金属门、猫眼和三个孩子站位参考；作为场景与道具总概念的白模依据。",
+                "version_id": "",
+                "version_status": "",
+                "card_type": "",
+                "card_id": "",
+                "card_title": "",
+                "usage_note": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。",
+                "generation_guidance": "Whitebox guidance / 白模读取说明:\n- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.\n- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.\n- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.\n- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.\n- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.\n- Source whitebox replica seed: ACT1_SHOT_003_SOURCE_KEYFRAME.\n- Replica intent / 复刻意图: 以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+                "whitebox_interpretation": {
+                  "mode": "spatial_control_only",
+                  "source_asset_id": "ACT1_SHOT_003_SOURCE_KEYFRAME",
+                  "source_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+                  "replica_note": "以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+                  "tags": [
+                    "ACT01",
+                    "SCN_COMPOUND",
+                    "hidden_arcade_door",
+                    "peephole",
+                    "three_children",
+                    "1to1_replica"
+                  ],
+                  "use_for": [
+                    "camera framing and lens/composition",
+                    "subject scale, blocking, pose, sightline, and depth order",
+                    "major set anchors such as doors, windows, corridors, walls, props, and openings",
+                    "main light direction, shadow rhythm, and scene readability"
+                  ],
+                  "preserve": [
+                    "overall aspect ratio and camera angle",
+                    "relative positions between characters and key set pieces",
+                    "door/window/opening height and screen position when present",
+                    "foreground/midground/background separation"
+                  ],
+                  "ignore": [
+                    "gray clay material",
+                    "primitive cube/sphere/cylinder shapes",
+                    "mannequin or toy-like character appearance",
+                    "unfinished low-poly geometry",
+                    "plain studio-white lighting unless the shot explicitly asks for it"
+                  ],
+                  "prompt_bridge": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。"
+                }
+              }
+            ],
+            "preview_path": "",
+            "versions": []
+          },
+          {
+            "card_id": "BIBLE_LOOKDEV_001",
+            "scope": "project",
+            "act_id": "",
+            "category": "lookdev",
+            "title": "90年代北方小城写实质感 / 1990s northern small-city realism",
+            "summary": "全片视觉底色：纪实电影感、低饱和、颗粒但不脏、旧胶片/早期DV记忆感，强调冬春交界或阴天里的灰冷空气。",
+            "visual_direction": "冷灰水泥、褪色红黄广告纸、旧木门和铁门、混浊室内烟雾、钨丝灯与街面自然光混合；摄影机克制，少用夸张广角。",
+            "prompt_notes": "cinematic realism, 1990s northern Chinese small town, muted colors, natural film grain, smoky interiors, mixed tungsten and overcast daylight, grounded documentary texture",
+            "revision_note": "",
+            "negative_prompt": "不要过度磨皮、塑料感、CG感、现代高清广告片、过饱和网红色调、随机英文霓虹和水印。",
+            "selected": true,
+            "image_selected": true,
+            "status": "draft",
+            "references": [],
+            "preview_path": "",
+            "versions": []
+          },
+          {
+            "card_id": "BIBLE_PROP_001",
+            "scope": "project",
+            "act_id": "",
+            "category": "prop",
+            "title": "旧金属门、猫眼与游戏机房道具 / Door, peephole and arcade props",
+            "summary": "关键道具承担叙事信息：猫眼说明老板识别熟人，旧门说明游戏厅隐蔽，室内街机、烟灰缸、硬币和杂乱桌椅说明地下游戏机房生态。",
+            "visual_direction": "门要厚重、旧、暗、带磨损把手和猫眼；室内道具应杂乱但有时代感，街机屏幕亮度压住烟雾，不出现现代 LCD 大屏。",
+            "prompt_notes": "rusty metal door with peephole, worn handle, 1990s arcade machines, coin slot, smoke haze, ashtrays, cluttered stools and cables, period-correct props",
+            "revision_note": "",
+            "negative_prompt": "不要现代网吧、电竞椅、液晶显示器、智能门锁、干净商场电玩、随机品牌文字。",
+            "selected": true,
+            "image_selected": true,
+            "status": "draft",
+            "references": [
+              {
+                "ref_id": "WBX_20260616_024949",
+                "asset_ref": "project:06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+                "asset_id": "WBX_20260616_024949",
+                "path": "06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+                "origin": "project",
+                "kind": "whitebox",
+                "role": "replica_whitebox",
+                "note": "隐藏游戏机房入口的空间、机位、旧墙、金属门、猫眼和三个孩子站位参考；作为场景与道具总概念的白模依据。",
+                "version_id": "",
+                "version_status": "",
+                "card_type": "",
+                "card_id": "",
+                "card_title": "",
+                "usage_note": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。",
+                "generation_guidance": "Whitebox guidance / 白模读取说明:\n- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.\n- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.\n- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.\n- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.\n- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.\n- Source whitebox replica seed: ACT1_SHOT_003_SOURCE_KEYFRAME.\n- Replica intent / 复刻意图: 以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+                "whitebox_interpretation": {
+                  "mode": "spatial_control_only",
+                  "source_asset_id": "ACT1_SHOT_003_SOURCE_KEYFRAME",
+                  "source_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+                  "replica_note": "以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+                  "tags": [
+                    "ACT01",
+                    "SCN_COMPOUND",
+                    "hidden_arcade_door",
+                    "peephole",
+                    "three_children",
+                    "1to1_replica"
+                  ],
+                  "use_for": [
+                    "camera framing and lens/composition",
+                    "subject scale, blocking, pose, sightline, and depth order",
+                    "major set anchors such as doors, windows, corridors, walls, props, and openings",
+                    "main light direction, shadow rhythm, and scene readability"
+                  ],
+                  "preserve": [
+                    "overall aspect ratio and camera angle",
+                    "relative positions between characters and key set pieces",
+                    "door/window/opening height and screen position when present",
+                    "foreground/midground/background separation"
+                  ],
+                  "ignore": [
+                    "gray clay material",
+                    "primitive cube/sphere/cylinder shapes",
+                    "mannequin or toy-like character appearance",
+                    "unfinished low-poly geometry",
+                    "plain studio-white lighting unless the shot explicitly asks for it"
+                  ],
+                  "prompt_bridge": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。"
+                }
+              }
+            ],
+            "preview_path": "",
+            "versions": []
+          },
+          {
+            "card_id": "BIBLE_005",
+            "scope": "project",
+            "act_id": "",
+            "category": "lookdev",
+            "title": "",
+            "summary": "街机厅混混三人组，都是和哥哥同龄的年轻人，但社会痕迹明显，学生气少\n老大，矮个子，黄毛，长相凶狠，耳朵后夹着烟，爱打游戏\n老二，瘦高个，嚣张，穿个白色背心\n老三，胖子，又肥又壮，有点憨憨的",
+            "visual_direction": "",
+            "prompt_notes": "",
+            "revision_note": "",
+            "negative_prompt": "",
+            "selected": true,
+            "image_selected": true,
+            "status": "image_ready",
+            "references": [],
+            "preview_path": "08_generation/jobs/CARD_IMG_20260618_221216/outputs/001_BIBLE_005_v001.png",
+            "versions": [
+              {
+                "version_id": "v001",
+                "output_path": "08_generation/jobs/CARD_IMG_20260618_221216/outputs/001_BIBLE_005_v001.png",
+                "notes": "电影触发生成；用户确认使用第二张。方向：14-15岁初中小痞子，街机厅混混三人组，作为全局人设/氛围参考。",
+                "created_at": "2026-06-18T22:31:50+08:00",
+                "status": "current",
+                "candidate_id": "",
+                "task_id": "",
+                "packet_id": "",
+                "qa": {}
+              }
+            ]
+          }
+        ],
+        "context_references": [
+          {
+            "ref_id": "THREE_BROTHERS_turnaround_expression_contact_sheet_v001",
+            "asset_ref": "resource:media/01_AIGC/character_design_v2/THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+            "asset_id": "THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+            "path": "media/01_AIGC/character_design_v2/THREE_BROTHERS_turnaround_expression_contact_sheet_v001.jpg",
+            "origin": "resource",
+            "kind": "character_ref",
+            "role": "character_design_contact_sheet",
+            "note": "三个小朋友统一人设、三视图、表情和服装连续性参考 / Global reference for the three children character identity, turnaround, expressions, and wardrobe continuity.",
+            "version_id": "",
+            "version_status": "",
+            "card_type": "",
+            "card_id": "",
+            "card_title": ""
+          },
+          {
+            "ref_id": "CHR_BRO_A_late_scuffed_reference_v001.png",
+            "asset_ref": "resource:media/01_AIGC/character_design_v2/stage_variants/CHR_BRO_A_late_scuffed_reference_v001.png",
+            "asset_id": "CHR_BRO_A_late_scuffed_reference_v001.png",
+            "path": "media/01_AIGC/character_design_v2/stage_variants/CHR_BRO_A_late_scuffed_reference_v001.png",
+            "origin": "resource",
+            "kind": "image",
+            "role": "image",
+            "note": "给哥哥带一个眼镜",
+            "version_id": "",
+            "version_status": "",
+            "card_type": "",
+            "card_id": "",
+            "card_title": ""
+          },
+          {
+            "ref_id": "WBX_20260616_024949",
+            "asset_ref": "project:06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+            "asset_id": "WBX_20260616_024949",
+            "path": "06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+            "origin": "project",
+            "kind": "whitebox",
+            "role": "replica_whitebox",
+            "note": "隐藏游戏机房入口的空间、机位、旧墙、金属门、猫眼和三个孩子站位参考；作为场景与道具总概念的白模依据。",
+            "version_id": "",
+            "version_status": "",
+            "card_type": "",
+            "card_id": "",
+            "card_title": "",
+            "usage_note": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。",
+            "generation_guidance": "Whitebox guidance / 白模读取说明:\n- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.\n- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.\n- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.\n- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.\n- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.\n- Source whitebox replica seed: ACT1_SHOT_003_SOURCE_KEYFRAME.\n- Replica intent / 复刻意图: 以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+            "whitebox_interpretation": {
+              "mode": "spatial_control_only",
+              "source_asset_id": "ACT1_SHOT_003_SOURCE_KEYFRAME",
+              "source_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+              "replica_note": "以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+              "tags": [
+                "ACT01",
+                "SCN_COMPOUND",
+                "hidden_arcade_door",
+                "peephole",
+                "three_children",
+                "1to1_replica"
+              ],
+              "use_for": [
+                "camera framing and lens/composition",
+                "subject scale, blocking, pose, sightline, and depth order",
+                "major set anchors such as doors, windows, corridors, walls, props, and openings",
+                "main light direction, shadow rhythm, and scene readability"
+              ],
+              "preserve": [
+                "overall aspect ratio and camera angle",
+                "relative positions between characters and key set pieces",
+                "door/window/opening height and screen position when present",
+                "foreground/midground/background separation"
+              ],
+              "ignore": [
+                "gray clay material",
+                "primitive cube/sphere/cylinder shapes",
+                "mannequin or toy-like character appearance",
+                "unfinished low-poly geometry",
+                "plain studio-white lighting unless the shot explicitly asks for it"
+              ],
+              "prompt_bridge": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。"
+            }
+          },
+          {
+            "ref_id": "WBX_20260616_024949",
+            "asset_ref": "project:06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+            "asset_id": "WBX_20260616_024949",
+            "path": "06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+            "origin": "project",
+            "kind": "whitebox",
+            "role": "replica_whitebox",
+            "note": "隐藏游戏机房入口的空间、机位、旧墙、金属门、猫眼和三个孩子站位参考；作为场景与道具总概念的白模依据。",
+            "version_id": "",
+            "version_status": "",
+            "card_type": "",
+            "card_id": "",
+            "card_title": "",
+            "usage_note": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。",
+            "generation_guidance": "Whitebox guidance / 白模读取说明:\n- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.\n- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.\n- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.\n- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.\n- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.\n- Source whitebox replica seed: ACT1_SHOT_003_SOURCE_KEYFRAME.\n- Replica intent / 复刻意图: 以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+            "whitebox_interpretation": {
+              "mode": "spatial_control_only",
+              "source_asset_id": "ACT1_SHOT_003_SOURCE_KEYFRAME",
+              "source_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+              "replica_note": "以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+              "tags": [
+                "ACT01",
+                "SCN_COMPOUND",
+                "hidden_arcade_door",
+                "peephole",
+                "three_children",
+                "1to1_replica"
+              ],
+              "use_for": [
+                "camera framing and lens/composition",
+                "subject scale, blocking, pose, sightline, and depth order",
+                "major set anchors such as doors, windows, corridors, walls, props, and openings",
+                "main light direction, shadow rhythm, and scene readability"
+              ],
+              "preserve": [
+                "overall aspect ratio and camera angle",
+                "relative positions between characters and key set pieces",
+                "door/window/opening height and screen position when present",
+                "foreground/midground/background separation"
+              ],
+              "ignore": [
+                "gray clay material",
+                "primitive cube/sphere/cylinder shapes",
+                "mannequin or toy-like character appearance",
+                "unfinished low-poly geometry",
+                "plain studio-white lighting unless the shot explicitly asks for it"
+              ],
+              "prompt_bridge": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。"
+            }
+          }
+        ],
+        "target_references": [
+          {
+            "ref_id": "WBX_20260616_024949",
+            "asset_ref": "project:06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+            "asset_id": "WBX_20260616_024949",
+            "path": "06_previs/whitebox_lab/jobs/WBX_20260616_024949/renders/WBX_20260616_024949_replica_whitebox.png",
+            "origin": "project",
+            "kind": "whitebox",
+            "role": "replica_whitebox",
+            "note": "高精度白模复刻：默认作为该分镜空间、机位、光照和人物动作参考 / high-fidelity replica whitebox for blocking, camera, lighting, and pose.",
+            "version_id": "",
+            "version_status": "",
+            "card_type": "",
+            "card_id": "",
+            "card_title": "",
+            "usage_note": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。",
+            "generation_guidance": "Whitebox guidance / 白模读取说明:\n- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.\n- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.\n- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.\n- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.\n- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.\n- Source whitebox replica seed: ACT1_SHOT_003_SOURCE_KEYFRAME.\n- Replica intent / 复刻意图: 以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+            "whitebox_interpretation": {
+              "mode": "spatial_control_only",
+              "source_asset_id": "ACT1_SHOT_003_SOURCE_KEYFRAME",
+              "source_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+              "replica_note": "以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。",
+              "tags": [
+                "ACT01",
+                "SCN_COMPOUND",
+                "hidden_arcade_door",
+                "peephole",
+                "three_children",
+                "1to1_replica"
+              ],
+              "use_for": [
+                "camera framing and lens/composition",
+                "subject scale, blocking, pose, sightline, and depth order",
+                "major set anchors such as doors, windows, corridors, walls, props, and openings",
+                "main light direction, shadow rhythm, and scene readability"
+              ],
+              "preserve": [
+                "overall aspect ratio and camera angle",
+                "relative positions between characters and key set pieces",
+                "door/window/opening height and screen position when present",
+                "foreground/midground/background separation"
+              ],
+              "ignore": [
+                "gray clay material",
+                "primitive cube/sphere/cylinder shapes",
+                "mannequin or toy-like character appearance",
+                "unfinished low-poly geometry",
+                "plain studio-white lighting unless the shot explicitly asks for it"
+              ],
+              "prompt_bridge": "把白模只当作空间、机位、构图、人物站位、遮挡关系、动作和光照方向参考；不要复制灰色材质、积木形状、低模人偶或 3D 测试渲染质感。最终图必须按分镜提示词、角色参考和美术风格重建为电影级真实画面。"
+            }
+          }
+        ],
+        "target_context": {
+          "scene": {
+            "scene_id": "SCN_COMPOUND",
+            "title": "居民楼角落 / Compound corner",
+            "act_id": "ACT01",
+            "act_title": "第一幕：进入游戏厅 / Act 1: Entering the arcade"
+          },
+          "nearby_storyboard_cards": [
+            {
+              "item_id": "ACT1_SHOT_001",
+              "scene_id": "SCN_COMPOUND",
+              "beat": "放学后偏离大路",
+              "shot_type": "远景 / establishing wide shot",
+              "frame_description": "傍晚的北方小城，旧居民楼压在灰色街道边。三个背书包的小朋友从放学人流边缘脱离，避开大路，朝居民楼背面走去。",
+              "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small city after school, old concrete apartment blocks and dusty street, muted gray winter palette, three Chinese schoolchildren with worn backpacks quietly leaving the main road and heading toward the back corner of a residential building, cautious secretive body language, realistic film still, 35mm lens, natural dusk light, subtle film grain, clean composition, no modern cars, no smartphones, no readable text, no watermark",
+              "notes": "建立时代、地域和偷偷行动。游戏厅入口不要过早显眼，先让路线和氛围成立。",
+              "revision_note": "",
+              "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/001_ACT1_SHOT_001.png",
+              "versions": []
+            },
+            {
+              "item_id": "ACT1_SHOT_002",
+              "scene_id": "SCN_COMPOUND",
+              "beat": "沿墙根靠近隐藏入口",
+              "shot_type": "中远景 / tracking medium-wide shot",
+              "frame_description": "三个孩子贴着居民楼墙根走，经过旧管道和剥落墙皮，互相用眼神确认没人注意，动作熟练又紧张。",
+              "image_prompt": "Cinematic film keyframe, three Chinese schoolchildren in 1990s school clothes sneaking along the wall of a shabby residential building, worn backpacks, old pipes, peeling paint, chipped concrete, one child glancing back nervously while another gestures to stay quiet, northern Chinese small-town realism, low handheld perspective, subdued colors, high-quality stable image, no modern objects, no random text, no watermark",
+              "notes": "鬼鬼祟祟但不要惊悚化，表情里要带着窃喜，哥哥在给弟弟讲游戏有多好玩，弟弟全神贯注的听着",
+              "revision_note": "",
+              "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/002_ACT1_SHOT_002.png",
+              "versions": []
+            },
+            {
+              "item_id": "ACT1_SHOT_003",
+              "scene_id": "SCN_COMPOUND",
+              "beat": "旧门和猫眼出现",
+              "shot_type": "中景 / medium shot",
+              "frame_description": "居民楼一楼角落有一扇不起眼的旧金属门，门上有猫眼，没有正式招牌。三个孩子停在门前，压低声音等待。",
+              "image_prompt": "Cinematic storyboard keyframe, hidden arcade entrance in the corner of an old Chinese residential building, 1990s northern small city, shabby closed metal door with a small peephole, no obvious signboard, three schoolchildren with backpacks standing on the left side whispering and looking secretive, cracked concrete wall, dim corridor shadow, realistic film still, strong readable composition, no modern signage, no readable text, no watermark",
+              "notes": "旧门+猫眼是第一幕核心视觉资产，门要普通、隐蔽、可信。",
+              "revision_note": "这个门不太像是游戏厅的门",
+              "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/003_ACT1_SHOT_003.png",
+              "versions": []
+            },
+            {
+              "item_id": "ACT1_SHOT_004",
+              "scene_id": "SCN_COMPOUND",
+              "beat": "老板从猫眼确认熟人",
+              "shot_type": "猫眼特写 / peephole close-up",
+              "frame_description": "从门内猫眼视角看出去，三个孩子的脸被猫眼畸变压缩，紧张又期待。门内老板确认他们是熟客。",
+              "image_prompt": "Cinematic close-up keyframe from inside a closed door peephole, fisheye peephole distortion, three Chinese schoolchildren with worn backpacks visible outside in a shabby apartment corner, nervous excited faces, 1990s northern China, faint green-blue arcade light around the peephole edge, realistic film texture, suspenseful but not horror, clean image, no text, no watermark, no modern objects",
+              "notes": "用猫眼制造“被审查/被放行”的边界感。可后续关联孩子人设。",
+              "revision_note": "",
+              "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/004_ACT1_SHOT_004.png",
+              "versions": []
+            },
+            {
+              "item_id": "ACT1_SHOT_005",
+              "scene_id": "SCN_COMPOUND",
+              "beat": "门缝打开，机房气息泄出",
+              "shot_type": "近景 / close medium shot",
+              "frame_description": "旧门打开一条缝，老板的半张脸和手出现在门后。蓝绿街机光、烟雾和嘈杂声从门缝先涌出来，孩子们身体微微前倾。",
+              "image_prompt": "Cinematic keyframe, shabby metal door opening a narrow crack, middle-aged Chinese arcade owner partly visible inside, hand holding the door, blue-green CRT arcade light and cigarette smoke leaking from the interior, three schoolchildren with backpacks waiting outside and leaning forward, 1990s northern Chinese residential building corner, realistic gritty atmosphere, clean film still, no readable text, no watermark, no modern elements",
+              "notes": "门缝是两个世界的边界，光、烟和声音比台词更重要。",
+              "revision_note": "",
+              "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/005_ACT1_SHOT_005.png",
+              "versions": []
+            },
+            {
+              "item_id": "ACT1_SHOT_006",
+              "scene_id": "SCN_ARCADE",
+              "beat": "孩子进入乌烟瘴气的游戏厅",
+              "shot_type": "儿童视角中景 / child-height medium shot",
+              "frame_description": "三个孩子刚进室内，画面被烟雾、街机屏幕光和拥挤背影包围。他们像闯进另一个秩序混乱的世界。",
+              "image_prompt": "Cinematic storyboard keyframe inside a smoky 1990s Chinese underground arcade, three schoolchildren with worn backpacks entering from a doorway, blue and green CRT arcade cabinet glow, cigarette smoke hanging under a low ceiling, crowded silhouettes of adults and teenagers, gritty northern small-town atmosphere, child-height camera perspective, high-quality film still, no modern machines, no smartphone, no readable random text, no watermark",
+              "notes": "三人仍然是画面锚点，不能被杂乱人群完全吞掉。",
+              "revision_note": "",
+              "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/006_ACT1_SHOT_006.png",
+              "versions": []
+            },
+            {
+              "item_id": "ACT1_SHOT_007",
+              "scene_id": "SCN_ARCADE",
+              "beat": "游戏厅鱼龙混杂全貌",
+              "shot_type": "广角全景 / wide interior shot",
+              "frame_description": "低矮拥挤的游戏厅里，一排排旧街机发出蓝绿光。成年人、少年和孩子混在一起，烟雾让空气显得浑浊。",
+              "image_prompt": "Wide cinematic interior keyframe of a crowded 1990s Chinese arcade hall, low ceiling, rows of old arcade cabinets, cigarette smoke, mixed crowd of adult men, teenagers, and children, three schoolchildren with backpacks visible near the entrance as small figures, blue-green CRT glow, gritty social realism, northern Chinese small-town underground game room, balanced composition, high image quality, no cyberpunk neon, no modern screens, no readable text, no watermark",
+              "notes": "这一条是游戏厅场景设定核心图，既要乱，又要构图可读。",
+              "revision_note": "",
+              "output_path": "",
+              "versions": [
+                {
+                  "version_id": "current",
+                  "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/007_ACT1_SHOT_007.png",
+                  "notes": "",
+                  "created_at": "",
+                  "status": "rejected",
+                  "candidate_id": "",
+                  "task_id": "",
+                  "packet_id": "",
+                  "qa": {}
+                }
+              ]
+            },
+            {
+              "item_id": "ACT1_SHOT_008",
+              "scene_id": "SCN_ARCADE",
+              "beat": "三个孩子站定，兴奋与不安并存",
+              "shot_type": "中近景 / medium close shot",
+              "frame_description": "三个孩子站在游戏厅内部，脸被街机光照亮。他们互相看一眼，兴奋和不安同时出现，第一幕停在正式进入灰色成人空间的瞬间。",
+              "image_prompt": "Cinematic medium close-up keyframe, three Chinese schoolchildren with worn backpacks standing inside a smoky 1990s underground arcade, CRT blue-green light on their faces, expressions mixed with excitement and unease, blurred crowded arcade background, cigarette smoke, gritty realistic film still, northern Chinese small-town atmosphere, strong character continuity, clean stable image, no distorted faces, no modern objects, no readable text, no watermark",
+              "notes": "第一幕收束图，情绪锚点。后续可接投币、游戏机或危险事件。",
+              "revision_note": "",
+              "output_path": "08_generation/jobs/IDEA_IMG_20260616_013841/outputs/008_ACT1_SHOT_008.png",
+              "versions": []
+            },
+            {
+              "item_id": "ACT2_SHOT_001",
+              "scene_id": "SCN_ARCADE",
+              "beat": "被游戏厅气氛震住",
+              "shot_type": "儿童视角中景 / child-height medium shot",
+              "frame_description": "三个孩子刚进入游戏厅内部，两个弟弟停住脚步，被烟雾、CRT屏幕光和混杂人群震住；哥哥故作镇定，侧身示意他们跟紧。",
+              "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Three Chinese schoolboys just inside the doorway; two younger boys frozen by smoke, CRT light and crowded silhouettes, older brother pretending to be mature and signaling them to follow, child-height perspective, blue-green light on faces.",
+              "notes": "承接第一幕进入室内，强调两个弟弟的震慑和哥哥的装成熟。",
+              "revision_note": "",
+              "output_path": "",
+              "versions": []
+            },
+            {
+              "item_id": "ACT2_SHOT_002",
+              "scene_id": "SCN_ARCADE",
+              "beat": "哥哥掏出一块钱",
+              "shot_type": "手部特写 / insert close-up",
+              "frame_description": "哥哥从口袋里掏出一张皱旧的一元人民币，纸币被手汗和年代痕迹压皱，背景是模糊的柜台和老板。",
+              "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Insert close-up of an older brother child hand pulling out a worn 1990s Chinese one-yuan banknote, wrinkled paper texture, sweaty fingers, blurred arcade counter and owner in background, authentic period detail.",
+              "notes": "钱必须真实、年代感强；避免可读文字过清导致模型乱字，可强调纸币质感和颜色。",
+              "revision_note": "",
+              "output_path": "",
+              "versions": []
+            },
+            {
+              "item_id": "ACT2_SHOT_003",
+              "scene_id": "SCN_ARCADE",
+              "beat": "三个游戏币落入掌心",
+              "shot_type": "道具特写 / prop insert",
+              "frame_description": "老板把三个粗糙的金属游戏币放到哥哥掌心，硬币边缘磨损，反射着绿色街机光。两个弟弟在虚焦里盯着。",
+              "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Close-up of three rough worn metal arcade tokens dropping into a schoolboy palm, chipped edges, green CRT reflections, younger brothers blurred in background watching eagerly, authentic 1990s Chinese arcade tokens.",
+              "notes": "游戏币是核心年代道具，要粗糙、廉价、被摸旧。",
+              "revision_note": "",
+              "output_path": "",
+              "versions": []
+            },
+            {
+              "item_id": "ACT2_SHOT_004",
+              "scene_id": "SCN_ARCADE",
+              "beat": "走向真人快打机",
+              "shot_type": "跟拍中景 / tracking medium shot",
+              "frame_description": "哥哥握着游戏币，驾轻就熟地穿过人群走向一台真人快打街机；两个弟弟紧跟在后面，眼睛被屏幕吸住。",
+              "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Tracking medium shot of older brother confidently leading two younger boys through crowded smoky arcade toward a Mortal Kombat-style old fighting game cabinet, tokens in hand, younger boys staring at screens, no readable logos.",
+              "notes": "街机可暗示真人快打，不要出现清晰商标文字。",
+              "revision_note": "",
+              "output_path": "",
+              "versions": []
+            },
+            {
+              "item_id": "ACT2_SHOT_005",
+              "scene_id": "SCN_ARCADE",
+              "beat": "哥哥投币开打",
+              "shot_type": "街机侧面近景 / side close shot",
+              "frame_description": "游戏币投入投币口，哥哥双手落在摇杆和按钮上，动作熟练；两个弟弟站在旁边，脸上是崇拜和紧张。",
+              "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Side close shot of a token entering an old arcade coin slot, older brother hands confidently on joystick and buttons, two younger brothers beside him watching with admiration and tension, CRT fighting game glow.",
+              "notes": "投币口、手、按钮、弟弟表情要一起服务哥哥“熟练”的形象。",
+              "revision_note": "",
+              "output_path": "",
+              "versions": []
+            },
+            {
+              "item_id": "ACT2_SHOT_006",
+              "scene_id": "SCN_ARCADE",
+              "beat": "哥哥连胜，弟弟欢呼",
+              "shot_type": "中近景 / medium close shot",
+              "frame_description": "屏幕光照在哥哥脸上，他压着得意继续操作；两个弟弟在旁边兴奋地小声欢呼，周围开始有人回头。",
+              "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Medium close shot of older brother lit by CRT glow, focused and slightly smug while playing a fighting game, two younger brothers cheering quietly beside him, nearby teenagers turning their heads, smoky arcade background.",
+              "notes": "情绪从震慑转为短暂胜利，哥哥不能过分夸张。",
+              "revision_note": "",
+              "output_path": "",
+              "versions": []
+            },
+            {
+              "item_id": "ACT2_SHOT_007",
+              "scene_id": "SCN_ARCADE",
+              "beat": "围观人群变多",
+              "shot_type": "广角压迫镜头 / crowded wide shot",
+              "frame_description": "街机周围的人越围越多，肩膀和后脑勺形成压迫感。三个孩子被挤在机器前，哥哥仍然站在中心。",
+              "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Crowded wide shot around an old fighting game cabinet, shoulders and backs forming pressure around three schoolboys, older brother centered at controls, smoky low ceiling, plastic stools, mixed teenagers and adults but no modern clothing.",
+              "notes": "围观是危险升温，不只是热闹。",
+              "revision_note": "",
+              "output_path": "",
+              "versions": []
+            },
+            {
+              "item_id": "ACT2_SHOT_008",
+              "scene_id": "SCN_ARCADE",
+              "beat": "黄毛插入副机位投币挑战",
+              "shot_type": "双人机位中景 / two-player medium shot",
+              "frame_description": "一个和哥哥年纪相仿的黄毛小痞子突然挤到副操作位，不说话直接投币。哥哥侧头愣了一下，两个弟弟也安静下来。",
+              "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Medium shot of a same-age teenage yellow-haired local punk boy pushing into the second player position and dropping a token without speaking, older brother surprised but composed, younger brothers suddenly quiet, old dual-control arcade cabinet.",
+              "notes": "黄毛必须是初中生小痞子，不是成年人；挑战动作要干脆。",
+              "revision_note": "",
+              "output_path": "",
+              "versions": []
+            },
+            {
+              "item_id": "ACT2_SHOT_009",
+              "scene_id": "SCN_ARCADE",
+              "beat": "哥哥应战并赢第一局",
+              "shot_type": "过肩对抗镜头 / over-the-shoulder duel shot",
+              "frame_description": "从黄毛肩后看哥哥操作，哥哥嘴角轻微一笑后快速按键，屏幕光把两人的脸分成冷暖两侧。",
+              "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Over-the-shoulder duel shot from behind the yellow-haired teen punk, older brother at opposite controls with a restrained smirk, fast hands on buttons, CRT light splitting their faces, tense arcade crowd around them.",
+              "notes": "强调哥哥的轻蔑和熟练，但仍保持孩子气。",
+              "revision_note": "",
+              "output_path": "",
+              "versions": []
+            },
+            {
+              "item_id": "ACT2_SHOT_010",
+              "scene_id": "SCN_ARCADE",
+              "beat": "黄毛骂骂咧咧再次投币",
+              "shot_type": "快速剪辑特写组 / montage inserts",
+              "frame_description": "黄毛不服气，嘴里骂着又掏游戏币。画面切到投币口、狰狞表情、按键手指和弟弟紧张的眼神。",
+              "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Rapid montage-style storyboard panel: yellow-haired teen punk angry and cursing, another token pushed into coin slot, grimacing face, aggressive fingers smashing arcade buttons, younger brothers watching nervously, gritty smoky arcade.",
+              "notes": "这条可以作为快剪提示；不要生成文字脏话。",
+              "revision_note": "",
+              "output_path": "",
+              "versions": []
+            },
+            {
+              "item_id": "ACT2_SHOT_011",
+              "scene_id": "SCN_ARCADE",
+              "beat": "黄毛连输后砸按钮",
+              "shot_type": "低角度近景 / low close shot",
+              "frame_description": "连续失败后，黄毛用拳头砸了一下按钮台，塑料按钮和金属面板震动。哥哥和弟弟都短暂僵住。",
+              "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Low close shot of yellow-haired teen punk slamming his fist onto an old arcade control panel after repeated losses, buttons shaking, older brother and younger boys frozen in background, tension under CRT glow.",
+              "notes": "这是危险第一次显形，控制力度，不要变成打斗。",
+              "revision_note": "",
+              "output_path": "",
+              "versions": []
+            },
+            {
+              "item_id": "ACT2_SHOT_012",
+              "scene_id": "SCN_ARCADE",
+              "beat": "黄毛离开前恶狠狠盯哥哥",
+              "shot_type": "凝视中近景 / tense medium close shot",
+              "frame_description": "黄毛转身离开前停了一下，恶狠狠地盯了哥哥一眼，没有说话。哥哥表面得意，两个弟弟的笑意收住。",
+              "image_prompt": "Cinematic storyboard keyframe, 1990s northern Chinese small-town underground arcade, gritty social realism, smoky air, old CRT arcade cabinet glow, worn school backpacks, realistic film still, clean composition, no modern smartphone, no modern esports hall, no cyberpunk, no readable random text, no watermark. Tense medium close shot of same-age yellow-haired punk turning away but stopping to glare silently at the older brother, older brother trying to look proud, younger brothers’ smiles fading, smoky arcade crowd blurred behind, ominous but realistic.",
+              "notes": "第二幕收束在无声威胁，给后续冲突埋钩子。",
+              "revision_note": "",
+              "output_path": "",
+              "versions": []
+            }
+          ],
+          "related_assets": [
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "03_story",
+              "asset_id": "SCN_COMPOUND_STORY_BEATS",
+              "kind": "",
+              "role": "beat_sheet",
+              "path": "03_story/beats/coin_slot_sample_beat_sheet.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "03_story",
+              "asset_id": "SCN_COMPOUND_FULL_SHOT_LIST",
+              "kind": "",
+              "role": "full_shot_list",
+              "path": "07_shots/shot_list.csv"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "04_lookdev",
+              "asset_id": "SCN_COMPOUND_LOOK_BIBLE",
+              "kind": "",
+              "role": "look_bible",
+              "path": "04_lookdev/references/coin_slot_look_bible_v001.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "04_lookdev",
+              "asset_id": "SCN_COMPOUND_COLOR_SCRIPT",
+              "kind": "",
+              "role": "color_script",
+              "path": "04_lookdev/palettes/coin_slot_color_script.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "04_lookdev",
+              "asset_id": "SCN_COMPOUND_VISUAL_REFS",
+              "kind": "",
+              "role": "visual_references",
+              "path": "04_lookdev/references/coin_slot_visual_references.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "04_lookdev",
+              "asset_id": "SCN_COMPOUND_SCENE_REFERENCE",
+              "kind": "",
+              "role": "scene_reference",
+              "path": "media/01_AIGC/scene_refs/SC_01_compound_corner_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "05_asset_bible",
+              "asset_id": "SCN_COMPOUND_CHARACTER_STAGE_LOCKS",
+              "kind": "",
+              "role": "character_stage_locks",
+              "path": "05_asset_bible/character_stage_locks/coin_slot_character_stage_locks.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "05_asset_bible",
+              "asset_id": "SCN_COMPOUND_LOCATION_BIBLE",
+              "kind": "",
+              "role": "location_bible",
+              "path": "05_asset_bible/locations/coin_slot_location_bible.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "05_asset_bible",
+              "asset_id": "SCN_COMPOUND_CONTINUITY_LOCKS",
+              "kind": "",
+              "role": "continuity_locks",
+              "path": "05_asset_bible/continuity/coin_slot_continuity_locks.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "SCN_COMPOUND_SCENE_LOCK",
+              "kind": "",
+              "role": "scene_lock",
+              "path": "06_previs/scene_locks/scn-compound/scene_lock.yaml"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "SCN_COMPOUND_CAMERA_MANIFEST",
+              "kind": "",
+              "role": "camera_manifest",
+              "path": "06_previs/scene_locks/scn-compound/camera_manifest.csv"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "SCN_COMPOUND_REFERENCE_ASSETS",
+              "kind": "",
+              "role": "reference_assets",
+              "path": "06_previs/scene_locks/scn-compound/reference_assets.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "SCN_COMPOUND_WHITEBOX_INDEX",
+              "kind": "",
+              "role": "whitebox_index",
+              "path": "06_previs/scene_locks/scn-compound/whitebox_index.csv"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB001_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB002_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB002.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB003_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB003.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB004_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB004.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB005_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB005.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB006_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB006.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB007_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB007.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB008_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB008.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB009_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB009.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB010_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB010.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB011_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB011.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB012_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB012.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB013_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB013.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB014_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB014.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB015_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB015.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB016_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB016.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB017_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB017.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "06_previs",
+              "asset_id": "MSB018_WHITEBOX",
+              "kind": "",
+              "role": "whitebox",
+              "path": "media/01_AIGC/whitebox_renders_v2/B01/WB2_COMPOUND_MSB018.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "07_shots",
+              "asset_id": "SCN_COMPOUND_SHOT_LIST",
+              "kind": "",
+              "role": "shot_list",
+              "path": "07_shots/shot_list.csv"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "07_shots",
+              "asset_id": "MSB001_IMAGE_PROMPT",
+              "kind": "",
+              "role": "image_prompt",
+              "path": "07_shots/prompts/MSB001.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "07_shots",
+              "asset_id": "MSB003_IMAGE_PROMPT",
+              "kind": "",
+              "role": "image_prompt",
+              "path": "07_shots/prompts/MSB003.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "07_shots",
+              "asset_id": "MSB006_IMAGE_PROMPT",
+              "kind": "",
+              "role": "image_prompt",
+              "path": "07_shots/prompts/MSB006.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "07_shots",
+              "asset_id": "MSB009_IMAGE_PROMPT",
+              "kind": "",
+              "role": "image_prompt",
+              "path": "07_shots/prompts/MSB009.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "07_shots",
+              "asset_id": "MSB012_IMAGE_PROMPT",
+              "kind": "",
+              "role": "image_prompt",
+              "path": "07_shots/prompts/MSB012.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "07_shots",
+              "asset_id": "SCN_COMPOUND_SHOT_INDEX_188",
+              "kind": "",
+              "role": "scene_shot_index",
+              "path": "07_shots/scene_slices/SCN_COMPOUND_shot_index.csv"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "07_shots",
+              "asset_id": "SCN_COMPOUND_PROMPT_PACK_188",
+              "kind": "",
+              "role": "scene_prompt_pack",
+              "path": "07_shots/scene_slices/SCN_COMPOUND_prompt_pack.csv"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "07_shots",
+              "asset_id": "MSB001_VIDEO_PROMPT",
+              "kind": "",
+              "role": "video_prompt",
+              "path": "07_shots/video_prompts/MSB001.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "07_shots",
+              "asset_id": "MSB003_VIDEO_PROMPT",
+              "kind": "",
+              "role": "video_prompt",
+              "path": "07_shots/video_prompts/MSB003.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "07_shots",
+              "asset_id": "MSB006_VIDEO_PROMPT",
+              "kind": "",
+              "role": "video_prompt",
+              "path": "07_shots/video_prompts/MSB006.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "07_shots",
+              "asset_id": "MSB009_VIDEO_PROMPT",
+              "kind": "",
+              "role": "video_prompt",
+              "path": "07_shots/video_prompts/MSB009.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "07_shots",
+              "asset_id": "MSB012_VIDEO_PROMPT",
+              "kind": "",
+              "role": "video_prompt",
+              "path": "07_shots/video_prompts/MSB012.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "SCN_COMPOUND_IMAGE_OUTPUT_INDEX",
+              "kind": "",
+              "role": "image_outputs",
+              "path": "08_generation/outputs/images/coin_slot_image_outputs_index.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "SCN_COMPOUND_REJECT_LOG",
+              "kind": "",
+              "role": "rejects",
+              "path": "08_generation/rejects/coin_slot_reject_log.md"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "SCN_COMPOUND_STORYBOARD_IMAGE_INDEX",
+              "kind": "",
+              "role": "storyboard_image_index",
+              "path": "08_generation/outputs/images/SCN_COMPOUND_storyboard_image_index.csv"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB001_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB001_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB001_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB001_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB002_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB002_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB002_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB002_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB003_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB003_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB003_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB003_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB004_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB004_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB004_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB004_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB005_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB005_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB005_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB005_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB006_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB006_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB006_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB006_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB007_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB007_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB007_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB007_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB008_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB008_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB008_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB008_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB009_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB009_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB009_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB009_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB010_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB010_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB010_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB010_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB011_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB011_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB011_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB011_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB012_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB012_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB012_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB012_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB013_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB013_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB013_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB013_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB014_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB014_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB014_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB014_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB015_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB015_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB015_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB015_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB016_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB016_v001.png"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB016_FINAL_STORYBOARD",
+              "kind": "",
+              "role": "final_storyboard_panel",
+              "path": "media/01_AIGC/final_storyboard_panels/B01/MSB016_final_storyboard_v002.jpg"
+            },
+            {
+              "scene_id": "SCN_COMPOUND",
+              "scene_title": "居民楼角落 / Compound corner",
+              "step": "08_generation",
+              "asset_id": "MSB017_PURE_KEYFRAME",
+              "kind": "",
+              "role": "storyboard_keyframe",
+              "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB017_v001.png"
+            }
+          ]
+        },
+        "whitebox_guidance": [
+          "Whitebox guidance / 白模读取说明:\n- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.\n- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.\n- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.\n- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.\n- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.\n- Source whitebox replica seed: ACT1_SHOT_003_SOURCE_KEYFRAME.\n- Replica intent / 复刻意图: 以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。"
+        ]
+      },
+      "whitebox_guidance": [
+        "Whitebox guidance / 白模读取说明:\n- Use the whitebox image only for camera, composition, scale, blocking, pose, sightline, depth order, and main lighting direction.\n- Preserve the relative positions of characters and key set pieces; preserve major anchors such as door/window/opening height, wall edges, corridors, and foreground/background separation.\n- Do not copy gray clay materials, primitive cube/sphere/cylinder shapes, mannequin appearance, low-poly geometry, or clean 3D test-render look.\n- Convert the whitebox into the shot's requested cinematic world using the storyboard prompt, character references, scene references, era, materials, atmosphere, and art direction.\n- Negative constraint: no toy-like figures, no unfinished previs look, no blank gray surfaces unless explicitly requested, no random text, no watermark.\n- Source whitebox replica seed: ACT1_SHOT_003_SOURCE_KEYFRAME.\n- Replica intent / 复刻意图: 以 ACT1_SHOT_003 为母图，尽量 1:1 复刻旧墙、暗金属门、猫眼、门把手、三名孩子在左侧等待的站位、眼线高度和画面比例；白模用于后续第一幕同场景改机位/光照/动作。"
+      ],
+      "suggested_version_id": "v001",
+      "suggested_candidate_outputs": [
+        {
+          "candidate_id": "c01",
+          "version_id": "v001_c01",
+          "output_path": "08_generation/jobs/CARD_IMG_20260619_004223/outputs/005_ACT1_SHOT_005_v001_c01.png",
+          "output_absolute_path": "/Users/jaychoupp/Desktop/Story/Film/projects/coin-slot/08_generation/jobs/CARD_IMG_20260619_004223/outputs/005_ACT1_SHOT_005_v001_c01.png"
+        },
+        {
+          "candidate_id": "c02",
+          "version_id": "v001_c02",
+          "output_path": "08_generation/jobs/CARD_IMG_20260619_004223/outputs/005_ACT1_SHOT_005_v001_c02.png",
+          "output_absolute_path": "/Users/jaychoupp/Desktop/Story/Film/projects/coin-slot/08_generation/jobs/CARD_IMG_20260619_004223/outputs/005_ACT1_SHOT_005_v001_c02.png"
+        },
+        {
+          "candidate_id": "c03",
+          "version_id": "v001_c03",
+          "output_path": "08_generation/jobs/CARD_IMG_20260619_004223/outputs/005_ACT1_SHOT_005_v001_c03.png",
+          "output_absolute_path": "/Users/jaychoupp/Desktop/Story/Film/projects/coin-slot/08_generation/jobs/CARD_IMG_20260619_004223/outputs/005_ACT1_SHOT_005_v001_c03.png"
+        }
+      ],
+      "suggested_output_path": "08_generation/jobs/CARD_IMG_20260619_004223/outputs/005_ACT1_SHOT_005_v001_c01.png",
+      "suggested_output_absolute_path": "/Users/jaychoupp/Desktop/Story/Film/projects/coin-slot/08_generation/jobs/CARD_IMG_20260619_004223/outputs/005_ACT1_SHOT_005_v001_c01.png"
+    }
+  ]
+}
+```

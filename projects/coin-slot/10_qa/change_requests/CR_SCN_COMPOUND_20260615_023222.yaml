@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "change_request_id": "CR_SCN_COMPOUND_20260615_023222",
+  "project_slug": "coin-slot",
+  "scene_id": "SCN_COMPOUND",
+  "trigger_step": "08_generation",
+  "trigger_asset_id": "MSB001_PURE_KEYFRAME",
+  "creative_direction": "Board generation request / 画布生成请求\n\nScene / 场戏: SCN_COMPOUND 居民楼角落 / Compound corner\nMain image / 主图: MSB001_PURE_KEYFRAME\nMain path / 主图路径: media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB001_v001.png\n\nMain brief / 主图备注:\n游戏厅加一道关着的门，门上有个猫眼，三个小孩子出现在画面左侧，有点鬼鬼祟祟的样子\n\nReference stack / 关联素材:\n- Reference / 关联图: character_s0_clean_v002_contact_sheet_ascii.jpg\n  Path: media/01_AIGC/contact_sheets/character_s0_clean_v002_contact_sheet_ascii.jpg\n  Relation note / 连线说明: Use selected visual element from this reference.\n  Reference note / 关联图备注: 三个少年的人设\n\nOutput goal / 输出目标:\n- Generate a clean, stable, high-quality key image suitable for downstream video AIGC.\n- Preserve the main composition unless the note explicitly changes it.\n- Integrate reference elements only according to relation notes.\n- Avoid noise, distorted anatomy, inconsistent character identity, unreadable composition, watermarks, random text, and unwanted new props.",
+  "status": "review_ready",
+  "created_at": "2026-06-15T02:32:22+08:00",
+  "impact_table": [
+    {
+      "impact_id": "I001",
+      "action": "check",
+      "impact_scope": "shared",
+      "asset_id": "SCN_COMPOUND_CHARACTER_STAGE_LOCKS",
+      "stage_id": "05_asset_bible",
+      "role": "character_stage_locks",
+      "path": "05_asset_bible/character_stage_locks/coin_slot_character_stage_locks.md",
+      "why": "生成输出变化会影响剪辑、QA 和交付 / Generated-output changes affect edit, QA, and delivery.",
+      "selected": false
+    },
+    {
+      "impact_id": "I002",
+      "action": "check",
+      "impact_scope": "shared",
+      "asset_id": "SCN_COMPOUND_LOCATION_BIBLE",
+      "stage_id": "05_asset_bible",
+      "role": "location_bible",
+      "path": "05_asset_bible/locations/coin_slot_location_bible.md",
+      "why": "生成输出变化会影响剪辑、QA 和交付 / Generated-output changes affect edit, QA, and delivery.",
+      "selected": false
+    },
+    {
+      "impact_id": "I003",
+      "action": "check",
+      "impact_scope": "shared",
+      "asset_id": "SCN_COMPOUND_CONTINUITY_LOCKS",
+      "stage_id": "05_asset_bible",
+      "role": "continuity_locks",
+      "path": "05_asset_bible/continuity/coin_slot_continuity_locks.md",
+      "why": "生成输出变化会影响剪辑、QA 和交付 / Generated-output changes affect edit, QA, and delivery.",
+      "selected": false
+    },
+    {
+      "impact_id": "I004",
+      "action": "modify",
+      "impact_scope": "direct",
+      "asset_id": "MSB001_PURE_KEYFRAME",
+      "stage_id": "08_generation",
+      "role": "storyboard_keyframe",
+      "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB001_v001.png",
+      "why": "直接修改的步骤资源 / Directly edited step asset.",
+      "selected": true,
+      "action_overridden": true
+    },
+    {
+      "impact_id": "I005",
+      "action": "modify",
+      "impact_scope": "downstream",
+      "asset_id": "SCN_COMPOUND_ROUGH_CUT_TIMING",
+      "stage_id": "09_edit",
+      "role": "rough_cut",
+      "path": "09_edit/rough_cut/coin_slot_12shot_timing_plan.md",
+      "why": "生成输出变化会影响剪辑、QA 和交付 / Generated-output changes affect edit, QA, and delivery.",
+      "selected": false
+    },
+    {
+      "impact_id": "I006",
+      "action": "modify",
+      "impact_scope": "downstream",
+      "asset_id": "SCN_COMPOUND_SOUND_INTENT",
+      "stage_id": "09_edit",
+      "role": "sound_intent",
+      "path": "09_edit/audio/coin_slot_sound_edit_intent_map.md",
+      "why": "生成输出变化会影响剪辑、QA 和交付 / Generated-output changes affect edit, QA, and delivery.",
+      "selected": false
+    },
+    {
+      "impact_id": "I007",
+      "action": "modify",
+      "impact_scope": "downstream",
+      "asset_id": "SCN_COMPOUND_FIX_QUEUE",
+      "stage_id": "10_qa",
+      "role": "fix_queue",
+      "path": "10_qa/fix_queue/coin_slot_next_batch_fix_queue.md",
+      "why": "生成输出变化会影响剪辑、QA 和交付 / Generated-output changes affect edit, QA, and delivery.",
+      "selected": false
+    },
+    {
+      "impact_id": "I008",
+      "action": "modify",
+      "impact_scope": "downstream",
+      "asset_id": "SCN_COMPOUND_DELIVERY_MANIFEST",
+      "stage_id": "11_delivery",
+      "role": "delivery_manifest",
+      "path": "11_delivery/manifests/coin_slot_sample_delivery_manifest.md",
+      "why": "生成输出变化会影响剪辑、QA 和交付 / Generated-output changes affect edit, QA, and delivery.",
+      "selected": false
+    }
+  ],
+  "generation_queue": [
+    {
+      "queue_id": "GEN_CR_SCN_COMPOUND_20260615_023222_001",
+      "asset_id": "MSB001_PURE_KEYFRAME",
+      "stage_id": "08_generation",
+      "target_version": "v001",
+      "action": "modify",
+      "path": "media/01_AIGC/visual_assets/pure/micro_storyboard/B01/MSB001_v001.png",
+      "result_path": "08_generation/jobs/CR_SCN_COMPOUND_20260615_023222/outputs/GEN_CR_SCN_COMPOUND_20260615_023222_001_MSB001_PURE_KEYFRAME_v001.md",
+      "status": "review_ready",
+      "started_at": "2026-06-15T02:32:23+08:00",
+      "packet_path": "08_generation/jobs/CR_SCN_COMPOUND_20260615_023222/outputs/GEN_CR_SCN_COMPOUND_20260615_023222_001_MSB001_PURE_KEYFRAME_v001.md",
+      "task_path": "08_generation/jobs/CR_SCN_COMPOUND_20260615_023222/tasks/GEN_CR_SCN_COMPOUND_20260615_023222_001_MSB001_PURE_KEYFRAME_v001.json",
+      "adapter": "manual_packet",
+      "completed_at": "2026-06-15T02:32:23+08:00",
+      "final_output_path": "08_generation/jobs/CR_SCN_COMPOUND_20260615_023222/outputs/GEN_CR_SCN_COMPOUND_20260615_023222_001_MSB001_PURE_KEYFRAME_codex_v002.png",
+      "output_attached_at": "2026-06-15T02:49:15+08:00",
+      "output_exists": true,
+      "output_notes": "Generated by Codex image_gen after cinematic prompt optimization; closed peephole door and three boys integrated into rainy compound keyframe."
+    }
+  ],
+  "approval": {
+    "user_confirmed": true,
+    "confirmed_at": "2026-06-15T02:32:23+08:00",
+    "notes": "Reference board packet for MSB001_PURE_KEYFRAME"
+  },
+  "generation_run": {
+    "adapter": "manual_packet",
+    "adapter_type": "manual_packet",
+    "status": "review_ready",
+    "started_at": "2026-06-15T02:32:23+08:00",
+    "completed_at": "2026-06-15T02:32:23+08:00",
+    "item_count": 1,
+    "failed_count": 0,
+    "notes": ""
+  },
+  "last_output_attached_at": "2026-06-15T02:49:15+08:00"
+}
