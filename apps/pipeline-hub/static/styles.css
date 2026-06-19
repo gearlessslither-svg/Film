@@ -1258,6 +1258,30 @@ textarea:focus {
   font-size: 11px;
 }
 
+.idea-insert-after {
+  display: grid;
+  place-items: center;
+  padding-top: 2px;
+}
+
+.idea-insert-row-after {
+  width: 42px;
+  min-height: 32px;
+  border: 2px solid #5c6b7a;
+  border-radius: 8px;
+  background: #eef6f4;
+  color: #0f766e;
+  font-size: 22px;
+  font-weight: 850;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.idea-insert-row-after:hover {
+  background: #dff1ed;
+  border-color: var(--accent);
+}
+
 .idea-shot-row footer,
 .project-bible-card footer {
   display: grid;
@@ -3393,6 +3417,49 @@ th {
     linear-gradient(90deg, rgba(31, 41, 38, 0.08) 1px, transparent 1px),
     #f8faf9;
   background-size: 28px 28px;
+}
+
+.board-target-banner {
+  position: sticky;
+  top: 0;
+  z-index: 4;
+  margin: 12px;
+  border: 2px solid #0f766e;
+  border-radius: 8px;
+  background: #ecfdf5;
+  color: #12352f;
+  padding: 10px 12px;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  box-shadow: 0 2px 0 rgba(15, 118, 110, 0.16);
+}
+
+.board-target-banner div {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.board-target-banner strong {
+  font-size: 13px;
+}
+
+.board-target-banner span,
+.board-target-banner small {
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.board-target-banner span {
+  font-weight: 750;
+  word-break: break-word;
+}
+
+.board-target-banner small {
+  color: #31544d;
+  max-width: 360px;
 }
 
 .board-canvas-stage {

@@ -2215,6 +2215,24 @@ def normalize_idea_row(row: dict[str, object], index: int) -> dict[str, object]:
     raw_id = str(row.get("item_id") or row.get("shot_id") or "").strip()
     item_id = safe_file_stem(raw_id) if raw_id else f"IDEA_SHOT_{index:03d}"
     versions = normalize_concept_card_versions(row.get("versions", []))
+    linked_cards_raw = row.get("linked_cards") or row.get("linked_card_ids") or row.get("storyboard_links") or []
+    linked_cards: list[str] = []
+    if isinstance(linked_cards_raw, str):
+        linked_cards_source = re.split(r"[,，\s]+", linked_cards_raw)
+    elif isinstance(linked_cards_raw, list):
+        linked_cards_source = linked_cards_raw
+    else:
+        linked_cards_source = []
+    seen_linked_cards: set[str] = set()
+    for linked in linked_cards_source:
+        if isinstance(linked, dict):
+            linked_id = str(linked.get("item_id") or linked.get("card_id") or linked.get("id") or "").strip()
+        else:
+            linked_id = str(linked or "").strip()
+        if not linked_id or linked_id in seen_linked_cards:
+            continue
+        seen_linked_cards.add(linked_id)
+        linked_cards.append(linked_id)
     return {
         "item_id": item_id,
         "act_id": safe_file_stem(row.get("act_id", "") or ""),
@@ -2222,6 +2240,7 @@ def normalize_idea_row(row: dict[str, object], index: int) -> dict[str, object]:
         "beat": str(row.get("beat", "") or "").strip(),
         "shot_type": str(row.get("shot_type", "") or "").strip(),
         "frame_description": str(row.get("frame_description", "") or "").strip(),
+        "linked_cards": linked_cards,
         "spatial_logic": str(row.get("spatial_logic") or row.get("blocking_logic") or row.get("continuity_logic") or "").strip(),
         "image_prompt": str(row.get("image_prompt", "") or "").strip(),
         "video_prompt": str(row.get("video_prompt", "") or "").strip(),
@@ -2485,6 +2504,7 @@ def idea_board_to_markdown(board: dict[str, object]) -> str:
                     f"- Scene / 场戏: {row.get('scene_id', '')}",
                     f"- Beat / 剧情点: {row.get('beat', '')}",
                     f"- Shot type / 镜头: {row.get('shot_type', '')}",
+                    f"- Linked cards / 关联分镜: {', '.join(str(item) for item in row.get('linked_cards', []) if str(item).strip())}",
                     f"- Sort after / 放在之后: {row.get('sort_after', '')}",
                     f"- Selected / 选中: {row.get('selected', True)}",
                     f"- Status / 状态: {row.get('status', '')}",
@@ -2529,6 +2549,7 @@ def write_idea_board_files(path: Path, board: dict[str, object]) -> None:
         "beat",
         "shot_type",
         "frame_description",
+        "linked_cards",
         "spatial_logic",
         "image_prompt",
         "video_prompt",
@@ -2548,6 +2569,7 @@ def write_idea_board_files(path: Path, board: dict[str, object]) -> None:
             for row in rows:
                 if isinstance(row, dict):
                     record = {key: row.get(key, "") for key in fieldnames}
+                    record["linked_cards"] = ", ".join(str(item) for item in row.get("linked_cards", []) if str(item).strip())
                     record["references"] = json.dumps(row.get("references", []), ensure_ascii=False)
                     writer.writerow(record)
 
@@ -2858,6 +2880,7 @@ def scene_context_for_row(path: Path, board: dict[str, object], row: dict[str, o
                 "beat": item.get("beat", ""),
                 "shot_type": item.get("shot_type", ""),
                 "frame_description": item.get("frame_description", ""),
+                "linked_cards": item.get("linked_cards", []),
                 "spatial_logic": item.get("spatial_logic", ""),
                 "image_prompt": item.get("image_prompt", ""),
                 "notes": item.get("notes", ""),
@@ -2946,6 +2969,7 @@ def concept_card_context(path: Path, board: dict[str, object], card: dict[str, o
                 "beat": row.get("beat", ""),
                 "shot_type": row.get("shot_type", ""),
                 "frame_description": row.get("frame_description", ""),
+                "linked_cards": row.get("linked_cards", []),
                 "spatial_logic": row.get("spatial_logic", ""),
                 "image_prompt": row.get("image_prompt", ""),
                 "notes": row.get("notes", ""),
@@ -3241,6 +3265,7 @@ def create_card_image_packet(slug: str, payload: dict[str, object]) -> dict[str,
                 "beat": row.get("beat", ""),
                 "shot_type": row.get("shot_type", ""),
                 "frame_description": row.get("frame_description", ""),
+                "linked_cards": row.get("linked_cards", []),
                 "spatial_logic": row.get("spatial_logic", ""),
                 "image_prompt": row.get("image_prompt", ""),
                 "video_prompt": row.get("video_prompt", ""),

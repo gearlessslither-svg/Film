@@ -35,6 +35,7 @@ const state = {
   boardHandoffs: [],
   boardHandoffCollapsed: false,
   boardLinkSourceId: "",
+  boardTargetCard: null,
   whiteboxOpen: false,
   whiteboxSourceRef: "",
   whiteboxSelectedTargets: [],
@@ -1201,7 +1202,7 @@ function finalStoryboardFrames(scene) {
         card_title: row.beat || row.item_id || "",
         card_category: "storyboard",
         card_summary: row.frame_description || "",
-        card_prompt: [row.spatial_logic, row.image_prompt, row.video_prompt, row.revision_note, row.notes].filter(Boolean).join(" "),
+        card_prompt: [storyboardLinkValue(row.linked_cards || []), row.spatial_logic, row.image_prompt, row.video_prompt, row.revision_note, row.notes].filter(Boolean).join(" "),
         qa_score: current?.qa?.score ?? null,
         is_final_storyboard_frame: true,
         row_index: index,
@@ -1589,7 +1590,7 @@ function cardVersionImageAssets() {
         card_title: row.beat || row.item_id || "",
         card_category: "storyboard",
         card_summary: row.frame_description || "",
-        card_prompt: [row.spatial_logic, row.image_prompt, row.revision_note, row.notes].filter(Boolean).join(" "),
+        card_prompt: [storyboardLinkValue(row.linked_cards || []), row.spatial_logic, row.image_prompt, row.revision_note, row.notes].filter(Boolean).join(" "),
         qa_score: version.qa?.score ?? null,
       });
     });
@@ -2065,6 +2066,7 @@ function boardPromptForNode(node) {
   const asset = boardNodeAsset(node);
   const scene = boardSceneForNode(asset);
   const outputTarget = boardOutputTargetForNode(node, asset);
+  const cardTarget = boardTargetCardForNode(node, asset);
   const outgoing = boardNodeOutgoingEdges(node.id);
   const references = outgoing
     .map((edge) => {
@@ -2088,6 +2090,12 @@ function boardPromptForNode(node) {
     `Main path / 主图路径: ${asset?.path || ""}`,
     `Output routing / 出图归档: ${boardOutputScopeLabel(outputTarget.scope)} · ${boardOutputKindLabel(outputTarget.kind)}`,
     `Output routing note / 归档备注: ${outputTarget.note || "Use this routing when saving and cataloging the generated image."}`,
+    "",
+    "Target card / 目标卡片:",
+    cardTarget
+      ? `- ${cardTarget.card_type === "storyboard" ? "Storyboard" : "Concept"}: ${boardTargetCardLabel(cardTarget) || boardTargetCardId(cardTarget)}`
+      : "- No fixed target card. Use output routing.",
+    cardTarget ? "- Generated output must be saved as a new version on this target card, even if the main image comes from another source." : "",
     "",
     "Main brief / 主图备注:",
     node.note || "- Describe the complete new image to generate from this main image.",
@@ -2137,6 +2145,57 @@ function boardCardTargetForAsset(asset) {
   return null;
 }
 
+function currentBoardTargetCard() {
+  const target = state.boardTargetCard || null;
+  if (!target?.card_type) return null;
+  if (target.card_type === "concept" && target.card_id) return target;
+  if (target.card_type === "storyboard" && target.item_id) return target;
+  return null;
+}
+
+function storyboardCanvasTargetFromRow(row = {}, index = 0) {
+  if (!row?.item_id) return null;
+  return {
+    card_type: "storyboard",
+    item_id: row.item_id || "",
+    row_index: index,
+    act_id: row.act_id || "",
+    scene_id: row.scene_id || "",
+    title: row.beat || row.frame_description || row.item_id || "",
+    summary: row.frame_description || row.image_prompt || row.notes || "",
+  };
+}
+
+function boardTargetCardForNode(node, asset = boardNodeAsset(node)) {
+  return currentBoardTargetCard() || boardCardTargetForAsset(asset);
+}
+
+function boardTargetCardId(target = currentBoardTargetCard()) {
+  if (!target) return "";
+  return target.card_type === "concept" ? target.card_id || "" : target.item_id || "";
+}
+
+function boardTargetCardLabel(target = currentBoardTargetCard()) {
+  if (!target) return "";
+  const id = boardTargetCardId(target);
+  const title = target.title || target.summary || "";
+  return [id, title].filter(Boolean).join(" · ");
+}
+
+function renderBoardTargetBanner() {
+  const target = currentBoardTargetCard();
+  if (!target) return "";
+  return `
+    <div class="board-target-banner">
+      <div>
+        <strong>分镜专属画布 / Shot-specific canvas</strong>
+        <span>输出默认回传到：${escapeHtml(boardTargetCardLabel(target) || "当前分镜")}</span>
+      </div>
+      <small>仍可拖入任意主图和多张参考图；生成按钮只为这张分镜创建精修回填包。</small>
+    </div>
+  `;
+}
+
 function boardReferencePayloads(node) {
   return boardNodeOutgoingEdges(node.id)
     .map((edge, index) => {
@@ -2165,7 +2224,7 @@ function boardReferencePayloads(node) {
 }
 
 function boardCardPacketPayload(node, asset) {
-  const target = boardCardTargetForAsset(asset);
+  const target = boardTargetCardForNode(node, asset);
   const outputTarget = boardOutputTargetForNode(node, asset);
   const catalogPath = boardOutputSuggestedCatalogPath(node, asset);
   return {
@@ -2370,9 +2429,9 @@ function boardGenerationMessageFromRun(runResult, adapter) {
 async function createBoardCardGenerationPacket(nodeId) {
   const node = state.boardNodes.find((item) => item.id === nodeId);
   const asset = boardNodeAsset(node);
-  const target = boardCardTargetForAsset(asset);
+  const target = boardTargetCardForNode(node, asset);
   if (!node || !asset || !target) {
-    toast("这张图没有绑定到文字卡片版本 / This image is not linked to a card version");
+    toast("这张图没有绑定到文字卡片，或未打开分镜专属画布 / This image is not linked to a card version or shot canvas target");
     return;
   }
   if (state.busy) {
@@ -2396,7 +2455,7 @@ async function createBoardCardGenerationPacket(nodeId) {
     const packetResult = {
       status: "packet",
       outputPath: result.packet_path || "",
-      message: "已生成卡片精修包，可拖给 Codex 生图并回填到原卡片版本 / Card refinement packet ready.",
+      message: "已生成卡片精修包，可拖给 Codex 生图并回填到目标卡片 / Card refinement packet ready.",
       handoffText: result.handoff_text || "",
       suggestedOutputPath: result.suggested_output_path || "",
       cardTarget: target,
@@ -2447,7 +2506,7 @@ async function createBoardGenerationPacket(nodeId) {
     toast("画布节点缺少图片信息 / Board node is missing image context");
     return;
   }
-  if (boardCardTargetForAsset(asset)) {
+  if (boardTargetCardForNode(node, asset)) {
     await createBoardCardGenerationPacket(nodeId);
     return;
   }
@@ -2585,7 +2644,8 @@ function renderBoardNode(node) {
   const generationOutput = !activeGeneration && lastGeneration.outputPath ? lastGeneration.outputPath : "";
   const generationClass = activeGeneration ? "running" : lastGeneration.status || "";
   const outputTarget = boardOutputTargetForNode(node, asset);
-  const cardTarget = boardCardTargetForAsset(asset);
+  const cardTarget = boardTargetCardForNode(node, asset);
+  const cardTargetLabel = boardTargetCardLabel(cardTarget);
   return `
     <article class="board-node-card ${escapeHtml(node.role || "reference")} ${activeLink ? "linking" : ""} ${activeGeneration ? "generating" : ""}" data-node-id="${escapeHtml(node.id)}" style="left:${Number(node.x || 0)}px; top:${Number(node.y || 0)}px;">
       <header>
@@ -2601,7 +2661,7 @@ function renderBoardNode(node) {
       <div class="board-node-meta">
         <strong>${escapeHtml(asset.asset_id || asset.role || asset.path)}</strong>
         <small>${escapeHtml(asset.scene_id || "PROJECT")} · ${escapeHtml(kindLabel(asset.kind))} · ${escapeHtml(asset.path || "")}</small>
-        ${cardTarget ? `<small class="board-card-target">回填卡片 / Card version: ${escapeHtml(asset.card_type || "")} · ${escapeHtml(asset.card_id || "")}</small>` : ""}
+        ${cardTarget ? `<small class="board-card-target">回填目标 / Target card: ${escapeHtml(cardTargetLabel || boardTargetCardId(cardTarget))}</small>` : ""}
       </div>
       <label>${escapeHtml(boardNodeNoteLabel(node))}
         <textarea class="board-node-note" data-node-id="${escapeHtml(node.id)}" rows="4" placeholder="${node.role === "main" ? "完整描述要生成的新图 / Describe the full new image" : "说明要借用什么元素 / Describe what to borrow"}">${escapeHtml(node.note || "")}</textarea>
@@ -2636,7 +2696,7 @@ function renderBoardNode(node) {
       }
       <footer>
         <span>${outgoingCount} 关联 / refs</span>
-        <button class="command-button primary board-generate-node" data-help="${cardTarget ? "把这张卡片版本和画布备注整理成精修任务包，生成后回填到原卡片版本。" : "汇总主图、关联图、连线说明和备注，生成可交给 Codex 处理的图片任务包。"}" data-node-id="${escapeHtml(node.id)}" type="button" ${state.busy ? "disabled" : ""}>${activeGeneration ? `生成中 ${progress}%` : cardTarget ? "精修入卡 / Revise Card" : "生成 / Generate"}</button>
+        <button class="command-button primary board-generate-node" data-help="${cardTarget ? "把当前主图、关联图和画布备注整理成单卡精修包，生成后默认回填到目标卡片。" : "汇总主图、关联图、连线说明和备注，生成可交给 Codex 处理的图片任务包。"}" data-node-id="${escapeHtml(node.id)}" type="button" ${state.busy ? "disabled" : ""}>${activeGeneration ? `生成中 ${progress}%` : cardTarget ? "精修入卡 / Revise Card" : "生成 / Generate"}</button>
       </footer>
       ${
         generationMessage
@@ -2662,6 +2722,7 @@ function renderBoardCanvas() {
   const root = $("referenceBoardCanvas");
   if (!root) return;
   root.innerHTML = `
+    ${renderBoardTargetBanner()}
     <div class="board-canvas-stage">
       ${renderBoardEdges()}
       ${
@@ -3009,13 +3070,50 @@ function openReferenceBoard() {
     toast("请先选择项目 / Select a project first");
     return;
   }
+  state.boardTargetCard = null;
   state.boardOpen = true;
   loadBoardState();
   renderReferenceBoard();
 }
 
+function addStoryboardTargetDefaultNode(target) {
+  if (!target?.item_id) return false;
+  const candidates = allBoardImageAssets().filter((asset) => asset.card_type === "storyboard" && asset.card_id === target.item_id && asset.path);
+  const asset =
+    candidates.find((item) => item.version_status === "final") ||
+    candidates.find((item) => item.version_status === "current") ||
+    candidates.find((item) => item.version_status === "candidate") ||
+    candidates[0];
+  if (!asset) return false;
+  if (!state.boardNodes.some((node) => node.assetRef === asset.ref)) {
+    addBoardNode(asset.ref, boardDefaultNodePoint());
+    return true;
+  }
+  return false;
+}
+
+function openStoryboardCanvas(index) {
+  const board = collectIdeaBoardFromDom();
+  const row = board.rows?.[index];
+  const target = storyboardCanvasTargetFromRow(row, index);
+  if (!row || !target) {
+    toast("没有找到这张分镜卡 / Storyboard card not found");
+    return;
+  }
+  state.ideaActiveRowIndex = index;
+  setIdeaBoardLocal(board);
+  state.boardOpen = true;
+  loadBoardState();
+  state.boardTargetCard = target;
+  setImageLibraryFilters({ scope: row.act_id ? `act:${row.act_id}` : row.scene_id ? `scene:${row.scene_id}` : "all", tag: "all" }, allBoardImageAssets());
+  const inserted = addStoryboardTargetDefaultNode(target);
+  if (!inserted) renderReferenceBoard();
+  toast(`已打开分镜专属画布 / Shot canvas: ${boardTargetCardLabel(target) || target.item_id}`);
+}
+
 function closeReferenceBoard() {
   state.boardOpen = false;
+  state.boardTargetCard = null;
   state.boardLinkSourceId = "";
   renderReferenceBoard();
 }
@@ -3447,6 +3545,75 @@ function nextIdeaItemIdForAct(rows, actId) {
   return `${actId}_SHOT_${String(count).padStart(3, "0")}`;
 }
 
+function parseStoryboardLinkInput(value) {
+  if (Array.isArray(value)) {
+    return [...new Set(value.map((item) => String(item || "").trim()).filter(Boolean))];
+  }
+  return [...new Set(String(value || "").split(/[,，\s]+/).map((item) => item.trim()).filter(Boolean))];
+}
+
+function storyboardLinkValue(value) {
+  return parseStoryboardLinkInput(value).join(", ");
+}
+
+function parseRenumberableShotId(value) {
+  const text = String(value || "").trim();
+  const match = text.match(/^(.+?)(\d{2,})(.*)$/);
+  if (!match) return null;
+  return {
+    prefix: match[1],
+    number: Number(match[2]),
+    width: match[2].length,
+    suffix: match[3] || "",
+  };
+}
+
+function rowInsertScopeKey(row = {}) {
+  if (row.scene_id) return `scene:${row.scene_id}`;
+  if (row.act_id) return `act:${row.act_id}`;
+  return "all";
+}
+
+function rowMatchesInsertScope(row = {}, scopeKey = "") {
+  return rowInsertScopeKey(row) === scopeKey;
+}
+
+function replaceMappedCardId(value, idMap) {
+  const text = String(value || "").trim();
+  return idMap.get(text) || text;
+}
+
+function updateStoryboardIdReferences(board, idMap) {
+  if (!idMap.size) return board;
+  board.rows = (board.rows || []).map((row) => ({
+    ...row,
+    sort_after: replaceMappedCardId(row.sort_after || "", idMap),
+    linked_cards: parseStoryboardLinkInput(row.linked_cards || []).map((item) => replaceMappedCardId(item, idMap)),
+  }));
+  return board;
+}
+
+function renumberRowsAfterInsert(board, insertIndex, baseRow) {
+  const parsedBase = parseRenumberableShotId(baseRow?.item_id || "");
+  if (!parsedBase) return board;
+  const scopeKey = rowInsertScopeKey(baseRow);
+  const idMap = new Map();
+  let nextNumber = parsedBase.number + 1;
+  for (let index = insertIndex + 1; index < (board.rows || []).length; index += 1) {
+    const row = board.rows[index];
+    if (!rowMatchesInsertScope(row, scopeKey)) continue;
+    const parsed = parseRenumberableShotId(row.item_id || "");
+    if (parsed && parsed.prefix !== parsedBase.prefix) continue;
+    const suffix = parsed?.suffix || "";
+    const oldId = row.item_id || "";
+    const newId = `${parsedBase.prefix}${String(nextNumber).padStart(parsedBase.width, "0")}${suffix}`;
+    row.item_id = newId;
+    if (oldId && oldId !== newId) idMap.set(oldId, newId);
+    nextNumber += 1;
+  }
+  return updateStoryboardIdReferences(board, idMap);
+}
+
 function nextIdeaActId(acts) {
   const count = Math.max(storyActEntries().length, (acts || []).length) + 1;
   return `ACT${String(count).padStart(2, "0")}`;
@@ -3701,6 +3868,7 @@ function collectIdeaBoardFromDom() {
       beat: value("beat"),
       shot_type: value("shot_type"),
       frame_description: value("frame_description"),
+      linked_cards: parseStoryboardLinkInput(value("linked_cards")),
       spatial_logic: value("spatial_logic"),
       image_prompt: value("image_prompt"),
       video_prompt: value("video_prompt"),
@@ -4253,6 +4421,7 @@ function buildIdeaStoryboardCardsHandoff(board) {
         beat: "剧情点",
         shot_type: "远景/中景/近景/特写/运动镜头等",
         frame_description: "这一帧看到什么，谁在哪里，情绪和动作是什么",
+        linked_cards: [],
         spatial_logic: "空间硬规则：门内外方向、人物视线、左右关系、屏幕位置、遮挡关系等",
         image_prompt: "可直接用于生成高质量分镜关键帧的图片提示词",
         video_prompt: "后续视频生成提示词，可选",
@@ -4277,7 +4446,7 @@ function buildIdeaStoryboardCardsHandoff(board) {
     "- act_inputs[selected_act_id].idea 是当前幕独立故事内容；story_outline 只作为全局背景。",
     "- project_bible/global_references/style_notes 是全局设定，必须继承到 image_prompt 的连续性里。",
     "- 保留其他幕 rows、project_bible、global_references 和所有 versions；只新增或替换当前幕 rows。",
-    "- 每张分镜卡必须有 item_id、act_id、scene_id、beat、shot_type、frame_description、spatial_logic、image_prompt、video_prompt、notes。",
+    "- 每张分镜卡必须有 item_id、act_id、scene_id、beat、shot_type、frame_description、linked_cards、spatial_logic、image_prompt、video_prompt、notes。",
     "- item_id 建议使用 ACTxx_SHOT_001 这种格式，必须跟当前幕编号一致。",
     "- 如果当前幕已有 rows，可以按当前幕故事重排当前幕 rows，但不要碰其他幕。",
     "- 回填成功后只汇报当前幕生成了多少张分镜卡和最关键的镜头节奏建议。",
@@ -4874,7 +5043,7 @@ function cardFilterAsset(card, cardType, board = currentIdeaBoard(), index = 0) 
     card_title: card.beat || card.item_id || "",
     card_category: "storyboard",
     card_summary: card.frame_description || "",
-    card_prompt: [card.spatial_logic, card.image_prompt, card.video_prompt, card.revision_note, card.notes].filter(Boolean).join(" "),
+    card_prompt: [storyboardLinkValue(card.linked_cards || []), card.spatial_logic, card.image_prompt, card.video_prompt, card.revision_note, card.notes].filter(Boolean).join(" "),
   };
 }
 
@@ -4970,6 +5139,7 @@ function cardMatchesCardFilters(card, cardType, board = currentIdeaBoard(), inde
     card.scene_id,
     card.shot_type,
     card.frame_description,
+    storyboardLinkValue(card.linked_cards || []),
     card.spatial_logic,
     card.image_prompt,
     card.video_prompt,
@@ -5288,6 +5458,7 @@ function renderIdeaRows(entries, allRows = currentIdeaBoard().rows || []) {
             <label class="checkbox-label"><input class="idea-batch-check" data-idea-index="${index}" type="checkbox" ${batchSet.has(index) ? "checked" : ""} /> 同步参考</label>
             <button class="mini-command idea-focus-row ${state.ideaActiveRowIndex === index ? "active" : ""}" data-help="把这张分镜设为当前参考绑定目标，下面图库拖入的图片会挂到它身上。" data-idea-index="${index}" type="button">参考 / Refs</button>
             <button class="mini-command card-generate-one" data-help="只为这一张分镜文字卡生成图片包，适合单张精修。" data-card-type="storyboard" data-card-id="${escapeHtml(row.item_id || "")}" type="button">只生成此卡</button>
+            <button class="mini-command storyboard-canvas-open" data-help="打开只回填到这张分镜的专属画布；可选择任意主图和多张参考图。" data-idea-index="${index}" type="button">专属画布</button>
             <button class="icon-button idea-delete-row" data-idea-index="${index}" type="button" title="删除条目 / Delete row">×</button>
           </header>
           <div class="idea-row-ref-strip">
@@ -5299,6 +5470,9 @@ function renderIdeaRows(entries, allRows = currentIdeaBoard().rows || []) {
           </label>
           <label>画面描述 / Frame description
             <textarea data-idea-field="frame_description" rows="3">${escapeHtml(row.frame_description || "")}</textarea>
+          </label>
+          <label>关联分镜 / Linked cards
+            <input data-idea-field="linked_cards" value="${escapeHtml(storyboardLinkValue(row.linked_cards || []))}" placeholder="例如：ACT1_SHOT_003, MSB058；留空表示无硬关联" />
           </label>
           <label>空间逻辑 / Spatial logic
             <textarea data-idea-field="spatial_logic" rows="2" placeholder="门内外方向、视线、左右关系、屏幕位置、遮挡关系等硬规则">${escapeHtml(row.spatial_logic || "")}</textarea>
@@ -5329,6 +5503,9 @@ function renderIdeaRows(entries, allRows = currentIdeaBoard().rows || []) {
                 : ""
             }
           </footer>
+          <div class="idea-insert-after">
+            <button class="idea-insert-row-after" data-idea-index="${index}" type="button" title="在这张卡后面插入一张空白分镜卡，并自动关联当前卡。">＋</button>
+          </div>
         </article>
       `,
     )
@@ -5841,6 +6018,7 @@ function addIdeaRow() {
     beat: "",
     shot_type: "",
     frame_description: "",
+    linked_cards: [],
     spatial_logic: "",
     image_prompt: "",
     video_prompt: "",
@@ -5856,6 +6034,45 @@ function addIdeaRow() {
   state.ideaActiveRowIndex = board.rows.length - 1;
   setIdeaBoardLocal(board);
   renderIdeaLab();
+}
+
+function insertIdeaRowAfter(index) {
+  const board = collectIdeaBoardFromDom();
+  const baseRow = board.rows?.[index];
+  if (!baseRow) return;
+  const linkedId = baseRow.item_id || "";
+  const parsedLinkedId = parseRenumberableShotId(linkedId);
+  const insertedId = parsedLinkedId
+    ? `${parsedLinkedId.prefix}${String(parsedLinkedId.number + 1).padStart(parsedLinkedId.width, "0")}`
+    : nextIdeaItemIdForAct(board.rows, baseRow.act_id || activeStoryActId() || "");
+  const newRow = {
+    item_id: insertedId,
+    act_id: baseRow.act_id || "",
+    scene_id: baseRow.scene_id || "",
+    beat: "",
+    shot_type: "",
+    frame_description: "",
+    linked_cards: linkedId ? [linkedId] : [],
+    spatial_logic: "",
+    image_prompt: "",
+    video_prompt: "",
+    notes: "",
+    revision_note: "",
+    sort_after: linkedId,
+    selected: true,
+    status: "draft",
+    output_path: "",
+    output_notes: "",
+    versions: [],
+    references: [],
+  };
+  board.rows.splice(index + 1, 0, newRow);
+  renumberRowsAfterInsert(board, index, baseRow);
+  state.ideaBatchRows = (state.ideaBatchRows || []).map((item) => (Number(item) > index ? Number(item) + 1 : Number(item)));
+  state.ideaActiveRowIndex = index + 1;
+  setIdeaBoardLocal(board);
+  renderIdeaLab();
+  document.querySelector(`.idea-shot-row[data-idea-index="${state.ideaActiveRowIndex}"]`)?.scrollIntoView({ behavior: "smooth", block: "center" });
 }
 
 function deleteIdeaRow(index) {
@@ -6017,6 +6234,9 @@ function bindIdeaLabEvents() {
       renderIdeaLab();
     });
   });
+  $("ideaRows")?.querySelectorAll(".storyboard-canvas-open").forEach((button) => {
+    button.addEventListener("click", () => openStoryboardCanvas(Number(button.dataset.ideaIndex || 0)));
+  });
   document.querySelectorAll(".idea-map-focus").forEach((button) => {
     button.addEventListener("click", () => {
       state.ideaActiveRowIndex = Number(button.dataset.ideaIndex || 0);
@@ -6040,6 +6260,9 @@ function bindIdeaLabEvents() {
   });
   $("ideaRows")?.querySelectorAll(".idea-delete-row").forEach((button) => {
     button.addEventListener("click", () => deleteIdeaRow(Number(button.dataset.ideaIndex || 0)));
+  });
+  $("ideaRows")?.querySelectorAll(".idea-insert-row-after").forEach((button) => {
+    button.addEventListener("click", () => insertIdeaRowAfter(Number(button.dataset.ideaIndex || 0)));
   });
   document.querySelectorAll(".idea-delete-act").forEach((button) => {
     button.addEventListener("click", () => deleteIdeaAct(Number(button.dataset.ideaActIndex || 0)));
