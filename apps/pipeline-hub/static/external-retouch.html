@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>外部修图 / External Retouch</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body data-page="external-retouch">
+    <div class="external-page-shell">
+      <aside class="external-page-sidebar">
+        <div class="brand">
+          <div class="brand-mark">ER</div>
+          <div>
+            <h1>External Retouch</h1>
+            <p>外部修图 / Batch image retouch</p>
+          </div>
+        </div>
+        <div class="toolbar">
+          <button id="refreshBtn" class="icon-button" type="button" title="刷新项目 / Refresh projects">↻</button>
+          <a class="command-button" href="/">返回总控台 / Console</a>
+        </div>
+        <div id="projectList" class="project-list"></div>
+      </aside>
+
+      <main class="external-page-main">
+        <header class="workspace-header external-page-header">
+          <div>
+            <p class="eyebrow">当前项目 / Current Project</p>
+            <h2 id="projectTitle">读取中 / Loading</h2>
+            <p id="projectPath" class="path-line"></p>
+          </div>
+          <div class="workspace-actions">
+            <button id="openExternalRetouchBtn" class="command-button" type="button">外部修图 / External Retouch</button>
+            <button id="openBoardBtn" class="command-button primary" type="button">画布 / Board</button>
+            <div id="statusPills" class="status-pills"></div>
+          </div>
+        </header>
+
+        <section id="externalRetouchLab" class="external-retouch-lab external-retouch-standalone" aria-label="External Retouch"></section>
+      </main>
+    </div>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <div id="assetPreviewModal" class="asset-preview-modal" hidden>
+      <div class="asset-preview-window" role="dialog" aria-modal="true" aria-labelledby="assetPreviewTitle">
+        <header>
+          <div>
+            <p class="eyebrow">资源预览 / Asset Preview</p>
+            <h3 id="assetPreviewTitle">Preview</h3>
+            <p id="assetPreviewMeta"></p>
+          </div>
+          <div class="asset-preview-actions">
+            <button id="assetPreviewCopy" class="command-button primary" type="button" title="复制图片到剪贴板，然后按 Cmd+V 粘贴 / Copy image, paste with Cmd+V" hidden>复制图片 / Copy</button>
+            <a id="assetPreviewDownload" class="command-button" download title="下载到本地，再拖进 GPT / Download, then attach in GPT" hidden>下载 / Download</a>
+            <button id="assetPreviewClose" class="icon-button" type="button" title="关闭 / Close">×</button>
+          </div>
+        </header>
+        <div id="assetPreviewBody" class="asset-preview-body"></div>
+      </div>
+    </div>
+    <div id="referenceBoardModal" class="reference-board-modal" hidden>
+      <section class="reference-board-window" aria-label="图片关系画布 / Image Reference Board">
+        <header class="board-header">
+          <div>
+            <p class="eyebrow">Image Reference Board</p>
+            <h3>图片关系画布 / Image Reference Board</h3>
+            <p>主图、关联图、白模、人设、场景和道具参考 / Main image, references, whiteboxes, characters, scenes, and props</p>
+            <ol class="workflow-steps">
+              <li><strong>01</strong><span>拖入图片</span></li>
+              <li><strong>02</strong><span>设主图/关联图</span></li>
+              <li><strong>03</strong><span>写备注和连线</span></li>
+              <li><strong>04</strong><span>生成精修任务包</span></li>
+            </ol>
+          </div>
+          <div class="board-header-actions">
+            <button id="clearBoardBtn" class="command-button" data-help="移除画布上的节点、连线和临时交接卡，不删除项目里的图片文件。" type="button">清空画布 / Clear</button>
+            <button id="closeBoardBtn" class="icon-button" type="button" title="关闭 / Close">×</button>
+          </div>
+        </header>
+        <main class="board-main">
+          <div id="referenceBoardCanvas" class="reference-board-canvas"></div>
+          <aside class="board-help-panel">
+            <strong>关系 / Relations</strong>
+            <p>先在一个节点点击“设为主图”，再在另一个节点点击“连为关联图”。主图备注写完整生成目标，关联图备注写要借用的元素。</p>
+            <p>生成按钮会汇总主图、连线、关联图和备注，写入标准任务包。</p>
+          </aside>
+        </main>
+        <footer class="board-asset-dock">
+          <div id="boardHandoffDock" class="board-handoff-dock"></div>
+          <div class="board-filters">
+            <label>幕/场戏 / Act or scene <select id="boardSceneFilter"></select></label>
+            <label>标签 / Tag <select id="boardTagFilter"></select></label>
+            <label>搜索 / Search <input id="boardSearchInput" placeholder="人物、场景、白模、镜头、路径 / character, scene, whitebox, shot, path" /></label>
+          </div>
+          <div id="boardAssetTray" class="board-asset-tray"></div>
+        </footer>
+      </section>
+    </div>
+    <div id="boardImageLightbox" class="board-image-lightbox" hidden>
+      <div class="board-image-lightbox-actions">
+        <button id="boardImageLightboxCopy" class="command-button primary" type="button" title="复制图片到剪贴板，然后按 Cmd+V 粘贴 / Copy image, paste with Cmd+V">复制图片 / Copy</button>
+        <a id="boardImageLightboxDownload" class="command-button" download title="下载到本地，再拖进 GPT / Download, then attach in GPT">下载 / Download</a>
+        <button id="boardImageLightboxClose" class="icon-button" type="button" title="关闭 / Close">×</button>
+      </div>
+      <img id="boardImageLightboxImg" alt="" />
+    </div>
+
+    <script src="/static/app.js"></script>
+  </body>
+</html>

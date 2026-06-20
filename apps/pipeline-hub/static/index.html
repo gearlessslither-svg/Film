@@ -59,6 +59,7 @@
           <div class="workspace-actions">
             <button id="openIdeaLabBtn" class="command-button" type="button">创意 / Idea</button>
             <button id="openWhiteboxLabBtn" class="command-button" type="button">白模 / Whitebox</button>
+            <a id="openExternalRetouchBtn" class="command-button" href="/external-retouch">外部修图 / External Retouch</a>
             <button id="openBoardBtn" class="command-button primary" type="button">画布 / Board</button>
             <div id="statusPills" class="status-pills"></div>
           </div>
@@ -284,7 +285,11 @@
             <h3 id="assetPreviewTitle">Preview</h3>
             <p id="assetPreviewMeta"></p>
           </div>
-          <button id="assetPreviewClose" class="icon-button" type="button" title="关闭 / Close">×</button>
+          <div class="asset-preview-actions">
+            <button id="assetPreviewCopy" class="command-button primary" type="button" title="复制图片到剪贴板，然后按 ⌘V 粘贴 / Copy image, paste with ⌘V" hidden>复制图片 / Copy</button>
+            <a id="assetPreviewDownload" class="command-button" download title="下载到本地，再拖进 GPT / Download, then attach in GPT" hidden>下载 / Download</a>
+            <button id="assetPreviewClose" class="icon-button" type="button" title="关闭 / Close">×</button>
+          </div>
         </header>
         <div id="assetPreviewBody" class="asset-preview-body"></div>
       </div>
@@ -328,7 +333,11 @@
       </section>
     </div>
     <div id="boardImageLightbox" class="board-image-lightbox" hidden>
-      <button id="boardImageLightboxClose" class="icon-button" type="button" title="关闭 / Close">×</button>
+      <div class="board-image-lightbox-actions">
+        <button id="boardImageLightboxCopy" class="command-button primary" type="button" title="复制图片到剪贴板，然后按 ⌘V 粘贴 / Copy image, paste with ⌘V">复制图片 / Copy</button>
+        <a id="boardImageLightboxDownload" class="command-button" download title="下载到本地，再拖进 GPT / Download, then attach in GPT">下载 / Download</a>
+        <button id="boardImageLightboxClose" class="icon-button" type="button" title="关闭 / Close">×</button>
+      </div>
       <img id="boardImageLightboxImg" alt="" />
     </div>
     <div id="whiteboxLabModal" class="reference-board-modal whitebox-lab-modal" hidden>

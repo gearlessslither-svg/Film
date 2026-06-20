@@ -1,3 +1,9 @@
+const APP_PAGE = document.body?.dataset?.page || "main";
+
+function isExternalRetouchPage() {
+  return APP_PAGE === "external-retouch";
+}
+
 const state = {
   projects: [],
   selectedSlug: null,
@@ -13,6 +19,7 @@ const state = {
   ideaActiveRowIndex: 0,
   ideaActiveBibleIndex: 0,
   ideaBatchRows: [],
+  cardVersionPreview: {},
   ideaRefFilters: {
     act: "all",
     tag: "all",
@@ -44,6 +51,21 @@ const state = {
   whiteboxFilters: {
     scene: "current",
     query: "",
+  },
+  externalRetouch: {
+    folderPath: "",
+    recursive: true,
+    maxImages: 300,
+    scanResults: [],
+    selectedScanPaths: [],
+    globalReferenceNote: "",
+    query: "",
+    activeRowIndex: 0,
+    folderPickerOpen: false,
+    folderPickerPath: "",
+    folderPickerListing: null,
+    folderPickerError: "",
+    nativeFolderPickerOpen: false,
   },
   boardFilters: {
     scene: "all",
@@ -289,7 +311,9 @@ function absoluteAssetUrl(url = "") {
 function externalImageDragAttrs(url, path, name = "", options = {}) {
   if (!url || !isImagePath(path || url)) return "";
   const fileName = imageFileNameFromPath(path || name || url, name || "pipeline-image.png");
-  const draggable = options.draggable === false ? "" : 'draggable="true"';
+  // Links are draggable by default; emit an explicit draggable="false" so the <a>
+  // wrapper never starts a URL/.webloc drag and the inner <img> is always the source.
+  const draggable = options.draggable === false ? 'draggable="false"' : 'draggable="true"';
   return [
     'data-external-image-drag="true"',
     `data-drag-image-url="${escapeHtml(url)}"`,
@@ -302,6 +326,19 @@ function externalImageDragAttrs(url, path, name = "", options = {}) {
 function downloadImageAttrs(url, path, name = "") {
   if (!url || !isImagePath(path || url)) return "";
   return `href="${escapeHtml(url)}" download="${escapeHtml(imageFileNameFromPath(path || name || url, name || "pipeline-image.png"))}"`;
+}
+
+const EXTERNAL_IMAGE_DRAG_CACHE_LIMIT = 48;
+
+// Keep the cache bounded so a long session of hovering/dragging images doesn't pin
+// dozens of full-resolution blobs in memory (Map preserves insertion order → FIFO).
+function rememberExternalImageDragFile(absoluteUrl, file) {
+  externalImageDragCache.set(absoluteUrl, { file });
+  while (externalImageDragCache.size > EXTERNAL_IMAGE_DRAG_CACHE_LIMIT) {
+    const oldest = externalImageDragCache.keys().next().value;
+    if (oldest === undefined || oldest === absoluteUrl) break;
+    externalImageDragCache.delete(oldest);
+  }
 }
 
 async function preloadExternalImageDrag(element) {
@@ -320,7 +357,7 @@ async function preloadExternalImageDrag(element) {
     })
     .then((blob) => {
       const file = new File([blob], name, { type: blob.type || imageMimeFromPath(path || name) });
-      externalImageDragCache.set(absoluteUrl, { file });
+      rememberExternalImageDragFile(absoluteUrl, file);
       return file;
     })
     .catch((error) => {
@@ -374,29 +411,156 @@ function attachExternalImageDragData(event, element) {
     try {
       transfer.items.add(file);
       addedFile = true;
+      // Cache the loaded-pixel file so the next drag of this image is instant.
+      if (!cached?.file && absoluteUrl) rememberExternalImageDragFile(absoluteUrl, file);
     } catch {
       addedFile = false;
     }
   }
+  // DownloadURL drives drops onto the OS desktop/Finder; uri-list/text covers web
+  // drop targets. Both are set unconditionally, so a drag always carries the image
+  // even when no File object is attached — no "drag again" retry needed.
   transfer.setData("text/plain", absoluteUrl || path);
   transfer.setData("text/uri-list", absoluteUrl || path);
   transfer.setData("DownloadURL", `${file?.type || imageMimeFromPath(path || name)}:${name}:${absoluteUrl}`);
   transfer.effectAllowed = "copy";
   if (!addedFile) {
+    // No File this time (image not yet decoded); warm it for subsequent drags.
     preloadExternalImageDrag(element).catch(() => {});
-    toast("正在准备可拖拽文件；如果外站没接住，请再拖一次 / Preparing file drag; try again if needed");
   }
 }
 
+async function blobToPngBlob(blob) {
+  if (!blob || blob.type === "image/png") return blob;
+  // The clipboard reliably accepts image/png; re-encode other formats (jpeg/webp).
+  const bitmap = await createImageBitmap(blob);
+  const canvas = document.createElement("canvas");
+  canvas.width = bitmap.width;
+  canvas.height = bitmap.height;
+  canvas.getContext("2d").drawImage(bitmap, 0, 0);
+  bitmap.close?.();
+  return await new Promise((resolve, reject) => {
+    canvas.toBlob((out) => (out ? resolve(out) : reject(new Error("PNG encode failed"))), "image/png");
+  });
+}
+
+// Synchronously turn an already-decoded <img> into a PNG Blob (no network, no async),
+// so we can hand the clipboard a real Blob inside the click's user-gesture window.
+function pngBlobFromLoadedImage(element) {
+  const img = element?.matches?.("img") ? element : element?.querySelector?.("img");
+  if (!img?.complete || !img.naturalWidth || !img.naturalHeight) return null;
+  try {
+    const canvas = document.createElement("canvas");
+    canvas.width = img.naturalWidth;
+    canvas.height = img.naturalHeight;
+    canvas.getContext("2d").drawImage(img, 0, 0);
+    return blobFromDataUrl(canvas.toDataURL("image/png"));
+  } catch {
+    return null; // cross-origin taint or oversized canvas
+  }
+}
+
+async function copyExternalImageToClipboard(element) {
+  if (!navigator.clipboard?.write || typeof ClipboardItem === "undefined") {
+    toast("此浏览器不支持复制图片到剪贴板 / Clipboard image copy unsupported here");
+    return;
+  }
+  try {
+    // Preferred: a real Blob written synchronously within the gesture. Avoids the
+    // Promise-valued ClipboardItem form, which several Chromium builds (incl. Atlas)
+    // accept without actually placing the image on the OS pasteboard.
+    let blob = pngBlobFromLoadedImage(element);
+    if (!blob) {
+      const cached = externalImageDragCache.get(absoluteAssetUrl(element?.dataset?.dragImageUrl || ""));
+      if (cached?.file) blob = await blobToPngBlob(cached.file);
+    }
+    if (!blob) {
+      const absoluteUrl = absoluteAssetUrl(element?.dataset?.dragImageUrl || "");
+      if (!absoluteUrl) {
+        toast("没有可复制的图片 / No image to copy");
+        return;
+      }
+      blob = await blobToPngBlob(await fetch(absoluteUrl).then((response) => {
+        if (!response.ok) throw new Error(response.statusText || `HTTP ${response.status}`);
+        return response.blob();
+      }));
+    }
+    await navigator.clipboard.write([new ClipboardItem({ "image/png": blob })]);
+    toast("已复制图片，可在 GPT/邮件/文档里按 ⌘V 粘贴 / Image copied — paste with ⌘V");
+  } catch (error) {
+    // Surface the real error name (e.g. NotAllowedError) so failures are diagnosable.
+    toast(`复制失败 / Copy failed: ${error.name || "Error"} — ${error.message || error}`);
+  }
+}
+
+let _imageCopyFab = null;
+let _imageCopyFabTarget = null;
+
+function imageCopyFab() {
+  if (_imageCopyFab) return _imageCopyFab;
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "image-copy-fab";
+  button.textContent = "复制 / Copy";
+  button.title = "复制图片到剪贴板，然后按 ⌘V 粘贴 / Copy image, then paste with ⌘V";
+  button.hidden = true;
+  button.addEventListener("click", (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    if (_imageCopyFabTarget) copyExternalImageToClipboard(_imageCopyFabTarget);
+  });
+  document.body.appendChild(button);
+  _imageCopyFab = button;
+  return button;
+}
+
+function showImageCopyFab(element) {
+  const img = element.matches?.("img") ? element : element.querySelector?.("img");
+  const anchor = img || element;
+  const rect = anchor.getBoundingClientRect();
+  if (rect.width < 48 || rect.height < 48) {
+    hideImageCopyFab();
+    return;
+  }
+  const button = imageCopyFab();
+  _imageCopyFabTarget = element;
+  button.hidden = false;
+  button.style.left = `${Math.round(rect.right - button.offsetWidth - 6)}px`;
+  button.style.top = `${Math.round(rect.top + 6)}px`;
+}
+
+function hideImageCopyFab() {
+  if (_imageCopyFab) _imageCopyFab.hidden = true;
+  _imageCopyFabTarget = null;
+}
+
+function installImageCopyButton() {
+  const dragSelector = "[data-external-image-drag='true']";
+  document.addEventListener(
+    "mouseover",
+    (event) => {
+      if (event.target === _imageCopyFab || event.target?.closest?.(".image-copy-fab")) return;
+      const element = event.target?.closest?.(dragSelector);
+      if (element) showImageCopyFab(element);
+      else hideImageCopyFab();
+    },
+    { passive: true },
+  );
+  // The fixed-position button would drift from its image on scroll/drag — just hide it.
+  document.addEventListener("scroll", hideImageCopyFab, { capture: true, passive: true });
+  document.addEventListener("dragstart", hideImageCopyFab, { capture: true });
+}
+
 function installExternalImageDrag() {
+  installImageCopyButton();
   const dragSelector = "[data-external-image-drag='true']";
   const warm = (target) => {
     const element = target?.closest?.(dragSelector);
     if (element) preloadExternalImageDrag(element).catch(() => {});
   };
+  // Warm only on press (fires right before dragstart) — not on every hover, which
+  // otherwise triggers a fetch for each image the pointer passes over.
   document.addEventListener("pointerdown", (event) => warm(event.target), { capture: true });
-  document.addEventListener("mouseover", (event) => warm(event.target), { passive: true });
-  document.addEventListener("touchstart", (event) => warm(event.target), { passive: true, capture: true });
   document.addEventListener(
     "dragstart",
     (event) => {
@@ -437,6 +601,7 @@ function projectLabel(project) {
 
 function renderProjects() {
   const root = $("projectList");
+  if (!root) return;
   if (!state.projects.length) {
     root.innerHTML = `<div class="empty-state">还没有项目。先创建一个项目。/ No projects yet. Create one first.</div>`;
     return;
@@ -543,6 +708,7 @@ function statusLabel(status) {
 
 function renderHeader() {
   const detail = state.detail;
+  if (!$("projectTitle") || !$("projectPath") || !$("statusPills")) return;
   if (!detail) {
     $("projectTitle").textContent = "未选择项目 / No project selected";
     $("projectPath").textContent = "";
@@ -742,7 +908,7 @@ function renderPreviewTile(item) {
     `;
   }
   return `
-    <a class="preview-tile" href="${escapeHtml(item.url)}" target="_blank" title="${title}" ${externalImageDragAttrs(item.url, item.path, item.name)}>
+    <a class="preview-tile" href="${escapeHtml(item.url)}" target="_blank" title="${title}" ${externalImageDragAttrs(item.url, item.path, item.name, { draggable: false })}>
       <img src="${escapeHtml(item.url)}" alt="${escapeHtml(item.name)}" loading="lazy" ${externalImageDragAttrs(item.url, item.path, item.name)} />
       <span>${escapeHtml(item.name)}</span>
       <small>${escapeHtml(assetSummary(item))}</small>
@@ -782,7 +948,7 @@ function renderSceneLocks() {
 
   if (overview?.url && overview.previewable && !overview.lfs_missing) {
     $("sceneLockOverview").innerHTML = `
-      <a class="scene-overview-link" href="${escapeHtml(overview.url)}" target="_blank" title="${escapeHtml(overview.path)}" ${externalImageDragAttrs(overview.url, overview.path, overview.name)}>
+      <a class="scene-overview-link" href="${escapeHtml(overview.url)}" target="_blank" title="${escapeHtml(overview.path)}" ${externalImageDragAttrs(overview.url, overview.path, overview.name, { draggable: false })}>
         <img src="${escapeHtml(overview.url)}" alt="${escapeHtml(overview.name)}" loading="lazy" ${externalImageDragAttrs(overview.url, overview.path, overview.name)} />
       </a>
     `;
@@ -949,7 +1115,7 @@ function filteredAssets() {
 function renderResourceThumb(item) {
   if (item.category === "image") {
     if (item.previewable && !item.lfs_missing) {
-      return `<a class="resource-thumb" href="${escapeHtml(item.url)}" target="_blank" ${externalImageDragAttrs(item.url, item.path, item.name)}><img src="${escapeHtml(item.url)}" alt="${escapeHtml(item.name)}" loading="lazy" ${externalImageDragAttrs(item.url, item.path, item.name)} /></a>`;
+      return `<a class="resource-thumb" href="${escapeHtml(item.url)}" target="_blank" ${externalImageDragAttrs(item.url, item.path, item.name, { draggable: false })}><img src="${escapeHtml(item.url)}" alt="${escapeHtml(item.name)}" loading="lazy" ${externalImageDragAttrs(item.url, item.path, item.name)} /></a>`;
     }
     return `<div class="resource-thumb">${renderLfsPlaceholder(item.lfs_missing ? "未下载 / missing" : "不可预览 / no preview")}</div>`;
   }
@@ -1193,6 +1359,15 @@ async function openAssetPreview(asset) {
   title.textContent = asset.asset_id || asset.role || path || "Asset";
   meta.textContent = `${asset.stage || ""} · ${kindLabel(asset.kind)} · ${path}`;
   body.innerHTML = `<div class="qa-loading">读取中 / Loading...</div>`;
+  const isImage = isImagePath(path);
+  const copyButton = $("assetPreviewCopy");
+  if (copyButton) copyButton.hidden = !isImage;
+  const downloadLink = $("assetPreviewDownload");
+  if (downloadLink) {
+    downloadLink.hidden = !isImage;
+    downloadLink.href = asset.url;
+    downloadLink.download = imageFileNameFromPath(path || asset.asset_id || "pipeline-image.png");
+  }
   modal.hidden = false;
   document.body.classList.add("modal-open");
   if (isImagePath(path)) {
@@ -2050,6 +2225,11 @@ function showBoardImageLightbox(asset) {
   img.dataset.dragImagePath = asset.path || "";
   img.dataset.dragImageName = imageFileNameFromPath(asset.path || asset.asset_id || "");
   img.draggable = true;
+  const download = $("boardImageLightboxDownload");
+  if (download) {
+    download.href = asset.url;
+    download.download = imageFileNameFromPath(asset.path || asset.asset_id || "pipeline-image.png");
+  }
   modal.hidden = false;
   document.body.classList.add("modal-open");
 }
@@ -3959,11 +4139,34 @@ function clearIdeaHandoffs() {
   renderIdeaLab();
 }
 
+// Memoized: this is called hundreds of thousands of times per render (via default
+// params like `board = currentIdeaBoard()` inside nested row/asset loops). Rebuilding
+// the wrapper each time was the dominant cost of renderIdeaLab (~3.8s). The wrapper is
+// derived purely from state.detail.idea_board (replaced wholesale on every edit, see
+// setIdeaBoardLocal) and state.selectedSlug, so we cache on those identities.
+let _ideaBoardCacheWrapper = null;
+let _ideaBoardCacheSource = null;
+let _ideaBoardCacheSlug = null;
+
+function invalidateIdeaBoardCache() {
+  _ideaBoardCacheWrapper = null;
+  _ideaBoardCacheSource = null;
+  _ideaBoardCacheSlug = null;
+  _storyActEntriesCache = null;
+  _storyActEntriesBoard = null;
+  _storyActEntriesScenes = null;
+}
+
 function currentIdeaBoard() {
-  const board = state.detail?.idea_board || {};
-  return {
+  const source = state.detail?.idea_board || null;
+  const slug = state.selectedSlug || "";
+  if (_ideaBoardCacheWrapper && _ideaBoardCacheSource === source && _ideaBoardCacheSlug === slug) {
+    return _ideaBoardCacheWrapper;
+  }
+  const board = source || {};
+  _ideaBoardCacheWrapper = {
     schema_version: 1,
-    project_slug: state.selectedSlug || "",
+    project_slug: slug,
     idea: board.idea || "",
     story_title: board.story_title || "",
     logline: board.logline || "",
@@ -3976,6 +4179,9 @@ function currentIdeaBoard() {
     rows: Array.isArray(board.rows) ? board.rows : [],
     completed_handoff_ids: normalizeIdeaHandoffIds(board.completed_handoff_ids || []),
   };
+  _ideaBoardCacheSource = source;
+  _ideaBoardCacheSlug = slug;
+  return _ideaBoardCacheWrapper;
 }
 
 function nextIdeaItemId(rows) {
@@ -4116,8 +4322,25 @@ function sceneDerivedStoryAct(scene, index = 0, boardAct = {}) {
   };
 }
 
+// Memoized: called ~690k times per render (via storyActEntryForId in row/asset loops).
+// Pure for a given board wrapper + scenes array, both stable within a render.
+let _storyActEntriesCache = null;
+let _storyActEntriesBoard = null;
+let _storyActEntriesScenes = null;
+
 function storyActEntries(board = currentIdeaBoard()) {
   const scenes = state.detail?.scene_workbench?.scenes || [];
+  if (_storyActEntriesCache && _storyActEntriesBoard === board && _storyActEntriesScenes === scenes) {
+    return _storyActEntriesCache;
+  }
+  const result = computeStoryActEntries(board, scenes);
+  _storyActEntriesCache = result;
+  _storyActEntriesBoard = board;
+  _storyActEntriesScenes = scenes;
+  return result;
+}
+
+function computeStoryActEntries(board, scenes) {
   const sceneIds = new Set(scenes.map((scene) => scene.scene_id).filter(Boolean));
   const manifestGroupActIds = new Set(scenes.map((scene) => scene.act_id).filter(Boolean));
   const boardActs = Array.isArray(board.acts) ? board.acts : [];
@@ -4406,6 +4629,7 @@ function setIdeaBoardLocal(board) {
     global_references: Array.isArray(board.global_references) ? board.global_references : [],
     rows: Array.isArray(board.rows) ? board.rows : [],
   };
+  invalidateIdeaBoardCache();
 }
 
 function syncIdeaReferenceNotesFromDom(board) {
@@ -4433,6 +4657,20 @@ function ideaReferenceKey(ref) {
 function ideaReferenceAsset(ref) {
   const key = ideaReferenceKey(ref);
   return allBoardImageAssets().find((asset) => asset.ref === key || asset.path === ref?.path) || null;
+}
+
+function ideaReferenceOrigin(ref) {
+  const origin = String(ref?.origin || "").trim();
+  if (origin === "resource" || origin === "project") return origin;
+  const assetRef = String(ref?.asset_ref || "").trim();
+  if (assetRef.startsWith("resource:")) return "resource";
+  if (assetRef.startsWith("project:")) return "project";
+  const asset = ideaReferenceAsset(ref);
+  return asset?.origin === "resource" ? "resource" : "project";
+}
+
+function ideaReferenceUrl(ref) {
+  return sceneAssetUrl(ref?.path || "", ideaReferenceOrigin(ref));
 }
 
 function makeIdeaReference(asset) {
@@ -4609,9 +4847,16 @@ function renderIdeaReferenceChip(ref, scope, rowIndex = "") {
   const asset = ideaReferenceAsset(ref);
   const label = ref.asset_id || asset?.asset_id || ref.path || "Reference";
   const key = ideaReferenceKey(ref);
+  const imageRef = {
+    ...ref,
+    path: ref.path || asset?.path || "",
+    origin: ref.origin || asset?.origin || "",
+    asset_ref: ref.asset_ref || asset?.ref || "",
+  };
+  const imageUrl = isImagePath(imageRef.path || "") ? ideaReferenceUrl(imageRef) : "";
   return `
     <div class="idea-ref-chip" data-ref-key="${escapeHtml(key)}">
-      ${asset?.url ? `<img src="${escapeHtml(asset.url)}" alt="${escapeHtml(label)}" loading="lazy" />` : ""}
+      ${imageUrl ? `<img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(label)}" loading="lazy" />` : ""}
       <span>${escapeHtml(label)}</span>
       <button class="icon-button idea-remove-ref" data-ref-scope="${escapeHtml(scope)}" data-ref-key="${escapeHtml(key)}" data-idea-index="${escapeHtml(rowIndex)}" type="button" title="移除参考 / Remove">×</button>
     </div>
@@ -4622,10 +4867,17 @@ function renderIdeaReferenceEditor(ref, scope) {
   const asset = ideaReferenceAsset(ref);
   const label = ref.asset_id || asset?.asset_id || ref.path || "Reference";
   const key = ideaReferenceKey(ref);
+  const imageRef = {
+    ...ref,
+    path: ref.path || asset?.path || "",
+    origin: ref.origin || asset?.origin || "",
+    asset_ref: ref.asset_ref || asset?.ref || "",
+  };
+  const imageUrl = isImagePath(imageRef.path || "") ? ideaReferenceUrl(imageRef) : "";
   return `
     <article class="idea-ref-editor">
       <div class="idea-ref-editor-head">
-        ${asset?.url ? `<img src="${escapeHtml(asset.url)}" alt="${escapeHtml(label)}" loading="lazy" />` : ""}
+        ${imageUrl ? `<img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(label)}" loading="lazy" />` : ""}
         <div>
           <strong>${escapeHtml(label)}</strong>
           <small>${escapeHtml(kindLabel(ref.kind || asset?.kind))} · ${escapeHtml(ref.path || asset?.path || "")}</small>
@@ -5226,14 +5478,94 @@ function cardVersionEntries(cardOrRow) {
   return versions.filter((version) => version?.output_path);
 }
 
+function cardVersionPreviewKey(cardOrRow) {
+  if (!cardOrRow) return "";
+  if (cardOrRow.card_id) return `concept:${cardOrRow.card_id}`;
+  if (cardOrRow.card_uid) return `storyboard:${cardOrRow.card_uid}`;
+  if (cardOrRow.item_id) return `storyboard:${cardOrRow.item_id}`;
+  if (cardOrRow.output_path) return `output:${cardOrRow.output_path}`;
+  if (cardOrRow.preview_path) return `preview:${cardOrRow.preview_path}`;
+  return "";
+}
+
+function preferredCardVersion(cardOrRow, versions) {
+  const key = cardVersionPreviewKey(cardOrRow);
+  const selectedPath = key ? state.cardVersionPreview[key] || "" : "";
+  if (selectedPath) {
+    const selected = versions.find((version) => version.output_path === selectedPath);
+    if (selected) return selected;
+    delete state.cardVersionPreview[key];
+  }
+  return [...versions].reverse().find((version) => version.status === "final")
+    || [...versions].reverse().find((version) => version.status === "current")
+    || versions[versions.length - 1];
+}
+
+function cardVersionPreviewKeyFromControl(control) {
+  const { target } = cardVersionTargetFromButton(control);
+  return cardVersionPreviewKey(target);
+}
+
+function selectCardVersionPreview(control, { openLightbox = false } = {}) {
+  const path = control?.dataset?.versionPath || "";
+  const versionId = control?.dataset?.versionId || "";
+  if (!path) return;
+  if (openLightbox) {
+    openCardVersionImagePreview(path, versionId);
+    return;
+  }
+  const key = cardVersionPreviewKeyFromControl(control);
+  if (!key) {
+    openCardVersionImagePreview(path, versionId);
+    return;
+  }
+  state.cardVersionPreview[key] = path;
+  if (control.closest(".external-retouch-card")) {
+    const board = collectExternalRetouchBoardFromDom();
+    setIdeaBoardLocal(board);
+    renderExternalRetouchLab();
+  } else {
+    const board = collectIdeaBoardFromDom();
+    setIdeaBoardLocal(board);
+    renderIdeaLab();
+  }
+}
+
+let pendingCardVersionThumbClick = null;
+
+function handleCardVersionPreviewClick(event) {
+  event.preventDefault();
+  const link = event.currentTarget;
+  if (link.classList.contains("card-version-thumb-link")) {
+    const path = link.dataset.versionPath || "";
+    if (pendingCardVersionThumbClick?.path === path) {
+      clearTimeout(pendingCardVersionThumbClick.timer);
+      pendingCardVersionThumbClick = null;
+      selectCardVersionPreview(link, { openLightbox: true });
+      return;
+    }
+    if (pendingCardVersionThumbClick?.timer) {
+      clearTimeout(pendingCardVersionThumbClick.timer);
+    }
+    pendingCardVersionThumbClick = {
+      path,
+      timer: window.setTimeout(() => {
+        pendingCardVersionThumbClick = null;
+        selectCardVersionPreview(link);
+      }, 180),
+    };
+    return;
+  }
+  openCardVersionImagePreview(link.dataset.versionPath || "", link.dataset.versionId || "");
+}
+
 function renderCardVersionPreview(cardOrRow, label = "版本 / Versions") {
   const versions = cardVersionEntries(cardOrRow);
   if (!versions.length) {
     return `<div class="card-version-empty">暂无图片版本 / No image versions yet.</div>`;
   }
-  const current = [...versions].reverse().find((version) => version.status === "final")
-    || [...versions].reverse().find((version) => version.status === "current")
-    || versions[versions.length - 1];
+  const current = preferredCardVersion(cardOrRow, versions);
+  const previewKey = cardVersionPreviewKey(cardOrRow);
   const statusLabel = (status) => CARD_VERSION_STATUS_LABELS[status || "candidate"] || CARD_VERSION_STATUS_LABELS.candidate;
   const statusClass = (status) => (["final", "current", "reference", "rejected", "candidate"].includes(status) ? status : "candidate");
   const actionStateAttrs = (version, status) => {
@@ -5241,38 +5573,53 @@ function renderCardVersionPreview(cardOrRow, label = "版本 / Versions") {
     return `class="mini-command card-version-status${active ? " active" : ""}" aria-pressed="${active ? "true" : "false"}"`;
   };
   const versionLabel = (version) => [version.version_id || "current", version.candidate_id || ""].filter(Boolean).join(" · ");
+  const versionDownloadLink = (version, labelText = "下载") => {
+    const path = version.output_path || "";
+    const url = sceneAssetUrl(path);
+    if (!path || !url) return "";
+    return `<a class="mini-command card-version-download" ${downloadImageAttrs(url, path, version.version_id || path)} title="下载这张图片 / Download this image">${escapeHtml(labelText)}</a>`;
+  };
   const qaBadge = (version) => {
     const score = version.qa?.score;
     if (score === undefined || score === null || score === "") return `<span class="card-version-qa muted">未质检</span>`;
     return `<span class="card-version-qa ${scoreClass(Number(score))}">技术分 ${escapeHtml(score)}</span>`;
   };
+  const currentUrl = sceneAssetUrl(current.output_path || "");
   return `
-    <div class="card-version-panel">
-      <div class="card-version-latest">
-        <a class="card-version-preview-link" href="${escapeHtml(sceneAssetUrl(current.output_path || ""))}" target="_blank" title="点击预览大图 / Click to preview full image" data-version-id="${escapeHtml(current.version_id || "current")}" data-version-path="${escapeHtml(current.output_path || "")}" ${externalImageDragAttrs(sceneAssetUrl(current.output_path || ""), current.output_path || "", current.version_id || "current")}>
-          <img src="${escapeHtml(sceneAssetUrl(current.output_path || ""))}" alt="${escapeHtml(current.version_id || "current")}" loading="lazy" ${externalImageDragAttrs(sceneAssetUrl(current.output_path || ""), current.output_path || "", current.version_id || "current")} />
+    <div class="card-version-panel" data-card-version-key="${escapeHtml(previewKey)}">
+      <div class="card-version-hero">
+        <a class="card-version-preview-link card-version-hero-link" href="${escapeHtml(currentUrl)}" target="_blank" title="点击预览大图 / Click to preview full image" data-version-id="${escapeHtml(current.version_id || "current")}" data-version-path="${escapeHtml(current.output_path || "")}" ${externalImageDragAttrs(currentUrl, current.output_path || "", current.version_id || "current", { draggable: false })}>
+          <img src="${escapeHtml(currentUrl)}" alt="${escapeHtml(current.version_id || "current")}" loading="lazy" ${externalImageDragAttrs(currentUrl, current.output_path || "", current.version_id || "current")} />
         </a>
-        <div>
+      </div>
+      <div class="card-version-summary">
+        <div class="card-version-meta">
           <strong>${escapeHtml(label)}</strong>
-          <span>${escapeHtml(versionLabel(current))} · ${escapeHtml(statusLabel(current.status))} · ${escapeHtml(current.created_at || "")}</span>
-          <span class="card-version-state ${escapeHtml(statusClass(current.status))}">${escapeHtml(statusLabel(current.status))}</span>
-          ${qaBadge(current)}
-          <small>${escapeHtml(current.notes || current.output_path || "")}</small>
-          <div class="card-version-actions">
-            <button class="mini-command card-version-qa-run" data-help="对这张版本图做技术评分，检查清晰度、噪点、曝光和对比。" data-version-id="${escapeHtml(current.version_id || "")}" data-version-path="${escapeHtml(current.output_path || "")}" type="button">质检 / QA</button>
-            <button class="mini-command card-version-to-board" data-help="把这张图送入画板，用主图/关联图/备注方式继续精修。" data-version-path="${escapeHtml(current.output_path || "")}" type="button">画板精修 / Board refine</button>
+          <span>${escapeHtml(versionLabel(current))} · ${escapeHtml(current.created_at || "")}</span>
+          <div class="card-version-badges">
+            <span class="card-version-state ${escapeHtml(statusClass(current.status))}">${escapeHtml(statusLabel(current.status))}</span>
+            ${qaBadge(current)}
           </div>
+          <small>${escapeHtml(current.notes || current.output_path || "")}</small>
+        </div>
+        <div class="card-version-actions">
+          <button class="mini-command card-version-qa-run" data-help="对这张版本图做技术评分，检查清晰度、噪点、曝光和对比。" data-version-id="${escapeHtml(current.version_id || "")}" data-version-path="${escapeHtml(current.output_path || "")}" type="button">质检 / QA</button>
+          <button class="mini-command card-version-to-board" data-help="把这张图送入画板，用主图/关联图/备注方式继续精修。" data-version-path="${escapeHtml(current.output_path || "")}" type="button">画板精修 / Board refine</button>
+          ${versionDownloadLink(current, "下载 / Download")}
         </div>
       </div>
       <div class="card-version-strip">
         ${versions
           .map(
-            (version) => `
-              <div class="card-version-thumb ${escapeHtml(statusClass(version.status))}" title="${escapeHtml(version.notes || version.output_path || "")}">
-                <a class="card-version-preview-link" href="${escapeHtml(sceneAssetUrl(version.output_path || ""))}" target="_blank" title="点击预览大图 / Click to preview full image" data-version-id="${escapeHtml(version.version_id || "version")}" data-version-path="${escapeHtml(version.output_path || "")}" ${externalImageDragAttrs(sceneAssetUrl(version.output_path || ""), version.output_path || "", version.version_id || "version")}>
+            (version) => {
+              const previewing = version.output_path === current.output_path;
+              return `
+              <div class="card-version-thumb ${escapeHtml(statusClass(version.status))}${previewing ? " previewing" : ""}" title="${escapeHtml(version.notes || version.output_path || "")}">
+                <a class="card-version-preview-link card-version-thumb-link" href="${escapeHtml(sceneAssetUrl(version.output_path || ""))}" target="_blank" title="单击切换上方预览，双击打开大图 / Click to preview above, double-click to enlarge" data-version-id="${escapeHtml(version.version_id || "version")}" data-version-path="${escapeHtml(version.output_path || "")}" ${externalImageDragAttrs(sceneAssetUrl(version.output_path || ""), version.output_path || "", version.version_id || "version", { draggable: false })}>
                   <img src="${escapeHtml(sceneAssetUrl(version.output_path || ""))}" alt="${escapeHtml(version.version_id || "version")}" loading="lazy" ${externalImageDragAttrs(sceneAssetUrl(version.output_path || ""), version.output_path || "", version.version_id || "version")} />
                   <span>${escapeHtml(versionLabel(version))}</span>
                 </a>
+                ${previewing ? `<small class="card-version-preview-state">预览中 / Preview</small>` : ""}
                 <small class="card-version-state ${escapeHtml(statusClass(version.status))}">${escapeHtml(statusLabel(version.status))}</small>
                 ${qaBadge(version)}
                 <div class="card-version-mini-actions">
@@ -5282,9 +5629,11 @@ function renderCardVersionPreview(cardOrRow, label = "版本 / Versions") {
                   <button ${actionStateAttrs(version, "rejected")} data-help="标记为不用；它会离开最终预览，留在待定/废图管理逻辑里。" data-version-id="${escapeHtml(version.version_id || "")}" data-version-path="${escapeHtml(version.output_path || "")}" data-version-status="rejected" type="button">淘汰</button>
                   <button class="mini-command card-version-qa-run" data-help="对这张版本图做技术评分。" data-version-id="${escapeHtml(version.version_id || "")}" data-version-path="${escapeHtml(version.output_path || "")}" type="button">质检</button>
                   <button class="mini-command card-version-to-board" data-help="送入画板继续单图精修。" data-version-path="${escapeHtml(version.output_path || "")}" type="button">画板</button>
+                  ${versionDownloadLink(version)}
                 </div>
               </div>
-            `,
+            `;
+            },
           )
           .join("")}
       </div>
@@ -5471,15 +5820,20 @@ function applyVersionStatusToCard(cardOrRow, versionId, versionPath, nextStatus,
 }
 
 function cardVersionTargetFromButton(button) {
-  const board = collectIdeaBoardFromDom();
+  const board = collectExternalRetouchBoardFromDom(collectIdeaBoardFromDom());
   const bibleCard = button.closest(".project-bible-card");
   const shotRow = button.closest(".idea-shot-row");
+  const externalCard = button.closest(".external-retouch-card");
   if (bibleCard) {
     const index = Number(bibleCard.dataset.bibleIndex || state.ideaActiveBibleIndex || 0);
     return { board, cardType: "concept", target: board.project_bible?.[index] || null };
   }
   if (shotRow) {
     const index = Number(shotRow.dataset.ideaIndex || state.ideaActiveRowIndex || 0);
+    return { board, cardType: "storyboard", target: board.rows?.[index] || null };
+  }
+  if (externalCard) {
+    const index = Number(externalCard.dataset.ideaIndex || 0);
     return { board, cardType: "storyboard", target: board.rows?.[index] || null };
   }
   return { board, cardType: "", target: null };
@@ -5495,10 +5849,13 @@ async function updateCardVersionStatus(button) {
     toast("没有找到这个版本 / Version not found");
     return;
   }
+  const previewKey = cardVersionPreviewKey(target);
+  if (previewKey && versionPath) state.cardVersionPreview[previewKey] = versionPath;
   await runAction("更新版本状态 / Update version status", async () => {
     const result = await persistIdeaBoard(board, { toast: false, render: false });
     setIdeaBoardLocal(result?.idea_board || board);
-    renderIdeaLab();
+    if (button.closest(".external-retouch-card")) renderAll();
+    else renderIdeaLab();
     toast(`版本已标记为 ${CARD_VERSION_STATUS_LABELS[status] || status}`);
   });
 }
@@ -5536,7 +5893,8 @@ async function runCardVersionQa(button) {
     };
     const saved = await persistIdeaBoard(board, { toast: false, render: false });
     setIdeaBoardLocal(saved?.idea_board || board);
-    renderIdeaLab();
+    if (button.closest(".external-retouch-card")) renderAll();
+    else renderIdeaLab();
     toast(`技术分 ${result.score} / QA score ${result.score}`);
   });
 }
@@ -5754,14 +6112,38 @@ function projectBibleEntriesForCardScope(board = currentIdeaBoard()) {
     .filter(({ card, index }) => cardMatchesCardScope(card, "concept", board, index));
 }
 
+// These two filter the full row list and are called ~10x per render with identical
+// inputs (renderIdeaLab, filter-count controls, active-row bookkeeping, etc.). Each
+// row match is expensive, so memoize per render. Inputs: board content (wrapper
+// identity, replaced on every edit) + the card filter state + selected scene.
+let _ideaScopeEntries = { board: null, key: "", value: null };
+let _ideaFilterEntries = { board: null, key: "", value: null };
+
+function ideaRowEntriesCacheKey() {
+  const f = state.cardFilters || {};
+  return `${state.selectedSlug || ""}|${state.selectedSceneId || ""}|${f.scope || ""}|${f.tag || "all"}|${f.mode || "all"}|${f.query || ""}`;
+}
+
 function ideaRowEntriesForCardScope(board = currentIdeaBoard()) {
-  return (board.rows || [])
+  const key = ideaRowEntriesCacheKey();
+  if (_ideaScopeEntries.value && _ideaScopeEntries.board === board && _ideaScopeEntries.key === key) {
+    return _ideaScopeEntries.value;
+  }
+  const value = (board.rows || [])
     .map((row, index) => ({ row, index }))
     .filter(({ row, index }) => cardMatchesCardScope(row, "storyboard", board, index));
+  _ideaScopeEntries = { board, key, value };
+  return value;
 }
 
 function filteredIdeaRowEntriesForCurrentScene(board = currentIdeaBoard()) {
-  return ideaRowEntriesForCardScope(board).filter(({ row, index }) => cardMatchesCardFilters(row, "storyboard", board, index));
+  const key = ideaRowEntriesCacheKey();
+  if (_ideaFilterEntries.value && _ideaFilterEntries.board === board && _ideaFilterEntries.key === key) {
+    return _ideaFilterEntries.value;
+  }
+  const value = ideaRowEntriesForCardScope(board).filter(({ row, index }) => cardMatchesCardFilters(row, "storyboard", board, index));
+  _ideaFilterEntries = { board, key, value };
+  return value;
 }
 
 function renderCardFilterControls(total, visible, cardType, board = currentIdeaBoard()) {
@@ -5923,6 +6305,7 @@ function renderProjectBibleCards(board, entries = filteredProjectBibleEntries(bo
             <span>${(card.references || []).length} 当前参考 / refs · ${escapeHtml(projectBibleScopeLabel(card.scope))}${card.act_id ? ` · ${escapeHtml(projectBibleActLabel(board, card.act_id))}` : ""} · ${escapeHtml(projectBibleCategoryLabel(card.category))}</span>
             ${(card.references || []).slice(0, 8).map((ref) => renderIdeaReferenceChip(ref, "bible", index)).join("")}
           </div>
+          ${renderCardVersionPreview(card, "概念图版本 / Concept image versions")}
           <label>概念说明 / Summary
             <textarea data-bible-field="summary" rows="3">${escapeHtml(card.summary || "")}</textarea>
           </label>
@@ -5938,7 +6321,6 @@ function renderProjectBibleCards(board, entries = filteredProjectBibleEntries(bo
           <label>负面约束 / Negative prompt
             <textarea data-bible-field="negative_prompt" rows="2">${escapeHtml(card.negative_prompt || "")}</textarea>
           </label>
-          ${renderCardVersionPreview(card, "概念图版本 / Concept image versions")}
           <footer>
             <label>状态 / Status <input data-bible-field="status" value="${escapeHtml(card.status || "draft")}" /></label>
           </footer>
@@ -6043,6 +6425,7 @@ function renderIdeaRows(entries, allRows = currentIdeaBoard().rows || []) {
             <span>${(row.references || []).length} 当前参考 / refs · ${escapeHtml(row.card_uid || "UID pending")} · 可拖入图片</span>
             ${(row.references || []).slice(0, 6).map((ref) => renderIdeaReferenceChip(ref, "row", index)).join("")}
           </div>
+          ${renderCardVersionPreview(row, "分镜图版本 / Storyboard image versions")}
           <label>剧情点 / Beat
             <textarea data-idea-field="beat" rows="2">${escapeHtml(row.beat || "")}</textarea>
           </label>
@@ -6070,7 +6453,6 @@ function renderIdeaRows(entries, allRows = currentIdeaBoard().rows || []) {
           <label>排序 / 放在谁后面
             <input data-idea-field="sort_after" value="${escapeHtml(row.sort_after || "")}" placeholder="例如：05、MSB058、ACT2_SHOT_006 或情绪卡名字" />
           </label>
-          ${renderCardVersionPreview(row, "分镜图版本 / Storyboard image versions")}
           <footer>
             <label>状态 / Status <input data-idea-field="status" value="${escapeHtml(row.status || "draft")}" /></label>
             <label>图片路径 / Output <input data-idea-field="output_path" value="${escapeHtml(row.output_path || "")}" /></label>
@@ -6169,6 +6551,803 @@ function renderIdeaLab() {
     </div>
   `;
   bindIdeaLabEvents();
+}
+
+function externalRetouchRows(board = currentIdeaBoard()) {
+  return (board.rows || [])
+    .map((row, index) => ({ row, index }))
+    .filter(({ row }) => (row.act_id || "") === "EXT_RETOUCH");
+}
+
+function externalRetouchFilteredRows(board = currentIdeaBoard()) {
+  const query = String(state.externalRetouch.query || "").trim().toLowerCase();
+  const entries = externalRetouchRows(board);
+  if (!query) return entries;
+  return entries.filter(({ row }) => [
+    row.item_id,
+    row.beat,
+    row.shot_type,
+    row.frame_description,
+    row.spatial_logic,
+    row.image_prompt,
+    row.video_prompt,
+    row.notes,
+    row.revision_note,
+    row.status,
+    row.output_path,
+    ...(row.references || []).flatMap((ref) => [ref.asset_id, ref.path, ref.note, ref.role]),
+    ...cardVersionEntries(row).flatMap((version) => [version.version_id, version.status, version.notes, version.output_path]),
+  ].join(" ").toLowerCase().includes(query));
+}
+
+function collectExternalRetouchBoardFromDom(baseBoard = collectIdeaBoardFromDom()) {
+  const board = {
+    ...baseBoard,
+    rows: Array.isArray(baseBoard.rows) ? [...baseBoard.rows] : [],
+  };
+  document.querySelectorAll(".external-retouch-card").forEach((card) => {
+    const index = Number(card.dataset.ideaIndex || -1);
+    if (!Number.isInteger(index) || index < 0 || !board.rows[index]) return;
+    const existing = board.rows[index];
+    const value = (field) => card.querySelector(`[data-ext-field="${field}"]`)?.value || "";
+    board.rows[index] = {
+      ...existing,
+      item_id: value("item_id") || existing.item_id || "",
+      act_id: "EXT_RETOUCH",
+      scene_id: value("scene_id") || existing.scene_id || "SCN_EXTERNAL_RETOUCH",
+      beat: value("beat"),
+      shot_type: value("shot_type"),
+      frame_description: value("frame_description"),
+      linked_cards: parseStoryboardLinkInput(value("linked_cards")),
+      spatial_logic: value("spatial_logic"),
+      image_prompt: value("image_prompt"),
+      video_prompt: value("video_prompt"),
+      notes: value("notes"),
+      revision_note: value("revision_note"),
+      sort_after: value("sort_after"),
+      selected: card.querySelector('[data-ext-field="selected"]')?.checked ?? true,
+      status: value("status") || existing.status || "image_ready",
+      output_path: existing.output_path || "",
+      output_notes: existing.output_notes || "",
+      output_attached_at: existing.output_attached_at || "",
+      versions: Array.isArray(existing.versions) ? existing.versions : [],
+      references: Array.isArray(existing.references) ? existing.references : [],
+    };
+  });
+  return board;
+}
+
+function externalRetouchTargets(board = currentIdeaBoard()) {
+  return externalRetouchFilteredRows(board)
+    .filter(({ row }) => row.selected !== false)
+    .map(({ row }) => ({
+      card_type: "storyboard",
+      card_uid: row.card_uid || "",
+      item_id: row.item_id || "",
+    }))
+    .filter((target) => target.item_id);
+}
+
+function renderExternalRetouchScanList() {
+  const results = state.externalRetouch.scanResults || [];
+  if (!results.length) return `<div class="empty-state">还没有扫描结果 / No scanned images yet.</div>`;
+  const selected = new Set(state.externalRetouch.selectedScanPaths || []);
+  return `
+    <div class="external-scan-list">
+      ${results
+        .map((item, index) => `
+          <label class="external-scan-row" title="${escapeHtml(item.abs_path || "")}">
+            <input class="external-scan-check" data-scan-index="${index}" type="checkbox" ${selected.has(item.abs_path) ? "checked" : ""} />
+            <strong>${escapeHtml(item.name || "")}</strong>
+            <span>${escapeHtml(item.extension || "")} · ${Math.round(Number(item.size || 0) / 1024)} KB</span>
+          </label>
+        `)
+        .join("")}
+    </div>
+  `;
+}
+
+function renderExternalRetouchFolderPicker() {
+  if (!state.externalRetouch.folderPickerOpen) return "";
+  const listing = state.externalRetouch.folderPickerListing || {};
+  const currentPath = listing.path || state.externalRetouch.folderPickerPath || "桌面 / Desktop";
+  const directories = Array.isArray(listing.directories) ? listing.directories : [];
+  const error = state.externalRetouch.folderPickerError || listing.error || "";
+  return `
+    <div class="external-folder-modal" role="dialog" aria-modal="true" aria-label="选择本地文件夹 / Choose local folder">
+      <section class="external-folder-window">
+        <header>
+          <div>
+            <p class="eyebrow">Local Folder</p>
+            <h3>选择图片文件夹 / Choose image folder</h3>
+            <p>${escapeHtml(currentPath)}</p>
+          </div>
+          <button id="externalFolderPickerClose" class="icon-button" type="button" title="关闭 / Close">×</button>
+        </header>
+        <div class="external-folder-toolbar">
+          <button id="externalFolderPickerDesktop" class="command-button" type="button">桌面 / Desktop</button>
+          <button id="externalFolderPickerParent" class="command-button" type="button" ${listing.parent ? "" : "disabled"}>上一级 / Parent</button>
+          <button id="externalFolderPickerChoose" class="command-button primary" type="button" ${listing.path ? "" : "disabled"}>选择此文件夹 / Choose</button>
+        </div>
+        ${error ? `<div class="empty-state compact">${escapeHtml(error)}</div>` : ""}
+        <div class="external-folder-list">
+          ${
+            directories.length
+              ? directories
+                  .map((item) => `
+                    <button class="external-folder-row" data-folder-path="${escapeHtml(item.path || "")}" type="button">
+                      <span>▸</span>
+                      <strong>${escapeHtml(item.name || item.path || "")}</strong>
+                      <small>${escapeHtml(item.path || "")}</small>
+                    </button>
+                  `)
+                  .join("")
+              : `<div class="empty-state compact">这个文件夹下没有可进入的子文件夹 / No subfolders here.</div>`
+          }
+        </div>
+      </section>
+    </div>
+  `;
+}
+
+function renderExternalRetouchReferenceList(board = currentIdeaBoard()) {
+  const refs = (board.global_references || []).filter((ref) => String(ref.role || "").includes("external_retouch"));
+  if (!refs.length) return `<div class="empty-state compact">暂无外部修图全局参考 / No global retouch references.</div>`;
+  return `
+    <div class="external-ref-list">
+      ${refs
+        .slice(-8)
+        .reverse()
+        .map((ref) => `
+          <a class="external-ref-chip" href="${escapeHtml(ideaReferenceUrl(ref))}" target="_blank" title="${escapeHtml(ref.note || ref.path || "")}">
+            ${isImagePath(ref.path || "") ? `<img src="${escapeHtml(ideaReferenceUrl(ref))}" alt="${escapeHtml(ref.asset_id || "")}" loading="lazy" />` : ""}
+            <span>${escapeHtml(ref.note || ref.asset_id || ref.path || "")}</span>
+          </a>
+        `)
+        .join("")}
+    </div>
+  `;
+}
+
+function externalRetouchActiveRowEntry(board = currentIdeaBoard()) {
+  const entries = externalRetouchRows(board);
+  if (!entries.length) {
+    state.externalRetouch.activeRowIndex = 0;
+    return null;
+  }
+  let index = Number(state.externalRetouch.activeRowIndex ?? entries[0].index);
+  if (!entries.some((entry) => entry.index === index)) index = entries[0].index;
+  state.externalRetouch.activeRowIndex = index;
+  return entries.find((entry) => entry.index === index) || entries[0];
+}
+
+function externalRetouchReferenceAssets() {
+  const assets = allBoardImageAssets().filter((asset) => frameIsUsable(asset));
+  const filters = currentImageLibraryFilters(assets);
+  return assets.filter((asset) => imageAssetMatchesLibraryFilters(asset, { act: filters.scope, tag: filters.tag, query: filters.query }, "act"));
+}
+
+function renderExternalRetouchReferenceLibrary(board = currentIdeaBoard()) {
+  const allAssets = allBoardImageAssets().filter((asset) => frameIsUsable(asset));
+  const filters = currentImageLibraryFilters(allAssets);
+  const assets = externalRetouchReferenceAssets().slice(0, 60);
+  const activeEntry = externalRetouchActiveRowEntry(board);
+  return `
+    <div class="external-control-card external-reference-library">
+      <div class="external-library-head">
+        <strong>项目图片库 / Reference library</strong>
+        <span>${assets.length}/${allAssets.length} 匹配 · 当前卡 ${escapeHtml(activeEntry?.row?.item_id || "未选择")}</span>
+      </div>
+      <div class="external-library-filters">
+        <label>范围 / Scope
+          <select id="externalRetouchRefScopeFilter">
+            ${ideaReferenceActOptions(allAssets).map((option) => `<option value="${escapeHtml(option.value)}" ${filters.scope === option.value ? "selected" : ""}>${escapeHtml(option.label)}</option>`).join("")}
+          </select>
+        </label>
+        <label>标签 / Tag
+          <select id="externalRetouchRefTagFilter">
+            ${BOARD_TAG_OPTIONS.map((option) => `<option value="${escapeHtml(option.value)}" ${filters.tag === option.value ? "selected" : ""}>${escapeHtml(option.label)}</option>`).join("")}
+          </select>
+        </label>
+        <label>搜索 / Search
+          <input id="externalRetouchRefSearchInput" value="${escapeHtml(filters.query || "")}" placeholder="人物、场景、白模、镜头、路径 / character, scene, whitebox, shot, path" />
+        </label>
+      </div>
+      <div class="idea-ref-asset-grid external-ref-asset-grid">
+        ${
+          assets.length
+            ? assets
+                .map((asset) => {
+                  const versionLabel = asset.version_status ? CARD_VERSION_STATUS_LABELS[asset.version_status] || asset.version_status : "";
+                  return `
+                    <article class="idea-ref-asset external-ref-asset" draggable="true" data-asset-ref="${escapeHtml(asset.ref)}">
+                      <img src="${escapeHtml(asset.url)}" alt="${escapeHtml(asset.asset_id || asset.path)}" loading="lazy" />
+                      <strong>${escapeHtml(asset.asset_id || asset.role || asset.path)}</strong>
+                      <small>${escapeHtml(asset.scene_id || asset.act_id || "PROJECT")} · ${escapeHtml(kindLabel(asset.kind))}${versionLabel ? ` · ${escapeHtml(versionLabel)}` : ""}${escapeHtml(assetQaLabel(asset))}</small>
+                      ${asset.card_id ? `<small>${escapeHtml(asset.card_id)}${asset.card_title ? ` · ${escapeHtml(asset.card_title)}` : ""}</small>` : ""}
+                      <div>
+                        <button class="mini-command external-add-library-ref" data-ref-scope="global" data-asset-ref="${escapeHtml(asset.ref)}" type="button">全局参考</button>
+                        <button class="mini-command external-add-library-ref" data-ref-scope="card" data-asset-ref="${escapeHtml(asset.ref)}" type="button" ${activeEntry ? "" : "disabled"}>当前卡参考</button>
+                        <button class="mini-command external-send-library-board" data-asset-ref="${escapeHtml(asset.ref)}" type="button">送入画板</button>
+                      </div>
+                    </article>
+                  `;
+                })
+                .join("")
+            : `<div class="empty-state">没有匹配参考图 / No matching references.</div>`
+        }
+      </div>
+    </div>
+  `;
+}
+
+function addExternalRetouchAssetReference(scope, assetRef) {
+  const board = collectExternalRetouchBoardFromDom();
+  const asset = allBoardImageAssets().find((item) => item.ref === assetRef);
+  if (!asset) return;
+  const ref = {
+    ...makeIdeaReference(asset),
+    role: scope === "global" ? "external_retouch_global_reference" : "external_retouch_card_reference",
+  };
+  if (scope === "global") {
+    const note = $("externalRetouchGlobalRefNote")?.value.trim() || state.externalRetouch.globalReferenceNote || "";
+    ref.note = note || ref.note || "外部修图全局参考 / Global retouch reference";
+    board.global_references = normalizeIdeaReferenceList([...(board.global_references || []), ref]);
+    setIdeaBoardLocal(board);
+    renderExternalRetouchLab();
+    toast("已加入外部修图全局参考 / Added global retouch reference");
+    return;
+  }
+  const activeEntry = externalRetouchActiveRowEntry(board);
+  if (!activeEntry?.row) {
+    toast("请先选择一张外部修图卡 / Select a retouch card first");
+    return;
+  }
+  ref.note = ref.note || "外部修图单张参考 / Card retouch reference";
+  activeEntry.row.references = normalizeIdeaReferenceList([...(activeEntry.row.references || []), ref]);
+  board.rows[activeEntry.index] = activeEntry.row;
+  state.externalRetouch.activeRowIndex = activeEntry.index;
+  setIdeaBoardLocal(board);
+  renderExternalRetouchLab();
+  toast(`已绑定到 ${activeEntry.row.item_id || "当前卡"} / Added to current card`);
+}
+
+function sendExternalRetouchAssetToBoard(assetRef) {
+  if (!state.detail) return;
+  state.boardOpen = true;
+  loadBoardState();
+  addBoardNode(assetRef, boardDefaultNodePoint());
+  toast("已送入画板 / Sent to board");
+}
+
+function renderExternalRetouchCard(row, index) {
+  const active = Number(state.externalRetouch.activeRowIndex || 0) === index;
+  return `
+    <article class="external-retouch-card ${active ? "active" : ""}" data-idea-index="${index}" data-card-uid="${escapeHtml(row.card_uid || "")}">
+      <header>
+        <label>编号 / ID <input data-ext-field="item_id" value="${escapeHtml(row.item_id || "")}" /></label>
+        <label>场戏 / Scene <input data-ext-field="scene_id" value="${escapeHtml(row.scene_id || "SCN_EXTERNAL_RETOUCH")}" /></label>
+        <label>镜头 / Shot <input data-ext-field="shot_type" value="${escapeHtml(row.shot_type || "")}" /></label>
+        <label class="checkbox-label"><input data-ext-field="selected" type="checkbox" ${row.selected === false ? "" : "checked"} /> 本次修图</label>
+        <button class="mini-command external-card-active" type="button">${active ? "当前卡" : "设当前"}</button>
+        <button class="mini-command external-card-save" type="button">保存</button>
+        <button class="mini-command external-card-packet-one" type="button">只修这张</button>
+      </header>
+      <div class="external-card-main">
+        ${renderCardVersionPreview(row, "外部图版本 / External image versions")}
+      </div>
+      <section class="external-card-priority-note">
+        <label>本次修图意见 / Revision note
+          <textarea data-ext-field="revision_note" rows="3" placeholder="例如：把人物替换成三兄弟；黄毛按全局参考；保留构图和灯光">${escapeHtml(row.revision_note || "")}</textarea>
+        </label>
+      </section>
+      <details class="external-card-details" open>
+        <summary>文字分析、提示词与排序 / Analysis, prompts and ordering</summary>
+        <div class="external-card-fields">
+          <label>剧情点 / Beat
+            <textarea data-ext-field="beat" rows="2">${escapeHtml(row.beat || "")}</textarea>
+          </label>
+          <label>画面描述 / Frame description
+            <textarea data-ext-field="frame_description" rows="3">${escapeHtml(row.frame_description || "")}</textarea>
+          </label>
+          <label>空间逻辑 / Spatial logic
+            <textarea data-ext-field="spatial_logic" rows="2">${escapeHtml(row.spatial_logic || "")}</textarea>
+          </label>
+          <label>图片提示词 / Image prompt
+            <textarea data-ext-field="image_prompt" rows="4">${escapeHtml(row.image_prompt || "")}</textarea>
+          </label>
+          <label>视频生成提示词 / Video prompt
+            <textarea data-ext-field="video_prompt" rows="4">${escapeHtml(row.video_prompt || "")}</textarea>
+          </label>
+          <label>图片基本分析 / Basic analysis
+            <textarea data-ext-field="notes" rows="3">${escapeHtml(row.notes || "")}</textarea>
+          </label>
+          <label>关联分镜 / Linked cards
+            <input data-ext-field="linked_cards" value="${escapeHtml(storyboardLinkValue(row.linked_cards || []))}" />
+          </label>
+          <label>排序 / Sort after
+            <input data-ext-field="sort_after" value="${escapeHtml(row.sort_after || "")}" />
+          </label>
+          <label>状态 / Status
+            <input data-ext-field="status" value="${escapeHtml(row.status || "image_ready")}" />
+          </label>
+        </div>
+      </details>
+      <section class="external-card-reference-panel">
+        <div>
+          <strong>单张参考 / Card references</strong>
+          <span>${(row.references || []).length} refs</span>
+        </div>
+        <div class="external-ref-list">
+          ${(row.references || [])
+            .map((ref) => `
+              <a class="external-ref-chip" href="${escapeHtml(ideaReferenceUrl(ref))}" target="_blank" title="${escapeHtml(ref.note || ref.path || "")}">
+                ${isImagePath(ref.path || "") ? `<img src="${escapeHtml(ideaReferenceUrl(ref))}" alt="${escapeHtml(ref.asset_id || "")}" loading="lazy" />` : ""}
+                <span>${escapeHtml(ref.note || ref.asset_id || ref.path || "")}</span>
+              </a>
+            `)
+            .join("")}
+        </div>
+        <div class="external-reference-upload">
+          <input class="external-card-reference-file" type="file" accept="image/*" multiple />
+          <input class="external-card-reference-note" value="" placeholder="这张参考要用哪里：脸、衣服、门、灯光、构图..." />
+          <button class="mini-command external-card-reference-upload" type="button">上传到本卡 / Upload</button>
+        </div>
+        <div class="external-reference-hint">也可以在左侧图片库点击“当前卡参考”，会绑定到标记为“当前卡”的这张分镜卡。</div>
+        <div class="external-version-drop">拖入新图可直接成为本卡候选版本 / Drop a new image here as a candidate version</div>
+      </section>
+    </article>
+  `;
+}
+
+function renderExternalRetouchLab() {
+  const root = $("externalRetouchLab");
+  if (!root) return;
+  if (!state.detail) {
+    root.innerHTML = "";
+    return;
+  }
+  const board = currentIdeaBoard();
+  const rows = externalRetouchFilteredRows(board);
+  const allRows = externalRetouchRows(board);
+  if (rows.length && !rows.some(({ index }) => index === Number(state.externalRetouch.activeRowIndex || 0))) {
+    state.externalRetouch.activeRowIndex = rows[0].index;
+  }
+  const selectedCount = rows.filter(({ row }) => row.selected !== false).length;
+  root.innerHTML = `
+    <div class="external-retouch-header">
+      <div>
+        <p class="eyebrow">External Retouch</p>
+        <h3>外部修图 / Batch external image retouch</h3>
+        <ol class="workflow-steps">
+          <li><strong>01</strong><span>扫描本地图片</span></li>
+          <li><strong>02</strong><span>导入为分镜卡</span></li>
+          <li><strong>03</strong><span>绑定全局/单张参考</span></li>
+          <li><strong>04</strong><span>生成分析卡或修图包</span></li>
+          <li><strong>05</strong><span>选择 Final</span></li>
+        </ol>
+      </div>
+      <div class="external-retouch-actions">
+        <button id="externalRetouchSaveBtn" class="command-button" type="button">保存 / Save</button>
+        <button id="externalRetouchAnalysisBtn" class="command-button primary" type="button">生成分析卡 / Analysis Card</button>
+        <button id="externalRetouchPacketBtn" class="command-button priority" type="button">生成修图包 / Retouch Pack</button>
+        <button id="externalRetouchSelectBtn" class="command-button" type="button">全选当前 / Select</button>
+        <button id="externalRetouchClearBtn" class="command-button" type="button">清空当前 / Clear</button>
+      </div>
+    </div>
+    <div class="external-retouch-layout">
+      <section class="external-retouch-control">
+        <div class="external-control-card">
+          <strong>扫描外部图片 / Scan local images</strong>
+          <label>本地文件夹 / Local folder</label>
+          <div class="external-folder-field">
+            <input id="externalRetouchFolder" value="${escapeHtml(state.externalRetouch.folderPath || "")}" placeholder="点击打开 macOS 文件夹选择器 / Click to open macOS folder picker" readonly />
+            <button id="externalRetouchBrowseFolderBtn" class="command-button" type="button">浏览 / Browse</button>
+          </div>
+          <div class="external-control-row">
+            <label class="checkbox-label"><input id="externalRetouchRecursive" type="checkbox" ${state.externalRetouch.recursive ? "checked" : ""} /> 包含子文件夹</label>
+            <label>上限 / Max <input id="externalRetouchMax" type="number" min="1" max="2000" value="${escapeHtml(state.externalRetouch.maxImages || 300)}" /></label>
+          </div>
+          <div class="external-control-row">
+            <button id="externalRetouchScanBtn" class="command-button" type="button">扫描 / Scan</button>
+            <button id="externalRetouchImportBtn" class="command-button primary" type="button">导入为卡片 / Import Cards</button>
+          </div>
+          <small>${state.externalRetouch.scanResults.length} 扫描结果 / scanned · ${(state.externalRetouch.selectedScanPaths || []).length} 已选 / selected</small>
+          ${renderExternalRetouchScanList()}
+        </div>
+        <div class="external-control-card">
+          <strong>全局参考 / Global references</strong>
+          <textarea id="externalRetouchGlobalRefNote" rows="4" placeholder="例如：所有出现三兄弟的图，都按这张人设替换脸和服装；黄毛按另一张图替换发型和气质">${escapeHtml(state.externalRetouch.globalReferenceNote || "")}</textarea>
+          <input id="externalRetouchGlobalRefFiles" type="file" accept="image/*" multiple />
+          <button id="externalRetouchGlobalRefUploadBtn" class="command-button" type="button">上传全局参考 / Upload Global Ref</button>
+          ${renderExternalRetouchReferenceList(board)}
+        </div>
+        ${renderExternalRetouchReferenceLibrary(board)}
+      </section>
+      <section class="external-retouch-cards">
+        <div class="external-retouch-card-toolbar">
+          <strong>${selectedCount}/${rows.length} 当前可见 · ${allRows.length} 外部修图卡</strong>
+          <input id="externalRetouchSearch" value="${escapeHtml(state.externalRetouch.query || "")}" placeholder="搜索外部卡、提示词、版本、参考 / Search" />
+        </div>
+        ${
+          rows.length
+            ? rows.map(({ row, index }) => renderExternalRetouchCard(row, index)).join("")
+            : `<div class="empty-state">还没有外部修图卡。先扫描并导入图片 / No external retouch cards yet. Scan and import images first.</div>`
+        }
+      </section>
+    </div>
+    ${renderExternalRetouchFolderPicker()}
+  `;
+  bindExternalRetouchEvents();
+}
+
+async function persistExternalRetouchBoard(options = {}) {
+  if (!state.selectedSlug || !state.detail) return null;
+  const board = collectExternalRetouchBoardFromDom();
+  const result = await requestJson(`/api/projects/${state.selectedSlug}/idea-board`, {
+    method: "POST",
+    body: JSON.stringify(board),
+  });
+  state.detail = result.project || state.detail;
+  setIdeaBoardLocal(result.idea_board || board);
+  if (options.toast !== false) toast("外部修图已保存 / External retouch saved");
+  if (options.render !== false) renderAll();
+  return result;
+}
+
+function updateExternalRetouchScanSelection() {
+  state.externalRetouch.selectedScanPaths = Array.from(document.querySelectorAll(".external-scan-check:checked"))
+    .map((input) => state.externalRetouch.scanResults[Number(input.dataset.scanIndex || -1)]?.abs_path || "")
+    .filter(Boolean);
+}
+
+async function loadExternalRetouchFolder(path = "") {
+  if (!state.selectedSlug) return;
+  state.externalRetouch.folderPickerError = "";
+  try {
+    const result = await requestJson(`/api/projects/${state.selectedSlug}/external-retouch-folder-list`, {
+      method: "POST",
+      body: JSON.stringify({ path }),
+    });
+    state.externalRetouch.folderPickerListing = result;
+    state.externalRetouch.folderPickerPath = result.path || path || "";
+  } catch (error) {
+    state.externalRetouch.folderPickerError = error.message;
+  }
+  renderExternalRetouchLab();
+}
+
+async function openExternalRetouchFolderPicker(path = "") {
+  state.externalRetouch.folderPickerOpen = true;
+  state.externalRetouch.folderPickerListing = null;
+  state.externalRetouch.folderPickerError = "";
+  renderExternalRetouchLab();
+  await loadExternalRetouchFolder(path || "");
+}
+
+async function chooseExternalRetouchFolderNative() {
+  if (!state.selectedSlug || state.externalRetouch.nativeFolderPickerOpen) return;
+  state.externalRetouch.nativeFolderPickerOpen = true;
+  toast("正在打开 macOS 文件夹选择器 / Opening folder picker...");
+  try {
+    const result = await requestJson(`/api/projects/${state.selectedSlug}/external-retouch-choose-folder`, {
+      method: "POST",
+      body: JSON.stringify({ path: state.externalRetouch.folderPath || "" }),
+    });
+    if (result.ok && result.path) {
+      state.externalRetouch.folderPath = result.path;
+      state.externalRetouch.folderPickerOpen = false;
+      state.externalRetouch.scanResults = [];
+      state.externalRetouch.selectedScanPaths = [];
+      renderExternalRetouchLab();
+      toast("已选择本地文件夹 / Folder selected");
+      return;
+    }
+    if (result.canceled) return;
+    toast(result.error || "系统文件夹选择器不可用，改用列表选择 / Native picker unavailable; using list picker");
+    await openExternalRetouchFolderPicker("");
+  } catch (error) {
+    toast(`系统文件夹选择器失败 / Native picker failed: ${error.message}`);
+    await openExternalRetouchFolderPicker("");
+  } finally {
+    state.externalRetouch.nativeFolderPickerOpen = false;
+  }
+}
+
+function closeExternalRetouchFolderPicker() {
+  state.externalRetouch.folderPickerOpen = false;
+  renderExternalRetouchLab();
+}
+
+function chooseExternalRetouchFolder(path = "") {
+  const selectedPath = path || state.externalRetouch.folderPickerListing?.path || "";
+  if (!selectedPath) return;
+  state.externalRetouch.folderPath = selectedPath;
+  state.externalRetouch.folderPickerOpen = false;
+  state.externalRetouch.scanResults = [];
+  state.externalRetouch.selectedScanPaths = [];
+  renderExternalRetouchLab();
+  toast("已选择本地文件夹 / Folder selected");
+}
+
+async function scanExternalRetouchImages() {
+  if (!state.selectedSlug) return;
+  state.externalRetouch.folderPath = $("externalRetouchFolder")?.value.trim() || "";
+  state.externalRetouch.recursive = $("externalRetouchRecursive")?.checked ?? true;
+  state.externalRetouch.maxImages = Number($("externalRetouchMax")?.value || 300);
+  await runAction("扫描外部图片 / Scan external images", async () => {
+    const result = await requestJson(`/api/projects/${state.selectedSlug}/external-retouch-scan`, {
+      method: "POST",
+      body: JSON.stringify({
+        folder_path: state.externalRetouch.folderPath,
+        recursive: state.externalRetouch.recursive,
+        max_images: state.externalRetouch.maxImages,
+      }),
+    });
+    state.externalRetouch.scanResults = result.images || [];
+    state.externalRetouch.selectedScanPaths = state.externalRetouch.scanResults.map((item) => item.abs_path).filter(Boolean);
+    renderExternalRetouchLab();
+  });
+}
+
+async function importExternalRetouchImages() {
+  if (!state.selectedSlug) return;
+  updateExternalRetouchScanSelection();
+  const images = (state.externalRetouch.scanResults || []).filter((item) => (state.externalRetouch.selectedScanPaths || []).includes(item.abs_path));
+  if (!images.length) {
+    toast("请先勾选要导入的图片 / Select images to import");
+    return;
+  }
+  await runAction("导入外部修图卡 / Import external retouch cards", async () => {
+    const result = await requestJson(`/api/projects/${state.selectedSlug}/external-retouch-import`, {
+      method: "POST",
+      body: JSON.stringify({ images }),
+    });
+    state.detail = result.project || state.detail;
+    state.externalRetouch.selectedScanPaths = [];
+    renderAll();
+  });
+}
+
+async function uploadExternalRetouchReference({ scope = "global", card = null } = {}) {
+  if (!state.selectedSlug) return;
+  const fileInput = scope === "global" ? $("externalRetouchGlobalRefFiles") : card?.querySelector(".external-card-reference-file");
+  const files = [...(fileInput?.files || [])].filter(fileIsImage);
+  if (!files.length) {
+    toast("请选择参考图片 / Select reference images");
+    return;
+  }
+  const note = scope === "global"
+    ? ($("externalRetouchGlobalRefNote")?.value.trim() || "外部修图全局参考 / Global retouch reference")
+    : (card?.querySelector(".external-card-reference-note")?.value.trim() || "外部修图单张参考 / Card retouch reference");
+  if (scope === "global") state.externalRetouch.globalReferenceNote = note;
+  await runAction(scope === "global" ? "上传全局参考 / Upload global reference" : "上传单张参考 / Upload card reference", async () => {
+    let latestProject = null;
+    for (const file of files) {
+      const dataUrl = await readFileAsDataUrl(file);
+      const result = await requestJson(`/api/projects/${state.selectedSlug}/external-retouch-reference-upload`, {
+        method: "POST",
+        body: JSON.stringify({
+          scope,
+          item_id: card?.querySelector('[data-ext-field="item_id"]')?.value || "",
+          card_uid: card?.dataset.cardUid || "",
+          file_name: file.name || "reference.png",
+          data_url: dataUrl,
+          note,
+        }),
+      });
+      latestProject = result.project || latestProject;
+    }
+    if (latestProject) state.detail = latestProject;
+    renderAll();
+  });
+}
+
+async function uploadExternalRetouchCandidate(card, file) {
+  if (!state.selectedSlug || !card || !fileIsImage(file)) {
+    toast("只能拖入图片文件 / Drop an image file");
+    return;
+  }
+  const board = collectExternalRetouchBoardFromDom();
+  setIdeaBoardLocal(board);
+  const rowIndex = Number(card.dataset.ideaIndex || 0);
+  const row = board.rows?.[rowIndex];
+  if (!row?.item_id) {
+    toast("没有找到这张外部修图卡 / External retouch card not found");
+    return;
+  }
+  const dataUrl = await readFileAsDataUrl(file);
+  const payload = await requestJson(`/api/projects/${encodeURIComponent(state.selectedSlug)}/card-version-upload`, {
+    method: "POST",
+    body: JSON.stringify({
+      card_type: "storyboard",
+      item_id: row.item_id,
+      card_uid: row.card_uid || "",
+      file_name: file.name || "external-retouch-candidate.png",
+      mime_type: file.type || "",
+      data_url: dataUrl,
+      notes: `外部修图候选图 / External retouch candidate: ${file.name || "image"}`,
+    }),
+  });
+  state.detail = payload.project || state.detail;
+  renderAll();
+  toast("已加入外部修图卡候选版本 / Added candidate version");
+}
+
+async function createExternalRetouchAnalysisPacket() {
+  if (!state.selectedSlug || !state.detail) return;
+  await runAction("外部修图分析卡 / External retouch analysis", async () => {
+    const board = collectExternalRetouchBoardFromDom();
+    const targets = externalRetouchTargets(board);
+    if (!targets.length) {
+      toast("请先勾选外部修图卡 / Select retouch cards first");
+      return;
+    }
+    const result = await requestJson(`/api/projects/${state.selectedSlug}/external-retouch-analysis-packet`, {
+      method: "POST",
+      body: JSON.stringify({ ...board, targets }),
+    });
+    state.detail = result.project || state.detail;
+    addIdeaHandoff({
+      kind: "external_retouch_analysis",
+      title: `${result.target_count || 0} 张外部图 → Codex 解析`,
+      path: result.packet_path || "",
+      text: result.handoff_text || "",
+    });
+    renderAll();
+  });
+}
+
+async function createExternalRetouchPacket(singleCard = null) {
+  if (!state.selectedSlug || !state.detail) return;
+  await runAction("外部修图包 / External retouch packet", async () => {
+    const board = collectExternalRetouchBoardFromDom();
+    const targets = singleCard
+      ? [{
+          card_type: "storyboard",
+          card_uid: singleCard.dataset.cardUid || "",
+          item_id: singleCard.querySelector('[data-ext-field="item_id"]')?.value || "",
+        }]
+      : externalRetouchTargets(board);
+    await createCardImagePacketForTargets(board, targets, "external_retouch_image", "请先勾选要修图的外部卡 / Select external retouch cards first");
+  });
+}
+
+function setExternalRetouchVisibleSelection(checked) {
+  const board = collectExternalRetouchBoardFromDom();
+  externalRetouchFilteredRows(board).forEach(({ index }) => {
+    if (board.rows[index]) board.rows[index].selected = checked;
+  });
+  setIdeaBoardLocal(board);
+  renderExternalRetouchLab();
+}
+
+function bindExternalVersionButtons(root) {
+  root.querySelectorAll(".card-version-preview-link").forEach((link) => {
+    link.addEventListener("click", handleCardVersionPreviewClick);
+  });
+  root.querySelectorAll(".card-version-to-board").forEach((button) => {
+    button.addEventListener("click", () => sendVersionImageToBoard(button.dataset.versionPath || ""));
+  });
+  root.querySelectorAll(".card-version-status").forEach((button) => {
+    button.addEventListener("click", () => updateCardVersionStatus(button));
+  });
+  root.querySelectorAll(".card-version-qa-run").forEach((button) => {
+    button.addEventListener("click", () => runCardVersionQa(button));
+  });
+}
+
+function bindExternalRetouchEvents() {
+  const root = $("externalRetouchLab");
+  if (!root) return;
+  $("externalRetouchFolder")?.addEventListener("click", () => {
+    chooseExternalRetouchFolderNative();
+  });
+  $("externalRetouchFolder")?.addEventListener("focus", () => {
+    chooseExternalRetouchFolderNative();
+  });
+  $("externalRetouchBrowseFolderBtn")?.addEventListener("click", () => {
+    chooseExternalRetouchFolderNative();
+  });
+  $("externalRetouchRecursive")?.addEventListener("change", (event) => {
+    state.externalRetouch.recursive = event.target.checked;
+  });
+  $("externalRetouchMax")?.addEventListener("input", (event) => {
+    state.externalRetouch.maxImages = Number(event.target.value || 300);
+  });
+  $("externalRetouchSearch")?.addEventListener("input", (event) => {
+    state.externalRetouch.query = event.target.value || "";
+    const board = collectExternalRetouchBoardFromDom();
+    setIdeaBoardLocal(board);
+    renderExternalRetouchLab();
+  });
+  $("externalRetouchScanBtn")?.addEventListener("click", scanExternalRetouchImages);
+  $("externalRetouchImportBtn")?.addEventListener("click", importExternalRetouchImages);
+  $("externalRetouchSaveBtn")?.addEventListener("click", () => persistExternalRetouchBoard());
+  $("externalRetouchAnalysisBtn")?.addEventListener("click", createExternalRetouchAnalysisPacket);
+  $("externalRetouchPacketBtn")?.addEventListener("click", () => createExternalRetouchPacket());
+  $("externalRetouchSelectBtn")?.addEventListener("click", () => setExternalRetouchVisibleSelection(true));
+  $("externalRetouchClearBtn")?.addEventListener("click", () => setExternalRetouchVisibleSelection(false));
+  $("externalRetouchGlobalRefNote")?.addEventListener("input", (event) => {
+    state.externalRetouch.globalReferenceNote = event.target.value || "";
+  });
+  $("externalRetouchGlobalRefUploadBtn")?.addEventListener("click", () => uploadExternalRetouchReference({ scope: "global" }));
+  $("externalFolderPickerClose")?.addEventListener("click", closeExternalRetouchFolderPicker);
+  $("externalFolderPickerDesktop")?.addEventListener("click", () => loadExternalRetouchFolder(""));
+  $("externalFolderPickerParent")?.addEventListener("click", () => loadExternalRetouchFolder(state.externalRetouch.folderPickerListing?.parent || ""));
+  $("externalFolderPickerChoose")?.addEventListener("click", () => chooseExternalRetouchFolder());
+  root.querySelectorAll(".external-folder-row").forEach((button) => {
+    button.addEventListener("click", () => loadExternalRetouchFolder(button.dataset.folderPath || ""));
+  });
+  $("externalRetouchRefScopeFilter")?.addEventListener("change", (event) => {
+    setImageLibraryFilters({ scope: event.target.value || "all" }, allBoardImageAssets());
+    renderExternalRetouchLab();
+  });
+  $("externalRetouchRefTagFilter")?.addEventListener("change", (event) => {
+    setImageLibraryFilters({ tag: event.target.value || "all" }, allBoardImageAssets());
+    renderExternalRetouchLab();
+  });
+  $("externalRetouchRefSearchInput")?.addEventListener("input", (event) => {
+    setImageLibraryFilters({ query: event.target.value || "" }, allBoardImageAssets());
+    renderExternalRetouchLab();
+  });
+  root.querySelectorAll(".external-add-library-ref").forEach((button) => {
+    button.addEventListener("click", () => addExternalRetouchAssetReference(button.dataset.refScope || "card", button.dataset.assetRef || ""));
+  });
+  root.querySelectorAll(".external-send-library-board").forEach((button) => {
+    button.addEventListener("click", () => sendExternalRetouchAssetToBoard(button.dataset.assetRef || ""));
+  });
+  root.querySelectorAll(".external-ref-asset").forEach((card) => {
+    card.addEventListener("dragstart", (event) => {
+      const assetRef = card.dataset.assetRef || "";
+      if (!assetRef) return;
+      event.dataTransfer?.setData("text/plain", assetRef);
+      event.dataTransfer?.setData("application/x-pipeline-asset-ref", assetRef);
+      event.dataTransfer.effectAllowed = "copy";
+    });
+  });
+  root.querySelectorAll(".external-scan-check").forEach((checkbox) => {
+    checkbox.addEventListener("change", updateExternalRetouchScanSelection);
+  });
+  root.querySelectorAll(".external-card-active").forEach((button) => {
+    button.addEventListener("click", () => {
+      const card = button.closest(".external-retouch-card");
+      state.externalRetouch.activeRowIndex = Number(card?.dataset.ideaIndex || 0);
+      setIdeaBoardLocal(collectExternalRetouchBoardFromDom());
+      renderExternalRetouchLab();
+    });
+  });
+  root.querySelectorAll(".external-card-save").forEach((button) => {
+    button.addEventListener("click", () => persistExternalRetouchBoard());
+  });
+  root.querySelectorAll(".external-card-packet-one").forEach((button) => {
+    button.addEventListener("click", () => createExternalRetouchPacket(button.closest(".external-retouch-card")));
+  });
+  root.querySelectorAll(".external-card-reference-upload").forEach((button) => {
+    button.addEventListener("click", () => uploadExternalRetouchReference({ scope: "card", card: button.closest(".external-retouch-card") }));
+  });
+  root.querySelectorAll(".external-retouch-card").forEach((card) => {
+    card.addEventListener("dragover", (event) => {
+      const types = Array.from(event.dataTransfer?.types || []);
+      if (!types.includes("Files")) return;
+      event.preventDefault();
+      event.dataTransfer.dropEffect = "copy";
+      card.classList.add("drop-target");
+    });
+    card.addEventListener("dragleave", () => card.classList.remove("drop-target"));
+    card.addEventListener("drop", async (event) => {
+      event.preventDefault();
+      card.classList.remove("drop-target");
+      const file = [...(event.dataTransfer?.files || [])].find(fileIsImage);
+      if (!file) return;
+      try {
+        await uploadExternalRetouchCandidate(card, file);
+      } catch (error) {
+        toast(`导入候选图失败 / Candidate import failed: ${error.message}`);
+      }
+    });
+  });
+  bindExternalVersionButtons(root);
 }
 
 async function saveIdeaBoard(options = {}) {
@@ -6508,7 +7687,7 @@ async function createCardImagePacketForTargets(board, targets, kind = "card_imag
   }
   const result = await requestJson(`/api/projects/${state.selectedSlug}/card-image-packet`, {
     method: "POST",
-    body: JSON.stringify({ ...board, targets }),
+    body: JSON.stringify({ ...board, targets, packet_kind: kind }),
   });
   state.detail = result.project || state.detail;
   addIdeaHandoff({
@@ -6924,10 +8103,7 @@ function bindIdeaLabEvents() {
   $("ideaAddRowBtn")?.addEventListener("click", addIdeaRow);
   $("ideaBuildImagePacketBtn")?.addEventListener("click", createIdeaImagePacket);
   document.querySelectorAll(".card-version-preview-link").forEach((link) => {
-    link.addEventListener("click", (event) => {
-      event.preventDefault();
-      openCardVersionImagePreview(link.dataset.versionPath || "", link.dataset.versionId || "");
-    });
+    link.addEventListener("click", handleCardVersionPreviewClick);
   });
   document.querySelectorAll(".card-version-to-board").forEach((button) => {
     button.addEventListener("click", () => sendVersionImageToBoard(button.dataset.versionPath || ""));
@@ -8323,11 +9499,19 @@ function renderAutofill() {
 }
 
 function renderAll() {
+  if (isExternalRetouchPage()) {
+    renderProjects();
+    renderHeader();
+    renderExternalRetouchLab();
+    renderReferenceBoard();
+    return;
+  }
   renderProjects();
   renderSidebarSceneNavigator();
   renderHeader();
   renderIdeaLab();
   renderStoryboardStudio();
+  renderExternalRetouchLab();
   renderReferenceBoard();
   renderWhiteboxLab();
   renderMetrics();
@@ -8515,23 +9699,23 @@ async function saveResourceAnnotation(ref, patch, options = {}) {
 }
 
 function bindResourceFilters() {
-  $("stageFilter").addEventListener("change", (event) => {
+  $("stageFilter")?.addEventListener("change", (event) => {
     state.filters.stage = event.target.value;
     renderResourceBrowser();
   });
-  $("kindFilter").addEventListener("change", (event) => {
+  $("kindFilter")?.addEventListener("change", (event) => {
     state.filters.kind = event.target.value;
     renderResourceBrowser();
   });
-  $("decisionFilter").addEventListener("change", (event) => {
+  $("decisionFilter")?.addEventListener("change", (event) => {
     state.filters.decision = event.target.value;
     renderResourceBrowser();
   });
-  $("assetSearch").addEventListener("input", (event) => {
+  $("assetSearch")?.addEventListener("input", (event) => {
     state.filters.query = event.target.value;
     renderResourceBrowser();
   });
-  $("clearResourceFilters").addEventListener("click", () => {
+  $("clearResourceFilters")?.addEventListener("click", () => {
     state.filters = { stage: "all", kind: "all", decision: "all", query: "" };
     renderResourceBrowser();
   });
@@ -8630,23 +9814,41 @@ function installButtonHelpObserver() {
 }
 
 function bindEvents() {
-  $("refreshBtn").addEventListener("click", () => runAction("刷新 / Refresh", loadProjects));
+  $("refreshBtn")?.addEventListener("click", () => runAction("刷新 / Refresh", loadProjects));
   $("openIdeaLabBtn")?.addEventListener("click", () => $("ideaLab")?.scrollIntoView({ behavior: "smooth", block: "start" }));
   $("openWhiteboxLabBtn")?.addEventListener("click", openWhiteboxLab);
+  $("openExternalRetouchBtn")?.addEventListener("click", (event) => {
+    event.preventDefault();
+    if (isExternalRetouchPage()) $("externalRetouchLab")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    else window.location.href = "/external-retouch";
+  });
   $("openBoardBtn")?.addEventListener("click", openReferenceBoard);
   $("closeBoardBtn")?.addEventListener("click", closeReferenceBoard);
   $("clearBoardBtn")?.addEventListener("click", clearReferenceBoard);
+  $("boardImageLightboxCopy")?.addEventListener("click", (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    copyExternalImageToClipboard($("boardImageLightboxImg"));
+  });
+  // Let the native download proceed, but don't let the click bubble up and close the lightbox.
+  $("boardImageLightboxDownload")?.addEventListener("click", (event) => event.stopPropagation());
   $("boardImageLightboxClose")?.addEventListener("click", closeBoardImageLightbox);
   $("boardImageLightbox")?.addEventListener("click", (event) => {
     event.preventDefault();
     closeBoardImageLightbox();
   });
-  $("validateBtn").addEventListener("click", validateCurrentProject);
-  $("analyzeBtn").addEventListener("click", analyzeCurrentProject);
-  $("autofillBtn").addEventListener("click", autofillCurrentProject);
-  $("sceneLockBtn").addEventListener("click", buildSceneLocksCurrentProject);
-  $("createForm").addEventListener("submit", createProject);
-  $("linkForm").addEventListener("submit", updateLinks);
+  $("validateBtn")?.addEventListener("click", validateCurrentProject);
+  $("analyzeBtn")?.addEventListener("click", analyzeCurrentProject);
+  $("autofillBtn")?.addEventListener("click", autofillCurrentProject);
+  $("sceneLockBtn")?.addEventListener("click", buildSceneLocksCurrentProject);
+  $("createForm")?.addEventListener("submit", createProject);
+  $("linkForm")?.addEventListener("submit", updateLinks);
+  $("assetPreviewCopy")?.addEventListener("click", (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    const image = $("assetPreviewBody")?.querySelector(".asset-preview-image");
+    if (image) copyExternalImageToClipboard(image);
+  });
   $("assetPreviewClose")?.addEventListener("click", closeAssetPreview);
   $("assetPreviewModal")?.addEventListener("click", (event) => {
     if (event.target?.id === "assetPreviewModal" || event.target?.closest?.(".asset-preview-image")) closeAssetPreview();

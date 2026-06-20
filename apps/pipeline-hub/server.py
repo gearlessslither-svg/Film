@@ -2009,13 +2009,20 @@ def bool_from_payload(value: object, default: bool = True) -> bool:
 
 def normalize_idea_reference(ref: dict[str, object], index: int) -> dict[str, object]:
     asset_ref = str(ref.get("asset_ref") or ref.get("ref") or "").strip()
+    ref_path = str(ref.get("path", "") or "").strip()
+    origin = str(ref.get("origin", "") or "").strip()
+    if not origin:
+        if asset_ref.startswith("resource:") or ref_path.startswith("media/"):
+            origin = "resource"
+        elif asset_ref.startswith("project:"):
+            origin = "project"
     raw_id = str(ref.get("ref_id") or ref.get("asset_id") or asset_ref or "").strip()
     normalized = {
         "ref_id": safe_file_stem(raw_id) if raw_id else f"REF_{index:03d}",
         "asset_ref": asset_ref,
         "asset_id": str(ref.get("asset_id", "") or "").strip(),
-        "path": str(ref.get("path", "") or "").strip(),
-        "origin": str(ref.get("origin", "") or "").strip(),
+        "path": ref_path,
+        "origin": origin,
         "kind": str(ref.get("kind", "") or "").strip(),
         "role": str(ref.get("role", "") or "").strip(),
         "note": str(ref.get("note", "") or "").strip(),
@@ -3196,6 +3203,17 @@ def load_idea_board(path: Path, slug: str) -> dict[str, object]:
 def update_idea_board(slug: str, payload: dict[str, object]) -> dict[str, object]:
     path = project_path(slug)
     existing = load_idea_board(path, slug)
+    if isinstance(payload.get("row_updates"), list):
+        updated_rows = apply_idea_board_row_updates(existing, payload.get("row_updates", []))
+        board = normalize_idea_board(slug, existing)
+        merge_completed_handoff_ids(board, payload)
+        write_idea_board_files(path, board)
+        return {
+            "ok": True,
+            "updated_rows": updated_rows,
+            "idea_board": load_idea_board(path, slug),
+            "project": project_detail(slug),
+        }
     merged = {**existing, **payload}
     for key in ("act_inputs", "acts", "project_bible", "global_references", "rows", "completed_handoff_ids"):
         if key not in payload:
@@ -3204,6 +3222,61 @@ def update_idea_board(slug: str, payload: dict[str, object]) -> dict[str, object
     merge_completed_handoff_ids(board, payload)
     write_idea_board_files(path, board)
     return {"ok": True, "idea_board": load_idea_board(path, slug), "project": project_detail(slug)}
+
+
+IDEA_ROW_PATCH_FIELDS = {
+    "beat",
+    "shot_type",
+    "frame_description",
+    "linked_cards",
+    "spatial_logic",
+    "image_prompt",
+    "video_prompt",
+    "notes",
+    "revision_note",
+    "sort_after",
+    "selected",
+    "status",
+    "output_path",
+    "output_notes",
+    "references",
+}
+
+
+def apply_idea_board_row_updates(board: dict[str, object], updates: object) -> int:
+    if not isinstance(updates, list):
+        return 0
+    rows = board.get("rows", [])
+    if not isinstance(rows, list):
+        return 0
+    rows_by_uid = {
+        str(row.get("card_uid", "") or "").strip(): row
+        for row in rows
+        if isinstance(row, dict) and str(row.get("card_uid", "") or "").strip()
+    }
+    rows_by_item = {
+        safe_file_stem(row.get("item_id", "") or ""): row
+        for row in rows
+        if isinstance(row, dict) and str(row.get("item_id", "") or "").strip()
+    }
+    updated = 0
+    for patch in updates:
+        if not isinstance(patch, dict):
+            continue
+        card_uid = str(patch.get("card_uid", "") or "").strip()
+        item_id = safe_file_stem(patch.get("item_id", "") or "")
+        row = rows_by_uid.get(card_uid) or rows_by_item.get(item_id)
+        if not isinstance(row, dict):
+            continue
+        touched = False
+        for field in IDEA_ROW_PATCH_FIELDS:
+            if field not in patch:
+                continue
+            row[field] = patch[field]
+            touched = True
+        if touched:
+            updated += 1
+    return updated
 
 
 def build_idea_image_packet_text(
@@ -3851,23 +3924,23 @@ def build_card_image_packet_text(
     packet_rel_path: str,
     tasks: list[dict[str, object]],
 ) -> str:
-    context_cards = enabled_project_bible_cards(board)
+    compact_tasks = [compact_card_image_task(task) for task in tasks]
     return "\n".join(
         [
             "# Codex Card Image Handoff / Codex 卡片图片生成包",
             "",
-            "这是电影项目的概念/分镜卡片图片生成包，不是投资策略卡片。请调用当前聊天里的真实生图能力，只为 Tasks 中列出的目标电影卡片生成图片。不要因为上下文里有其他卡片，就自动生成它们。",
+            "轻量包：这是电影项目的概念/分镜卡片图片生成包，不是投资策略卡片。只为 Tasks 中列出的目标电影卡片生成图片；不要读取、复述或使用完整故事/完整 idea_board。",
             "",
             "## Codex Run Mode / 执行模式",
             "- 目标是卡片级生成：如果 Tasks 里只有 1 张卡，就只生成 1 张；有多张才批量生成。",
-            "- 生成前可做电影级提示词优化，强化构图、光影、材质、角色连续性和负面约束。",
+            "- 每张图只参考本 task 的字段、all_references、continuity_locks、whitebox_guidance、revision_note 和总风格提示。",
+            "- 生成前可做电影级提示词优化，强化构图、光影、材质、角色连续性和负面约束，但不要改变分镜意图。",
             "- revision_note 是本轮精修意见，优先级高于长期 notes/prompt_notes；不要把一次性修改写死成永久设定。",
             "- spatial_logic 和 spatial_logic_checks 是硬性空间检查；生成提示词前先核对门内外方向、人物视线、屏幕位置、机位轴线和道具结构。若情绪描述与空间逻辑冲突，空间逻辑优先。",
             "- continuity_locks 是硬性连续性锁，不是氛围参考：同一人物、同一门、同一街机、同一地点跨幕出现时，身份、外形、比例、颜色、门/道具结构和空间锚点必须保持一致。",
             "- 如果 task 命中 continuity_anchors 但 continuity_missing 不为空，不要硬跑最终图；先补参考/白模，或明确只生成探索图并标注风险。",
             "- Concept task 的 scope/act_id/act_context 决定它是全项目设定还是某一幕设定；幕级概念只继承并服务对应 act 的上下文。",
-            "- Context cards、global references、nearby storyboard cards、related assets 只用于风格和连续性参考，不是生成目标。",
-            "- 每个 task 的 inherited_references/continuity_locks/all_references 是必须读取的继承参考；全局人设、设定参考、单卡参考和连续性锁都要纳入生成提示。",
+            "- all_references 是必须读取的继承参考；全局人设、设定参考、单卡参考和连续性锁都要纳入生成提示。",
             "- 默认回传全部：除非用户明确要求先挑选，否则你生成的每一张候选图都要保存并回填，不要只回传其中一张。",
             "- 编号记录规则：分镜号/卡片号、版本号、候选号只能写入文件名、version_id、candidate_id 和回填 JSON；绝对不要画进图片像素里。",
             "- 画面必须干净：不要在图上加分镜号、版本号、候选编号、字幕、水印、标签、随机文字或 UI 标记。",
@@ -3881,21 +3954,10 @@ def build_card_image_packet_text(
             f"- Project root: {path}",
             f"- Packet id: {packet_id}",
             f"- Packet path: {packet_rel_path}",
+            f"- Target count: {len(tasks)}",
             "",
-            "## Story / 故事",
-            f"- Title: {board.get('story_title', '')}",
-            f"- Logline: {board.get('logline', '')}",
-            "",
-            "## Context Cards / 上下文概念卡",
-            "这些卡片用于统一人物、场景、道具、美术、年代和负面约束；不要自动生成它们，除非它们也出现在 Tasks 里。",
-            "```json",
-            json.dumps(context_cards, ensure_ascii=False, indent=2),
-            "```",
-            "",
-            "## Global References / 全局参考",
-            "```json",
-            json.dumps(board.get("global_references", []), ensure_ascii=False, indent=2),
-            "```",
+            "## 总风格提示 / Overall style",
+            card_image_style_context(board),
             "",
             "## Callback / 回填接口",
             f"- POST: http://127.0.0.1:8787/api/projects/{slug}/card-image-output",
@@ -3903,7 +3965,228 @@ def build_card_image_packet_text(
             "",
             "## Tasks / 目标卡片任务",
             "```json",
-            json.dumps({"packet_id": packet_id, "tasks": tasks}, ensure_ascii=False, indent=2),
+            json.dumps({"packet_id": packet_id, "tasks": compact_tasks}, ensure_ascii=False, indent=2),
+            "```",
+        ]
+    )
+
+
+def compact_generation_reference(ref: object) -> dict[str, object]:
+    if not isinstance(ref, dict):
+        return {}
+    return {
+        "origin": ref.get("origin", ""),
+        "path": ref.get("path", ""),
+        "asset_ref": ref.get("asset_ref", ""),
+        "role": ref.get("role", ""),
+        "note": compact_handoff_text(ref.get("note", ""), 240),
+    }
+
+
+def compact_reference_list(refs: object, include_external_retouch: bool = False, limit: int = 24) -> list[dict[str, object]]:
+    if not isinstance(refs, list):
+        return []
+    compact_refs: list[dict[str, object]] = []
+    seen: set[tuple[str, str, str]] = set()
+    for ref in refs:
+        if not isinstance(ref, dict):
+            continue
+        role = str(ref.get("role", "") or "")
+        note = str(ref.get("note", "") or "")
+        if not include_external_retouch and ("external_retouch" in role or "外部修图" in note):
+            continue
+        compact_ref = compact_generation_reference(ref)
+        key = (
+            str(compact_ref.get("origin", "") or ""),
+            str(compact_ref.get("path", "") or compact_ref.get("asset_ref", "") or ""),
+            str(compact_ref.get("role", "") or ""),
+        )
+        if key in seen:
+            continue
+        seen.add(key)
+        compact_refs.append(compact_ref)
+        if len(compact_refs) >= limit:
+            break
+    return compact_refs
+
+
+def card_image_style_context(board: dict[str, object]) -> str:
+    parts = [
+        compact_handoff_text(board.get("story_title", ""), 100),
+        compact_handoff_text(board.get("logline", ""), 260),
+        compact_handoff_text(board.get("style_notes", ""), 360),
+    ]
+    text = " / ".join(part for part in parts if part)
+    if text:
+        return text
+    return "保持项目已锁定的人设、场景、道具、年代质感和电影写实风格；只根据目标卡片和必要参考生成。"
+
+
+def compact_card_context(value: object, limit: int = 320) -> object:
+    if isinstance(value, dict):
+        compact: dict[str, object] = {}
+        for key in ("act_id", "scene_id", "title", "summary", "dramatic_purpose", "key_beats", "idea"):
+            if key in value and str(value.get(key, "") or "").strip():
+                compact[key] = compact_handoff_text(value.get(key, ""), limit)
+        return compact
+    if isinstance(value, list):
+        items: list[object] = []
+        for item in value[:4]:
+            compact_item = compact_card_context(item, limit)
+            if compact_item:
+                items.append(compact_item)
+        return items
+    return compact_handoff_text(value, limit) if value else ""
+
+
+def compact_card_image_task(task: dict[str, object]) -> dict[str, object]:
+    card_type = str(task.get("card_type", "") or "").strip()
+    is_external_retouch = str(task.get("act_id", "") or "") == "EXT_RETOUCH"
+    required_refs: list[object] = []
+    for ref_field in ("target_references", "continuity_locks"):
+        ref_items = task.get(ref_field, [])
+        if isinstance(ref_items, list):
+            required_refs.extend(ref_items)
+    if not required_refs:
+        fallback_refs = task.get("all_references", [])
+        if isinstance(fallback_refs, list):
+            required_refs.extend(fallback_refs)
+    refs = compact_reference_list(required_refs, include_external_retouch=is_external_retouch)
+    continuity_locks = compact_reference_list(task.get("continuity_locks", []), include_external_retouch=is_external_retouch)
+    base: dict[str, object] = {
+        "task_id": task.get("task_id", ""),
+        "card_type": card_type,
+        "act_id": task.get("act_id", ""),
+        "revision_note": compact_handoff_text(task.get("revision_note", ""), 700),
+        "all_references": refs,
+        "continuity_locks": continuity_locks,
+        "continuity_missing": task.get("continuity_missing", []),
+        "whitebox_guidance": compact_handoff_text(task.get("whitebox_guidance", ""), 520),
+        "suggested_candidate_outputs": task.get("suggested_candidate_outputs", []),
+        "suggested_output_path": task.get("suggested_output_path", ""),
+    }
+    if card_type == "concept":
+        base.update(
+            {
+                "card_id": task.get("card_id", ""),
+                "scope": task.get("scope", ""),
+                "category": task.get("category", ""),
+                "title": compact_handoff_text(task.get("title", ""), 160),
+                "summary": compact_handoff_text(task.get("summary", ""), 420),
+                "visual_direction": compact_handoff_text(task.get("visual_direction", ""), 700),
+                "prompt_notes": compact_handoff_text(task.get("prompt_notes", ""), 700),
+                "negative_prompt": compact_handoff_text(task.get("negative_prompt", ""), 360),
+                "act_context": compact_card_context(task.get("act_context", {}), 260),
+            }
+        )
+    else:
+        base.update(
+            {
+                "card_uid": task.get("card_uid", ""),
+                "item_id": task.get("item_id", ""),
+                "scene_id": task.get("scene_id", ""),
+                "beat": compact_handoff_text(task.get("beat", ""), 260),
+                "shot_type": compact_handoff_text(task.get("shot_type", ""), 180),
+                "frame_description": compact_handoff_text(task.get("frame_description", ""), 520),
+                "linked_cards": task.get("linked_cards", []),
+                "spatial_logic": compact_handoff_text(task.get("spatial_logic", ""), 520),
+                "spatial_logic_checks": task.get("spatial_logic_checks", []),
+                "image_prompt": compact_handoff_text(task.get("image_prompt", ""), 900),
+                "video_prompt": compact_handoff_text(task.get("video_prompt", ""), 900),
+                "notes": compact_handoff_text(task.get("notes", ""), 520),
+                "existing_output_path": task.get("existing_output_path", ""),
+                "nearby_context": compact_card_context(task.get("nearby_context", []), 220),
+            }
+        )
+    return base
+
+
+def external_retouch_global_references(board: dict[str, object]) -> list[dict[str, object]]:
+    refs = board.get("global_references", [])
+    if not isinstance(refs, list):
+        return []
+    compact_refs: list[dict[str, object]] = []
+    for ref in refs:
+        if not isinstance(ref, dict):
+            continue
+        role = str(ref.get("role", "") or "")
+        note = str(ref.get("note", "") or "")
+        if "external_retouch" not in role and "外部修图" not in note:
+            continue
+        compact_refs.append(compact_generation_reference(ref))
+    return compact_refs
+
+
+def compact_external_retouch_task(task: dict[str, object]) -> dict[str, object]:
+    single_refs = [
+        compact_generation_reference(ref)
+        for ref in task.get("target_references", [])
+        if isinstance(ref, dict)
+    ]
+    return {
+        "task_id": task.get("task_id", ""),
+        "card_type": task.get("card_type", ""),
+        "card_uid": task.get("card_uid", ""),
+        "item_id": task.get("item_id", ""),
+        "source_image": task.get("existing_output_path", ""),
+        "beat": compact_handoff_text(task.get("beat", ""), 220),
+        "shot_type": compact_handoff_text(task.get("shot_type", ""), 180),
+        "frame_description": compact_handoff_text(task.get("frame_description", ""), 360),
+        "spatial_logic": compact_handoff_text(task.get("spatial_logic", ""), 360),
+        "image_prompt": compact_handoff_text(task.get("image_prompt", ""), 700),
+        "video_prompt": compact_handoff_text(task.get("video_prompt", ""), 700),
+        "notes": compact_handoff_text(task.get("notes", ""), 360),
+        "revision_note": compact_handoff_text(task.get("revision_note", ""), 700),
+        "single_references": [ref for ref in single_refs if ref],
+        "suggested_candidate_outputs": task.get("suggested_candidate_outputs", []),
+    }
+
+
+def build_external_retouch_image_packet_text(
+    slug: str,
+    path: Path,
+    board: dict[str, object],
+    packet_id: str,
+    packet_rel_path: str,
+    tasks: list[dict[str, object]],
+) -> str:
+    compact_tasks = [compact_external_retouch_task(task) for task in tasks]
+    return "\n".join(
+        [
+            "# Codex External Retouch Image Handoff / Codex 外部修图轻量生图包",
+            "",
+            "轻量包：只根据本包目标图、全局参考、单图参考和 revision_note 生成修图候选。不要读取、复述或使用完整故事/完整 idea_board。",
+            "",
+            "## 执行规则",
+            "- 每个 task 只处理自己的 source_image，不要自动扩展到未列出的图片。",
+            "- revision_note 是最高优先级；参考图用于锁定人设、场景、道具或风格，不要改变修图意图。",
+            "- 保留原图可用构图、空间方向、遮挡关系和光影；只改批注要求的问题。",
+            "- 输出画面不要带编号、字幕、水印、分析文字栏或 UI 标记。",
+            "- 每张图生成后必须回填 image_analysis 和 video_prompt；video_prompt 写清视频时间、景别、机位运动、光影、人物动作、台词/声音和图生视频约束。",
+            "- 默认回传全部候选图；不要只回传其中一张。",
+            "",
+            "## Project / 项目",
+            f"- Project slug: {slug}",
+            f"- Project root: {path}",
+            f"- Packet id: {packet_id}",
+            f"- Packet path: {packet_rel_path}",
+            f"- Target count: {len(tasks)}",
+            "",
+            "## 总风格提示 / Overall style",
+            external_retouch_style_context(board),
+            "",
+            "## Global references / 全局参考",
+            "```json",
+            json.dumps(external_retouch_global_references(board), ensure_ascii=False, indent=2),
+            "```",
+            "",
+            "## Callback / 回填接口",
+            f"- POST: http://127.0.0.1:8787/api/projects/{slug}/card-image-output",
+            "- Body: {\"outputs\":[{\"card_type\":\"storyboard\",\"card_uid\":\"...\",\"item_id\":\"...\",\"version_id\":\"v001_c01\",\"candidate_id\":\"c01\",\"task_id\":\"...\",\"packet_id\":\"...\",\"output_path\":\"...\",\"notes\":\"...\",\"image_analysis\":\"...\",\"video_prompt\":\"...\"}]}",
+            "",
+            "## Tasks / 目标图片",
+            "```json",
+            json.dumps({"packet_id": packet_id, "tasks": compact_tasks}, ensure_ascii=False, indent=2),
             "```",
         ]
     )
@@ -4156,6 +4439,7 @@ def create_card_image_packet(slug: str, payload: dict[str, object]) -> dict[str,
     path = project_path(slug)
     board = normalize_idea_board(slug, payload) if payload.get("rows") is not None or payload.get("project_bible") is not None else load_idea_board(path, slug)
     board = enrich_idea_board_whitebox_references(path, board)
+    packet_kind = str(payload.get("packet_kind") or payload.get("kind") or "").strip()
     preflight = card_image_preflight_for_targets(slug, payload)
     if payload.get("rows") is not None or payload.get("project_bible") is not None:
         write_idea_board_files(path, board)
@@ -4293,6 +4577,7 @@ def create_card_image_packet(slug: str, payload: dict[str, object]) -> dict[str,
                 "card_type": "storyboard",
                 "card_uid": row.get("card_uid", ""),
                 "item_id": card_id,
+                "act_id": row.get("act_id", ""),
                 "scene_id": row.get("scene_id", ""),
                 "beat": row.get("beat", ""),
                 "shot_type": row.get("shot_type", ""),
@@ -4328,7 +4613,14 @@ def create_card_image_packet(slug: str, payload: dict[str, object]) -> dict[str,
     if not tasks:
         raise ValueError("没有可生成的目标卡片 / No valid target cards.")
     packet_rel_path = str(Path("08_generation") / "jobs" / packet_id / "outputs" / f"{packet_id}_card_handoff.md")
-    packet_text = build_card_image_packet_text(slug, path, board, packet_id, packet_rel_path, tasks)
+    is_external_retouch = packet_kind == "external_retouch_image" or all(
+        str(task.get("card_type", "") or "") == "storyboard" and str(task.get("act_id", "") or "") == "EXT_RETOUCH"
+        for task in tasks
+    )
+    if is_external_retouch:
+        packet_text = build_external_retouch_image_packet_text(slug, path, board, packet_id, packet_rel_path, tasks)
+    else:
+        packet_text = build_card_image_packet_text(slug, path, board, packet_id, packet_rel_path, tasks)
     (path / packet_rel_path).write_text(packet_text, encoding="utf-8")
     write_yaml_file(job_dir / "card_image_tasks.json", {"packet_id": packet_id, "tasks": tasks})
     return {
@@ -4504,6 +4796,12 @@ def upload_card_version_image(slug: str, payload: dict[str, object]) -> dict[str
 
     notes = str(payload.get("notes", "") or "外部拖拽导入备选图 / External drop candidate").strip()
     candidate_id = safe_file_stem(payload.get("candidate_id") or f"drop{existing_count + 1:02d}")
+    incoming_video_prompt = str(payload.get("video_prompt", "") or "").strip()
+    incoming_analysis_raw = payload.get("image_analysis") if payload.get("image_analysis") is not None else payload.get("analysis")
+    if isinstance(incoming_analysis_raw, (dict, list)):
+        incoming_image_analysis = json.dumps(incoming_analysis_raw, ensure_ascii=False)
+    else:
+        incoming_image_analysis = str(incoming_analysis_raw or "").strip()
     updated = 0
     target: dict[str, object] | None = None
     if card_type == "concept":
@@ -4534,8 +4832,8 @@ def upload_card_version_image(slug: str, payload: dict[str, object]) -> dict[str
             "candidate_id": candidate_id,
             "task_id": str(payload.get("task_id", "") or "").strip(),
             "packet_id": packet_id,
-            "video_prompt": str(payload.get("video_prompt", "") or "").strip(),
-            "image_analysis": str(payload.get("image_analysis", "") or "").strip(),
+            "video_prompt": incoming_video_prompt,
+            "image_analysis": incoming_analysis_raw if isinstance(incoming_analysis_raw, (dict, list)) else incoming_image_analysis,
             "qa": {},
         }
     )
@@ -4543,8 +4841,39 @@ def upload_card_version_image(slug: str, payload: dict[str, object]) -> dict[str
     if card_type == "concept" and not str(target.get("preview_path", "") or "").strip():
         target["preview_path"] = output_path
         target["status"] = "image_ready"
-    elif card_type != "concept" and not str(target.get("output_path", "") or "").strip():
-        target["output_path"] = output_path
+    elif card_type != "concept":
+        should_update_video_prompt = bool(
+            incoming_video_prompt
+            or incoming_image_analysis
+            or any(
+                str(payload.get(key, "") or "").strip()
+                for key in (
+                    "video_duration",
+                    "duration",
+                    "shot_size",
+                    "framing",
+                    "camera_movement",
+                    "lighting",
+                    "character_action",
+                    "dialogue",
+                    "negative_prompt",
+                )
+            )
+        )
+        if should_update_video_prompt:
+            video_prompt = merge_video_prompt_for_callback(target, payload, notes)
+            if video_prompt:
+                target["video_prompt"] = video_prompt
+        if incoming_image_analysis:
+            target["notes"] = incoming_image_analysis
+        if notes and not str(target.get("revision_note", "") or "").strip():
+            target["revision_note"] = notes
+        for field in ("beat", "shot_type", "frame_description", "spatial_logic", "image_prompt"):
+            value = str(payload.get(field, "") or "").strip()
+            if value:
+                target[field] = value
+        if not str(target.get("output_path", "") or "").strip():
+            target["output_path"] = output_path
         target["output_notes"] = notes
         target["output_attached_at"] = now_iso()
         target["status"] = "image_ready"
@@ -4556,6 +4885,518 @@ def upload_card_version_image(slug: str, payload: dict[str, object]) -> dict[str
         "output_path": output_path,
         "version": versions[-1],
         "idea_board": load_idea_board(path, slug),
+        "project": project_detail(slug),
+    }
+
+
+def external_retouch_act() -> dict[str, object]:
+    return {
+        "act_id": "EXT_RETOUCH",
+        "title": "外部修图 / External retouch",
+        "summary": "外部导入图片的批量修图工作区；原图、参考图、修正版和 Final 选择都以分镜卡版本形式管理。",
+        "dramatic_purpose": "把外部 AI 图或参考图批量转成项目内可追踪的分镜卡，便于统一人设、场景、道具和视频提示词。",
+        "key_beats": "扫描外部图片、导入分镜卡、分析图片内容、绑定全局/单张参考、批量修图、选择 Final",
+        "status": "draft",
+    }
+
+
+def ensure_external_retouch_act(board: dict[str, object]) -> None:
+    acts = board.setdefault("acts", [])
+    if not isinstance(acts, list):
+        acts = []
+        board["acts"] = acts
+    if not any(isinstance(act, dict) and str(act.get("act_id", "")) == "EXT_RETOUCH" for act in acts):
+        acts.append(external_retouch_act())
+    act_inputs = board.setdefault("act_inputs", {})
+    if isinstance(act_inputs, dict) and "EXT_RETOUCH" not in act_inputs:
+        act_inputs["EXT_RETOUCH"] = {
+            "idea": "外部图片批量修图：按项目人设、场景、道具和风格把外部图改成可用分镜。",
+            "story_title": str(board.get("story_title", "") or ""),
+            "logline": str(board.get("logline", "") or ""),
+        }
+
+
+def external_retouch_rows(board: dict[str, object]) -> list[dict[str, object]]:
+    rows = board.get("rows", [])
+    if not isinstance(rows, list):
+        return []
+    return [
+        row
+        for row in rows
+        if isinstance(row, dict) and str(row.get("act_id", "") or "") == "EXT_RETOUCH"
+    ]
+
+
+def next_external_retouch_item_id(board: dict[str, object]) -> str:
+    max_number = 0
+    for row in external_retouch_rows(board):
+        match = re.search(r"(\d+)$", str(row.get("item_id", "") or ""))
+        if match:
+            max_number = max(max_number, int(match.group(1)))
+    return f"EXT_RETOUCH_{max_number + 1:03d}"
+
+
+def image_basic_analysis(path: Path) -> str:
+    stat = path.stat()
+    size_mb = stat.st_size / (1024 * 1024)
+    modified = datetime.fromtimestamp(stat.st_mtime, timezone.utc).astimezone().isoformat(timespec="seconds")
+    mime = mimetypes.guess_type(str(path))[0] or "image"
+    return "\n".join(
+        [
+            f"文件 / File: {path.name}",
+            f"格式 / Type: {mime}",
+            f"大小 / Size: {size_mb:.2f} MB",
+            f"修改时间 / Modified: {modified}",
+            "内容分析 / Content: 待 Codex 视觉分析回填人物、场景、动作、景别、机位、光影、台词/声音和视频生成约束。",
+        ]
+    )
+
+
+def external_retouch_video_prompt(file_name: str, analysis: str) -> str:
+    return "\n".join(
+        [
+            "基于回填图片的视频生成提示词 / Image-based video prompt",
+            "- 时长 / Duration: 待 Codex 根据画面内容判断，默认 4-5 秒",
+            "- 景别 / Shot size: 待 Codex 分析当前外部图的景别",
+            "- 机位运动 / Camera movement: 保持原图构图方向；如需修图，优先锁定人物朝向、遮挡、空间深度和主道具位置",
+            "- 光影 / Lighting: 保持原图可用光影，同时按项目全局风格统一色温、年代质感和材质真实度",
+            "- 人物动作 / Character action: 待 Codex 分析画中人物动作；若参考图要求替换人设，动作保留、身份替换",
+            "- 台词/声音 / Dialogue & sound: 待 Codex 从画面和导演备注推断；没有明确台词时保留环境声",
+            f"- 画面分析 / Image analysis: 外部导入图 {file_name}。\n{analysis}",
+            "- 空间硬约束 / Spatial logic: 修图时不要改变原图里的方向、左右关系、前后遮挡、视线和主要构图，除非单张备注明确要求。",
+            "- 图生视频约束 / Video constraints: 以当前版本图作为首帧或强参考帧；新图应回填为同一分镜卡的新版本，保留可用构图并替换为项目人设、场景、道具和风格。",
+        ]
+    )
+
+
+def copy_external_image_to_project(project_root: Path, source: Path, packet_id: str, prefix: str) -> str:
+    extension = source.suffix.lower()
+    if extension not in IMAGE_PREVIEW_EXTENSIONS:
+        extension = ".png"
+    output_dir = project_root / "08_generation" / "external_retouch" / packet_id
+    output_dir.mkdir(parents=True, exist_ok=True)
+    stem = safe_file_stem(prefix or source.stem)
+    candidate = output_dir / f"{stem}{extension}"
+    counter = 2
+    while candidate.exists():
+        candidate = output_dir / f"{stem}_{counter:02d}{extension}"
+        counter += 1
+    shutil.copy2(source, candidate)
+    return normalize_project_rel_path(str(candidate.relative_to(project_root)))
+
+
+def external_retouch_reference(path: str, *, note: str, role: str, ref_id: str, card_id: str = "") -> dict[str, object]:
+    return {
+        "ref_id": safe_file_stem(ref_id),
+        "asset_ref": f"project:{path}",
+        "asset_id": Path(path).name,
+        "path": path,
+        "origin": "project",
+        "kind": "image",
+        "role": role,
+        "note": note,
+        "version_id": "",
+        "version_status": "",
+        "card_type": "storyboard" if card_id else "",
+        "card_id": card_id,
+        "card_title": card_id,
+        "generation_guidance": note,
+    }
+
+
+def external_retouch_scan(slug: str, payload: dict[str, object]) -> dict[str, object]:
+    project_path(slug)
+    raw_folder = str(payload.get("folder_path", "") or "").strip()
+    if not raw_folder:
+        raise ValueError("请填写本地图片文件夹路径 / Enter a local image folder path.")
+    folder = Path(raw_folder).expanduser().resolve()
+    if not folder.exists() or not folder.is_dir():
+        raise ValueError("图片文件夹不存在 / Image folder does not exist.")
+    recursive = bool_from_payload(payload.get("recursive"), True)
+    max_images = max(1, min(2000, int(payload.get("max_images", 300) or 300)))
+    iterator = folder.rglob("*") if recursive else folder.glob("*")
+    images: list[dict[str, object]] = []
+    for item in sorted(iterator, key=lambda value: str(value).lower()):
+        if len(images) >= max_images:
+            break
+        if not item.is_file() or item.suffix.lower() not in IMAGE_PREVIEW_EXTENSIONS:
+            continue
+        stat = item.stat()
+        images.append(
+            {
+                "abs_path": str(item),
+                "name": item.name,
+                "extension": item.suffix.lower(),
+                "size": stat.st_size,
+                "modified_at": datetime.fromtimestamp(stat.st_mtime, timezone.utc).astimezone().isoformat(timespec="seconds"),
+                "mime": mimetypes.guess_type(str(item))[0] or "image",
+            }
+        )
+    return {"ok": True, "folder_path": str(folder), "recursive": recursive, "count": len(images), "images": images}
+
+
+def external_retouch_folder_list(slug: str, payload: dict[str, object]) -> dict[str, object]:
+    project_path(slug)
+    desktop = Path.home() / "Desktop"
+    default_path = desktop if desktop.exists() else Path.home()
+    raw_path = str(payload.get("path", "") or "").strip()
+    target = Path(raw_path).expanduser() if raw_path else default_path
+    try:
+        target = target.resolve()
+    except OSError:
+        target = default_path.resolve()
+    if not target.exists() or not target.is_dir():
+        target = default_path.resolve()
+    directories: list[dict[str, object]] = []
+    error = ""
+    try:
+        children = sorted(target.iterdir(), key=lambda item: (not item.is_dir(), item.name.lower()))
+        for child in children:
+            if not child.is_dir() or child.name.startswith("."):
+                continue
+            directories.append(
+                {
+                    "name": child.name,
+                    "path": str(child),
+                }
+            )
+    except PermissionError:
+        error = "没有权限读取这个文件夹 / Permission denied."
+    except OSError as exc:
+        error = str(exc)
+    parent = "" if target.parent == target else str(target.parent)
+    return {
+        "ok": not error,
+        "path": str(target),
+        "parent": parent,
+        "desktop": str(default_path),
+        "home": str(Path.home()),
+        "directories": directories,
+        "error": error,
+    }
+
+
+def applescript_string(value: str) -> str:
+    return '"' + value.replace("\\", "\\\\").replace('"', '\\"') + '"'
+
+
+def external_retouch_choose_folder(slug: str, payload: dict[str, object]) -> dict[str, object]:
+    project_path(slug)
+    if sys.platform != "darwin":
+        return {
+            "ok": False,
+            "supported": False,
+            "error": "当前系统不支持 macOS 原生文件夹选择器 / Native macOS folder picker is not available.",
+        }
+    desktop = Path.home() / "Desktop"
+    default_path = desktop if desktop.exists() else Path.home()
+    raw_path = str(payload.get("path", "") or "").strip()
+    if raw_path:
+        candidate = Path(raw_path).expanduser()
+        if candidate.exists() and candidate.is_dir():
+            default_path = candidate
+    try:
+        default_path = default_path.resolve()
+    except OSError:
+        default_path = Path.home().resolve()
+    script = [
+        f"set defaultFolder to POSIX file {applescript_string(str(default_path))}",
+        'set chosenFolder to choose folder with prompt "选择图片文件夹 / Choose image folder" default location defaultFolder',
+        "POSIX path of chosenFolder",
+    ]
+    command: list[str] = ["osascript"]
+    for line in script:
+        command.extend(["-e", line])
+    try:
+        completed = subprocess.run(command, capture_output=True, text=True, timeout=600, check=False)
+    except subprocess.TimeoutExpired:
+        return {"ok": False, "canceled": True, "error": "选择文件夹超时 / Folder picker timed out."}
+    if completed.returncode != 0:
+        error = (completed.stderr or completed.stdout or "").strip()
+        return {
+            "ok": False,
+            "canceled": "User canceled" in error or "用户已取消" in error,
+            "supported": True,
+            "error": error,
+        }
+    selected = (completed.stdout or "").strip()
+    if not selected:
+        return {"ok": False, "canceled": True, "supported": True, "error": ""}
+    try:
+        selected_path = str(Path(selected).expanduser().resolve())
+    except OSError:
+        selected_path = selected.rstrip("/")
+    return {"ok": True, "supported": True, "path": selected_path}
+
+
+def external_retouch_import(slug: str, payload: dict[str, object]) -> dict[str, object]:
+    path = project_path(slug)
+    board = load_idea_board(path, slug)
+    ensure_external_retouch_act(board)
+    images = payload.get("images", [])
+    if not isinstance(images, list) or not images:
+        raise ValueError("请选择要导入的图片 / Select images to import.")
+    packet_id = safe_file_stem(payload.get("packet_id") or f"EXT_RETOUCH_IMPORT_{datetime.now().strftime('%Y%m%d_%H%M%S')}")
+    imported: list[dict[str, object]] = []
+    rows = board.setdefault("rows", [])
+    if not isinstance(rows, list):
+        rows = []
+        board["rows"] = rows
+    for image in images:
+        source_text = str(image.get("abs_path", "") if isinstance(image, dict) else image or "").strip()
+        if not source_text:
+            continue
+        source = Path(source_text).expanduser().resolve()
+        if not source.exists() or not source.is_file() or source.suffix.lower() not in IMAGE_PREVIEW_EXTENSIONS:
+            continue
+        item_id = next_external_retouch_item_id(board)
+        rel_path = copy_external_image_to_project(path, source, packet_id, item_id)
+        analysis = image_basic_analysis(source)
+        version = {
+            "version_id": "external_original",
+            "output_path": rel_path,
+            "notes": f"外部导入原图 / External original: {source.name}",
+            "created_at": now_iso(),
+            "status": "current",
+            "candidate_id": "external_original",
+            "task_id": "",
+            "packet_id": packet_id,
+            "video_prompt": external_retouch_video_prompt(source.name, analysis),
+            "image_analysis": analysis,
+            "qa": {},
+        }
+        row = {
+            "card_uid": idea_card_uid_for({"act_id": "EXT_RETOUCH", "beat": source.name}, len(rows) + 1, item_id),
+            "item_id": item_id,
+            "act_id": "EXT_RETOUCH",
+            "scene_id": "SCN_EXTERNAL_RETOUCH",
+            "beat": f"外部导入图：{source.stem}",
+            "shot_type": "外部图待分析 / external image pending analysis",
+            "frame_description": f"外部导入图片 {source.name}，需要按项目人设、场景、道具和风格进行分析与修图。",
+            "linked_cards": [],
+            "spatial_logic": "先保留原图构图、方向、景别、前后遮挡和主要空间关系；只有导演备注明确要求时才改变。",
+            "image_prompt": f"以外部原图 {source.name} 为主图进行项目化修图：保留原构图和可用动作，替换/统一为项目人设、场景、道具和 90 年代写实电影风格；参考图说明优先。",
+            "video_prompt": version["video_prompt"],
+            "notes": analysis,
+            "revision_note": str(payload.get("revision_note", "") or "").strip(),
+            "sort_after": "",
+            "selected": True,
+            "status": "image_ready",
+            "output_path": rel_path,
+            "output_notes": str(version["notes"]),
+            "output_attached_at": now_iso(),
+            "versions": [version],
+            "references": [
+                external_retouch_reference(
+                    rel_path,
+                    note="外部原图作为主图；修图时保留构图和空间关系。",
+                    role="source_image",
+                    ref_id=f"{item_id}_source",
+                    card_id=item_id,
+                )
+            ],
+        }
+        rows.append(row)
+        imported.append({"item_id": item_id, "card_uid": row["card_uid"], "output_path": rel_path, "source_path": str(source)})
+    board["updated_at"] = now_iso()
+    write_idea_board_files(path, board)
+    return {"ok": True, "imported": imported, "count": len(imported), "idea_board": load_idea_board(path, slug), "project": project_detail(slug)}
+
+
+def external_retouch_reference_upload(slug: str, payload: dict[str, object]) -> dict[str, object]:
+    path = project_path(slug)
+    board = load_idea_board(path, slug)
+    ensure_external_retouch_act(board)
+    data, mime_type = data_url_image_bytes(str(payload.get("data_url", "") or ""))
+    file_name = str(payload.get("file_name", "") or "external-reference.png")
+    extension = image_extension_for_upload(file_name, mime_type)
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    packet_id = safe_file_stem(payload.get("packet_id") or f"EXT_RETOUCH_REF_{timestamp}")
+    output_dir = path / "08_generation" / "external_retouch" / "references" / packet_id
+    output_dir.mkdir(parents=True, exist_ok=True)
+    stem = safe_file_stem(payload.get("output_stem") or Path(file_name).stem or "reference")
+    output_file = output_dir / f"{stem}{extension}"
+    counter = 2
+    while output_file.exists():
+        output_file = output_dir / f"{stem}_{counter:02d}{extension}"
+        counter += 1
+    output_file.write_bytes(data)
+    rel_path = normalize_project_rel_path(str(output_file.relative_to(path)))
+    note = str(payload.get("note", "") or "外部修图参考图 / External retouch reference").strip()
+    scope = str(payload.get("scope", "global") or "global").strip()
+    role = str(payload.get("role", "") or ("external_retouch_global_reference" if scope == "global" else "external_retouch_card_reference")).strip()
+    item_id = safe_file_stem(payload.get("item_id", "") or payload.get("card_id", ""))
+    card_uid = safe_file_stem(payload.get("card_uid", "") or "")
+    ref = external_retouch_reference(rel_path, note=note, role=role, ref_id=f"{packet_id}_{stem}", card_id=item_id)
+    updated = 0
+    if scope == "global":
+        refs = board.setdefault("global_references", [])
+        if not isinstance(refs, list):
+            refs = []
+            board["global_references"] = refs
+        refs.append(ref)
+        updated = 1
+    else:
+        rows = board.get("rows", [])
+        if not isinstance(rows, list):
+            rows = []
+        for row in rows:
+            if not isinstance(row, dict):
+                continue
+            if (card_uid and safe_file_stem(row.get("card_uid", "")) == card_uid) or safe_file_stem(row.get("item_id", "")) == item_id:
+                row_refs = row.setdefault("references", [])
+                if not isinstance(row_refs, list):
+                    row_refs = []
+                    row["references"] = row_refs
+                row_refs.append(ref)
+                updated = 1
+                break
+        if not updated:
+            raise ValueError("没有找到要绑定单张参考的外部修图卡 / Target retouch card not found.")
+    board["updated_at"] = now_iso()
+    write_idea_board_files(path, board)
+    return {"ok": True, "updated": updated, "reference": ref, "idea_board": load_idea_board(path, slug), "project": project_detail(slug)}
+
+
+def compact_handoff_text(value: object, limit: int = 520) -> str:
+    text = re.sub(r"\s+", " ", str(value or "")).strip()
+    if len(text) <= limit:
+        return text
+    return text[:limit].rstrip() + "..."
+
+
+def external_retouch_style_context(board: dict[str, object]) -> str:
+    act_inputs = board.get("act_inputs", {})
+    ext_input = act_inputs.get("EXT_RETOUCH", {}) if isinstance(act_inputs, dict) else {}
+    style_parts = [
+        compact_handoff_text(board.get("style_notes", ""), 360),
+        compact_handoff_text(ext_input.get("idea", "") if isinstance(ext_input, dict) else "", 220),
+    ]
+    style_text = " / ".join(part for part in style_parts if part)
+    if style_text:
+        return style_text
+    return "保持项目统一人设、场景、道具与 90 年代写实电影质感；保留原图可用构图和光影，只替换批注要求的内容。"
+
+
+def build_external_retouch_analysis_text(slug: str, packet_id: str, rows: list[dict[str, object]], board: dict[str, object]) -> str:
+    callback_url = f"http://127.0.0.1:8787/api/projects/{slug}/idea-board"
+    lines = [
+        "# External Retouch Analysis / 外部修图图片分析卡",
+        "",
+        "轻量卡：只处理本卡列出的目标图片。不要读取、复述或回传完整故事/完整 idea_board。",
+        "",
+        "## 工作要求",
+        "- 每张目标图只参考：source_image、global references、single references、revision_note 和总风格提示。",
+        "- 必须逐张查看目标图，分析画面内容、人物、年龄、服装、动作、场景、道具、景别、机位、光影、空间关系和潜在视频运动。",
+        "- 回填到对应 row：beat、shot_type、frame_description、spatial_logic、image_prompt、video_prompt、notes、revision_note。不要改 unrelated rows。",
+        "- video_prompt 必须包含：视频时间、镜头景别、机位运动、光影、人物动作、台词/声音、空间硬约束、图生视频约束。",
+        "- 如果全局参考图要求替换三兄弟、黄毛或环境风格，请判断每张目标图中哪些元素需要替换，并写进 image_prompt/revision_note。",
+        "- 完成后只 POST row_updates 小补丁到 callback，不要 POST 完整 idea_board。",
+        "",
+        f"- callback_url: {callback_url}",
+        f"- completed_handoff_id: {packet_id}",
+        f"- target_count: {len(rows)}",
+        "",
+        "## 总风格提示 / Overall style",
+        external_retouch_style_context(board),
+        "",
+        "## 回填格式 / Compact callback format",
+        "```json",
+        json.dumps(
+            {
+                "row_updates": [
+                    {
+                        "card_uid": "<target card_uid>",
+                        "item_id": "<target item_id>",
+                        "beat": "<one-line beat>",
+                        "shot_type": "<shot size / camera angle>",
+                        "frame_description": "<what is in the frame>",
+                        "spatial_logic": "<direction, blocking, continuity constraints>",
+                        "image_prompt": "<retouch/generation prompt using references>",
+                        "video_prompt": "<duration, shot size, camera movement, light, action, sound/dialogue, spatial constraints>",
+                        "notes": "<basic visual analysis>",
+                        "revision_note": "<specific retouch intent>",
+                        "status": "analysis_ready",
+                    }
+                ],
+                "completed_handoff_ids": [packet_id],
+            },
+            ensure_ascii=False,
+            indent=2,
+        ),
+        "```",
+        "",
+        "## 全局参考 / Global references",
+    ]
+    for ref in board.get("global_references", []) if isinstance(board.get("global_references"), list) else []:
+        if not isinstance(ref, dict):
+            continue
+        role = str(ref.get("role", "") or "")
+        if "external_retouch" not in role:
+            continue
+        ref_origin = str(ref.get("origin", "") or "project")
+        lines.append(f"- {ref_origin}:{ref.get('path', '')}: {ref.get('note', '')}")
+    lines.extend(["", "## 目标卡片 / Target cards"])
+    for row in rows:
+        lines.extend(
+            [
+                "",
+                f"### {row.get('item_id', '')} · {row.get('beat', '')}",
+                f"- card_uid: {row.get('card_uid', '')}",
+                f"- source_image: {row.get('output_path', '')}",
+                f"- revision_note: {compact_handoff_text(row.get('revision_note', ''), 700)}",
+                f"- existing_notes: {compact_handoff_text(row.get('notes', ''), 360)}",
+                "- single references:",
+            ]
+        )
+        for ref in row.get("references", []) if isinstance(row.get("references"), list) else []:
+            if isinstance(ref, dict):
+                ref_origin = str(ref.get("origin", "") or "project")
+                lines.append(f"  - {ref_origin}:{ref.get('path', '')}: {ref.get('note', '')}")
+    return "\n".join(lines)
+
+
+def create_external_retouch_analysis_packet(slug: str, payload: dict[str, object]) -> dict[str, object]:
+    path = project_path(slug)
+    board = normalize_idea_board(slug, payload) if payload.get("rows") is not None else load_idea_board(path, slug)
+    ensure_external_retouch_act(board)
+    target_ids: set[str] = set()
+    target_uids: set[str] = set()
+    for item in payload.get("targets", []):
+        if isinstance(item, dict):
+            item_id = safe_file_stem(item.get("item_id", "") or "")
+            card_uid = str(item.get("card_uid", "") or "").strip()
+            if item_id:
+                target_ids.add(item_id)
+            if card_uid:
+                target_uids.add(card_uid)
+        elif isinstance(item, str):
+            item_id = safe_file_stem(item)
+            if item_id:
+                target_ids.add(item_id)
+    rows = [
+        row
+        for row in external_retouch_rows(board)
+        if (not target_ids and not target_uids)
+        or safe_file_stem(row.get("item_id", "")) in target_ids
+        or str(row.get("card_uid", "") or "").strip() in target_uids
+    ]
+    if not rows:
+        raise ValueError("没有外部修图卡可分析 / No external retouch cards to analyze.")
+    packet_id = safe_file_stem(payload.get("packet_id") or f"EXT_RETOUCH_ANALYSIS_{datetime.now().strftime('%Y%m%d_%H%M%S')}")
+    packet_rel_path = str(Path("08_generation") / "external_retouch" / "analysis" / f"{packet_id}.md")
+    packet_abs = path / packet_rel_path
+    packet_abs.parent.mkdir(parents=True, exist_ok=True)
+    handoff_text = build_external_retouch_analysis_text(slug, packet_id, rows, board)
+    packet_abs.write_text(handoff_text, encoding="utf-8")
+    write_idea_board_files(path, board)
+    return {
+        "ok": True,
+        "packet_id": packet_id,
+        "target_count": len(rows),
+        "packet_path": packet_rel_path,
+        "packet_absolute_path": str(packet_abs),
+        "handoff_text": handoff_text,
         "project": project_detail(slug),
     }
 
@@ -6118,6 +6959,9 @@ class PipelineHubHandler(BaseHTTPRequestHandler):
         if not parts:
             send_static(self, "/")
             return
+        if parts == ["external-retouch"]:
+            send_static(self, "external-retouch.html")
+            return
         if parts[0] == "static":
             send_static(self, "/".join(parts[1:]))
             return
@@ -6245,6 +7089,24 @@ class PipelineHubHandler(BaseHTTPRequestHandler):
                 return
             if action == "card-version-upload":
                 send_json(self, upload_card_version_image(slug, payload))
+                return
+            if action == "external-retouch-scan":
+                send_json(self, external_retouch_scan(slug, payload))
+                return
+            if action == "external-retouch-folder-list":
+                send_json(self, external_retouch_folder_list(slug, payload))
+                return
+            if action == "external-retouch-choose-folder":
+                send_json(self, external_retouch_choose_folder(slug, payload))
+                return
+            if action == "external-retouch-import":
+                send_json(self, external_retouch_import(slug, payload))
+                return
+            if action == "external-retouch-reference-upload":
+                send_json(self, external_retouch_reference_upload(slug, payload))
+                return
+            if action == "external-retouch-analysis-packet":
+                send_json(self, create_external_retouch_analysis_packet(slug, payload))
                 return
             if action == "current-version-package":
                 send_json(self, create_current_version_package(slug, payload))

@@ -28,6 +28,9 @@ python scripts/validate_pipeline_state.py <project-root>
 - Keep pure and annotated assets separate. Pure images go to image/video generation; annotated images are only for human review and production communication.
 - Every panel should express one visual state. Preparation, action, result, reaction, and transition frames are separate panels.
 - Rebuild review panels, contact sheets, animatics, and validation after every meaningful batch.
+- Keep Codex handoff packets scoped to the smallest useful context. Normal storyboard image, external retouch analysis, and external retouch image packets should include only target cards/images, required references, revision notes, spatial/continuity/whitebox constraints, and callback schema. Do not embed the full story, full `idea_board`, full project bible, or unrelated rows unless the task is explicitly a project audit, merge, or remote autopilot run.
+- Prefer compact callbacks. For card analysis or text-only updates, return `row_updates` patches keyed by `card_uid`/`item_id`; do not POST a full board unless the operation genuinely rewrites project structure.
+- Treat reference images as hard intent, not decoration. If a card says to replace a face, character, prop, or environment with project references, preserve that modification intent even when the generation prompt must be rephrased for safety.
 
 ## Tool Map
 
@@ -64,6 +67,15 @@ Load only the reference needed for the current task:
 - `references/runtime-resilience-and-keepawake.md`: long-run recovery and keep-awake rules.
 
 Use `$aigc-film-project-auditor` when the user asks for one-click analysis of all current project steps, missing assets, aesthetic risks, or director-facing recommendations before batch generation.
+
+## Pipeline Hub Handoff Rule
+
+Only remote/autopilot packets may carry broad project context. Ordinary per-card production packets must be compact:
+
+- Analysis cards: selected targets + global/single references + revision notes + compact patch callback.
+- Image cards: selected targets + required references/continuity locks + whitebox/spatial constraints + output paths.
+- External retouch cards: source images + retouch notes + global/single references; no unrelated story context.
+- Callback payloads: image outputs or `row_updates`, with `image_analysis` and `video_prompt` when an image is returned.
 
 ## Output Standard
 

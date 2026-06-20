@@ -16,6 +16,7 @@ This document breaks the current vision into runnable tools, skills, and project
 | 镜头生产准备 / Shot production prep | Pipeline Hub 镜头表 / shot table | `07_shots/shot_list.csv` | `$aigc-film-pipeline` | shot-level task table |
 | 白模/空间 QA / Whitebox & spatial QA | 后续专用面板 / dedicated panel (planned) | `scripts/visual/qa_whitebox_images.py`, `qa_whitebox_similarity.py` | `$aigc-film-pipeline` | `06_previs/qa/` |
 | 分镜/音频/交付验证 / Storyboard, audio, delivery | 后续专用面板 / dedicated panel (planned) | `scripts/visual/build_*`, `validate_final_delivery.py` | `$aigc-film-pipeline` | `11_delivery/` |
+| 外部修图与轻量 Codex handoff / External retouch & lightweight handoff | Pipeline Hub 外部修图页 / external-retouch page | `POST /external-retouch-analysis-packet`, `POST /card-image-packet`, compact `row_updates` | `$aigc-film-pipeline` | selected target cards, references, compact callbacks |
 
 ## Current Completion / 当前完成度
 
@@ -27,6 +28,7 @@ This document breaks the current vision into runnable tools, skills, and project
 - 可按分析缺口自动补齐安全资产，并生成 Codex/image2/Blender/plugin 适配器任务 / Can autofill safe assets from gaps and generate Codex/image2/Blender/plugin adapter tasks: done
 - 可读取投币口样板并展示阶段/镜头/报告 / Can read the Coin Slot sample and show stages/shots/reports: done
 - 投币口 12 镜头标准样板批次 / Coin Slot 12-shot standard sample batch: done
+- 外部修图页、轻量解析卡、轻量生图包和 `row_updates` 回填 / External retouch page, lightweight analysis packets, lightweight image packets, and `row_updates` callback: done
 
 ## Next Expansion / 后续扩展
 
