@@ -1,0 +1,4 @@
+interface:
+  display_name: "点子发动机"
+  short_description: "每日AIGC视频选题、爆款样本分析、时长与图片量估算、风控和制作方案。"
+  default_prompt: "用点子发动机给我今天可做的AIGC视频选题，并附带样本趋势报告。"

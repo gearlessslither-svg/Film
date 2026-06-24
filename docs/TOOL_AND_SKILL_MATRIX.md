@@ -17,6 +17,7 @@ This document breaks the current vision into runnable tools, skills, and project
 | 白模/空间 QA / Whitebox & spatial QA | 后续专用面板 / dedicated panel (planned) | `scripts/visual/qa_whitebox_images.py`, `qa_whitebox_similarity.py` | `$aigc-film-pipeline` | `06_previs/qa/` |
 | 分镜/音频/交付验证 / Storyboard, audio, delivery | 后续专用面板 / dedicated panel (planned) | `scripts/visual/build_*`, `validate_final_delivery.py` | `$aigc-film-pipeline` | `11_delivery/` |
 | 外部修图与轻量 Codex handoff / External retouch & lightweight handoff | Pipeline Hub 外部修图页 / external-retouch page | `POST /external-retouch-analysis-packet`, `POST /card-image-packet`, compact `row_updates` | `$aigc-film-pipeline` | selected target cards, references, compact callbacks |
+| 每日 AIGC 选题与趋势扫描 / Daily AIGC ideation and trend scan | Codex 对话 / Codex chat | Web/search + storyboard planning | `$idea-engine` | idea cards, 10-sample trend report, duration/image budget, safe production plan |
 
 ## Current Completion / 当前完成度
 
