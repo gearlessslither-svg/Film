@@ -1,0 +1,4 @@
+interface:
+  display_name: "Film Session Relay"
+  short_description: "Prevent Codex OOM crashes; carry film projects across windows"
+  default_prompt: "Use $film-session-relay: check session size, enforce per-window budget, and write/read project handoffs so this AIGC film project survives across windows without crashing Codex."
