@@ -7146,6 +7146,31 @@ def open_project_path(slug: str, payload: dict[str, object]) -> dict[str, object
     return {"ok": True, "supported": True, "path": str(target)}
 
 
+def open_latest_idea_board_package(slug: str, payload: dict[str, object]) -> dict[str, object]:
+    path = project_path(slug)
+    scope = str(payload.get("scope", "all") or "all").strip()
+    if scope not in {"all", "act"}:
+        scope = "all"
+    act_id = str(payload.get("act_id", "") or "").strip()
+    if scope == "act" and not act_id:
+        raise ValueError("请选择一个幕再打开幕总包 / Select an act before opening an act package.")
+    scope_dir = "all" if scope == "all" else safe_file_stem(act_id)
+    package_base = path / "11_delivery" / "idea_board_packages" / safe_file_stem(slug)
+    package_roots = [package_base / scope_dir]
+    if scope == "all":
+        package_roots.append(package_base)
+    candidates = []
+    for package_root in package_roots:
+        if package_root.exists():
+            candidates.extend(item for item in package_root.iterdir() if item.is_dir() and item.name.startswith("IBP_"))
+    if not candidates:
+        raise FileNotFoundError("还没有对应总包，请先生成一次 / No matching package yet. Create one first.")
+    latest = max(candidates, key=lambda item: (item.stat().st_mtime, item.name))
+    result = open_project_path(slug, {"path": str(latest.relative_to(path))})
+    result.update({"scope": scope, "act_id": act_id, "package_dir": str(latest.relative_to(path))})
+    return result
+
+
 def blender_executable() -> str:
     candidate = shutil.which("blender")
     if candidate:
@@ -8108,6 +8133,9 @@ class PipelineHubHandler(BaseHTTPRequestHandler):
                 return
             if action == "idea-board-package":
                 send_json(self, create_idea_board_package(slug, payload))
+                return
+            if action == "open-latest-idea-board-package":
+                send_json(self, open_latest_idea_board_package(slug, payload))
                 return
             if action == "open-project-path":
                 send_json(self, open_project_path(slug, payload))

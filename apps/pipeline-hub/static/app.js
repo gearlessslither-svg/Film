@@ -6879,22 +6879,39 @@ function renderIdeaLab() {
           <li><strong>05</strong><span>Final版本进入图片页</span></li>
         </ol>
       </div>
-      <div class="idea-actions">
-        <button id="ideaBuildActsBtn" class="command-button priority" data-help="故事只有大纲时使用：让 AI 把整体故事扩展成一幕幕独立的戏，只更新幕结构和每幕故事草稿。" type="button">生成幕 / Build Acts</button>
-        <button id="ideaBuildStoryboardCardsBtn" class="command-button primary" data-help="当前幕故事内容确定后使用：只按当前幕生成一张张分镜文字卡，不改其他幕。" type="button">生成分镜卡 / Build Cards</button>
-        <button id="ideaWhiteboxBtn" class="command-button" data-help="在最终出图前锁定复杂空间、核心道具和人物关系；适合街机、并排对战、背后机位和走位复杂镜头。" type="button">生成白模 / Whitebox</button>
-        <button id="cardPreflightBtn" class="command-button" data-help="在生成图片包前检查重复编号、空提示词、缺白模、缺连续性锁和空间逻辑风险。" type="button">生成前检查 / Preflight</button>
-        <button id="cardBuildImagePacketBtn" class="command-button" data-help="把当前可见且勾选的分镜卡打包成图片生成任务。" type="button">生成图片包 / Image Pack</button>
-        <button id="currentVersionPackageBtn" class="command-button" data-help="收集当前幕/场景已标为 Final 或参考的图片，供视频生成阶段使用。" type="button">Final图包 / Final Pack</button>
-        <button id="ideaBoardPackageBtn" class="command-button" data-help="打包全项目创意区所有文字卡、图片提示词、视频提示词和已生成图片，并提供打开总包入口。" type="button">创意总包 / Idea Pack</button>
-        <button id="actBoardPackageBtn" class="command-button" data-help="只打包当前幕的文字卡、图片提示词、视频提示词和已生成图片，并提供打开幕总包入口。" type="button">幕总包 / Act Pack</button>
-        <button id="videoUploadPackageBtn" class="command-button primary" data-help="按当前幕顺序复制所有可用分镜图到上传文件夹，并生成一份可粘贴到 AIGC 视频网站的连续镜头提示词。" type="button">视频上传包 / Video Upload</button>
-        <button id="batchVersionQaBtn" class="command-button" data-help="批量检查当前可见分镜图的清晰度、噪点、曝光和对比。" type="button">批量质检 / Batch QA</button>
-        <button id="qaRepairPacketBtn" class="command-button" data-help="把低分图片整理成修复包，便于集中重生成。" type="button">低分修复包 / QA Fix</button>
-        <button id="cardSelectVisibleBtn" class="command-button" data-help="勾选当前筛选出来的分镜卡，下一步只生成这些卡。" type="button">全选当前 / Select All</button>
-        <button id="cardClearVisibleBtn" class="command-button" data-help="取消当前筛选结果的生成勾选，不删除文字卡。" type="button">清空当前 / Clear</button>
-        <button id="ideaSaveBtn" class="command-button" data-help="手动保存当前所有文字、勾选、参考图和备注。" type="button">手动保存 / Save now</button>
-        <button id="ideaAddRowBtn" class="command-button" data-help="在当前幕/场景下新增一张空白分镜文字卡。" type="button">新增条目 / Add Row</button>
+      <div class="idea-actions idea-action-groups">
+        <div class="idea-action-group">
+          <span class="idea-action-group-title">Codex处理</span>
+          <div class="idea-action-row">
+            <button id="ideaBuildActsBtn" class="command-button priority" data-help="故事只有大纲时使用：让 AI 把整体故事扩展成一幕幕独立的戏，只更新幕结构和每幕故事草稿。" type="button">生成幕 / Build Acts</button>
+            <button id="ideaBuildStoryboardCardsBtn" class="command-button primary" data-help="当前幕故事内容确定后使用：只按当前幕生成一张张分镜文字卡，不改其他幕。" type="button">生成分镜卡 / Build Cards</button>
+            <button id="ideaWhiteboxBtn" class="command-button" data-help="在最终出图前锁定复杂空间、核心道具和人物关系；适合街机、并排对战、背后机位和走位复杂镜头。" type="button">生成白模 / Whitebox</button>
+            <button id="cardPreflightBtn" class="command-button" data-help="在生成图片包前检查重复编号、空提示词、缺白模、缺连续性锁和空间逻辑风险。" type="button">生成前检查 / Preflight</button>
+            <button id="cardBuildImagePacketBtn" class="command-button" data-help="把当前可见且勾选的分镜卡打包成图片生成任务。" type="button">生成图片包 / Image Pack</button>
+          </div>
+        </div>
+        <div class="idea-action-group">
+          <span class="idea-action-group-title">整理/上传</span>
+          <div class="idea-action-row">
+            <button id="ideaBoardPackageBtn" class="command-button" data-help="打包全项目创意区所有文字卡、图片提示词、视频提示词和已生成图片，并提供打开总包入口。" type="button">生成创意总包</button>
+            <button id="openIdeaBoardPackageBtn" class="command-button" data-help="打开最近一次生成的创意总包文件夹。" type="button">打开创意总包</button>
+            <button id="actBoardPackageBtn" class="command-button" data-help="只打包当前幕的文字卡、图片提示词、视频提示词和已生成图片，并提供打开幕总包入口。" type="button">生成幕总包</button>
+            <button id="openActBoardPackageBtn" class="command-button" data-help="打开当前幕最近一次生成的幕总包文件夹。" type="button">打开幕总包</button>
+            <button id="currentVersionPackageBtn" class="command-button" data-help="收集当前幕/场景已标为 Final 或参考的图片，供视频生成阶段使用。" type="button">Final图包 / Final Pack</button>
+            <button id="videoUploadPackageBtn" class="command-button primary" data-help="按当前幕顺序复制所有可用分镜图到上传文件夹，并生成一份可粘贴到 AIGC 视频网站的连续镜头提示词。" type="button">视频上传包 / Video Upload</button>
+          </div>
+        </div>
+        <div class="idea-action-group compact">
+          <span class="idea-action-group-title">维护</span>
+          <div class="idea-action-row">
+            <button id="batchVersionQaBtn" class="command-button" data-help="批量检查当前可见分镜图的清晰度、噪点、曝光和对比。" type="button">批量质检 / Batch QA</button>
+            <button id="qaRepairPacketBtn" class="command-button" data-help="把低分图片整理成修复包，便于集中重生成。" type="button">低分修复包 / QA Fix</button>
+            <button id="cardSelectVisibleBtn" class="command-button" data-help="勾选当前筛选出来的分镜卡，下一步只生成这些卡。" type="button">全选当前 / Select All</button>
+            <button id="cardClearVisibleBtn" class="command-button" data-help="取消当前筛选结果的生成勾选，不删除文字卡。" type="button">清空当前 / Clear</button>
+            <button id="ideaSaveBtn" class="command-button" data-help="手动保存当前所有文字、勾选、参考图和备注。" type="button">手动保存 / Save now</button>
+            <button id="ideaAddRowBtn" class="command-button" data-help="在当前幕/场景下新增一张空白分镜文字卡。" type="button">新增条目 / Add Row</button>
+          </div>
+        </div>
       </div>
     </div>
     <div class="idea-layout">
@@ -8264,6 +8281,36 @@ async function createActBoardPackage() {
   await createIdeaBoardPackageForScope("act");
 }
 
+async function openLatestIdeaBoardPackageForScope(scope) {
+  if (!state.selectedSlug || !state.detail) return;
+  const isActPackage = scope === "act";
+  const board = collectIdeaBoardFromDom();
+  const actId = activeStoryActId() || board.acts?.[0]?.act_id || "";
+  if (isActPackage && !actId) {
+    toast("没有当前幕可打开 / No current act to open");
+    return;
+  }
+  await runAction(isActPackage ? "打开幕总包 / Open act package" : "打开创意总包 / Open idea package", async () => {
+    try {
+      const result = await requestJson(`/api/projects/${state.selectedSlug}/open-latest-idea-board-package`, {
+        method: "POST",
+        body: JSON.stringify(isActPackage ? { scope: "act", act_id: actId } : { scope: "all" }),
+      });
+      toast(`已打开${isActPackage ? "幕总包" : "创意总包"} / Opened package · ${result.package_dir || ""}`);
+    } catch (error) {
+      toast(error?.message || "还没有对应总包，请先生成一次 / Create the package first");
+    }
+  });
+}
+
+async function openLatestIdeaBoardPackage() {
+  await openLatestIdeaBoardPackageForScope("all");
+}
+
+async function openLatestActBoardPackage() {
+  await openLatestIdeaBoardPackageForScope("act");
+}
+
 function setVisibleCardSelection(checked) {
   if (isProjectBibleSelected()) {
     document.querySelectorAll('.project-bible-card [data-bible-field="image_selected"]').forEach((input) => {
@@ -8587,7 +8634,9 @@ function bindIdeaLabEvents() {
   $("cardBuildImagePacketBtn")?.addEventListener("click", () => createCardImagePacket());
   $("currentVersionPackageBtn")?.addEventListener("click", createCurrentVersionPackage);
   $("ideaBoardPackageBtn")?.addEventListener("click", createIdeaBoardPackage);
+  $("openIdeaBoardPackageBtn")?.addEventListener("click", openLatestIdeaBoardPackage);
   $("actBoardPackageBtn")?.addEventListener("click", createActBoardPackage);
+  $("openActBoardPackageBtn")?.addEventListener("click", openLatestActBoardPackage);
   $("videoUploadPackageBtn")?.addEventListener("click", createVideoUploadPackage);
   $("batchVersionQaBtn")?.addEventListener("click", runVisibleCardVersionQa);
   $("qaRepairPacketBtn")?.addEventListener("click", createQaRepairPacket);
