@@ -25,6 +25,8 @@ from urllib.parse import parse_qs, quote, unquote, urlparse
 APP_ROOT = Path(__file__).resolve().parent
 REPO_ROOT = APP_ROOT.parents[1]
 PROJECTS_ROOT = REPO_ROOT / "projects"
+RECYCLE_BIN_ROOT = PROJECTS_ROOT / "_recycle_bin"
+DAILY_IDEAS_ROOT = PROJECTS_ROOT / "_daily_ideas"
 SCRIPTS_ROOT = REPO_ROOT / "scripts"
 STATIC_ROOT = APP_ROOT / "static"
 
@@ -41,6 +43,8 @@ except Exception:  # pragma: no cover - server can still run read-only without Y
 
 
 SLUG_RE = re.compile(r"^[a-z0-9][a-z0-9-]{0,63}$")
+RECYCLE_NAME_RE = re.compile(r"^[a-z0-9][a-z0-9._-]{0,127}$")
+DAILY_DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 TEXT_PREVIEW_EXTENSIONS = {".md", ".txt", ".csv", ".json", ".yaml", ".yml", ".srt"}
 IMAGE_PREVIEW_EXTENSIONS = {".png", ".jpg", ".jpeg", ".webp", ".gif"}
 MEDIA_PREVIEW_EXTENSIONS = IMAGE_PREVIEW_EXTENSIONS | {".mp4", ".webm", ".mp3", ".wav", ".ogg"}
@@ -234,6 +238,19 @@ def project_path(slug: str) -> Path:
     path = (PROJECTS_ROOT / slug).resolve()
     if PROJECTS_ROOT.resolve() not in path.parents and path != PROJECTS_ROOT.resolve():
         raise ValueError("项目路径越界 / Project path escaped projects root.")
+    return path
+
+
+def validate_recycle_name(name: str) -> None:
+    if not RECYCLE_NAME_RE.fullmatch(name):
+        raise ValueError("回收站项目名无效 / Invalid recycled project name.")
+
+
+def recycled_project_path(name: str) -> Path:
+    validate_recycle_name(name)
+    path = (RECYCLE_BIN_ROOT / name).resolve()
+    if RECYCLE_BIN_ROOT.resolve() not in path.parents and path != RECYCLE_BIN_ROOT.resolve():
+        raise ValueError("回收站路径越界 / Recycle-bin path escaped root.")
     return path
 
 
@@ -1906,7 +1923,7 @@ def list_projects() -> list[dict[str, object]]:
         return []
     projects = []
     for path in sorted(PROJECTS_ROOT.iterdir()):
-        if not path.is_dir() or path.name == "_template":
+        if not path.is_dir() or path.name.startswith("_"):
             continue
         if not (path / "project.yaml").exists():
             continue
@@ -1927,6 +1944,114 @@ def list_projects() -> list[dict[str, object]]:
             }
         )
     return projects
+
+
+def recycle_meta_path(path: Path) -> Path:
+    return path / "00_admin" / "recycle_meta.json"
+
+
+def load_recycle_meta(path: Path) -> dict[str, object]:
+    target = recycle_meta_path(path)
+    if not target.exists():
+        return {}
+    try:
+        data = json.loads(target.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return {}
+    return data if isinstance(data, dict) else {}
+
+
+def write_recycle_meta(path: Path, data: dict[str, object]) -> None:
+    target = recycle_meta_path(path)
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text(json.dumps(data, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+
+def remove_recycle_meta(path: Path) -> None:
+    target = recycle_meta_path(path)
+    if target.exists():
+        target.unlink()
+
+
+def fallback_recycled_slug(name: str) -> str:
+    return name.split("__", 1)[0]
+
+
+def summarize_recycled_project(path: Path) -> dict[str, object]:
+    meta = load_recycle_meta(path)
+    manifest = load_manifest(path)
+    original_slug = str(meta.get("original_slug") or manifest_project_value(manifest, "slug") or fallback_recycled_slug(path.name))
+    name = str(meta.get("project_name") or manifest_project_value(manifest, "name") or original_slug or path.name)
+    return {
+        "trash_name": path.name,
+        "slug": original_slug,
+        "name": name,
+        "path": str(path),
+        "recycled_at": str(meta.get("recycled_at") or ""),
+        "original_path": str(meta.get("original_path") or ""),
+    }
+
+
+def list_recycled_projects() -> list[dict[str, object]]:
+    if not RECYCLE_BIN_ROOT.exists():
+        return []
+    projects = []
+    for path in sorted(RECYCLE_BIN_ROOT.iterdir()):
+        if not path.is_dir() or not (path / "project.yaml").exists():
+            continue
+        projects.append(summarize_recycled_project(path))
+    projects.sort(key=lambda item: str(item.get("recycled_at") or ""), reverse=True)
+    return projects
+
+
+def unique_recycle_target(slug: str) -> Path:
+    target = RECYCLE_BIN_ROOT / slug
+    if not target.exists():
+        return target
+    stamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    candidate = RECYCLE_BIN_ROOT / f"{slug}__{stamp}"
+    index = 2
+    while candidate.exists():
+        candidate = RECYCLE_BIN_ROOT / f"{slug}__{stamp}_{index}"
+        index += 1
+    return candidate
+
+
+def recycle_project(slug: str) -> dict[str, object]:
+    path = project_path(slug)
+    if not path.is_dir() or not (path / "project.yaml").exists():
+        raise FileNotFoundError("项目不存在 / Project does not exist.")
+    manifest = load_manifest(path)
+    RECYCLE_BIN_ROOT.mkdir(parents=True, exist_ok=True)
+    target = unique_recycle_target(slug)
+    shutil.move(str(path), str(target))
+    write_recycle_meta(
+        target,
+        {
+            "schema_version": 1,
+            "original_slug": slug,
+            "project_name": manifest_project_value(manifest, "name") or slug,
+            "original_path": str(path),
+            "trash_name": target.name,
+            "recycled_at": now_iso(),
+        },
+    )
+    return {"ok": True, "project": summarize_recycled_project(target), "projects": list_projects(), "recycled_projects": list_recycled_projects()}
+
+
+def restore_recycled_project(name: str) -> dict[str, object]:
+    source = recycled_project_path(name)
+    if not source.is_dir() or not (source / "project.yaml").exists():
+        raise FileNotFoundError("回收站里没有这个项目 / Recycled project does not exist.")
+    meta = load_recycle_meta(source)
+    slug = str(meta.get("original_slug") or fallback_recycled_slug(source.name)).strip()
+    validate_slug(slug)
+    target = project_path(slug)
+    if target.exists():
+        raise FileExistsError("同名项目已经存在，不能覆盖恢复 / A project with this slug already exists.")
+    shutil.move(str(source), str(target))
+    remove_recycle_meta(target)
+    return {"ok": True, "project": project_detail(slug), "projects": list_projects(), "recycled_projects": list_recycled_projects()}
 
 
 def create_project(payload: dict[str, object]) -> dict[str, object]:
@@ -1972,6 +2097,373 @@ def update_project_links(slug: str, payload: dict[str, object]) -> dict[str, obj
         encoding="utf-8",
     )
     return project_detail(slug)
+
+
+def local_date_string() -> str:
+    return datetime.now().astimezone().strftime("%Y-%m-%d")
+
+
+def validate_daily_date(value: str) -> str:
+    date_text = str(value or "").strip()
+    if date_text == "today":
+        return local_date_string()
+    if not DAILY_DATE_RE.fullmatch(date_text):
+        raise ValueError("日期格式必须是 YYYY-MM-DD / Date must be YYYY-MM-DD.")
+    try:
+        datetime.strptime(date_text, "%Y-%m-%d")
+    except ValueError as exc:
+        raise ValueError("日期不存在 / Invalid date.") from exc
+    return date_text
+
+
+def daily_idea_slug(date_text: str) -> str:
+    return f"daily-ideas-{date_text}"
+
+
+def daily_idea_path(date_text: str) -> Path:
+    return DAILY_IDEAS_ROOT / validate_daily_date(date_text)
+
+
+def daily_asset_url(date_text: str, rel_path: str) -> str:
+    return f"/api/daily-ideas/{quote(date_text)}/asset?path={quote(rel_path)}"
+
+
+def default_daily_idea_board(date_text: str) -> dict[str, object]:
+    return {
+        "schema_version": 1,
+        "project_slug": daily_idea_slug(date_text),
+        "updated_at": now_iso(),
+        "idea": "每日灵感池：热点观察、AIGC 可生成转译、首帧图和视频提示词。",
+        "story_title": f"{date_text} 每日灵感",
+        "logline": "把当天适合中国受众的热点/情绪/视觉趋势，转成可直接生图和图生视频的短片卡。",
+        "story_outline": "按日期保存。每条灵感卡包含热点标题、观众钩子、图片提示词、AIGC 视频提示词、风险备注和输出图片路径。",
+        "style_notes": (
+            "优先选择适合 AIGC 的强视觉反差、时代错位、民俗/都市传说/怀旧/梦核/类型混搭；"
+            "避免真实名人肖像、品牌 logo、精确版权角色、可读文字和高风险题材。"
+        ),
+        "act_inputs": {
+            "HOT": {
+                "story_title": f"{date_text} 十个热点灵感",
+                "logline": "当天热点/情绪转译成十个 AIGC 短视频方向。",
+                "idea": "一次生成十个候选，每个候选直接带首帧图提示词、图生视频提示词和风险备注。",
+            }
+        },
+        "acts": [
+            {
+                "act_id": "HOT",
+                "title": "今日热点灵感 / Today's Hot Ideas",
+                "summary": "10个当天热点/情绪/视觉趋势转译。",
+                "dramatic_purpose": "快速筛选当天可以制作成 AIGC 视频的题材。",
+                "key_beats": "热点、钩子、AIGC优势、首帧、视频运动、风险规避。",
+                "status": "draft",
+            }
+        ],
+        "project_bible": [],
+        "global_references": [],
+        "rows": [],
+        "completed_handoff_ids": [],
+    }
+
+
+def ensure_daily_idea_project(date_text: str) -> Path:
+    date_text = validate_daily_date(date_text)
+    path = daily_idea_path(date_text)
+    if not path.exists():
+        for stage_id, _description in STAGES:
+            (path / stage_id).mkdir(parents=True, exist_ok=True)
+        manifest_text = "\n".join(
+            [
+                "project:",
+                f"  name: {date_text} 每日灵感 / Daily Ideas",
+                f"  slug: {daily_idea_slug(date_text)}",
+                "  status: daily_ideas",
+                f"  created_at: {now_iso()}",
+                "  source_root: ''",
+                "  resource_root: ''",
+                "",
+            ]
+        )
+        (path / "project.yaml").write_text(manifest_text, encoding="utf-8")
+    else:
+        for stage_id, _description in STAGES:
+            (path / stage_id).mkdir(parents=True, exist_ok=True)
+    board_path = idea_board_path(path)
+    if not board_path.exists():
+        write_idea_board_files(path, default_daily_idea_board(date_text))
+    return path
+
+
+def daily_idea_assets(date_text: str, path: Path, board: dict[str, object]) -> list[dict[str, object]]:
+    assets: list[dict[str, object]] = []
+    for row in board.get("rows", []):
+        if not isinstance(row, dict):
+            continue
+        rel_path = str(row.get("output_path", "") or "").strip()
+        if not rel_path:
+            continue
+        try:
+            normalized = normalize_project_rel_path(rel_path)
+        except ValueError:
+            continue
+        target = (path / normalized).resolve()
+        if not target.exists() or not target.is_file():
+            continue
+        assets.append(
+            {
+                "item_id": row.get("item_id", ""),
+                "beat": row.get("beat", ""),
+                "path": normalized,
+                "name": target.name,
+                "url": daily_asset_url(date_text, normalized),
+                "previewable": target.suffix.lower() in IMAGE_PREVIEW_EXTENSIONS,
+                "kind": "image",
+            }
+        )
+    return assets
+
+
+def summarize_daily_idea(date_text: str, *, ensure: bool = False) -> dict[str, object]:
+    date_text = validate_daily_date(date_text)
+    path = ensure_daily_idea_project(date_text) if ensure else daily_idea_path(date_text)
+    if not path.exists():
+        return {
+            "date": date_text,
+            "slug": daily_idea_slug(date_text),
+            "name": f"{date_text} 每日灵感",
+            "path": str(path),
+            "row_count": 0,
+            "image_count": 0,
+            "updated_at": "",
+            "exists": False,
+        }
+    board = load_idea_board(path, daily_idea_slug(date_text))
+    rows = [row for row in board.get("rows", []) if isinstance(row, dict)]
+    image_count = sum(1 for row in rows if str(row.get("output_path", "") or "").strip())
+    return {
+        "date": date_text,
+        "slug": daily_idea_slug(date_text),
+        "name": f"{date_text} 每日灵感",
+        "path": str(path),
+        "row_count": len(rows),
+        "image_count": image_count,
+        "updated_at": str(board.get("updated_at", "") or ""),
+        "exists": True,
+    }
+
+
+def list_daily_ideas() -> list[dict[str, object]]:
+    if not DAILY_IDEAS_ROOT.exists():
+        return []
+    items: list[dict[str, object]] = []
+    for path in sorted(DAILY_IDEAS_ROOT.iterdir(), reverse=True):
+        if not path.is_dir() or not DAILY_DATE_RE.fullmatch(path.name):
+            continue
+        items.append(summarize_daily_idea(path.name))
+    return items
+
+
+def daily_idea_detail(date_text: str, *, ensure: bool = True) -> dict[str, object]:
+    date_text = validate_daily_date(date_text)
+    path = ensure_daily_idea_project(date_text) if ensure else daily_idea_path(date_text)
+    board = load_idea_board(path, daily_idea_slug(date_text))
+    assets = daily_idea_assets(date_text, path, board)
+    summary = summarize_daily_idea(date_text, ensure=True)
+    return {
+        **summary,
+        "idea_board": board,
+        "assets": assets,
+        "calendar_dates": [item["date"] for item in list_daily_ideas() if item.get("row_count") or item.get("image_count")],
+    }
+
+
+def update_daily_idea_board(date_text: str, payload: dict[str, object]) -> dict[str, object]:
+    date_text = validate_daily_date(date_text)
+    path = ensure_daily_idea_project(date_text)
+    existing = load_idea_board(path, daily_idea_slug(date_text))
+    if isinstance(payload.get("row_updates"), list):
+        updated_rows = apply_idea_board_row_updates(existing, payload.get("row_updates", []))
+        board = normalize_idea_board(daily_idea_slug(date_text), existing)
+        merge_completed_handoff_ids(board, payload)
+        write_idea_board_files(path, board)
+        return {"ok": True, "updated_rows": updated_rows, "daily_idea": daily_idea_detail(date_text)}
+    merged = {**existing, **payload}
+    for key in ("act_inputs", "acts", "project_bible", "global_references", "rows", "completed_handoff_ids"):
+        if key not in payload:
+            merged[key] = existing.get(key, {} if key == "act_inputs" else [])
+    board = normalize_idea_board(daily_idea_slug(date_text), merged)
+    merge_completed_handoff_ids(board, payload)
+    write_idea_board_files(path, board)
+    return {"ok": True, "daily_idea": daily_idea_detail(date_text)}
+
+
+def merge_daily_idea_rows(date_text: str, payload: dict[str, object]) -> dict[str, object]:
+    date_text = validate_daily_date(date_text)
+    path = ensure_daily_idea_project(date_text)
+    existing = load_idea_board(path, daily_idea_slug(date_text))
+    incoming_rows = payload.get("rows", [])
+    if isinstance(payload.get("board"), dict):
+        board_payload = payload["board"]
+        incoming_rows = board_payload.get("rows", incoming_rows) if isinstance(board_payload, dict) else incoming_rows
+        for key in ("idea", "story_title", "logline", "story_outline", "style_notes", "act_inputs", "acts", "project_bible", "global_references"):
+            if isinstance(board_payload, dict) and key in board_payload:
+                existing[key] = board_payload[key]
+    if not isinstance(incoming_rows, list):
+        incoming_rows = []
+    rows = existing.get("rows", [])
+    if not isinstance(rows, list):
+        rows = []
+    row_by_id = {safe_file_stem(row.get("item_id", "") or ""): index for index, row in enumerate(rows) if isinstance(row, dict)}
+    merged_count = 0
+    appended_count = 0
+    for row in incoming_rows:
+        if not isinstance(row, dict):
+            continue
+        item_id = safe_file_stem(row.get("item_id", "") or "")
+        if not item_id:
+            continue
+        if item_id in row_by_id:
+            rows[row_by_id[item_id]] = {**rows[row_by_id[item_id]], **row}
+            merged_count += 1
+        else:
+            rows.append(row)
+            row_by_id[item_id] = len(rows) - 1
+            appended_count += 1
+    existing["rows"] = rows
+    merge_completed_handoff_ids(existing, payload)
+    board = normalize_idea_board(daily_idea_slug(date_text), existing)
+    write_idea_board_files(path, board)
+    return {
+        "ok": True,
+        "merged_count": merged_count,
+        "appended_count": appended_count,
+        "daily_idea": daily_idea_detail(date_text),
+    }
+
+
+def create_daily_idea_handoff(date_text: str, payload: dict[str, object]) -> dict[str, object]:
+    date_text = validate_daily_date(date_text)
+    ensure_daily_idea_project(date_text)
+    topic_count = max(1, min(12, int(payload.get("count", 10) or 10)))
+    seed = str(payload.get("seed", "") or "").strip()
+    callback_url = f"http://127.0.0.1:8787/api/daily-ideas/{date_text}/hotspot-output"
+    output_dir = f"08_generation/jobs/DAILY_{date_text.replace('-', '')}_HOTSPOTS/outputs"
+    text = "\n".join(
+        [
+            "# Codex Daily Inspiration Handoff / 每日灵感生产卡",
+            "",
+            f"- target_date: {date_text}",
+            f"- target_count: {topic_count}",
+            f"- callback_url: {callback_url}",
+            f"- suggested_output_dir: {output_dir}",
+            "",
+            "## 任务 / Task",
+            f"请为 {date_text} 生成 {topic_count} 个适合中国受众、适合 AIGC 图生视频的今日热点/情绪/视觉趋势灵感。",
+            "每个灵感必须直接产出：标题/钩子、为什么可能有人看、AIGC 视觉优势、首帧图片提示词、AIGC 图生视频提示词、风险规避说明。",
+            "然后为每个灵感生成 1 张首帧图，保存到 suggested_output_dir，并把相对路径写入 output_path 后回填。",
+            "",
+            "## 用户补充 / User Seed",
+            seed or "优先考虑今日热点、公共情绪、怀旧/民俗/梦核/类型混搭和适合短视频传播的视觉反差。",
+            "",
+            "## 生成规则 / Rules",
+            "- 必须先联网核对当天信息；回答或回填中保留 observation_time 和可公开来源摘要。",
+            "- 避免真实名人肖像、品牌 logo、精确版权角色、可读文字、政治谣言、血腥、露骨性内容和高风险模仿。",
+            "- 图片提示词必须是可直接生图的首帧描述，不要只是概念名。",
+            "- 视频提示词必须写清主体运动、镜头运动、场景变化、结尾过渡和负面约束。",
+            "- 图片文件名建议 001_DAILY_HOT_001.png 这种稳定编号；不要把编号画进图片。",
+            "- 回填只传路径和结构化文本，不要传 base64。",
+            "",
+            "## Callback JSON shape / 回填 JSON",
+            "POST 回调时发送：",
+            "```json",
+            json.dumps(
+                {
+                    "completed_handoff_id": "__IDEA_HANDOFF_ID__",
+                    "board": {
+                        "story_title": f"{date_text} 每日灵感",
+                        "logline": "今日热点转译成 AIGC 短视频候选。",
+                        "story_outline": "10个热点灵感卡，每张含首帧图和图生视频提示词。",
+                        "style_notes": "安全转译热点，不复制真人/IP/logo；强化AIGC视觉优势。",
+                    },
+                    "rows": [
+                        {
+                            "item_id": "DAILY_HOT_001",
+                            "act_id": "HOT",
+                            "scene_id": f"DAILY_{date_text.replace('-', '')}",
+                            "beat": "标题 / hook",
+                            "shot_type": "daily AIGC idea keyframe",
+                            "frame_description": "首帧画面描述",
+                            "image_prompt": "可直接生图的完整提示词",
+                            "video_prompt": "可直接给视频网站的图生视频提示词",
+                            "notes": "热点来源摘要、受众理由、风险规避、feasibility",
+                            "status": "image_ready",
+                            "output_path": f"{output_dir}/001_DAILY_HOT_001.png",
+                            "references": [],
+                        }
+                    ],
+                },
+                ensure_ascii=False,
+                indent=2,
+            ),
+            "```",
+        ]
+    )
+    return {
+        "ok": True,
+        "date": date_text,
+        "title": f"{date_text} · {topic_count} 个今日灵感生产卡",
+        "handoff_text": text,
+        "callback_url": callback_url,
+        "output_dir": output_dir,
+        "daily_idea": daily_idea_detail(date_text),
+    }
+
+
+def send_daily_asset(handler: BaseHTTPRequestHandler, date_text: str, query: str) -> None:
+    date_text = validate_daily_date(date_text)
+    path = ensure_daily_idea_project(date_text).resolve()
+    params = parse_qs(query)
+    rel_path = normalize_project_rel_path(params.get("path", [""])[0])
+    target = (path / rel_path).resolve()
+    try:
+        target.relative_to(path)
+    except ValueError as exc:
+        raise ValueError("资源路径必须在日期项目内 / Asset path must stay inside the daily idea project.") from exc
+    if not target.exists() or not target.is_file():
+        send_text(handler, "资源不存在 / Asset not found", status=404)
+        return
+    content_type = mimetypes.guess_type(target.name)[0] or "application/octet-stream"
+    data = target.read_bytes()
+    handler.send_response(200)
+    handler.send_header("Content-Type", content_type)
+    handler.send_header("Content-Length", str(len(data)))
+    handler.end_headers()
+    handler.wfile.write(data)
+
+
+def open_daily_idea_path(date_text: str, payload: dict[str, object]) -> dict[str, object]:
+    date_text = validate_daily_date(date_text)
+    root = ensure_daily_idea_project(date_text).resolve()
+    raw_path = str(payload.get("path", "") or "").strip() or "."
+    candidate = Path(raw_path).expanduser()
+    target = candidate.resolve() if candidate.is_absolute() else (root / candidate).resolve()
+    try:
+        target.relative_to(root)
+    except ValueError as exc:
+        raise ValueError("只能打开当前日期灵感项目内的位置 / Can only open paths inside this daily idea.") from exc
+    if not target.exists():
+        raise ValueError("位置不存在 / Path does not exist.")
+    if target.is_file():
+        target = target.parent
+    if sys.platform == "darwin":
+        command = ["open", str(target)]
+    elif sys.platform.startswith("linux") and shutil.which("xdg-open"):
+        command = ["xdg-open", str(target)]
+    elif sys.platform.startswith("win"):
+        command = ["cmd", "/c", "start", "", str(target)]
+    else:
+        return {"ok": False, "supported": False, "path": str(target), "error": "当前系统不支持自动打开文件夹。"}
+    subprocess.Popen(command, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    return {"ok": True, "supported": True, "path": str(target)}
 
 
 def idea_board_path(path: Path) -> Path:
@@ -6195,6 +6687,438 @@ def create_current_version_package(slug: str, payload: dict[str, object]) -> dic
     }
 
 
+def first_story_act_id(board: dict[str, object]) -> str:
+    acts = board.get("acts", [])
+    if isinstance(acts, list):
+        for act in acts:
+            if isinstance(act, dict):
+                act_id = str(act.get("act_id", "") or "").strip()
+                if act_id:
+                    return act_id
+    for row in board.get("rows", []):
+        if isinstance(row, dict):
+            act_id = str(row.get("act_id", "") or "").strip()
+            if act_id:
+                return act_id
+    return ""
+
+
+def act_record_for_id(board: dict[str, object], act_id: str) -> dict[str, object]:
+    for act in board.get("acts", []):
+        if isinstance(act, dict) and str(act.get("act_id", "") or "") == act_id:
+            return act
+    return {}
+
+
+def video_upload_rows_for_act(board: dict[str, object], act_id: str) -> list[dict[str, object]]:
+    rows = []
+    for row in board.get("rows", []):
+        if not isinstance(row, dict):
+            continue
+        row_act = str(row.get("act_id", "") or "").strip()
+        if act_id and row_act != act_id:
+            continue
+        if row_act == "EXT_RETOUCH":
+            continue
+        rows.append(row)
+    return rows
+
+
+def best_video_upload_version(row: dict[str, object]) -> dict[str, object]:
+    priority = {"final": 0, "current": 1, "reference": 2, "candidate": 3}
+    versions = [version for version in version_entries_for_output(row, "output_path") if version.get("output_path")]
+    versions.sort(key=lambda version: (priority.get(str(version.get("status", "") or ""), 9), str(version.get("version_id", "") or "")))
+    return versions[0] if versions else {}
+
+
+def compact_prompt_text(text: str, max_parts: int = 6) -> str:
+    pieces = [
+        re.sub(r"\s+", " ", part).strip(" ;,，。")
+        for part in re.split(r"[。\n;；]+", str(text or ""))
+        if re.sub(r"\s+", " ", part).strip(" ;,，。")
+    ]
+    seen: set[str] = set()
+    compact: list[str] = []
+    for piece in pieces:
+        key = piece.lower()
+        if key in seen:
+            continue
+        seen.add(key)
+        compact.append(piece)
+        if len(compact) >= max_parts:
+            break
+    return "；".join(compact)
+
+
+def act_continuity_brief(board: dict[str, object], act: dict[str, object], act_id: str) -> str:
+    act_input = board.get("act_inputs", {}).get(act_id, {}) if isinstance(board.get("act_inputs"), dict) else {}
+    raw = " ".join(
+        str(value or "").strip()
+        for value in (
+            board.get("style_notes", ""),
+            act.get("title", ""),
+            act.get("summary", ""),
+            act.get("dramatic_purpose", ""),
+            act.get("key_beats", ""),
+            act_input.get("idea", "") if isinstance(act_input, dict) else "",
+        )
+        if str(value or "").strip()
+    )
+    compact = compact_prompt_text(raw, max_parts=5)
+    return compact or "保持本幕统一人物身份、服装、空间方向、光线、色彩和情绪节奏；镜头之间自然承接，不突然换景。"
+
+
+def optimized_video_upload_prompt(
+    row: dict[str, object],
+    version: dict[str, object],
+    continuity: str,
+    previous_row: dict[str, object] | None,
+    next_row: dict[str, object] | None,
+) -> str:
+    base = str(version.get("video_prompt") or row.get("video_prompt") or "").strip()
+    frame = str(row.get("frame_description") or row.get("beat") or "").strip()
+    spatial = str(row.get("spatial_logic") or "").strip()
+    shot_type = str(row.get("shot_type") or "").strip()
+    prev_hint = str((previous_row or {}).get("beat") or (previous_row or {}).get("frame_description") or "").strip()
+    next_hint = str((next_row or {}).get("beat") or (next_row or {}).get("frame_description") or "").strip()
+    core = compact_prompt_text("。".join(part for part in (base, frame, spatial) if part), max_parts=5)
+    lines = [
+        f"图生视频，使用上传的当前图片作为唯一首帧参考。{core or frame}",
+        f"本幕连续性：{continuity}",
+        "镜头运动：稳定、克制、自然呼吸感；不要突然推拉摇晃，不要改变主体身份、服装、年龄、五官和场景结构。",
+        "画面约束：保持原图构图、景别、光线方向、色彩气质；不要生成字幕、歌词、logo、水印、额外文字。",
+    ]
+    if shot_type:
+        lines.insert(1, f"镜头类型：{shot_type}。")
+    if prev_hint:
+        lines.append(f"与上一镜承接：情绪和运动从“{prev_hint}”自然延续。")
+    if next_hint:
+        lines.append(f"向下一镜过渡：结尾为“{next_hint}”保留方向、视线或光线动势。")
+    return "\n".join(lines)
+
+
+def build_video_upload_package_text(package: dict[str, object]) -> str:
+    items = package.get("items", [])
+    missing = package.get("missing", [])
+    lines = [
+        f"# {package.get('act_id', '')} 视频上传包 / Video Upload Package",
+        "",
+        "用途：把本幕图片按顺序上传到 AIGC 视频网站，然后粘贴本包提示词。",
+        "注意：浏览器通常不能稳定地一次复制多张本地图片到另一个网站；本包已把图片复制到 images 文件夹并按 001、002、003 编号。",
+        "",
+        "## 全幕统一提示 / Act Continuity",
+        str(package.get("continuity", "")),
+        "",
+        "## 图片上传顺序 / Image Upload Order",
+    ]
+    if items:
+        for item in items:
+            lines.append(f"{item.get('index', 0):03d}. {item.get('image_file', '')}  |  {item.get('item_id', '')}  |  {item.get('beat', '')}")
+    else:
+        lines.append("- No ready images.")
+    if missing:
+        lines.extend(["", "## 缺图 / Missing Images"])
+        for item in missing:
+            lines.append(f"- {item.get('item_id', '')} {item.get('beat', '')}: {item.get('reason', '')}")
+    lines.extend(["", "## 逐镜头提示词 / Per-Shot Prompts"])
+    for item in items:
+        lines.extend(
+            [
+                "",
+                f"### {item.get('index', 0):03d}. {item.get('item_id', '')} · {item.get('beat', '')}",
+                f"图片文件 / Image file: {item.get('image_file', '')}",
+                f"原始路径 / Source path: {item.get('source_path', '')}",
+                "",
+                str(item.get("prompt", "")).strip(),
+            ]
+        )
+    return "\n".join(lines).rstrip() + "\n"
+
+
+def create_video_upload_package(slug: str, payload: dict[str, object]) -> dict[str, object]:
+    path = project_path(slug)
+    board = load_idea_board(path, slug)
+    act_id = str(payload.get("act_id", "") or "").strip() or first_story_act_id(board)
+    if not act_id:
+        raise ValueError("没有可打包的幕 / No act available for packaging.")
+    act = act_record_for_id(board, act_id)
+    rows = video_upload_rows_for_act(board, act_id)
+    continuity = act_continuity_brief(board, act, act_id)
+    package_id = f"VUP_{act_id}_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+    project_dir = safe_file_stem(slug)
+    act_dir = safe_file_stem(act_id)
+    package_rel_dir = Path("11_delivery") / "video_upload_packages" / project_dir / act_dir / package_id
+    package_dir = path / package_rel_dir
+    images_dir = package_dir / "images"
+    images_dir.mkdir(parents=True, exist_ok=True)
+    items: list[dict[str, object]] = []
+    missing: list[dict[str, object]] = []
+    for row_index, row in enumerate(rows):
+        version = best_video_upload_version(row)
+        output_path = str(version.get("output_path", "") or row.get("output_path", "") or "").strip()
+        source = path / output_path if output_path else None
+        if not output_path or source is None or not source.exists() or not source.is_file():
+            missing.append(
+                {
+                    "item_id": row.get("item_id", ""),
+                    "beat": row.get("beat", ""),
+                    "reason": "缺少可用输出图 / Missing output image",
+                    "source_path": output_path,
+                }
+            )
+            continue
+        index = len(items) + 1
+        suffix = source.suffix or ".png"
+        image_name = f"{index:03d}_{safe_file_stem(row.get('item_id') or source.stem)}{suffix}"
+        target = images_dir / image_name
+        shutil.copy2(source, target)
+        previous_row = rows[row_index - 1] if row_index > 0 else None
+        next_row = rows[row_index + 1] if row_index + 1 < len(rows) else None
+        items.append(
+            {
+                "index": index,
+                "item_id": row.get("item_id", ""),
+                "beat": row.get("beat", ""),
+                "scene_id": row.get("scene_id", ""),
+                "shot_type": row.get("shot_type", ""),
+                "image_file": image_name,
+                "package_image_path": str((Path("images") / image_name).as_posix()),
+                "package_image_absolute_path": str(target),
+                "source_path": output_path,
+                "source_absolute_path": str(source),
+                "browser_url": asset_url(slug, "project", output_path),
+                "version_id": version.get("version_id", ""),
+                "version_status": version.get("status", ""),
+                "prompt": optimized_video_upload_prompt(row, version, continuity, previous_row, next_row),
+            }
+        )
+    package: dict[str, object] = {
+        "schema_version": 1,
+        "project_slug": slug,
+        "project_root": str(path),
+        "package_id": package_id,
+        "act_id": act_id,
+        "act_title": act.get("title", ""),
+        "created_at": now_iso(),
+        "package_dir": str(package_rel_dir),
+        "package_absolute_dir": str(package_dir),
+        "images_dir": str(package_rel_dir / "images"),
+        "images_absolute_dir": str(images_dir),
+        "image_package_dir": str(package_rel_dir / "images"),
+        "image_package_absolute_dir": str(images_dir),
+        "continuity": continuity,
+        "items": items,
+        "missing": missing,
+    }
+    text = build_video_upload_package_text(package)
+    json_rel_path = package_rel_dir / f"{package_id}.json"
+    text_rel_path = package_rel_dir / f"{package_id}.txt"
+    (path / json_rel_path).write_text(json.dumps(package, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    (path / text_rel_path).write_text(text, encoding="utf-8")
+    return {
+        "ok": True,
+        "package_id": package_id,
+        "act_id": act_id,
+        "act_title": act.get("title", ""),
+        "package_path": str(text_rel_path),
+        "package_absolute_path": str(path / text_rel_path),
+        "package_dir": str(package_rel_dir),
+        "package_absolute_dir": str(package_dir),
+        "images_dir": str(package_rel_dir / "images"),
+        "images_absolute_dir": str(images_dir),
+        "image_package_dir": str(package_rel_dir / "images"),
+        "image_package_absolute_dir": str(images_dir),
+        "image_count": len(items),
+        "missing_count": len(missing),
+        "items": items,
+        "missing": missing,
+        "handoff_text": text,
+        "clipboard_text": text,
+        "project": project_detail(slug),
+    }
+
+
+def build_idea_board_package_text(package: dict[str, object]) -> str:
+    rows = package.get("rows", [])
+    missing = package.get("missing", [])
+    lines = [
+        f"# {package.get('project_slug', '')} 创意总包 / Idea Board Package",
+        "",
+        "用途：归档创意区所有文字卡、图片、图片提示词和 AIGC 视频提示词。",
+        "",
+        "## 图片目录 / Image Folder",
+        str(package.get("images_dir", "")),
+        "",
+        "## 图片清单 / Image Order",
+    ]
+    image_rows = [row for row in rows if row.get("image_file")]
+    if image_rows:
+        for row in image_rows:
+            lines.append(f"{row.get('index', 0):03d}. {row.get('image_file', '')} | {row.get('item_id', '')} | {row.get('beat', '')}")
+    else:
+        lines.append("- No ready images.")
+    if missing:
+        lines.extend(["", "## 缺图条目 / Missing Images"])
+        for row in missing:
+            lines.append(f"- {row.get('item_id', '')} | {row.get('beat', '')} | {row.get('reason', '')}")
+    lines.extend(["", "## 全部创意卡 / All Idea Cards"])
+    for row in rows:
+        lines.extend(
+            [
+                "",
+                f"### {row.get('index', 0):03d}. {row.get('item_id', '')} · {row.get('beat', '')}",
+                f"- Act / 幕: {row.get('act_id', '')}",
+                f"- Scene / 场戏: {row.get('scene_id', '')}",
+                f"- Status / 状态: {row.get('status', '')}",
+                f"- Image file / 图片文件: {row.get('image_file', '') or '(missing)'}",
+                f"- Source path / 原始路径: {row.get('source_path', '')}",
+                "",
+                "Frame description / 画面描述:",
+                str(row.get("frame_description", "") or ""),
+                "",
+                "Image prompt / 图片提示词:",
+                str(row.get("image_prompt", "") or ""),
+                "",
+                "AIGC video prompt / AIGC 视频提示词:",
+                str(row.get("video_prompt", "") or ""),
+                "",
+                "Notes / 备注:",
+                str(row.get("notes", "") or ""),
+            ]
+        )
+    return "\n".join(lines).rstrip() + "\n"
+
+
+def create_idea_board_package(slug: str, payload: dict[str, object]) -> dict[str, object]:
+    path = project_path(slug)
+    board = load_idea_board(path, slug)
+    scope = str(payload.get("scope", "all") or "all").strip()
+    act_id = str(payload.get("act_id", "") or "").strip()
+    rows: list[dict[str, object]] = []
+    for row in board.get("rows", []):
+        if not isinstance(row, dict):
+            continue
+        if scope == "act" and act_id and str(row.get("act_id", "") or "").strip() != act_id:
+            continue
+        if str(row.get("act_id", "") or "").strip() == "EXT_RETOUCH":
+            continue
+        rows.append(row)
+    package_id = f"IBP_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+    project_dir = safe_file_stem(slug)
+    package_rel_dir = Path("11_delivery") / "idea_board_packages" / project_dir / package_id
+    package_dir = path / package_rel_dir
+    images_dir = package_dir / "images"
+    images_dir.mkdir(parents=True, exist_ok=True)
+    packaged_rows: list[dict[str, object]] = []
+    missing: list[dict[str, object]] = []
+    for index, row in enumerate(rows, start=1):
+        version = best_video_upload_version(row)
+        output_path = str(version.get("output_path", "") or row.get("output_path", "") or "").strip()
+        image_name = ""
+        package_image_path = ""
+        if output_path:
+            source = path / output_path
+            if source.exists() and source.is_file():
+                suffix = source.suffix or ".png"
+                image_name = f"{index:03d}_{safe_file_stem(row.get('item_id') or source.stem)}{suffix}"
+                target = images_dir / image_name
+                shutil.copy2(source, target)
+                package_image_path = str((Path("images") / image_name).as_posix())
+            else:
+                missing.append({"item_id": row.get("item_id", ""), "beat": row.get("beat", ""), "reason": "图片路径不存在 / Image path missing", "source_path": output_path})
+        else:
+            missing.append({"item_id": row.get("item_id", ""), "beat": row.get("beat", ""), "reason": "没有 output_path / No output_path", "source_path": ""})
+        packaged_rows.append(
+            {
+                "index": index,
+                "item_id": row.get("item_id", ""),
+                "act_id": row.get("act_id", ""),
+                "scene_id": row.get("scene_id", ""),
+                "beat": row.get("beat", ""),
+                "shot_type": row.get("shot_type", ""),
+                "status": row.get("status", ""),
+                "frame_description": row.get("frame_description", ""),
+                "spatial_logic": row.get("spatial_logic", ""),
+                "image_prompt": row.get("image_prompt", ""),
+                "video_prompt": row.get("video_prompt", ""),
+                "notes": row.get("notes", ""),
+                "revision_note": row.get("revision_note", ""),
+                "source_path": output_path,
+                "image_file": image_name,
+                "package_image_path": package_image_path,
+            }
+        )
+    package: dict[str, object] = {
+        "schema_version": 1,
+        "project_slug": slug,
+        "project_root": str(path),
+        "package_id": package_id,
+        "created_at": now_iso(),
+        "scope": scope,
+        "act_id": act_id,
+        "package_dir": str(package_rel_dir),
+        "package_absolute_dir": str(package_dir),
+        "images_dir": str(package_rel_dir / "images"),
+        "images_absolute_dir": str(images_dir),
+        "image_package_dir": str(package_rel_dir / "images"),
+        "rows": packaged_rows,
+        "missing": missing,
+    }
+    text = build_idea_board_package_text(package)
+    json_rel_path = package_rel_dir / f"{package_id}.json"
+    text_rel_path = package_rel_dir / f"{package_id}.md"
+    (path / json_rel_path).write_text(json.dumps(package, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    (path / text_rel_path).write_text(text, encoding="utf-8")
+    return {
+        "ok": True,
+        "package_id": package_id,
+        "package_path": str(text_rel_path),
+        "package_absolute_path": str(path / text_rel_path),
+        "package_dir": str(package_rel_dir),
+        "package_absolute_dir": str(package_dir),
+        "images_dir": str(package_rel_dir / "images"),
+        "image_package_dir": str(package_rel_dir / "images"),
+        "image_count": sum(1 for row in packaged_rows if row.get("image_file")),
+        "row_count": len(packaged_rows),
+        "missing_count": len(missing),
+        "handoff_text": text,
+        "clipboard_text": text,
+        "project": project_detail(slug),
+    }
+
+
+def open_project_path(slug: str, payload: dict[str, object]) -> dict[str, object]:
+    root = project_path(slug).resolve()
+    raw_path = str(payload.get("path", "") or "").strip()
+    if not raw_path:
+        raise ValueError("缺少要打开的位置 / Missing path to open.")
+    candidate = Path(raw_path).expanduser()
+    target = candidate.resolve() if candidate.is_absolute() else (root / candidate).resolve()
+    try:
+        target.relative_to(root)
+    except ValueError as exc:
+        raise ValueError("只能打开当前项目内的位置 / Can only open paths inside this project.") from exc
+    if not target.exists():
+        raise ValueError("位置不存在 / Path does not exist.")
+    if target.is_file():
+        target = target.parent
+    if sys.platform == "darwin":
+        command = ["open", str(target)]
+    elif sys.platform.startswith("linux") and shutil.which("xdg-open"):
+        command = ["xdg-open", str(target)]
+    elif sys.platform.startswith("win"):
+        command = ["cmd", "/c", "start", "", str(target)]
+    else:
+        return {
+            "ok": False,
+            "supported": False,
+            "path": str(target),
+            "error": "当前系统不支持自动打开文件夹 / Opening folders is not supported on this system.",
+        }
+    subprocess.Popen(command, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    return {"ok": True, "supported": True, "path": str(target)}
+
+
 def blender_executable() -> str:
     candidate = shutil.which("blender")
     if candidate:
@@ -6965,8 +7889,20 @@ class PipelineHubHandler(BaseHTTPRequestHandler):
         if parts[0] == "static":
             send_static(self, "/".join(parts[1:]))
             return
+        if parts == ["api", "daily-ideas"]:
+            send_json(self, {"dates": list_daily_ideas(), "today": local_date_string()})
+            return
+        if len(parts) == 3 and parts[:2] == ["api", "daily-ideas"]:
+            send_json(self, daily_idea_detail(parts[2]))
+            return
+        if len(parts) == 4 and parts[:2] == ["api", "daily-ideas"] and parts[3] == "asset":
+            send_daily_asset(self, parts[2], parsed.query)
+            return
         if parts == ["api", "projects"]:
             send_json(self, {"projects": list_projects()})
+            return
+        if parts == ["api", "recycle-bin", "projects"]:
+            send_json(self, {"projects": list_recycled_projects()})
             return
         if len(parts) == 3 and parts[:2] == ["api", "projects"]:
             send_json(self, project_detail(parts[2]))
@@ -6998,9 +7934,38 @@ class PipelineHubHandler(BaseHTTPRequestHandler):
         if parts == ["api", "projects"]:
             send_json(self, create_project(payload))
             return
+        if len(parts) == 4 and parts[:2] == ["api", "daily-ideas"]:
+            date_text = parts[2]
+            action = parts[3]
+            if action == "board":
+                send_json(self, update_daily_idea_board(date_text, payload))
+                return
+            if action == "hotspot-handoff":
+                send_json(self, create_daily_idea_handoff(date_text, payload))
+                return
+            if action == "hotspot-output":
+                send_json(self, merge_daily_idea_rows(date_text, payload))
+                return
+            if action == "open-path":
+                send_json(self, open_daily_idea_path(date_text, payload))
+                return
+        if len(parts) == 4 and parts[:2] == ["api", "recycle-bin"] and parts[3] == "restore":
+            try:
+                send_json(self, restore_recycled_project(parts[2]))
+            except FileExistsError as exc:
+                send_json(self, {"error": str(exc)}, status=409)
+            except (FileNotFoundError, ValueError) as exc:
+                send_json(self, {"error": str(exc)}, status=400)
+            return
         if len(parts) == 4 and parts[:2] == ["api", "projects"]:
             slug = parts[2]
             action = parts[3]
+            if action == "recycle":
+                try:
+                    send_json(self, recycle_project(slug))
+                except (FileNotFoundError, ValueError) as exc:
+                    send_json(self, {"error": str(exc)}, status=400)
+                return
             if action == "validate":
                 result = run_repo_script(["scripts/validate_aigc_project.py", f"projects/{slug}", "--print-json"])
                 send_json(self, result)
@@ -7110,6 +8075,15 @@ class PipelineHubHandler(BaseHTTPRequestHandler):
                 return
             if action == "current-version-package":
                 send_json(self, create_current_version_package(slug, payload))
+                return
+            if action == "video-upload-package":
+                send_json(self, create_video_upload_package(slug, payload))
+                return
+            if action == "idea-board-package":
+                send_json(self, create_idea_board_package(slug, payload))
+                return
+            if action == "open-project-path":
+                send_json(self, open_project_path(slug, payload))
                 return
             if action == "whitebox-job":
                 send_json(self, create_whitebox_job(slug, payload))

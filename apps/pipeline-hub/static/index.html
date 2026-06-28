@@ -58,12 +58,18 @@
           </div>
           <div class="workspace-actions">
             <button id="openIdeaLabBtn" class="command-button" type="button">创意 / Idea</button>
+            <button id="openDailyIdeasBtn" class="command-button" type="button">灵感 / Inspiration</button>
             <button id="openWhiteboxLabBtn" class="command-button" type="button">白模 / Whitebox</button>
             <a id="openExternalRetouchBtn" class="command-button" href="/external-retouch">外部修图 / External Retouch</a>
+            <button id="openRecycleBinBtn" class="command-button" type="button">回收站 / Recycle</button>
             <button id="openBoardBtn" class="command-button primary" type="button">画布 / Board</button>
             <div id="statusPills" class="status-pills"></div>
           </div>
         </header>
+
+        <section id="recycleBinPage" class="panel recycle-bin-page" aria-label="项目回收站 / Project recycle bin" hidden></section>
+
+        <section id="dailyIdeasPage" class="daily-ideas-page" aria-label="每日灵感 / Daily Inspiration" hidden></section>
 
         <section id="ideaLab" class="idea-lab" aria-label="Idea Lab"></section>
 

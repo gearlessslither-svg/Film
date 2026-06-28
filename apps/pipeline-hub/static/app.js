@@ -6,6 +6,19 @@ function isExternalRetouchPage() {
 
 const state = {
   projects: [],
+  recycledProjects: [],
+  recycleBinOpen: false,
+  dailyIdeasOpen: false,
+  dailyIdeas: {
+    dates: [],
+    selectedDate: "",
+    detail: null,
+    calendarYear: new Date().getFullYear(),
+    calendarMonth: new Date().getMonth() + 1,
+    seed: "",
+    handoffs: [],
+  },
+  projectMutationBusy: false,
   selectedSlug: null,
   detail: null,
   busy: false,
@@ -278,6 +291,7 @@ function naturalCompare(a, b) {
 
 function toast(message) {
   const node = $("toast");
+  if (!node) return;
   node.textContent = message;
   node.classList.add("show");
   clearTimeout(node._timer);
@@ -599,31 +613,224 @@ function projectLabel(project) {
   return `${project.slug} · 准备度/Readiness ${readiness} · P0 ${project.p0_count ?? 0}`;
 }
 
+function recycledProjectLabel(project) {
+  const recycledAt = project.recycled_at ? ` · ${project.recycled_at}` : "";
+  return `${project.slug || project.trash_name}${recycledAt}`;
+}
+
+function todayDateString() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const day = String(now.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+function dailyIdeaHandoffStorageKey() {
+  return state.dailyIdeas.selectedDate ? `pipeline-daily-idea-handoffs:${state.dailyIdeas.selectedDate}` : "pipeline-daily-idea-handoffs";
+}
+
+function loadDailyIdeaHandoffs() {
+  try {
+    const parsed = JSON.parse(localStorage.getItem(dailyIdeaHandoffStorageKey()) || "[]");
+    state.dailyIdeas.handoffs = Array.isArray(parsed) ? parsed : [];
+  } catch {
+    state.dailyIdeas.handoffs = [];
+  }
+}
+
+function saveDailyIdeaHandoffs() {
+  localStorage.setItem(dailyIdeaHandoffStorageKey(), JSON.stringify(state.dailyIdeas.handoffs || []));
+}
+
+function dailyIdeaSummaryLabel(item) {
+  const rows = Number(item.row_count || 0);
+  const images = Number(item.image_count || 0);
+  return `${rows} 条灵感 · ${images} 张图`;
+}
+
 function renderProjects() {
   const root = $("projectList");
   if (!root) return;
+  const createForm = $("createForm");
+  if (createForm) createForm.hidden = Boolean(state.dailyIdeasOpen);
+  if (state.dailyIdeasOpen) {
+    const dates = state.dailyIdeas.dates || [];
+    const selected = state.dailyIdeas.selectedDate || todayDateString();
+    root.innerHTML = dates.length
+      ? dates
+          .map(
+            (item) => `
+              <article class="project-item daily-date-item ${item.date === selected ? "active" : ""}">
+                <button class="project-select-button" data-date="${escapeHtml(item.date)}" data-no-help="true" type="button">
+                  <strong>${escapeHtml(item.date)}</strong>
+                  <span>${escapeHtml(dailyIdeaSummaryLabel(item))}</span>
+                </button>
+              </article>
+            `,
+          )
+          .join("")
+      : `<div class="empty-state">还没有每日灵感。点击右侧生成今天的灵感。/ No daily ideas yet.</div>`;
+    root.querySelectorAll(".project-select-button").forEach((button) => {
+      button.addEventListener("click", () => selectDailyIdeaDate(button.dataset.date));
+    });
+    renderRecycleBinPage();
+    return;
+  }
   if (!state.projects.length) {
     root.innerHTML = `<div class="empty-state">还没有项目。先创建一个项目。/ No projects yet. Create one first.</div>`;
+    renderRecycleBinPage();
     return;
   }
   root.innerHTML = state.projects
     .map(
       (project) => `
-        <button class="project-item ${project.slug === state.selectedSlug ? "active" : ""}" data-slug="${escapeHtml(project.slug)}" type="button">
-          <strong>${escapeHtml(project.name)}</strong>
-          <span>${escapeHtml(projectLabel(project))}</span>
-        </button>
+        <article class="project-item ${project.slug === state.selectedSlug ? "active" : ""}">
+          <button class="project-select-button" data-slug="${escapeHtml(project.slug)}" data-no-help="true" type="button">
+            <strong>${escapeHtml(project.name)}</strong>
+            <span>${escapeHtml(projectLabel(project))}</span>
+          </button>
+          <button class="project-recycle-button" data-slug="${escapeHtml(project.slug)}" data-no-help="true" type="button" title="回收项目 / Move project to recycle bin" ${state.projectMutationBusy ? "disabled" : ""}>回收</button>
+        </article>
       `,
     )
     .join("");
-  root.querySelectorAll(".project-item").forEach((button) => {
+  root.querySelectorAll(".project-select-button").forEach((button) => {
     button.addEventListener("click", () => selectProject(button.dataset.slug));
   });
+  root.querySelectorAll(".project-recycle-button").forEach((button) => {
+    button.addEventListener("click", (event) => {
+      event.stopPropagation();
+      recycleProject(button.dataset.slug);
+    });
+  });
+  renderRecycleBinPage();
+}
+
+function renderRecycleBinPage() {
+  const root = $("recycleBinPage");
+  if (!root) return;
+  root.hidden = !state.recycleBinOpen;
+  if (!state.recycleBinOpen) return;
+  const count = state.recycledProjects.length;
+  const rows = count
+    ? state.recycledProjects
+        .map(
+          (project) => `
+            <article class="recycle-item">
+              <div>
+                <strong>${escapeHtml(project.name || project.slug || project.trash_name)}</strong>
+                <span>${escapeHtml(recycledProjectLabel(project))}</span>
+              </div>
+              <button class="command-button recycle-restore-button" data-trash-name="${escapeHtml(project.trash_name)}" type="button" ${state.projectMutationBusy ? "disabled" : ""}>恢复</button>
+            </article>
+          `,
+        )
+        .join("")
+    : `<div class="empty-state">回收站为空 / Recycle bin is empty.</div>`;
+  root.innerHTML = `
+    <div class="panel-header recycle-bin-page-header">
+      <div>
+        <h3>项目回收站 / Project Recycle Bin</h3>
+        <span>${count} 个已回收项目 / ${count} recycled projects</span>
+      </div>
+      <div class="recycle-bin-page-actions">
+        <button id="refreshRecycleBinBtn" class="command-button" type="button">刷新 / Refresh</button>
+        <button id="closeRecycleBinBtn" class="icon-button" type="button" title="关闭回收站 / Close recycle bin">×</button>
+      </div>
+    </div>
+    <div class="recycle-bin-list">${rows}</div>
+  `;
+  $("refreshRecycleBinBtn")?.addEventListener("click", () => runAction("刷新回收站 / Refresh recycle bin", refreshProjectCollections));
+  $("closeRecycleBinBtn")?.addEventListener("click", closeRecycleBinPage);
+  root.querySelectorAll(".recycle-restore-button").forEach((button) => {
+    button.addEventListener("click", () => restoreProject(button.dataset.trashName));
+  });
+}
+
+async function openRecycleBinPage() {
+  state.recycleBinOpen = true;
+  await refreshProjectCollections();
+  renderRecycleBinPage();
+  $("recycleBinPage")?.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function closeRecycleBinPage() {
+  state.recycleBinOpen = false;
+  renderRecycleBinPage();
+}
+
+function renderDailyIdeaCalendar() {
+  const root = $("sidebarSceneNavigator");
+  if (!root) return;
+  const year = Number(state.dailyIdeas.calendarYear || new Date().getFullYear());
+  const month = Number(state.dailyIdeas.calendarMonth || new Date().getMonth() + 1);
+  const selected = state.dailyIdeas.selectedDate || todayDateString();
+  const generated = new Set((state.dailyIdeas.dates || []).filter((item) => Number(item.row_count || 0) || Number(item.image_count || 0)).map((item) => item.date));
+  const firstDay = new Date(year, month - 1, 1);
+  const daysInMonth = new Date(year, month, 0).getDate();
+  const leading = (firstDay.getDay() + 6) % 7;
+  const cells = [];
+  for (let i = 0; i < leading; i += 1) cells.push(`<span class="daily-calendar-cell empty"></span>`);
+  for (let day = 1; day <= daysInMonth; day += 1) {
+    const date = `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+    cells.push(`
+      <button class="daily-calendar-cell ${generated.has(date) ? "has-daily" : ""} ${date === selected ? "active" : ""}" data-date="${escapeHtml(date)}" type="button">
+        ${day}
+      </button>
+    `);
+  }
+  root.innerHTML = `
+    <section class="sidebar-scene-panel daily-calendar-panel">
+      <div class="sidebar-scene-header">
+        <span>灵感日历 / Calendar</span>
+        <small>${year}-${String(month).padStart(2, "0")}</small>
+      </div>
+      <div class="daily-calendar-controls">
+        <button class="mini-command daily-calendar-prev" type="button">‹</button>
+        <input class="daily-calendar-year" type="number" min="2020" max="2100" value="${year}" />
+        <select class="daily-calendar-month">
+          ${Array.from({ length: 12 }, (_, index) => index + 1)
+            .map((value) => `<option value="${value}" ${value === month ? "selected" : ""}>${String(value).padStart(2, "0")}</option>`)
+            .join("")}
+        </select>
+        <button class="mini-command daily-calendar-next" type="button">›</button>
+      </div>
+      <div class="daily-calendar-weekdays">
+        <span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span>
+      </div>
+      <div class="daily-calendar-grid">${cells.join("")}</div>
+    </section>
+  `;
+  root.querySelector(".daily-calendar-prev")?.addEventListener("click", () => shiftDailyIdeaMonth(-1));
+  root.querySelector(".daily-calendar-next")?.addEventListener("click", () => shiftDailyIdeaMonth(1));
+  root.querySelector(".daily-calendar-year")?.addEventListener("change", (event) => {
+    state.dailyIdeas.calendarYear = Number(event.target.value || year);
+    renderDailyIdeaCalendar();
+  });
+  root.querySelector(".daily-calendar-month")?.addEventListener("change", (event) => {
+    state.dailyIdeas.calendarMonth = Number(event.target.value || month);
+    renderDailyIdeaCalendar();
+  });
+  root.querySelectorAll(".daily-calendar-cell[data-date]").forEach((button) => {
+    button.addEventListener("click", () => selectDailyIdeaDate(button.dataset.date));
+  });
+}
+
+function shiftDailyIdeaMonth(delta) {
+  const base = new Date(Number(state.dailyIdeas.calendarYear), Number(state.dailyIdeas.calendarMonth) - 1 + delta, 1);
+  state.dailyIdeas.calendarYear = base.getFullYear();
+  state.dailyIdeas.calendarMonth = base.getMonth() + 1;
+  renderDailyIdeaCalendar();
 }
 
 function renderSidebarSceneNavigator() {
   const root = $("sidebarSceneNavigator");
   if (!root) return;
+  if (state.dailyIdeasOpen) {
+    renderDailyIdeaCalendar();
+    return;
+  }
   const scenes = state.detail?.scene_workbench?.scenes || [];
   const board = currentIdeaBoard();
   const acts = storyActEntries(board);
@@ -709,6 +916,19 @@ function statusLabel(status) {
 function renderHeader() {
   const detail = state.detail;
   if (!$("projectTitle") || !$("projectPath") || !$("statusPills")) return;
+  if (state.dailyIdeasOpen) {
+    const daily = state.dailyIdeas.detail;
+    const date = state.dailyIdeas.selectedDate || todayDateString();
+    $("projectTitle").textContent = `${date} 每日灵感 / Daily Inspiration`;
+    $("projectPath").textContent = daily?.path || "";
+    $("statusPills").innerHTML = [
+      pill("灵感页 / Inspiration", "ok"),
+      pill(date, "ok"),
+      pill(`${daily?.row_count || 0} 条`, Number(daily?.row_count || 0) ? "ok" : "warn"),
+      pill(`${daily?.image_count || 0} 张图`, Number(daily?.image_count || 0) ? "ok" : "warn"),
+    ].join("");
+    return;
+  }
   if (!detail) {
     $("projectTitle").textContent = "未选择项目 / No project selected";
     $("projectPath").textContent = "";
@@ -5323,12 +5543,14 @@ function buildProjectBibleAnalysisHandoff(board) {
 
 function addIdeaHandoff(handoff) {
   const id = `idea_handoff_${Date.now()}_${Math.random().toString(16).slice(2, 8)}`;
+  const text = handoff.text || "";
+  const includeCompletionNote = handoff.codexCompletionNote !== false;
   const nextHandoff = {
     id,
     createdAt: new Date().toLocaleString(),
     autoCopy: true,
     ...handoff,
-    text: withIdeaHandoffCompletionNote(handoff.text || "", id),
+    text: includeCompletionNote ? withIdeaHandoffCompletionNote(text, id) : text,
   };
   state.ideaHandoffs = [nextHandoff, ...state.ideaHandoffs].slice(0, 12);
   saveIdeaHandoffs();
@@ -5354,11 +5576,14 @@ function renderIdeaHandoffs() {
                 <strong>${escapeHtml(handoff.title || "Codex handoff")}</strong>
                 <small>${escapeHtml(handoff.kind || "")} · ${escapeHtml(handoff.createdAt || "")}</small>
                 ${handoff.path ? `<small>${escapeHtml(handoff.path)}</small>` : ""}
+                ${handoff.openFolder ? `<small>位置 / Folder: ${escapeHtml(handoff.openFolder)}</small>` : ""}
+                ${handoff.imageFolder ? `<small>图片包 / Images: ${escapeHtml(handoff.imageFolder)}</small>` : ""}
                 ${handoff.message ? `<small class="idea-handoff-message">${escapeHtml(handoff.message)}</small>` : ""}
                 ${handoff.autoCopy ? `<small class="handoff-copy-hint">已尝试自动复制 / Auto-copy attempted</small>` : ""}
               </div>
               <div class="idea-handoff-actions">
                 <button class="mini-command idea-copy-handoff" data-idea-handoff-id="${escapeHtml(handoff.id)}" type="button">复制 / Copy</button>
+                ${handoff.openFolder || handoff.imageFolder ? `<button class="mini-command idea-open-image-folder" data-idea-handoff-id="${escapeHtml(handoff.id)}" type="button">${escapeHtml(handoff.openFolderLabel || (handoff.openFolder ? "打开位置 / Open" : "打开图片包 / Open"))}</button>` : ""}
                 <button class="icon-button idea-delete-handoff" data-idea-handoff-id="${escapeHtml(handoff.id)}" type="button" title="删除 / Delete">×</button>
               </div>
               <details>
@@ -5371,6 +5596,157 @@ function renderIdeaHandoffs() {
         .join("")}
     </div>
   `;
+}
+
+function addDailyIdeaHandoff(handoff) {
+  const id = `daily_idea_handoff_${Date.now()}_${Math.random().toString(16).slice(2, 8)}`;
+  const text = String(handoff.text || handoff.handoff_text || "").replaceAll(IDEA_HANDOFF_ID_PLACEHOLDER, id);
+  const next = {
+    id,
+    createdAt: new Date().toLocaleString(),
+    autoCopy: true,
+    ...handoff,
+    text,
+  };
+  state.dailyIdeas.handoffs = [next, ...(state.dailyIdeas.handoffs || [])].slice(0, 12);
+  saveDailyIdeaHandoffs();
+  autoCopyHandoffText(text);
+}
+
+function renderDailyIdeaHandoffs() {
+  const handoffs = state.dailyIdeas.handoffs || [];
+  if (!handoffs.length) {
+    return `<div class="idea-handoff-empty">点击“生成今日热点”后，这里会出现可复制给 Codex 的生产卡。</div>`;
+  }
+  return `
+    <div class="idea-handoff-toolbar">
+      <span>${handoffs.length} 张灵感生产卡 · 复制后我会执行并回填到当天页面</span>
+      <button class="mini-command daily-clear-handoffs" type="button">清空 / Clear</button>
+    </div>
+    <div class="idea-handoff-list">
+      ${handoffs
+        .map(
+          (handoff) => `
+            <article class="idea-handoff-card ready" draggable="true" data-daily-handoff-id="${escapeHtml(handoff.id)}">
+              <div>
+                <strong>${escapeHtml(handoff.title || "每日灵感生产卡")}</strong>
+                <small>${escapeHtml(handoff.createdAt || "")}</small>
+                ${handoff.callbackUrl ? `<small>${escapeHtml(handoff.callbackUrl)}</small>` : ""}
+                ${handoff.autoCopy ? `<small class="handoff-copy-hint">已尝试自动复制 / Auto-copy attempted</small>` : ""}
+              </div>
+              <div class="idea-handoff-actions">
+                <button class="mini-command daily-copy-handoff" data-daily-handoff-id="${escapeHtml(handoff.id)}" type="button">复制 / Copy</button>
+                <button class="icon-button daily-delete-handoff" data-daily-handoff-id="${escapeHtml(handoff.id)}" type="button" title="删除 / Delete">×</button>
+              </div>
+              <details>
+                <summary>展开生产卡 / Show packet</summary>
+                <textarea readonly rows="7">${escapeHtml(handoff.text || "")}</textarea>
+              </details>
+            </article>
+          `,
+        )
+        .join("")}
+    </div>
+  `;
+}
+
+function dailyIdeaAssetForRow(row) {
+  const path = row?.output_path || "";
+  return (state.dailyIdeas.detail?.assets || []).find((asset) => asset.path === path || asset.item_id === row?.item_id) || null;
+}
+
+function renderDailyIdeaRows() {
+  const board = state.dailyIdeas.detail?.idea_board || {};
+  const rows = Array.isArray(board.rows) ? board.rows : [];
+  if (!rows.length) {
+    return `<div class="empty-state">当天还没有灵感卡。先点击“生成今日热点”。/ No idea cards yet.</div>`;
+  }
+  return rows
+    .map((row) => {
+      const asset = dailyIdeaAssetForRow(row);
+      return `
+        <article class="daily-idea-card">
+          <div class="daily-idea-thumb">
+            ${
+              asset?.url
+                ? `<img src="${escapeHtml(asset.url)}" alt="${escapeHtml(row.beat || row.item_id || "")}" loading="lazy" />`
+                : `<div class="daily-idea-placeholder">待生成图片</div>`
+            }
+          </div>
+          <div class="daily-idea-card-body">
+            <div class="daily-idea-card-title">
+              <strong>${escapeHtml(row.beat || row.item_id || "Untitled")}</strong>
+              <span>${escapeHtml(row.item_id || "")} · ${escapeHtml(row.status || "draft")}</span>
+            </div>
+            <p>${escapeHtml(row.frame_description || row.notes || "")}</p>
+            <div class="daily-idea-meta">
+              ${row.output_path ? `<span>${escapeHtml(row.output_path)}</span>` : "<span>无图片路径 / no image path</span>"}
+            </div>
+            <details>
+              <summary>图片提示词 / Image prompt</summary>
+              <textarea readonly rows="4">${escapeHtml(row.image_prompt || "")}</textarea>
+            </details>
+            <details>
+              <summary>AIGC 视频提示词 / Video prompt</summary>
+              <textarea readonly rows="4">${escapeHtml(row.video_prompt || "")}</textarea>
+            </details>
+            <details>
+              <summary>备注 / Notes</summary>
+              <textarea readonly rows="3">${escapeHtml(row.notes || "")}</textarea>
+            </details>
+          </div>
+        </article>
+      `;
+    })
+    .join("");
+}
+
+function renderDailyIdeasPage() {
+  const root = $("dailyIdeasPage");
+  if (!root) return;
+  root.hidden = !state.dailyIdeasOpen;
+  if (!state.dailyIdeasOpen) return;
+  const detail = state.dailyIdeas.detail;
+  const date = state.dailyIdeas.selectedDate || todayDateString();
+  const board = detail?.idea_board || {};
+  root.innerHTML = `
+    <div class="daily-ideas-header panel">
+      <div>
+        <p class="eyebrow">Daily Inspiration</p>
+        <h3>${escapeHtml(date)} 每日灵感</h3>
+        <span>${Number(detail?.row_count || 0)} 条灵感 · ${Number(detail?.image_count || 0)} 张图</span>
+      </div>
+      <div class="daily-ideas-actions">
+        <input id="dailyIdeaDateInput" type="date" value="${escapeHtml(date)}" />
+        <button id="dailyIdeaRefreshBtn" class="command-button" type="button">刷新 / Refresh</button>
+        <button id="dailyIdeaOpenFolderBtn" class="command-button" type="button">打开目录 / Open</button>
+      </div>
+    </div>
+    <section class="daily-ideas-layout">
+      <aside class="daily-ideas-control panel">
+        <label>灵感要求 / Seed
+          <textarea id="dailyIdeaSeedInput" rows="6" placeholder="例如：今天中文互联网热点，偏怪诞、怀旧、民俗、梦核，适合直接做AIGC短片。">${escapeHtml(state.dailyIdeas.seed || "")}</textarea>
+        </label>
+        <label>数量 / Count
+          <input id="dailyIdeaCountInput" type="number" min="1" max="12" value="10" />
+        </label>
+        <button id="dailyIdeaBuildHandoffBtn" class="command-button primary full" type="button">生成今日热点 / Build Today</button>
+        <div class="daily-idea-board-summary">
+          <strong>${escapeHtml(board.story_title || "今日灵感")}</strong>
+          <span>${escapeHtml(board.logline || "")}</span>
+        </div>
+        <div id="dailyIdeaHandoffDock" class="idea-handoff-dock">${renderDailyIdeaHandoffs()}</div>
+      </aside>
+      <section class="daily-ideas-results panel">
+        <div class="panel-header">
+          <h3>热点卡片 / Idea Cards</h3>
+          <span>图片和视频提示词会回填到这里</span>
+        </div>
+        <div class="daily-idea-card-list">${renderDailyIdeaRows()}</div>
+      </section>
+    </section>
+  `;
+  bindDailyIdeaEvents();
 }
 
 function renderIdeaActPlanner(board) {
@@ -6510,6 +6886,8 @@ function renderIdeaLab() {
         <button id="cardPreflightBtn" class="command-button" data-help="在生成图片包前检查重复编号、空提示词、缺白模、缺连续性锁和空间逻辑风险。" type="button">生成前检查 / Preflight</button>
         <button id="cardBuildImagePacketBtn" class="command-button" data-help="把当前可见且勾选的分镜卡打包成图片生成任务。" type="button">生成图片包 / Image Pack</button>
         <button id="currentVersionPackageBtn" class="command-button" data-help="收集当前幕/场景已标为 Final 或参考的图片，供视频生成阶段使用。" type="button">Final图包 / Final Pack</button>
+        <button id="ideaBoardPackageBtn" class="command-button" data-help="打包创意区所有文字卡、图片提示词、视频提示词和已生成图片，并提供打开图片包入口。" type="button">创意总包 / Idea Pack</button>
+        <button id="videoUploadPackageBtn" class="command-button primary" data-help="按当前幕顺序复制所有可用分镜图到上传文件夹，并生成一份可粘贴到 AIGC 视频网站的连续镜头提示词。" type="button">视频上传包 / Video Upload</button>
         <button id="batchVersionQaBtn" class="command-button" data-help="批量检查当前可见分镜图的清晰度、噪点、曝光和对比。" type="button">批量质检 / Batch QA</button>
         <button id="qaRepairPacketBtn" class="command-button" data-help="把低分图片整理成修复包，便于集中重生成。" type="button">低分修复包 / QA Fix</button>
         <button id="cardSelectVisibleBtn" class="command-button" data-help="勾选当前筛选出来的分镜卡，下一步只生成这些卡。" type="button">全选当前 / Select All</button>
@@ -7806,6 +8184,67 @@ async function createCurrentVersionPackage() {
   });
 }
 
+async function createVideoUploadPackage() {
+  if (!state.selectedSlug || !state.detail) return;
+  await runAction("生成视频上传包 / Video upload package", async () => {
+    const board = collectIdeaBoardFromDom();
+    await persistIdeaBoard(board, { toast: false, render: false });
+    const actId = activeStoryActId() || board.acts?.[0]?.act_id || "";
+    const result = await requestJson(`/api/projects/${state.selectedSlug}/video-upload-package`, {
+      method: "POST",
+      body: JSON.stringify({ act_id: actId }),
+    });
+    state.detail = result.project || state.detail;
+    const missing = Number(result.missing_count || 0);
+    const message = missing
+      ? `视频上传包已生成：${result.image_count || 0} 张图片，${missing} 张缺图 / Video upload package ready with missing images`
+      : `视频上传包已生成：${result.image_count || 0} 张图片 / Video upload package ready`;
+    addIdeaHandoff({
+      kind: "video_upload_package",
+      status: missing ? "missing_images" : "ready",
+      message,
+      title: `${result.act_id || actId} · ${result.image_count || 0} 张图 → 视频上传包`,
+      path: result.package_path || "",
+      imageFolder: result.image_package_dir || result.images_dir || "",
+      codexCompletionNote: false,
+      text: result.clipboard_text || result.handoff_text || "",
+    });
+    toast(`${message} · ${result.image_package_dir || result.images_dir || ""}`);
+    renderAll();
+  });
+}
+
+async function createIdeaBoardPackage() {
+  if (!state.selectedSlug || !state.detail) return;
+  await runAction("生成创意总包 / Idea board package", async () => {
+    const board = collectIdeaBoardFromDom();
+    await persistIdeaBoard(board, { toast: false, render: false });
+    const result = await requestJson(`/api/projects/${state.selectedSlug}/idea-board-package`, {
+      method: "POST",
+      body: JSON.stringify({ scope: "all" }),
+    });
+    state.detail = result.project || state.detail;
+    const missing = Number(result.missing_count || 0);
+    const message = missing
+      ? `创意总包已生成：${result.row_count || 0} 条，${result.image_count || 0} 张图片，${missing} 条缺图 / Idea package ready with missing images`
+      : `创意总包已生成：${result.row_count || 0} 条，${result.image_count || 0} 张图片 / Idea package ready`;
+    addIdeaHandoff({
+      kind: "idea_board_package",
+      status: missing ? "missing_images" : "ready",
+      message,
+      title: `${result.row_count || 0} 条 · ${result.image_count || 0} 张图 → 创意总包`,
+      path: result.package_path || "",
+      openFolder: result.package_dir || "",
+      openFolderLabel: "打开总包 / Open Pack",
+      imageFolder: result.image_package_dir || result.images_dir || "",
+      codexCompletionNote: false,
+      text: result.clipboard_text || result.handoff_text || "",
+    });
+    toast(`${message} · ${result.image_package_dir || result.images_dir || ""}`);
+    renderAll();
+  });
+}
+
 function setVisibleCardSelection(checked) {
   if (isProjectBibleSelected()) {
     document.querySelectorAll('.project-bible-card [data-bible-field="image_selected"]').forEach((input) => {
@@ -8005,6 +8444,62 @@ function deleteIdeaRow(index) {
   renderIdeaLab();
 }
 
+function bindDailyIdeaEvents() {
+  $("dailyIdeaDateInput")?.addEventListener("change", (event) => selectDailyIdeaDate(event.target.value));
+  $("dailyIdeaRefreshBtn")?.addEventListener("click", async () => {
+    await refreshDailyIdeas();
+    await loadDailyIdeaDetail(state.dailyIdeas.selectedDate || todayDateString());
+    renderAll();
+    toast("灵感页已刷新 / Daily ideas refreshed");
+  });
+  $("dailyIdeaOpenFolderBtn")?.addEventListener("click", openDailyIdeaFolder);
+  $("dailyIdeaBuildHandoffBtn")?.addEventListener("click", buildDailyIdeaHandoff);
+  $("dailyIdeaSeedInput")?.addEventListener("input", (event) => {
+    state.dailyIdeas.seed = event.target.value || "";
+  });
+  $("dailyIdeaHandoffDock")?.querySelector(".daily-clear-handoffs")?.addEventListener("click", (event) => {
+    event.preventDefault();
+    state.dailyIdeas.handoffs = [];
+    saveDailyIdeaHandoffs();
+    renderDailyIdeasPage();
+  });
+  $("dailyIdeaHandoffDock")?.querySelectorAll(".idea-handoff-card").forEach((card) => {
+    card.addEventListener("dragstart", (event) => {
+      const handoff = state.dailyIdeas.handoffs.find((item) => item.id === card.dataset.dailyHandoffId);
+      if (!handoff) return;
+      event.dataTransfer?.setData("text/plain", handoff.text || "");
+      event.dataTransfer?.setData("text/markdown", handoff.text || "");
+      event.dataTransfer?.setData("text/codex-handoff-id", handoff.id || "");
+      event.dataTransfer.effectAllowed = "copy";
+    });
+  });
+  $("dailyIdeaHandoffDock")?.querySelectorAll(".daily-copy-handoff").forEach((button) => {
+    button.addEventListener("click", async (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      const handoff = state.dailyIdeas.handoffs.find((item) => item.id === button.dataset.dailyHandoffId);
+      if (!handoff) return;
+      try {
+        await navigator.clipboard.writeText(handoff.text || "");
+        toast("已复制每日灵感生产卡 / Daily idea packet copied");
+      } catch {
+        const textarea = button.closest(".idea-handoff-card")?.querySelector("textarea");
+        textarea?.select?.();
+        document.execCommand?.("copy");
+      }
+    });
+  });
+  $("dailyIdeaHandoffDock")?.querySelectorAll(".daily-delete-handoff").forEach((button) => {
+    button.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      state.dailyIdeas.handoffs = state.dailyIdeas.handoffs.filter((item) => item.id !== button.dataset.dailyHandoffId);
+      saveDailyIdeaHandoffs();
+      renderDailyIdeasPage();
+    });
+  });
+}
+
 function bindIdeaHandoffEvents() {
   $("ideaHandoffDock")?.querySelector(".idea-clear-handoffs")?.addEventListener("click", (event) => {
     event.preventDefault();
@@ -8037,6 +8532,24 @@ function bindIdeaHandoffEvents() {
       }
     });
   });
+  $("ideaHandoffDock")?.querySelectorAll(".idea-open-image-folder").forEach((button) => {
+    button.addEventListener("click", async (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      const handoff = state.ideaHandoffs.find((item) => item.id === button.dataset.ideaHandoffId);
+      const folder = handoff?.openFolder || handoff?.imageFolder || "";
+      if (!folder || !state.selectedSlug) return;
+      try {
+        await requestJson(`/api/projects/${state.selectedSlug}/open-project-path`, {
+          method: "POST",
+          body: JSON.stringify({ path: folder }),
+        });
+        toast("已打开位置 / Folder opened");
+      } catch (error) {
+        toast(error?.message || "打开位置失败 / Failed to open folder");
+      }
+    });
+  });
   $("ideaHandoffDock")?.querySelectorAll(".idea-delete-handoff").forEach((button) => {
     button.addEventListener("click", (event) => {
       event.preventDefault();
@@ -8054,6 +8567,8 @@ function bindIdeaLabEvents() {
   $("projectBibleAddCardBtn")?.addEventListener("click", () => addProjectBibleCard());
   $("cardBuildImagePacketBtn")?.addEventListener("click", () => createCardImagePacket());
   $("currentVersionPackageBtn")?.addEventListener("click", createCurrentVersionPackage);
+  $("ideaBoardPackageBtn")?.addEventListener("click", createIdeaBoardPackage);
+  $("videoUploadPackageBtn")?.addEventListener("click", createVideoUploadPackage);
   $("batchVersionQaBtn")?.addEventListener("click", runVisibleCardVersionQa);
   $("qaRepairPacketBtn")?.addEventListener("click", createQaRepairPacket);
   $("cardSelectVisibleBtn")?.addEventListener("click", () => setVisibleCardSelection(true));
@@ -9498,12 +10013,32 @@ function renderAutofill() {
   $("autofillView").textContent = autofill.text || "还没有自动补全记录 / No autofill run yet.";
 }
 
+function setDailyIdeasWorkspaceVisible(active) {
+  const dailyPage = $("dailyIdeasPage");
+  if (dailyPage) dailyPage.hidden = !active;
+  ["ideaLab", "storyboardStudio"].forEach((id) => {
+    const element = $(id);
+    if (element) element.hidden = active;
+  });
+  const toolbox = document.querySelector(".toolbox-panel");
+  if (toolbox) toolbox.hidden = active;
+}
+
 function renderAll() {
   if (isExternalRetouchPage()) {
     renderProjects();
     renderHeader();
     renderExternalRetouchLab();
     renderReferenceBoard();
+    return;
+  }
+  setDailyIdeasWorkspaceVisible(Boolean(state.dailyIdeasOpen));
+  if (state.dailyIdeasOpen) {
+    renderProjects();
+    renderSidebarSceneNavigator();
+    renderHeader();
+    renderDailyIdeasPage();
+    renderRecycleBinPage();
     return;
   }
   renderProjects();
@@ -9530,8 +10065,7 @@ function renderAll() {
 }
 
 async function loadProjects() {
-  const payload = await requestJson("/api/projects");
-  state.projects = payload.projects || [];
+  await refreshProjectCollections();
   if (!state.selectedSlug && state.projects.length) {
     const coinSlot = state.projects.find((project) => project.slug === "coin-slot");
     state.selectedSlug = (coinSlot || state.projects[0]).slug;
@@ -9542,6 +10076,101 @@ async function loadProjects() {
   } else {
     renderAll();
   }
+}
+
+async function refreshDailyIdeas() {
+  const payload = await requestJson("/api/daily-ideas");
+  state.dailyIdeas.dates = payload.dates || [];
+  if (!state.dailyIdeas.selectedDate) {
+    state.dailyIdeas.selectedDate = payload.today || todayDateString();
+  }
+}
+
+async function loadDailyIdeaDetail(date) {
+  const targetDate = date || state.dailyIdeas.selectedDate || todayDateString();
+  const detail = await requestJson(`/api/daily-ideas/${encodeURIComponent(targetDate)}`);
+  state.dailyIdeas.selectedDate = detail.date || targetDate;
+  state.dailyIdeas.detail = detail;
+  const parsed = new Date(`${state.dailyIdeas.selectedDate}T00:00:00`);
+  if (!Number.isNaN(parsed.getTime())) {
+    state.dailyIdeas.calendarYear = parsed.getFullYear();
+    state.dailyIdeas.calendarMonth = parsed.getMonth() + 1;
+  }
+  loadDailyIdeaHandoffs();
+}
+
+async function openDailyIdeasPage() {
+  await runAction("打开灵感页 / Open inspiration", async () => {
+    state.dailyIdeasOpen = true;
+    state.recycleBinOpen = false;
+    await refreshDailyIdeas();
+    await loadDailyIdeaDetail(state.dailyIdeas.selectedDate || todayDateString());
+    await refreshDailyIdeas();
+    renderAll();
+    $("dailyIdeasPage")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+}
+
+async function selectDailyIdeaDate(date) {
+  if (!date) return;
+  try {
+    state.dailyIdeasOpen = true;
+    await loadDailyIdeaDetail(date);
+    await refreshDailyIdeas();
+    renderAll();
+  } catch (error) {
+    toast(`读取灵感日期失败 / Failed to load daily idea: ${error.message}`);
+  }
+}
+
+async function buildDailyIdeaHandoff() {
+  const date = state.dailyIdeas.selectedDate || todayDateString();
+  const seed = $("dailyIdeaSeedInput")?.value.trim() || "";
+  const count = Number($("dailyIdeaCountInput")?.value || 10);
+  state.dailyIdeas.seed = seed;
+  await runAction("生成今日热点生产卡 / Build daily idea packet", async () => {
+    const result = await requestJson(`/api/daily-ideas/${encodeURIComponent(date)}/hotspot-handoff`, {
+      method: "POST",
+      body: JSON.stringify({ seed, count }),
+    });
+    state.dailyIdeas.detail = result.daily_idea || state.dailyIdeas.detail;
+    addDailyIdeaHandoff({
+      title: result.title || `${date} 今日灵感生产卡`,
+      text: result.handoff_text || "",
+      callbackUrl: result.callback_url || "",
+      outputDir: result.output_dir || "",
+    });
+    toast("今日灵感生产卡已生成并尝试复制 / Daily idea packet ready");
+    renderAll();
+  });
+}
+
+async function openDailyIdeaFolder() {
+  const date = state.dailyIdeas.selectedDate || todayDateString();
+  try {
+    await requestJson(`/api/daily-ideas/${encodeURIComponent(date)}/open-path`, {
+      method: "POST",
+      body: JSON.stringify({ path: "." }),
+    });
+    toast("已打开当天灵感目录 / Daily idea folder opened");
+  } catch (error) {
+    toast(error?.message || "打开目录失败 / Failed to open folder");
+  }
+}
+
+async function refreshProjectCollections() {
+  const [payload, recyclePayload] = await Promise.all([
+    requestJson("/api/projects"),
+    requestJson("/api/recycle-bin/projects"),
+  ]);
+  state.projects = payload.projects || [];
+  state.recycledProjects = recyclePayload.projects || [];
+  if (state.selectedSlug && !state.projects.some((project) => project.slug === state.selectedSlug)) {
+    state.selectedSlug = null;
+    state.detail = null;
+  }
+  renderProjects();
+  renderRecycleBinPage();
 }
 
 async function loadDetail(slug) {
@@ -9568,6 +10197,77 @@ async function selectProject(slug) {
     await loadDetail(slug);
   } catch (error) {
     toast(`读取项目失败 / Failed to load project: ${error.message}`);
+  }
+}
+
+async function recycleProject(slug) {
+  if (!slug) return;
+  if (state.projectMutationBusy) {
+    toast("上一个项目操作还在处理 / Previous project action is still running");
+    return;
+  }
+  const project = state.projects.find((item) => item.slug === slug);
+  const name = project?.name || slug;
+  if (!window.confirm(`确定回收项目“${name}”？\n项目不会删除，可在回收站恢复。`)) return;
+  state.projectMutationBusy = true;
+  renderProjects();
+  toast("回收项目中 / Recycling project...");
+  try {
+    const result = await requestJson(`/api/projects/${encodeURIComponent(slug)}/recycle`, { method: "POST", body: "{}" });
+    state.projects = result.projects || state.projects.filter((item) => item.slug !== slug);
+    state.recycledProjects = result.recycled_projects || state.recycledProjects;
+    const wasSelected = state.selectedSlug === slug;
+    if (state.selectedSlug === slug) {
+      state.selectedSlug = null;
+      state.detail = null;
+    }
+    state.recycleBinOpen = true;
+    if (wasSelected) renderAll();
+    else {
+      renderProjects();
+      renderRecycleBinPage();
+    }
+    toast("项目已回收 / Project recycled");
+  } catch (error) {
+    toast(`回收项目失败 / Recycle failed: ${error.message}`);
+  } finally {
+    state.projectMutationBusy = false;
+    renderProjects();
+    renderRecycleBinPage();
+  }
+}
+
+async function restoreProject(trashName) {
+  if (!trashName) return;
+  if (state.projectMutationBusy) {
+    toast("上一个项目操作还在处理 / Previous project action is still running");
+    return;
+  }
+  const project = state.recycledProjects.find((item) => item.trash_name === trashName);
+  const name = project?.name || trashName;
+  if (!window.confirm(`恢复项目“${name}”？\n如果主项目区已有同名 slug，系统会阻止覆盖。`)) return;
+  state.projectMutationBusy = true;
+  renderProjects();
+  renderRecycleBinPage();
+  toast("恢复项目中 / Restoring project...");
+  try {
+    const result = await requestJson(`/api/recycle-bin/${encodeURIComponent(trashName)}/restore`, { method: "POST", body: "{}" });
+    state.projects = result.projects || state.projects;
+    state.recycledProjects = result.recycled_projects || state.recycledProjects.filter((item) => item.trash_name !== trashName);
+    renderProjects();
+    renderRecycleBinPage();
+    if (result.project?.slug) {
+      state.selectedSlug = result.project.slug;
+      state.detail = result.project;
+      renderAll();
+    }
+    toast("项目已恢复 / Project restored");
+  } catch (error) {
+    toast(`恢复项目失败 / Restore failed: ${error.message}`);
+  } finally {
+    state.projectMutationBusy = false;
+    renderProjects();
+    renderRecycleBinPage();
   }
 }
 
@@ -9748,6 +10448,10 @@ function bindKeyboardShortcuts() {
       closeReferenceBoard();
       return;
     }
+    if (event.key === "Escape" && state.recycleBinOpen) {
+      closeRecycleBinPage();
+      return;
+    }
     if (event.key === "Escape" && document.body.classList.contains("modal-open")) {
       closeAssetPreview();
       return;
@@ -9814,15 +10518,34 @@ function installButtonHelpObserver() {
 }
 
 function bindEvents() {
-  $("refreshBtn")?.addEventListener("click", () => runAction("刷新 / Refresh", loadProjects));
-  $("openIdeaLabBtn")?.addEventListener("click", () => $("ideaLab")?.scrollIntoView({ behavior: "smooth", block: "start" }));
-  $("openWhiteboxLabBtn")?.addEventListener("click", openWhiteboxLab);
+  $("refreshBtn")?.addEventListener("click", () => (state.dailyIdeasOpen ? openDailyIdeasPage() : runAction("刷新 / Refresh", loadProjects)));
+  $("openIdeaLabBtn")?.addEventListener("click", () => {
+    state.dailyIdeasOpen = false;
+    renderAll();
+    $("ideaLab")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+  $("openDailyIdeasBtn")?.addEventListener("click", openDailyIdeasPage);
+  $("openWhiteboxLabBtn")?.addEventListener("click", () => {
+    state.dailyIdeasOpen = false;
+    renderAll();
+    openWhiteboxLab();
+  });
+  $("openRecycleBinBtn")?.addEventListener("click", () => {
+    state.dailyIdeasOpen = false;
+    renderAll();
+    runAction("打开回收站 / Open recycle bin", openRecycleBinPage);
+  });
   $("openExternalRetouchBtn")?.addEventListener("click", (event) => {
     event.preventDefault();
+    state.dailyIdeasOpen = false;
     if (isExternalRetouchPage()) $("externalRetouchLab")?.scrollIntoView({ behavior: "smooth", block: "start" });
     else window.location.href = "/external-retouch";
   });
-  $("openBoardBtn")?.addEventListener("click", openReferenceBoard);
+  $("openBoardBtn")?.addEventListener("click", () => {
+    state.dailyIdeasOpen = false;
+    renderAll();
+    openReferenceBoard();
+  });
   $("closeBoardBtn")?.addEventListener("click", closeReferenceBoard);
   $("clearBoardBtn")?.addEventListener("click", clearReferenceBoard);
   $("boardImageLightboxCopy")?.addEventListener("click", (event) => {
