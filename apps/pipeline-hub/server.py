@@ -6941,16 +6941,33 @@ def create_video_upload_package(slug: str, payload: dict[str, object]) -> dict[s
 def build_idea_board_package_text(package: dict[str, object]) -> str:
     rows = package.get("rows", [])
     missing = package.get("missing", [])
+    scope = str(package.get("scope", "all") or "all")
+    act_id = str(package.get("act_id", "") or "")
+    act_title = str(package.get("act_title", "") or "")
+    if scope == "act":
+        title = f"{package.get('project_slug', '')} {act_id} 幕总包 / Act Package"
+        purpose = "用途：归档当前幕的文字卡、图片、图片提示词和 AIGC 视频提示词。"
+        row_heading = "## 当前幕创意卡 / Act Idea Cards"
+    else:
+        title = f"{package.get('project_slug', '')} 创意总包 / Idea Board Package"
+        purpose = "用途：归档创意区所有文字卡、图片、图片提示词和 AIGC 视频提示词。"
+        row_heading = "## 全部创意卡 / All Idea Cards"
     lines = [
-        f"# {package.get('project_slug', '')} 创意总包 / Idea Board Package",
+        f"# {title}",
         "",
-        "用途：归档创意区所有文字卡、图片、图片提示词和 AIGC 视频提示词。",
+        purpose,
+        "",
+        f"- Scope / 范围: {scope}",
+        f"- Act / 幕: {act_id}" if act_id else "- Act / 幕: all",
+        f"- Created / 创建时间: {package.get('created_at', '')}",
         "",
         "## 图片目录 / Image Folder",
         str(package.get("images_dir", "")),
         "",
         "## 图片清单 / Image Order",
     ]
+    if act_title:
+        lines.insert(6, f"- Act title / 幕标题: {act_title}")
     image_rows = [row for row in rows if row.get("image_file")]
     if image_rows:
         for row in image_rows:
@@ -6961,7 +6978,7 @@ def build_idea_board_package_text(package: dict[str, object]) -> str:
         lines.extend(["", "## 缺图条目 / Missing Images"])
         for row in missing:
             lines.append(f"- {row.get('item_id', '')} | {row.get('beat', '')} | {row.get('reason', '')}")
-    lines.extend(["", "## 全部创意卡 / All Idea Cards"])
+    lines.extend(["", row_heading])
     for row in rows:
         lines.extend(
             [
@@ -6993,7 +7010,12 @@ def create_idea_board_package(slug: str, payload: dict[str, object]) -> dict[str
     path = project_path(slug)
     board = load_idea_board(path, slug)
     scope = str(payload.get("scope", "all") or "all").strip()
+    if scope not in {"all", "act"}:
+        scope = "all"
     act_id = str(payload.get("act_id", "") or "").strip()
+    if scope == "act" and not act_id:
+        raise ValueError("请选择一个幕再生成幕总包 / Select an act before creating an act package.")
+    act = next((item for item in board.get("acts", []) if isinstance(item, dict) and str(item.get("act_id", "") or "").strip() == act_id), {})
     rows: list[dict[str, object]] = []
     for row in board.get("rows", []):
         if not isinstance(row, dict):
@@ -7005,7 +7027,8 @@ def create_idea_board_package(slug: str, payload: dict[str, object]) -> dict[str
         rows.append(row)
     package_id = f"IBP_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
     project_dir = safe_file_stem(slug)
-    package_rel_dir = Path("11_delivery") / "idea_board_packages" / project_dir / package_id
+    scope_dir = "all" if scope == "all" else safe_file_stem(act_id)
+    package_rel_dir = Path("11_delivery") / "idea_board_packages" / project_dir / scope_dir / package_id
     package_dir = path / package_rel_dir
     images_dir = package_dir / "images"
     images_dir.mkdir(parents=True, exist_ok=True)
@@ -7056,6 +7079,7 @@ def create_idea_board_package(slug: str, payload: dict[str, object]) -> dict[str
         "created_at": now_iso(),
         "scope": scope,
         "act_id": act_id,
+        "act_title": act.get("title", "") if isinstance(act, dict) else "",
         "package_dir": str(package_rel_dir),
         "package_absolute_dir": str(package_dir),
         "images_dir": str(package_rel_dir / "images"),
@@ -7072,6 +7096,9 @@ def create_idea_board_package(slug: str, payload: dict[str, object]) -> dict[str
     return {
         "ok": True,
         "package_id": package_id,
+        "scope": scope,
+        "act_id": act_id,
+        "act_title": act.get("title", "") if isinstance(act, dict) else "",
         "package_path": str(text_rel_path),
         "package_absolute_path": str(path / text_rel_path),
         "package_dir": str(package_rel_dir),

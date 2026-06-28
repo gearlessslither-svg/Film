@@ -6886,7 +6886,8 @@ function renderIdeaLab() {
         <button id="cardPreflightBtn" class="command-button" data-help="在生成图片包前检查重复编号、空提示词、缺白模、缺连续性锁和空间逻辑风险。" type="button">生成前检查 / Preflight</button>
         <button id="cardBuildImagePacketBtn" class="command-button" data-help="把当前可见且勾选的分镜卡打包成图片生成任务。" type="button">生成图片包 / Image Pack</button>
         <button id="currentVersionPackageBtn" class="command-button" data-help="收集当前幕/场景已标为 Final 或参考的图片，供视频生成阶段使用。" type="button">Final图包 / Final Pack</button>
-        <button id="ideaBoardPackageBtn" class="command-button" data-help="打包创意区所有文字卡、图片提示词、视频提示词和已生成图片，并提供打开图片包入口。" type="button">创意总包 / Idea Pack</button>
+        <button id="ideaBoardPackageBtn" class="command-button" data-help="打包全项目创意区所有文字卡、图片提示词、视频提示词和已生成图片，并提供打开总包入口。" type="button">创意总包 / Idea Pack</button>
+        <button id="actBoardPackageBtn" class="command-button" data-help="只打包当前幕的文字卡、图片提示词、视频提示词和已生成图片，并提供打开幕总包入口。" type="button">幕总包 / Act Pack</button>
         <button id="videoUploadPackageBtn" class="command-button primary" data-help="按当前幕顺序复制所有可用分镜图到上传文件夹，并生成一份可粘贴到 AIGC 视频网站的连续镜头提示词。" type="button">视频上传包 / Video Upload</button>
         <button id="batchVersionQaBtn" class="command-button" data-help="批量检查当前可见分镜图的清晰度、噪点、曝光和对比。" type="button">批量质检 / Batch QA</button>
         <button id="qaRepairPacketBtn" class="command-button" data-help="把低分图片整理成修复包，便于集中重生成。" type="button">低分修复包 / QA Fix</button>
@@ -8214,35 +8215,53 @@ async function createVideoUploadPackage() {
   });
 }
 
-async function createIdeaBoardPackage() {
+async function createIdeaBoardPackageForScope(scope) {
   if (!state.selectedSlug || !state.detail) return;
-  await runAction("生成创意总包 / Idea board package", async () => {
+  const isActPackage = scope === "act";
+  await runAction(isActPackage ? "生成幕总包 / Act package" : "生成创意总包 / Idea board package", async () => {
     const board = collectIdeaBoardFromDom();
     await persistIdeaBoard(board, { toast: false, render: false });
+    const actId = activeStoryActId() || board.acts?.[0]?.act_id || "";
+    if (isActPackage && !actId) {
+      toast("没有可打包的当前幕 / No current act to package");
+      return;
+    }
     const result = await requestJson(`/api/projects/${state.selectedSlug}/idea-board-package`, {
       method: "POST",
-      body: JSON.stringify({ scope: "all" }),
+      body: JSON.stringify(isActPackage ? { scope: "act", act_id: actId } : { scope: "all" }),
     });
     state.detail = result.project || state.detail;
     const missing = Number(result.missing_count || 0);
+    const label = isActPackage ? "幕总包" : "创意总包";
+    const labelEn = isActPackage ? "Act package" : "Idea package";
     const message = missing
-      ? `创意总包已生成：${result.row_count || 0} 条，${result.image_count || 0} 张图片，${missing} 条缺图 / Idea package ready with missing images`
-      : `创意总包已生成：${result.row_count || 0} 条，${result.image_count || 0} 张图片 / Idea package ready`;
+      ? `${label}已生成：${result.row_count || 0} 条，${result.image_count || 0} 张图片，${missing} 条缺图 / ${labelEn} ready with missing images`
+      : `${label}已生成：${result.row_count || 0} 条，${result.image_count || 0} 张图片 / ${labelEn} ready`;
     addIdeaHandoff({
-      kind: "idea_board_package",
+      kind: isActPackage ? "act_board_package" : "idea_board_package",
       status: missing ? "missing_images" : "ready",
       message,
-      title: `${result.row_count || 0} 条 · ${result.image_count || 0} 张图 → 创意总包`,
+      title: isActPackage
+        ? `${result.act_id || actId} · ${result.row_count || 0} 条 · ${result.image_count || 0} 张图 → 幕总包`
+        : `${result.row_count || 0} 条 · ${result.image_count || 0} 张图 → 创意总包`,
       path: result.package_path || "",
       openFolder: result.package_dir || "",
-      openFolderLabel: "打开总包 / Open Pack",
+      openFolderLabel: isActPackage ? "打开幕总包 / Open Act Pack" : "打开创意总包 / Open Idea Pack",
       imageFolder: result.image_package_dir || result.images_dir || "",
       codexCompletionNote: false,
       text: result.clipboard_text || result.handoff_text || "",
     });
-    toast(`${message} · ${result.image_package_dir || result.images_dir || ""}`);
+    toast(`${message} · ${result.package_dir || ""}`);
     renderAll();
   });
+}
+
+async function createIdeaBoardPackage() {
+  await createIdeaBoardPackageForScope("all");
+}
+
+async function createActBoardPackage() {
+  await createIdeaBoardPackageForScope("act");
 }
 
 function setVisibleCardSelection(checked) {
@@ -8568,6 +8587,7 @@ function bindIdeaLabEvents() {
   $("cardBuildImagePacketBtn")?.addEventListener("click", () => createCardImagePacket());
   $("currentVersionPackageBtn")?.addEventListener("click", createCurrentVersionPackage);
   $("ideaBoardPackageBtn")?.addEventListener("click", createIdeaBoardPackage);
+  $("actBoardPackageBtn")?.addEventListener("click", createActBoardPackage);
   $("videoUploadPackageBtn")?.addEventListener("click", createVideoUploadPackage);
   $("batchVersionQaBtn")?.addEventListener("click", runVisibleCardVersionQa);
   $("qaRepairPacketBtn")?.addEventListener("click", createQaRepairPacket);
