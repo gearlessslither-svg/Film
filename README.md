@@ -6,6 +6,24 @@ This folder is a small delivery repo for the current Reference-003 preview outpu
 
 ## Files
 
+- `preview/reference003_after_identity_repair_r1_1080p_with_music_20260630.mp4`
+  - Current preview after the image-first repair pass.
+  - Uses the real R1 replacement images for `OP_SHOT_024`, `OP_SHOT_025`, and `OP_SHOT_034`.
+  - 1920x1080 MP4 with the 21:9 image area letterboxed inside a standard 1080p frame.
+  - Reference video music track muxed in.
+  - Duration: 84.437 seconds audio / 84.417 seconds video.
+  - Size: 29,349,069 bytes.
+  - SHA-256: `95d6eeb26641bc90f2d91c1103aab179c60b2af7a9dddb5bd63ae8a7bbb4851b`
+
+- `preview/reference003_identity_locked_workprint_v2_1080p_with_music_20260630.mp4`
+  - Superseded intermediate workprint v2 after director feedback.
+  - Rejected `OP_SHOT_025` and `OP_SHOT_034` were replaced with temporary proxies before R1 images were generated.
+  - 1920x1080 MP4 with the 21:9 image area letterboxed inside a standard 1080p frame.
+  - Reference video music track muxed in.
+  - Duration: 84.437 seconds audio / 84.417 seconds video.
+  - Size: 29,326,368 bytes.
+  - SHA-256: `ff814f06cfaabe3703bce3ce360374cc4fe0d46ac600727b6a2aae96a1aaf274`
+
 - `preview/reference003_keyframe_clean_animatic_1080p_mpeg4_with_music_20260630.mp4`
   - Cleaner high-resolution preview rebuilt from the original 1915x821 keyframe PNGs.
   - 1920x1080 MP4 with the 21:9 image area letterboxed inside a standard 1080p frame.
@@ -34,3 +52,4 @@ This is a preview/animatic deliverable, not the final AIGC motion-video rough cu
 
 The official 21 AIGC video segments are still pending generation. This preview uses the completed
 keyframes plus the source reference audio so the timing and music feel can be reviewed remotely.
+The current R1 preview uses repaired still images, not final generated motion-video segments.

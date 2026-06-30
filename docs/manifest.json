@@ -2,10 +2,72 @@
   "project_slug": "blue-water-citypop-op",
   "reference": "reference-003",
   "generated_at": "2026-06-30",
-  "delivery_type": "keyframe_animatic_preview_with_music",
-  "status": "preview_ready",
-  "note": "This is a 42-keyframe animatic preview with the reference audio muxed in. It is not the final AIGC motion-video rough cut.",
+  "delivery_type": "keyframe_animatic_previews_with_music",
+  "status": "current_preview_ready",
+  "note": "This is a set of 42-keyframe animatic previews with the reference audio muxed in. The current R1 preview uses real replacement stills for OP_SHOT_024, OP_SHOT_025, and OP_SHOT_034 after the image-first repair pass. It is not the final AIGC motion-video rough cut.",
   "files": [
+    {
+      "path": "preview/reference003_after_identity_repair_r1_1080p_with_music_20260630.mp4",
+      "role": "current_preview_after_identity_repair_r1",
+      "duration_seconds": 84.437,
+      "video_duration_seconds": 84.417,
+      "size_bytes": 29349069,
+      "sha256": "95d6eeb26641bc90f2d91c1103aab179c60b2af7a9dddb5bd63ae8a7bbb4851b",
+      "video": {
+        "codec": "mpeg4",
+        "width": 1920,
+        "height": 1080,
+        "fps": 24
+      },
+      "audio": {
+        "codec": "aac",
+        "bit_rate": 189765
+      },
+      "r1_replacements": [
+        {
+          "item_id": "OP_SHOT_024",
+          "output_path": "08_generation/jobs/REFERENCE003_IDENTITY_REPAIR_R1_20260630/outputs/OP_SHOT_024_VEHICLE_LOCK_R1.png"
+        },
+        {
+          "item_id": "OP_SHOT_025",
+          "output_path": "08_generation/jobs/REFERENCE003_IDENTITY_REPAIR_R1_20260630/outputs/OP_SHOT_025_R1.png"
+        },
+        {
+          "item_id": "OP_SHOT_034",
+          "output_path": "08_generation/jobs/REFERENCE003_IDENTITY_REPAIR_R1_20260630/outputs/OP_SHOT_034_R1.png"
+        }
+      ]
+    },
+    {
+      "path": "preview/reference003_identity_locked_workprint_v2_1080p_with_music_20260630.mp4",
+      "role": "superseded_identity_locked_workprint_v2_proxy",
+      "duration_seconds": 84.437,
+      "video_duration_seconds": 84.417,
+      "size_bytes": 29326368,
+      "sha256": "ff814f06cfaabe3703bce3ce360374cc4fe0d46ac600727b6a2aae96a1aaf274",
+      "video": {
+        "codec": "mpeg4",
+        "width": 1920,
+        "height": 1080,
+        "fps": 24
+      },
+      "audio": {
+        "codec": "aac",
+        "bit_rate": 189765
+      },
+      "substitutions": [
+        {
+          "item_id": "OP_SHOT_025",
+          "proxy_source_item_id": "OP_SHOT_021",
+          "reason": "Rejected large group portrait replaced by accepted group-running workprint frame."
+        },
+        {
+          "item_id": "OP_SHOT_034",
+          "proxy_source_item_id": "OP_SHOT_011",
+          "reason": "Rejected sea-background Nadia replaced by approved Nadia face-lock proxy."
+        }
+      ]
+    },
     {
       "path": "preview/reference003_keyframe_clean_animatic_1080p_mpeg4_with_music_20260630.mp4",
       "role": "preview_video_highres",
