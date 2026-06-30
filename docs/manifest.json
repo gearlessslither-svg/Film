@@ -1,0 +1,25 @@
+{
+  "project_slug": "blue-water-citypop-op",
+  "reference": "reference-003",
+  "generated_at": "2026-06-30",
+  "delivery_type": "keyframe_animatic_preview_with_music",
+  "status": "preview_ready",
+  "note": "This is a 42-keyframe animatic preview with the reference audio muxed in. It is not the final AIGC motion-video rough cut.",
+  "files": [
+    {
+      "path": "preview/reference003_keyframe_animatic_with_music_20260630.mp4",
+      "role": "preview_video",
+      "duration_seconds": 84.437,
+      "size_bytes": 4911003,
+      "sha256": "925dd7280c4c218c39b25e10d2539f0029eab5daf4993acd4cea86719eb7c83d"
+    },
+    {
+      "path": "audio/reference003_animatic_music_20260630.m4a",
+      "role": "preview_audio_only",
+      "duration_seconds": 84.437,
+      "size_bytes": 1372110,
+      "sha256": "e3e39d01a07d655010468c5cc5ec7ff3bdf8b0e6fcb0e76237d7c37d43f400bd"
+    }
+  ]
+}
+
