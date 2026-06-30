@@ -7,6 +7,23 @@
   "note": "This is a 42-keyframe animatic preview with the reference audio muxed in. It is not the final AIGC motion-video rough cut.",
   "files": [
     {
+      "path": "preview/reference003_keyframe_clean_animatic_1080p_mpeg4_with_music_20260630.mp4",
+      "role": "preview_video_highres",
+      "duration_seconds": 84.437,
+      "size_bytes": 29299948,
+      "sha256": "09ca49dce1cf00d0778b7401403faada831628ae500dc4a5c4f027bfbf063abc",
+      "video": {
+        "codec": "mpeg4",
+        "width": 1920,
+        "height": 1080,
+        "fps": 24
+      },
+      "audio": {
+        "codec": "aac",
+        "bit_rate": 189765
+      }
+    },
+    {
       "path": "preview/reference003_keyframe_animatic_with_music_20260630.mp4",
       "role": "preview_video",
       "duration_seconds": 84.437,
@@ -22,4 +39,3 @@
     }
   ]
 }
-
