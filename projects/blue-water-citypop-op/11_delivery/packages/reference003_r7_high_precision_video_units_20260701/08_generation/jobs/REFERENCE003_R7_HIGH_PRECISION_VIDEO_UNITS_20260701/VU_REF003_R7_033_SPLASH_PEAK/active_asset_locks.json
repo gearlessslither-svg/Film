@@ -1,0 +1,10 @@
+[
+  {
+    "group": "props_vehicles_symbols",
+    "asset_id": "water_burst_transition",
+    "status": "official_transition_lock",
+    "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_038.png",
+    "global_lock_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_global_asset_locks/props_vehicles_symbols_water_burst_transition.png",
+    "exists": true
+  }
+]

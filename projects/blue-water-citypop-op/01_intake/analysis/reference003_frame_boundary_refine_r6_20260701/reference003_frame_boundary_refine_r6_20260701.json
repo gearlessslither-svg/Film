@@ -1,0 +1,237 @@
+{
+  "schema_version": "reference003_frame_boundary_refine_r6_v1",
+  "source_video": "01_intake/references/reference-003-full-op-2160p.mp4",
+  "fps": 23.976018059011626,
+  "frame_count": 2024,
+  "duration_sec": 84.418,
+  "method": "OpenCV full-frame scan at source frame rate; grayscale, HSV histogram, and edge deltas; robust hard-boundary and single-frame flash candidates.",
+  "hard_threshold": 0.346942,
+  "flash_threshold": 0.300739,
+  "candidate_boundaries": [
+    {
+      "kind": "hard_boundary_candidate",
+      "frame": 16,
+      "time_sec": 0.667,
+      "timecode": "00:00.67",
+      "score": 0.81266
+    },
+    {
+      "kind": "hard_boundary_candidate",
+      "frame": 353,
+      "time_sec": 14.723,
+      "timecode": "00:14.72",
+      "score": 0.49533
+    },
+    {
+      "kind": "hard_boundary_candidate",
+      "frame": 562,
+      "time_sec": 23.44,
+      "timecode": "00:23.44",
+      "score": 0.34794
+    },
+    {
+      "kind": "hard_boundary_candidate",
+      "frame": 573,
+      "time_sec": 23.899,
+      "timecode": "00:23.90",
+      "score": 0.44837
+    },
+    {
+      "kind": "hard_boundary_candidate",
+      "frame": 643,
+      "time_sec": 26.818,
+      "timecode": "00:26.82",
+      "score": 0.43224
+    },
+    {
+      "kind": "hard_boundary_candidate",
+      "frame": 658,
+      "time_sec": 27.444,
+      "timecode": "00:27.44",
+      "score": 0.52175
+    },
+    {
+      "kind": "hard_boundary_candidate",
+      "frame": 688,
+      "time_sec": 28.695,
+      "timecode": "00:28.70",
+      "score": 0.36739
+    },
+    {
+      "kind": "hard_boundary_candidate",
+      "frame": 729,
+      "time_sec": 30.405,
+      "timecode": "00:30.41",
+      "score": 0.46417
+    },
+    {
+      "kind": "hard_boundary_candidate",
+      "frame": 743,
+      "time_sec": 30.989,
+      "timecode": "00:30.99",
+      "score": 0.46412
+    },
+    {
+      "kind": "hard_boundary_candidate",
+      "frame": 814,
+      "time_sec": 33.951,
+      "timecode": "00:33.95",
+      "score": 0.47453
+    },
+    {
+      "kind": "hard_boundary_candidate",
+      "frame": 829,
+      "time_sec": 34.576,
+      "timecode": "00:34.58",
+      "score": 0.52165
+    },
+    {
+      "kind": "hard_boundary_candidate",
+      "frame": 892,
+      "time_sec": 37.204,
+      "timecode": "00:37.20",
+      "score": 0.41436
+    },
+    {
+      "kind": "hard_boundary_candidate",
+      "frame": 914,
+      "time_sec": 38.121,
+      "timecode": "00:38.12",
+      "score": 0.47117
+    },
+    {
+      "kind": "hard_boundary_candidate",
+      "frame": 1137,
+      "time_sec": 47.422,
+      "timecode": "00:47.42",
+      "score": 0.41874
+    },
+    {
+      "kind": "hard_boundary_candidate",
+      "frame": 1143,
+      "time_sec": 47.673,
+      "timecode": "00:47.67",
+      "score": 0.4249
+    },
+    {
+      "kind": "hard_boundary_candidate",
+      "frame": 1149,
+      "time_sec": 47.923,
+      "timecode": "00:47.92",
+      "score": 0.36538
+    },
+    {
+      "kind": "hard_boundary_candidate",
+      "frame": 1155,
+      "time_sec": 48.173,
+      "timecode": "00:48.17",
+      "score": 0.40941
+    },
+    {
+      "kind": "hard_boundary_candidate",
+      "frame": 1167,
+      "time_sec": 48.674,
+      "timecode": "00:48.67",
+      "score": 0.50551
+    },
+    {
+      "kind": "hard_boundary_candidate",
+      "frame": 1172,
+      "time_sec": 48.882,
+      "timecode": "00:48.88",
+      "score": 0.39777
+    },
+    {
+      "kind": "hard_boundary_candidate",
+      "frame": 1181,
+      "time_sec": 49.258,
+      "timecode": "00:49.26",
+      "score": 0.37396
+    },
+    {
+      "kind": "hard_boundary_candidate",
+      "frame": 1215,
+      "time_sec": 50.676,
+      "timecode": "00:50.68",
+      "score": 0.39844
+    },
+    {
+      "kind": "hard_boundary_candidate",
+      "frame": 1237,
+      "time_sec": 51.593,
+      "timecode": "00:51.59",
+      "score": 0.45256
+    },
+    {
+      "kind": "hard_boundary_candidate",
+      "frame": 1247,
+      "time_sec": 52.01,
+      "timecode": "00:52.01",
+      "score": 0.35709
+    },
+    {
+      "kind": "hard_boundary_candidate",
+      "frame": 1257,
+      "time_sec": 52.427,
+      "timecode": "00:52.43",
+      "score": 0.47887
+    },
+    {
+      "kind": "hard_boundary_candidate",
+      "frame": 1473,
+      "time_sec": 61.436,
+      "timecode": "01:01.44",
+      "score": 0.38192
+    },
+    {
+      "kind": "hard_boundary_candidate",
+      "frame": 1557,
+      "time_sec": 64.94,
+      "timecode": "01:04.94",
+      "score": 0.34859
+    },
+    {
+      "kind": "hard_boundary_candidate",
+      "frame": 1593,
+      "time_sec": 66.441,
+      "timecode": "01:06.44",
+      "score": 0.49649
+    },
+    {
+      "kind": "hard_boundary_candidate",
+      "frame": 1711,
+      "time_sec": 71.363,
+      "timecode": "01:11.36",
+      "score": 0.4735
+    },
+    {
+      "kind": "hard_boundary_candidate",
+      "frame": 1805,
+      "time_sec": 75.284,
+      "timecode": "01:15.28",
+      "score": 0.37585
+    },
+    {
+      "kind": "hard_boundary_candidate",
+      "frame": 1937,
+      "time_sec": 80.789,
+      "timecode": "01:20.79",
+      "score": 0.49113
+    }
+  ],
+  "single_frame_flash_candidates": [
+    {
+      "kind": "single_frame_flash_candidate",
+      "frame": 353,
+      "time_sec": 14.723,
+      "timecode": "00:14.72",
+      "d_in": 0.49533,
+      "d_out": 0.44569,
+      "bridge_prev_next": 0.04262
+    }
+  ],
+  "metrics_csv": "01_intake/analysis/reference003_frame_boundary_refine_r6_20260701/reference003_frame_level_metrics.csv",
+  "opening_0_25_contact_sheet": "01_intake/analysis/reference003_frame_boundary_refine_r6_20260701/opening_00_25_4fps_contact_sheet.jpg",
+  "top_boundary_candidate_sheet": "01_intake/analysis/reference003_frame_boundary_refine_r6_20260701/top_boundary_candidate_triplets.jpg",
+  "single_frame_flash_candidate_sheet": "01_intake/analysis/reference003_frame_boundary_refine_r6_20260701/single_frame_flash_candidate_triplets.jpg"
+}

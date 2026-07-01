@@ -1,0 +1,44 @@
+[
+  {
+    "order": 1,
+    "item_id": "OP_SHOT_005",
+    "kind": "official_keyframe",
+    "time_sec": 7.5,
+    "timecode": "00:07.50",
+    "role": "图1 / no_text_credit_safe_bird",
+    "beat": "无字职员表安全位",
+    "difference_reason": "",
+    "source_reference_frame": "",
+    "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_005.png",
+    "packaged_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_003_CREDIT_SAFE_BIRD_CLOUDS/keyframes/01_OP_SHOT_005.png",
+    "exists": true
+  },
+  {
+    "order": 2,
+    "item_id": "OP_SHOT_006",
+    "kind": "official_keyframe",
+    "time_sec": 11.5,
+    "timecode": "00:11.50",
+    "role": "图2 / cloud_bank_growth",
+    "beat": "云层增长填画",
+    "difference_reason": "",
+    "source_reference_frame": "",
+    "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_006_v2.png",
+    "packaged_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_003_CREDIT_SAFE_BIRD_CLOUDS/keyframes/02_OP_SHOT_006.png",
+    "exists": true
+  },
+  {
+    "order": 3,
+    "item_id": "R5_VU_REF003_003_CREDIT_SAFE_BIRD_CLOUDS_014000ms_01",
+    "kind": "r5_adaptive_generated",
+    "time_sec": 14.0,
+    "timecode": "00:14.00",
+    "role": "adaptive_primary",
+    "beat": "Cloud/bird/title-safe composition changes over a long no-text sky section; adds clean sky state for preview and AIGC prompt.",
+    "difference_reason": "Cloud/bird/title-safe composition changes over a long no-text sky section; adds clean sky state for preview and AIGC prompt.",
+    "source_reference_frame": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0029.jpg",
+    "source_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_003_CREDIT_SAFE_BIRD_CLOUDS_014000ms_01.png",
+    "packaged_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_003_CREDIT_SAFE_BIRD_CLOUDS/keyframes/03_R5_VU_REF003_003_CREDIT_SAFE_BIRD_CLOUDS_014000ms_01.png",
+    "exists": true
+  }
+]

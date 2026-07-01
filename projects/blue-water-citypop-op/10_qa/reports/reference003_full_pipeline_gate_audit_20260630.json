@@ -1,0 +1,108 @@
+{
+  "schema_version": "reference003_full_pipeline_gate_audit_v1",
+  "project_slug": "blue-water-citypop-op",
+  "created_at": "2026-06-30T15:49:49+08:00",
+  "status": "not_complete",
+  "completion_proven": false,
+  "all_commands_ok": true,
+  "command_results": [
+    {
+      "name": "project_validation",
+      "command": "python3 /Users/jaychoupp/Story/Film/scripts/validate_aigc_project.py /Users/jaychoupp/Story/Film/projects/blue-water-citypop-op",
+      "returncode": 0,
+      "ok": true,
+      "output_tail": "project_status=pass\npass: project_folder_exists /Users/jaychoupp/Story/Film/projects/blue-water-citypop-op\npass: required_directories\npass: required_files\npass: rar_exclusion\npass: shot_list_schema\npass: project_manifest_contract\npass: script_first_director_script requires script-first principle and one-take rule\npass: video_units_contract\npass: transition_edges_contract\npass: video_unit_camera_manifest_contract\npass: video_reference_remake_support"
+    },
+    {
+      "name": "keyframe_status_previs_rebuild",
+      "command": "python3 /Users/jaychoupp/Story/Film/projects/blue-water-citypop-op/10_qa/reference_match/REFERENCE003_OFFICIAL_KEYFRAME_STATUS_20260630/rebuild_reference003_keyframe_status_previs.py",
+      "returncode": 0,
+      "ok": true,
+      "output_tail": "{\n  \"status\": \"ok\",\n  \"official_generated_keyframes\": 42,\n  \"pending_keyframes\": 0,\n  \"status_sheet\": \"10_qa/reference_match/REFERENCE003_OFFICIAL_KEYFRAME_STATUS_20260630/reference003_official_keyframe_status_sheet_42up.jpg\",\n  \"status_animatic_mp4\": \"09_edit/rough_cut/reference003_keyframe_status_animatic_20260630.mp4\",\n  \"decode_ok\": true,\n  \"duration_line\": \"Duration: 00:01:24.50, start: 0.000000, bitrate: 334 kb/s\"\n}"
+    },
+    {
+      "name": "video_unit_readiness_rebuild",
+      "command": "python3 /Users/jaychoupp/Story/Film/projects/blue-water-citypop-op/08_generation/jobs/REFERENCE003_VIDEO_UNITS_READY_20260630/rebuild_reference003_video_unit_readiness.py",
+      "returncode": 0,
+      "ok": true,
+      "output_tail": "{\n  \"status\": \"all_video_units_ready_for_generation\",\n  \"summary\": {\n    \"video_units_total\": 21,\n    \"video_units_ready_for_generation\": 21,\n    \"video_units_blocked_until_keyframes_complete\": 0,\n    \"keyframes_total\": 42,\n    \"keyframes_generated_reference003_qa_pass\": 42,\n    \"keyframes_prompt_ready_reference003\": 0,\n    \"transition_edges_total\": 41,\n    \"missing_outputs_for_passed_keyframes\": []\n  },\n  \"manifest\": \"08_generation/jobs/REFERENCE003_VIDEO_UNITS_READY_20260630/manifest.json\"\n}"
+    },
+    {
+      "name": "roughcut_assembly_readiness",
+      "command": "python3 /Users/jaychoupp/Story/Film/projects/blue-water-citypop-op/09_edit/rough_cut/assemble_reference003_roughcut_from_segments.py --check-only --print-json",
+      "returncode": 0,
+      "ok": true,
+      "output_tail": "{\n  \"status\": \"waiting_for_segments\",\n  \"summary\": {\n    \"segments_total\": 21,\n    \"segments_existing\": 0,\n    \"segments_decode_pass\": 0,\n    \"missing_segments\": 21,\n    \"failed_decode_segments\": 0,\n    \"ready_for_assembly\": false,\n    \"roughcut_exists\": false,\n    \"roughcut_decode_ok\": false,\n    \"roughcut_duration_sec\": null,\n    \"roughcut_duration_delta_sec\": null,\n    \"roughcut_duration_match_within_1s\": false\n  },\n  \"report\": \"10_qa/reports/reference003_roughcut_assembly_20260630.md\"\n}"
+    },
+    {
+      "name": "roughcut_transition_audit_rebuild",
+      "command": "python3 /Users/jaychoupp/Story/Film/projects/blue-water-citypop-op/09_edit/rough_cut/rebuild_reference003_roughcut_transition_audit.py",
+      "returncode": 0,
+      "ok": true,
+      "output_tail": "{\n  \"status\": \"template_waiting_for_video_segments\",\n  \"summary\": {\n    \"segments_total\": 21,\n    \"segments_existing\": 0,\n    \"segments_decode_pass\": 0,\n    \"transition_edges_total\": 41,\n    \"transition_edges_reviewed\": 0,\n    \"roughcut_path\": \"09_edit/rough_cut/reference003_full_op_roughcut_20260630.mp4\",\n    \"roughcut_exists\": false,\n    \"roughcut_decode_ok\": false,\n    \"roughcut_duration_sec\": null,\n    \"roughcut_duration_delta_sec\": null,\n    \"roughcut_duration_match_within_1s\": false\n  },\n  \"report\": \"10_qa/reports/reference003_roughcut_transition_audit_template_20260630.md\"\n}"
+    },
+    {
+      "name": "no_text_logo_safety_review_refresh",
+      "command": "python3 /Users/jaychoupp/Story/Film/projects/blue-water-citypop-op/10_qa/reports/update_reference003_no_text_logo_safety_review.py --refresh --print-json",
+      "returncode": 0,
+      "ok": true,
+      "output_tail": "      \"segment\": {\n        \"total\": 21,\n        \"exists\": 0,\n        \"pass\": 0,\n        \"needs_fix\": 0,\n        \"pending\": 21\n      },\n      \"roughcut\": {\n        \"total\": 1,\n        \"exists\": 0,\n        \"pass\": 0,\n        \"needs_fix\": 0,\n        \"pending\": 1\n      }\n    },\n    \"completion_gate_pass\": false\n  },\n  \"review_json\": \"10_qa/reports/reference003_no_text_logo_safety_review_20260630.json\",\n  \"review_md\": \"10_qa/reports/reference003_no_text_logo_safety_review_20260630.md\"\n}"
+    },
+    {
+      "name": "completion_audit_rebuild",
+      "command": "python3 /Users/jaychoupp/Story/Film/projects/blue-water-citypop-op/10_qa/reports/rebuild_reference003_completion_audit.py",
+      "returncode": 0,
+      "ok": true,
+      "output_tail": "{\n  \"status\": \"template_not_complete\",\n  \"completion_proven\": false,\n  \"passed_gates\": 6,\n  \"total_gates\": 11,\n  \"not_complete_reason\": \"Remaining keyframes, video segments, transition review, roughcut decode/duration, or manual no-text safety evidence is incomplete.\"\n}"
+    }
+  ],
+  "summary": {
+    "keyframes_official_generated": 42,
+    "keyframes_pending": 0,
+    "video_units_ready": 21,
+    "video_units_blocked": 0,
+    "segments_decode_pass": 0,
+    "transition_edges_reviewed": 0,
+    "roughcut_decode_ok": false,
+    "no_text_logo_safety_pass": false,
+    "completion_gates_passed": 6,
+    "completion_gates_total": 11
+  },
+  "blocking_gates": [
+    {
+      "gate": "video_units_21_generated",
+      "current": "0/21 decode pass",
+      "evidence": "09_edit/rough_cut/reference003_roughcut_transition_audit_template.json"
+    },
+    {
+      "gate": "transition_edges_41_reviewed",
+      "current": "0/41 reviewed",
+      "evidence": "09_edit/rough_cut/reference003_roughcut_transition_audit_template.json"
+    },
+    {
+      "gate": "roughcut_full_decode",
+      "current": "decode=False",
+      "evidence": "09_edit/rough_cut/reference003_full_op_roughcut_20260630.mp4"
+    },
+    {
+      "gate": "duration_match",
+      "current": "duration=None; delta=None",
+      "evidence": "09_edit/rough_cut/reference003_full_op_roughcut_20260630.mp4"
+    },
+    {
+      "gate": "no_text_logo_safety",
+      "current": "0/64 effective pass; gate=False",
+      "evidence": "10_qa/reports/reference003_no_text_logo_safety_review_20260630.json"
+    }
+  ],
+  "evidence_files": {
+    "keyframe_status_manifest": "10_qa/reference_match/REFERENCE003_OFFICIAL_KEYFRAME_STATUS_20260630/manifest.json",
+    "video_unit_readiness_manifest": "08_generation/jobs/REFERENCE003_VIDEO_UNITS_READY_20260630/manifest.json",
+    "roughcut_assembly_report": "10_qa/reports/reference003_roughcut_assembly_20260630.json",
+    "roughcut_transition_audit": "09_edit/rough_cut/reference003_roughcut_transition_audit_template.json",
+    "no_text_logo_safety_review": "10_qa/reports/reference003_no_text_logo_safety_review_20260630.json",
+    "completion_audit": "10_qa/reports/reference003_completion_audit_template_20260630.json"
+  },
+  "boundary": "This audit proves the current gate state only; it cannot replace missing image/video generation or manual visual safety review.",
+  "rebuild_script": "10_qa/reports/run_reference003_full_pipeline_gate_audit.py"
+}

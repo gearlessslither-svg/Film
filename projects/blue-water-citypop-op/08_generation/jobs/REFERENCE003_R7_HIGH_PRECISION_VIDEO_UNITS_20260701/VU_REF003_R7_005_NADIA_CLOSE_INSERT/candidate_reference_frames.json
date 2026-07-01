@@ -1,0 +1,26 @@
+[
+  {
+    "asset_id": "R7_CAND_005_start_025931ms",
+    "parent_video_unit_id": "VU_REF003_R7_005_NADIA_CLOSE_INSERT",
+    "role": "start",
+    "source_time_sec": 25.931,
+    "source_timecode": "00:25.93",
+    "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_005_NADIA_CLOSE_INSERT/candidate_reference_frames/R7_CAND_005_start_025931ms.jpg",
+    "priority": "P1_generate_next_small_batch",
+    "status": "candidate_reference_frame_needs_prompt_and_generation",
+    "difference_reason": "Nadia近景插入 start boundary/transition frame from R7 high-precision split.",
+    "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_005_start_025931ms.png"
+  },
+  {
+    "asset_id": "R7_CAND_005_end_026788ms",
+    "parent_video_unit_id": "VU_REF003_R7_005_NADIA_CLOSE_INSERT",
+    "role": "end",
+    "source_time_sec": 26.788,
+    "source_timecode": "00:26.79",
+    "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_005_NADIA_CLOSE_INSERT/candidate_reference_frames/R7_CAND_005_end_026788ms.jpg",
+    "priority": "P3_reference_video_or_already_handled",
+    "status": "candidate_reference_frame_review",
+    "difference_reason": "Nadia近景插入 end boundary/transition frame from R7 high-precision split.",
+    "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_005_end_026788ms.png"
+  }
+]

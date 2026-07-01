@@ -1,0 +1,874 @@
+{
+  "schema_version": "reference003_video_segment_generation_batch_v1",
+  "project_slug": "blue-water-citypop-op",
+  "created_at": "2026-06-30T17:32:23+08:00",
+  "status": "ready_for_external_aigc_video_generation",
+  "orders": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21
+  ],
+  "jobs": [
+    {
+      "unit_id": "VU_REF003_001_BLACK_CLOUD_FADEIN",
+      "job_dir": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_001_BLACK_CLOUD_FADEIN",
+      "reference_clip": {
+        "attempted": true,
+        "ok": true,
+        "path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_001_BLACK_CLOUD_FADEIN/reference_clip/VU_REF003_001_BLACK_CLOUD_FADEIN_reference.mp4",
+        "start_sec": 0.0,
+        "end_sec": 2.0,
+        "duration_sec": 2.0,
+        "stderr_tail": "",
+        "decode_ok": true
+      },
+      "keyframe_anchors": [
+        {
+          "order": 1,
+          "item_id": "OP_SHOT_001",
+          "timecode": "00:00.00",
+          "role": "图1 / black_to_cloud_start",
+          "beat": "黑场/云层淡入",
+          "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_001.png",
+          "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_001_BLACK_CLOUD_FADEIN/keyframes/01_OP_SHOT_001.png",
+          "exists": true
+        },
+        {
+          "order": 2,
+          "item_id": "OP_SHOT_002",
+          "timecode": "00:01.50",
+          "role": "图2 / bright_cloud_sky_reveal",
+          "beat": "云层蓝天显现",
+          "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_002.png",
+          "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_001_BLACK_CLOUD_FADEIN/keyframes/02_OP_SHOT_002.png",
+          "exists": true
+        }
+      ],
+      "generation_brief": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_001_BLACK_CLOUD_FADEIN/AIGC_VIDEO_GENERATION_BRIEF.md",
+      "qa_checklist": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_001_BLACK_CLOUD_FADEIN/SEGMENT_QA_CHECKLIST.md",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_segments/VU_REF003_001_BLACK_CLOUD_FADEIN.mp4",
+      "ready": true
+    },
+    {
+      "unit_id": "VU_REF003_002_WHITE_BIRD_SKY",
+      "job_dir": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_002_WHITE_BIRD_SKY",
+      "reference_clip": {
+        "attempted": true,
+        "ok": true,
+        "path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_002_WHITE_BIRD_SKY/reference_clip/VU_REF003_002_WHITE_BIRD_SKY_reference.mp4",
+        "start_sec": 2.5,
+        "end_sec": 7.0,
+        "duration_sec": 4.5,
+        "stderr_tail": "",
+        "decode_ok": true
+      },
+      "keyframe_anchors": [
+        {
+          "order": 1,
+          "item_id": "OP_SHOT_003",
+          "timecode": "00:02.50",
+          "role": "图1 / bird_entry",
+          "beat": "白鸟首次入画",
+          "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_003.png",
+          "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_002_WHITE_BIRD_SKY/keyframes/01_OP_SHOT_003.png",
+          "exists": true
+        },
+        {
+          "order": 2,
+          "item_id": "OP_SHOT_004",
+          "timecode": "00:05.00",
+          "role": "图2 / bird_glide",
+          "beat": "白鸟滑翔延续",
+          "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_004.png",
+          "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_002_WHITE_BIRD_SKY/keyframes/02_OP_SHOT_004.png",
+          "exists": true
+        }
+      ],
+      "generation_brief": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_002_WHITE_BIRD_SKY/AIGC_VIDEO_GENERATION_BRIEF.md",
+      "qa_checklist": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_002_WHITE_BIRD_SKY/SEGMENT_QA_CHECKLIST.md",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_segments/VU_REF003_002_WHITE_BIRD_SKY.mp4",
+      "ready": true
+    },
+    {
+      "unit_id": "VU_REF003_003_CREDIT_SAFE_BIRD_CLOUDS",
+      "job_dir": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_003_CREDIT_SAFE_BIRD_CLOUDS",
+      "reference_clip": {
+        "attempted": true,
+        "ok": true,
+        "path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_003_CREDIT_SAFE_BIRD_CLOUDS/reference_clip/VU_REF003_003_CREDIT_SAFE_BIRD_CLOUDS_reference.mp4",
+        "start_sec": 7.0,
+        "end_sec": 14.0,
+        "duration_sec": 7.0,
+        "stderr_tail": "",
+        "decode_ok": true
+      },
+      "keyframe_anchors": [
+        {
+          "order": 1,
+          "item_id": "OP_SHOT_005",
+          "timecode": "00:07.50",
+          "role": "图1 / no_text_credit_safe_bird",
+          "beat": "无字职员表安全位",
+          "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_005.png",
+          "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_003_CREDIT_SAFE_BIRD_CLOUDS/keyframes/01_OP_SHOT_005.png",
+          "exists": true
+        },
+        {
+          "order": 2,
+          "item_id": "OP_SHOT_006",
+          "timecode": "00:11.50",
+          "role": "图2 / cloud_bank_growth",
+          "beat": "云层增长填画",
+          "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_006_v2.png",
+          "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_003_CREDIT_SAFE_BIRD_CLOUDS/keyframes/02_OP_SHOT_006.png",
+          "exists": true
+        }
+      ],
+      "generation_brief": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_003_CREDIT_SAFE_BIRD_CLOUDS/AIGC_VIDEO_GENERATION_BRIEF.md",
+      "qa_checklist": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_003_CREDIT_SAFE_BIRD_CLOUDS/SEGMENT_QA_CHECKLIST.md",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_segments/VU_REF003_003_CREDIT_SAFE_BIRD_CLOUDS.mp4",
+      "ready": true
+    },
+    {
+      "unit_id": "VU_REF003_004_AIRCRAFT_BRIEF_REVEAL",
+      "job_dir": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_004_AIRCRAFT_BRIEF_REVEAL",
+      "reference_clip": {
+        "attempted": true,
+        "ok": true,
+        "path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_004_AIRCRAFT_BRIEF_REVEAL/reference_clip/VU_REF003_004_AIRCRAFT_BRIEF_REVEAL_reference.mp4",
+        "start_sec": 14.5,
+        "end_sec": 16.5,
+        "duration_sec": 2.0,
+        "stderr_tail": "",
+        "decode_ok": true
+      },
+      "keyframe_anchors": [
+        {
+          "order": 1,
+          "item_id": "OP_SHOT_007",
+          "timecode": "00:15.00",
+          "role": "图1 / aircraft_brief_reveal",
+          "beat": "飞行器短露",
+          "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_007.png",
+          "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_004_AIRCRAFT_BRIEF_REVEAL/keyframes/01_OP_SHOT_007.png",
+          "exists": true
+        }
+      ],
+      "generation_brief": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_004_AIRCRAFT_BRIEF_REVEAL/AIGC_VIDEO_GENERATION_BRIEF.md",
+      "qa_checklist": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_004_AIRCRAFT_BRIEF_REVEAL/SEGMENT_QA_CHECKLIST.md",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_segments/VU_REF003_004_AIRCRAFT_BRIEF_REVEAL.mp4",
+      "ready": true
+    },
+    {
+      "unit_id": "VU_REF003_005_MAIN_TITLE_SAFE_HOLD",
+      "job_dir": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_005_MAIN_TITLE_SAFE_HOLD",
+      "reference_clip": {
+        "attempted": true,
+        "ok": true,
+        "path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_005_MAIN_TITLE_SAFE_HOLD/reference_clip/VU_REF003_005_MAIN_TITLE_SAFE_HOLD_reference.mp4",
+        "start_sec": 17.0,
+        "end_sec": 22.0,
+        "duration_sec": 5.0,
+        "stderr_tail": "",
+        "decode_ok": true
+      },
+      "keyframe_anchors": [
+        {
+          "order": 1,
+          "item_id": "OP_SHOT_008",
+          "timecode": "00:18.50",
+          "role": "图1 / main_title_safe_no_text",
+          "beat": "主标题无字安全位",
+          "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_008_v2.png",
+          "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_005_MAIN_TITLE_SAFE_HOLD/keyframes/01_OP_SHOT_008.png",
+          "exists": true
+        }
+      ],
+      "generation_brief": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_005_MAIN_TITLE_SAFE_HOLD/AIGC_VIDEO_GENERATION_BRIEF.md",
+      "qa_checklist": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_005_MAIN_TITLE_SAFE_HOLD/SEGMENT_QA_CHECKLIST.md",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_segments/VU_REF003_005_MAIN_TITLE_SAFE_HOLD.mp4",
+      "ready": true
+    },
+    {
+      "unit_id": "VU_REF003_006_SUN_FLARE_TO_NADIA",
+      "job_dir": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_006_SUN_FLARE_TO_NADIA",
+      "reference_clip": {
+        "attempted": true,
+        "ok": true,
+        "path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_006_SUN_FLARE_TO_NADIA/reference_clip/VU_REF003_006_SUN_FLARE_TO_NADIA_reference.mp4",
+        "start_sec": 22.5,
+        "end_sec": 23.5,
+        "duration_sec": 1.0,
+        "stderr_tail": "",
+        "decode_ok": true
+      },
+      "keyframe_anchors": [
+        {
+          "order": 1,
+          "item_id": "OP_SHOT_009",
+          "timecode": "00:23.00",
+          "role": "图1 / sun_flare_transition",
+          "beat": "太阳光线转场",
+          "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_009.png",
+          "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_006_SUN_FLARE_TO_NADIA/keyframes/01_OP_SHOT_009.png",
+          "exists": true
+        }
+      ],
+      "generation_brief": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_006_SUN_FLARE_TO_NADIA/AIGC_VIDEO_GENERATION_BRIEF.md",
+      "qa_checklist": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_006_SUN_FLARE_TO_NADIA/SEGMENT_QA_CHECKLIST.md",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_segments/VU_REF003_006_SUN_FLARE_TO_NADIA.mp4",
+      "ready": true
+    },
+    {
+      "unit_id": "VU_REF003_007_NADIA_PROFILE_ENTRY",
+      "job_dir": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_007_NADIA_PROFILE_ENTRY",
+      "reference_clip": {
+        "attempted": true,
+        "ok": true,
+        "path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_007_NADIA_PROFILE_ENTRY/reference_clip/VU_REF003_007_NADIA_PROFILE_ENTRY_reference.mp4",
+        "start_sec": 24.0,
+        "end_sec": 27.5,
+        "duration_sec": 3.5,
+        "stderr_tail": "",
+        "decode_ok": true
+      },
+      "keyframe_anchors": [
+        {
+          "order": 1,
+          "item_id": "OP_SHOT_010",
+          "timecode": "00:24.50",
+          "role": "图1 / Nadia_profile",
+          "beat": "Nadia 侧脸入场",
+          "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_010_v2.png",
+          "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_007_NADIA_PROFILE_ENTRY/keyframes/01_OP_SHOT_010.png",
+          "exists": true
+        },
+        {
+          "order": 2,
+          "item_id": "OP_SHOT_011",
+          "timecode": "00:27.00",
+          "role": "图2 / Nadia_close",
+          "beat": "Nadia 正面近景",
+          "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_011_v2.png",
+          "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_007_NADIA_PROFILE_ENTRY/keyframes/02_OP_SHOT_011.png",
+          "exists": true
+        }
+      ],
+      "generation_brief": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_007_NADIA_PROFILE_ENTRY/AIGC_VIDEO_GENERATION_BRIEF.md",
+      "qa_checklist": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_007_NADIA_PROFILE_ENTRY/SEGMENT_QA_CHECKLIST.md",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_segments/VU_REF003_007_NADIA_PROFILE_ENTRY.mp4",
+      "ready": true
+    },
+    {
+      "unit_id": "VU_REF003_008_JEAN_INTRO",
+      "job_dir": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_008_JEAN_INTRO",
+      "reference_clip": {
+        "attempted": true,
+        "ok": true,
+        "path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_008_JEAN_INTRO/reference_clip/VU_REF003_008_JEAN_INTRO_reference.mp4",
+        "start_sec": 28.0,
+        "end_sec": 30.5,
+        "duration_sec": 2.5,
+        "stderr_tail": "",
+        "decode_ok": true
+      },
+      "keyframe_anchors": [
+        {
+          "order": 1,
+          "item_id": "OP_SHOT_012",
+          "timecode": "00:29.00",
+          "role": "图1 / Jean_hat_face",
+          "beat": "Jean 入场",
+          "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_012.png",
+          "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_008_JEAN_INTRO/keyframes/01_OP_SHOT_012.png",
+          "exists": true
+        }
+      ],
+      "generation_brief": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_008_JEAN_INTRO/AIGC_VIDEO_GENERATION_BRIEF.md",
+      "qa_checklist": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_008_JEAN_INTRO/SEGMENT_QA_CHECKLIST.md",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_segments/VU_REF003_008_JEAN_INTRO.mp4",
+      "ready": true
+    },
+    {
+      "unit_id": "VU_REF003_009_MARIE_KING_MEADOW",
+      "job_dir": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_009_MARIE_KING_MEADOW",
+      "reference_clip": {
+        "attempted": true,
+        "ok": true,
+        "path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_009_MARIE_KING_MEADOW/reference_clip/VU_REF003_009_MARIE_KING_MEADOW_reference.mp4",
+        "start_sec": 31.0,
+        "end_sec": 34.0,
+        "duration_sec": 3.0,
+        "stderr_tail": "",
+        "decode_ok": true
+      },
+      "keyframe_anchors": [
+        {
+          "order": 1,
+          "item_id": "OP_SHOT_013",
+          "timecode": "00:31.50",
+          "role": "图1 / Marie_King_meadow",
+          "beat": "Marie 与 King 草地笑点",
+          "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_013.png",
+          "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_009_MARIE_KING_MEADOW/keyframes/01_OP_SHOT_013.png",
+          "exists": true
+        },
+        {
+          "order": 2,
+          "item_id": "OP_SHOT_014",
+          "timecode": "00:34.00",
+          "role": "图2 / Marie_King_close",
+          "beat": "Marie 与 King 近景",
+          "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_014.png",
+          "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_009_MARIE_KING_MEADOW/keyframes/02_OP_SHOT_014.png",
+          "exists": true
+        }
+      ],
+      "generation_brief": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_009_MARIE_KING_MEADOW/AIGC_VIDEO_GENERATION_BRIEF.md",
+      "qa_checklist": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_009_MARIE_KING_MEADOW/SEGMENT_QA_CHECKLIST.md",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_segments/VU_REF003_009_MARIE_KING_MEADOW.mp4",
+      "ready": true
+    },
+    {
+      "unit_id": "VU_REF003_010_GRANDIS_TRIO_INTRO",
+      "job_dir": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_010_GRANDIS_TRIO_INTRO",
+      "reference_clip": {
+        "attempted": true,
+        "ok": true,
+        "path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_010_GRANDIS_TRIO_INTRO/reference_clip/VU_REF003_010_GRANDIS_TRIO_INTRO_reference.mp4",
+        "start_sec": 34.5,
+        "end_sec": 37.5,
+        "duration_sec": 3.0,
+        "stderr_tail": "",
+        "decode_ok": true
+      },
+      "keyframe_anchors": [
+        {
+          "order": 1,
+          "item_id": "OP_SHOT_015",
+          "timecode": "00:35.50",
+          "role": "图1 / Grandis_trio_wide",
+          "beat": "Grandis 三人组宽景",
+          "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_015.png",
+          "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_010_GRANDIS_TRIO_INTRO/keyframes/01_OP_SHOT_015.png",
+          "exists": true
+        },
+        {
+          "order": 2,
+          "item_id": "OP_SHOT_016",
+          "timecode": "00:37.00",
+          "role": "图2 / Grandis_trio_close",
+          "beat": "Grandis 三人组近景",
+          "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_016_v2.png",
+          "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_010_GRANDIS_TRIO_INTRO/keyframes/02_OP_SHOT_016.png",
+          "exists": true
+        }
+      ],
+      "generation_brief": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_010_GRANDIS_TRIO_INTRO/AIGC_VIDEO_GENERATION_BRIEF.md",
+      "qa_checklist": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_010_GRANDIS_TRIO_INTRO/SEGMENT_QA_CHECKLIST.md",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_segments/VU_REF003_010_GRANDIS_TRIO_INTRO.mp4",
+      "ready": true
+    },
+    {
+      "unit_id": "VU_REF003_011_RUNNING_MONTAGE",
+      "job_dir": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_011_RUNNING_MONTAGE",
+      "reference_clip": {
+        "attempted": true,
+        "ok": true,
+        "path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_011_RUNNING_MONTAGE/reference_clip/VU_REF003_011_RUNNING_MONTAGE_reference.mp4",
+        "start_sec": 38.0,
+        "end_sec": 47.5,
+        "duration_sec": 9.5,
+        "stderr_tail": "",
+        "decode_ok": true
+      },
+      "keyframe_anchors": [
+        {
+          "order": 1,
+          "item_id": "OP_SHOT_017",
+          "timecode": "00:38.00",
+          "role": "图1 / Nadia_run_feet",
+          "beat": "Nadia 奔跑脚步",
+          "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_017.png",
+          "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_011_RUNNING_MONTAGE/keyframes/01_OP_SHOT_017.png",
+          "exists": true
+        },
+        {
+          "order": 2,
+          "item_id": "OP_SHOT_018",
+          "timecode": "00:39.50",
+          "role": "图2 / Nadia_run_front",
+          "beat": "Nadia 奔跑正面",
+          "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_018.png",
+          "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_011_RUNNING_MONTAGE/keyframes/02_OP_SHOT_018.png",
+          "exists": true
+        },
+        {
+          "order": 3,
+          "item_id": "OP_SHOT_019",
+          "timecode": "00:41.50",
+          "role": "图3 / Jean_run",
+          "beat": "Jean 奔跑",
+          "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH04/outputs/OP_SHOT_019.png",
+          "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_011_RUNNING_MONTAGE/keyframes/03_OP_SHOT_019.png",
+          "exists": true
+        },
+        {
+          "order": 4,
+          "item_id": "OP_SHOT_020",
+          "timecode": "00:43.50",
+          "role": "图4 / Marie_run",
+          "beat": "Marie 奔跑",
+          "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH04/outputs/OP_SHOT_020.png",
+          "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_011_RUNNING_MONTAGE/keyframes/04_OP_SHOT_020.png",
+          "exists": true
+        },
+        {
+          "order": 5,
+          "item_id": "OP_SHOT_021",
+          "timecode": "00:45.50",
+          "role": "图5 / group_run",
+          "beat": "全员奔跑",
+          "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH04/outputs/OP_SHOT_021_v2.png",
+          "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_011_RUNNING_MONTAGE/keyframes/05_OP_SHOT_021.png",
+          "exists": true
+        },
+        {
+          "order": 6,
+          "item_id": "OP_SHOT_022",
+          "timecode": "00:47.50",
+          "role": "图6 / Jean_reaction_close",
+          "beat": "Jean 反应近景",
+          "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH04/outputs/OP_SHOT_022.png",
+          "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_011_RUNNING_MONTAGE/keyframes/06_OP_SHOT_022.png",
+          "exists": true
+        }
+      ],
+      "generation_brief": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_011_RUNNING_MONTAGE/AIGC_VIDEO_GENERATION_BRIEF.md",
+      "qa_checklist": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_011_RUNNING_MONTAGE/SEGMENT_QA_CHECKLIST.md",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_segments/VU_REF003_011_RUNNING_MONTAGE.mp4",
+      "ready": true
+    },
+    {
+      "unit_id": "VU_REF003_012_GRANDIS_VEHICLE_ACTION",
+      "job_dir": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_012_GRANDIS_VEHICLE_ACTION",
+      "reference_clip": {
+        "attempted": true,
+        "ok": true,
+        "path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_012_GRANDIS_VEHICLE_ACTION/reference_clip/VU_REF003_012_GRANDIS_VEHICLE_ACTION_reference.mp4",
+        "start_sec": 48.0,
+        "end_sec": 51.5,
+        "duration_sec": 3.5,
+        "stderr_tail": "",
+        "decode_ok": true
+      },
+      "keyframe_anchors": [
+        {
+          "order": 1,
+          "item_id": "OP_SHOT_023",
+          "timecode": "00:48.00",
+          "role": "图1 / Grandis_action_close",
+          "beat": "Grandis 动作桥",
+          "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH04/outputs/OP_SHOT_023.png",
+          "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_012_GRANDIS_VEHICLE_ACTION/keyframes/01_OP_SHOT_023.png",
+          "exists": true
+        },
+        {
+          "order": 2,
+          "item_id": "OP_SHOT_024",
+          "timecode": "00:49.50",
+          "role": "图2 / vehicle_sky_action",
+          "beat": "车辆/飞行器空中动作",
+          "source_path": "08_generation/jobs/REFERENCE003_IDENTITY_REPAIR_R1_20260630/outputs/OP_SHOT_024_VEHICLE_LOCK_R1.png",
+          "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_012_GRANDIS_VEHICLE_ACTION/keyframes/02_OP_SHOT_024.png",
+          "exists": true
+        },
+        {
+          "order": 3,
+          "item_id": "OP_SHOT_025",
+          "timecode": "00:51.50",
+          "role": "图3 / group_lineup",
+          "beat": "全员群像",
+          "source_path": "08_generation/jobs/REFERENCE003_IDENTITY_REPAIR_R1_20260630/outputs/OP_SHOT_025_R1.png",
+          "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_012_GRANDIS_VEHICLE_ACTION/keyframes/03_OP_SHOT_025.png",
+          "exists": true
+        }
+      ],
+      "generation_brief": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_012_GRANDIS_VEHICLE_ACTION/AIGC_VIDEO_GENERATION_BRIEF.md",
+      "qa_checklist": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_012_GRANDIS_VEHICLE_ACTION/SEGMENT_QA_CHECKLIST.md",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_segments/VU_REF003_012_GRANDIS_VEHICLE_ACTION.mp4",
+      "ready": true
+    },
+    {
+      "unit_id": "VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS",
+      "job_dir": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS",
+      "reference_clip": {
+        "attempted": true,
+        "ok": true,
+        "path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS/reference_clip/VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS_reference.mp4",
+        "start_sec": 52.0,
+        "end_sec": 61.0,
+        "duration_sec": 9.0,
+        "stderr_tail": "",
+        "decode_ok": true
+      },
+      "keyframe_anchors": [
+        {
+          "order": 1,
+          "item_id": "OP_SHOT_026",
+          "timecode": "00:52.50",
+          "role": "图1 / undersea_start",
+          "beat": "Nautilus 水下初现",
+          "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_026.png",
+          "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS/keyframes/01_OP_SHOT_026.png",
+          "exists": true
+        },
+        {
+          "order": 2,
+          "item_id": "OP_SHOT_027",
+          "timecode": "00:55.00",
+          "role": "图2 / undersea_pass",
+          "beat": "Nautilus 水下通过",
+          "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_027.png",
+          "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS/keyframes/02_OP_SHOT_027.png",
+          "exists": true
+        },
+        {
+          "order": 3,
+          "item_id": "OP_SHOT_028",
+          "timecode": "00:58.50",
+          "role": "图3 / undersea_shadow",
+          "beat": "Nautilus 深蓝剪影",
+          "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_028.png",
+          "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS/keyframes/03_OP_SHOT_028.png",
+          "exists": true
+        }
+      ],
+      "generation_brief": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS/AIGC_VIDEO_GENERATION_BRIEF.md",
+      "qa_checklist": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS/SEGMENT_QA_CHECKLIST.md",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_segments/VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS.mp4",
+      "ready": true
+    },
+    {
+      "unit_id": "VU_REF003_014_NIGHT_CITY_BLUE_GRID",
+      "job_dir": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_014_NIGHT_CITY_BLUE_GRID",
+      "reference_clip": {
+        "attempted": true,
+        "ok": true,
+        "path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_014_NIGHT_CITY_BLUE_GRID/reference_clip/VU_REF003_014_NIGHT_CITY_BLUE_GRID_reference.mp4",
+        "start_sec": 61.5,
+        "end_sec": 64.5,
+        "duration_sec": 3.0,
+        "stderr_tail": "",
+        "decode_ok": true
+      },
+      "keyframe_anchors": [
+        {
+          "order": 1,
+          "item_id": "OP_SHOT_029",
+          "timecode": "01:01.50",
+          "role": "图1 / night_city_reveal",
+          "beat": "夜城初现",
+          "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_029.png",
+          "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_014_NIGHT_CITY_BLUE_GRID/keyframes/01_OP_SHOT_029.png",
+          "exists": true
+        },
+        {
+          "order": 2,
+          "item_id": "OP_SHOT_030",
+          "timecode": "01:03.50",
+          "role": "图2 / glowing_blue_grid",
+          "beat": "蓝色地面图案",
+          "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_030.png",
+          "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_014_NIGHT_CITY_BLUE_GRID/keyframes/02_OP_SHOT_030.png",
+          "exists": true
+        }
+      ],
+      "generation_brief": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_014_NIGHT_CITY_BLUE_GRID/AIGC_VIDEO_GENERATION_BRIEF.md",
+      "qa_checklist": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_014_NIGHT_CITY_BLUE_GRID/SEGMENT_QA_CHECKLIST.md",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_segments/VU_REF003_014_NIGHT_CITY_BLUE_GRID.mp4",
+      "ready": true
+    },
+    {
+      "unit_id": "VU_REF003_015_NIGHT_AIRCRAFT_PASS",
+      "job_dir": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_015_NIGHT_AIRCRAFT_PASS",
+      "reference_clip": {
+        "attempted": true,
+        "ok": true,
+        "path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_015_NIGHT_AIRCRAFT_PASS/reference_clip/VU_REF003_015_NIGHT_AIRCRAFT_PASS_reference.mp4",
+        "start_sec": 65.0,
+        "end_sec": 66.0,
+        "duration_sec": 1.0,
+        "stderr_tail": "",
+        "decode_ok": true
+      },
+      "keyframe_anchors": [
+        {
+          "order": 1,
+          "item_id": "OP_SHOT_031",
+          "timecode": "01:05.50",
+          "role": "图1 / night_aircraft_pass",
+          "beat": "夜航飞行器",
+          "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_031.png",
+          "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_015_NIGHT_AIRCRAFT_PASS/keyframes/01_OP_SHOT_031.png",
+          "exists": true
+        }
+      ],
+      "generation_brief": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_015_NIGHT_AIRCRAFT_PASS/AIGC_VIDEO_GENERATION_BRIEF.md",
+      "qa_checklist": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_015_NIGHT_AIRCRAFT_PASS/SEGMENT_QA_CHECKLIST.md",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_segments/VU_REF003_015_NIGHT_AIRCRAFT_PASS.mp4",
+      "ready": true
+    },
+    {
+      "unit_id": "VU_REF003_016_NEMO_SUNSET_PROFILE",
+      "job_dir": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_016_NEMO_SUNSET_PROFILE",
+      "reference_clip": {
+        "attempted": true,
+        "ok": true,
+        "path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_016_NEMO_SUNSET_PROFILE/reference_clip/VU_REF003_016_NEMO_SUNSET_PROFILE_reference.mp4",
+        "start_sec": 66.5,
+        "end_sec": 71.0,
+        "duration_sec": 4.5,
+        "stderr_tail": "",
+        "decode_ok": true
+      },
+      "keyframe_anchors": [
+        {
+          "order": 1,
+          "item_id": "OP_SHOT_032",
+          "timecode": "01:06.50",
+          "role": "图1 / Nemo_profile_start",
+          "beat": "Nemo 夕景初入",
+          "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_032.png",
+          "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_016_NEMO_SUNSET_PROFILE/keyframes/01_OP_SHOT_032.png",
+          "exists": true
+        },
+        {
+          "order": 2,
+          "item_id": "OP_SHOT_033",
+          "timecode": "01:09.50",
+          "role": "图2 / Nemo_profile_hold",
+          "beat": "Nemo 夕景 hold",
+          "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_033.png",
+          "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_016_NEMO_SUNSET_PROFILE/keyframes/02_OP_SHOT_033.png",
+          "exists": true
+        }
+      ],
+      "generation_brief": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_016_NEMO_SUNSET_PROFILE/AIGC_VIDEO_GENERATION_BRIEF.md",
+      "qa_checklist": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_016_NEMO_SUNSET_PROFILE/SEGMENT_QA_CHECKLIST.md",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_segments/VU_REF003_016_NEMO_SUNSET_PROFILE.mp4",
+      "ready": true
+    },
+    {
+      "unit_id": "VU_REF003_017_NADIA_SOLEMN_CLOSE",
+      "job_dir": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_017_NADIA_SOLEMN_CLOSE",
+      "reference_clip": {
+        "attempted": true,
+        "ok": true,
+        "path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_017_NADIA_SOLEMN_CLOSE/reference_clip/VU_REF003_017_NADIA_SOLEMN_CLOSE_reference.mp4",
+        "start_sec": 71.5,
+        "end_sec": 73.0,
+        "duration_sec": 1.5,
+        "stderr_tail": "",
+        "decode_ok": true
+      },
+      "keyframe_anchors": [
+        {
+          "order": 1,
+          "item_id": "OP_SHOT_034",
+          "timecode": "01:12.00",
+          "role": "图1 / Nadia_solemn_front",
+          "beat": "Nadia 庄重正面",
+          "source_path": "08_generation/jobs/REFERENCE003_IDENTITY_REPAIR_R1_20260630/outputs/OP_SHOT_034_R1.png",
+          "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_017_NADIA_SOLEMN_CLOSE/keyframes/01_OP_SHOT_034.png",
+          "exists": true
+        }
+      ],
+      "generation_brief": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_017_NADIA_SOLEMN_CLOSE/AIGC_VIDEO_GENERATION_BRIEF.md",
+      "qa_checklist": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_017_NADIA_SOLEMN_CLOSE/SEGMENT_QA_CHECKLIST.md",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_segments/VU_REF003_017_NADIA_SOLEMN_CLOSE.mp4",
+      "ready": true
+    },
+    {
+      "unit_id": "VU_REF003_018_BLUE_WATER_SYMBOL",
+      "job_dir": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_018_BLUE_WATER_SYMBOL",
+      "reference_clip": {
+        "attempted": true,
+        "ok": true,
+        "path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_018_BLUE_WATER_SYMBOL/reference_clip/VU_REF003_018_BLUE_WATER_SYMBOL_reference.mp4",
+        "start_sec": 73.5,
+        "end_sec": 77.0,
+        "duration_sec": 3.5,
+        "stderr_tail": "",
+        "decode_ok": true
+      },
+      "keyframe_anchors": [
+        {
+          "order": 1,
+          "item_id": "OP_SHOT_035",
+          "timecode": "01:13.50",
+          "role": "图1 / Blue_Water_jewel_symbol",
+          "beat": "Blue Water 宝石象征",
+          "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_035.png",
+          "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_018_BLUE_WATER_SYMBOL/keyframes/01_OP_SHOT_035.png",
+          "exists": true
+        },
+        {
+          "order": 2,
+          "item_id": "OP_SHOT_036",
+          "timecode": "01:15.00",
+          "role": "图2 / blue_symbol_bloom",
+          "beat": "蓝色符号光",
+          "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_036.png",
+          "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_018_BLUE_WATER_SYMBOL/keyframes/02_OP_SHOT_036.png",
+          "exists": true
+        },
+        {
+          "order": 3,
+          "item_id": "OP_SHOT_037",
+          "timecode": "01:16.50",
+          "role": "图3 / underwater_texture",
+          "beat": "水下蓝色纹理",
+          "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_037.png",
+          "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_018_BLUE_WATER_SYMBOL/keyframes/03_OP_SHOT_037.png",
+          "exists": true
+        }
+      ],
+      "generation_brief": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_018_BLUE_WATER_SYMBOL/AIGC_VIDEO_GENERATION_BRIEF.md",
+      "qa_checklist": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_018_BLUE_WATER_SYMBOL/SEGMENT_QA_CHECKLIST.md",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_segments/VU_REF003_018_BLUE_WATER_SYMBOL.mp4",
+      "ready": true
+    },
+    {
+      "unit_id": "VU_REF003_019_WATER_SPLASH_TRANSITION",
+      "job_dir": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_019_WATER_SPLASH_TRANSITION",
+      "reference_clip": {
+        "attempted": true,
+        "ok": true,
+        "path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_019_WATER_SPLASH_TRANSITION/reference_clip/VU_REF003_019_WATER_SPLASH_TRANSITION_reference.mp4",
+        "start_sec": 77.5,
+        "end_sec": 79.5,
+        "duration_sec": 2.0,
+        "stderr_tail": "",
+        "decode_ok": true
+      },
+      "keyframe_anchors": [
+        {
+          "order": 1,
+          "item_id": "OP_SHOT_038",
+          "timecode": "01:18.00",
+          "role": "图1 / water_burst",
+          "beat": "水花爆发",
+          "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_038.png",
+          "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_019_WATER_SPLASH_TRANSITION/keyframes/01_OP_SHOT_038.png",
+          "exists": true
+        },
+        {
+          "order": 2,
+          "item_id": "OP_SHOT_039",
+          "timecode": "01:19.00",
+          "role": "图2 / splash_to_sky",
+          "beat": "水花转蓝天",
+          "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_039.png",
+          "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_019_WATER_SPLASH_TRANSITION/keyframes/02_OP_SHOT_039.png",
+          "exists": true
+        }
+      ],
+      "generation_brief": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_019_WATER_SPLASH_TRANSITION/AIGC_VIDEO_GENERATION_BRIEF.md",
+      "qa_checklist": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_019_WATER_SPLASH_TRANSITION/SEGMENT_QA_CHECKLIST.md",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_segments/VU_REF003_019_WATER_SPLASH_TRANSITION.mp4",
+      "ready": true
+    },
+    {
+      "unit_id": "VU_REF003_020_FINAL_SKY_SAFE_HOLD",
+      "job_dir": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_020_FINAL_SKY_SAFE_HOLD",
+      "reference_clip": {
+        "attempted": true,
+        "ok": true,
+        "path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_020_FINAL_SKY_SAFE_HOLD/reference_clip/VU_REF003_020_FINAL_SKY_SAFE_HOLD_reference.mp4",
+        "start_sec": 79.5,
+        "end_sec": 83.0,
+        "duration_sec": 3.5,
+        "stderr_tail": "",
+        "decode_ok": true
+      },
+      "keyframe_anchors": [
+        {
+          "order": 1,
+          "item_id": "OP_SHOT_040",
+          "timecode": "01:20.00",
+          "role": "图1 / final_sky_safe",
+          "beat": "最终蓝天安全位",
+          "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_040.png",
+          "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_020_FINAL_SKY_SAFE_HOLD/keyframes/01_OP_SHOT_040.png",
+          "exists": true
+        },
+        {
+          "order": 2,
+          "item_id": "OP_SHOT_041",
+          "timecode": "01:22.00",
+          "role": "图2 / final_sun_hold",
+          "beat": "最终太阳 hold",
+          "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_041.png",
+          "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_020_FINAL_SKY_SAFE_HOLD/keyframes/02_OP_SHOT_041.png",
+          "exists": true
+        }
+      ],
+      "generation_brief": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_020_FINAL_SKY_SAFE_HOLD/AIGC_VIDEO_GENERATION_BRIEF.md",
+      "qa_checklist": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_020_FINAL_SKY_SAFE_HOLD/SEGMENT_QA_CHECKLIST.md",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_segments/VU_REF003_020_FINAL_SKY_SAFE_HOLD.mp4",
+      "ready": true
+    },
+    {
+      "unit_id": "VU_REF003_021_BLACK_TAIL",
+      "job_dir": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_021_BLACK_TAIL",
+      "reference_clip": {
+        "attempted": true,
+        "ok": true,
+        "path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_021_BLACK_TAIL/reference_clip/VU_REF003_021_BLACK_TAIL_reference.mp4",
+        "start_sec": 83.5,
+        "end_sec": 84.44,
+        "duration_sec": 0.94,
+        "stderr_tail": "",
+        "decode_ok": true
+      },
+      "keyframe_anchors": [
+        {
+          "order": 1,
+          "item_id": "OP_SHOT_042",
+          "timecode": "01:23.50",
+          "role": "图1 / black_tail",
+          "beat": "黑场结尾",
+          "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_042.png",
+          "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_021_BLACK_TAIL/keyframes/01_OP_SHOT_042.png",
+          "exists": true
+        }
+      ],
+      "generation_brief": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_021_BLACK_TAIL/AIGC_VIDEO_GENERATION_BRIEF.md",
+      "qa_checklist": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_021_BLACK_TAIL/SEGMENT_QA_CHECKLIST.md",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_segments/VU_REF003_021_BLACK_TAIL.mp4",
+      "ready": true
+    }
+  ],
+  "next_action": "Use each job's reference clip, keyframe anchors, and generation brief in a video-capable AIGC tool; save returned MP4s to expected_video_output_path, then run roughcut/audit scripts.",
+  "report_json": "10_qa/reports/reference003_video_segment_all_units01_21_after_identity_repair_r1_generation_ready_20260630.json",
+  "report_md": "10_qa/reports/reference003_video_segment_all_units01_21_after_identity_repair_r1_generation_ready_20260630.md"
+}

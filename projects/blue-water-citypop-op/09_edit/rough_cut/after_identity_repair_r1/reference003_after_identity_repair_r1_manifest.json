@@ -1,0 +1,358 @@
+{
+  "schema_version": "reference003_after_identity_repair_r1_preview_manifest",
+  "project_slug": "blue-water-citypop-op",
+  "created_at": "2026-06-30",
+  "status": "decode_ok",
+  "boundary": "Preview/workprint assembled from current R1-repaired keyframes. Not final AIGC motion-video rough cut.",
+  "output_mp4": "09_edit/rough_cut/reference003_after_identity_repair_r1_1080p_with_music_20260630.mp4",
+  "frame_count": 42,
+  "r1_outputs_verified": [
+    {
+      "item_id": "OP_SHOT_024",
+      "output_path": "08_generation/jobs/REFERENCE003_IDENTITY_REPAIR_R1_20260630/outputs/OP_SHOT_024_VEHICLE_LOCK_R1.png"
+    },
+    {
+      "item_id": "OP_SHOT_025",
+      "output_path": "08_generation/jobs/REFERENCE003_IDENTITY_REPAIR_R1_20260630/outputs/OP_SHOT_025_R1.png"
+    },
+    {
+      "item_id": "OP_SHOT_034",
+      "output_path": "08_generation/jobs/REFERENCE003_IDENTITY_REPAIR_R1_20260630/outputs/OP_SHOT_034_R1.png"
+    }
+  ],
+  "frames": [
+    {
+      "order": 1,
+      "item_id": "OP_SHOT_001",
+      "duration_sec": 1.5,
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_001.png",
+      "frame_path": "09_edit/rough_cut/after_identity_repair_r1/frames_1920x824_jpg/001_OP_SHOT_001.jpg"
+    },
+    {
+      "order": 2,
+      "item_id": "OP_SHOT_002",
+      "duration_sec": 1.0,
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_002.png",
+      "frame_path": "09_edit/rough_cut/after_identity_repair_r1/frames_1920x824_jpg/002_OP_SHOT_002.jpg"
+    },
+    {
+      "order": 3,
+      "item_id": "OP_SHOT_003",
+      "duration_sec": 2.5,
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_003.png",
+      "frame_path": "09_edit/rough_cut/after_identity_repair_r1/frames_1920x824_jpg/003_OP_SHOT_003.jpg"
+    },
+    {
+      "order": 4,
+      "item_id": "OP_SHOT_004",
+      "duration_sec": 2.5,
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_004.png",
+      "frame_path": "09_edit/rough_cut/after_identity_repair_r1/frames_1920x824_jpg/004_OP_SHOT_004.jpg"
+    },
+    {
+      "order": 5,
+      "item_id": "OP_SHOT_005",
+      "duration_sec": 4.0,
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_005.png",
+      "frame_path": "09_edit/rough_cut/after_identity_repair_r1/frames_1920x824_jpg/005_OP_SHOT_005.jpg"
+    },
+    {
+      "order": 6,
+      "item_id": "OP_SHOT_006",
+      "duration_sec": 3.5,
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_006_v2.png",
+      "frame_path": "09_edit/rough_cut/after_identity_repair_r1/frames_1920x824_jpg/006_OP_SHOT_006.jpg"
+    },
+    {
+      "order": 7,
+      "item_id": "OP_SHOT_007",
+      "duration_sec": 3.5,
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_007.png",
+      "frame_path": "09_edit/rough_cut/after_identity_repair_r1/frames_1920x824_jpg/007_OP_SHOT_007.jpg"
+    },
+    {
+      "order": 8,
+      "item_id": "OP_SHOT_008",
+      "duration_sec": 4.5,
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_008_v2.png",
+      "frame_path": "09_edit/rough_cut/after_identity_repair_r1/frames_1920x824_jpg/008_OP_SHOT_008.jpg"
+    },
+    {
+      "order": 9,
+      "item_id": "OP_SHOT_009",
+      "duration_sec": 1.5,
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_009.png",
+      "frame_path": "09_edit/rough_cut/after_identity_repair_r1/frames_1920x824_jpg/009_OP_SHOT_009.jpg"
+    },
+    {
+      "order": 10,
+      "item_id": "OP_SHOT_010",
+      "duration_sec": 2.5,
+      "source_path": "08_generation/jobs/REFERENCE003_FRAME_PROMOTION_R3_20260630/outputs/OP_SHOT_010_R3_NADIA_PROFILE_BEAUTY_LOCK.png",
+      "frame_path": "09_edit/rough_cut/after_identity_repair_r1/frames_1920x824_jpg/010_OP_SHOT_010.jpg"
+    },
+    {
+      "order": 11,
+      "item_id": "OP_SHOT_011",
+      "duration_sec": 2.0,
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_011_v2.png",
+      "frame_path": "09_edit/rough_cut/after_identity_repair_r1/frames_1920x824_jpg/011_OP_SHOT_011.jpg"
+    },
+    {
+      "order": 12,
+      "item_id": "OP_SHOT_012",
+      "duration_sec": 2.5,
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_012.png",
+      "frame_path": "09_edit/rough_cut/after_identity_repair_r1/frames_1920x824_jpg/012_OP_SHOT_012.jpg"
+    },
+    {
+      "order": 13,
+      "item_id": "OP_SHOT_013",
+      "duration_sec": 2.5,
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_013.png",
+      "frame_path": "09_edit/rough_cut/after_identity_repair_r1/frames_1920x824_jpg/013_OP_SHOT_013.jpg"
+    },
+    {
+      "order": 14,
+      "item_id": "OP_SHOT_014",
+      "duration_sec": 1.5,
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_014.png",
+      "frame_path": "09_edit/rough_cut/after_identity_repair_r1/frames_1920x824_jpg/014_OP_SHOT_014.jpg"
+    },
+    {
+      "order": 15,
+      "item_id": "OP_SHOT_015",
+      "duration_sec": 1.5,
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_015.png",
+      "frame_path": "09_edit/rough_cut/after_identity_repair_r1/frames_1920x824_jpg/015_OP_SHOT_015.jpg"
+    },
+    {
+      "order": 16,
+      "item_id": "OP_SHOT_016",
+      "duration_sec": 1.0,
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_016_v2.png",
+      "frame_path": "09_edit/rough_cut/after_identity_repair_r1/frames_1920x824_jpg/016_OP_SHOT_016.jpg"
+    },
+    {
+      "order": 17,
+      "item_id": "OP_SHOT_017",
+      "duration_sec": 1.5,
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_017.png",
+      "frame_path": "09_edit/rough_cut/after_identity_repair_r1/frames_1920x824_jpg/017_OP_SHOT_017.jpg"
+    },
+    {
+      "order": 18,
+      "item_id": "OP_SHOT_018",
+      "duration_sec": 2.0,
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_018.png",
+      "frame_path": "09_edit/rough_cut/after_identity_repair_r1/frames_1920x824_jpg/018_OP_SHOT_018.jpg"
+    },
+    {
+      "order": 19,
+      "item_id": "OP_SHOT_019",
+      "duration_sec": 2.0,
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH04/outputs/OP_SHOT_019.png",
+      "frame_path": "09_edit/rough_cut/after_identity_repair_r1/frames_1920x824_jpg/019_OP_SHOT_019.jpg"
+    },
+    {
+      "order": 20,
+      "item_id": "OP_SHOT_020",
+      "duration_sec": 2.0,
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH04/outputs/OP_SHOT_020.png",
+      "frame_path": "09_edit/rough_cut/after_identity_repair_r1/frames_1920x824_jpg/020_OP_SHOT_020.jpg"
+    },
+    {
+      "order": 21,
+      "item_id": "OP_SHOT_021",
+      "duration_sec": 2.0,
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH04/outputs/OP_SHOT_021_v2.png",
+      "frame_path": "09_edit/rough_cut/after_identity_repair_r1/frames_1920x824_jpg/021_OP_SHOT_021.jpg"
+    },
+    {
+      "order": 22,
+      "item_id": "OP_SHOT_022",
+      "duration_sec": 0.5,
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH04/outputs/OP_SHOT_022.png",
+      "frame_path": "09_edit/rough_cut/after_identity_repair_r1/frames_1920x824_jpg/022_OP_SHOT_022.jpg"
+    },
+    {
+      "order": 23,
+      "item_id": "OP_SHOT_023",
+      "duration_sec": 1.5,
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH04/outputs/OP_SHOT_023.png",
+      "frame_path": "09_edit/rough_cut/after_identity_repair_r1/frames_1920x824_jpg/023_OP_SHOT_023.jpg"
+    },
+    {
+      "order": 24,
+      "item_id": "OP_SHOT_024",
+      "duration_sec": 2.0,
+      "source_path": "08_generation/jobs/REFERENCE003_IDENTITY_REPAIR_R1_20260630/outputs/OP_SHOT_024_VEHICLE_LOCK_R1.png",
+      "frame_path": "09_edit/rough_cut/after_identity_repair_r1/frames_1920x824_jpg/024_OP_SHOT_024.jpg"
+    },
+    {
+      "order": 25,
+      "item_id": "OP_SHOT_025",
+      "duration_sec": 1.0,
+      "source_path": "08_generation/jobs/REFERENCE003_IDENTITY_REPAIR_R1_20260630/outputs/OP_SHOT_025_R1.png",
+      "frame_path": "09_edit/rough_cut/after_identity_repair_r1/frames_1920x824_jpg/025_OP_SHOT_025.jpg"
+    },
+    {
+      "order": 26,
+      "item_id": "OP_SHOT_026",
+      "duration_sec": 2.5,
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_026.png",
+      "frame_path": "09_edit/rough_cut/after_identity_repair_r1/frames_1920x824_jpg/026_OP_SHOT_026.jpg"
+    },
+    {
+      "order": 27,
+      "item_id": "OP_SHOT_027",
+      "duration_sec": 3.5,
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_027.png",
+      "frame_path": "09_edit/rough_cut/after_identity_repair_r1/frames_1920x824_jpg/027_OP_SHOT_027.jpg"
+    },
+    {
+      "order": 28,
+      "item_id": "OP_SHOT_028",
+      "duration_sec": 3.0,
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_028.png",
+      "frame_path": "09_edit/rough_cut/after_identity_repair_r1/frames_1920x824_jpg/028_OP_SHOT_028.jpg"
+    },
+    {
+      "order": 29,
+      "item_id": "OP_SHOT_029",
+      "duration_sec": 2.0,
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_029.png",
+      "frame_path": "09_edit/rough_cut/after_identity_repair_r1/frames_1920x824_jpg/029_OP_SHOT_029.jpg"
+    },
+    {
+      "order": 30,
+      "item_id": "OP_SHOT_030",
+      "duration_sec": 2.0,
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_030.png",
+      "frame_path": "09_edit/rough_cut/after_identity_repair_r1/frames_1920x824_jpg/030_OP_SHOT_030.jpg"
+    },
+    {
+      "order": 31,
+      "item_id": "OP_SHOT_031",
+      "duration_sec": 1.0,
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_031.png",
+      "frame_path": "09_edit/rough_cut/after_identity_repair_r1/frames_1920x824_jpg/031_OP_SHOT_031.jpg"
+    },
+    {
+      "order": 32,
+      "item_id": "OP_SHOT_032",
+      "duration_sec": 3.0,
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_032.png",
+      "frame_path": "09_edit/rough_cut/after_identity_repair_r1/frames_1920x824_jpg/032_OP_SHOT_032.jpg"
+    },
+    {
+      "order": 33,
+      "item_id": "OP_SHOT_033",
+      "duration_sec": 2.5,
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_033.png",
+      "frame_path": "09_edit/rough_cut/after_identity_repair_r1/frames_1920x824_jpg/033_OP_SHOT_033.jpg"
+    },
+    {
+      "order": 34,
+      "item_id": "OP_SHOT_034",
+      "duration_sec": 1.5,
+      "source_path": "08_generation/jobs/REFERENCE003_IDENTITY_REPAIR_R1_20260630/outputs/OP_SHOT_034_R1.png",
+      "frame_path": "09_edit/rough_cut/after_identity_repair_r1/frames_1920x824_jpg/034_OP_SHOT_034.jpg"
+    },
+    {
+      "order": 35,
+      "item_id": "OP_SHOT_035",
+      "duration_sec": 1.5,
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_035.png",
+      "frame_path": "09_edit/rough_cut/after_identity_repair_r1/frames_1920x824_jpg/035_OP_SHOT_035.jpg"
+    },
+    {
+      "order": 36,
+      "item_id": "OP_SHOT_036",
+      "duration_sec": 1.5,
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_036.png",
+      "frame_path": "09_edit/rough_cut/after_identity_repair_r1/frames_1920x824_jpg/036_OP_SHOT_036.jpg"
+    },
+    {
+      "order": 37,
+      "item_id": "OP_SHOT_037",
+      "duration_sec": 1.5,
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_037.png",
+      "frame_path": "09_edit/rough_cut/after_identity_repair_r1/frames_1920x824_jpg/037_OP_SHOT_037.jpg"
+    },
+    {
+      "order": 38,
+      "item_id": "OP_SHOT_038",
+      "duration_sec": 1.0,
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_038.png",
+      "frame_path": "09_edit/rough_cut/after_identity_repair_r1/frames_1920x824_jpg/038_OP_SHOT_038.jpg"
+    },
+    {
+      "order": 39,
+      "item_id": "OP_SHOT_039",
+      "duration_sec": 1.0,
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_039.png",
+      "frame_path": "09_edit/rough_cut/after_identity_repair_r1/frames_1920x824_jpg/039_OP_SHOT_039.jpg"
+    },
+    {
+      "order": 40,
+      "item_id": "OP_SHOT_040",
+      "duration_sec": 2.0,
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_040.png",
+      "frame_path": "09_edit/rough_cut/after_identity_repair_r1/frames_1920x824_jpg/040_OP_SHOT_040.jpg"
+    },
+    {
+      "order": 41,
+      "item_id": "OP_SHOT_041",
+      "duration_sec": 1.5,
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_041.png",
+      "frame_path": "09_edit/rough_cut/after_identity_repair_r1/frames_1920x824_jpg/041_OP_SHOT_041.jpg"
+    },
+    {
+      "order": 42,
+      "item_id": "OP_SHOT_042",
+      "duration_sec": 0.937333,
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_042.png",
+      "frame_path": "09_edit/rough_cut/after_identity_repair_r1/frames_1920x824_jpg/042_OP_SHOT_042.jpg"
+    }
+  ],
+  "encode": {
+    "command": [
+      "/Applications/Bitwig Studio.app/Contents/MacOS/ffmpeg",
+      "-y",
+      "-safe",
+      "0",
+      "-f",
+      "concat",
+      "-i",
+      "/Users/jaychoupp/Story/Film/projects/blue-water-citypop-op/09_edit/rough_cut/after_identity_repair_r1/reference003_after_identity_repair_r1_concat.txt",
+      "-i",
+      "/Users/jaychoupp/Story/Film/projects/blue-water-citypop-op/01_intake/references/reference-003-full-op-2160p.mp4",
+      "-map",
+      "0:v:0",
+      "-map",
+      "1:a:0",
+      "-vf",
+      "fps=24,format=yuv420p,pad=1920:1080:0:128:black",
+      "-c:v",
+      "mpeg4",
+      "-q:v",
+      "1",
+      "-c:a",
+      "aac",
+      "-b:a",
+      "192k",
+      "-shortest",
+      "-movflags",
+      "+faststart",
+      "/Users/jaychoupp/Story/Film/projects/blue-water-citypop-op/09_edit/rough_cut/reference003_after_identity_repair_r1_1080p_with_music_20260630.mp4"
+    ],
+    "returncode": 0,
+    "stderr_tail": "      encoder         : Lavc60.31.102 aac\nframe=    0 fps=0.0 q=0.0 size=       0kB time=N/A bitrate=N/A speed=N/A    \nframe=  227 fps=0.0 q=1.0 size=    1280kB time=00:00:09.45 bitrate=1109.6kbits/s speed=18.1x    \nframe=  509 fps=497 q=1.0 size=    3584kB time=00:00:21.22 bitrate=1383.2kbits/s speed=20.7x    \nframe=  760 fps=499 q=1.0 size=    6912kB time=00:00:31.65 bitrate=1788.6kbits/s speed=20.8x    \nframe=  995 fps=492 q=1.0 size=   11264kB time=00:00:41.47 bitrate=2225.0kbits/s speed=20.5x    \nframe= 1238 fps=490 q=1.0 size=   16384kB time=00:00:51.54 bitrate=2604.1kbits/s speed=20.4x    \nframe= 1475 fps=487 q=1.0 size=   19968kB time=00:01:01.44 bitrate=2662.4kbits/s speed=20.3x    \n[mjpeg @ 0x8ad06c000] EOI missing, emulating\n    Last message repeated 1 times\nframe= 1725 fps=489 q=1.0 size=   23552kB time=00:01:11.87 bitrate=2684.5kbits/s speed=20.4x    \nframe= 1943 fps=482 q=1.0 size=   27904kB time=00:01:20.93 bitrate=2824.2kbits/s speed=20.1x    \n[mp4 @ 0x8ad032f80] Starting second pass: moving the moov atom to the beginning of the file\n[out#0/mp4 @ 0x8ad0686c0] video:26686kB audio:1956kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 0.151864%\nframe= 2026 fps=481 q=1.0 Lsize=   28686kB time=00:01:24.41 bitrate=2783.8kbits/s speed=  20x    \n[aac @ 0x8ad06e800] Qavg: 15236.901",
+    "output_path": "09_edit/rough_cut/reference003_after_identity_repair_r1_1080p_with_music_20260630.mp4",
+    "output_exists": true,
+    "output_size_bytes": 29374714,
+    "decode_ok": true,
+    "decode_stderr_tail": ""
+  }
+}

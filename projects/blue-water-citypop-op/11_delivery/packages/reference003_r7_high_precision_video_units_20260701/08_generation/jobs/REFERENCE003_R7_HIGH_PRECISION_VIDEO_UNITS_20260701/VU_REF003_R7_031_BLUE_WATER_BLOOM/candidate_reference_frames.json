@@ -1,0 +1,38 @@
+[
+  {
+    "asset_id": "R7_CAND_031_start_074104ms",
+    "parent_video_unit_id": "VU_REF003_R7_031_BLUE_WATER_BLOOM",
+    "role": "start",
+    "source_time_sec": 74.104,
+    "source_timecode": "01:14.10",
+    "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_031_BLUE_WATER_BLOOM/candidate_reference_frames/R7_CAND_031_start_074104ms.jpg",
+    "priority": "P3_reference_video_or_already_handled",
+    "status": "candidate_reference_frame_review",
+    "difference_reason": "Blue Water蓝色绽放 start boundary/transition frame from R7 high-precision split.",
+    "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_031_start_074104ms.png"
+  },
+  {
+    "asset_id": "R7_CAND_031_end_076421ms",
+    "parent_video_unit_id": "VU_REF003_R7_031_BLUE_WATER_BLOOM",
+    "role": "end",
+    "source_time_sec": 76.421,
+    "source_timecode": "01:16.42",
+    "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_031_BLUE_WATER_BLOOM/candidate_reference_frames/R7_CAND_031_end_076421ms.jpg",
+    "priority": "P3_reference_video_or_already_handled",
+    "status": "candidate_reference_frame_review",
+    "difference_reason": "Blue Water蓝色绽放 end boundary/transition frame from R7 high-precision split.",
+    "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_031_end_076421ms.png"
+  },
+  {
+    "asset_id": "R7_CAND_031_middle_075262ms",
+    "parent_video_unit_id": "VU_REF003_R7_031_BLUE_WATER_BLOOM",
+    "role": "middle",
+    "source_time_sec": 75.262,
+    "source_timecode": "01:15.26",
+    "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_031_BLUE_WATER_BLOOM/candidate_reference_frames/R7_CAND_031_middle_075262ms.jpg",
+    "priority": "P3_reference_video_or_already_handled",
+    "status": "candidate_reference_frame_review",
+    "difference_reason": "Blue Water蓝色绽放 middle boundary/transition frame from R7 high-precision split.",
+    "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_031_middle_075262ms.png"
+  }
+]

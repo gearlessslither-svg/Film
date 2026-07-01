@@ -1,0 +1,50 @@
+{
+  "job_id": "REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630",
+  "updated_at": "2026-06-30T04:59:36+08:00",
+  "source_reference": "reference-003-full-op-2160p",
+  "generated_sheet": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/REFERENCE003_QA_BATCH01_generated_sheet.jpg",
+  "reference_sheet": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/refs/REFERENCE003_QA_BATCH01_reference_sheet.jpg",
+  "compare_sheet": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/REFERENCE003_QA_BATCH01_ref_vs_generated.jpg",
+  "verdict_summary": {
+    "pass": 6,
+    "needs_review": 0
+  },
+  "items": [
+    {
+      "item_id": "OP_SHOT_001",
+      "status": "generated_reference003_qa_pass",
+      "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_001.png",
+      "note": "REFERENCE003_QA_BATCH01 official keyframe generated from full video reference. Visual QA pass: dark fade-in frame, no text/logo."
+    },
+    {
+      "item_id": "OP_SHOT_002",
+      "status": "generated_reference003_qa_pass",
+      "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_002.png",
+      "note": "REFERENCE003_QA_BATCH01 official keyframe generated from full video reference. Visual QA pass: bright cloud/blue-sky reveal, no text/logo."
+    },
+    {
+      "item_id": "OP_SHOT_003",
+      "status": "generated_reference003_qa_pass",
+      "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_003.png",
+      "note": "REFERENCE003_QA_BATCH01 official keyframe generated from full video reference. Visual QA pass: white bird entry on clean sky, reference text removed."
+    },
+    {
+      "item_id": "OP_SHOT_004",
+      "status": "generated_reference003_qa_pass",
+      "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_004.png",
+      "note": "REFERENCE003_QA_BATCH01 official keyframe generated from full video reference. Visual QA pass: white bird glide on clean sky, reference text removed."
+    },
+    {
+      "item_id": "OP_SHOT_005",
+      "status": "generated_reference003_qa_pass",
+      "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_005.png",
+      "note": "REFERENCE003_QA_BATCH01 official keyframe generated from full video reference. Visual QA pass: credit-safe empty sky with tiny bird, all text removed."
+    },
+    {
+      "item_id": "OP_SHOT_006",
+      "status": "generated_reference003_qa_pass",
+      "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_006_v2.png",
+      "note": "REFERENCE003_QA_BATCH01 R2 official keyframe generated from full video reference. Visual QA pass: right-side cloud bank, visible tiny bird, no text/logo."
+    }
+  ]
+}

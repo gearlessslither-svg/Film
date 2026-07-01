@@ -1,0 +1,111 @@
+{
+  "schema_version": "reference003_r7_high_precision_video_unit_package_v1",
+  "created_at": "2026-07-01T07:36:06+08:00",
+  "status": "ready_for_external_aigc_video_generation",
+  "unit": {
+    "order": 29,
+    "unit_id": "VU_REF003_R7_029_NEMO_SUNSET_PROFILE",
+    "title": "Nemo夕景肖像长段",
+    "start": 66.024,
+    "end": 71.363,
+    "intent": "Nemo 船长夕景肖像长段，首尾/中间关键帧承载连续运动。",
+    "active_locks": [
+      [
+        "characters",
+        "nemo"
+      ]
+    ],
+    "mode": "slow_hold"
+  },
+  "reference_clip": {
+    "path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_029_NEMO_SUNSET_PROFILE/reference_clip/VU_REF003_R7_029_NEMO_SUNSET_PROFILE_reference.mp4",
+    "start_sec": 66.024,
+    "end_sec": 71.363,
+    "duration_sec": 5.339,
+    "ok": true,
+    "decode_ok": true,
+    "stderr_tail": "      handler_name    : VideoHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : Lavc60.31.102 mpeg4\n    Side data:\n      cpb: bitrate max/min/avg: 0/0/200000 buffer size: 0 vbv_delay: N/A\nframe=    0 fps=0.0 q=3.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    \n[out#0/mp4 @ 0x7bd068480] video:4504kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 0.045905%\nframe=  128 fps=0.0 q=3.0 Lsize=    4506kB time=00:00:05.29 bitrate=6968.3kbits/s speed=26.6x    "
+  },
+  "ordered_generated_anchors": [
+    {
+      "order": 1,
+      "item_id": "OP_SHOT_032",
+      "kind": "official_keyframe",
+      "time_sec": 66.5,
+      "timecode": "01:06.50",
+      "role": "图1 / Nemo_profile_start",
+      "beat": "Nemo 夕景初入",
+      "difference_reason": "",
+      "source_reference_frame": "",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_032.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_029_NEMO_SUNSET_PROFILE/keyframes/01_OP_SHOT_032.png",
+      "exists": true,
+      "source_unit_id": "VU_REF003_016_NEMO_SUNSET_PROFILE"
+    },
+    {
+      "order": 2,
+      "item_id": "OP_SHOT_033",
+      "kind": "official_keyframe",
+      "time_sec": 69.5,
+      "timecode": "01:09.50",
+      "role": "图2 / Nemo_profile_hold",
+      "beat": "Nemo 夕景 hold",
+      "difference_reason": "",
+      "source_reference_frame": "",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_033.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_029_NEMO_SUNSET_PROFILE/keyframes/02_OP_SHOT_033.png",
+      "exists": true,
+      "source_unit_id": "VU_REF003_016_NEMO_SUNSET_PROFILE"
+    }
+  ],
+  "candidate_reference_frames": [
+    {
+      "asset_id": "R7_CAND_029_start_066054ms",
+      "parent_video_unit_id": "VU_REF003_R7_029_NEMO_SUNSET_PROFILE",
+      "role": "start",
+      "source_time_sec": 66.054,
+      "source_timecode": "01:06.05",
+      "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_029_NEMO_SUNSET_PROFILE/candidate_reference_frames/R7_CAND_029_start_066054ms.jpg",
+      "priority": "P2_review_after_p1",
+      "status": "candidate_reference_frame_review",
+      "difference_reason": "Nemo夕景肖像长段 start boundary/transition frame from R7 high-precision split.",
+      "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_029_start_066054ms.png"
+    },
+    {
+      "asset_id": "R7_CAND_029_end_071333ms",
+      "parent_video_unit_id": "VU_REF003_R7_029_NEMO_SUNSET_PROFILE",
+      "role": "end",
+      "source_time_sec": 71.333,
+      "source_timecode": "01:11.33",
+      "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_029_NEMO_SUNSET_PROFILE/candidate_reference_frames/R7_CAND_029_end_071333ms.jpg",
+      "priority": "P2_review_after_p1",
+      "status": "candidate_reference_frame_review",
+      "difference_reason": "Nemo夕景肖像长段 end boundary/transition frame from R7 high-precision split.",
+      "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_029_end_071333ms.png"
+    },
+    {
+      "asset_id": "R7_CAND_029_middle_068694ms",
+      "parent_video_unit_id": "VU_REF003_R7_029_NEMO_SUNSET_PROFILE",
+      "role": "middle",
+      "source_time_sec": 68.694,
+      "source_timecode": "01:08.69",
+      "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_029_NEMO_SUNSET_PROFILE/candidate_reference_frames/R7_CAND_029_middle_068694ms.jpg",
+      "priority": "P2_review_after_p1",
+      "status": "candidate_reference_frame_review",
+      "difference_reason": "Nemo夕景肖像长段 middle boundary/transition frame from R7 high-precision split.",
+      "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_029_middle_068694ms.png"
+    }
+  ],
+  "active_asset_locks": [
+    {
+      "group": "characters",
+      "asset_id": "nemo",
+      "status": "official_identity_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_032.png",
+      "global_lock_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_global_asset_locks/characters_nemo.png",
+      "exists": true
+    }
+  ],
+  "prompt_only": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_PROMPT_INDEX/PROMPT_ONLY/29_VU_REF003_R7_029_NEMO_SUNSET_PROFILE.md",
+  "expected_video_output_path": "08_generation/outputs/video/reference003_r7_high_precision_segments/VU_REF003_R7_029_NEMO_SUNSET_PROFILE.mp4"
+}

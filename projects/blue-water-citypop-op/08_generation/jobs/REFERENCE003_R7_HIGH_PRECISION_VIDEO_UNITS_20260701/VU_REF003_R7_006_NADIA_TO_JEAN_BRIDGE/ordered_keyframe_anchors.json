@@ -1,0 +1,62 @@
+[
+  {
+    "order": 1,
+    "item_id": "OP_SHOT_011",
+    "kind": "official_keyframe",
+    "time_sec": 27.0,
+    "timecode": "00:27.00",
+    "role": "图2 / Nadia_close",
+    "beat": "Nadia 正面近景",
+    "difference_reason": "",
+    "source_reference_frame": "",
+    "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_011_v2.png",
+    "packaged_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_006_NADIA_TO_JEAN_BRIDGE/keyframes/01_OP_SHOT_011.png",
+    "exists": true,
+    "source_unit_id": "VU_REF003_007_NADIA_PROFILE_ENTRY"
+  },
+  {
+    "order": 2,
+    "item_id": "R5_VU_REF003_007_NADIA_PROFILE_ENTRY_027500ms_01",
+    "kind": "r5_adaptive_generated",
+    "time_sec": 27.5,
+    "timecode": "00:27.50",
+    "role": "adaptive_primary",
+    "beat": "Nadia 侧脸入场到近景: scene-boundary / hard visual turn; visually different from nearest existing anchor; local motion/color change peak",
+    "difference_reason": "Nadia 侧脸入场到近景: scene-boundary / hard visual turn; visually different from nearest existing anchor; local motion/color change peak",
+    "source_reference_frame": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0056.jpg",
+    "source_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_007_NADIA_PROFILE_ENTRY_027500ms_01.png",
+    "packaged_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_006_NADIA_TO_JEAN_BRIDGE/keyframes/02_R5_VU_REF003_007_NADIA_PROFILE_ENTRY_027500ms_01.png",
+    "exists": true,
+    "source_unit_id": "VU_REF003_007_NADIA_PROFILE_ENTRY"
+  },
+  {
+    "order": 3,
+    "item_id": "R5_VU_REF003_008_JEAN_INTRO_028500ms_02",
+    "kind": "r5_adaptive_generated",
+    "time_sec": 28.5,
+    "timecode": "00:28.50",
+    "role": "adaptive_middle",
+    "beat": "Jean intro has fast entry/pose changes; extra frame carries different body/hat/face orientation and protects Jean identity.",
+    "difference_reason": "Jean intro has fast entry/pose changes; extra frame carries different body/hat/face orientation and protects Jean identity.",
+    "source_reference_frame": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0058.jpg",
+    "source_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_008_JEAN_INTRO_028500ms_02.png",
+    "packaged_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_006_NADIA_TO_JEAN_BRIDGE/keyframes/03_R5_VU_REF003_008_JEAN_INTRO_028500ms_02.png",
+    "exists": true,
+    "source_unit_id": "VU_REF003_008_JEAN_INTRO"
+  },
+  {
+    "order": 4,
+    "item_id": "OP_SHOT_012",
+    "kind": "official_keyframe",
+    "time_sec": 29.0,
+    "timecode": "00:29.00",
+    "role": "图1 / Jean_hat_face",
+    "beat": "Jean 入场",
+    "difference_reason": "",
+    "source_reference_frame": "",
+    "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_012.png",
+    "packaged_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_006_NADIA_TO_JEAN_BRIDGE/keyframes/04_OP_SHOT_012.png",
+    "exists": true,
+    "source_unit_id": "VU_REF003_008_JEAN_INTRO"
+  }
+]

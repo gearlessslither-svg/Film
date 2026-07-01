@@ -1,0 +1,58 @@
+[
+  {
+    "order": 1,
+    "item_id": "OP_SHOT_003",
+    "kind": "official_keyframe",
+    "time_sec": 2.5,
+    "timecode": "00:02.50",
+    "role": "图1 / bird_entry",
+    "beat": "白鸟首次入画",
+    "difference_reason": "",
+    "source_reference_frame": "",
+    "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_003.png",
+    "packaged_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_002_WHITE_BIRD_SKY/keyframes/01_OP_SHOT_003.png",
+    "exists": true
+  },
+  {
+    "order": 2,
+    "item_id": "R5_VU_REF003_002_WHITE_BIRD_SKY_003500ms_02",
+    "kind": "r5_adaptive_generated",
+    "time_sec": 3.5,
+    "timecode": "00:03.50",
+    "role": "adaptive_middle",
+    "beat": "White bird glide changes screen position/scale within a long sky movement; useful middle/final action anchor without generating every frame.",
+    "difference_reason": "White bird glide changes screen position/scale within a long sky movement; useful middle/final action anchor without generating every frame.",
+    "source_reference_frame": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0008.jpg",
+    "source_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_002_WHITE_BIRD_SKY_003500ms_02.png",
+    "packaged_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_002_WHITE_BIRD_SKY/keyframes/02_R5_VU_REF003_002_WHITE_BIRD_SKY_003500ms_02.png",
+    "exists": true
+  },
+  {
+    "order": 3,
+    "item_id": "OP_SHOT_004",
+    "kind": "official_keyframe",
+    "time_sec": 5.0,
+    "timecode": "00:05.00",
+    "role": "图2 / bird_glide",
+    "beat": "白鸟滑翔延续",
+    "difference_reason": "",
+    "source_reference_frame": "",
+    "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_004.png",
+    "packaged_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_002_WHITE_BIRD_SKY/keyframes/03_OP_SHOT_004.png",
+    "exists": true
+  },
+  {
+    "order": 4,
+    "item_id": "R5_VU_REF003_002_WHITE_BIRD_SKY_007000ms_01",
+    "kind": "r5_adaptive_generated",
+    "time_sec": 7.0,
+    "timecode": "00:07.00",
+    "role": "adaptive_primary",
+    "beat": "White bird glide changes screen position/scale within a long sky movement; useful middle/final action anchor without generating every frame.",
+    "difference_reason": "White bird glide changes screen position/scale within a long sky movement; useful middle/final action anchor without generating every frame.",
+    "source_reference_frame": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0015.jpg",
+    "source_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_002_WHITE_BIRD_SKY_007000ms_01.png",
+    "packaged_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_002_WHITE_BIRD_SKY/keyframes/04_R5_VU_REF003_002_WHITE_BIRD_SKY_007000ms_01.png",
+    "exists": true
+  }
+]

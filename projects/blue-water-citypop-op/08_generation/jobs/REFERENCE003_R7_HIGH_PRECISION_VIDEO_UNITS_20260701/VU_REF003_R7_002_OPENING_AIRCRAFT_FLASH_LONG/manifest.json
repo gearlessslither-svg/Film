@@ -1,0 +1,244 @@
+{
+  "schema_version": "reference003_r7_high_precision_video_unit_package_v1",
+  "created_at": "2026-07-01T07:36:06+08:00",
+  "status": "ready_for_external_aigc_video_generation",
+  "unit": {
+    "order": 2,
+    "unit_id": "VU_REF003_R7_002_OPENING_AIRCRAFT_FLASH_LONG",
+    "title": "开场长段B：白鸟云层到飞行器闪现",
+    "start": 7.0,
+    "end": 16.5,
+    "intent": "保留白鸟/云层长运动，并精准抓住 00:14.72 飞行器一闪。",
+    "active_locks": [
+      [
+        "props_vehicles_symbols",
+        "white_bird"
+      ],
+      [
+        "props_vehicles_symbols",
+        "jean_aircraft"
+      ]
+    ],
+    "mode": "long_opening_flash"
+  },
+  "reference_clip": {
+    "path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_002_OPENING_AIRCRAFT_FLASH_LONG/reference_clip/VU_REF003_R7_002_OPENING_AIRCRAFT_FLASH_LONG_reference.mp4",
+    "start_sec": 7.0,
+    "end_sec": 16.5,
+    "duration_sec": 9.5,
+    "ok": true,
+    "decode_ok": true,
+    "stderr_tail": "      handler_name    : VideoHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : Lavc60.31.102 mpeg4\n    Side data:\n      cpb: bitrate max/min/avg: 0/0/200000 buffer size: 0 vbv_delay: N/A\nframe=    0 fps=0.0 q=3.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    \n[out#0/mp4 @ 0xa9ec4c480] video:3444kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 0.072042%\nframe=  228 fps=0.0 q=3.0 Lsize=    3447kB time=00:00:09.46 bitrate=2982.4kbits/s speed=35.4x    "
+  },
+  "ordered_generated_anchors": [
+    {
+      "order": 1,
+      "item_id": "R5_VU_REF003_002_WHITE_BIRD_SKY_007000ms_01",
+      "kind": "r5_adaptive_generated",
+      "time_sec": 7.0,
+      "timecode": "00:07.00",
+      "role": "adaptive_primary",
+      "beat": "White bird glide changes screen position/scale within a long sky movement; useful middle/final action anchor without generating every frame.",
+      "difference_reason": "White bird glide changes screen position/scale within a long sky movement; useful middle/final action anchor without generating every frame.",
+      "source_reference_frame": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0015.jpg",
+      "source_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_002_WHITE_BIRD_SKY_007000ms_01.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_002_OPENING_AIRCRAFT_FLASH_LONG/keyframes/01_R5_VU_REF003_002_WHITE_BIRD_SKY_007000ms_01.png",
+      "exists": true,
+      "source_unit_id": "VU_REF003_002_WHITE_BIRD_SKY"
+    },
+    {
+      "order": 2,
+      "item_id": "OP_SHOT_005",
+      "kind": "official_keyframe",
+      "time_sec": 7.5,
+      "timecode": "00:07.50",
+      "role": "图1 / no_text_credit_safe_bird",
+      "beat": "无字职员表安全位",
+      "difference_reason": "",
+      "source_reference_frame": "",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_005.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_002_OPENING_AIRCRAFT_FLASH_LONG/keyframes/02_OP_SHOT_005.png",
+      "exists": true,
+      "source_unit_id": "VU_REF003_003_CREDIT_SAFE_BIRD_CLOUDS"
+    },
+    {
+      "order": 3,
+      "item_id": "OP_SHOT_006",
+      "kind": "official_keyframe",
+      "time_sec": 11.5,
+      "timecode": "00:11.50",
+      "role": "图2 / cloud_bank_growth",
+      "beat": "云层增长填画",
+      "difference_reason": "",
+      "source_reference_frame": "",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_006_v2.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_002_OPENING_AIRCRAFT_FLASH_LONG/keyframes/03_OP_SHOT_006.png",
+      "exists": true,
+      "source_unit_id": "VU_REF003_003_CREDIT_SAFE_BIRD_CLOUDS"
+    },
+    {
+      "order": 4,
+      "item_id": "R5_VU_REF003_003_CREDIT_SAFE_BIRD_CLOUDS_014000ms_01",
+      "kind": "r5_adaptive_generated",
+      "time_sec": 14.0,
+      "timecode": "00:14.00",
+      "role": "adaptive_primary",
+      "beat": "Cloud/bird/title-safe composition changes over a long no-text sky section; adds clean sky state for preview and AIGC prompt.",
+      "difference_reason": "Cloud/bird/title-safe composition changes over a long no-text sky section; adds clean sky state for preview and AIGC prompt.",
+      "source_reference_frame": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0029.jpg",
+      "source_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_003_CREDIT_SAFE_BIRD_CLOUDS_014000ms_01.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_002_OPENING_AIRCRAFT_FLASH_LONG/keyframes/04_R5_VU_REF003_003_CREDIT_SAFE_BIRD_CLOUDS_014000ms_01.png",
+      "exists": true,
+      "source_unit_id": "VU_REF003_003_CREDIT_SAFE_BIRD_CLOUDS"
+    },
+    {
+      "order": 5,
+      "item_id": "R5_VU_REF003_004_AIRCRAFT_BRIEF_REVEAL_014500ms_02",
+      "kind": "r5_adaptive_generated",
+      "time_sec": 14.5,
+      "timecode": "00:14.50",
+      "role": "adaptive_middle",
+      "beat": "Brief aircraft reveal is a fast prop/camera state change; current single anchor does not cover entry and exit/reveal phase.",
+      "difference_reason": "Brief aircraft reveal is a fast prop/camera state change; current single anchor does not cover entry and exit/reveal phase.",
+      "source_reference_frame": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0030.jpg",
+      "source_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_004_AIRCRAFT_BRIEF_REVEAL_014500ms_02.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_002_OPENING_AIRCRAFT_FLASH_LONG/keyframes/05_R5_VU_REF003_004_AIRCRAFT_BRIEF_REVEAL_014500ms_02.png",
+      "exists": true,
+      "source_unit_id": "VU_REF003_004_AIRCRAFT_BRIEF_REVEAL"
+    },
+    {
+      "order": 6,
+      "item_id": "OP_SHOT_007",
+      "kind": "official_keyframe",
+      "time_sec": 15.0,
+      "timecode": "00:15.00",
+      "role": "图1 / aircraft_brief_reveal",
+      "beat": "飞行器短露",
+      "difference_reason": "",
+      "source_reference_frame": "",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_007.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_002_OPENING_AIRCRAFT_FLASH_LONG/keyframes/06_OP_SHOT_007.png",
+      "exists": true,
+      "source_unit_id": "VU_REF003_004_AIRCRAFT_BRIEF_REVEAL"
+    },
+    {
+      "order": 7,
+      "item_id": "R5_VU_REF003_004_AIRCRAFT_BRIEF_REVEAL_016000ms_01",
+      "kind": "r5_adaptive_generated",
+      "time_sec": 16.0,
+      "timecode": "00:16.00",
+      "role": "adaptive_primary",
+      "beat": "Brief aircraft reveal is a fast prop/camera state change; current single anchor does not cover entry and exit/reveal phase.",
+      "difference_reason": "Brief aircraft reveal is a fast prop/camera state change; current single anchor does not cover entry and exit/reveal phase.",
+      "source_reference_frame": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0033.jpg",
+      "source_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_004_AIRCRAFT_BRIEF_REVEAL_016000ms_01.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_002_OPENING_AIRCRAFT_FLASH_LONG/keyframes/07_R5_VU_REF003_004_AIRCRAFT_BRIEF_REVEAL_016000ms_01.png",
+      "exists": true,
+      "source_unit_id": "VU_REF003_004_AIRCRAFT_BRIEF_REVEAL"
+    }
+  ],
+  "candidate_reference_frames": [
+    {
+      "asset_id": "R7_CAND_002_start_007030ms",
+      "parent_video_unit_id": "VU_REF003_R7_002_OPENING_AIRCRAFT_FLASH_LONG",
+      "role": "start",
+      "source_time_sec": 7.03,
+      "source_timecode": "00:07.03",
+      "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_002_OPENING_AIRCRAFT_FLASH_LONG/candidate_reference_frames/R7_CAND_002_start_007030ms.jpg",
+      "priority": "P3_reference_video_or_already_handled",
+      "status": "candidate_reference_frame_review",
+      "difference_reason": "开场长段B：白鸟云层到飞行器闪现 start boundary/transition frame from R7 high-precision split.",
+      "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_002_start_007030ms.png"
+    },
+    {
+      "asset_id": "R7_CAND_002_end_016470ms",
+      "parent_video_unit_id": "VU_REF003_R7_002_OPENING_AIRCRAFT_FLASH_LONG",
+      "role": "end",
+      "source_time_sec": 16.47,
+      "source_timecode": "00:16.47",
+      "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_002_OPENING_AIRCRAFT_FLASH_LONG/candidate_reference_frames/R7_CAND_002_end_016470ms.jpg",
+      "priority": "P2_review_after_p1",
+      "status": "candidate_reference_frame_review",
+      "difference_reason": "开场长段B：白鸟云层到飞行器闪现 end boundary/transition frame from R7 high-precision split.",
+      "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_002_end_016470ms.png"
+    },
+    {
+      "asset_id": "R7_CAND_002_middle_011750ms",
+      "parent_video_unit_id": "VU_REF003_R7_002_OPENING_AIRCRAFT_FLASH_LONG",
+      "role": "middle",
+      "source_time_sec": 11.75,
+      "source_timecode": "00:11.75",
+      "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_002_OPENING_AIRCRAFT_FLASH_LONG/candidate_reference_frames/R7_CAND_002_middle_011750ms.jpg",
+      "priority": "P3_reference_video_or_already_handled",
+      "status": "candidate_reference_frame_review",
+      "difference_reason": "开场长段B：白鸟云层到飞行器闪现 middle boundary/transition frame from R7 high-precision split.",
+      "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_002_middle_011750ms.png"
+    }
+  ],
+  "active_asset_locks": [
+    {
+      "group": "props_vehicles_symbols",
+      "asset_id": "white_bird",
+      "status": "official_prop_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_003.png",
+      "global_lock_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_global_asset_locks/props_vehicles_symbols_white_bird.png",
+      "exists": true
+    },
+    {
+      "group": "props_vehicles_symbols",
+      "asset_id": "jean_aircraft",
+      "status": "official_prop_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_007.png",
+      "global_lock_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_global_asset_locks/props_vehicles_symbols_jean_aircraft.png",
+      "exists": true
+    }
+  ],
+  "prompt_only": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_PROMPT_INDEX/PROMPT_ONLY/02_VU_REF003_R7_002_OPENING_AIRCRAFT_FLASH_LONG.md",
+  "expected_video_output_path": "08_generation/outputs/video/reference003_r7_high_precision_segments/VU_REF003_R7_002_OPENING_AIRCRAFT_FLASH_LONG.mp4",
+  "production_prompt": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_PROMPT_INDEX/PRODUCTION_READY_PROMPT_ONLY/02_VU_REF003_R7_002_OPENING_AIRCRAFT_FLASH_LONG_PRODUCTION_READY.md",
+  "production_ready_readme": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_002_OPENING_AIRCRAFT_FLASH_LONG/AIGC_VIDEO_PRODUCTION_READY.md",
+  "r7_generated_candidate_images": [
+    {
+      "asset_id": "R7_CAND_002_start_007030ms",
+      "role": "start",
+      "source_time_sec": 7.03,
+      "source_timecode": "00:07.03",
+      "priority": "P3_reference_video_or_already_handled",
+      "status": "generated_asset_ready_pending_review",
+      "unit_title": "开场长段B：白鸟云层到飞行器闪现",
+      "difference_reason": "开场长段B：白鸟云层到飞行器闪现 start boundary/transition frame from R7 high-precision split.",
+      "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_002_OPENING_AIRCRAFT_FLASH_LONG/candidate_reference_frames/R7_CAND_002_start_007030ms.jpg",
+      "generated_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_002_start_007030ms.png",
+      "image_prompt": "21:9 anamorphic live-action keyframe, faithful high-end live-action remake of the reference-003 OP, pure image only, no readable text/logo/subtitle/watermark. Use source frame `08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_002_OPENING_AIRCRAFT_FLASH_LONG/candidate_reference_frames/R7_CAND_002_start_007030ms.jpg` at 00:07.03 as composition/timing reference. Video unit: VU_REF003_R7_002_OPENING_AIRCRAFT_FLASH_LONG (开场长段B：白鸟云层到飞行器闪现). Shot intent: 保留白鸟/云层长运动，并精准抓住 00:14.72 飞行器一闪。 Preserve active locks when visible: white_bird, jean_aircraft. Nearest generated anchors for continuity: R5_VU_REF003_002_WHITE_BIRD_SKY_007000ms_01, OP_SHOT_005, OP_SHOT_006. Do not copy anime line art; create a clean live-action remake frame. Negative prompt: readable text, title letters, lyrics, credits, broadcaster mark, subtitle, watermark, random symbols, distorted face or hands, changed identity, changed prop design, sexualized minor.",
+      "exists": true
+    },
+    {
+      "asset_id": "R7_CAND_002_middle_011750ms",
+      "role": "middle",
+      "source_time_sec": 11.75,
+      "source_timecode": "00:11.75",
+      "priority": "P3_reference_video_or_already_handled",
+      "status": "generated_asset_ready_pending_review",
+      "unit_title": "开场长段B：白鸟云层到飞行器闪现",
+      "difference_reason": "开场长段B：白鸟云层到飞行器闪现 middle boundary/transition frame from R7 high-precision split.",
+      "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_002_OPENING_AIRCRAFT_FLASH_LONG/candidate_reference_frames/R7_CAND_002_middle_011750ms.jpg",
+      "generated_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_002_middle_011750ms.png",
+      "image_prompt": "21:9 anamorphic live-action keyframe, faithful high-end live-action remake of the reference-003 OP, pure image only, no readable text/logo/subtitle/watermark. Use source frame `08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_002_OPENING_AIRCRAFT_FLASH_LONG/candidate_reference_frames/R7_CAND_002_middle_011750ms.jpg` at 00:11.75 as composition/timing reference. Video unit: VU_REF003_R7_002_OPENING_AIRCRAFT_FLASH_LONG (开场长段B：白鸟云层到飞行器闪现). Shot intent: 保留白鸟/云层长运动，并精准抓住 00:14.72 飞行器一闪。 Preserve active locks when visible: white_bird, jean_aircraft. Nearest generated anchors for continuity: R5_VU_REF003_002_WHITE_BIRD_SKY_007000ms_01, OP_SHOT_005, OP_SHOT_006. Do not copy anime line art; create a clean live-action remake frame. Negative prompt: readable text, title letters, lyrics, credits, broadcaster mark, subtitle, watermark, random symbols, distorted face or hands, changed identity, changed prop design, sexualized minor.",
+      "exists": true
+    },
+    {
+      "asset_id": "R7_CAND_002_end_016470ms",
+      "role": "end",
+      "source_time_sec": 16.47,
+      "source_timecode": "00:16.47",
+      "priority": "P2_review_after_p1",
+      "status": "generated_asset_ready",
+      "unit_title": "开场长段B：白鸟云层到飞行器闪现",
+      "difference_reason": "开场长段B：白鸟云层到飞行器闪现 end boundary/transition frame from R7 high-precision split.",
+      "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_002_OPENING_AIRCRAFT_FLASH_LONG/candidate_reference_frames/R7_CAND_002_end_016470ms.jpg",
+      "generated_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_002_end_016470ms.png",
+      "image_prompt": "21:9 anamorphic live-action keyframe, faithful high-end live-action remake of the reference-003 OP, pure image only, no readable text/logo/subtitle/watermark. Use source frame `08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_002_OPENING_AIRCRAFT_FLASH_LONG/candidate_reference_frames/R7_CAND_002_end_016470ms.jpg` at 00:16.47 as composition/timing reference. Video unit: VU_REF003_R7_002_OPENING_AIRCRAFT_FLASH_LONG (开场长段B：白鸟云层到飞行器闪现). Shot intent: 保留白鸟/云层长运动，并精准抓住 00:14.72 飞行器一闪。 Preserve active locks when visible: white_bird, jean_aircraft. Nearest generated anchors for continuity: R5_VU_REF003_002_WHITE_BIRD_SKY_007000ms_01, OP_SHOT_005, OP_SHOT_006. Do not copy anime line art; create a clean live-action remake frame. Negative prompt: readable text, title letters, lyrics, credits, broadcaster mark, subtitle, watermark, random symbols, distorted face or hands, changed identity, changed prop design, sexualized minor.",
+      "exists": true
+    }
+  ]
+}

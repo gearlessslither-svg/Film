@@ -1,0 +1,184 @@
+{
+  "schema_version": "reference003_r7_high_precision_video_unit_package_v1",
+  "created_at": "2026-07-01T07:36:06+08:00",
+  "status": "ready_for_external_aigc_video_generation",
+  "unit": {
+    "order": 30,
+    "unit_id": "VU_REF003_R7_030_NADIA_SOLEMN_TO_JEWEL",
+    "title": "Nadia庄重到宝石",
+    "start": 71.363,
+    "end": 74.074,
+    "intent": "Nadia 庄重正面过渡到 Blue Water 象征。",
+    "active_locks": [
+      [
+        "characters",
+        "nadia"
+      ],
+      [
+        "props_vehicles_symbols",
+        "blue_water_pendant"
+      ]
+    ],
+    "mode": "high_precision_segment"
+  },
+  "reference_clip": {
+    "path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_030_NADIA_SOLEMN_TO_JEWEL/reference_clip/VU_REF003_R7_030_NADIA_SOLEMN_TO_JEWEL_reference.mp4",
+    "start_sec": 71.363,
+    "end_sec": 74.074,
+    "duration_sec": 2.711,
+    "ok": true,
+    "decode_ok": true,
+    "stderr_tail": "      handler_name    : VideoHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : Lavc60.31.102 mpeg4\n    Side data:\n      cpb: bitrate max/min/avg: 0/0/200000 buffer size: 0 vbv_delay: N/A\nframe=    0 fps=0.0 q=3.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    \n[out#0/mp4 @ 0x9cc828480] video:1852kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 0.094774%\nframe=   65 fps=0.0 q=3.0 Lsize=    1853kB time=00:00:02.66 bitrate=5687.9kbits/s speed=21.8x    "
+  },
+  "ordered_generated_anchors": [
+    {
+      "order": 1,
+      "item_id": "OP_SHOT_034",
+      "kind": "official_keyframe",
+      "time_sec": 72.0,
+      "timecode": "01:12.00",
+      "role": "图1 / Nadia_solemn_front",
+      "beat": "Nadia 庄重正面",
+      "difference_reason": "",
+      "source_reference_frame": "",
+      "source_path": "08_generation/jobs/REFERENCE003_IDENTITY_REPAIR_R1_20260630/outputs/OP_SHOT_034_R1.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_030_NADIA_SOLEMN_TO_JEWEL/keyframes/01_OP_SHOT_034.png",
+      "exists": true,
+      "source_unit_id": "VU_REF003_017_NADIA_SOLEMN_CLOSE"
+    },
+    {
+      "order": 2,
+      "item_id": "OP_SHOT_035",
+      "kind": "official_keyframe",
+      "time_sec": 73.5,
+      "timecode": "01:13.50",
+      "role": "图1 / Blue_Water_jewel_symbol",
+      "beat": "Blue Water 宝石象征",
+      "difference_reason": "",
+      "source_reference_frame": "",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_035.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_030_NADIA_SOLEMN_TO_JEWEL/keyframes/02_OP_SHOT_035.png",
+      "exists": true,
+      "source_unit_id": "VU_REF003_018_BLUE_WATER_SYMBOL"
+    },
+    {
+      "order": 3,
+      "item_id": "R5_VU_REF003_018_BLUE_WATER_SYMBOL_074000ms_01",
+      "kind": "r5_adaptive_generated",
+      "time_sec": 74.0,
+      "timecode": "01:14.00",
+      "role": "adaptive_primary",
+      "beat": "Blue Water 象征与水下纹理: scene-boundary / hard visual turn; visually different from nearest existing anchor; local motion/color change peak",
+      "difference_reason": "Blue Water 象征与水下纹理: scene-boundary / hard visual turn; visually different from nearest existing anchor; local motion/color change peak",
+      "source_reference_frame": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0149.jpg",
+      "source_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_018_BLUE_WATER_SYMBOL_074000ms_01.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_030_NADIA_SOLEMN_TO_JEWEL/keyframes/03_R5_VU_REF003_018_BLUE_WATER_SYMBOL_074000ms_01.png",
+      "exists": true,
+      "source_unit_id": "VU_REF003_018_BLUE_WATER_SYMBOL"
+    }
+  ],
+  "candidate_reference_frames": [
+    {
+      "asset_id": "R7_CAND_030_start_071393ms",
+      "parent_video_unit_id": "VU_REF003_R7_030_NADIA_SOLEMN_TO_JEWEL",
+      "role": "start",
+      "source_time_sec": 71.393,
+      "source_timecode": "01:11.39",
+      "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_030_NADIA_SOLEMN_TO_JEWEL/candidate_reference_frames/R7_CAND_030_start_071393ms.jpg",
+      "priority": "P2_review_after_p1",
+      "status": "candidate_reference_frame_review",
+      "difference_reason": "Nadia庄重到宝石 start boundary/transition frame from R7 high-precision split.",
+      "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_030_start_071393ms.png"
+    },
+    {
+      "asset_id": "R7_CAND_030_end_074044ms",
+      "parent_video_unit_id": "VU_REF003_R7_030_NADIA_SOLEMN_TO_JEWEL",
+      "role": "end",
+      "source_time_sec": 74.044,
+      "source_timecode": "01:14.04",
+      "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_030_NADIA_SOLEMN_TO_JEWEL/candidate_reference_frames/R7_CAND_030_end_074044ms.jpg",
+      "priority": "P3_reference_video_or_already_handled",
+      "status": "candidate_reference_frame_review",
+      "difference_reason": "Nadia庄重到宝石 end boundary/transition frame from R7 high-precision split.",
+      "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_030_end_074044ms.png"
+    },
+    {
+      "asset_id": "R7_CAND_030_middle_072718ms",
+      "parent_video_unit_id": "VU_REF003_R7_030_NADIA_SOLEMN_TO_JEWEL",
+      "role": "middle",
+      "source_time_sec": 72.719,
+      "source_timecode": "01:12.72",
+      "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_030_NADIA_SOLEMN_TO_JEWEL/candidate_reference_frames/R7_CAND_030_middle_072718ms.jpg",
+      "priority": "P2_review_after_p1",
+      "status": "candidate_reference_frame_review",
+      "difference_reason": "Nadia庄重到宝石 middle boundary/transition frame from R7 high-precision split.",
+      "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_030_middle_072718ms.png"
+    }
+  ],
+  "active_asset_locks": [
+    {
+      "group": "characters",
+      "asset_id": "nadia",
+      "status": "official_identity_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_011_v2.png",
+      "global_lock_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_global_asset_locks/characters_nadia.png",
+      "exists": true
+    },
+    {
+      "group": "props_vehicles_symbols",
+      "asset_id": "blue_water_pendant",
+      "status": "official_prop_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_035.png",
+      "global_lock_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_global_asset_locks/props_vehicles_symbols_blue_water_pendant.png",
+      "exists": true
+    }
+  ],
+  "prompt_only": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_PROMPT_INDEX/PROMPT_ONLY/30_VU_REF003_R7_030_NADIA_SOLEMN_TO_JEWEL.md",
+  "expected_video_output_path": "08_generation/outputs/video/reference003_r7_high_precision_segments/VU_REF003_R7_030_NADIA_SOLEMN_TO_JEWEL.mp4",
+  "production_prompt": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_PROMPT_INDEX/PRODUCTION_READY_PROMPT_ONLY/30_VU_REF003_R7_030_NADIA_SOLEMN_TO_JEWEL_PRODUCTION_READY.md",
+  "production_ready_readme": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_030_NADIA_SOLEMN_TO_JEWEL/AIGC_VIDEO_PRODUCTION_READY.md",
+  "r7_generated_candidate_images": [
+    {
+      "asset_id": "R7_CAND_030_start_071393ms",
+      "role": "start",
+      "source_time_sec": 71.393,
+      "source_timecode": "01:11.39",
+      "priority": "P2_review_after_p1",
+      "status": "generated_asset_ready",
+      "unit_title": "Nadia庄重到宝石",
+      "difference_reason": "Nadia庄重到宝石 start boundary/transition frame from R7 high-precision split.",
+      "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_030_NADIA_SOLEMN_TO_JEWEL/candidate_reference_frames/R7_CAND_030_start_071393ms.jpg",
+      "generated_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_030_start_071393ms.png",
+      "image_prompt": "21:9 anamorphic live-action keyframe, faithful high-end live-action remake of the reference-003 OP, pure image only, no readable text/logo/subtitle/watermark. Use source frame `08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_030_NADIA_SOLEMN_TO_JEWEL/candidate_reference_frames/R7_CAND_030_start_071393ms.jpg` at 01:11.39 as composition/timing reference. Video unit: VU_REF003_R7_030_NADIA_SOLEMN_TO_JEWEL (Nadia庄重到宝石). Shot intent: Nadia 庄重正面过渡到 Blue Water 象征。 Preserve active locks when visible: nadia, blue_water_pendant. Nearest generated anchors for continuity: OP_SHOT_034, OP_SHOT_035, R5_VU_REF003_018_BLUE_WATER_SYMBOL_074000ms_01. Do not copy anime line art; create a clean live-action remake frame. Negative prompt: readable text, title letters, lyrics, credits, broadcaster mark, subtitle, watermark, random symbols, distorted face or hands, changed identity, changed prop design, sexualized minor.",
+      "exists": true
+    },
+    {
+      "asset_id": "R7_CAND_030_middle_072718ms",
+      "role": "middle",
+      "source_time_sec": 72.719,
+      "source_timecode": "01:12.72",
+      "priority": "P2_review_after_p1",
+      "status": "generated_asset_ready",
+      "unit_title": "Nadia庄重到宝石",
+      "difference_reason": "Nadia庄重到宝石 middle boundary/transition frame from R7 high-precision split.",
+      "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_030_NADIA_SOLEMN_TO_JEWEL/candidate_reference_frames/R7_CAND_030_middle_072718ms.jpg",
+      "generated_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_030_middle_072718ms.png",
+      "image_prompt": "21:9 anamorphic live-action keyframe, faithful high-end live-action remake of the reference-003 OP, pure image only, no readable text/logo/subtitle/watermark. Use source frame `08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_030_NADIA_SOLEMN_TO_JEWEL/candidate_reference_frames/R7_CAND_030_middle_072718ms.jpg` at 01:12.72 as composition/timing reference. Video unit: VU_REF003_R7_030_NADIA_SOLEMN_TO_JEWEL (Nadia庄重到宝石). Shot intent: Nadia 庄重正面过渡到 Blue Water 象征。 Preserve active locks when visible: nadia, blue_water_pendant. Nearest generated anchors for continuity: OP_SHOT_034, OP_SHOT_035, R5_VU_REF003_018_BLUE_WATER_SYMBOL_074000ms_01. Do not copy anime line art; create a clean live-action remake frame. Negative prompt: readable text, title letters, lyrics, credits, broadcaster mark, subtitle, watermark, random symbols, distorted face or hands, changed identity, changed prop design, sexualized minor.",
+      "exists": true
+    },
+    {
+      "asset_id": "R7_CAND_030_end_074044ms",
+      "role": "end",
+      "source_time_sec": 74.044,
+      "source_timecode": "01:14.04",
+      "priority": "P3_reference_video_or_already_handled",
+      "status": "generated_asset_ready_pending_review",
+      "unit_title": "Nadia庄重到宝石",
+      "difference_reason": "Nadia庄重到宝石 end boundary/transition frame from R7 high-precision split.",
+      "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_030_NADIA_SOLEMN_TO_JEWEL/candidate_reference_frames/R7_CAND_030_end_074044ms.jpg",
+      "generated_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_030_end_074044ms.png",
+      "image_prompt": "21:9 anamorphic live-action keyframe, faithful high-end live-action remake of the reference-003 OP, pure image only, no readable text/logo/subtitle/watermark. Use source frame `08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_030_NADIA_SOLEMN_TO_JEWEL/candidate_reference_frames/R7_CAND_030_end_074044ms.jpg` at 01:14.04 as composition/timing reference. Video unit: VU_REF003_R7_030_NADIA_SOLEMN_TO_JEWEL (Nadia庄重到宝石). Shot intent: Nadia 庄重正面过渡到 Blue Water 象征。 Preserve active locks when visible: nadia, blue_water_pendant. Nearest generated anchors for continuity: OP_SHOT_034, OP_SHOT_035, R5_VU_REF003_018_BLUE_WATER_SYMBOL_074000ms_01. Do not copy anime line art; create a clean live-action remake frame. Negative prompt: readable text, title letters, lyrics, credits, broadcaster mark, subtitle, watermark, random symbols, distorted face or hands, changed identity, changed prop design, sexualized minor.",
+      "exists": true
+    }
+  ]
+}

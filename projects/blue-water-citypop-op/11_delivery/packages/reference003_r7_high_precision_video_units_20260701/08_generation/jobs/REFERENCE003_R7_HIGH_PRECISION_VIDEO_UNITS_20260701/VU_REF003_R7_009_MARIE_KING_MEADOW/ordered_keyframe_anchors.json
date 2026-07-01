@@ -1,0 +1,17 @@
+[
+  {
+    "order": 1,
+    "item_id": "OP_SHOT_014",
+    "kind": "official_keyframe",
+    "time_sec": 34.0,
+    "timecode": "00:34.00",
+    "role": "图2 / Marie_King_close",
+    "beat": "Marie 与 King 近景",
+    "difference_reason": "",
+    "source_reference_frame": "",
+    "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_014.png",
+    "packaged_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_009_MARIE_KING_MEADOW/keyframes/01_OP_SHOT_014.png",
+    "exists": true,
+    "source_unit_id": "VU_REF003_009_MARIE_KING_MEADOW"
+  }
+]

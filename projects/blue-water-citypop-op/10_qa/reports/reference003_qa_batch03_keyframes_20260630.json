@@ -1,0 +1,50 @@
+{
+  "job_id": "REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03",
+  "updated_at": "2026-06-30T05:32:08+08:00",
+  "source_reference": "reference-003-full-op-2160p",
+  "generated_sheet": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/REFERENCE003_QA_BATCH03_generated_sheet.jpg",
+  "reference_sheet": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/refs/REFERENCE003_QA_BATCH03_reference_sheet.jpg",
+  "compare_sheet": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/REFERENCE003_QA_BATCH03_ref_vs_generated.jpg",
+  "verdict_summary": {
+    "pass": 6,
+    "needs_review": 0
+  },
+  "items": [
+    {
+      "item_id": "OP_SHOT_013",
+      "status": "generated_reference003_qa_pass",
+      "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_013.png",
+      "note": "REFERENCE003_QA_BATCH03 official keyframe generated from full video reference. Visual QA pass: Marie and King laughing in meadow, child-safe, no text/logo."
+    },
+    {
+      "item_id": "OP_SHOT_014",
+      "status": "generated_reference003_qa_pass",
+      "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_014.png",
+      "note": "REFERENCE003_QA_BATCH03 official keyframe generated from full video reference. Visual QA pass: Marie and King close joyful beat, child-safe and friendly, no text/logo."
+    },
+    {
+      "item_id": "OP_SHOT_015",
+      "status": "generated_reference003_qa_pass",
+      "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_015.png",
+      "note": "REFERENCE003_QA_BATCH03 official keyframe generated from full video reference. Visual QA pass: Grandis trio wide period lineup, three adults, no text/logo; normalized to 1915x821."
+    },
+    {
+      "item_id": "OP_SHOT_016",
+      "status": "generated_reference003_qa_pass",
+      "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_016_v2.png",
+      "note": "REFERENCE003_QA_BATCH03 R2 official keyframe generated from full video reference. Visual QA pass: exactly three adult Grandis trio close cluster, no text/logo."
+    },
+    {
+      "item_id": "OP_SHOT_017",
+      "status": "generated_reference003_qa_pass",
+      "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_017.png",
+      "note": "REFERENCE003_QA_BATCH03 official keyframe generated from full video reference. Visual QA pass: Nadia running foot/leg action beat, safe framing, no text/logo."
+    },
+    {
+      "item_id": "OP_SHOT_018",
+      "status": "generated_reference003_qa_pass",
+      "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_018.png",
+      "note": "REFERENCE003_QA_BATCH03 official keyframe generated from full video reference. Visual QA pass: Nadia running front action beat, age-safe conservative costume, no text/logo; normalized to 1915x821."
+    }
+  ]
+}

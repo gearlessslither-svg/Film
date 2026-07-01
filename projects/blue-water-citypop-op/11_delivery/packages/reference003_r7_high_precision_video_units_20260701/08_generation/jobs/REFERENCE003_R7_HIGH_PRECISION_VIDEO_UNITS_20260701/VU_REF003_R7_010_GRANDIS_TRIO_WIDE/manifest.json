@@ -1,0 +1,150 @@
+{
+  "schema_version": "reference003_r7_high_precision_video_unit_package_v1",
+  "created_at": "2026-07-01T07:36:06+08:00",
+  "status": "ready_for_external_aigc_video_generation",
+  "unit": {
+    "order": 10,
+    "unit_id": "VU_REF003_R7_010_GRANDIS_TRIO_WIDE",
+    "title": "Grandis三人组广角",
+    "start": 33.951,
+    "end": 35.953,
+    "intent": "Grandis 三人组广角亮相。",
+    "active_locks": [
+      [
+        "characters",
+        "grandis"
+      ],
+      [
+        "characters",
+        "sanson"
+      ],
+      [
+        "characters",
+        "hanson"
+      ]
+    ],
+    "mode": "high_precision_segment"
+  },
+  "reference_clip": {
+    "path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_010_GRANDIS_TRIO_WIDE/reference_clip/VU_REF003_R7_010_GRANDIS_TRIO_WIDE_reference.mp4",
+    "start_sec": 33.951,
+    "end_sec": 35.953,
+    "duration_sec": 2.002,
+    "ok": true,
+    "decode_ok": true,
+    "stderr_tail": "      handler_name    : VideoHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : Lavc60.31.102 mpeg4\n    Side data:\n      cpb: bitrate max/min/avg: 0/0/200000 buffer size: 0 vbv_delay: N/A\nframe=    0 fps=0.0 q=3.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    \n[out#0/mp4 @ 0x8f700c9c0] video:4651kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 0.036975%\nframe=   48 fps=0.0 q=3.0 Lsize=    4653kB time=00:00:01.96 bitrate=19444.0kbits/s speed=12.5x    "
+  },
+  "ordered_generated_anchors": [
+    {
+      "order": 1,
+      "item_id": "OP_SHOT_014",
+      "kind": "official_keyframe",
+      "time_sec": 34.0,
+      "timecode": "00:34.00",
+      "role": "图2 / Marie_King_close",
+      "beat": "Marie 与 King 近景",
+      "difference_reason": "",
+      "source_reference_frame": "",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_014.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_010_GRANDIS_TRIO_WIDE/keyframes/01_OP_SHOT_014.png",
+      "exists": true,
+      "source_unit_id": "VU_REF003_009_MARIE_KING_MEADOW"
+    },
+    {
+      "order": 2,
+      "item_id": "R5_VU_REF003_010_GRANDIS_TRIO_INTRO_034500ms_01",
+      "kind": "r5_adaptive_generated",
+      "time_sec": 34.5,
+      "timecode": "00:34.50",
+      "role": "adaptive_primary",
+      "beat": "Grandis trio introduction changes blocking and group pose; extra frame protects three-person identity and screen direction.",
+      "difference_reason": "Grandis trio introduction changes blocking and group pose; extra frame protects three-person identity and screen direction.",
+      "source_reference_frame": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0070.jpg",
+      "source_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_010_GRANDIS_TRIO_INTRO_034500ms_01.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_010_GRANDIS_TRIO_WIDE/keyframes/02_R5_VU_REF003_010_GRANDIS_TRIO_INTRO_034500ms_01.png",
+      "exists": true,
+      "source_unit_id": "VU_REF003_010_GRANDIS_TRIO_INTRO"
+    },
+    {
+      "order": 3,
+      "item_id": "OP_SHOT_015",
+      "kind": "official_keyframe",
+      "time_sec": 35.5,
+      "timecode": "00:35.50",
+      "role": "图1 / Grandis_trio_wide",
+      "beat": "Grandis 三人组宽景",
+      "difference_reason": "",
+      "source_reference_frame": "",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_015.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_010_GRANDIS_TRIO_WIDE/keyframes/03_OP_SHOT_015.png",
+      "exists": true,
+      "source_unit_id": "VU_REF003_010_GRANDIS_TRIO_INTRO"
+    }
+  ],
+  "candidate_reference_frames": [
+    {
+      "asset_id": "R7_CAND_010_start_033981ms",
+      "parent_video_unit_id": "VU_REF003_R7_010_GRANDIS_TRIO_WIDE",
+      "role": "start",
+      "source_time_sec": 33.981,
+      "source_timecode": "00:33.98",
+      "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_010_GRANDIS_TRIO_WIDE/candidate_reference_frames/R7_CAND_010_start_033981ms.jpg",
+      "priority": "P3_reference_video_or_already_handled",
+      "status": "candidate_reference_frame_review",
+      "difference_reason": "Grandis三人组广角 start boundary/transition frame from R7 high-precision split.",
+      "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_010_start_033981ms.png"
+    },
+    {
+      "asset_id": "R7_CAND_010_end_035923ms",
+      "parent_video_unit_id": "VU_REF003_R7_010_GRANDIS_TRIO_WIDE",
+      "role": "end",
+      "source_time_sec": 35.923,
+      "source_timecode": "00:35.92",
+      "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_010_GRANDIS_TRIO_WIDE/candidate_reference_frames/R7_CAND_010_end_035923ms.jpg",
+      "priority": "P2_review_after_p1",
+      "status": "candidate_reference_frame_review",
+      "difference_reason": "Grandis三人组广角 end boundary/transition frame from R7 high-precision split.",
+      "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_010_end_035923ms.png"
+    },
+    {
+      "asset_id": "R7_CAND_010_middle_034952ms",
+      "parent_video_unit_id": "VU_REF003_R7_010_GRANDIS_TRIO_WIDE",
+      "role": "middle",
+      "source_time_sec": 34.952,
+      "source_timecode": "00:34.95",
+      "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_010_GRANDIS_TRIO_WIDE/candidate_reference_frames/R7_CAND_010_middle_034952ms.jpg",
+      "priority": "P2_review_after_p1",
+      "status": "candidate_reference_frame_review",
+      "difference_reason": "Grandis三人组广角 middle boundary/transition frame from R7 high-precision split.",
+      "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_010_middle_034952ms.png"
+    }
+  ],
+  "active_asset_locks": [
+    {
+      "group": "characters",
+      "asset_id": "grandis",
+      "status": "official_identity_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_016_v2.png",
+      "global_lock_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_global_asset_locks/characters_grandis.png",
+      "exists": true
+    },
+    {
+      "group": "characters",
+      "asset_id": "sanson",
+      "status": "official_identity_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_016_v2.png",
+      "global_lock_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_global_asset_locks/characters_sanson.png",
+      "exists": true
+    },
+    {
+      "group": "characters",
+      "asset_id": "hanson",
+      "status": "official_identity_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_016_v2.png",
+      "global_lock_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_global_asset_locks/characters_hanson.png",
+      "exists": true
+    }
+  ],
+  "prompt_only": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_PROMPT_INDEX/PROMPT_ONLY/10_VU_REF003_R7_010_GRANDIS_TRIO_WIDE.md",
+  "expected_video_output_path": "08_generation/outputs/video/reference003_r7_high_precision_segments/VU_REF003_R7_010_GRANDIS_TRIO_WIDE.mp4"
+}

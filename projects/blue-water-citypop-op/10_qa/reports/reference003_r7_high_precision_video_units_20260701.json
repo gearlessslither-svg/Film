@@ -1,0 +1,1021 @@
+{
+  "schema_version": "reference003_r7_high_precision_video_units_report_v1",
+  "created_at": "2026-07-01T07:36:06+08:00",
+  "status": "ready_for_external_aigc_video_generation_with_candidate_queue",
+  "unit_count": 36,
+  "ready_jobs": 36,
+  "total_generated_anchors": 88,
+  "total_r5_anchors": 25,
+  "total_candidate_frames": 98,
+  "p1_candidate_count": 14,
+  "p2_candidate_count": 20,
+  "p3_candidate_count": 64,
+  "package_root": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701",
+  "prompt_index": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_PROMPT_INDEX/AIGC_VIDEO_PROMPT_INDEX.md",
+  "candidate_queue_json": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/reference003_r7_candidate_image_generation_queue.json",
+  "candidate_queue_md": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/reference003_r7_candidate_image_generation_queue.md",
+  "p1_contact_sheet": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/reference003_r7_p1_candidate_contact_sheet.jpg",
+  "jobs": [
+    {
+      "order": 1,
+      "unit_id": "VU_REF003_R7_001_OPENING_CLOUD_BIRD_LONG",
+      "title": "开场长段A：黑场云层到白鸟入画",
+      "time_range": "00:00.00-00:07.00",
+      "duration_sec": 7.0,
+      "job_dir": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_001_OPENING_CLOUD_BIRD_LONG",
+      "ready": true,
+      "generated_anchor_count": 6,
+      "r5_anchor_count": 2,
+      "candidate_frame_count": 3,
+      "p1_candidate_count": 0,
+      "active_locks": [
+        "white_bird"
+      ],
+      "reference_clip": {
+        "path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_001_OPENING_CLOUD_BIRD_LONG/reference_clip/VU_REF003_R7_001_OPENING_CLOUD_BIRD_LONG_reference.mp4",
+        "start_sec": 0.0,
+        "end_sec": 7.0,
+        "duration_sec": 7.0,
+        "ok": true,
+        "decode_ok": true,
+        "stderr_tail": "      handler_name    : VideoHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : Lavc60.31.102 mpeg4\n    Side data:\n      cpb: bitrate max/min/avg: 0/0/200000 buffer size: 0 vbv_delay: N/A\nframe=    0 fps=0.0 q=3.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    \n[out#0/mp4 @ 0x882c50480] video:1940kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 0.113012%\nframe=  168 fps=0.0 q=3.0 Lsize=    1942kB time=00:00:06.96 bitrate=2284.2kbits/s speed=39.4x    "
+      },
+      "prompt_only": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_PROMPT_INDEX/PROMPT_ONLY/01_VU_REF003_R7_001_OPENING_CLOUD_BIRD_LONG.md",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_r7_high_precision_segments/VU_REF003_R7_001_OPENING_CLOUD_BIRD_LONG.mp4"
+    },
+    {
+      "order": 2,
+      "unit_id": "VU_REF003_R7_002_OPENING_AIRCRAFT_FLASH_LONG",
+      "title": "开场长段B：白鸟云层到飞行器闪现",
+      "time_range": "00:07.00-00:16.50",
+      "duration_sec": 9.5,
+      "job_dir": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_002_OPENING_AIRCRAFT_FLASH_LONG",
+      "ready": true,
+      "generated_anchor_count": 7,
+      "r5_anchor_count": 4,
+      "candidate_frame_count": 3,
+      "p1_candidate_count": 0,
+      "active_locks": [
+        "white_bird",
+        "jean_aircraft"
+      ],
+      "reference_clip": {
+        "path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_002_OPENING_AIRCRAFT_FLASH_LONG/reference_clip/VU_REF003_R7_002_OPENING_AIRCRAFT_FLASH_LONG_reference.mp4",
+        "start_sec": 7.0,
+        "end_sec": 16.5,
+        "duration_sec": 9.5,
+        "ok": true,
+        "decode_ok": true,
+        "stderr_tail": "      handler_name    : VideoHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : Lavc60.31.102 mpeg4\n    Side data:\n      cpb: bitrate max/min/avg: 0/0/200000 buffer size: 0 vbv_delay: N/A\nframe=    0 fps=0.0 q=3.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    \n[out#0/mp4 @ 0xa9ec4c480] video:3444kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 0.072042%\nframe=  228 fps=0.0 q=3.0 Lsize=    3447kB time=00:00:09.46 bitrate=2982.4kbits/s speed=35.4x    "
+      },
+      "prompt_only": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_PROMPT_INDEX/PROMPT_ONLY/02_VU_REF003_R7_002_OPENING_AIRCRAFT_FLASH_LONG.md",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_r7_high_precision_segments/VU_REF003_R7_002_OPENING_AIRCRAFT_FLASH_LONG.mp4"
+    },
+    {
+      "order": 3,
+      "unit_id": "VU_REF003_R7_003_OPENING_TITLE_FLARE_NADIA",
+      "title": "开场长段C：标题安全位到日光转Nadia",
+      "time_range": "00:16.50-00:24.80",
+      "duration_sec": 8.3,
+      "job_dir": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_003_OPENING_TITLE_FLARE_NADIA",
+      "ready": true,
+      "generated_anchor_count": 5,
+      "r5_anchor_count": 2,
+      "candidate_frame_count": 3,
+      "p1_candidate_count": 0,
+      "active_locks": [
+        "nadia",
+        "blue_water_pendant"
+      ],
+      "reference_clip": {
+        "path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_003_OPENING_TITLE_FLARE_NADIA/reference_clip/VU_REF003_R7_003_OPENING_TITLE_FLARE_NADIA_reference.mp4",
+        "start_sec": 16.5,
+        "end_sec": 24.8,
+        "duration_sec": 8.3,
+        "ok": true,
+        "decode_ok": true,
+        "stderr_tail": "      handler_name    : VideoHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : Lavc60.31.102 mpeg4\n    Side data:\n      cpb: bitrate max/min/avg: 0/0/200000 buffer size: 0 vbv_delay: N/A\nframe=    0 fps=0.0 q=3.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    \n[out#0/mp4 @ 0x754c4c480] video:5432kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 0.044319%\nframe=  200 fps=0.0 q=3.0 Lsize=    5434kB time=00:00:08.29 bitrate=5363.4kbits/s speed=27.8x    "
+      },
+      "prompt_only": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_PROMPT_INDEX/PROMPT_ONLY/03_VU_REF003_R7_003_OPENING_TITLE_FLARE_NADIA.md",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_r7_high_precision_segments/VU_REF003_R7_003_OPENING_TITLE_FLARE_NADIA.mp4"
+    },
+    {
+      "order": 4,
+      "unit_id": "VU_REF003_R7_004_NADIA_PROFILE_CONTINUE",
+      "title": "Nadia侧脸延续",
+      "time_range": "00:24.80-00:25.90",
+      "duration_sec": 1.101,
+      "job_dir": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_004_NADIA_PROFILE_CONTINUE",
+      "ready": true,
+      "generated_anchor_count": 1,
+      "r5_anchor_count": 0,
+      "candidate_frame_count": 2,
+      "p1_candidate_count": 1,
+      "active_locks": [
+        "nadia",
+        "blue_water_pendant"
+      ],
+      "reference_clip": {
+        "path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_004_NADIA_PROFILE_CONTINUE/reference_clip/VU_REF003_R7_004_NADIA_PROFILE_CONTINUE_reference.mp4",
+        "start_sec": 24.8,
+        "end_sec": 25.901,
+        "duration_sec": 1.101,
+        "ok": true,
+        "decode_ok": true,
+        "stderr_tail": "      handler_name    : VideoHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : Lavc60.31.102 mpeg4\n    Side data:\n      cpb: bitrate max/min/avg: 0/0/200000 buffer size: 0 vbv_delay: N/A\nframe=    0 fps=0.0 q=3.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    \n[out#0/mp4 @ 0xa8500c9c0] video:812kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 0.194423%\nframe=   27 fps=0.0 q=3.0 Lsize=     814kB time=00:00:01.08 bitrate=6147.5kbits/s speed=11.5x    "
+      },
+      "prompt_only": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_PROMPT_INDEX/PROMPT_ONLY/04_VU_REF003_R7_004_NADIA_PROFILE_CONTINUE.md",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_r7_high_precision_segments/VU_REF003_R7_004_NADIA_PROFILE_CONTINUE.mp4"
+    },
+    {
+      "order": 5,
+      "unit_id": "VU_REF003_R7_005_NADIA_CLOSE_INSERT",
+      "title": "Nadia近景插入",
+      "time_range": "00:25.90-00:26.82",
+      "duration_sec": 0.917,
+      "job_dir": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_005_NADIA_CLOSE_INSERT",
+      "ready": true,
+      "generated_anchor_count": 1,
+      "r5_anchor_count": 0,
+      "candidate_frame_count": 2,
+      "p1_candidate_count": 1,
+      "active_locks": [
+        "nadia",
+        "blue_water_pendant"
+      ],
+      "reference_clip": {
+        "path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_005_NADIA_CLOSE_INSERT/reference_clip/VU_REF003_R7_005_NADIA_CLOSE_INSERT_reference.mp4",
+        "start_sec": 25.901,
+        "end_sec": 26.818,
+        "duration_sec": 0.917,
+        "ok": true,
+        "decode_ok": true,
+        "stderr_tail": "      handler_name    : VideoHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : Lavc60.31.102 mpeg4\n    Side data:\n      cpb: bitrate max/min/avg: 0/0/200000 buffer size: 0 vbv_delay: N/A\nframe=    0 fps=0.0 q=3.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    \n[out#0/mp4 @ 0xc15068480] video:707kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 0.220147%\nframe=   22 fps=0.0 q=3.0 Lsize=     708kB time=00:00:00.87 bitrate=6623.8kbits/s speed=16.7x    "
+      },
+      "prompt_only": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_PROMPT_INDEX/PROMPT_ONLY/05_VU_REF003_R7_005_NADIA_CLOSE_INSERT.md",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_r7_high_precision_segments/VU_REF003_R7_005_NADIA_CLOSE_INSERT.mp4"
+    },
+    {
+      "order": 6,
+      "unit_id": "VU_REF003_R7_006_NADIA_TO_JEAN_BRIDGE",
+      "title": "Nadia到Jean过渡",
+      "time_range": "00:26.82-00:28.86",
+      "duration_sec": 2.044,
+      "job_dir": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_006_NADIA_TO_JEAN_BRIDGE",
+      "ready": true,
+      "generated_anchor_count": 4,
+      "r5_anchor_count": 2,
+      "candidate_frame_count": 3,
+      "p1_candidate_count": 0,
+      "active_locks": [
+        "nadia",
+        "jean",
+        "blue_water_pendant"
+      ],
+      "reference_clip": {
+        "path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_006_NADIA_TO_JEAN_BRIDGE/reference_clip/VU_REF003_R7_006_NADIA_TO_JEAN_BRIDGE_reference.mp4",
+        "start_sec": 26.818,
+        "end_sec": 28.862,
+        "duration_sec": 2.044,
+        "ok": true,
+        "decode_ok": true,
+        "stderr_tail": "      handler_name    : VideoHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : Lavc60.31.102 mpeg4\n    Side data:\n      cpb: bitrate max/min/avg: 0/0/200000 buffer size: 0 vbv_delay: N/A\nframe=    0 fps=0.0 q=3.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    \n[out#0/mp4 @ 0xb12c50480] video:1317kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 0.128808%\nframe=   49 fps=0.0 q=3.0 Lsize=    1319kB time=00:00:02.00 bitrate=5395.6kbits/s speed=20.4x    "
+      },
+      "prompt_only": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_PROMPT_INDEX/PROMPT_ONLY/06_VU_REF003_R7_006_NADIA_TO_JEAN_BRIDGE.md",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_r7_high_precision_segments/VU_REF003_R7_006_NADIA_TO_JEAN_BRIDGE.mp4"
+    },
+    {
+      "order": 7,
+      "unit_id": "VU_REF003_R7_007_JEAN_FACE_FLASH",
+      "title": "Jean帽子正脸短插",
+      "time_range": "00:28.86-00:29.49",
+      "duration_sec": 0.626,
+      "job_dir": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_007_JEAN_FACE_FLASH",
+      "ready": true,
+      "generated_anchor_count": 1,
+      "r5_anchor_count": 0,
+      "candidate_frame_count": 2,
+      "p1_candidate_count": 1,
+      "active_locks": [
+        "jean"
+      ],
+      "reference_clip": {
+        "path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_007_JEAN_FACE_FLASH/reference_clip/VU_REF003_R7_007_JEAN_FACE_FLASH_reference.mp4",
+        "start_sec": 28.862,
+        "end_sec": 29.488,
+        "duration_sec": 0.626,
+        "ok": true,
+        "decode_ok": true,
+        "stderr_tail": "      handler_name    : VideoHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : Lavc60.31.102 mpeg4\n    Side data:\n      cpb: bitrate max/min/avg: 0/0/200000 buffer size: 0 vbv_delay: N/A\nframe=    0 fps=0.0 q=3.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    \n[out#0/mp4 @ 0x723060480] video:472kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 0.323825%\nframe=   15 fps=0.0 q=3.0 Lsize=     473kB time=00:00:00.58 bitrate=6642.7kbits/s speed=7.15x    "
+      },
+      "prompt_only": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_PROMPT_INDEX/PROMPT_ONLY/07_VU_REF003_R7_007_JEAN_FACE_FLASH.md",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_r7_high_precision_segments/VU_REF003_R7_007_JEAN_FACE_FLASH.mp4"
+    },
+    {
+      "order": 8,
+      "unit_id": "VU_REF003_R7_008_JEAN_TO_MARIE_BRIDGE",
+      "title": "Jean到Marie草地过渡",
+      "time_range": "00:29.49-00:31.95",
+      "duration_sec": 2.461,
+      "job_dir": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_008_JEAN_TO_MARIE_BRIDGE",
+      "ready": true,
+      "generated_anchor_count": 3,
+      "r5_anchor_count": 2,
+      "candidate_frame_count": 3,
+      "p1_candidate_count": 0,
+      "active_locks": [
+        "jean",
+        "marie",
+        "king"
+      ],
+      "reference_clip": {
+        "path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_008_JEAN_TO_MARIE_BRIDGE/reference_clip/VU_REF003_R7_008_JEAN_TO_MARIE_BRIDGE_reference.mp4",
+        "start_sec": 29.488,
+        "end_sec": 31.949,
+        "duration_sec": 2.461,
+        "ok": true,
+        "decode_ok": true,
+        "stderr_tail": "      handler_name    : VideoHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : Lavc60.31.102 mpeg4\n    Side data:\n      cpb: bitrate max/min/avg: 0/0/200000 buffer size: 0 vbv_delay: N/A\nframe=    0 fps=0.0 q=3.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    \n[out#0/mp4 @ 0x76500c9c0] video:3853kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 0.045753%\nframe=   59 fps=0.0 q=3.0 Lsize=    3854kB time=00:00:02.41 bitrate=13052.7kbits/s speed=14.5x    "
+      },
+      "prompt_only": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_PROMPT_INDEX/PROMPT_ONLY/08_VU_REF003_R7_008_JEAN_TO_MARIE_BRIDGE.md",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_r7_high_precision_segments/VU_REF003_R7_008_JEAN_TO_MARIE_BRIDGE.mp4"
+    },
+    {
+      "order": 9,
+      "unit_id": "VU_REF003_R7_009_MARIE_KING_MEADOW",
+      "title": "Marie与King草地段",
+      "time_range": "00:31.95-00:33.95",
+      "duration_sec": 2.002,
+      "job_dir": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_009_MARIE_KING_MEADOW",
+      "ready": true,
+      "generated_anchor_count": 1,
+      "r5_anchor_count": 0,
+      "candidate_frame_count": 3,
+      "p1_candidate_count": 2,
+      "active_locks": [
+        "marie",
+        "king"
+      ],
+      "reference_clip": {
+        "path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_009_MARIE_KING_MEADOW/reference_clip/VU_REF003_R7_009_MARIE_KING_MEADOW_reference.mp4",
+        "start_sec": 31.949,
+        "end_sec": 33.951,
+        "duration_sec": 2.002,
+        "ok": true,
+        "decode_ok": true,
+        "stderr_tail": "      handler_name    : VideoHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : Lavc60.31.102 mpeg4\n    Side data:\n      cpb: bitrate max/min/avg: 0/0/200000 buffer size: 0 vbv_delay: N/A\nframe=    0 fps=0.0 q=3.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    \n[out#0/mp4 @ 0x7af00c9c0] video:1933kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 0.086360%\nframe=   48 fps=0.0 q=3.0 Lsize=    1934kB time=00:00:01.96 bitrate=8083.0kbits/s speed=17.6x    "
+      },
+      "prompt_only": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_PROMPT_INDEX/PROMPT_ONLY/09_VU_REF003_R7_009_MARIE_KING_MEADOW.md",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_r7_high_precision_segments/VU_REF003_R7_009_MARIE_KING_MEADOW.mp4"
+    },
+    {
+      "order": 10,
+      "unit_id": "VU_REF003_R7_010_GRANDIS_TRIO_WIDE",
+      "title": "Grandis三人组广角",
+      "time_range": "00:33.95-00:35.95",
+      "duration_sec": 2.002,
+      "job_dir": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_010_GRANDIS_TRIO_WIDE",
+      "ready": true,
+      "generated_anchor_count": 3,
+      "r5_anchor_count": 1,
+      "candidate_frame_count": 3,
+      "p1_candidate_count": 0,
+      "active_locks": [
+        "grandis",
+        "sanson",
+        "hanson"
+      ],
+      "reference_clip": {
+        "path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_010_GRANDIS_TRIO_WIDE/reference_clip/VU_REF003_R7_010_GRANDIS_TRIO_WIDE_reference.mp4",
+        "start_sec": 33.951,
+        "end_sec": 35.953,
+        "duration_sec": 2.002,
+        "ok": true,
+        "decode_ok": true,
+        "stderr_tail": "      handler_name    : VideoHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : Lavc60.31.102 mpeg4\n    Side data:\n      cpb: bitrate max/min/avg: 0/0/200000 buffer size: 0 vbv_delay: N/A\nframe=    0 fps=0.0 q=3.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    \n[out#0/mp4 @ 0x8f700c9c0] video:4651kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 0.036975%\nframe=   48 fps=0.0 q=3.0 Lsize=    4653kB time=00:00:01.96 bitrate=19444.0kbits/s speed=12.5x    "
+      },
+      "prompt_only": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_PROMPT_INDEX/PROMPT_ONLY/10_VU_REF003_R7_010_GRANDIS_TRIO_WIDE.md",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_r7_high_precision_segments/VU_REF003_R7_010_GRANDIS_TRIO_WIDE.mp4"
+    },
+    {
+      "order": 11,
+      "unit_id": "VU_REF003_R7_011_GRANDIS_TRIO_CLOSE",
+      "title": "Grandis三人组近景",
+      "time_range": "00:35.95-00:37.20",
+      "duration_sec": 1.251,
+      "job_dir": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_011_GRANDIS_TRIO_CLOSE",
+      "ready": true,
+      "generated_anchor_count": 1,
+      "r5_anchor_count": 0,
+      "candidate_frame_count": 3,
+      "p1_candidate_count": 2,
+      "active_locks": [
+        "grandis",
+        "sanson",
+        "hanson"
+      ],
+      "reference_clip": {
+        "path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_011_GRANDIS_TRIO_CLOSE/reference_clip/VU_REF003_R7_011_GRANDIS_TRIO_CLOSE_reference.mp4",
+        "start_sec": 35.953,
+        "end_sec": 37.204,
+        "duration_sec": 1.251,
+        "ok": true,
+        "decode_ok": true,
+        "stderr_tail": "      handler_name    : VideoHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : Lavc60.31.102 mpeg4\n    Side data:\n      cpb: bitrate max/min/avg: 0/0/200000 buffer size: 0 vbv_delay: N/A\nframe=    0 fps=0.0 q=3.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    \n[out#0/mp4 @ 0xa9ac44480] video:1839kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 0.087352%\nframe=   30 fps=0.0 q=3.0 Lsize=    1841kB time=00:00:01.20 bitrate=12466.3kbits/s speed=12.9x    "
+      },
+      "prompt_only": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_PROMPT_INDEX/PROMPT_ONLY/11_VU_REF003_R7_011_GRANDIS_TRIO_CLOSE.md",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_r7_high_precision_segments/VU_REF003_R7_011_GRANDIS_TRIO_CLOSE.mp4"
+    },
+    {
+      "order": 12,
+      "unit_id": "VU_REF003_R7_012_RUN_MONTAGE_ENTRY",
+      "title": "奔跑Montage入场",
+      "time_range": "00:37.20-00:38.12",
+      "duration_sec": 0.917,
+      "job_dir": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_012_RUN_MONTAGE_ENTRY",
+      "ready": true,
+      "generated_anchor_count": 3,
+      "r5_anchor_count": 1,
+      "candidate_frame_count": 2,
+      "p1_candidate_count": 0,
+      "active_locks": [
+        "nadia"
+      ],
+      "reference_clip": {
+        "path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_012_RUN_MONTAGE_ENTRY/reference_clip/VU_REF003_R7_012_RUN_MONTAGE_ENTRY_reference.mp4",
+        "start_sec": 37.204,
+        "end_sec": 38.121,
+        "duration_sec": 0.917,
+        "ok": true,
+        "decode_ok": true,
+        "stderr_tail": "      handler_name    : VideoHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : Lavc60.31.102 mpeg4\n    Side data:\n      cpb: bitrate max/min/avg: 0/0/200000 buffer size: 0 vbv_delay: N/A\nframe=    0 fps=0.0 q=3.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    \n[out#0/mp4 @ 0x803068480] video:1466kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 0.107166%\nframe=   22 fps=0.0 q=3.0 Lsize=    1468kB time=00:00:00.87 bitrate=13728.2kbits/s speed=9.77x    "
+      },
+      "prompt_only": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_PROMPT_INDEX/PROMPT_ONLY/12_VU_REF003_R7_012_RUN_MONTAGE_ENTRY.md",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_r7_high_precision_segments/VU_REF003_R7_012_RUN_MONTAGE_ENTRY.mp4"
+    },
+    {
+      "order": 13,
+      "unit_id": "VU_REF003_R7_013_NADIA_RUN_FEET",
+      "title": "Nadia奔跑脚步",
+      "time_range": "00:38.12-00:39.50",
+      "duration_sec": 1.379,
+      "job_dir": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_013_NADIA_RUN_FEET",
+      "ready": true,
+      "generated_anchor_count": 2,
+      "r5_anchor_count": 0,
+      "candidate_frame_count": 3,
+      "p1_candidate_count": 1,
+      "active_locks": [
+        "nadia",
+        "blue_water_pendant"
+      ],
+      "reference_clip": {
+        "path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_013_NADIA_RUN_FEET/reference_clip/VU_REF003_R7_013_NADIA_RUN_FEET_reference.mp4",
+        "start_sec": 38.121,
+        "end_sec": 39.5,
+        "duration_sec": 1.379,
+        "ok": true,
+        "decode_ok": true,
+        "stderr_tail": "      handler_name    : VideoHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : Lavc60.31.102 mpeg4\n    Side data:\n      cpb: bitrate max/min/avg: 0/0/200000 buffer size: 0 vbv_delay: N/A\nframe=    0 fps=0.0 q=3.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    \n[out#0/mp4 @ 0xae9068480] video:1291kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 0.125676%\nframe=   34 fps=0.0 q=3.0 Lsize=    1292kB time=00:00:01.37 bitrate=7691.6kbits/s speed=12.2x    "
+      },
+      "prompt_only": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_PROMPT_INDEX/PROMPT_ONLY/13_VU_REF003_R7_013_NADIA_RUN_FEET.md",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_r7_high_precision_segments/VU_REF003_R7_013_NADIA_RUN_FEET.mp4"
+    },
+    {
+      "order": 14,
+      "unit_id": "VU_REF003_R7_014_NADIA_RUN_FRONT",
+      "title": "Nadia正面奔跑",
+      "time_range": "00:39.50-00:41.50",
+      "duration_sec": 2.0,
+      "job_dir": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_014_NADIA_RUN_FRONT",
+      "ready": true,
+      "generated_anchor_count": 2,
+      "r5_anchor_count": 0,
+      "candidate_frame_count": 3,
+      "p1_candidate_count": 0,
+      "active_locks": [
+        "nadia",
+        "blue_water_pendant"
+      ],
+      "reference_clip": {
+        "path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_014_NADIA_RUN_FRONT/reference_clip/VU_REF003_R7_014_NADIA_RUN_FRONT_reference.mp4",
+        "start_sec": 39.5,
+        "end_sec": 41.5,
+        "duration_sec": 2.0,
+        "ok": true,
+        "decode_ok": true,
+        "stderr_tail": "      handler_name    : VideoHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : Lavc60.31.102 mpeg4\n    Side data:\n      cpb: bitrate max/min/avg: 0/0/200000 buffer size: 0 vbv_delay: N/A\nframe=    1 fps=0.0 q=3.0 size=       0kB time=00:00:00.04 bitrate=   8.4kbits/s dup=1 drop=0 speed=0.577x    \n[out#0/mp4 @ 0x70505c480] video:3054kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 0.056057%\nframe=   48 fps=0.0 q=3.0 Lsize=    3056kB time=00:00:01.96 bitrate=12769.3kbits/s dup=1 drop=0 speed=12.3x    "
+      },
+      "prompt_only": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_PROMPT_INDEX/PROMPT_ONLY/14_VU_REF003_R7_014_NADIA_RUN_FRONT.md",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_r7_high_precision_segments/VU_REF003_R7_014_NADIA_RUN_FRONT.mp4"
+    },
+    {
+      "order": 15,
+      "unit_id": "VU_REF003_R7_015_JEAN_RUN",
+      "title": "Jean奔跑",
+      "time_range": "00:41.50-00:43.50",
+      "duration_sec": 2.0,
+      "job_dir": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_015_JEAN_RUN",
+      "ready": true,
+      "generated_anchor_count": 2,
+      "r5_anchor_count": 0,
+      "candidate_frame_count": 3,
+      "p1_candidate_count": 0,
+      "active_locks": [
+        "jean"
+      ],
+      "reference_clip": {
+        "path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_015_JEAN_RUN/reference_clip/VU_REF003_R7_015_JEAN_RUN_reference.mp4",
+        "start_sec": 41.5,
+        "end_sec": 43.5,
+        "duration_sec": 2.0,
+        "ok": true,
+        "decode_ok": true,
+        "stderr_tail": "      handler_name    : VideoHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : Lavc60.31.102 mpeg4\n    Side data:\n      cpb: bitrate max/min/avg: 0/0/200000 buffer size: 0 vbv_delay: N/A\nframe=    0 fps=0.0 q=3.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    \n[out#0/mp4 @ 0xb1700c9c0] video:2803kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 0.060527%\nframe=   48 fps=0.0 q=3.0 Lsize=    2804kB time=00:00:01.96 bitrate=11718.8kbits/s speed=16.9x    "
+      },
+      "prompt_only": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_PROMPT_INDEX/PROMPT_ONLY/15_VU_REF003_R7_015_JEAN_RUN.md",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_r7_high_precision_segments/VU_REF003_R7_015_JEAN_RUN.mp4"
+    },
+    {
+      "order": 16,
+      "unit_id": "VU_REF003_R7_016_MARIE_KING_RUN",
+      "title": "Marie与King奔跑",
+      "time_range": "00:43.50-00:45.50",
+      "duration_sec": 2.0,
+      "job_dir": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_016_MARIE_KING_RUN",
+      "ready": true,
+      "generated_anchor_count": 2,
+      "r5_anchor_count": 0,
+      "candidate_frame_count": 3,
+      "p1_candidate_count": 0,
+      "active_locks": [
+        "marie",
+        "king"
+      ],
+      "reference_clip": {
+        "path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_016_MARIE_KING_RUN/reference_clip/VU_REF003_R7_016_MARIE_KING_RUN_reference.mp4",
+        "start_sec": 43.5,
+        "end_sec": 45.5,
+        "duration_sec": 2.0,
+        "ok": true,
+        "decode_ok": true,
+        "stderr_tail": "      handler_name    : VideoHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : Lavc60.31.102 mpeg4\n    Side data:\n      cpb: bitrate max/min/avg: 0/0/200000 buffer size: 0 vbv_delay: N/A\nframe=    0 fps=0.0 q=3.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    \n[out#0/mp4 @ 0x9ed00c9c0] video:3943kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 0.043223%\nframe=   48 fps=0.0 q=3.0 Lsize=    3944kB time=00:00:01.96 bitrate=16483.2kbits/s speed=12.6x    "
+      },
+      "prompt_only": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_PROMPT_INDEX/PROMPT_ONLY/16_VU_REF003_R7_016_MARIE_KING_RUN.md",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_r7_high_precision_segments/VU_REF003_R7_016_MARIE_KING_RUN.mp4"
+    },
+    {
+      "order": 17,
+      "unit_id": "VU_REF003_R7_017_GROUP_RUN",
+      "title": "群像奔跑",
+      "time_range": "00:45.50-00:47.42",
+      "duration_sec": 1.922,
+      "job_dir": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_017_GROUP_RUN",
+      "ready": true,
+      "generated_anchor_count": 2,
+      "r5_anchor_count": 0,
+      "candidate_frame_count": 3,
+      "p1_candidate_count": 0,
+      "active_locks": [
+        "nadia",
+        "jean",
+        "marie",
+        "king",
+        "blue_water_pendant"
+      ],
+      "reference_clip": {
+        "path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_017_GROUP_RUN/reference_clip/VU_REF003_R7_017_GROUP_RUN_reference.mp4",
+        "start_sec": 45.5,
+        "end_sec": 47.422,
+        "duration_sec": 1.922,
+        "ok": true,
+        "decode_ok": true,
+        "stderr_tail": "      handler_name    : VideoHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : Lavc60.31.102 mpeg4\n    Side data:\n      cpb: bitrate max/min/avg: 0/0/200000 buffer size: 0 vbv_delay: N/A\nframe=    0 fps=0.0 q=3.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    \n[out#0/mp4 @ 0xc07460480] video:4030kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 0.042475%\nframe=   47 fps=0.0 q=3.0 Lsize=    4032kB time=00:00:01.91 bitrate=17216.3kbits/s speed=17.3x    "
+      },
+      "prompt_only": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_PROMPT_INDEX/PROMPT_ONLY/17_VU_REF003_R7_017_GROUP_RUN.md",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_r7_high_precision_segments/VU_REF003_R7_017_GROUP_RUN.mp4"
+    },
+    {
+      "order": 18,
+      "unit_id": "VU_REF003_R7_018_REACTION_TO_ACTION_CLUSTER",
+      "title": "奔跑到动作插入簇",
+      "time_range": "00:47.42-00:48.17",
+      "duration_sec": 0.751,
+      "job_dir": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_018_REACTION_TO_ACTION_CLUSTER",
+      "ready": true,
+      "generated_anchor_count": 2,
+      "r5_anchor_count": 0,
+      "candidate_frame_count": 2,
+      "p1_candidate_count": 0,
+      "active_locks": [
+        "jean",
+        "grandis",
+        "sanson",
+        "hanson"
+      ],
+      "reference_clip": {
+        "path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_018_REACTION_TO_ACTION_CLUSTER/reference_clip/VU_REF003_R7_018_REACTION_TO_ACTION_CLUSTER_reference.mp4",
+        "start_sec": 47.422,
+        "end_sec": 48.173,
+        "duration_sec": 0.751,
+        "ok": true,
+        "decode_ok": true,
+        "stderr_tail": "      handler_name    : VideoHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : Lavc60.31.102 mpeg4\n    Side data:\n      cpb: bitrate max/min/avg: 0/0/200000 buffer size: 0 vbv_delay: N/A\nframe=    0 fps=0.0 q=3.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    \n[out#0/mp4 @ 0xa9300c9c0] video:624kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 0.246658%\nframe=   18 fps=0.0 q=3.0 Lsize=     626kB time=00:00:00.70 bitrate=7231.4kbits/s speed=9.05x    "
+      },
+      "prompt_only": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_PROMPT_INDEX/PROMPT_ONLY/18_VU_REF003_R7_018_REACTION_TO_ACTION_CLUSTER.md",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_r7_high_precision_segments/VU_REF003_R7_018_REACTION_TO_ACTION_CLUSTER.mp4"
+    },
+    {
+      "order": 19,
+      "unit_id": "VU_REF003_R7_019_GRANDIS_ACTION_INSERT",
+      "title": "Grandis动作短插",
+      "time_range": "00:48.17-00:48.67",
+      "duration_sec": 0.501,
+      "job_dir": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_019_GRANDIS_ACTION_INSERT",
+      "ready": true,
+      "generated_anchor_count": 1,
+      "r5_anchor_count": 0,
+      "candidate_frame_count": 2,
+      "p1_candidate_count": 1,
+      "active_locks": [
+        "grandis",
+        "sanson",
+        "hanson"
+      ],
+      "reference_clip": {
+        "path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_019_GRANDIS_ACTION_INSERT/reference_clip/VU_REF003_R7_019_GRANDIS_ACTION_INSERT_reference.mp4",
+        "start_sec": 48.173,
+        "end_sec": 48.674,
+        "duration_sec": 0.501,
+        "ok": true,
+        "decode_ok": true,
+        "stderr_tail": "      handler_name    : VideoHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : Lavc60.31.102 mpeg4\n    Side data:\n      cpb: bitrate max/min/avg: 0/0/200000 buffer size: 0 vbv_delay: N/A\nframe=    0 fps=0.0 q=3.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    \n[out#0/mp4 @ 0x764c4c480] video:307kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 0.492968%\nframe=   12 fps=0.0 q=3.0 Lsize=     308kB time=00:00:00.45 bitrate=5506.1kbits/s speed=5.65x    "
+      },
+      "prompt_only": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_PROMPT_INDEX/PROMPT_ONLY/19_VU_REF003_R7_019_GRANDIS_ACTION_INSERT.md",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_r7_high_precision_segments/VU_REF003_R7_019_GRANDIS_ACTION_INSERT.mp4"
+    },
+    {
+      "order": 20,
+      "unit_id": "VU_REF003_R7_020_VEHICLE_PREP_FLASH",
+      "title": "车辆动作预备闪帧",
+      "time_range": "00:48.67-00:49.67",
+      "duration_sec": 1.001,
+      "job_dir": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_020_VEHICLE_PREP_FLASH",
+      "ready": true,
+      "generated_anchor_count": 1,
+      "r5_anchor_count": 0,
+      "candidate_frame_count": 2,
+      "p1_candidate_count": 1,
+      "active_locks": [
+        "grandis",
+        "sanson",
+        "hanson",
+        "grandis_vehicle"
+      ],
+      "reference_clip": {
+        "path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_020_VEHICLE_PREP_FLASH/reference_clip/VU_REF003_R7_020_VEHICLE_PREP_FLASH_reference.mp4",
+        "start_sec": 48.674,
+        "end_sec": 49.675,
+        "duration_sec": 1.001,
+        "ok": true,
+        "decode_ok": true,
+        "stderr_tail": "      handler_name    : VideoHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : Lavc60.31.102 mpeg4\n    Side data:\n      cpb: bitrate max/min/avg: 0/0/200000 buffer size: 0 vbv_delay: N/A\nframe=    0 fps=0.0 q=3.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    \n[out#0/mp4 @ 0x897068480] video:1151kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 0.137547%\nframe=   24 fps=0.0 q=3.0 Lsize=    1152kB time=00:00:00.95 bitrate=9841.6kbits/s speed=8.56x    "
+      },
+      "prompt_only": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_PROMPT_INDEX/PROMPT_ONLY/20_VU_REF003_R7_020_VEHICLE_PREP_FLASH.md",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_r7_high_precision_segments/VU_REF003_R7_020_VEHICLE_PREP_FLASH.mp4"
+    },
+    {
+      "order": 21,
+      "unit_id": "VU_REF003_R7_021_VEHICLE_ARC",
+      "title": "车辆飞行动作",
+      "time_range": "00:49.67-00:50.68",
+      "duration_sec": 1.001,
+      "job_dir": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_021_VEHICLE_ARC",
+      "ready": true,
+      "generated_anchor_count": 1,
+      "r5_anchor_count": 0,
+      "candidate_frame_count": 2,
+      "p1_candidate_count": 1,
+      "active_locks": [
+        "grandis_vehicle"
+      ],
+      "reference_clip": {
+        "path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_021_VEHICLE_ARC/reference_clip/VU_REF003_R7_021_VEHICLE_ARC_reference.mp4",
+        "start_sec": 49.675,
+        "end_sec": 50.676,
+        "duration_sec": 1.001,
+        "ok": true,
+        "decode_ok": true,
+        "stderr_tail": "      handler_name    : VideoHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : Lavc60.31.102 mpeg4\n    Side data:\n      cpb: bitrate max/min/avg: 0/0/200000 buffer size: 0 vbv_delay: N/A\nframe=    0 fps=0.0 q=3.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    \n[out#0/mp4 @ 0xbb9068480] video:669kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 0.233608%\nframe=   24 fps=0.0 q=3.0 Lsize=     671kB time=00:00:00.95 bitrate=5728.7kbits/s speed= 7.6x    "
+      },
+      "prompt_only": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_PROMPT_INDEX/PROMPT_ONLY/21_VU_REF003_R7_021_VEHICLE_ARC.md",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_r7_high_precision_segments/VU_REF003_R7_021_VEHICLE_ARC.mp4"
+    },
+    {
+      "order": 22,
+      "unit_id": "VU_REF003_R7_022_GROUP_LINEUP_TO_UNDERSEA",
+      "title": "群像到海底过渡",
+      "time_range": "00:50.68-00:52.43",
+      "duration_sec": 1.751,
+      "job_dir": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_022_GROUP_LINEUP_TO_UNDERSEA",
+      "ready": true,
+      "generated_anchor_count": 3,
+      "r5_anchor_count": 1,
+      "candidate_frame_count": 3,
+      "p1_candidate_count": 0,
+      "active_locks": [
+        "nadia",
+        "jean",
+        "marie",
+        "king",
+        "nautilus"
+      ],
+      "reference_clip": {
+        "path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_022_GROUP_LINEUP_TO_UNDERSEA/reference_clip/VU_REF003_R7_022_GROUP_LINEUP_TO_UNDERSEA_reference.mp4",
+        "start_sec": 50.676,
+        "end_sec": 52.427,
+        "duration_sec": 1.751,
+        "ok": true,
+        "decode_ok": true,
+        "stderr_tail": "      handler_name    : VideoHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : Lavc60.31.102 mpeg4\n    Side data:\n      cpb: bitrate max/min/avg: 0/0/200000 buffer size: 0 vbv_delay: N/A\nframe=    0 fps=0.0 q=3.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    \n[out#0/mp4 @ 0x80f060480] video:3023kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 0.055853%\nframe=   42 fps=0.0 q=3.0 Lsize=    3025kB time=00:00:01.71 bitrate=14490.2kbits/s speed=18.5x    "
+      },
+      "prompt_only": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_PROMPT_INDEX/PROMPT_ONLY/22_VU_REF003_R7_022_GROUP_LINEUP_TO_UNDERSEA.md",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_r7_high_precision_segments/VU_REF003_R7_022_GROUP_LINEUP_TO_UNDERSEA.mp4"
+    },
+    {
+      "order": 23,
+      "unit_id": "VU_REF003_R7_023_NAUTILUS_UNDERSEA_ENTRY",
+      "title": "Nautilus海底入场",
+      "time_range": "00:52.43-00:55.00",
+      "duration_sec": 2.573,
+      "job_dir": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_023_NAUTILUS_UNDERSEA_ENTRY",
+      "ready": true,
+      "generated_anchor_count": 2,
+      "r5_anchor_count": 0,
+      "candidate_frame_count": 3,
+      "p1_candidate_count": 0,
+      "active_locks": [
+        "nautilus"
+      ],
+      "reference_clip": {
+        "path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_023_NAUTILUS_UNDERSEA_ENTRY/reference_clip/VU_REF003_R7_023_NAUTILUS_UNDERSEA_ENTRY_reference.mp4",
+        "start_sec": 52.427,
+        "end_sec": 55.0,
+        "duration_sec": 2.573,
+        "ok": true,
+        "decode_ok": true,
+        "stderr_tail": "      handler_name    : VideoHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : Lavc60.31.102 mpeg4\n    Side data:\n      cpb: bitrate max/min/avg: 0/0/200000 buffer size: 0 vbv_delay: N/A\nframe=    0 fps=0.0 q=3.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    \n[out#0/mp4 @ 0x707068480] video:1644kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 0.106030%\nframe=   62 fps=0.0 q=3.0 Lsize=    1646kB time=00:00:02.54 bitrate=5299.2kbits/s speed=19.8x    "
+      },
+      "prompt_only": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_PROMPT_INDEX/PROMPT_ONLY/23_VU_REF003_R7_023_NAUTILUS_UNDERSEA_ENTRY.md",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_r7_high_precision_segments/VU_REF003_R7_023_NAUTILUS_UNDERSEA_ENTRY.mp4"
+    },
+    {
+      "order": 24,
+      "unit_id": "VU_REF003_R7_024_NAUTILUS_PASS",
+      "title": "Nautilus水下通过",
+      "time_range": "00:55.00-00:57.00",
+      "duration_sec": 2.0,
+      "job_dir": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_024_NAUTILUS_PASS",
+      "ready": true,
+      "generated_anchor_count": 2,
+      "r5_anchor_count": 1,
+      "candidate_frame_count": 3,
+      "p1_candidate_count": 0,
+      "active_locks": [
+        "nautilus"
+      ],
+      "reference_clip": {
+        "path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_024_NAUTILUS_PASS/reference_clip/VU_REF003_R7_024_NAUTILUS_PASS_reference.mp4",
+        "start_sec": 55.0,
+        "end_sec": 57.0,
+        "duration_sec": 2.0,
+        "ok": true,
+        "decode_ok": true,
+        "stderr_tail": "      handler_name    : VideoHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : Lavc60.31.102 mpeg4\n    Side data:\n      cpb: bitrate max/min/avg: 0/0/200000 buffer size: 0 vbv_delay: N/A\nframe=    0 fps=0.0 q=3.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    \n[out#0/mp4 @ 0xb81084480] video:1537kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 0.109376%\nframe=   48 fps=0.0 q=3.0 Lsize=    1538kB time=00:00:01.96 bitrate=6428.4kbits/s speed=  13x    "
+      },
+      "prompt_only": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_PROMPT_INDEX/PROMPT_ONLY/24_VU_REF003_R7_024_NAUTILUS_PASS.md",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_r7_high_precision_segments/VU_REF003_R7_024_NAUTILUS_PASS.mp4"
+    },
+    {
+      "order": 25,
+      "unit_id": "VU_REF003_R7_025_NAUTILUS_LIGHT_SHIFT",
+      "title": "Nautilus光带变化",
+      "time_range": "00:57.00-00:58.50",
+      "duration_sec": 1.5,
+      "job_dir": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_025_NAUTILUS_LIGHT_SHIFT",
+      "ready": true,
+      "generated_anchor_count": 2,
+      "r5_anchor_count": 1,
+      "candidate_frame_count": 3,
+      "p1_candidate_count": 1,
+      "active_locks": [
+        "nautilus"
+      ],
+      "reference_clip": {
+        "path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_025_NAUTILUS_LIGHT_SHIFT/reference_clip/VU_REF003_R7_025_NAUTILUS_LIGHT_SHIFT_reference.mp4",
+        "start_sec": 57.0,
+        "end_sec": 58.5,
+        "duration_sec": 1.5,
+        "ok": true,
+        "decode_ok": true,
+        "stderr_tail": "      handler_name    : VideoHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : Lavc60.31.102 mpeg4\n    Side data:\n      cpb: bitrate max/min/avg: 0/0/200000 buffer size: 0 vbv_delay: N/A\nframe=    0 fps=0.0 q=3.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    \n[out#0/mp4 @ 0x893060480] video:1116kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 0.146046%\nframe=   36 fps=0.0 q=3.0 Lsize=    1118kB time=00:00:01.45 bitrate=6271.9kbits/s speed=17.1x    "
+      },
+      "prompt_only": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_PROMPT_INDEX/PROMPT_ONLY/25_VU_REF003_R7_025_NAUTILUS_LIGHT_SHIFT.md",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_r7_high_precision_segments/VU_REF003_R7_025_NAUTILUS_LIGHT_SHIFT.mp4"
+    },
+    {
+      "order": 26,
+      "unit_id": "VU_REF003_R7_026_NAUTILUS_EXIT",
+      "title": "Nautilus海底尾段",
+      "time_range": "00:58.50-01:01.44",
+      "duration_sec": 2.936,
+      "job_dir": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_026_NAUTILUS_EXIT",
+      "ready": true,
+      "generated_anchor_count": 3,
+      "r5_anchor_count": 1,
+      "candidate_frame_count": 3,
+      "p1_candidate_count": 0,
+      "active_locks": [
+        "nautilus"
+      ],
+      "reference_clip": {
+        "path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_026_NAUTILUS_EXIT/reference_clip/VU_REF003_R7_026_NAUTILUS_EXIT_reference.mp4",
+        "start_sec": 58.5,
+        "end_sec": 61.436,
+        "duration_sec": 2.936,
+        "ok": true,
+        "decode_ok": true,
+        "stderr_tail": "      handler_name    : VideoHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : Lavc60.31.102 mpeg4\n    Side data:\n      cpb: bitrate max/min/avg: 0/0/200000 buffer size: 0 vbv_delay: N/A\nframe=    0 fps=0.0 q=3.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    \n[out#0/mp4 @ 0x76b00c9c0] video:2022kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 0.088136%\nframe=   71 fps=0.0 q=3.0 Lsize=    2024kB time=00:00:02.91 bitrate=5678.9kbits/s speed=19.8x    "
+      },
+      "prompt_only": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_PROMPT_INDEX/PROMPT_ONLY/26_VU_REF003_R7_026_NAUTILUS_EXIT.md",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_r7_high_precision_segments/VU_REF003_R7_026_NAUTILUS_EXIT.mp4"
+    },
+    {
+      "order": 27,
+      "unit_id": "VU_REF003_R7_027_NIGHT_CITY_GRID",
+      "title": "夜城蓝网格",
+      "time_range": "01:01.44-01:04.94",
+      "duration_sec": 3.504,
+      "job_dir": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_027_NIGHT_CITY_GRID",
+      "ready": true,
+      "generated_anchor_count": 4,
+      "r5_anchor_count": 2,
+      "candidate_frame_count": 3,
+      "p1_candidate_count": 0,
+      "active_locks": [
+        "blue_grid_geometry"
+      ],
+      "reference_clip": {
+        "path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_027_NIGHT_CITY_GRID/reference_clip/VU_REF003_R7_027_NIGHT_CITY_GRID_reference.mp4",
+        "start_sec": 61.436,
+        "end_sec": 64.94,
+        "duration_sec": 3.504,
+        "ok": true,
+        "decode_ok": true,
+        "stderr_tail": "      handler_name    : VideoHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : Lavc60.31.102 mpeg4\n    Side data:\n      cpb: bitrate max/min/avg: 0/0/200000 buffer size: 0 vbv_delay: N/A\nframe=    0 fps=0.0 q=3.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    \n[out#0/mp4 @ 0x86300c9c0] video:2776kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 0.066168%\nframe=   84 fps=0.0 q=3.0 Lsize=    2778kB time=00:00:03.46 bitrate=6573.8kbits/s speed=24.2x    "
+      },
+      "prompt_only": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_PROMPT_INDEX/PROMPT_ONLY/27_VU_REF003_R7_027_NIGHT_CITY_GRID.md",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_r7_high_precision_segments/VU_REF003_R7_027_NIGHT_CITY_GRID.mp4"
+    },
+    {
+      "order": 28,
+      "unit_id": "VU_REF003_R7_028_NIGHT_AIRCRAFT_PASS",
+      "title": "夜航飞行器短切",
+      "time_range": "01:04.94-01:06.02",
+      "duration_sec": 1.084,
+      "job_dir": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_028_NIGHT_AIRCRAFT_PASS",
+      "ready": true,
+      "generated_anchor_count": 2,
+      "r5_anchor_count": 1,
+      "candidate_frame_count": 2,
+      "p1_candidate_count": 1,
+      "active_locks": [
+        "jean_aircraft"
+      ],
+      "reference_clip": {
+        "path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_028_NIGHT_AIRCRAFT_PASS/reference_clip/VU_REF003_R7_028_NIGHT_AIRCRAFT_PASS_reference.mp4",
+        "start_sec": 64.94,
+        "end_sec": 66.024,
+        "duration_sec": 1.084,
+        "ok": true,
+        "decode_ok": true,
+        "stderr_tail": "      handler_name    : VideoHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : Lavc60.31.102 mpeg4\n    Side data:\n      cpb: bitrate max/min/avg: 0/0/200000 buffer size: 0 vbv_delay: N/A\nframe=    0 fps=0.0 q=3.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    \n[out#0/mp4 @ 0xae700c9c0] video:512kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 0.307644%\nframe=   26 fps=0.0 q=3.0 Lsize=     514kB time=00:00:01.04 bitrate=4035.0kbits/s speed=10.4x    "
+      },
+      "prompt_only": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_PROMPT_INDEX/PROMPT_ONLY/28_VU_REF003_R7_028_NIGHT_AIRCRAFT_PASS.md",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_r7_high_precision_segments/VU_REF003_R7_028_NIGHT_AIRCRAFT_PASS.mp4"
+    },
+    {
+      "order": 29,
+      "unit_id": "VU_REF003_R7_029_NEMO_SUNSET_PROFILE",
+      "title": "Nemo夕景肖像长段",
+      "time_range": "01:06.02-01:11.36",
+      "duration_sec": 5.339,
+      "job_dir": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_029_NEMO_SUNSET_PROFILE",
+      "ready": true,
+      "generated_anchor_count": 2,
+      "r5_anchor_count": 0,
+      "candidate_frame_count": 3,
+      "p1_candidate_count": 0,
+      "active_locks": [
+        "nemo"
+      ],
+      "reference_clip": {
+        "path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_029_NEMO_SUNSET_PROFILE/reference_clip/VU_REF003_R7_029_NEMO_SUNSET_PROFILE_reference.mp4",
+        "start_sec": 66.024,
+        "end_sec": 71.363,
+        "duration_sec": 5.339,
+        "ok": true,
+        "decode_ok": true,
+        "stderr_tail": "      handler_name    : VideoHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : Lavc60.31.102 mpeg4\n    Side data:\n      cpb: bitrate max/min/avg: 0/0/200000 buffer size: 0 vbv_delay: N/A\nframe=    0 fps=0.0 q=3.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    \n[out#0/mp4 @ 0x7bd068480] video:4504kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 0.045905%\nframe=  128 fps=0.0 q=3.0 Lsize=    4506kB time=00:00:05.29 bitrate=6968.3kbits/s speed=26.6x    "
+      },
+      "prompt_only": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_PROMPT_INDEX/PROMPT_ONLY/29_VU_REF003_R7_029_NEMO_SUNSET_PROFILE.md",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_r7_high_precision_segments/VU_REF003_R7_029_NEMO_SUNSET_PROFILE.mp4"
+    },
+    {
+      "order": 30,
+      "unit_id": "VU_REF003_R7_030_NADIA_SOLEMN_TO_JEWEL",
+      "title": "Nadia庄重到宝石",
+      "time_range": "01:11.36-01:14.07",
+      "duration_sec": 2.711,
+      "job_dir": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_030_NADIA_SOLEMN_TO_JEWEL",
+      "ready": true,
+      "generated_anchor_count": 3,
+      "r5_anchor_count": 1,
+      "candidate_frame_count": 3,
+      "p1_candidate_count": 0,
+      "active_locks": [
+        "nadia",
+        "blue_water_pendant"
+      ],
+      "reference_clip": {
+        "path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_030_NADIA_SOLEMN_TO_JEWEL/reference_clip/VU_REF003_R7_030_NADIA_SOLEMN_TO_JEWEL_reference.mp4",
+        "start_sec": 71.363,
+        "end_sec": 74.074,
+        "duration_sec": 2.711,
+        "ok": true,
+        "decode_ok": true,
+        "stderr_tail": "      handler_name    : VideoHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : Lavc60.31.102 mpeg4\n    Side data:\n      cpb: bitrate max/min/avg: 0/0/200000 buffer size: 0 vbv_delay: N/A\nframe=    0 fps=0.0 q=3.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    \n[out#0/mp4 @ 0x9cc828480] video:1852kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 0.094774%\nframe=   65 fps=0.0 q=3.0 Lsize=    1853kB time=00:00:02.66 bitrate=5687.9kbits/s speed=21.8x    "
+      },
+      "prompt_only": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_PROMPT_INDEX/PROMPT_ONLY/30_VU_REF003_R7_030_NADIA_SOLEMN_TO_JEWEL.md",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_r7_high_precision_segments/VU_REF003_R7_030_NADIA_SOLEMN_TO_JEWEL.mp4"
+    },
+    {
+      "order": 31,
+      "unit_id": "VU_REF003_R7_031_BLUE_WATER_BLOOM",
+      "title": "Blue Water蓝色绽放",
+      "time_range": "01:14.07-01:16.45",
+      "duration_sec": 2.377,
+      "job_dir": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_031_BLUE_WATER_BLOOM",
+      "ready": true,
+      "generated_anchor_count": 3,
+      "r5_anchor_count": 1,
+      "candidate_frame_count": 3,
+      "p1_candidate_count": 0,
+      "active_locks": [
+        "blue_water_pendant"
+      ],
+      "reference_clip": {
+        "path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_031_BLUE_WATER_BLOOM/reference_clip/VU_REF003_R7_031_BLUE_WATER_BLOOM_reference.mp4",
+        "start_sec": 74.074,
+        "end_sec": 76.451,
+        "duration_sec": 2.377,
+        "ok": true,
+        "decode_ok": true,
+        "stderr_tail": "      handler_name    : VideoHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : Lavc60.31.102 mpeg4\n    Side data:\n      cpb: bitrate max/min/avg: 0/0/200000 buffer size: 0 vbv_delay: N/A\nframe=    0 fps=0.0 q=3.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    \n[out#0/mp4 @ 0x7d7060480] video:4078kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 0.043321%\nframe=   57 fps=0.0 q=3.0 Lsize=    4080kB time=00:00:02.33 bitrate=14309.0kbits/s speed=13.7x    "
+      },
+      "prompt_only": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_PROMPT_INDEX/PROMPT_ONLY/31_VU_REF003_R7_031_BLUE_WATER_BLOOM.md",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_r7_high_precision_segments/VU_REF003_R7_031_BLUE_WATER_BLOOM.mp4"
+    },
+    {
+      "order": 32,
+      "unit_id": "VU_REF003_R7_032_UNDERWATER_TO_SPLASH",
+      "title": "水下纹理到水花",
+      "time_range": "01:16.45-01:17.79",
+      "duration_sec": 1.335,
+      "job_dir": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_032_UNDERWATER_TO_SPLASH",
+      "ready": true,
+      "generated_anchor_count": 3,
+      "r5_anchor_count": 1,
+      "candidate_frame_count": 3,
+      "p1_candidate_count": 1,
+      "active_locks": [
+        "water_burst_transition"
+      ],
+      "reference_clip": {
+        "path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_032_UNDERWATER_TO_SPLASH/reference_clip/VU_REF003_R7_032_UNDERWATER_TO_SPLASH_reference.mp4",
+        "start_sec": 76.451,
+        "end_sec": 77.786,
+        "duration_sec": 1.335,
+        "ok": true,
+        "decode_ok": true,
+        "stderr_tail": "      handler_name    : VideoHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : Lavc60.31.102 mpeg4\n    Side data:\n      cpb: bitrate max/min/avg: 0/0/200000 buffer size: 0 vbv_delay: N/A\nframe=    0 fps=0.0 q=3.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    \n[out#0/mp4 @ 0xc04c50480] video:827kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 0.193279%\nframe=   32 fps=0.0 q=3.0 Lsize=     829kB time=00:00:01.29 bitrate=5250.6kbits/s speed=16.2x    "
+      },
+      "prompt_only": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_PROMPT_INDEX/PROMPT_ONLY/32_VU_REF003_R7_032_UNDERWATER_TO_SPLASH.md",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_r7_high_precision_segments/VU_REF003_R7_032_UNDERWATER_TO_SPLASH.mp4"
+    },
+    {
+      "order": 33,
+      "unit_id": "VU_REF003_R7_033_SPLASH_PEAK",
+      "title": "水花爆发峰值",
+      "time_range": "01:17.79-01:19.20",
+      "duration_sec": 1.418,
+      "job_dir": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_033_SPLASH_PEAK",
+      "ready": true,
+      "generated_anchor_count": 3,
+      "r5_anchor_count": 1,
+      "candidate_frame_count": 3,
+      "p1_candidate_count": 0,
+      "active_locks": [
+        "water_burst_transition"
+      ],
+      "reference_clip": {
+        "path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_033_SPLASH_PEAK/reference_clip/VU_REF003_R7_033_SPLASH_PEAK_reference.mp4",
+        "start_sec": 77.786,
+        "end_sec": 79.204,
+        "duration_sec": 1.418,
+        "ok": true,
+        "decode_ok": true,
+        "stderr_tail": "      handler_name    : VideoHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : Lavc60.31.102 mpeg4\n    Side data:\n      cpb: bitrate max/min/avg: 0/0/200000 buffer size: 0 vbv_delay: N/A\nframe=    0 fps=0.0 q=3.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    \n[out#0/mp4 @ 0x79700c9c0] video:1295kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 0.125819%\nframe=   34 fps=0.0 q=3.0 Lsize=    1297kB time=00:00:01.37 bitrate=7719.8kbits/s speed=13.7x    "
+      },
+      "prompt_only": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_PROMPT_INDEX/PROMPT_ONLY/33_VU_REF003_R7_033_SPLASH_PEAK.md",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_r7_high_precision_segments/VU_REF003_R7_033_SPLASH_PEAK.mp4"
+    },
+    {
+      "order": 34,
+      "unit_id": "VU_REF003_R7_034_FINAL_SKY_TRANSITION",
+      "title": "最终天空转场",
+      "time_range": "01:19.20-01:20.79",
+      "duration_sec": 1.585,
+      "job_dir": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_034_FINAL_SKY_TRANSITION",
+      "ready": true,
+      "generated_anchor_count": 2,
+      "r5_anchor_count": 0,
+      "candidate_frame_count": 3,
+      "p1_candidate_count": 0,
+      "active_locks": [],
+      "reference_clip": {
+        "path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_034_FINAL_SKY_TRANSITION/reference_clip/VU_REF003_R7_034_FINAL_SKY_TRANSITION_reference.mp4",
+        "start_sec": 79.204,
+        "end_sec": 80.789,
+        "duration_sec": 1.585,
+        "ok": true,
+        "decode_ok": true,
+        "stderr_tail": "      handler_name    : VideoHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : Lavc60.31.102 mpeg4\n    Side data:\n      cpb: bitrate max/min/avg: 0/0/200000 buffer size: 0 vbv_delay: N/A\nframe=    0 fps=0.0 q=3.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    \n[out#0/mp4 @ 0x79f060480] video:1108kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 0.148185%\nframe=   38 fps=0.0 q=3.0 Lsize=    1109kB time=00:00:01.54 bitrate=5889.4kbits/s speed=12.9x    "
+      },
+      "prompt_only": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_PROMPT_INDEX/PROMPT_ONLY/34_VU_REF003_R7_034_FINAL_SKY_TRANSITION.md",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_r7_high_precision_segments/VU_REF003_R7_034_FINAL_SKY_TRANSITION.mp4"
+    },
+    {
+      "order": 35,
+      "unit_id": "VU_REF003_R7_035_FINAL_SKY_HOLD",
+      "title": "最终天空Hold",
+      "time_range": "01:20.79-01:23.58",
+      "duration_sec": 2.795,
+      "job_dir": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_035_FINAL_SKY_HOLD",
+      "ready": true,
+      "generated_anchor_count": 2,
+      "r5_anchor_count": 0,
+      "candidate_frame_count": 3,
+      "p1_candidate_count": 0,
+      "active_locks": [],
+      "reference_clip": {
+        "path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_035_FINAL_SKY_HOLD/reference_clip/VU_REF003_R7_035_FINAL_SKY_HOLD_reference.mp4",
+        "start_sec": 80.789,
+        "end_sec": 83.584,
+        "duration_sec": 2.795,
+        "ok": true,
+        "decode_ok": true,
+        "stderr_tail": "      handler_name    : VideoHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : Lavc60.31.102 mpeg4\n    Side data:\n      cpb: bitrate max/min/avg: 0/0/200000 buffer size: 0 vbv_delay: N/A\nframe=    0 fps=0.0 q=3.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    \n[out#0/mp4 @ 0xc9483c480] video:1107kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 0.159603%\nframe=   67 fps=0.0 q=3.0 Lsize=    1109kB time=00:00:02.75 bitrate=3299.2kbits/s speed=29.5x    "
+      },
+      "prompt_only": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_PROMPT_INDEX/PROMPT_ONLY/35_VU_REF003_R7_035_FINAL_SKY_HOLD.md",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_r7_high_precision_segments/VU_REF003_R7_035_FINAL_SKY_HOLD.mp4"
+    },
+    {
+      "order": 36,
+      "unit_id": "VU_REF003_R7_036_BLACK_TAIL",
+      "title": "黑场尾帧",
+      "time_range": "01:23.58-01:24.42",
+      "duration_sec": 0.834,
+      "job_dir": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_036_BLACK_TAIL",
+      "ready": true,
+      "generated_anchor_count": 1,
+      "r5_anchor_count": 0,
+      "candidate_frame_count": 2,
+      "p1_candidate_count": 0,
+      "active_locks": [],
+      "reference_clip": {
+        "path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_036_BLACK_TAIL/reference_clip/VU_REF003_R7_036_BLACK_TAIL_reference.mp4",
+        "start_sec": 83.584,
+        "end_sec": 84.418,
+        "duration_sec": 0.834,
+        "ok": true,
+        "decode_ok": true,
+        "stderr_tail": "      handler_name    : VideoHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : Lavc60.31.102 mpeg4\n    Side data:\n      cpb: bitrate max/min/avg: 0/0/200000 buffer size: 0 vbv_delay: N/A\nframe=    0 fps=0.0 q=3.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    \n[out#0/mp4 @ 0x74f060480] video:48kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 3.208502%\nframe=   20 fps=0.0 q=3.0 Lsize=      50kB time=00:00:00.79 bitrate= 514.7kbits/s speed=16.2x    "
+      },
+      "prompt_only": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_PROMPT_INDEX/PROMPT_ONLY/36_VU_REF003_R7_036_BLACK_TAIL.md",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_r7_high_precision_segments/VU_REF003_R7_036_BLACK_TAIL.mp4"
+    }
+  ],
+  "report_json": "10_qa/reports/reference003_r7_high_precision_video_units_20260701.json",
+  "report_md": "10_qa/reports/reference003_r7_high_precision_video_units_20260701.md"
+}

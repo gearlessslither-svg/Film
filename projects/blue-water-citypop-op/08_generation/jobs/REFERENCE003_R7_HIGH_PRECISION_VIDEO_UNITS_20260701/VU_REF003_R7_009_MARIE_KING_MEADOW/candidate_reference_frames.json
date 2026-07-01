@@ -1,0 +1,38 @@
+[
+  {
+    "asset_id": "R7_CAND_009_start_031979ms",
+    "parent_video_unit_id": "VU_REF003_R7_009_MARIE_KING_MEADOW",
+    "role": "start",
+    "source_time_sec": 31.979,
+    "source_timecode": "00:31.98",
+    "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_009_MARIE_KING_MEADOW/candidate_reference_frames/R7_CAND_009_start_031979ms.jpg",
+    "priority": "P1_generate_next_small_batch",
+    "status": "candidate_reference_frame_needs_prompt_and_generation",
+    "difference_reason": "Marie与King草地段 start boundary/transition frame from R7 high-precision split.",
+    "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_009_start_031979ms.png"
+  },
+  {
+    "asset_id": "R7_CAND_009_end_033921ms",
+    "parent_video_unit_id": "VU_REF003_R7_009_MARIE_KING_MEADOW",
+    "role": "end",
+    "source_time_sec": 33.921,
+    "source_timecode": "00:33.92",
+    "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_009_MARIE_KING_MEADOW/candidate_reference_frames/R7_CAND_009_end_033921ms.jpg",
+    "priority": "P3_reference_video_or_already_handled",
+    "status": "candidate_reference_frame_review",
+    "difference_reason": "Marie与King草地段 end boundary/transition frame from R7 high-precision split.",
+    "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_009_end_033921ms.png"
+  },
+  {
+    "asset_id": "R7_CAND_009_middle_032950ms",
+    "parent_video_unit_id": "VU_REF003_R7_009_MARIE_KING_MEADOW",
+    "role": "middle",
+    "source_time_sec": 32.95,
+    "source_timecode": "00:32.95",
+    "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_009_MARIE_KING_MEADOW/candidate_reference_frames/R7_CAND_009_middle_032950ms.jpg",
+    "priority": "P1_generate_next_small_batch",
+    "status": "candidate_reference_frame_needs_prompt_and_generation",
+    "difference_reason": "Marie与King草地段 middle boundary/transition frame from R7 high-precision split.",
+    "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_009_middle_032950ms.png"
+  }
+]

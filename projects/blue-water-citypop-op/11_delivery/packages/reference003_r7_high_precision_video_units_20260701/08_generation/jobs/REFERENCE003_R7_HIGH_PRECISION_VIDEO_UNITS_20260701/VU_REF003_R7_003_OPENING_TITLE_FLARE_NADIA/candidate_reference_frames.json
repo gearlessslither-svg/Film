@@ -1,0 +1,38 @@
+[
+  {
+    "asset_id": "R7_CAND_003_start_016530ms",
+    "parent_video_unit_id": "VU_REF003_R7_003_OPENING_TITLE_FLARE_NADIA",
+    "role": "start",
+    "source_time_sec": 16.53,
+    "source_timecode": "00:16.53",
+    "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_003_OPENING_TITLE_FLARE_NADIA/candidate_reference_frames/R7_CAND_003_start_016530ms.jpg",
+    "priority": "P2_review_after_p1",
+    "status": "candidate_reference_frame_review",
+    "difference_reason": "开场长段C：标题安全位到日光转Nadia start boundary/transition frame from R7 high-precision split.",
+    "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_003_start_016530ms.png"
+  },
+  {
+    "asset_id": "R7_CAND_003_end_024770ms",
+    "parent_video_unit_id": "VU_REF003_R7_003_OPENING_TITLE_FLARE_NADIA",
+    "role": "end",
+    "source_time_sec": 24.77,
+    "source_timecode": "00:24.77",
+    "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_003_OPENING_TITLE_FLARE_NADIA/candidate_reference_frames/R7_CAND_003_end_024770ms.jpg",
+    "priority": "P3_reference_video_or_already_handled",
+    "status": "candidate_reference_frame_review",
+    "difference_reason": "开场长段C：标题安全位到日光转Nadia end boundary/transition frame from R7 high-precision split.",
+    "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_003_end_024770ms.png"
+  },
+  {
+    "asset_id": "R7_CAND_003_middle_020650ms",
+    "parent_video_unit_id": "VU_REF003_R7_003_OPENING_TITLE_FLARE_NADIA",
+    "role": "middle",
+    "source_time_sec": 20.65,
+    "source_timecode": "00:20.65",
+    "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_003_OPENING_TITLE_FLARE_NADIA/candidate_reference_frames/R7_CAND_003_middle_020650ms.jpg",
+    "priority": "P2_review_after_p1",
+    "status": "candidate_reference_frame_review",
+    "difference_reason": "开场长段C：标题安全位到日光转Nadia middle boundary/transition frame from R7 high-precision split.",
+    "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_003_middle_020650ms.png"
+  }
+]

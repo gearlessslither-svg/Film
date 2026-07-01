@@ -1,0 +1,38 @@
+[
+  {
+    "asset_id": "R7_CAND_013_start_038151ms",
+    "parent_video_unit_id": "VU_REF003_R7_013_NADIA_RUN_FEET",
+    "role": "start",
+    "source_time_sec": 38.151,
+    "source_timecode": "00:38.15",
+    "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_013_NADIA_RUN_FEET/candidate_reference_frames/R7_CAND_013_start_038151ms.jpg",
+    "priority": "P3_reference_video_or_already_handled",
+    "status": "candidate_reference_frame_review",
+    "difference_reason": "Nadia奔跑脚步 start boundary/transition frame from R7 high-precision split.",
+    "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_013_start_038151ms.png"
+  },
+  {
+    "asset_id": "R7_CAND_013_end_039470ms",
+    "parent_video_unit_id": "VU_REF003_R7_013_NADIA_RUN_FEET",
+    "role": "end",
+    "source_time_sec": 39.47,
+    "source_timecode": "00:39.47",
+    "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_013_NADIA_RUN_FEET/candidate_reference_frames/R7_CAND_013_end_039470ms.jpg",
+    "priority": "P3_reference_video_or_already_handled",
+    "status": "candidate_reference_frame_review",
+    "difference_reason": "Nadia奔跑脚步 end boundary/transition frame from R7 high-precision split.",
+    "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_013_end_039470ms.png"
+  },
+  {
+    "asset_id": "R7_CAND_013_middle_038811ms",
+    "parent_video_unit_id": "VU_REF003_R7_013_NADIA_RUN_FEET",
+    "role": "middle",
+    "source_time_sec": 38.811,
+    "source_timecode": "00:38.81",
+    "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_013_NADIA_RUN_FEET/candidate_reference_frames/R7_CAND_013_middle_038811ms.jpg",
+    "priority": "P1_generate_next_small_batch",
+    "status": "candidate_reference_frame_needs_prompt_and_generation",
+    "difference_reason": "Nadia奔跑脚步 middle boundary/transition frame from R7 high-precision split.",
+    "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_013_middle_038811ms.png"
+  }
+]

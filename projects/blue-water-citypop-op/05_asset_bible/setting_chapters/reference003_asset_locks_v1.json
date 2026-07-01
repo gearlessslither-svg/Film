@@ -1,0 +1,115 @@
+{
+  "schema_version": "aigc_film_setting_chapter_asset_locks_v1",
+  "project_slug": "blue-water-citypop-op",
+  "reference_id": "reference-003-full-op-2160p",
+  "status": "approved_for_current_production",
+  "approved_by": "director_instruction",
+  "approved_at": "2026-06-30",
+  "gate_rule": "Use this setting chapter before any new shot scheduling, keyframe generation, video prompt packaging, or final edit.",
+  "characters": {
+    "nadia": {
+      "status": "official_identity_lock",
+      "lock_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_011_v2.png",
+      "director_note": "Nadia face uses the second front close-up as the preferred official face for this version."
+    },
+    "jean": {
+      "status": "official_identity_lock",
+      "lock_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_012.png"
+    },
+    "marie": {
+      "status": "official_identity_lock",
+      "lock_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_014.png"
+    },
+    "king": {
+      "status": "official_identity_lock",
+      "lock_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_014.png"
+    },
+    "grandis": {
+      "status": "official_identity_lock",
+      "lock_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_016_v2.png"
+    },
+    "sanson": {
+      "status": "official_identity_lock",
+      "lock_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_016_v2.png"
+    },
+    "hanson": {
+      "status": "official_identity_lock",
+      "lock_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_016_v2.png"
+    },
+    "nemo": {
+      "status": "official_identity_lock",
+      "lock_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_032.png"
+    },
+    "electra": {
+      "status": "needs_setting_lock",
+      "production_rule": "Do not make Electra a clear hero-face subject in current official frames until a dedicated lock is generated."
+    },
+    "gargoyle": {
+      "status": "needs_setting_lock",
+      "production_rule": "Not active in the current 42-keyframe pass; do not invent a visible new face without lock approval."
+    }
+  },
+  "props_vehicles_symbols": {
+    "blue_water_pendant": {
+      "status": "official_prop_lock",
+      "lock_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_035.png"
+    },
+    "white_bird": {
+      "status": "official_prop_lock",
+      "lock_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_003.png"
+    },
+    "jean_aircraft": {
+      "status": "official_prop_lock",
+      "lock_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_007.png"
+    },
+    "grandis_vehicle": {
+      "status": "official_prop_lock",
+      "lock_path": "08_generation/jobs/REFERENCE003_IDENTITY_REPAIR_R1_20260630/outputs/OP_SHOT_024_VEHICLE_LOCK_R1.png",
+      "director_note": "R1 Grandis vehicle/action craft lock replaces the rejected OP_SHOT_025 vehicle/group reference.",
+      "updated_at": "2026-06-30T17:18:27+08:00"
+    },
+    "nautilus": {
+      "status": "official_prop_lock",
+      "lock_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_026.png"
+    },
+    "blue_grid_geometry": {
+      "status": "official_scene_symbol_lock",
+      "lock_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_030.png"
+    },
+    "water_burst_transition": {
+      "status": "official_transition_lock",
+      "lock_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_038.png"
+    }
+  },
+  "first_repair_targets": [
+    {
+      "item_id": "OP_SHOT_025",
+      "reason": "director rejected group lineup / large group portrait; group identity and vehicle/prop continuity fail"
+    },
+    {
+      "item_id": "OP_SHOT_034",
+      "reason": "director rejected blue/sea-background Nadia; must be remade using OP_SHOT_011_v2 face lock"
+    },
+    {
+      "item_id": "OP_SHOT_021",
+      "reason": "director accepted for current workprint; keep as reference for group-running energy"
+    }
+  ],
+  "latest_repair_outputs": {
+    "OP_SHOT_024": {
+      "status": "generated_reference003_identity_repair_r1_pass",
+      "output_path": "08_generation/jobs/REFERENCE003_IDENTITY_REPAIR_R1_20260630/outputs/OP_SHOT_024_VEHICLE_LOCK_R1.png",
+      "decision": "R1 Grandis vehicle/action craft lock generated from dense OP24 reference frames; use as new vehicle/action craft continuity source."
+    },
+    "OP_SHOT_025": {
+      "status": "generated_reference003_identity_repair_r1_pass",
+      "output_path": "08_generation/jobs/REFERENCE003_IDENTITY_REPAIR_R1_20260630/outputs/OP_SHOT_025_R1.png",
+      "decision": "R1 hard replacement for director-rejected large group portrait; uses locked character identities and new Grandis vehicle craft lock."
+    },
+    "OP_SHOT_034": {
+      "status": "generated_reference003_identity_repair_r1_pass",
+      "output_path": "08_generation/jobs/REFERENCE003_IDENTITY_REPAIR_R1_20260630/outputs/OP_SHOT_034_R1.png",
+      "decision": "R1 hard replacement for director-rejected sea-background Nadia; uses OP_SHOT_011_v2 as Nadia face lock."
+    }
+  }
+}

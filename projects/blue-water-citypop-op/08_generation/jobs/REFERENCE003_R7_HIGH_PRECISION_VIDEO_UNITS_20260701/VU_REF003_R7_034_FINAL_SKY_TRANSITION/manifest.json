@@ -1,0 +1,143 @@
+{
+  "schema_version": "reference003_r7_high_precision_video_unit_package_v1",
+  "created_at": "2026-07-01T07:36:06+08:00",
+  "status": "ready_for_external_aigc_video_generation",
+  "unit": {
+    "order": 34,
+    "unit_id": "VU_REF003_R7_034_FINAL_SKY_TRANSITION",
+    "title": "最终天空转场",
+    "start": 79.204,
+    "end": 80.789,
+    "intent": "水花后转入最终无字天空。",
+    "active_locks": [],
+    "mode": "high_precision_segment"
+  },
+  "reference_clip": {
+    "path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_034_FINAL_SKY_TRANSITION/reference_clip/VU_REF003_R7_034_FINAL_SKY_TRANSITION_reference.mp4",
+    "start_sec": 79.204,
+    "end_sec": 80.789,
+    "duration_sec": 1.585,
+    "ok": true,
+    "decode_ok": true,
+    "stderr_tail": "      handler_name    : VideoHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : Lavc60.31.102 mpeg4\n    Side data:\n      cpb: bitrate max/min/avg: 0/0/200000 buffer size: 0 vbv_delay: N/A\nframe=    0 fps=0.0 q=3.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    \n[out#0/mp4 @ 0x79f060480] video:1108kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 0.148185%\nframe=   38 fps=0.0 q=3.0 Lsize=    1109kB time=00:00:01.54 bitrate=5889.4kbits/s speed=12.9x    "
+  },
+  "ordered_generated_anchors": [
+    {
+      "order": 1,
+      "item_id": "OP_SHOT_039",
+      "kind": "official_keyframe",
+      "time_sec": 79.0,
+      "timecode": "01:19.00",
+      "role": "图2 / splash_to_sky",
+      "beat": "水花转蓝天",
+      "difference_reason": "",
+      "source_reference_frame": "",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_039.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_034_FINAL_SKY_TRANSITION/keyframes/01_OP_SHOT_039.png",
+      "exists": true,
+      "source_unit_id": "VU_REF003_019_WATER_SPLASH_TRANSITION"
+    },
+    {
+      "order": 2,
+      "item_id": "OP_SHOT_040",
+      "kind": "official_keyframe",
+      "time_sec": 80.0,
+      "timecode": "01:20.00",
+      "role": "图1 / final_sky_safe",
+      "beat": "最终蓝天安全位",
+      "difference_reason": "",
+      "source_reference_frame": "",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_040.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_034_FINAL_SKY_TRANSITION/keyframes/02_OP_SHOT_040.png",
+      "exists": true,
+      "source_unit_id": "VU_REF003_020_FINAL_SKY_SAFE_HOLD"
+    }
+  ],
+  "candidate_reference_frames": [
+    {
+      "asset_id": "R7_CAND_034_start_079234ms",
+      "parent_video_unit_id": "VU_REF003_R7_034_FINAL_SKY_TRANSITION",
+      "role": "start",
+      "source_time_sec": 79.234,
+      "source_timecode": "01:19.23",
+      "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_034_FINAL_SKY_TRANSITION/candidate_reference_frames/R7_CAND_034_start_079234ms.jpg",
+      "priority": "P3_reference_video_or_already_handled",
+      "status": "candidate_reference_frame_review",
+      "difference_reason": "最终天空转场 start boundary/transition frame from R7 high-precision split.",
+      "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_034_start_079234ms.png"
+    },
+    {
+      "asset_id": "R7_CAND_034_end_080759ms",
+      "parent_video_unit_id": "VU_REF003_R7_034_FINAL_SKY_TRANSITION",
+      "role": "end",
+      "source_time_sec": 80.759,
+      "source_timecode": "01:20.76",
+      "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_034_FINAL_SKY_TRANSITION/candidate_reference_frames/R7_CAND_034_end_080759ms.jpg",
+      "priority": "P3_reference_video_or_already_handled",
+      "status": "candidate_reference_frame_review",
+      "difference_reason": "最终天空转场 end boundary/transition frame from R7 high-precision split.",
+      "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_034_end_080759ms.png"
+    },
+    {
+      "asset_id": "R7_CAND_034_middle_079996ms",
+      "parent_video_unit_id": "VU_REF003_R7_034_FINAL_SKY_TRANSITION",
+      "role": "middle",
+      "source_time_sec": 79.996,
+      "source_timecode": "01:20.00",
+      "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_034_FINAL_SKY_TRANSITION/candidate_reference_frames/R7_CAND_034_middle_079996ms.jpg",
+      "priority": "P3_reference_video_or_already_handled",
+      "status": "candidate_reference_frame_review",
+      "difference_reason": "最终天空转场 middle boundary/transition frame from R7 high-precision split.",
+      "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_034_middle_079996ms.png"
+    }
+  ],
+  "active_asset_locks": [],
+  "prompt_only": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_PROMPT_INDEX/PROMPT_ONLY/34_VU_REF003_R7_034_FINAL_SKY_TRANSITION.md",
+  "expected_video_output_path": "08_generation/outputs/video/reference003_r7_high_precision_segments/VU_REF003_R7_034_FINAL_SKY_TRANSITION.mp4",
+  "production_prompt": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_PROMPT_INDEX/PRODUCTION_READY_PROMPT_ONLY/34_VU_REF003_R7_034_FINAL_SKY_TRANSITION_PRODUCTION_READY.md",
+  "production_ready_readme": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_034_FINAL_SKY_TRANSITION/AIGC_VIDEO_PRODUCTION_READY.md",
+  "r7_generated_candidate_images": [
+    {
+      "asset_id": "R7_CAND_034_start_079234ms",
+      "role": "start",
+      "source_time_sec": 79.234,
+      "source_timecode": "01:19.23",
+      "priority": "P3_reference_video_or_already_handled",
+      "status": "generated_asset_ready_pending_review",
+      "unit_title": "最终天空转场",
+      "difference_reason": "最终天空转场 start boundary/transition frame from R7 high-precision split.",
+      "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_034_FINAL_SKY_TRANSITION/candidate_reference_frames/R7_CAND_034_start_079234ms.jpg",
+      "generated_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_034_start_079234ms.png",
+      "image_prompt": "21:9 anamorphic live-action keyframe, faithful high-end live-action remake of the reference-003 OP, pure image only, no readable text/logo/subtitle/watermark. Use source frame `08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_034_FINAL_SKY_TRANSITION/candidate_reference_frames/R7_CAND_034_start_079234ms.jpg` at 01:19.23 as composition/timing reference. Video unit: VU_REF003_R7_034_FINAL_SKY_TRANSITION (最终天空转场). Shot intent: 水花后转入最终无字天空。 Preserve active locks when visible: none. Nearest generated anchors for continuity: OP_SHOT_039, OP_SHOT_040. Do not copy anime line art; create a clean live-action remake frame. Negative prompt: readable text, title letters, lyrics, credits, broadcaster mark, subtitle, watermark, random symbols, distorted face or hands, changed identity, changed prop design, sexualized minor.",
+      "exists": true
+    },
+    {
+      "asset_id": "R7_CAND_034_middle_079996ms",
+      "role": "middle",
+      "source_time_sec": 79.996,
+      "source_timecode": "01:20.00",
+      "priority": "P3_reference_video_or_already_handled",
+      "status": "generated_asset_ready_pending_review",
+      "unit_title": "最终天空转场",
+      "difference_reason": "最终天空转场 middle boundary/transition frame from R7 high-precision split.",
+      "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_034_FINAL_SKY_TRANSITION/candidate_reference_frames/R7_CAND_034_middle_079996ms.jpg",
+      "generated_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_034_middle_079996ms.png",
+      "image_prompt": "21:9 anamorphic live-action keyframe, faithful high-end live-action remake of the reference-003 OP, pure image only, no readable text/logo/subtitle/watermark. Use source frame `08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_034_FINAL_SKY_TRANSITION/candidate_reference_frames/R7_CAND_034_middle_079996ms.jpg` at 01:20.00 as composition/timing reference. Video unit: VU_REF003_R7_034_FINAL_SKY_TRANSITION (最终天空转场). Shot intent: 水花后转入最终无字天空。 Preserve active locks when visible: none. Nearest generated anchors for continuity: OP_SHOT_039, OP_SHOT_040. Do not copy anime line art; create a clean live-action remake frame. Negative prompt: readable text, title letters, lyrics, credits, broadcaster mark, subtitle, watermark, random symbols, distorted face or hands, changed identity, changed prop design, sexualized minor.",
+      "exists": true
+    },
+    {
+      "asset_id": "R7_CAND_034_end_080759ms",
+      "role": "end",
+      "source_time_sec": 80.759,
+      "source_timecode": "01:20.76",
+      "priority": "P3_reference_video_or_already_handled",
+      "status": "generated_asset_ready_pending_review",
+      "unit_title": "最终天空转场",
+      "difference_reason": "最终天空转场 end boundary/transition frame from R7 high-precision split.",
+      "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_034_FINAL_SKY_TRANSITION/candidate_reference_frames/R7_CAND_034_end_080759ms.jpg",
+      "generated_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_034_end_080759ms.png",
+      "image_prompt": "21:9 anamorphic live-action keyframe, faithful high-end live-action remake of the reference-003 OP, pure image only, no readable text/logo/subtitle/watermark. Use source frame `08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_034_FINAL_SKY_TRANSITION/candidate_reference_frames/R7_CAND_034_end_080759ms.jpg` at 01:20.76 as composition/timing reference. Video unit: VU_REF003_R7_034_FINAL_SKY_TRANSITION (最终天空转场). Shot intent: 水花后转入最终无字天空。 Preserve active locks when visible: none. Nearest generated anchors for continuity: OP_SHOT_039, OP_SHOT_040. Do not copy anime line art; create a clean live-action remake frame. Negative prompt: readable text, title letters, lyrics, credits, broadcaster mark, subtitle, watermark, random symbols, distorted face or hands, changed identity, changed prop design, sexualized minor.",
+      "exists": true
+    }
+  ]
+}

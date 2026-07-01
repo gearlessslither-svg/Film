@@ -1,0 +1,185 @@
+{
+  "schema_version": "video_content_analysis_v2",
+  "project_slug": "blue-water-citypop-op",
+  "updated_at": "2026-06-30T04:40:42+08:00",
+  "video_count": 6,
+  "unique_content_count": 5,
+  "duplicate_groups": [
+    [
+      "01_intake/references/nadia_op_reference_002.mp4",
+      "01_intake/references/reference-002-opening.mp4"
+    ]
+  ],
+  "overall_status": "all_current_project_video_files_analyzed",
+  "active_reference_id": "reference-003-full-op-2160p",
+  "videos": [
+    {
+      "id": "reference-002-opening_frame_stack_2fps",
+      "path": "01_intake/analysis/video_reference_packages/reference-002-opening/roughcuts/reference-002-opening_frame_stack_2fps.mp4",
+      "absolute_path": "/Users/jaychoupp/Story/Film/projects/blue-water-citypop-op/01_intake/analysis/video_reference_packages/reference-002-opening/roughcuts/reference-002-opening_frame_stack_2fps.mp4",
+      "role": "derived_reference_roughcut_superseded",
+      "decision": "Derived 2fps review roughcut for old 23s reference.",
+      "sha256": "113f5c4b052b87ef2156733c599a3401a4c70cbd08ebf59774ac146e3dae76d5",
+      "size_bytes": 1924220,
+      "probe": {
+        "ok": true,
+        "stream": {
+          "codec_name": "h264",
+          "width": 960,
+          "height": 540,
+          "r_frame_rate": "2/1",
+          "avg_frame_rate": "2/1",
+          "duration": "23.000000",
+          "nb_frames": "46"
+        },
+        "format": {
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "duration": "23.000000",
+          "size": "1924220"
+        }
+      },
+      "decode_ok": true,
+      "decode_error": ""
+    },
+    {
+      "id": "reference-003-full-op-2160p_frame_stack_2fps",
+      "path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/roughcuts/reference-003-full-op-2160p_frame_stack_2fps.mp4",
+      "absolute_path": "/Users/jaychoupp/Story/Film/projects/blue-water-citypop-op/01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/roughcuts/reference-003-full-op-2160p_frame_stack_2fps.mp4",
+      "role": "active_full_reference_roughcut",
+      "decision": "Derived 2fps roughcut for the active full OP reference.",
+      "sha256": "d05aba26f453a5a78d0af44b7e7cb9e0d2a8d616d049a953f914915a14e6a446",
+      "size_bytes": 21488441,
+      "probe": {
+        "ok": true,
+        "stream": {
+          "codec_name": "h264",
+          "width": 960,
+          "height": 720,
+          "r_frame_rate": "2/1",
+          "avg_frame_rate": "2/1",
+          "duration": "84.500000",
+          "nb_frames": "169"
+        },
+        "format": {
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "duration": "84.500000",
+          "size": "21488441"
+        }
+      },
+      "decode_ok": true,
+      "decode_error": ""
+    },
+    {
+      "id": "nadia_op_reference_002",
+      "path": "01_intake/references/nadia_op_reference_002.mp4",
+      "absolute_path": "/Users/jaychoupp/Story/Film/projects/blue-water-citypop-op/01_intake/references/nadia_op_reference_002.mp4",
+      "role": "duplicate_reference_alias_superseded",
+      "decision": "Byte-identical duplicate of reference-002-opening.mp4.",
+      "sha256": "a040bc0d7e75b2019d9391ddaeb974e58bcbbd715e2be9e22d5b1385f2f0d639",
+      "size_bytes": 17659562,
+      "probe": {
+        "ok": true,
+        "stream": {
+          "codec_name": "h264",
+          "width": 1920,
+          "height": 1080,
+          "r_frame_rate": "30/1",
+          "avg_frame_rate": "30/1",
+          "duration": "23.000000",
+          "nb_frames": "690"
+        },
+        "format": {
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "duration": "23.010952",
+          "size": "17659562"
+        }
+      },
+      "decode_ok": true,
+      "decode_error": ""
+    },
+    {
+      "id": "reference-002-opening",
+      "path": "01_intake/references/reference-002-opening.mp4",
+      "absolute_path": "/Users/jaychoupp/Story/Film/projects/blue-water-citypop-op/01_intake/references/reference-002-opening.mp4",
+      "role": "canonical_reference_video_superseded",
+      "decision": "Superseded 23s opening reference; covered earlier reference-002 package.",
+      "sha256": "a040bc0d7e75b2019d9391ddaeb974e58bcbbd715e2be9e22d5b1385f2f0d639",
+      "size_bytes": 17659562,
+      "probe": {
+        "ok": true,
+        "stream": {
+          "codec_name": "h264",
+          "width": 1920,
+          "height": 1080,
+          "r_frame_rate": "30/1",
+          "avg_frame_rate": "30/1",
+          "duration": "23.000000",
+          "nb_frames": "690"
+        },
+        "format": {
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "duration": "23.010952",
+          "size": "17659562"
+        }
+      },
+      "decode_ok": true,
+      "decode_error": ""
+    },
+    {
+      "id": "reference-003-full-op-2160p",
+      "path": "01_intake/references/reference-003-full-op-2160p.mp4",
+      "absolute_path": "/Users/jaychoupp/Story/Film/projects/blue-water-citypop-op/01_intake/references/reference-003-full-op-2160p.mp4",
+      "role": "active_full_reference_video",
+      "decision": "Active full 84.44s OP reference for 1:1 planning.",
+      "sha256": "6bfbe2d564c898df9414d2b3baa3353c2375b08dac710cebc09c22c31695f8f2",
+      "size_bytes": 28979589,
+      "probe": {
+        "ok": true,
+        "stream": {
+          "codec_name": "h264",
+          "width": 1440,
+          "height": 1080,
+          "r_frame_rate": "24000/1001",
+          "avg_frame_rate": "32384000/1350683",
+          "duration": "84.417687",
+          "nb_frames": "2024"
+        },
+        "format": {
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "duration": "84.437333",
+          "size": "28979589"
+        }
+      },
+      "decode_ok": true,
+      "decode_error": ""
+    },
+    {
+      "id": "opening_24s_onetake_previs",
+      "path": "06_previs/playblasts/opening_24s_onetake_previs.mp4",
+      "absolute_path": "/Users/jaychoupp/Story/Film/projects/blue-water-citypop-op/06_previs/playblasts/opening_24s_onetake_previs.mp4",
+      "role": "blender_previs_candidate_superseded",
+      "decision": "Generated/previs camera experiment; not accepted timing.",
+      "sha256": "97582d9731b56ffba4cd50cdd8099f57aefa75cdc4b4f8cc84d901b2e01f4801",
+      "size_bytes": 3138718,
+      "probe": {
+        "ok": true,
+        "stream": {
+          "codec_name": "h264",
+          "width": 1280,
+          "height": 548,
+          "r_frame_rate": "24/1",
+          "avg_frame_rate": "24/1",
+          "duration": "24.000000",
+          "nb_frames": "576"
+        },
+        "format": {
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "duration": "24.000000",
+          "size": "3138718"
+        }
+      },
+      "decode_ok": true,
+      "decode_error": ""
+    }
+  ]
+}

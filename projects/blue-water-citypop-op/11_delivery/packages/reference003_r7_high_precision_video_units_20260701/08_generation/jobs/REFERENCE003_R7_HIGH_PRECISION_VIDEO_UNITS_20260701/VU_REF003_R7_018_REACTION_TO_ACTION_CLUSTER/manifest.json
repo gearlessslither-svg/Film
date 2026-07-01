@@ -1,0 +1,135 @@
+{
+  "schema_version": "reference003_r7_high_precision_video_unit_package_v1",
+  "created_at": "2026-07-01T07:36:06+08:00",
+  "status": "ready_for_external_aigc_video_generation",
+  "unit": {
+    "order": 18,
+    "unit_id": "VU_REF003_R7_018_REACTION_TO_ACTION_CLUSTER",
+    "title": "奔跑到动作插入簇",
+    "start": 47.422,
+    "end": 48.173,
+    "intent": "Jean反应/动作桥接短簇，避免被吞进奔跑长段。",
+    "active_locks": [
+      [
+        "characters",
+        "jean"
+      ],
+      [
+        "characters",
+        "grandis"
+      ],
+      [
+        "characters",
+        "sanson"
+      ],
+      [
+        "characters",
+        "hanson"
+      ]
+    ],
+    "mode": "high_precision_segment"
+  },
+  "reference_clip": {
+    "path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_018_REACTION_TO_ACTION_CLUSTER/reference_clip/VU_REF003_R7_018_REACTION_TO_ACTION_CLUSTER_reference.mp4",
+    "start_sec": 47.422,
+    "end_sec": 48.173,
+    "duration_sec": 0.751,
+    "ok": true,
+    "decode_ok": true,
+    "stderr_tail": "      handler_name    : VideoHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : Lavc60.31.102 mpeg4\n    Side data:\n      cpb: bitrate max/min/avg: 0/0/200000 buffer size: 0 vbv_delay: N/A\nframe=    0 fps=0.0 q=3.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    \n[out#0/mp4 @ 0xa9300c9c0] video:624kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 0.246658%\nframe=   18 fps=0.0 q=3.0 Lsize=     626kB time=00:00:00.70 bitrate=7231.4kbits/s speed=9.05x    "
+  },
+  "ordered_generated_anchors": [
+    {
+      "order": 1,
+      "item_id": "OP_SHOT_022",
+      "kind": "official_keyframe",
+      "time_sec": 47.5,
+      "timecode": "00:47.50",
+      "role": "图6 / Jean_reaction_close",
+      "beat": "Jean 反应近景",
+      "difference_reason": "",
+      "source_reference_frame": "",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH04/outputs/OP_SHOT_022.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_018_REACTION_TO_ACTION_CLUSTER/keyframes/01_OP_SHOT_022.png",
+      "exists": true,
+      "source_unit_id": "VU_REF003_011_RUNNING_MONTAGE"
+    },
+    {
+      "order": 2,
+      "item_id": "OP_SHOT_023",
+      "kind": "official_keyframe",
+      "time_sec": 48.0,
+      "timecode": "00:48.00",
+      "role": "图1 / Grandis_action_close",
+      "beat": "Grandis 动作桥",
+      "difference_reason": "",
+      "source_reference_frame": "",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH04/outputs/OP_SHOT_023.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_018_REACTION_TO_ACTION_CLUSTER/keyframes/02_OP_SHOT_023.png",
+      "exists": true,
+      "source_unit_id": "VU_REF003_012_GRANDIS_VEHICLE_ACTION"
+    }
+  ],
+  "candidate_reference_frames": [
+    {
+      "asset_id": "R7_CAND_018_start_047452ms",
+      "parent_video_unit_id": "VU_REF003_R7_018_REACTION_TO_ACTION_CLUSTER",
+      "role": "start",
+      "source_time_sec": 47.452,
+      "source_timecode": "00:47.45",
+      "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_018_REACTION_TO_ACTION_CLUSTER/candidate_reference_frames/R7_CAND_018_start_047452ms.jpg",
+      "priority": "P3_reference_video_or_already_handled",
+      "status": "candidate_reference_frame_review",
+      "difference_reason": "奔跑到动作插入簇 start boundary/transition frame from R7 high-precision split.",
+      "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_018_start_047452ms.png"
+    },
+    {
+      "asset_id": "R7_CAND_018_end_048143ms",
+      "parent_video_unit_id": "VU_REF003_R7_018_REACTION_TO_ACTION_CLUSTER",
+      "role": "end",
+      "source_time_sec": 48.143,
+      "source_timecode": "00:48.14",
+      "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_018_REACTION_TO_ACTION_CLUSTER/candidate_reference_frames/R7_CAND_018_end_048143ms.jpg",
+      "priority": "P3_reference_video_or_already_handled",
+      "status": "candidate_reference_frame_review",
+      "difference_reason": "奔跑到动作插入簇 end boundary/transition frame from R7 high-precision split.",
+      "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_018_end_048143ms.png"
+    }
+  ],
+  "active_asset_locks": [
+    {
+      "group": "characters",
+      "asset_id": "jean",
+      "status": "official_identity_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_012.png",
+      "global_lock_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_global_asset_locks/characters_jean.png",
+      "exists": true
+    },
+    {
+      "group": "characters",
+      "asset_id": "grandis",
+      "status": "official_identity_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_016_v2.png",
+      "global_lock_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_global_asset_locks/characters_grandis.png",
+      "exists": true
+    },
+    {
+      "group": "characters",
+      "asset_id": "sanson",
+      "status": "official_identity_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_016_v2.png",
+      "global_lock_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_global_asset_locks/characters_sanson.png",
+      "exists": true
+    },
+    {
+      "group": "characters",
+      "asset_id": "hanson",
+      "status": "official_identity_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_016_v2.png",
+      "global_lock_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_global_asset_locks/characters_hanson.png",
+      "exists": true
+    }
+  ],
+  "prompt_only": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_PROMPT_INDEX/PROMPT_ONLY/18_VU_REF003_R7_018_REACTION_TO_ACTION_CLUSTER.md",
+  "expected_video_output_path": "08_generation/outputs/video/reference003_r7_high_precision_segments/VU_REF003_R7_018_REACTION_TO_ACTION_CLUSTER.mp4"
+}

@@ -1,0 +1,88 @@
+{
+  "job_id": "REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03",
+  "status": "qa_done_6_pass",
+  "source_reference": "reference-003-full-op-2160p",
+  "items": [
+    {
+      "item_id": "OP_SHOT_013",
+      "timecode": "00:31.50",
+      "reference_frame": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/refs/OP_SHOT_013_ref_003150.jpg",
+      "label": "Marie and King meadow"
+    },
+    {
+      "item_id": "OP_SHOT_014",
+      "timecode": "00:34.00",
+      "reference_frame": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/refs/OP_SHOT_014_ref_003400.jpg",
+      "label": "Marie and King close"
+    },
+    {
+      "item_id": "OP_SHOT_015",
+      "timecode": "00:35.50",
+      "reference_frame": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/refs/OP_SHOT_015_ref_003550.jpg",
+      "label": "Grandis trio wide"
+    },
+    {
+      "item_id": "OP_SHOT_016",
+      "timecode": "00:37.00",
+      "reference_frame": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/refs/OP_SHOT_016_ref_003700.jpg",
+      "label": "Grandis trio close"
+    },
+    {
+      "item_id": "OP_SHOT_017",
+      "timecode": "00:38.00",
+      "reference_frame": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/refs/OP_SHOT_017_ref_003800.jpg",
+      "label": "Nadia running feet/legs"
+    },
+    {
+      "item_id": "OP_SHOT_018",
+      "timecode": "00:39.50",
+      "reference_frame": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/refs/OP_SHOT_018_ref_003950.jpg",
+      "label": "Nadia running front"
+    }
+  ],
+  "reference_sheet": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/refs/REFERENCE003_QA_BATCH03_reference_sheet.jpg",
+  "output_dir": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs",
+  "generated_at": "2026-06-30T05:29:10+0800",
+  "outputs": [
+    {
+      "item_id": "OP_SHOT_013",
+      "status": "generated_reference003_qa_pass",
+      "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_013.png",
+      "note": "REFERENCE003_QA_BATCH03 official keyframe generated from full video reference. Visual QA pass: Marie and King laughing in meadow, child-safe, no text/logo."
+    },
+    {
+      "item_id": "OP_SHOT_014",
+      "status": "generated_reference003_qa_pass",
+      "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_014.png",
+      "note": "REFERENCE003_QA_BATCH03 official keyframe generated from full video reference. Visual QA pass: Marie and King close joyful beat, child-safe and friendly, no text/logo."
+    },
+    {
+      "item_id": "OP_SHOT_015",
+      "status": "generated_reference003_qa_pass",
+      "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_015.png",
+      "note": "REFERENCE003_QA_BATCH03 official keyframe generated from full video reference. Visual QA pass: Grandis trio wide period lineup, three adults, no text/logo; normalized to 1915x821."
+    },
+    {
+      "item_id": "OP_SHOT_016",
+      "status": "generated_reference003_qa_pass",
+      "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_016_v2.png",
+      "note": "REFERENCE003_QA_BATCH03 R2 official keyframe generated from full video reference. Visual QA pass: exactly three adult Grandis trio close cluster, no text/logo."
+    },
+    {
+      "item_id": "OP_SHOT_017",
+      "status": "generated_reference003_qa_pass",
+      "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_017.png",
+      "note": "REFERENCE003_QA_BATCH03 official keyframe generated from full video reference. Visual QA pass: Nadia running foot/leg action beat, safe framing, no text/logo."
+    },
+    {
+      "item_id": "OP_SHOT_018",
+      "status": "generated_reference003_qa_pass",
+      "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_018.png",
+      "note": "REFERENCE003_QA_BATCH03 official keyframe generated from full video reference. Visual QA pass: Nadia running front action beat, age-safe conservative costume, no text/logo; normalized to 1915x821."
+    }
+  ],
+  "generated_sheet": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/REFERENCE003_QA_BATCH03_generated_sheet.jpg",
+  "qa_report": "10_qa/reports/reference003_qa_batch03_keyframes_20260630.md",
+  "compare_sheet": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/REFERENCE003_QA_BATCH03_ref_vs_generated.jpg",
+  "updated_at": "2026-06-30T05:32:08+08:00"
+}

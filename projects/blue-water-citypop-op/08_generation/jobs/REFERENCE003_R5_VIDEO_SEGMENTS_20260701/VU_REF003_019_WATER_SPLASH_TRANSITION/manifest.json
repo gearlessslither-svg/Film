@@ -1,0 +1,300 @@
+{
+  "schema_version": "reference003_r5_expanded_video_segment_package_v1",
+  "project_slug": "blue-water-citypop-op",
+  "created_at": "2026-07-01T02:57:37+08:00",
+  "status": "ready_for_external_aigc_video_generation",
+  "unit": {
+    "order": 19,
+    "unit_id": "VU_REF003_019_WATER_SPLASH_TRANSITION",
+    "title": "水花爆发转天空",
+    "time_range": "01:17.50-01:19.50",
+    "stage_now": "ready_for_video_generation",
+    "blocking_keyframes": [],
+    "video_prompt_path": "07_shots/video_prompts_by_unit/VU_REF003_019_WATER_SPLASH_TRANSITION.md",
+    "expected_video_job_dir": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_019_WATER_SPLASH_TRANSITION",
+    "expected_video_output_path": "08_generation/outputs/video/reference003_r5_expanded_segments/VU_REF003_019_WATER_SPLASH_TRANSITION.mp4",
+    "roughcut_slot": 19,
+    "whitebox_required": false,
+    "keyframes": [
+      {
+        "item_id": "OP_SHOT_038",
+        "status": "generated_reference003_qa_pass",
+        "qa_pass": true,
+        "current_output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_038.png",
+        "expected_output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_038.png",
+        "timecode": "01:18.00",
+        "role": "图1 / water_burst",
+        "beat": "水花爆发",
+        "kind": "official_keyframe",
+        "time_sec": 78.0
+      },
+      {
+        "item_id": "OP_SHOT_039",
+        "status": "generated_reference003_qa_pass",
+        "qa_pass": true,
+        "current_output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_039.png",
+        "expected_output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_039.png",
+        "timecode": "01:19.00",
+        "role": "图2 / splash_to_sky",
+        "beat": "水花转蓝天",
+        "kind": "official_keyframe",
+        "time_sec": 79.0
+      }
+    ],
+    "transition_edges": [
+      {
+        "edge_id": "TE_REF003_037_037_TO_038",
+        "from": "OP_SHOT_037",
+        "to": "OP_SHOT_038",
+        "transition_type": "reference_cut_or_match",
+        "visual_bridge": "水下蓝色纹理 -> 水花爆发",
+        "incoming_instruction": "OP_SHOT_038 begins from the reference-003 timing after OP_SHOT_037: preserve the cut/motion function, but keep the generated remake no-text/no-logo."
+      },
+      {
+        "edge_id": "TE_REF003_038_038_TO_039",
+        "from": "OP_SHOT_038",
+        "to": "OP_SHOT_039",
+        "transition_type": "intra_unit_continuity",
+        "visual_bridge": "水花爆发 -> 水花转蓝天",
+        "incoming_instruction": "OP_SHOT_039 begins from the reference-003 timing after OP_SHOT_038: preserve the cut/motion function, but keep the generated remake no-text/no-logo."
+      },
+      {
+        "edge_id": "TE_REF003_039_039_TO_040",
+        "from": "OP_SHOT_039",
+        "to": "OP_SHOT_040",
+        "transition_type": "reference_cut_or_match",
+        "visual_bridge": "水花转蓝天 -> 最终蓝天安全位",
+        "incoming_instruction": "OP_SHOT_040 begins from the reference-003 timing after OP_SHOT_039: preserve the cut/motion function, but keep the generated remake no-text/no-logo."
+      }
+    ],
+    "generation_gate": "ready",
+    "qa_checklist": [
+      "segment uses only QA-pass Reference-003 keyframes as anchors",
+      "time range and motion function match reference-003-full-op-2160p",
+      "no readable text, credits, titles, lyrics, NHK mark, subtitle, watermark, or random symbols",
+      "incoming/outgoing/intra-unit transitions match declared transition_edges.json intent",
+      "minor characters remain age-appropriate, modest, non-sexualized",
+      "segment MP4 complete-decodes before roughcut assembly"
+    ]
+  },
+  "package_root": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_019_WATER_SPLASH_TRANSITION",
+  "package_type": "reference003_r5_expanded_video_segment",
+  "setting_chapter": "05_asset_bible/setting_chapters/reference003_setting_chapter_v1.md",
+  "asset_lock_manifest": "05_asset_bible/setting_chapters/reference003_asset_locks_v1.json",
+  "packaged_asset_locks": [
+    {
+      "group": "characters",
+      "asset_id": "nadia",
+      "status": "official_identity_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_011_v2.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_019_WATER_SPLASH_TRANSITION/asset_locks/characters_nadia.png",
+      "exists": true
+    },
+    {
+      "group": "characters",
+      "asset_id": "jean",
+      "status": "official_identity_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_012.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_019_WATER_SPLASH_TRANSITION/asset_locks/characters_jean.png",
+      "exists": true
+    },
+    {
+      "group": "characters",
+      "asset_id": "marie",
+      "status": "official_identity_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_014.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_019_WATER_SPLASH_TRANSITION/asset_locks/characters_marie.png",
+      "exists": true
+    },
+    {
+      "group": "characters",
+      "asset_id": "king",
+      "status": "official_identity_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_014.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_019_WATER_SPLASH_TRANSITION/asset_locks/characters_king.png",
+      "exists": true
+    },
+    {
+      "group": "characters",
+      "asset_id": "grandis",
+      "status": "official_identity_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_016_v2.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_019_WATER_SPLASH_TRANSITION/asset_locks/characters_grandis.png",
+      "exists": true
+    },
+    {
+      "group": "characters",
+      "asset_id": "sanson",
+      "status": "official_identity_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_016_v2.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_019_WATER_SPLASH_TRANSITION/asset_locks/characters_sanson.png",
+      "exists": true
+    },
+    {
+      "group": "characters",
+      "asset_id": "hanson",
+      "status": "official_identity_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_016_v2.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_019_WATER_SPLASH_TRANSITION/asset_locks/characters_hanson.png",
+      "exists": true
+    },
+    {
+      "group": "characters",
+      "asset_id": "nemo",
+      "status": "official_identity_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_032.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_019_WATER_SPLASH_TRANSITION/asset_locks/characters_nemo.png",
+      "exists": true
+    },
+    {
+      "group": "characters",
+      "asset_id": "electra",
+      "status": "needs_setting_lock",
+      "source_path": "",
+      "packaged_path": "",
+      "exists": false
+    },
+    {
+      "group": "characters",
+      "asset_id": "gargoyle",
+      "status": "needs_setting_lock",
+      "source_path": "",
+      "packaged_path": "",
+      "exists": false
+    },
+    {
+      "group": "props_vehicles_symbols",
+      "asset_id": "blue_water_pendant",
+      "status": "official_prop_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_035.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_019_WATER_SPLASH_TRANSITION/asset_locks/props_vehicles_symbols_blue_water_pendant.png",
+      "exists": true
+    },
+    {
+      "group": "props_vehicles_symbols",
+      "asset_id": "white_bird",
+      "status": "official_prop_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_003.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_019_WATER_SPLASH_TRANSITION/asset_locks/props_vehicles_symbols_white_bird.png",
+      "exists": true
+    },
+    {
+      "group": "props_vehicles_symbols",
+      "asset_id": "jean_aircraft",
+      "status": "official_prop_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_007.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_019_WATER_SPLASH_TRANSITION/asset_locks/props_vehicles_symbols_jean_aircraft.png",
+      "exists": true
+    },
+    {
+      "group": "props_vehicles_symbols",
+      "asset_id": "grandis_vehicle",
+      "status": "official_prop_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_IDENTITY_REPAIR_R1_20260630/outputs/OP_SHOT_024_VEHICLE_LOCK_R1.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_019_WATER_SPLASH_TRANSITION/asset_locks/props_vehicles_symbols_grandis_vehicle.png",
+      "exists": true
+    },
+    {
+      "group": "props_vehicles_symbols",
+      "asset_id": "nautilus",
+      "status": "official_prop_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_026.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_019_WATER_SPLASH_TRANSITION/asset_locks/props_vehicles_symbols_nautilus.png",
+      "exists": true
+    },
+    {
+      "group": "props_vehicles_symbols",
+      "asset_id": "blue_grid_geometry",
+      "status": "official_scene_symbol_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_030.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_019_WATER_SPLASH_TRANSITION/asset_locks/props_vehicles_symbols_blue_grid_geometry.png",
+      "exists": true
+    },
+    {
+      "group": "props_vehicles_symbols",
+      "asset_id": "water_burst_transition",
+      "status": "official_transition_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_038.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_019_WATER_SPLASH_TRANSITION/asset_locks/props_vehicles_symbols_water_burst_transition.png",
+      "exists": true
+    }
+  ],
+  "reference_video_source": "01_intake/references/reference-003-full-op-2160p.mp4",
+  "reference_clip": {
+    "attempted": true,
+    "ok": true,
+    "path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_019_WATER_SPLASH_TRANSITION/reference_clip/VU_REF003_019_WATER_SPLASH_TRANSITION_reference.mp4",
+    "start_sec": 77.5,
+    "end_sec": 79.5,
+    "duration_sec": 2.0,
+    "stderr_tail": "",
+    "decode_ok": true
+  },
+  "keyframe_anchor_count": 4,
+  "official_keyframe_anchor_count": 2,
+  "r5_adaptive_anchor_count": 2,
+  "keyframe_anchors": [
+    {
+      "order": 1,
+      "item_id": "R5_VU_REF003_019_WATER_SPLASH_TRANSITION_077500ms_02",
+      "kind": "r5_adaptive_generated",
+      "time_sec": 77.5,
+      "timecode": "01:17.50",
+      "role": "adaptive_middle",
+      "beat": "Water burst transition has materially different splash/sky states; extra anchor helps preserve transition logic.",
+      "difference_reason": "Water burst transition has materially different splash/sky states; extra anchor helps preserve transition logic.",
+      "source_reference_frame": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0156.jpg",
+      "source_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_019_WATER_SPLASH_TRANSITION_077500ms_02.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_019_WATER_SPLASH_TRANSITION/keyframes/01_R5_VU_REF003_019_WATER_SPLASH_TRANSITION_077500ms_02.png",
+      "exists": true
+    },
+    {
+      "order": 2,
+      "item_id": "OP_SHOT_038",
+      "kind": "official_keyframe",
+      "time_sec": 78.0,
+      "timecode": "01:18.00",
+      "role": "图1 / water_burst",
+      "beat": "水花爆发",
+      "difference_reason": "",
+      "source_reference_frame": "",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_038.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_019_WATER_SPLASH_TRANSITION/keyframes/02_OP_SHOT_038.png",
+      "exists": true
+    },
+    {
+      "order": 3,
+      "item_id": "R5_VU_REF003_019_WATER_SPLASH_TRANSITION_078500ms_01",
+      "kind": "r5_adaptive_generated",
+      "time_sec": 78.5,
+      "timecode": "01:18.50",
+      "role": "adaptive_primary",
+      "beat": "Water burst transition has materially different splash/sky states; extra anchor helps preserve transition logic.",
+      "difference_reason": "Water burst transition has materially different splash/sky states; extra anchor helps preserve transition logic.",
+      "source_reference_frame": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0158.jpg",
+      "source_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_019_WATER_SPLASH_TRANSITION_078500ms_01.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_019_WATER_SPLASH_TRANSITION/keyframes/03_R5_VU_REF003_019_WATER_SPLASH_TRANSITION_078500ms_01.png",
+      "exists": true
+    },
+    {
+      "order": 4,
+      "item_id": "OP_SHOT_039",
+      "kind": "official_keyframe",
+      "time_sec": 79.0,
+      "timecode": "01:19.00",
+      "role": "图2 / splash_to_sky",
+      "beat": "水花转蓝天",
+      "difference_reason": "",
+      "source_reference_frame": "",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_039.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_019_WATER_SPLASH_TRANSITION/keyframes/04_OP_SHOT_039.png",
+      "exists": true
+    }
+  ],
+  "ordered_keyframe_anchors_json": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_019_WATER_SPLASH_TRANSITION/ordered_keyframe_anchors.json",
+  "ordered_keyframe_contact_sheet": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_019_WATER_SPLASH_TRANSITION/ordered_keyframe_contact_sheet.jpg",
+  "generation_brief": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_019_WATER_SPLASH_TRANSITION/AIGC_VIDEO_GENERATION_BRIEF.md",
+  "qa_checklist": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_019_WATER_SPLASH_TRANSITION/SEGMENT_QA_CHECKLIST.md",
+  "expected_video_output_path": "08_generation/outputs/video/reference003_r5_expanded_segments/VU_REF003_019_WATER_SPLASH_TRANSITION.mp4",
+  "boundary": "This package prepares inputs only; it does not claim that external AIGC video has been generated."
+}

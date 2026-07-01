@@ -1,0 +1,91 @@
+{
+  "job_id": "REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY",
+  "status": "qa_done_6_pass",
+  "source_reference": "reference-003-full-op-2160p",
+  "items": [
+    {
+      "item_id": "OP_SHOT_031",
+      "timecode": "01:05.50",
+      "title": "night aircraft pass",
+      "description": "Dark retro aircraft passes at night with small colored lights, no text",
+      "unit_id": "VU_REF003_015_NIGHT_AIRCRAFT_PASS",
+      "sample_index": 132,
+      "reference_frame": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/refs/OP_SHOT_031_ref_010550.jpg",
+      "prompt_file": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/prompts/OP_SHOT_031_generation_prompt.md",
+      "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_031.png",
+      "qa_status": "pass"
+    },
+    {
+      "item_id": "OP_SHOT_032",
+      "timecode": "01:06.50",
+      "title": "Nemo profile start",
+      "description": "Stern adult submarine captain in dark uniform and white cap against sunset sky, no text",
+      "unit_id": "VU_REF003_016_NEMO_SUNSET_PROFILE",
+      "sample_index": 134,
+      "reference_frame": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/refs/OP_SHOT_032_ref_010650.jpg",
+      "prompt_file": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/prompts/OP_SHOT_032_generation_prompt.md",
+      "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_032.png",
+      "qa_status": "pass"
+    },
+    {
+      "item_id": "OP_SHOT_033",
+      "timecode": "01:09.50",
+      "title": "Nemo profile hold",
+      "description": "Nemo holds a dignified profile at sunset, wind and coat shape clear",
+      "unit_id": "VU_REF003_016_NEMO_SUNSET_PROFILE",
+      "sample_index": 140,
+      "reference_frame": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/refs/OP_SHOT_033_ref_010950.jpg",
+      "prompt_file": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/prompts/OP_SHOT_033_generation_prompt.md",
+      "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_033.png",
+      "qa_status": "pass"
+    },
+    {
+      "item_id": "OP_SHOT_034",
+      "timecode": "01:12.00",
+      "title": "Nadia solemn front",
+      "description": "Nadia C-version front close-up in cool symbolic light, serious and age-safe",
+      "unit_id": "VU_REF003_017_NADIA_SOLEMN_CLOSE",
+      "sample_index": 145,
+      "reference_frame": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/refs/OP_SHOT_034_ref_011200.jpg",
+      "prompt_file": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/prompts/OP_SHOT_034_generation_prompt.md",
+      "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_034.png",
+      "qa_status": "pass"
+    },
+    {
+      "item_id": "OP_SHOT_035",
+      "timecode": "01:13.50",
+      "title": "Blue Water symbol",
+      "description": "Blue Water jewel/sapphire symbol over clean blue field, no text or marks",
+      "unit_id": "VU_REF003_018_BLUE_WATER_SYMBOL",
+      "sample_index": 148,
+      "reference_frame": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/refs/OP_SHOT_035_ref_011350.jpg",
+      "prompt_file": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/prompts/OP_SHOT_035_generation_prompt.md",
+      "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_035.png",
+      "qa_status": "pass"
+    },
+    {
+      "item_id": "OP_SHOT_036",
+      "timecode": "01:15.00",
+      "title": "blue symbol bloom",
+      "description": "Cyan-blue bloom or energy texture replaces original text overlay, jewel feeling preserved",
+      "unit_id": "VU_REF003_018_BLUE_WATER_SYMBOL",
+      "sample_index": 151,
+      "reference_frame": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/refs/OP_SHOT_036_ref_011500.jpg",
+      "prompt_file": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/prompts/OP_SHOT_036_generation_prompt.md",
+      "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_036.png",
+      "qa_status": "pass"
+    }
+  ],
+  "reference_sheet": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/refs/REFERENCE003_QA_BATCH06_reference_sheet.jpg",
+  "prompt_pack": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/prompts/BATCH06_generation_prompt_pack.md",
+  "qa_checklist": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/BATCH06_QA_CHECKLIST.md",
+  "output_dir": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs",
+  "post_generation_apply": {
+    "applied": true,
+    "applied_at": "2026-06-30T13:27:52+08:00",
+    "pass_count": 6,
+    "total": 6,
+    "report_json": "10_qa/reports/reference003_qa_batch06_keyframes_20260630.json",
+    "report_md": "10_qa/reports/reference003_qa_batch06_keyframes_20260630.md"
+  }
+}

@@ -1,0 +1,26 @@
+[
+  {
+    "asset_id": "R7_CAND_018_start_047452ms",
+    "parent_video_unit_id": "VU_REF003_R7_018_REACTION_TO_ACTION_CLUSTER",
+    "role": "start",
+    "source_time_sec": 47.452,
+    "source_timecode": "00:47.45",
+    "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_018_REACTION_TO_ACTION_CLUSTER/candidate_reference_frames/R7_CAND_018_start_047452ms.jpg",
+    "priority": "P3_reference_video_or_already_handled",
+    "status": "candidate_reference_frame_review",
+    "difference_reason": "奔跑到动作插入簇 start boundary/transition frame from R7 high-precision split.",
+    "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_018_start_047452ms.png"
+  },
+  {
+    "asset_id": "R7_CAND_018_end_048143ms",
+    "parent_video_unit_id": "VU_REF003_R7_018_REACTION_TO_ACTION_CLUSTER",
+    "role": "end",
+    "source_time_sec": 48.143,
+    "source_timecode": "00:48.14",
+    "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_018_REACTION_TO_ACTION_CLUSTER/candidate_reference_frames/R7_CAND_018_end_048143ms.jpg",
+    "priority": "P3_reference_video_or_already_handled",
+    "status": "candidate_reference_frame_review",
+    "difference_reason": "奔跑到动作插入簇 end boundary/transition frame from R7 high-precision split.",
+    "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_018_end_048143ms.png"
+  }
+]

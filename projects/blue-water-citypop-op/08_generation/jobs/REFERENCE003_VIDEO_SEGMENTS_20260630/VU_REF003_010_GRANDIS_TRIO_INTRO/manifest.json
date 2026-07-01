@@ -1,0 +1,253 @@
+{
+  "schema_version": "reference003_video_segment_generation_job_v1",
+  "project_slug": "blue-water-citypop-op",
+  "created_at": "2026-06-30T17:32:23+08:00",
+  "status": "ready_for_external_aigc_video_generation",
+  "unit": {
+    "order": 10,
+    "unit_id": "VU_REF003_010_GRANDIS_TRIO_INTRO",
+    "title": "Grandis 三人组介绍",
+    "time_range": "00:34.50-00:37.50",
+    "stage_now": "ready_for_video_generation",
+    "blocking_keyframes": [],
+    "video_prompt_path": "07_shots/video_prompts_by_unit/VU_REF003_010_GRANDIS_TRIO_INTRO.md",
+    "expected_video_job_dir": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_010_GRANDIS_TRIO_INTRO",
+    "expected_video_output_path": "08_generation/outputs/video/reference003_segments/VU_REF003_010_GRANDIS_TRIO_INTRO.mp4",
+    "roughcut_slot": 10,
+    "whitebox_required": false,
+    "keyframes": [
+      {
+        "item_id": "OP_SHOT_015",
+        "status": "generated_reference003_qa_pass",
+        "qa_pass": true,
+        "current_output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_015.png",
+        "expected_output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_015.png",
+        "timecode": "00:35.50",
+        "role": "图1 / Grandis_trio_wide",
+        "beat": "Grandis 三人组宽景"
+      },
+      {
+        "item_id": "OP_SHOT_016",
+        "status": "generated_reference003_qa_pass",
+        "qa_pass": true,
+        "current_output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_016_v2.png",
+        "expected_output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_016_v2.png",
+        "timecode": "00:37.00",
+        "role": "图2 / Grandis_trio_close",
+        "beat": "Grandis 三人组近景"
+      }
+    ],
+    "transition_edges": [
+      {
+        "edge_id": "TE_REF003_014_014_TO_015",
+        "from": "OP_SHOT_014",
+        "to": "OP_SHOT_015",
+        "transition_type": "reference_cut_or_match",
+        "visual_bridge": "Marie 与 King 近景 -> Grandis 三人组宽景",
+        "incoming_instruction": "OP_SHOT_015 begins from the reference-003 timing after OP_SHOT_014: preserve the cut/motion function, but keep the generated remake no-text/no-logo."
+      },
+      {
+        "edge_id": "TE_REF003_015_015_TO_016",
+        "from": "OP_SHOT_015",
+        "to": "OP_SHOT_016",
+        "transition_type": "intra_unit_continuity",
+        "visual_bridge": "Grandis 三人组宽景 -> Grandis 三人组近景",
+        "incoming_instruction": "OP_SHOT_016 begins from the reference-003 timing after OP_SHOT_015: preserve the cut/motion function, but keep the generated remake no-text/no-logo."
+      },
+      {
+        "edge_id": "TE_REF003_016_016_TO_017",
+        "from": "OP_SHOT_016",
+        "to": "OP_SHOT_017",
+        "transition_type": "reference_cut_or_match",
+        "visual_bridge": "Grandis 三人组近景 -> Nadia 奔跑脚步",
+        "incoming_instruction": "OP_SHOT_017 begins from the reference-003 timing after OP_SHOT_016: preserve the cut/motion function, but keep the generated remake no-text/no-logo."
+      }
+    ],
+    "generation_gate": "ready",
+    "qa_checklist": [
+      "segment uses only QA-pass Reference-003 keyframes as anchors",
+      "time range and motion function match reference-003-full-op-2160p",
+      "no readable text, credits, titles, lyrics, NHK mark, subtitle, watermark, or random symbols",
+      "incoming/outgoing/intra-unit transitions match declared transition_edges.json intent",
+      "minor characters remain age-appropriate, modest, non-sexualized",
+      "segment MP4 complete-decodes before roughcut assembly"
+    ]
+  },
+  "setting_chapter": "05_asset_bible/setting_chapters/reference003_setting_chapter_v1.md",
+  "asset_lock_manifest": "05_asset_bible/setting_chapters/reference003_asset_locks_v1.json",
+  "packaged_asset_locks": [
+    {
+      "group": "characters",
+      "asset_id": "nadia",
+      "status": "official_identity_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_011_v2.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_010_GRANDIS_TRIO_INTRO/asset_locks/characters_nadia.png",
+      "exists": true
+    },
+    {
+      "group": "characters",
+      "asset_id": "jean",
+      "status": "official_identity_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_012.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_010_GRANDIS_TRIO_INTRO/asset_locks/characters_jean.png",
+      "exists": true
+    },
+    {
+      "group": "characters",
+      "asset_id": "marie",
+      "status": "official_identity_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_014.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_010_GRANDIS_TRIO_INTRO/asset_locks/characters_marie.png",
+      "exists": true
+    },
+    {
+      "group": "characters",
+      "asset_id": "king",
+      "status": "official_identity_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_014.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_010_GRANDIS_TRIO_INTRO/asset_locks/characters_king.png",
+      "exists": true
+    },
+    {
+      "group": "characters",
+      "asset_id": "grandis",
+      "status": "official_identity_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_016_v2.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_010_GRANDIS_TRIO_INTRO/asset_locks/characters_grandis.png",
+      "exists": true
+    },
+    {
+      "group": "characters",
+      "asset_id": "sanson",
+      "status": "official_identity_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_016_v2.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_010_GRANDIS_TRIO_INTRO/asset_locks/characters_sanson.png",
+      "exists": true
+    },
+    {
+      "group": "characters",
+      "asset_id": "hanson",
+      "status": "official_identity_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_016_v2.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_010_GRANDIS_TRIO_INTRO/asset_locks/characters_hanson.png",
+      "exists": true
+    },
+    {
+      "group": "characters",
+      "asset_id": "nemo",
+      "status": "official_identity_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_032.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_010_GRANDIS_TRIO_INTRO/asset_locks/characters_nemo.png",
+      "exists": true
+    },
+    {
+      "group": "characters",
+      "asset_id": "electra",
+      "status": "needs_setting_lock",
+      "source_path": "",
+      "packaged_path": "",
+      "exists": false
+    },
+    {
+      "group": "characters",
+      "asset_id": "gargoyle",
+      "status": "needs_setting_lock",
+      "source_path": "",
+      "packaged_path": "",
+      "exists": false
+    },
+    {
+      "group": "props_vehicles_symbols",
+      "asset_id": "blue_water_pendant",
+      "status": "official_prop_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_035.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_010_GRANDIS_TRIO_INTRO/asset_locks/props_vehicles_symbols_blue_water_pendant.png",
+      "exists": true
+    },
+    {
+      "group": "props_vehicles_symbols",
+      "asset_id": "white_bird",
+      "status": "official_prop_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_003.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_010_GRANDIS_TRIO_INTRO/asset_locks/props_vehicles_symbols_white_bird.png",
+      "exists": true
+    },
+    {
+      "group": "props_vehicles_symbols",
+      "asset_id": "jean_aircraft",
+      "status": "official_prop_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_007.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_010_GRANDIS_TRIO_INTRO/asset_locks/props_vehicles_symbols_jean_aircraft.png",
+      "exists": true
+    },
+    {
+      "group": "props_vehicles_symbols",
+      "asset_id": "grandis_vehicle",
+      "status": "official_prop_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_IDENTITY_REPAIR_R1_20260630/outputs/OP_SHOT_024_VEHICLE_LOCK_R1.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_010_GRANDIS_TRIO_INTRO/asset_locks/props_vehicles_symbols_grandis_vehicle.png",
+      "exists": true
+    },
+    {
+      "group": "props_vehicles_symbols",
+      "asset_id": "nautilus",
+      "status": "official_prop_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_026.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_010_GRANDIS_TRIO_INTRO/asset_locks/props_vehicles_symbols_nautilus.png",
+      "exists": true
+    },
+    {
+      "group": "props_vehicles_symbols",
+      "asset_id": "blue_grid_geometry",
+      "status": "official_scene_symbol_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_030.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_010_GRANDIS_TRIO_INTRO/asset_locks/props_vehicles_symbols_blue_grid_geometry.png",
+      "exists": true
+    },
+    {
+      "group": "props_vehicles_symbols",
+      "asset_id": "water_burst_transition",
+      "status": "official_transition_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_038.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_010_GRANDIS_TRIO_INTRO/asset_locks/props_vehicles_symbols_water_burst_transition.png",
+      "exists": true
+    }
+  ],
+  "reference_video_source": "01_intake/references/reference-003-full-op-2160p.mp4",
+  "reference_clip": {
+    "attempted": true,
+    "ok": true,
+    "path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_010_GRANDIS_TRIO_INTRO/reference_clip/VU_REF003_010_GRANDIS_TRIO_INTRO_reference.mp4",
+    "start_sec": 34.5,
+    "end_sec": 37.5,
+    "duration_sec": 3.0,
+    "stderr_tail": "",
+    "decode_ok": true
+  },
+  "keyframe_anchors": [
+    {
+      "order": 1,
+      "item_id": "OP_SHOT_015",
+      "timecode": "00:35.50",
+      "role": "图1 / Grandis_trio_wide",
+      "beat": "Grandis 三人组宽景",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_015.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_010_GRANDIS_TRIO_INTRO/keyframes/01_OP_SHOT_015.png",
+      "exists": true
+    },
+    {
+      "order": 2,
+      "item_id": "OP_SHOT_016",
+      "timecode": "00:37.00",
+      "role": "图2 / Grandis_trio_close",
+      "beat": "Grandis 三人组近景",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_016_v2.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_010_GRANDIS_TRIO_INTRO/keyframes/02_OP_SHOT_016.png",
+      "exists": true
+    }
+  ],
+  "generation_brief": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_010_GRANDIS_TRIO_INTRO/AIGC_VIDEO_GENERATION_BRIEF.md",
+  "qa_checklist": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_010_GRANDIS_TRIO_INTRO/SEGMENT_QA_CHECKLIST.md",
+  "expected_video_output_path": "08_generation/outputs/video/reference003_segments/VU_REF003_010_GRANDIS_TRIO_INTRO.mp4",
+  "boundary": "This package prepares inputs only; it does not claim that AIGC video has been generated."
+}

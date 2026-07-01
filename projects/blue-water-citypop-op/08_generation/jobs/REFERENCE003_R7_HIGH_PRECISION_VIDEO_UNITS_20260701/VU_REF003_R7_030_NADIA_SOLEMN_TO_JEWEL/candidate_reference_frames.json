@@ -1,0 +1,38 @@
+[
+  {
+    "asset_id": "R7_CAND_030_start_071393ms",
+    "parent_video_unit_id": "VU_REF003_R7_030_NADIA_SOLEMN_TO_JEWEL",
+    "role": "start",
+    "source_time_sec": 71.393,
+    "source_timecode": "01:11.39",
+    "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_030_NADIA_SOLEMN_TO_JEWEL/candidate_reference_frames/R7_CAND_030_start_071393ms.jpg",
+    "priority": "P2_review_after_p1",
+    "status": "candidate_reference_frame_review",
+    "difference_reason": "Nadia庄重到宝石 start boundary/transition frame from R7 high-precision split.",
+    "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_030_start_071393ms.png"
+  },
+  {
+    "asset_id": "R7_CAND_030_end_074044ms",
+    "parent_video_unit_id": "VU_REF003_R7_030_NADIA_SOLEMN_TO_JEWEL",
+    "role": "end",
+    "source_time_sec": 74.044,
+    "source_timecode": "01:14.04",
+    "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_030_NADIA_SOLEMN_TO_JEWEL/candidate_reference_frames/R7_CAND_030_end_074044ms.jpg",
+    "priority": "P3_reference_video_or_already_handled",
+    "status": "candidate_reference_frame_review",
+    "difference_reason": "Nadia庄重到宝石 end boundary/transition frame from R7 high-precision split.",
+    "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_030_end_074044ms.png"
+  },
+  {
+    "asset_id": "R7_CAND_030_middle_072718ms",
+    "parent_video_unit_id": "VU_REF003_R7_030_NADIA_SOLEMN_TO_JEWEL",
+    "role": "middle",
+    "source_time_sec": 72.719,
+    "source_timecode": "01:12.72",
+    "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_030_NADIA_SOLEMN_TO_JEWEL/candidate_reference_frames/R7_CAND_030_middle_072718ms.jpg",
+    "priority": "P2_review_after_p1",
+    "status": "candidate_reference_frame_review",
+    "difference_reason": "Nadia庄重到宝石 middle boundary/transition frame from R7 high-precision split.",
+    "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_030_middle_072718ms.png"
+  }
+]

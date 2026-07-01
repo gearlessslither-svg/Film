@@ -1,0 +1,18 @@
+[
+  {
+    "group": "props_vehicles_symbols",
+    "asset_id": "white_bird",
+    "status": "official_prop_lock",
+    "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_003.png",
+    "global_lock_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_global_asset_locks/props_vehicles_symbols_white_bird.png",
+    "exists": true
+  },
+  {
+    "group": "props_vehicles_symbols",
+    "asset_id": "jean_aircraft",
+    "status": "official_prop_lock",
+    "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_007.png",
+    "global_lock_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_global_asset_locks/props_vehicles_symbols_jean_aircraft.png",
+    "exists": true
+  }
+]

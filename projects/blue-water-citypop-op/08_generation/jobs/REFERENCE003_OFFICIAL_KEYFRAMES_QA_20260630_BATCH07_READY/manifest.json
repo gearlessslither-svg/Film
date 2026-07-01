@@ -1,0 +1,91 @@
+{
+  "job_id": "REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY",
+  "status": "qa_done_6_pass",
+  "source_reference": "reference-003-full-op-2160p",
+  "items": [
+    {
+      "item_id": "OP_SHOT_037",
+      "timecode": "01:16.50",
+      "title": "underwater blue texture",
+      "description": "Underwater blue texture and light pattern, clean and text-free",
+      "unit_id": "VU_REF003_018_BLUE_WATER_SYMBOL",
+      "sample_index": 154,
+      "reference_frame": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/refs/OP_SHOT_037_ref_011650.jpg",
+      "prompt_file": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/prompts/OP_SHOT_037_generation_prompt.md",
+      "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_037.png",
+      "qa_status": "pass"
+    },
+    {
+      "item_id": "OP_SHOT_038",
+      "timecode": "01:18.00",
+      "title": "water burst",
+      "description": "Bright water/ice-like burst fills frame with blue-white motion, no text",
+      "unit_id": "VU_REF003_019_WATER_SPLASH_TRANSITION",
+      "sample_index": 157,
+      "reference_frame": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/refs/OP_SHOT_038_ref_011800.jpg",
+      "prompt_file": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/prompts/OP_SHOT_038_generation_prompt.md",
+      "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_038.png",
+      "qa_status": "pass"
+    },
+    {
+      "item_id": "OP_SHOT_039",
+      "timecode": "01:19.00",
+      "title": "splash to sky",
+      "description": "Water streaks clear into blue sky and white cloud fragments",
+      "unit_id": "VU_REF003_019_WATER_SPLASH_TRANSITION",
+      "sample_index": 159,
+      "reference_frame": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/refs/OP_SHOT_039_ref_011900.jpg",
+      "prompt_file": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/prompts/OP_SHOT_039_generation_prompt.md",
+      "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_039.png",
+      "qa_status": "pass"
+    },
+    {
+      "item_id": "OP_SHOT_040",
+      "timecode": "01:20.00",
+      "title": "final sky safe",
+      "description": "Clean final blue sky card with soft cloud and no text, replacing the broadcaster end card",
+      "unit_id": "VU_REF003_020_FINAL_SKY_SAFE_HOLD",
+      "sample_index": 161,
+      "reference_frame": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/refs/OP_SHOT_040_ref_012000.jpg",
+      "prompt_file": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/prompts/OP_SHOT_040_generation_prompt.md",
+      "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_040.png",
+      "qa_status": "pass"
+    },
+    {
+      "item_id": "OP_SHOT_041",
+      "timecode": "01:22.00",
+      "title": "final sun hold",
+      "description": "Blue sky with bright sun glow and clear negative space, no logo or text",
+      "unit_id": "VU_REF003_020_FINAL_SKY_SAFE_HOLD",
+      "sample_index": 165,
+      "reference_frame": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/refs/OP_SHOT_041_ref_012200.jpg",
+      "prompt_file": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/prompts/OP_SHOT_041_generation_prompt.md",
+      "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_041.png",
+      "qa_status": "pass"
+    },
+    {
+      "item_id": "OP_SHOT_042",
+      "timecode": "01:23.50",
+      "title": "black tail",
+      "description": "Clean black tail frame after the final sky hold",
+      "unit_id": "VU_REF003_021_BLACK_TAIL",
+      "sample_index": 168,
+      "reference_frame": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/refs/OP_SHOT_042_ref_012350.jpg",
+      "prompt_file": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/prompts/OP_SHOT_042_generation_prompt.md",
+      "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_042.png",
+      "qa_status": "pass"
+    }
+  ],
+  "reference_sheet": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/refs/REFERENCE003_QA_BATCH07_reference_sheet.jpg",
+  "prompt_pack": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/prompts/BATCH07_generation_prompt_pack.md",
+  "qa_checklist": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/BATCH07_QA_CHECKLIST.md",
+  "output_dir": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs",
+  "post_generation_apply": {
+    "applied": true,
+    "applied_at": "2026-06-30T13:27:52+08:00",
+    "pass_count": 6,
+    "total": 6,
+    "report_json": "10_qa/reports/reference003_qa_batch07_keyframes_20260630.json",
+    "report_md": "10_qa/reports/reference003_qa_batch07_keyframes_20260630.md"
+  }
+}

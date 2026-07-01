@@ -1,0 +1,73 @@
+{
+  "job_id": "REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY",
+  "status": "qa_done_6_pass",
+  "source_reference": "reference-003-full-op-2160p",
+  "items": [
+    {
+      "item_id": "OP_SHOT_025",
+      "timecode": "00:51.50",
+      "reference_frame": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/refs/OP_SHOT_025_ref_005150.jpg",
+      "label": "group lineup tableau",
+      "prompt_file": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/prompts/OP_SHOT_025_generation_prompt.md",
+      "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_025.png",
+      "qa_status": "pass"
+    },
+    {
+      "item_id": "OP_SHOT_026",
+      "timecode": "00:52.50",
+      "reference_frame": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/refs/OP_SHOT_026_ref_005250.jpg",
+      "label": "Nautilus undersea start",
+      "prompt_file": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/prompts/OP_SHOT_026_generation_prompt.md",
+      "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_026.png",
+      "qa_status": "pass"
+    },
+    {
+      "item_id": "OP_SHOT_027",
+      "timecode": "00:55.00",
+      "reference_frame": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/refs/OP_SHOT_027_ref_005500.jpg",
+      "label": "Nautilus pass",
+      "prompt_file": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/prompts/OP_SHOT_027_generation_prompt.md",
+      "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_027.png",
+      "qa_status": "pass"
+    },
+    {
+      "item_id": "OP_SHOT_028",
+      "timecode": "00:58.50",
+      "reference_frame": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/refs/OP_SHOT_028_ref_005850.jpg",
+      "label": "Nautilus shadow",
+      "prompt_file": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/prompts/OP_SHOT_028_generation_prompt.md",
+      "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_028.png",
+      "qa_status": "pass"
+    },
+    {
+      "item_id": "OP_SHOT_029",
+      "timecode": "01:01.50",
+      "reference_frame": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/refs/OP_SHOT_029_ref_010150.jpg",
+      "label": "night city reveal",
+      "prompt_file": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/prompts/OP_SHOT_029_generation_prompt.md",
+      "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_029.png",
+      "qa_status": "pass"
+    },
+    {
+      "item_id": "OP_SHOT_030",
+      "timecode": "01:03.50",
+      "reference_frame": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/refs/OP_SHOT_030_ref_010350.jpg",
+      "label": "glowing blue grid",
+      "prompt_file": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/prompts/OP_SHOT_030_generation_prompt.md",
+      "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_030.png",
+      "qa_status": "pass"
+    }
+  ],
+  "reference_sheet": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/refs/REFERENCE003_QA_BATCH05_reference_sheet.jpg",
+  "prompt_pack": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/prompts/BATCH05_generation_prompt_pack.md",
+  "qa_checklist": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/BATCH05_QA_CHECKLIST.md",
+  "output_dir": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs",
+  "post_generation_apply": {
+    "applied": true,
+    "applied_at": "2026-06-30T13:27:52+08:00",
+    "pass_count": 6,
+    "total": 6,
+    "report_json": "10_qa/reports/reference003_qa_batch05_keyframes_20260630.json",
+    "report_md": "10_qa/reports/reference003_qa_batch05_keyframes_20260630.md"
+  }
+}

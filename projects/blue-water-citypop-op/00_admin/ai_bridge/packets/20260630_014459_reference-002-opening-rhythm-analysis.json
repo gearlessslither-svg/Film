@@ -1,0 +1,89 @@
+{
+  "schema_version": "codex_gpt_bridge_packet_v1",
+  "project_slug": "blue-water-citypop-op",
+  "packet_id": "20260630_014459_reference-002-opening-rhythm-analysis",
+  "status": "draft",
+  "created_at": "2026-06-30T01:44:59+08:00",
+  "created_by": "codex",
+  "intended_model": "gpt",
+  "task_type": "reference_rhythm_analysis",
+  "title": "reference 002 opening rhythm analysis",
+  "codex_role": "local evidence gathering, filesystem edits, media extraction, Blender/API execution, validation",
+  "gpt_role": "compact reasoning, reference interpretation, script/editing judgment, prompt drafting, adversarial review",
+  "question_for_gpt": "Analyze the attached bounded evidence for the first 23.01s reference video. Determine the real shot rhythm and whether the opening should be treated as one continuous one-take, multiple shot units, montage/title unit, or transitions. Then propose how Codex should rebuild the project opening units and Blender previs.",
+  "routing_policy": {
+    "do_not_include": [
+      "base64_media",
+      "full_video",
+      "full_image_batch",
+      "full_project_board_unless_required"
+    ],
+    "gpt_must_not_do": [
+      "write_local_files",
+      "run_commands",
+      "invent_unseen_evidence"
+    ],
+    "codex_applies_after_gpt": true
+  },
+  "bounded_evidence": {
+    "notes": [
+      "Reference media: 23.01s, 1920x1080, 30fps, H.264, copied to 01_intake/references/nadia_op_reference_002.mp4.",
+      "2fps contact sheet has 46 frames, from 0.0s to 22.5s.",
+      "Machine scene candidates cluster around 0.2s/0.3s, 12.43s/12.50s, 13.33-14.40s, 20.73-22.00s. Treat these as candidates, not final truth.",
+      "Codex visual observation from contact sheet: 0.0-4.5s mostly white bird over blue sky; 5.0-8.0s title/credit overlay with bird; 8.5-12.0s cloud bank fills frame with bird; 12.5-14.0s flying machine/aircraft appears briefly; 14.5-19.5s title logo card; 20.0-21.0s light/sun flare transition; 21.5-22.5s heroine close-up.",
+      "Current Blender previs is likely rhythm-wrong: it treats almost all 24s as continuous bird/aircraft follow, while reference appears to use a title-card section and fast transition to character close-up."
+    ],
+    "files": [
+      {
+        "path": "/Users/jaychoupp/Story/Film/projects/blue-water-citypop-op/01_intake/analysis/reference_002_2fps_contact_sheet.jpg",
+        "project_relative_path": "01_intake/analysis/reference_002_2fps_contact_sheet.jpg",
+        "exists": true,
+        "size_bytes": 471457,
+        "snippet": null
+      },
+      {
+        "path": "/Users/jaychoupp/Story/Film/projects/blue-water-citypop-op/01_intake/analysis/reference_002_scene_threshold_018.log",
+        "project_relative_path": "01_intake/analysis/reference_002_scene_threshold_018.log",
+        "exists": true,
+        "size_bytes": 5877,
+        "snippet": "Input #0, mov,mp4,m4a,3gp,3g2,mj2, from '/Users/jaychoupp/Story/Film/projects/blue-water-citypop-op/01_intake/references/nadia_op_reference_002.mp4':\n  Metadata:\n    major_brand     : mp42\n    minor_version   : 0\n    compatible_brands: mp41isom\n    creation_time   : 2026-06-29T17:26:55.000000Z\n  Duration: 00:00:23.01, start: 0.000000, bitrate: 6139 kb/s\n  Stream #0:0[0x1](und): Video: h264 (Constrained Baseline) (avc1 / 0x31637661), yuv420p(progressive), 1920x1080, 6011 kb/s, 30 fps, 30 tbr, 30k tbn (default)\n    Metadata:\n      creation_time   : 2026-06-29T17:26:55.000000Z\n      handler_name    : VideoHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : AVC Coding\n  Stream #0:1[0x2](und): Audio: aac (LC) (mp4a / 0x6134706D), 44100 Hz, stereo, fltp, 127 kb/s (default)\n    Metadata:\n      creation_time   : 2026-06-29T17:26:55.000000Z\n      handler_name    : SoundHandler\n      vendor_id       : [0][0][0][0]\nStream mapping:\n  Stream #0:0 -> #0:0 (h264 (native) -> wrapped_avframe (native))\n  Stream #0:1 -> #0:1 (aac (native) -> pcm_s16le (native))\nPress [q] to stop, [?] for help\n[Parsed_showinfo_1 @ 0xa22801b00] config in time_base: 1/30000, frame_rate: 30/1\n[Parsed_showinfo_1 @ 0xa22801b00] config out time_base: 0/0, frame_rate: 0/0\n[Parsed_showinfo_1 @ 0xa22801b00] n:   0 pts:   6000 pts_time:0.2     duration:   1000 duration_time:0.0333333 fmt:yuv420p cl:left sar:0/1 s:1920x1080 i:P iskey:0 type:P checksum:E515E446 plane_checksum:[38B87D3C D7C730C0 256F364A] mean:[94 139 114] stdev:[65.7 10.6 12.3]\n[Parsed_showinfo_1 @ 0xa22801b00] color_range:unknown color_space:unknown color_primaries:unknown color_trc:unknown\nOutput #0, null, to 'pipe:':\n  Metadata:\n    major_brand     : mp42\n    minor_version   : 0\n    compatible_brands: mp41isom\n    encoder         : Lavf60.16.100\n  Stream #0:0(und): Video: wrapped_avframe, yuv420p(progressive), 1920x1080, q=2-31, 200 kb/s, 30 fps, 30 tbn (default)\n    Metadata:\n      creation_time   : 2026-06-29T17:26:55.000000Z\n...[truncated]"
+      },
+      {
+        "path": "/Users/jaychoupp/Story/Film/projects/blue-water-citypop-op/01_intake/analysis/reference_002_scene_threshold_008.log",
+        "project_relative_path": "01_intake/analysis/reference_002_scene_threshold_008.log",
+        "exists": true,
+        "size_bytes": 12879,
+        "snippet": "Input #0, mov,mp4,m4a,3gp,3g2,mj2, from '/Users/jaychoupp/Story/Film/projects/blue-water-citypop-op/01_intake/references/nadia_op_reference_002.mp4':\n  Metadata:\n    major_brand     : mp42\n    minor_version   : 0\n    compatible_brands: mp41isom\n    creation_time   : 2026-06-29T17:26:55.000000Z\n  Duration: 00:00:23.01, start: 0.000000, bitrate: 6139 kb/s\n  Stream #0:0[0x1](und): Video: h264 (Constrained Baseline) (avc1 / 0x31637661), yuv420p(progressive), 1920x1080, 6011 kb/s, 30 fps, 30 tbr, 30k tbn (default)\n    Metadata:\n      creation_time   : 2026-06-29T17:26:55.000000Z\n      handler_name    : VideoHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : AVC Coding\n  Stream #0:1[0x2](und): Audio: aac (LC) (mp4a / 0x6134706D), 44100 Hz, stereo, fltp, 127 kb/s (default)\n    Metadata:\n      creation_time   : 2026-06-29T17:26:55.000000Z\n      handler_name    : SoundHandler\n      vendor_id       : [0][0][0][0]\nStream mapping:\n  Stream #0:0 -> #0:0 (h264 (native) -> wrapped_avframe (native))\n  Stream #0:1 -> #0:1 (aac (native) -> pcm_s16le (native))\nPress [q] to stop, [?] for help\n[Parsed_showinfo_1 @ 0xab300e040] config in time_base: 1/30000, frame_rate: 30/1\n[Parsed_showinfo_1 @ 0xab300e040] config out time_base: 0/0, frame_rate: 0/0\n[Parsed_showinfo_1 @ 0xab300e040] n:   0 pts:   6000 pts_time:0.2     duration:   1000 duration_time:0.0333333 fmt:yuv420p cl:left sar:0/1 s:1920x1080 i:P iskey:0 type:P checksum:E515E446 plane_checksum:[38B87D3C D7C730C0 256F364A] mean:[94 139 114] stdev:[65.7 10.6 12.3]\n[Parsed_showinfo_1 @ 0xab300e040] color_range:unknown color_space:unknown color_primaries:unknown color_trc:unknown\nOutput #0, null, to 'pipe:':\n  Metadata:\n    major_brand     : mp42\n    minor_version   : 0\n    compatible_brands: mp41isom\n    encoder         : Lavf60.16.100\n  Stream #0:0(und): Video: wrapped_avframe, yuv420p(progressive), 1920x1080, q=2-31, 200 kb/s, 30 fps, 30 tbn (default)\n    Metadata:\n      creation_time   : 2026-06-29T17:26:55.000000Z\n...[truncated]"
+      },
+      {
+        "path": "/Users/jaychoupp/Story/Film/projects/blue-water-citypop-op/03_story/scripts/director_shooting_script.md",
+        "project_relative_path": "03_story/scripts/director_shooting_script.md",
+        "exists": true,
+        "size_bytes": 7499,
+        "snippet": "# Director Shooting Script - Script-First Video Workflow\n\nUpdated: 2026-06-30T01:11:00+08:00\n\n## Hard Principle\n\n剧本控制镜头，镜头控制关键帧，关键帧之间的关系控制 AIGC 图片/视频提示词。图片只负责验证剧本镜头是否成立，不能倒过来决定哪些帧连续。\n\nProduction order:\n\n1. 剧本意图 / story intent\n2. 镜头单位 / video unit\n3. 关键帧角色 / keyframe roles\n4. 帧间关系与转场边 / frame relationships and transition edges\n5. 白模或 camera manifest / previs when required\n6. 图片提示词 / image prompts\n7. 组级 AIGC 视频提示词 / unit video prompts\n8. 关键帧生成与视频生成 / keyframes and video\n\n## One-Take Rule\n\n一镜到底不能靠 AIGC 从几张孤立图片里“猜连续”。如果剧本设计为一镜到底、复杂调度、复杂空间穿越、多角色连续运动、车辆/飞行器跟拍或强轴线镜头，默认先做：\n\n`首帧 + 尾帧 + 必要关键帧 + Blender 白模/高模或代理模型 + 相机位移动画 + playblast 内录/渲染 + 控制层 -> AIGC 风格化渲染`\n\nAIGC 的职责是渲染和风格化，不是发明空间连续性。任何一镜到底 unit 都必须先证明摄影机路径、主体相对位置、屏幕方向、开始/结束状态成立。\n\n## Opening 24s Blender Previs Candidate\n\n用户指出参考版本第一段应先以约 24 秒天空一镜到底成立：蓝天白云起幅 -> 跟拍白鸟 -> 由白鸟和镜头运动带出 Jean 式复古飞行器 -> 镜头再回到蓝天白云和白鸟。\n\n本轮已先用 Blender 做导演预演，不直接重排 42 张现有关键帧，等待用户审水准后再正式替换前 24 秒分镜结构。\n\n- Unit: `VU_001_024_OPENING_SKY_BIRD_PLANE_ONETAKE`\n- Status: `candidate_replacement_pending_user_review`\n- Playblast: `06_previs/playblasts/opening_24s_onetake_previs.mp4`\n- Blend: `06_previs/blender/opening_24s_onetake_previs.blend`\n- Keyframe contact sheet: `10_qa/reports/contact_sheet_OPENING_24S_ONETAKE_PREVIS_KEYFRAMES.jpg`\n- Prompt: `07_shots/video_prompts_by_unit/VU_001_024_OPENING_SKY_BIRD_PLANE_ONETAKE.md`\n- If approved: this candidate supersedes the current opening split from `VU_001_CLOUD_PRELUDE`, `VU_002_BIRD_PLANE_SKY_CHAIN`, `VU_003_SUN_FLASH_WIPE`, and the `00:12-00:24` slice of `VU_004_CHARACTER_INTRO_MONTAGE`; the first 24 seconds must be recut as a single video unit.\n\n## Anti-Regression Rules\n\n- 不允许直接从单张图片反推一镜到底。\n- 不允许把每张关键帧默认当成一个独立镜头。\n- 多图视频提示词必须写 `图1`、`图2`、`图3` 的顺序、角色和连接方式。\n- 一镜到底必须写清起点、中点、终点、运动路径、屏幕方向、人物相对位置、禁止硬切。\n- montage 必须写清硬切节奏，不能被平滑成连续镜头。\n- 转场必须同时写前镜头结束状态和后镜头开始状态；数据源放在 `07_shots/transition_edges.json`。\n- 复杂空间/多角色调度/上浮出水/车辆方向等风险，必须先看 `06_previs/camera_manifests/video_unit_camera_manifest.json`。\n\n## Video Units\n\n| Unit | Type | Time\n...[truncated]"
+      },
+      {
+        "path": "/Users/jaychoupp/Story/Film/projects/blue-water-citypop-op/10_qa/reports/opening_24s_onetake_blender_previs_report.md",
+        "project_relative_path": "10_qa/reports/opening_24s_onetake_blender_previs_report.md",
+        "exists": true,
+        "size_bytes": 2797,
+        "snippet": "# Opening 24s One-Take Blender Previs Report\n\nUpdated: 2026-06-30 01:11 Asia/Shanghai\n\n## Result\n\nPASS for director previs / camera blocking review.\n\nThis is a whitebox/previs pass, not final beauty render. It tests whether the first 24 seconds can be treated as one continuous shot: white bird already gliding in blue sky and clouds -> follow the bird -> reveal a Jean-style retro flying machine -> return to blue sky, clouds, and bird.\n\n## Deliverables\n\n- Playblast MP4: `06_previs/playblasts/opening_24s_onetake_previs.mp4`\n- Blender file: `06_previs/blender/opening_24s_onetake_previs.blend`\n- Build script: `06_previs/blender/scripts/build_opening_24s_onetake_previs.py`\n- Video render script: `06_previs/blender/scripts/render_opening_24s_onetake_video.py`\n- Full frame sequence: `06_previs/renders/opening_24s_onetake_animation_frames/opening_24s_0001.png` through `opening_24s_0576.png`\n- Key stills: `06_previs/renders/opening_24s_onetake_frames/`\n- Keyframe contact sheet: `10_qa/reports/contact_sheet_OPENING_24S_ONETAKE_PREVIS_KEYFRAMES.jpg`\n- Unit prompt: `07_shots/video_prompts_by_unit/VU_001_024_OPENING_SKY_BIRD_PLANE_ONETAKE.md`\n\n## Technical Check\n\n- Duration: 24.00 seconds\n- FPS: 24\n- Frame count: 576\n- Resolution: 1280 x 548\n- Aspect: 21:9 close, 320:137 display aspect\n- Blender: 5.1.2\n- Video codec: H.264 MP4 from Blender internal video output\n\n## Timing Map\n\n| Frame | Time | Role |\n|---:|---:|---|\n| 0001 | 00:00 | White bird already gliding in blue sky |\n| 0049 | 00:02 | White bird enters |\n| 0145 | 00:06 | Tracking bird through sky |\n| 0217 | 00:09 | Retro flying machine reveal |\n| 0313 | 00:13 | Bird and flying machine share sky space |\n| 0433 | 00:18 | Camera returns attention to sky and bird |\n| 0576 | 00:24 | Final blue sky / cloud / bird state |\n\n## Production Decision\n\nThis pass is registered as `VU_001_024_OPENING_SKY_BIRD_PLANE_ONETAKE` and marked `candidate_replacement_pending_user_review`.\n\nIf approved, the current first 24 seconds should be recut. T\n...[truncated]"
+      }
+    ]
+  },
+  "deliverable_requested": {
+    "format": "structured_json_or_markdown",
+    "must_include": [
+      "answer",
+      "assumptions",
+      "uncertainties",
+      "recommended_project_file_changes",
+      "adversarial_checks"
+    ]
+  },
+  "codex_apply_plan_after_gpt": [
+    "Import GPT response into 00_admin/ai_bridge/responses/ if provided outside Codex.",
+    "Translate accepted decisions into project source files.",
+    "Run project validation and write QA/handoff evidence."
+  ]
+}

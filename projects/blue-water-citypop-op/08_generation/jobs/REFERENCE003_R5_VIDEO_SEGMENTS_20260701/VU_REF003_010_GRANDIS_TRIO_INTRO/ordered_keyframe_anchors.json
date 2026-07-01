@@ -1,0 +1,58 @@
+[
+  {
+    "order": 1,
+    "item_id": "R5_VU_REF003_010_GRANDIS_TRIO_INTRO_034500ms_01",
+    "kind": "r5_adaptive_generated",
+    "time_sec": 34.5,
+    "timecode": "00:34.50",
+    "role": "adaptive_primary",
+    "beat": "Grandis trio introduction changes blocking and group pose; extra frame protects three-person identity and screen direction.",
+    "difference_reason": "Grandis trio introduction changes blocking and group pose; extra frame protects three-person identity and screen direction.",
+    "source_reference_frame": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0070.jpg",
+    "source_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_010_GRANDIS_TRIO_INTRO_034500ms_01.png",
+    "packaged_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_010_GRANDIS_TRIO_INTRO/keyframes/01_R5_VU_REF003_010_GRANDIS_TRIO_INTRO_034500ms_01.png",
+    "exists": true
+  },
+  {
+    "order": 2,
+    "item_id": "OP_SHOT_015",
+    "kind": "official_keyframe",
+    "time_sec": 35.5,
+    "timecode": "00:35.50",
+    "role": "图1 / Grandis_trio_wide",
+    "beat": "Grandis 三人组宽景",
+    "difference_reason": "",
+    "source_reference_frame": "",
+    "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_015.png",
+    "packaged_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_010_GRANDIS_TRIO_INTRO/keyframes/02_OP_SHOT_015.png",
+    "exists": true
+  },
+  {
+    "order": 3,
+    "item_id": "OP_SHOT_016",
+    "kind": "official_keyframe",
+    "time_sec": 37.0,
+    "timecode": "00:37.00",
+    "role": "图2 / Grandis_trio_close",
+    "beat": "Grandis 三人组近景",
+    "difference_reason": "",
+    "source_reference_frame": "",
+    "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_016_v2.png",
+    "packaged_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_010_GRANDIS_TRIO_INTRO/keyframes/03_OP_SHOT_016.png",
+    "exists": true
+  },
+  {
+    "order": 4,
+    "item_id": "R5_VU_REF003_010_GRANDIS_TRIO_INTRO_037500ms_02",
+    "kind": "r5_adaptive_generated",
+    "time_sec": 37.5,
+    "timecode": "00:37.50",
+    "role": "adaptive_middle",
+    "beat": "Grandis trio introduction changes blocking and group pose; extra frame protects three-person identity and screen direction.",
+    "difference_reason": "Grandis trio introduction changes blocking and group pose; extra frame protects three-person identity and screen direction.",
+    "source_reference_frame": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0076.jpg",
+    "source_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_010_GRANDIS_TRIO_INTRO_037500ms_02.png",
+    "packaged_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_010_GRANDIS_TRIO_INTRO/keyframes/04_R5_VU_REF003_010_GRANDIS_TRIO_INTRO_037500ms_02.png",
+    "exists": true
+  }
+]

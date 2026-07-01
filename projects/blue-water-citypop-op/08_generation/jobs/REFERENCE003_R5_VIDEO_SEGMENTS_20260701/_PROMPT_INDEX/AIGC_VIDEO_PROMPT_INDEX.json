@@ -1,0 +1,481 @@
+[
+  {
+    "order": 1,
+    "unit_id": "VU_REF003_001_BLACK_CLOUD_FADEIN",
+    "title": "黑场到云层蓝天淡入",
+    "time_range": "00:00.00-00:02.00",
+    "reference_clip": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_001_BLACK_CLOUD_FADEIN/reference_clip/VU_REF003_001_BLACK_CLOUD_FADEIN_reference.mp4",
+    "prompt_only_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/_PROMPT_INDEX/PROMPT_ONLY/01_VU_REF003_001_BLACK_CLOUD_FADEIN.md",
+    "full_generation_brief": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_001_BLACK_CLOUD_FADEIN/AIGC_VIDEO_GENERATION_BRIEF.md",
+    "ordered_keyframe_contact_sheet": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_001_BLACK_CLOUD_FADEIN/ordered_keyframe_contact_sheet.jpg",
+    "expected_video_output_path": "08_generation/outputs/video/reference003_r5_expanded_segments/VU_REF003_001_BLACK_CLOUD_FADEIN.mp4",
+    "active_asset_locks": []
+  },
+  {
+    "order": 2,
+    "unit_id": "VU_REF003_002_WHITE_BIRD_SKY",
+    "title": "白鸟入画与蓝天滑翔",
+    "time_range": "00:02.50-00:07.00",
+    "reference_clip": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_002_WHITE_BIRD_SKY/reference_clip/VU_REF003_002_WHITE_BIRD_SKY_reference.mp4",
+    "prompt_only_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/_PROMPT_INDEX/PROMPT_ONLY/02_VU_REF003_002_WHITE_BIRD_SKY.md",
+    "full_generation_brief": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_002_WHITE_BIRD_SKY/AIGC_VIDEO_GENERATION_BRIEF.md",
+    "ordered_keyframe_contact_sheet": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_002_WHITE_BIRD_SKY/ordered_keyframe_contact_sheet.jpg",
+    "expected_video_output_path": "08_generation/outputs/video/reference003_r5_expanded_segments/VU_REF003_002_WHITE_BIRD_SKY.mp4",
+    "active_asset_locks": [
+      {
+        "group": "props_vehicles_symbols",
+        "asset_id": "white_bird",
+        "status": "official_prop_lock",
+        "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_003.png",
+        "global_lock_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/_global_asset_locks/props_vehicles_symbols_white_bird.png"
+      }
+    ]
+  },
+  {
+    "order": 3,
+    "unit_id": "VU_REF003_003_CREDIT_SAFE_BIRD_CLOUDS",
+    "title": "白鸟字幕安全位与云层增长",
+    "time_range": "00:07.00-00:14.00",
+    "reference_clip": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_003_CREDIT_SAFE_BIRD_CLOUDS/reference_clip/VU_REF003_003_CREDIT_SAFE_BIRD_CLOUDS_reference.mp4",
+    "prompt_only_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/_PROMPT_INDEX/PROMPT_ONLY/03_VU_REF003_003_CREDIT_SAFE_BIRD_CLOUDS.md",
+    "full_generation_brief": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_003_CREDIT_SAFE_BIRD_CLOUDS/AIGC_VIDEO_GENERATION_BRIEF.md",
+    "ordered_keyframe_contact_sheet": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_003_CREDIT_SAFE_BIRD_CLOUDS/ordered_keyframe_contact_sheet.jpg",
+    "expected_video_output_path": "08_generation/outputs/video/reference003_r5_expanded_segments/VU_REF003_003_CREDIT_SAFE_BIRD_CLOUDS.mp4",
+    "active_asset_locks": [
+      {
+        "group": "props_vehicles_symbols",
+        "asset_id": "white_bird",
+        "status": "official_prop_lock",
+        "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_003.png",
+        "global_lock_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/_global_asset_locks/props_vehicles_symbols_white_bird.png"
+      }
+    ]
+  },
+  {
+    "order": 4,
+    "unit_id": "VU_REF003_004_AIRCRAFT_BRIEF_REVEAL",
+    "title": "飞行器短暂露出",
+    "time_range": "00:14.50-00:16.50",
+    "reference_clip": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_004_AIRCRAFT_BRIEF_REVEAL/reference_clip/VU_REF003_004_AIRCRAFT_BRIEF_REVEAL_reference.mp4",
+    "prompt_only_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/_PROMPT_INDEX/PROMPT_ONLY/04_VU_REF003_004_AIRCRAFT_BRIEF_REVEAL.md",
+    "full_generation_brief": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_004_AIRCRAFT_BRIEF_REVEAL/AIGC_VIDEO_GENERATION_BRIEF.md",
+    "ordered_keyframe_contact_sheet": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_004_AIRCRAFT_BRIEF_REVEAL/ordered_keyframe_contact_sheet.jpg",
+    "expected_video_output_path": "08_generation/outputs/video/reference003_r5_expanded_segments/VU_REF003_004_AIRCRAFT_BRIEF_REVEAL.mp4",
+    "active_asset_locks": [
+      {
+        "group": "props_vehicles_symbols",
+        "asset_id": "jean_aircraft",
+        "status": "official_prop_lock",
+        "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_007.png",
+        "global_lock_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/_global_asset_locks/props_vehicles_symbols_jean_aircraft.png"
+      }
+    ]
+  },
+  {
+    "order": 5,
+    "unit_id": "VU_REF003_005_MAIN_TITLE_SAFE_HOLD",
+    "title": "主标题功能位无字 hold",
+    "time_range": "00:17.00-00:22.00",
+    "reference_clip": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_005_MAIN_TITLE_SAFE_HOLD/reference_clip/VU_REF003_005_MAIN_TITLE_SAFE_HOLD_reference.mp4",
+    "prompt_only_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/_PROMPT_INDEX/PROMPT_ONLY/05_VU_REF003_005_MAIN_TITLE_SAFE_HOLD.md",
+    "full_generation_brief": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_005_MAIN_TITLE_SAFE_HOLD/AIGC_VIDEO_GENERATION_BRIEF.md",
+    "ordered_keyframe_contact_sheet": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_005_MAIN_TITLE_SAFE_HOLD/ordered_keyframe_contact_sheet.jpg",
+    "expected_video_output_path": "08_generation/outputs/video/reference003_r5_expanded_segments/VU_REF003_005_MAIN_TITLE_SAFE_HOLD.mp4",
+    "active_asset_locks": []
+  },
+  {
+    "order": 6,
+    "unit_id": "VU_REF003_006_SUN_FLARE_TO_NADIA",
+    "title": "太阳光转 Nadia",
+    "time_range": "00:22.50-00:23.50",
+    "reference_clip": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_006_SUN_FLARE_TO_NADIA/reference_clip/VU_REF003_006_SUN_FLARE_TO_NADIA_reference.mp4",
+    "prompt_only_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/_PROMPT_INDEX/PROMPT_ONLY/06_VU_REF003_006_SUN_FLARE_TO_NADIA.md",
+    "full_generation_brief": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_006_SUN_FLARE_TO_NADIA/AIGC_VIDEO_GENERATION_BRIEF.md",
+    "ordered_keyframe_contact_sheet": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_006_SUN_FLARE_TO_NADIA/ordered_keyframe_contact_sheet.jpg",
+    "expected_video_output_path": "08_generation/outputs/video/reference003_r5_expanded_segments/VU_REF003_006_SUN_FLARE_TO_NADIA.mp4",
+    "active_asset_locks": [
+      {
+        "group": "characters",
+        "asset_id": "nadia",
+        "status": "official_identity_lock",
+        "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_011_v2.png",
+        "global_lock_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/_global_asset_locks/characters_nadia.png"
+      },
+      {
+        "group": "props_vehicles_symbols",
+        "asset_id": "blue_water_pendant",
+        "status": "official_prop_lock",
+        "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_035.png",
+        "global_lock_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/_global_asset_locks/props_vehicles_symbols_blue_water_pendant.png"
+      }
+    ]
+  },
+  {
+    "order": 7,
+    "unit_id": "VU_REF003_007_NADIA_PROFILE_ENTRY",
+    "title": "Nadia 侧脸入场到近景",
+    "time_range": "00:24.00-00:27.50",
+    "reference_clip": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_007_NADIA_PROFILE_ENTRY/reference_clip/VU_REF003_007_NADIA_PROFILE_ENTRY_reference.mp4",
+    "prompt_only_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/_PROMPT_INDEX/PROMPT_ONLY/07_VU_REF003_007_NADIA_PROFILE_ENTRY.md",
+    "full_generation_brief": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_007_NADIA_PROFILE_ENTRY/AIGC_VIDEO_GENERATION_BRIEF.md",
+    "ordered_keyframe_contact_sheet": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_007_NADIA_PROFILE_ENTRY/ordered_keyframe_contact_sheet.jpg",
+    "expected_video_output_path": "08_generation/outputs/video/reference003_r5_expanded_segments/VU_REF003_007_NADIA_PROFILE_ENTRY.mp4",
+    "active_asset_locks": [
+      {
+        "group": "characters",
+        "asset_id": "nadia",
+        "status": "official_identity_lock",
+        "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_011_v2.png",
+        "global_lock_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/_global_asset_locks/characters_nadia.png"
+      },
+      {
+        "group": "props_vehicles_symbols",
+        "asset_id": "blue_water_pendant",
+        "status": "official_prop_lock",
+        "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_035.png",
+        "global_lock_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/_global_asset_locks/props_vehicles_symbols_blue_water_pendant.png"
+      }
+    ]
+  },
+  {
+    "order": 8,
+    "unit_id": "VU_REF003_008_JEAN_INTRO",
+    "title": "Jean 帽子与少年发明家入场",
+    "time_range": "00:28.00-00:30.50",
+    "reference_clip": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_008_JEAN_INTRO/reference_clip/VU_REF003_008_JEAN_INTRO_reference.mp4",
+    "prompt_only_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/_PROMPT_INDEX/PROMPT_ONLY/08_VU_REF003_008_JEAN_INTRO.md",
+    "full_generation_brief": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_008_JEAN_INTRO/AIGC_VIDEO_GENERATION_BRIEF.md",
+    "ordered_keyframe_contact_sheet": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_008_JEAN_INTRO/ordered_keyframe_contact_sheet.jpg",
+    "expected_video_output_path": "08_generation/outputs/video/reference003_r5_expanded_segments/VU_REF003_008_JEAN_INTRO.mp4",
+    "active_asset_locks": [
+      {
+        "group": "characters",
+        "asset_id": "jean",
+        "status": "official_identity_lock",
+        "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_012.png",
+        "global_lock_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/_global_asset_locks/characters_jean.png"
+      }
+    ]
+  },
+  {
+    "order": 9,
+    "unit_id": "VU_REF003_009_MARIE_KING_MEADOW",
+    "title": "Marie 与 King 草地段",
+    "time_range": "00:31.00-00:34.00",
+    "reference_clip": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_009_MARIE_KING_MEADOW/reference_clip/VU_REF003_009_MARIE_KING_MEADOW_reference.mp4",
+    "prompt_only_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/_PROMPT_INDEX/PROMPT_ONLY/09_VU_REF003_009_MARIE_KING_MEADOW.md",
+    "full_generation_brief": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_009_MARIE_KING_MEADOW/AIGC_VIDEO_GENERATION_BRIEF.md",
+    "ordered_keyframe_contact_sheet": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_009_MARIE_KING_MEADOW/ordered_keyframe_contact_sheet.jpg",
+    "expected_video_output_path": "08_generation/outputs/video/reference003_r5_expanded_segments/VU_REF003_009_MARIE_KING_MEADOW.mp4",
+    "active_asset_locks": [
+      {
+        "group": "characters",
+        "asset_id": "marie",
+        "status": "official_identity_lock",
+        "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_014.png",
+        "global_lock_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/_global_asset_locks/characters_marie.png"
+      },
+      {
+        "group": "characters",
+        "asset_id": "king",
+        "status": "official_identity_lock",
+        "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_014.png",
+        "global_lock_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/_global_asset_locks/characters_king.png"
+      }
+    ]
+  },
+  {
+    "order": 10,
+    "unit_id": "VU_REF003_010_GRANDIS_TRIO_INTRO",
+    "title": "Grandis 三人组介绍",
+    "time_range": "00:34.50-00:37.50",
+    "reference_clip": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_010_GRANDIS_TRIO_INTRO/reference_clip/VU_REF003_010_GRANDIS_TRIO_INTRO_reference.mp4",
+    "prompt_only_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/_PROMPT_INDEX/PROMPT_ONLY/10_VU_REF003_010_GRANDIS_TRIO_INTRO.md",
+    "full_generation_brief": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_010_GRANDIS_TRIO_INTRO/AIGC_VIDEO_GENERATION_BRIEF.md",
+    "ordered_keyframe_contact_sheet": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_010_GRANDIS_TRIO_INTRO/ordered_keyframe_contact_sheet.jpg",
+    "expected_video_output_path": "08_generation/outputs/video/reference003_r5_expanded_segments/VU_REF003_010_GRANDIS_TRIO_INTRO.mp4",
+    "active_asset_locks": [
+      {
+        "group": "characters",
+        "asset_id": "grandis",
+        "status": "official_identity_lock",
+        "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_016_v2.png",
+        "global_lock_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/_global_asset_locks/characters_grandis.png"
+      },
+      {
+        "group": "characters",
+        "asset_id": "sanson",
+        "status": "official_identity_lock",
+        "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_016_v2.png",
+        "global_lock_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/_global_asset_locks/characters_sanson.png"
+      },
+      {
+        "group": "characters",
+        "asset_id": "hanson",
+        "status": "official_identity_lock",
+        "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_016_v2.png",
+        "global_lock_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/_global_asset_locks/characters_hanson.png"
+      }
+    ]
+  },
+  {
+    "order": 11,
+    "unit_id": "VU_REF003_011_RUNNING_MONTAGE",
+    "title": "角色奔跑 montage",
+    "time_range": "00:38.00-00:47.50",
+    "reference_clip": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_011_RUNNING_MONTAGE/reference_clip/VU_REF003_011_RUNNING_MONTAGE_reference.mp4",
+    "prompt_only_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/_PROMPT_INDEX/PROMPT_ONLY/11_VU_REF003_011_RUNNING_MONTAGE.md",
+    "full_generation_brief": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_011_RUNNING_MONTAGE/AIGC_VIDEO_GENERATION_BRIEF.md",
+    "ordered_keyframe_contact_sheet": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_011_RUNNING_MONTAGE/ordered_keyframe_contact_sheet.jpg",
+    "expected_video_output_path": "08_generation/outputs/video/reference003_r5_expanded_segments/VU_REF003_011_RUNNING_MONTAGE.mp4",
+    "active_asset_locks": [
+      {
+        "group": "characters",
+        "asset_id": "nadia",
+        "status": "official_identity_lock",
+        "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_011_v2.png",
+        "global_lock_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/_global_asset_locks/characters_nadia.png"
+      },
+      {
+        "group": "characters",
+        "asset_id": "jean",
+        "status": "official_identity_lock",
+        "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_012.png",
+        "global_lock_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/_global_asset_locks/characters_jean.png"
+      },
+      {
+        "group": "characters",
+        "asset_id": "marie",
+        "status": "official_identity_lock",
+        "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_014.png",
+        "global_lock_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/_global_asset_locks/characters_marie.png"
+      },
+      {
+        "group": "characters",
+        "asset_id": "king",
+        "status": "official_identity_lock",
+        "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_014.png",
+        "global_lock_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/_global_asset_locks/characters_king.png"
+      },
+      {
+        "group": "props_vehicles_symbols",
+        "asset_id": "blue_water_pendant",
+        "status": "official_prop_lock",
+        "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_035.png",
+        "global_lock_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/_global_asset_locks/props_vehicles_symbols_blue_water_pendant.png"
+      }
+    ]
+  },
+  {
+    "order": 12,
+    "unit_id": "VU_REF003_012_GRANDIS_VEHICLE_ACTION",
+    "title": "Grandis 车辆动作到群像",
+    "time_range": "00:48.00-00:51.50",
+    "reference_clip": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_012_GRANDIS_VEHICLE_ACTION/reference_clip/VU_REF003_012_GRANDIS_VEHICLE_ACTION_reference.mp4",
+    "prompt_only_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/_PROMPT_INDEX/PROMPT_ONLY/12_VU_REF003_012_GRANDIS_VEHICLE_ACTION.md",
+    "full_generation_brief": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_012_GRANDIS_VEHICLE_ACTION/AIGC_VIDEO_GENERATION_BRIEF.md",
+    "ordered_keyframe_contact_sheet": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_012_GRANDIS_VEHICLE_ACTION/ordered_keyframe_contact_sheet.jpg",
+    "expected_video_output_path": "08_generation/outputs/video/reference003_r5_expanded_segments/VU_REF003_012_GRANDIS_VEHICLE_ACTION.mp4",
+    "active_asset_locks": [
+      {
+        "group": "characters",
+        "asset_id": "grandis",
+        "status": "official_identity_lock",
+        "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_016_v2.png",
+        "global_lock_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/_global_asset_locks/characters_grandis.png"
+      },
+      {
+        "group": "characters",
+        "asset_id": "sanson",
+        "status": "official_identity_lock",
+        "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_016_v2.png",
+        "global_lock_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/_global_asset_locks/characters_sanson.png"
+      },
+      {
+        "group": "characters",
+        "asset_id": "hanson",
+        "status": "official_identity_lock",
+        "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_016_v2.png",
+        "global_lock_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/_global_asset_locks/characters_hanson.png"
+      },
+      {
+        "group": "props_vehicles_symbols",
+        "asset_id": "grandis_vehicle",
+        "status": "official_prop_lock",
+        "source_path": "08_generation/jobs/REFERENCE003_IDENTITY_REPAIR_R1_20260630/outputs/OP_SHOT_024_VEHICLE_LOCK_R1.png",
+        "global_lock_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/_global_asset_locks/props_vehicles_symbols_grandis_vehicle.png"
+      }
+    ]
+  },
+  {
+    "order": 13,
+    "unit_id": "VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS",
+    "title": "Nautilus 海底光束段",
+    "time_range": "00:52.00-01:01.00",
+    "reference_clip": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS/reference_clip/VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS_reference.mp4",
+    "prompt_only_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/_PROMPT_INDEX/PROMPT_ONLY/13_VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS.md",
+    "full_generation_brief": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS/AIGC_VIDEO_GENERATION_BRIEF.md",
+    "ordered_keyframe_contact_sheet": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS/ordered_keyframe_contact_sheet.jpg",
+    "expected_video_output_path": "08_generation/outputs/video/reference003_r5_expanded_segments/VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS.mp4",
+    "active_asset_locks": [
+      {
+        "group": "props_vehicles_symbols",
+        "asset_id": "nautilus",
+        "status": "official_prop_lock",
+        "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_026.png",
+        "global_lock_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/_global_asset_locks/props_vehicles_symbols_nautilus.png"
+      }
+    ]
+  },
+  {
+    "order": 14,
+    "unit_id": "VU_REF003_014_NIGHT_CITY_BLUE_GRID",
+    "title": "夜城与蓝色地面图案",
+    "time_range": "01:01.50-01:04.50",
+    "reference_clip": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_014_NIGHT_CITY_BLUE_GRID/reference_clip/VU_REF003_014_NIGHT_CITY_BLUE_GRID_reference.mp4",
+    "prompt_only_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/_PROMPT_INDEX/PROMPT_ONLY/14_VU_REF003_014_NIGHT_CITY_BLUE_GRID.md",
+    "full_generation_brief": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_014_NIGHT_CITY_BLUE_GRID/AIGC_VIDEO_GENERATION_BRIEF.md",
+    "ordered_keyframe_contact_sheet": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_014_NIGHT_CITY_BLUE_GRID/ordered_keyframe_contact_sheet.jpg",
+    "expected_video_output_path": "08_generation/outputs/video/reference003_r5_expanded_segments/VU_REF003_014_NIGHT_CITY_BLUE_GRID.mp4",
+    "active_asset_locks": [
+      {
+        "group": "props_vehicles_symbols",
+        "asset_id": "blue_grid_geometry",
+        "status": "official_scene_symbol_lock",
+        "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_030.png",
+        "global_lock_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/_global_asset_locks/props_vehicles_symbols_blue_grid_geometry.png"
+      }
+    ]
+  },
+  {
+    "order": 15,
+    "unit_id": "VU_REF003_015_NIGHT_AIRCRAFT_PASS",
+    "title": "夜航飞行器短切",
+    "time_range": "01:05.00-01:06.00",
+    "reference_clip": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_015_NIGHT_AIRCRAFT_PASS/reference_clip/VU_REF003_015_NIGHT_AIRCRAFT_PASS_reference.mp4",
+    "prompt_only_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/_PROMPT_INDEX/PROMPT_ONLY/15_VU_REF003_015_NIGHT_AIRCRAFT_PASS.md",
+    "full_generation_brief": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_015_NIGHT_AIRCRAFT_PASS/AIGC_VIDEO_GENERATION_BRIEF.md",
+    "ordered_keyframe_contact_sheet": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_015_NIGHT_AIRCRAFT_PASS/ordered_keyframe_contact_sheet.jpg",
+    "expected_video_output_path": "08_generation/outputs/video/reference003_r5_expanded_segments/VU_REF003_015_NIGHT_AIRCRAFT_PASS.mp4",
+    "active_asset_locks": [
+      {
+        "group": "props_vehicles_symbols",
+        "asset_id": "jean_aircraft",
+        "status": "official_prop_lock",
+        "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_007.png",
+        "global_lock_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/_global_asset_locks/props_vehicles_symbols_jean_aircraft.png"
+      }
+    ]
+  },
+  {
+    "order": 16,
+    "unit_id": "VU_REF003_016_NEMO_SUNSET_PROFILE",
+    "title": "Nemo 夕景船长肖像",
+    "time_range": "01:06.50-01:11.00",
+    "reference_clip": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_016_NEMO_SUNSET_PROFILE/reference_clip/VU_REF003_016_NEMO_SUNSET_PROFILE_reference.mp4",
+    "prompt_only_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/_PROMPT_INDEX/PROMPT_ONLY/16_VU_REF003_016_NEMO_SUNSET_PROFILE.md",
+    "full_generation_brief": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_016_NEMO_SUNSET_PROFILE/AIGC_VIDEO_GENERATION_BRIEF.md",
+    "ordered_keyframe_contact_sheet": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_016_NEMO_SUNSET_PROFILE/ordered_keyframe_contact_sheet.jpg",
+    "expected_video_output_path": "08_generation/outputs/video/reference003_r5_expanded_segments/VU_REF003_016_NEMO_SUNSET_PROFILE.mp4",
+    "active_asset_locks": [
+      {
+        "group": "characters",
+        "asset_id": "nemo",
+        "status": "official_identity_lock",
+        "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_032.png",
+        "global_lock_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/_global_asset_locks/characters_nemo.png"
+      }
+    ]
+  },
+  {
+    "order": 17,
+    "unit_id": "VU_REF003_017_NADIA_SOLEMN_CLOSE",
+    "title": "Nadia 庄重正面近景",
+    "time_range": "01:11.50-01:13.00",
+    "reference_clip": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_017_NADIA_SOLEMN_CLOSE/reference_clip/VU_REF003_017_NADIA_SOLEMN_CLOSE_reference.mp4",
+    "prompt_only_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/_PROMPT_INDEX/PROMPT_ONLY/17_VU_REF003_017_NADIA_SOLEMN_CLOSE.md",
+    "full_generation_brief": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_017_NADIA_SOLEMN_CLOSE/AIGC_VIDEO_GENERATION_BRIEF.md",
+    "ordered_keyframe_contact_sheet": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_017_NADIA_SOLEMN_CLOSE/ordered_keyframe_contact_sheet.jpg",
+    "expected_video_output_path": "08_generation/outputs/video/reference003_r5_expanded_segments/VU_REF003_017_NADIA_SOLEMN_CLOSE.mp4",
+    "active_asset_locks": [
+      {
+        "group": "characters",
+        "asset_id": "nadia",
+        "status": "official_identity_lock",
+        "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_011_v2.png",
+        "global_lock_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/_global_asset_locks/characters_nadia.png"
+      },
+      {
+        "group": "props_vehicles_symbols",
+        "asset_id": "blue_water_pendant",
+        "status": "official_prop_lock",
+        "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_035.png",
+        "global_lock_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/_global_asset_locks/props_vehicles_symbols_blue_water_pendant.png"
+      }
+    ]
+  },
+  {
+    "order": 18,
+    "unit_id": "VU_REF003_018_BLUE_WATER_SYMBOL",
+    "title": "Blue Water 象征与水下纹理",
+    "time_range": "01:13.50-01:17.00",
+    "reference_clip": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_018_BLUE_WATER_SYMBOL/reference_clip/VU_REF003_018_BLUE_WATER_SYMBOL_reference.mp4",
+    "prompt_only_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/_PROMPT_INDEX/PROMPT_ONLY/18_VU_REF003_018_BLUE_WATER_SYMBOL.md",
+    "full_generation_brief": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_018_BLUE_WATER_SYMBOL/AIGC_VIDEO_GENERATION_BRIEF.md",
+    "ordered_keyframe_contact_sheet": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_018_BLUE_WATER_SYMBOL/ordered_keyframe_contact_sheet.jpg",
+    "expected_video_output_path": "08_generation/outputs/video/reference003_r5_expanded_segments/VU_REF003_018_BLUE_WATER_SYMBOL.mp4",
+    "active_asset_locks": [
+      {
+        "group": "props_vehicles_symbols",
+        "asset_id": "blue_water_pendant",
+        "status": "official_prop_lock",
+        "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_035.png",
+        "global_lock_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/_global_asset_locks/props_vehicles_symbols_blue_water_pendant.png"
+      }
+    ]
+  },
+  {
+    "order": 19,
+    "unit_id": "VU_REF003_019_WATER_SPLASH_TRANSITION",
+    "title": "水花爆发转天空",
+    "time_range": "01:17.50-01:19.50",
+    "reference_clip": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_019_WATER_SPLASH_TRANSITION/reference_clip/VU_REF003_019_WATER_SPLASH_TRANSITION_reference.mp4",
+    "prompt_only_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/_PROMPT_INDEX/PROMPT_ONLY/19_VU_REF003_019_WATER_SPLASH_TRANSITION.md",
+    "full_generation_brief": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_019_WATER_SPLASH_TRANSITION/AIGC_VIDEO_GENERATION_BRIEF.md",
+    "ordered_keyframe_contact_sheet": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_019_WATER_SPLASH_TRANSITION/ordered_keyframe_contact_sheet.jpg",
+    "expected_video_output_path": "08_generation/outputs/video/reference003_r5_expanded_segments/VU_REF003_019_WATER_SPLASH_TRANSITION.mp4",
+    "active_asset_locks": [
+      {
+        "group": "props_vehicles_symbols",
+        "asset_id": "water_burst_transition",
+        "status": "official_transition_lock",
+        "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_038.png",
+        "global_lock_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/_global_asset_locks/props_vehicles_symbols_water_burst_transition.png"
+      }
+    ]
+  },
+  {
+    "order": 20,
+    "unit_id": "VU_REF003_020_FINAL_SKY_SAFE_HOLD",
+    "title": "最终无字天空 hold",
+    "time_range": "01:19.50-01:23.00",
+    "reference_clip": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_020_FINAL_SKY_SAFE_HOLD/reference_clip/VU_REF003_020_FINAL_SKY_SAFE_HOLD_reference.mp4",
+    "prompt_only_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/_PROMPT_INDEX/PROMPT_ONLY/20_VU_REF003_020_FINAL_SKY_SAFE_HOLD.md",
+    "full_generation_brief": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_020_FINAL_SKY_SAFE_HOLD/AIGC_VIDEO_GENERATION_BRIEF.md",
+    "ordered_keyframe_contact_sheet": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_020_FINAL_SKY_SAFE_HOLD/ordered_keyframe_contact_sheet.jpg",
+    "expected_video_output_path": "08_generation/outputs/video/reference003_r5_expanded_segments/VU_REF003_020_FINAL_SKY_SAFE_HOLD.mp4",
+    "active_asset_locks": []
+  },
+  {
+    "order": 21,
+    "unit_id": "VU_REF003_021_BLACK_TAIL",
+    "title": "黑场尾帧",
+    "time_range": "01:23.50-01:24.44",
+    "reference_clip": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_021_BLACK_TAIL/reference_clip/VU_REF003_021_BLACK_TAIL_reference.mp4",
+    "prompt_only_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/_PROMPT_INDEX/PROMPT_ONLY/21_VU_REF003_021_BLACK_TAIL.md",
+    "full_generation_brief": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_021_BLACK_TAIL/AIGC_VIDEO_GENERATION_BRIEF.md",
+    "ordered_keyframe_contact_sheet": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_021_BLACK_TAIL/ordered_keyframe_contact_sheet.jpg",
+    "expected_video_output_path": "08_generation/outputs/video/reference003_r5_expanded_segments/VU_REF003_021_BLACK_TAIL.mp4",
+    "active_asset_locks": []
+  }
+]

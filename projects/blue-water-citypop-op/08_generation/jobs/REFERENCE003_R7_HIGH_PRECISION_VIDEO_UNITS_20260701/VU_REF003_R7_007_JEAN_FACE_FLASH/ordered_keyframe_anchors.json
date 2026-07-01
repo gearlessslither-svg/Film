@@ -1,0 +1,17 @@
+[
+  {
+    "order": 1,
+    "item_id": "OP_SHOT_012",
+    "kind": "official_keyframe",
+    "time_sec": 29.0,
+    "timecode": "00:29.00",
+    "role": "图1 / Jean_hat_face",
+    "beat": "Jean 入场",
+    "difference_reason": "",
+    "source_reference_frame": "",
+    "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_012.png",
+    "packaged_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_007_JEAN_FACE_FLASH/keyframes/01_OP_SHOT_012.png",
+    "exists": true,
+    "source_unit_id": "VU_REF003_008_JEAN_INTRO"
+  }
+]

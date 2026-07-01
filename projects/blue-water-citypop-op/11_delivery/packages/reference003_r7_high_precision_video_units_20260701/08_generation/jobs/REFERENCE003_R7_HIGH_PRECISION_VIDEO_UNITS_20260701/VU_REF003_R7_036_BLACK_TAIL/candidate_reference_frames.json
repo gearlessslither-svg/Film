@@ -1,0 +1,26 @@
+[
+  {
+    "asset_id": "R7_CAND_036_start_083614ms",
+    "parent_video_unit_id": "VU_REF003_R7_036_BLACK_TAIL",
+    "role": "start",
+    "source_time_sec": 83.614,
+    "source_timecode": "01:23.61",
+    "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_036_BLACK_TAIL/candidate_reference_frames/R7_CAND_036_start_083614ms.jpg",
+    "priority": "P3_reference_video_or_already_handled",
+    "status": "candidate_reference_frame_review",
+    "difference_reason": "黑场尾帧 start boundary/transition frame from R7 high-precision split.",
+    "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_036_start_083614ms.png"
+  },
+  {
+    "asset_id": "R7_CAND_036_end_084388ms",
+    "parent_video_unit_id": "VU_REF003_R7_036_BLACK_TAIL",
+    "role": "end",
+    "source_time_sec": 84.388,
+    "source_timecode": "01:24.39",
+    "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_036_BLACK_TAIL/candidate_reference_frames/R7_CAND_036_end_084388ms.jpg",
+    "priority": "P3_reference_video_or_already_handled",
+    "status": "candidate_reference_frame_review",
+    "difference_reason": "黑场尾帧 end boundary/transition frame from R7 high-precision split.",
+    "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_036_end_084388ms.png"
+  }
+]

@@ -1,0 +1,757 @@
+{
+  "schema_version": "reference003_next_window_preflight_v1",
+  "project_slug": "blue-water-citypop-op",
+  "created_at": "2026-06-30T12:42:00+08:00",
+  "status": "ready_for_fresh_window_generation",
+  "next_action": "Open a fresh window and generate OP_SHOT_025 through OP_SHOT_042 in queue_order.",
+  "fresh_window_required": true,
+  "summary": {
+    "queue_items": 18,
+    "expected_outputs_existing": 0,
+    "expected_outputs_missing": 18,
+    "board_status_counts": {
+      "generated_reference003_qa_pass": 24,
+      "prompt_ready_reference003": 18
+    },
+    "shot_list_status_counts": {
+      "generated_reference003_qa_pass": 24,
+      "prompt_ready_reference003": 18
+    },
+    "project_validation_pass": true
+  },
+  "gates": [
+    {
+      "gate": "handoff_files_exist",
+      "pass": true,
+      "current": "True"
+    },
+    {
+      "gate": "project_validation",
+      "pass": true,
+      "current": "project_status=pass"
+    },
+    {
+      "gate": "queue_has_18_items",
+      "pass": true,
+      "current": "18"
+    },
+    {
+      "gate": "queue_order_op_shot_025_to_042",
+      "pass": true,
+      "current": "['OP_SHOT_025']..['OP_SHOT_042']"
+    },
+    {
+      "gate": "batch_counts_6_each",
+      "pass": true,
+      "current": "{'05': 6, '06': 6, '07': 6}"
+    },
+    {
+      "gate": "reference_frames_exist",
+      "pass": true,
+      "current": "18/18"
+    },
+    {
+      "gate": "prompt_files_match_queue_text",
+      "pass": true,
+      "current": "18/18"
+    },
+    {
+      "gate": "board_and_shot_list_at_24_18",
+      "pass": true,
+      "current": "board={'generated_reference003_qa_pass': 24, 'prompt_ready_reference003': 18}; shot_list={'generated_reference003_qa_pass': 24, 'prompt_ready_reference003': 18}"
+    },
+    {
+      "gate": "next_window_packet_ready",
+      "pass": true,
+      "current": "ready_for_fresh_window_image_generation"
+    }
+  ],
+  "queue": {
+    "schema_version": "reference003_remaining_keyframe_generation_queue_v1",
+    "status": "ready_for_fresh_window_generation_queue",
+    "items_total": 18,
+    "by_batch": {
+      "05": 6,
+      "06": 6,
+      "07": 6
+    },
+    "items": [
+      {
+        "queue_order": 1,
+        "expected_order": 1,
+        "batch": "05",
+        "item_id": "OP_SHOT_025",
+        "timecode": "00:51.50",
+        "video_unit_id": "VU_REF003_012_GRANDIS_VEHICLE_ACTION",
+        "status_now": "prompt_ready_reference003",
+        "reference": {
+          "path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/refs/OP_SHOT_025_ref_005150.jpg",
+          "exists": true,
+          "size_bytes": 51946
+        },
+        "prompt": {
+          "path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/prompts/OP_SHOT_025_generation_prompt.md",
+          "exists": true,
+          "size_bytes": 847
+        },
+        "prompt_chars_declared": 847,
+        "prompt_chars_file": 847,
+        "prompt_text_present": true,
+        "prompt_text_matches_file": true,
+        "output": {
+          "path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_025.png",
+          "exists": false,
+          "size_bytes": 0
+        },
+        "apply_command": "python3 00_admin/ai_bridge/packets/apply_reference003_batch05_07_keyframes.py --batch 05 --apply"
+      },
+      {
+        "queue_order": 2,
+        "expected_order": 2,
+        "batch": "05",
+        "item_id": "OP_SHOT_026",
+        "timecode": "00:52.50",
+        "video_unit_id": "VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS",
+        "status_now": "prompt_ready_reference003",
+        "reference": {
+          "path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/refs/OP_SHOT_026_ref_005250.jpg",
+          "exists": true,
+          "size_bytes": 21965
+        },
+        "prompt": {
+          "path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/prompts/OP_SHOT_026_generation_prompt.md",
+          "exists": true,
+          "size_bytes": 588
+        },
+        "prompt_chars_declared": 588,
+        "prompt_chars_file": 588,
+        "prompt_text_present": true,
+        "prompt_text_matches_file": true,
+        "output": {
+          "path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_026.png",
+          "exists": false,
+          "size_bytes": 0
+        },
+        "apply_command": "python3 00_admin/ai_bridge/packets/apply_reference003_batch05_07_keyframes.py --batch 05 --apply"
+      },
+      {
+        "queue_order": 3,
+        "expected_order": 3,
+        "batch": "05",
+        "item_id": "OP_SHOT_027",
+        "timecode": "00:55.00",
+        "video_unit_id": "VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS",
+        "status_now": "prompt_ready_reference003",
+        "reference": {
+          "path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/refs/OP_SHOT_027_ref_005500.jpg",
+          "exists": true,
+          "size_bytes": 26027
+        },
+        "prompt": {
+          "path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/prompts/OP_SHOT_027_generation_prompt.md",
+          "exists": true,
+          "size_bytes": 589
+        },
+        "prompt_chars_declared": 589,
+        "prompt_chars_file": 589,
+        "prompt_text_present": true,
+        "prompt_text_matches_file": true,
+        "output": {
+          "path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_027.png",
+          "exists": false,
+          "size_bytes": 0
+        },
+        "apply_command": "python3 00_admin/ai_bridge/packets/apply_reference003_batch05_07_keyframes.py --batch 05 --apply"
+      },
+      {
+        "queue_order": 4,
+        "expected_order": 4,
+        "batch": "05",
+        "item_id": "OP_SHOT_028",
+        "timecode": "00:58.50",
+        "video_unit_id": "VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS",
+        "status_now": "prompt_ready_reference003",
+        "reference": {
+          "path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/refs/OP_SHOT_028_ref_005850.jpg",
+          "exists": true,
+          "size_bytes": 23291
+        },
+        "prompt": {
+          "path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/prompts/OP_SHOT_028_generation_prompt.md",
+          "exists": true,
+          "size_bytes": 550
+        },
+        "prompt_chars_declared": 550,
+        "prompt_chars_file": 550,
+        "prompt_text_present": true,
+        "prompt_text_matches_file": true,
+        "output": {
+          "path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_028.png",
+          "exists": false,
+          "size_bytes": 0
+        },
+        "apply_command": "python3 00_admin/ai_bridge/packets/apply_reference003_batch05_07_keyframes.py --batch 05 --apply"
+      },
+      {
+        "queue_order": 5,
+        "expected_order": 5,
+        "batch": "05",
+        "item_id": "OP_SHOT_029",
+        "timecode": "01:01.50",
+        "video_unit_id": "VU_REF003_014_NIGHT_CITY_BLUE_GRID",
+        "status_now": "prompt_ready_reference003",
+        "reference": {
+          "path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/refs/OP_SHOT_029_ref_010150.jpg",
+          "exists": true,
+          "size_bytes": 8719
+        },
+        "prompt": {
+          "path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/prompts/OP_SHOT_029_generation_prompt.md",
+          "exists": true,
+          "size_bytes": 572
+        },
+        "prompt_chars_declared": 572,
+        "prompt_chars_file": 572,
+        "prompt_text_present": true,
+        "prompt_text_matches_file": true,
+        "output": {
+          "path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_029.png",
+          "exists": false,
+          "size_bytes": 0
+        },
+        "apply_command": "python3 00_admin/ai_bridge/packets/apply_reference003_batch05_07_keyframes.py --batch 05 --apply"
+      },
+      {
+        "queue_order": 6,
+        "expected_order": 6,
+        "batch": "05",
+        "item_id": "OP_SHOT_030",
+        "timecode": "01:03.50",
+        "video_unit_id": "VU_REF003_014_NIGHT_CITY_BLUE_GRID",
+        "status_now": "prompt_ready_reference003",
+        "reference": {
+          "path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/refs/OP_SHOT_030_ref_010350.jpg",
+          "exists": true,
+          "size_bytes": 30679
+        },
+        "prompt": {
+          "path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/prompts/OP_SHOT_030_generation_prompt.md",
+          "exists": true,
+          "size_bytes": 628
+        },
+        "prompt_chars_declared": 628,
+        "prompt_chars_file": 628,
+        "prompt_text_present": true,
+        "prompt_text_matches_file": true,
+        "output": {
+          "path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_030.png",
+          "exists": false,
+          "size_bytes": 0
+        },
+        "apply_command": "python3 00_admin/ai_bridge/packets/apply_reference003_batch05_07_keyframes.py --batch 05 --apply"
+      },
+      {
+        "queue_order": 7,
+        "expected_order": 7,
+        "batch": "06",
+        "item_id": "OP_SHOT_031",
+        "timecode": "01:05.50",
+        "video_unit_id": "VU_REF003_015_NIGHT_AIRCRAFT_PASS",
+        "status_now": "prompt_ready_reference003",
+        "reference": {
+          "path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/refs/OP_SHOT_031_ref_010550.jpg",
+          "exists": true,
+          "size_bytes": 9206
+        },
+        "prompt": {
+          "path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/prompts/OP_SHOT_031_generation_prompt.md",
+          "exists": true,
+          "size_bytes": 903
+        },
+        "prompt_chars_declared": 903,
+        "prompt_chars_file": 903,
+        "prompt_text_present": true,
+        "prompt_text_matches_file": true,
+        "output": {
+          "path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_031.png",
+          "exists": false,
+          "size_bytes": 0
+        },
+        "apply_command": "python3 00_admin/ai_bridge/packets/apply_reference003_batch05_07_keyframes.py --batch 06 --apply"
+      },
+      {
+        "queue_order": 8,
+        "expected_order": 8,
+        "batch": "06",
+        "item_id": "OP_SHOT_032",
+        "timecode": "01:06.50",
+        "video_unit_id": "VU_REF003_016_NEMO_SUNSET_PROFILE",
+        "status_now": "prompt_ready_reference003",
+        "reference": {
+          "path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/refs/OP_SHOT_032_ref_010650.jpg",
+          "exists": true,
+          "size_bytes": 29684
+        },
+        "prompt": {
+          "path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/prompts/OP_SHOT_032_generation_prompt.md",
+          "exists": true,
+          "size_bytes": 927
+        },
+        "prompt_chars_declared": 927,
+        "prompt_chars_file": 927,
+        "prompt_text_present": true,
+        "prompt_text_matches_file": true,
+        "output": {
+          "path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_032.png",
+          "exists": false,
+          "size_bytes": 0
+        },
+        "apply_command": "python3 00_admin/ai_bridge/packets/apply_reference003_batch05_07_keyframes.py --batch 06 --apply"
+      },
+      {
+        "queue_order": 9,
+        "expected_order": 9,
+        "batch": "06",
+        "item_id": "OP_SHOT_033",
+        "timecode": "01:09.50",
+        "video_unit_id": "VU_REF003_016_NEMO_SUNSET_PROFILE",
+        "status_now": "prompt_ready_reference003",
+        "reference": {
+          "path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/refs/OP_SHOT_033_ref_010950.jpg",
+          "exists": true,
+          "size_bytes": 26751
+        },
+        "prompt": {
+          "path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/prompts/OP_SHOT_033_generation_prompt.md",
+          "exists": true,
+          "size_bytes": 906
+        },
+        "prompt_chars_declared": 906,
+        "prompt_chars_file": 906,
+        "prompt_text_present": true,
+        "prompt_text_matches_file": true,
+        "output": {
+          "path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_033.png",
+          "exists": false,
+          "size_bytes": 0
+        },
+        "apply_command": "python3 00_admin/ai_bridge/packets/apply_reference003_batch05_07_keyframes.py --batch 06 --apply"
+      },
+      {
+        "queue_order": 10,
+        "expected_order": 10,
+        "batch": "06",
+        "item_id": "OP_SHOT_034",
+        "timecode": "01:12.00",
+        "video_unit_id": "VU_REF003_017_NADIA_SOLEMN_CLOSE",
+        "status_now": "prompt_ready_reference003",
+        "reference": {
+          "path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/refs/OP_SHOT_034_ref_011200.jpg",
+          "exists": true,
+          "size_bytes": 18943
+        },
+        "prompt": {
+          "path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/prompts/OP_SHOT_034_generation_prompt.md",
+          "exists": true,
+          "size_bytes": 1013
+        },
+        "prompt_chars_declared": 1013,
+        "prompt_chars_file": 1013,
+        "prompt_text_present": true,
+        "prompt_text_matches_file": true,
+        "output": {
+          "path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_034.png",
+          "exists": false,
+          "size_bytes": 0
+        },
+        "apply_command": "python3 00_admin/ai_bridge/packets/apply_reference003_batch05_07_keyframes.py --batch 06 --apply"
+      },
+      {
+        "queue_order": 11,
+        "expected_order": 11,
+        "batch": "06",
+        "item_id": "OP_SHOT_035",
+        "timecode": "01:13.50",
+        "video_unit_id": "VU_REF003_018_BLUE_WATER_SYMBOL",
+        "status_now": "prompt_ready_reference003",
+        "reference": {
+          "path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/refs/OP_SHOT_035_ref_011350.jpg",
+          "exists": true,
+          "size_bytes": 22167
+        },
+        "prompt": {
+          "path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/prompts/OP_SHOT_035_generation_prompt.md",
+          "exists": true,
+          "size_bytes": 886
+        },
+        "prompt_chars_declared": 886,
+        "prompt_chars_file": 886,
+        "prompt_text_present": true,
+        "prompt_text_matches_file": true,
+        "output": {
+          "path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_035.png",
+          "exists": false,
+          "size_bytes": 0
+        },
+        "apply_command": "python3 00_admin/ai_bridge/packets/apply_reference003_batch05_07_keyframes.py --batch 06 --apply"
+      },
+      {
+        "queue_order": 12,
+        "expected_order": 12,
+        "batch": "06",
+        "item_id": "OP_SHOT_036",
+        "timecode": "01:15.00",
+        "video_unit_id": "VU_REF003_018_BLUE_WATER_SYMBOL",
+        "status_now": "prompt_ready_reference003",
+        "reference": {
+          "path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/refs/OP_SHOT_036_ref_011500.jpg",
+          "exists": true,
+          "size_bytes": 24255
+        },
+        "prompt": {
+          "path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/prompts/OP_SHOT_036_generation_prompt.md",
+          "exists": true,
+          "size_bytes": 895
+        },
+        "prompt_chars_declared": 895,
+        "prompt_chars_file": 895,
+        "prompt_text_present": true,
+        "prompt_text_matches_file": true,
+        "output": {
+          "path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_036.png",
+          "exists": false,
+          "size_bytes": 0
+        },
+        "apply_command": "python3 00_admin/ai_bridge/packets/apply_reference003_batch05_07_keyframes.py --batch 06 --apply"
+      },
+      {
+        "queue_order": 13,
+        "expected_order": 13,
+        "batch": "07",
+        "item_id": "OP_SHOT_037",
+        "timecode": "01:16.50",
+        "video_unit_id": "VU_REF003_018_BLUE_WATER_SYMBOL",
+        "status_now": "prompt_ready_reference003",
+        "reference": {
+          "path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/refs/OP_SHOT_037_ref_011650.jpg",
+          "exists": true,
+          "size_bytes": 17323
+        },
+        "prompt": {
+          "path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/prompts/OP_SHOT_037_generation_prompt.md",
+          "exists": true,
+          "size_bytes": 841
+        },
+        "prompt_chars_declared": 841,
+        "prompt_chars_file": 841,
+        "prompt_text_present": true,
+        "prompt_text_matches_file": true,
+        "output": {
+          "path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_037.png",
+          "exists": false,
+          "size_bytes": 0
+        },
+        "apply_command": "python3 00_admin/ai_bridge/packets/apply_reference003_batch05_07_keyframes.py --batch 07 --apply"
+      },
+      {
+        "queue_order": 14,
+        "expected_order": 14,
+        "batch": "07",
+        "item_id": "OP_SHOT_038",
+        "timecode": "01:18.00",
+        "video_unit_id": "VU_REF003_019_WATER_SPLASH_TRANSITION",
+        "status_now": "prompt_ready_reference003",
+        "reference": {
+          "path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/refs/OP_SHOT_038_ref_011800.jpg",
+          "exists": true,
+          "size_bytes": 22133
+        },
+        "prompt": {
+          "path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/prompts/OP_SHOT_038_generation_prompt.md",
+          "exists": true,
+          "size_bytes": 842
+        },
+        "prompt_chars_declared": 842,
+        "prompt_chars_file": 842,
+        "prompt_text_present": true,
+        "prompt_text_matches_file": true,
+        "output": {
+          "path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_038.png",
+          "exists": false,
+          "size_bytes": 0
+        },
+        "apply_command": "python3 00_admin/ai_bridge/packets/apply_reference003_batch05_07_keyframes.py --batch 07 --apply"
+      },
+      {
+        "queue_order": 15,
+        "expected_order": 15,
+        "batch": "07",
+        "item_id": "OP_SHOT_039",
+        "timecode": "01:19.00",
+        "video_unit_id": "VU_REF003_019_WATER_SPLASH_TRANSITION",
+        "status_now": "prompt_ready_reference003",
+        "reference": {
+          "path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/refs/OP_SHOT_039_ref_011900.jpg",
+          "exists": true,
+          "size_bytes": 28216
+        },
+        "prompt": {
+          "path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/prompts/OP_SHOT_039_generation_prompt.md",
+          "exists": true,
+          "size_bytes": 857
+        },
+        "prompt_chars_declared": 857,
+        "prompt_chars_file": 857,
+        "prompt_text_present": true,
+        "prompt_text_matches_file": true,
+        "output": {
+          "path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_039.png",
+          "exists": false,
+          "size_bytes": 0
+        },
+        "apply_command": "python3 00_admin/ai_bridge/packets/apply_reference003_batch05_07_keyframes.py --batch 07 --apply"
+      },
+      {
+        "queue_order": 16,
+        "expected_order": 16,
+        "batch": "07",
+        "item_id": "OP_SHOT_040",
+        "timecode": "01:20.00",
+        "video_unit_id": "VU_REF003_020_FINAL_SKY_SAFE_HOLD",
+        "status_now": "prompt_ready_reference003",
+        "reference": {
+          "path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/refs/OP_SHOT_040_ref_012000.jpg",
+          "exists": true,
+          "size_bytes": 9145
+        },
+        "prompt": {
+          "path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/prompts/OP_SHOT_040_generation_prompt.md",
+          "exists": true,
+          "size_bytes": 899
+        },
+        "prompt_chars_declared": 899,
+        "prompt_chars_file": 899,
+        "prompt_text_present": true,
+        "prompt_text_matches_file": true,
+        "output": {
+          "path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_040.png",
+          "exists": false,
+          "size_bytes": 0
+        },
+        "apply_command": "python3 00_admin/ai_bridge/packets/apply_reference003_batch05_07_keyframes.py --batch 07 --apply"
+      },
+      {
+        "queue_order": 17,
+        "expected_order": 17,
+        "batch": "07",
+        "item_id": "OP_SHOT_041",
+        "timecode": "01:22.00",
+        "video_unit_id": "VU_REF003_020_FINAL_SKY_SAFE_HOLD",
+        "status_now": "prompt_ready_reference003",
+        "reference": {
+          "path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/refs/OP_SHOT_041_ref_012200.jpg",
+          "exists": true,
+          "size_bytes": 9645
+        },
+        "prompt": {
+          "path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/prompts/OP_SHOT_041_generation_prompt.md",
+          "exists": true,
+          "size_bytes": 845
+        },
+        "prompt_chars_declared": 845,
+        "prompt_chars_file": 845,
+        "prompt_text_present": true,
+        "prompt_text_matches_file": true,
+        "output": {
+          "path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_041.png",
+          "exists": false,
+          "size_bytes": 0
+        },
+        "apply_command": "python3 00_admin/ai_bridge/packets/apply_reference003_batch05_07_keyframes.py --batch 07 --apply"
+      },
+      {
+        "queue_order": 18,
+        "expected_order": 18,
+        "batch": "07",
+        "item_id": "OP_SHOT_042",
+        "timecode": "01:23.50",
+        "video_unit_id": "VU_REF003_021_BLACK_TAIL",
+        "status_now": "prompt_ready_reference003",
+        "reference": {
+          "path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/refs/OP_SHOT_042_ref_012350.jpg",
+          "exists": true,
+          "size_bytes": 1243
+        },
+        "prompt": {
+          "path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/prompts/OP_SHOT_042_generation_prompt.md",
+          "exists": true,
+          "size_bytes": 813
+        },
+        "prompt_chars_declared": 813,
+        "prompt_chars_file": 813,
+        "prompt_text_present": true,
+        "prompt_text_matches_file": true,
+        "output": {
+          "path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_042.png",
+          "exists": false,
+          "size_bytes": 0
+        },
+        "apply_command": "python3 00_admin/ai_bridge/packets/apply_reference003_batch05_07_keyframes.py --batch 07 --apply"
+      }
+    ]
+  },
+  "board": {
+    "board_rows": 42,
+    "shot_list_rows": 42,
+    "board_status_counts": {
+      "generated_reference003_qa_pass": 24,
+      "prompt_ready_reference003": 18
+    },
+    "shot_list_status_counts": {
+      "generated_reference003_qa_pass": 24,
+      "prompt_ready_reference003": 18
+    },
+    "remaining_items": [
+      {
+        "item_id": "OP_SHOT_025",
+        "board_status": "prompt_ready_reference003",
+        "shot_list_status": "prompt_ready_reference003",
+        "board_output_path": "08_generation/jobs/OP_KEYFRAMES_20260629_REMAKE_V3/outputs/OP_SHOT_025.png",
+        "shot_prompt_path": "07_shots/prompts/OP_SHOT_025.md"
+      },
+      {
+        "item_id": "OP_SHOT_026",
+        "board_status": "prompt_ready_reference003",
+        "shot_list_status": "prompt_ready_reference003",
+        "board_output_path": "08_generation/jobs/OP_KEYFRAMES_20260629_REMAKE_V3/outputs/OP_SHOT_026.png",
+        "shot_prompt_path": "07_shots/prompts/OP_SHOT_026.md"
+      },
+      {
+        "item_id": "OP_SHOT_027",
+        "board_status": "prompt_ready_reference003",
+        "shot_list_status": "prompt_ready_reference003",
+        "board_output_path": "08_generation/jobs/OP_KEYFRAMES_20260629_REMAKE_V3/outputs/OP_SHOT_027.png",
+        "shot_prompt_path": "07_shots/prompts/OP_SHOT_027.md"
+      },
+      {
+        "item_id": "OP_SHOT_028",
+        "board_status": "prompt_ready_reference003",
+        "shot_list_status": "prompt_ready_reference003",
+        "board_output_path": "08_generation/jobs/OP_KEYFRAMES_20260629_REMAKE_V3/outputs/OP_SHOT_028.png",
+        "shot_prompt_path": "07_shots/prompts/OP_SHOT_028.md"
+      },
+      {
+        "item_id": "OP_SHOT_029",
+        "board_status": "prompt_ready_reference003",
+        "shot_list_status": "prompt_ready_reference003",
+        "board_output_path": "08_generation/jobs/OP_KEYFRAMES_20260629_REMAKE_V3/outputs/OP_SHOT_029.png",
+        "shot_prompt_path": "07_shots/prompts/OP_SHOT_029.md"
+      },
+      {
+        "item_id": "OP_SHOT_030",
+        "board_status": "prompt_ready_reference003",
+        "shot_list_status": "prompt_ready_reference003",
+        "board_output_path": "08_generation/jobs/OP_KEYFRAMES_20260629_REMAKE_V3/outputs/OP_SHOT_030.png",
+        "shot_prompt_path": "07_shots/prompts/OP_SHOT_030.md"
+      },
+      {
+        "item_id": "OP_SHOT_031",
+        "board_status": "prompt_ready_reference003",
+        "shot_list_status": "prompt_ready_reference003",
+        "board_output_path": "08_generation/jobs/OP_KEYFRAMES_20260629_REMAKE_V3/outputs/OP_SHOT_031.png",
+        "shot_prompt_path": "07_shots/prompts/OP_SHOT_031.md"
+      },
+      {
+        "item_id": "OP_SHOT_032",
+        "board_status": "prompt_ready_reference003",
+        "shot_list_status": "prompt_ready_reference003",
+        "board_output_path": "08_generation/jobs/OP_KEYFRAMES_20260629_REMAKE_V3/outputs/OP_SHOT_032.png",
+        "shot_prompt_path": "07_shots/prompts/OP_SHOT_032.md"
+      },
+      {
+        "item_id": "OP_SHOT_033",
+        "board_status": "prompt_ready_reference003",
+        "shot_list_status": "prompt_ready_reference003",
+        "board_output_path": "08_generation/jobs/OP_KEYFRAMES_20260629_HEROINE_C_REPLACE/outputs/OP_SHOT_033.png",
+        "shot_prompt_path": "07_shots/prompts/OP_SHOT_033.md"
+      },
+      {
+        "item_id": "OP_SHOT_034",
+        "board_status": "prompt_ready_reference003",
+        "shot_list_status": "prompt_ready_reference003",
+        "board_output_path": "08_generation/jobs/OP_KEYFRAMES_20260629_HEROINE_C_REPLACE/outputs/OP_SHOT_034.png",
+        "shot_prompt_path": "07_shots/prompts/OP_SHOT_034.md"
+      },
+      {
+        "item_id": "OP_SHOT_035",
+        "board_status": "prompt_ready_reference003",
+        "shot_list_status": "prompt_ready_reference003",
+        "board_output_path": "08_generation/jobs/OP_KEYFRAMES_20260629_REMAKE_V3/outputs/OP_SHOT_035.png",
+        "shot_prompt_path": "07_shots/prompts/OP_SHOT_035.md"
+      },
+      {
+        "item_id": "OP_SHOT_036",
+        "board_status": "prompt_ready_reference003",
+        "shot_list_status": "prompt_ready_reference003",
+        "board_output_path": "08_generation/jobs/OP_KEYFRAMES_20260629_REMAKE_V3/outputs/OP_SHOT_036.png",
+        "shot_prompt_path": "07_shots/prompts/OP_SHOT_036.md"
+      },
+      {
+        "item_id": "OP_SHOT_037",
+        "board_status": "prompt_ready_reference003",
+        "shot_list_status": "prompt_ready_reference003",
+        "board_output_path": "08_generation/jobs/OP_KEYFRAMES_20260629_REMAKE_V3/outputs/OP_SHOT_037.png",
+        "shot_prompt_path": "07_shots/prompts/OP_SHOT_037.md"
+      },
+      {
+        "item_id": "OP_SHOT_038",
+        "board_status": "prompt_ready_reference003",
+        "shot_list_status": "prompt_ready_reference003",
+        "board_output_path": "08_generation/jobs/OP_KEYFRAMES_20260629_REMAKE_V3/outputs/OP_SHOT_038.png",
+        "shot_prompt_path": "07_shots/prompts/OP_SHOT_038.md"
+      },
+      {
+        "item_id": "OP_SHOT_039",
+        "board_status": "prompt_ready_reference003",
+        "shot_list_status": "prompt_ready_reference003",
+        "board_output_path": "08_generation/jobs/OP_KEYFRAMES_20260629_REMAKE_V3/outputs/OP_SHOT_039.png",
+        "shot_prompt_path": "07_shots/prompts/OP_SHOT_039.md"
+      },
+      {
+        "item_id": "OP_SHOT_040",
+        "board_status": "prompt_ready_reference003",
+        "shot_list_status": "prompt_ready_reference003",
+        "board_output_path": "08_generation/jobs/OP_KEYFRAMES_20260629_REMAKE_V3/outputs/OP_SHOT_040.png",
+        "shot_prompt_path": "07_shots/prompts/OP_SHOT_040.md"
+      },
+      {
+        "item_id": "OP_SHOT_041",
+        "board_status": "prompt_ready_reference003",
+        "shot_list_status": "prompt_ready_reference003",
+        "board_output_path": "08_generation/jobs/OP_KEYFRAMES_20260629_REMAKE_V3/outputs/OP_SHOT_041.png",
+        "shot_prompt_path": "07_shots/prompts/OP_SHOT_041.md"
+      },
+      {
+        "item_id": "OP_SHOT_042",
+        "board_status": "prompt_ready_reference003",
+        "shot_list_status": "prompt_ready_reference003",
+        "board_output_path": "08_generation/jobs/OP_KEYFRAMES_20260629_REMAKE_V3/outputs/OP_SHOT_042.png",
+        "shot_prompt_path": "07_shots/prompts/OP_SHOT_042.md"
+      }
+    ]
+  },
+  "project_validation": {
+    "command": "python3 /Users/jaychoupp/Story/Film/scripts/validate_aigc_project.py /Users/jaychoupp/Story/Film/projects/blue-water-citypop-op",
+    "returncode": 0,
+    "project_status_pass": true,
+    "output_tail": "project_status=pass\npass: project_folder_exists /Users/jaychoupp/Story/Film/projects/blue-water-citypop-op\npass: required_directories\npass: required_files\npass: rar_exclusion\npass: shot_list_schema\npass: project_manifest_contract\npass: script_first_director_script requires script-first principle and one-take rule\npass: video_units_contract\npass: transition_edges_contract\npass: video_unit_camera_manifest_contract\npass: video_reference_remake_support"
+  },
+  "evidence_files": {
+    "handoff_latest": "00_admin/handoff/HANDOFF_LATEST.md",
+    "start_here": "00_admin/handoff/NEXT_WINDOW_START_HERE_REFERENCE003_20260630.md",
+    "queue_json": "00_admin/ai_bridge/packets/20260630_reference003_remaining_keyframe_generation_queue.json",
+    "next_window_packet": "00_admin/ai_bridge/packets/20260630_reference003_next_window_batch05_07_execution.json",
+    "apply_helper": "00_admin/ai_bridge/packets/apply_reference003_batch05_07_keyframes.py"
+  },
+  "rebuild_script": "00_admin/ai_bridge/packets/run_reference003_next_window_preflight.py"
+}

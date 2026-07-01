@@ -1,0 +1,38 @@
+[
+  {
+    "asset_id": "R7_CAND_027_start_061466ms",
+    "parent_video_unit_id": "VU_REF003_R7_027_NIGHT_CITY_GRID",
+    "role": "start",
+    "source_time_sec": 61.466,
+    "source_timecode": "01:01.47",
+    "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_027_NIGHT_CITY_GRID/candidate_reference_frames/R7_CAND_027_start_061466ms.jpg",
+    "priority": "P3_reference_video_or_already_handled",
+    "status": "candidate_reference_frame_review",
+    "difference_reason": "夜城蓝网格 start boundary/transition frame from R7 high-precision split.",
+    "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_027_start_061466ms.png"
+  },
+  {
+    "asset_id": "R7_CAND_027_end_064910ms",
+    "parent_video_unit_id": "VU_REF003_R7_027_NIGHT_CITY_GRID",
+    "role": "end",
+    "source_time_sec": 64.91,
+    "source_timecode": "01:04.91",
+    "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_027_NIGHT_CITY_GRID/candidate_reference_frames/R7_CAND_027_end_064910ms.jpg",
+    "priority": "P3_reference_video_or_already_handled",
+    "status": "candidate_reference_frame_review",
+    "difference_reason": "夜城蓝网格 end boundary/transition frame from R7 high-precision split.",
+    "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_027_end_064910ms.png"
+  },
+  {
+    "asset_id": "R7_CAND_027_middle_063188ms",
+    "parent_video_unit_id": "VU_REF003_R7_027_NIGHT_CITY_GRID",
+    "role": "middle",
+    "source_time_sec": 63.188,
+    "source_timecode": "01:03.19",
+    "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_027_NIGHT_CITY_GRID/candidate_reference_frames/R7_CAND_027_middle_063188ms.jpg",
+    "priority": "P3_reference_video_or_already_handled",
+    "status": "candidate_reference_frame_review",
+    "difference_reason": "夜城蓝网格 middle boundary/transition frame from R7 high-precision split.",
+    "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_027_middle_063188ms.png"
+  }
+]

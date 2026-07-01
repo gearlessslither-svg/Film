@@ -1,0 +1,1459 @@
+{
+  "schema_version": "script_first_video_units_v1",
+  "project_slug": "blue-water-citypop-op",
+  "updated_at": "2026-06-30T04:45:05+08:00",
+  "source_of_truth": "03_story/scripts/director_shooting_script.md",
+  "principle": "Script controls shot units; shot units control keyframes; keyframe relationships control AIGC image/video prompts. Images are validation artifacts, not the source of continuity decisions.",
+  "hard_rules": [
+    "Do not infer one-take status from generated images alone; one-take status must come from script/director design.",
+    "One video unit may contain one or many keyframes. A keyframe is not automatically a shot.",
+    "Every keyframe must belong to exactly one video unit.",
+    "Every transition must be represented as a transition edge, even if its text is written into the incoming prompt.",
+    "Video prompts for multi-keyframe units must explicitly list ordered images as 图1, 图2, 图3...",
+    "Montage and one-take are mutually exclusive; never smooth a montage into an unintended continuous shot.",
+    "Complex spatial continuity, multi-character one-take, or camera-axis risk requires whitebox/camera-manifest before regeneration."
+  ],
+  "opening_24s_blender_previs": {
+    "unit_id": "VU_001_024_OPENING_SKY_BIRD_PLANE_ONETAKE",
+    "status": "superseded_by_reference_002_opening_recut_v1",
+    "time_range": "00:00-00:24",
+    "unit_type": "one_take_blender_previs",
+    "title": "蓝天白云、跟拍白鸟、带出 Jean 式飞行器、回到蓝天白鸟的一镜到底",
+    "source_script_intent": "用户指出参考版本开场第一段应为约 24 秒天空一镜到底；本次 Blender 预演先锁摄影机、空间和运动关系，再决定是否重排前 24 秒分镜卡。",
+    "supersedes_for_review": [
+      "VU_001_CLOUD_PRELUDE",
+      "VU_002_BIRD_PLANE_SKY_CHAIN",
+      "VU_003_SUN_FLASH_WIPE",
+      "VU_004_CHARACTER_INTRO_MONTAGE:00:12-00:24"
+    ],
+    "requires_timeline_recut_if_approved": true,
+    "keyframes": [
+      {
+        "frame": 1,
+        "timecode": "00:00",
+        "role": "图1 / start",
+        "description": "白鸟已在蓝天白云中起势，天空占主导，作为一镜到底起幅。"
+      },
+      {
+        "frame": 49,
+        "timecode": "00:02",
+        "role": "图2 / white_bird_enters",
+        "description": "白鸟入画，成为摄影机跟拍动因。"
+      },
+      {
+        "frame": 145,
+        "timecode": "00:06",
+        "role": "图3 / tracking_midpoint",
+        "description": "摄影机跟随白鸟穿过云层，保持天空连续。"
+      },
+      {
+        "frame": 217,
+        "timecode": "00:09",
+        "role": "图4 / aircraft_reveal",
+        "description": "Jean 式复古飞行器从云间被带出。"
+      },
+      {
+        "frame": 313,
+        "timecode": "00:13",
+        "role": "图5 / bird_aircraft_cross",
+        "description": "白鸟与飞行器同一天空空间交叉，确认相对位置。"
+      },
+      {
+        "frame": 433,
+        "timecode": "00:18",
+        "role": "图6 / return_to_sky",
+        "description": "镜头离开飞行器，回到蓝天、云和白鸟。"
+      },
+      {
+        "frame": 576,
+        "timecode": "00:24",
+        "role": "图7 / end_state",
+        "description": "最终回到蓝天白云与白鸟状态，为下一段剪辑留口。"
+      }
+    ],
+    "camera_plan": {
+      "movement": "single continuous aerial follow camera; no hard cut; start with the white bird already gliding in blue sky, lock onto it, pan/track to reveal retro flying machine, then drift back to sky and bird.",
+      "framing": "21:9 wide sky, bird foreground/midground, aircraft revealed mid-distance, final negative sky space.",
+      "lens": "wide anamorphic 22-31mm equivalent with subtle lens changes keyed in Blender.",
+      "screen_direction": "white bird motivates camera; aircraft crosses within the same sky axis; final camera returns without axis flip.",
+      "focus": "infinity cloud plate to bird/flying-machine readable depth, then back to sky/bird.",
+      "lighting": "clean saturated blue daylight, soft white clouds, warm sun fill."
+    },
+    "previs_assets": {
+      "blend": "06_previs/blender/opening_24s_onetake_previs.blend",
+      "build_script": "06_previs/blender/scripts/build_opening_24s_onetake_previs.py",
+      "video_script": "06_previs/blender/scripts/render_opening_24s_onetake_video.py",
+      "playblast_mp4": "06_previs/playblasts/opening_24s_onetake_previs.mp4",
+      "frame_sequence": "06_previs/renders/opening_24s_onetake_animation_frames/opening_24s_0001.png..opening_24s_0576.png",
+      "keyframe_contact_sheet": "10_qa/reports/contact_sheet_OPENING_24S_ONETAKE_PREVIS_KEYFRAMES.jpg",
+      "render_log": "06_previs/playblasts/opening_24s_blender_render.log",
+      "video_log": "06_previs/playblasts/opening_24s_blender_video.log"
+    },
+    "aigc_prompt_requirements": [
+      "视频提示词必须按一镜到底写，不允许拆成孤立的天空图、鸟图、飞机图。",
+      "提示词显式列出图1到图7：每一图都是同一摄影机路径上的关键时刻。",
+      "AIGC 渲染应以 Blender playblast/camera path 作为空间与运动真相；生成图只做首帧、关键帧、质感参考。",
+      "若审批通过，前 24 秒的现有分镜、提示词和 timing 必须整体重排。"
+    ],
+    "adversarial_tests": [
+      "如果把任意中间图独立生成后无法解释前后空间关系，则失败。",
+      "如果飞行器出现像硬切插入而非被白鸟和摄影机带出，则失败。",
+      "如果结尾不能回到蓝天白云和白鸟状态，则失败。",
+      "如果出现标题字、Logo、字幕或动画逐帧截图感，则失败。"
+    ],
+    "review_outcome": "Reference-002 evidence shows segmented bird/cloud/brief-aircraft/title-safe/flare/Nadia rhythm, not a continuous aircraft-led 24s one-take."
+  },
+  "reference_002_opening_recut": {
+    "status": "superseded_by_reference_003_full_op_2160p",
+    "reference_id": "reference-002-opening",
+    "evidence": [
+      "01_intake/analysis/video_reference_packages/reference-002-opening/contact_sheets/reference-002-opening_contact_sheet_2fps.jpg",
+      "01_intake/analysis/video_reference_packages/reference-002-opening/frame_index.csv",
+      "01_intake/analysis/video_reference_packages/reference-002-opening/roughcuts/reference-002-opening_frame_stack_2fps.mp4",
+      "00_admin/ai_bridge/packets/20260630_023556_reference-002-opening_pixel_remake.json"
+    ],
+    "decision": "Use segmented reference rhythm for 00:00-00:23; do not use the 24s one-take aircraft-heavy candidate as accepted timing.",
+    "unit_ids": [
+      "VU_REF002_001_WHITE_BIRD_OPENING",
+      "VU_REF002_002_BIRD_CREDIT_SAFE_SKY",
+      "VU_REF002_003_CLOUD_BANK_AIRCRAFT_REVEAL",
+      "VU_REF002_004_TITLE_SAFE_HOLD_TO_FLARE",
+      "VU_REF002_005_NADIA_CLOSEUP_ENTRY"
+    ],
+    "uncertainties": [
+      "Only a 2fps sampled contact sheet was reviewed locally; sub-frame cut points remain approximate.",
+      "Post-23s character/run timing remains provisional until more reference evidence is ingested."
+    ],
+    "superseded_at": "2026-06-30T04:38:40+08:00",
+    "superseded_reason": "User provided full 84.44s 2160P OP video; full-video timing supersedes the earlier 23s reference package."
+  },
+  "reference_003_full_op_1to1_plan": {
+    "status": "active_units_applied_v1",
+    "reference_id": "reference-003-full-op-2160p",
+    "source_video": "/Users/jaychoupp/Library/Containers/com.tencent.qq/Data/Downloads/[2160P] 蓝宝石之谜OP 修复..mp4",
+    "project_video": "01_intake/references/reference-003-full-op-2160p.mp4",
+    "decision": "This full 84.44s OP video is now the authoritative timing/composition source for the 1:1 remake plan.",
+    "decision_file": "00_admin/ai_bridge/decisions/reference_003_full_op_1to1_unit_plan_v1.md",
+    "contact_sheet": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/contact_sheets/reference-003-full-op-2160p_contact_sheet_2fps.jpg",
+    "roughcut": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/roughcuts/reference-003-full-op-2160p_frame_stack_2fps.mp4",
+    "unit_count": 21,
+    "next_action": "Rewrite units/edges/camera manifest/shot_list/prompts from the full-op table before official generation.",
+    "applied_at": "2026-06-30T04:45:05+08:00",
+    "keyframe_count": 42,
+    "source_of_units": "full OP 2fps contact sheet + section sheets + local bounded analysis"
+  },
+  "units": [
+    {
+      "unit_id": "VU_REF003_001_BLACK_CLOUD_FADEIN",
+      "unit_type": "fadein_establishing_pair",
+      "time_range": "00:00.00-00:02.00",
+      "title": "黑场到云层蓝天淡入",
+      "source_script_intent": "完整 OP 从黑场/暗部起，淡入明亮云层和蓝天；不是白鸟第一帧开场。",
+      "whitebox_required": false,
+      "camera_plan": {
+        "movement": "fade from black into bright cloud plate, then reveal blue sky opening",
+        "framing": "sky/cloud establishing, no character",
+        "lens": "wide sky plate",
+        "screen_direction": "none yet",
+        "focus": "cloud mass and sky gradient",
+        "lighting": "bright daylight emerging from black"
+      },
+      "continuity_strategy": "建立天空舞台，为白鸟入画预留空间；不要提前出现标题、人物或飞机。",
+      "keyframes": [
+        {
+          "item_id": "OP_SHOT_001",
+          "timecode": "00:00.00",
+          "role": "图1 / black_to_cloud_start",
+          "beat": "黑场/云层淡入",
+          "shot_type": "black cloud fade-in",
+          "frame_description": "Black frame or very dark fade beginning into luminous cloud texture, no subject yet.",
+          "scene_id": "SCN_REF003_SKY_FADEIN",
+          "prompt_label": "图1",
+          "unit_id": "VU_REF003_001_BLACK_CLOUD_FADEIN",
+          "unit_type": "fadein_establishing_pair"
+        },
+        {
+          "item_id": "OP_SHOT_002",
+          "timecode": "00:01.50",
+          "role": "图2 / bright_cloud_sky_reveal",
+          "beat": "云层蓝天显现",
+          "shot_type": "bright cloud sky reveal",
+          "frame_description": "Bright white cloud mass opens into saturated blue sky, no bird yet.",
+          "scene_id": "SCN_REF003_SKY_FADEIN",
+          "prompt_label": "图2",
+          "unit_id": "VU_REF003_001_BLACK_CLOUD_FADEIN",
+          "unit_type": "fadein_establishing_pair"
+        }
+      ],
+      "incoming_edges": [],
+      "outgoing_edges": [
+        "TE_REF003_002_002_TO_003"
+      ],
+      "intra_unit_edges": [
+        "TE_REF003_001_001_TO_002"
+      ],
+      "aigc_prompt_requirements": [
+        "Use reference-003-full-op-2160p as the timing and composition source.",
+        "Replace original readable titles, credits, lyrics, subtitles, and NHK marks with clean no-text composition while preserving shot function.",
+        "Do not generate literal anime screenshots; produce a faithful live-action remake keyframe/video plan.",
+        "Preserve character age, costume color blocks, motion direction, and OP rhythm."
+      ],
+      "adversarial_tests": [
+        "If readable text, logo, credits, lyrics, subtitle, or broadcaster mark appears, reject.",
+        "If timing role or screen function no longer matches reference-003, reject.",
+        "If a montage unit becomes a false continuous one-take, reject."
+      ]
+    },
+    {
+      "unit_id": "VU_REF003_002_WHITE_BIRD_SKY",
+      "unit_type": "single_subject_motion_sequence",
+      "time_range": "00:02.50-00:07.00",
+      "title": "白鸟入画与蓝天滑翔",
+      "source_script_intent": "白鸟约 2.5 秒入画并在蓝天中持续滑翔，带出 OP 的第一条运动线。",
+      "whitebox_required": false,
+      "camera_plan": {
+        "movement": "locked/gentle follow on bird crossing blue sky",
+        "framing": "wide blue sky with white bird medium to small scale",
+        "lens": "wide anamorphic sky lens",
+        "screen_direction": "bird glides consistently across frame",
+        "focus": "bird silhouette against blue sky",
+        "lighting": "clean daylight"
+      },
+      "continuity_strategy": "同一只白鸟连续运动；原片字幕区域在生成版变成干净天空。",
+      "keyframes": [
+        {
+          "item_id": "OP_SHOT_003",
+          "timecode": "00:02.50",
+          "role": "图1 / bird_entry",
+          "beat": "白鸟首次入画",
+          "shot_type": "white bird entry",
+          "frame_description": "White bird enters the blue sky after the cloud fade-in, wings open and readable.",
+          "scene_id": "SCN_REF003_WHITE_BIRD",
+          "prompt_label": "图1",
+          "unit_id": "VU_REF003_002_WHITE_BIRD_SKY",
+          "unit_type": "single_subject_motion_sequence"
+        },
+        {
+          "item_id": "OP_SHOT_004",
+          "timecode": "00:05.00",
+          "role": "图2 / bird_glide",
+          "beat": "白鸟滑翔延续",
+          "shot_type": "white bird glide",
+          "frame_description": "The same white bird glides farther through saturated blue sky, no aircraft.",
+          "scene_id": "SCN_REF003_WHITE_BIRD",
+          "prompt_label": "图2",
+          "unit_id": "VU_REF003_002_WHITE_BIRD_SKY",
+          "unit_type": "single_subject_motion_sequence"
+        }
+      ],
+      "incoming_edges": [
+        "TE_REF003_002_002_TO_003"
+      ],
+      "outgoing_edges": [
+        "TE_REF003_004_004_TO_005"
+      ],
+      "intra_unit_edges": [
+        "TE_REF003_003_003_TO_004"
+      ],
+      "aigc_prompt_requirements": [
+        "Use reference-003-full-op-2160p as the timing and composition source.",
+        "Replace original readable titles, credits, lyrics, subtitles, and NHK marks with clean no-text composition while preserving shot function.",
+        "Do not generate literal anime screenshots; produce a faithful live-action remake keyframe/video plan.",
+        "Preserve character age, costume color blocks, motion direction, and OP rhythm."
+      ],
+      "adversarial_tests": [
+        "If readable text, logo, credits, lyrics, subtitle, or broadcaster mark appears, reject.",
+        "If timing role or screen function no longer matches reference-003, reject.",
+        "If a montage unit becomes a false continuous one-take, reject."
+      ]
+    },
+    {
+      "unit_id": "VU_REF003_003_CREDIT_SAFE_BIRD_CLOUDS",
+      "unit_type": "title_safe_bird_cloud_sequence",
+      "time_range": "00:07.00-00:14.00",
+      "title": "白鸟字幕安全位与云层增长",
+      "source_script_intent": "白鸟继续穿过蓝天，原片有职员表和歌词；生成版要保留留白和云层节奏但不能生成可读文字。",
+      "whitebox_required": false,
+      "camera_plan": {
+        "movement": "mostly locked sky hold with bird drift and cloud bank growth",
+        "framing": "clean center negative space, bird small, clouds entering",
+        "lens": "wide graphic sky field",
+        "screen_direction": "same bird direction from previous unit",
+        "focus": "bird and cloud bank",
+        "lighting": "even blue daylight"
+      },
+      "continuity_strategy": "用无字留白替代职员表；云层从边缘进入并逐渐占据画面。",
+      "keyframes": [
+        {
+          "item_id": "OP_SHOT_005",
+          "timecode": "00:07.50",
+          "role": "图1 / no_text_credit_safe_bird",
+          "beat": "无字职员表安全位",
+          "shot_type": "bird credit-safe sky",
+          "frame_description": "Small white bird over clean blue sky with large center negative space, replacing credits with no text.",
+          "scene_id": "SCN_REF003_CREDIT_SAFE_SKY",
+          "prompt_label": "图1",
+          "unit_id": "VU_REF003_003_CREDIT_SAFE_BIRD_CLOUDS",
+          "unit_type": "title_safe_bird_cloud_sequence"
+        },
+        {
+          "item_id": "OP_SHOT_006",
+          "timecode": "00:11.50",
+          "role": "图2 / cloud_bank_growth",
+          "beat": "云层增长填画",
+          "shot_type": "cloud bank growth",
+          "frame_description": "Large bright cloud bank grows into frame while the bird becomes small or exits.",
+          "scene_id": "SCN_REF003_CREDIT_SAFE_SKY",
+          "prompt_label": "图2",
+          "unit_id": "VU_REF003_003_CREDIT_SAFE_BIRD_CLOUDS",
+          "unit_type": "title_safe_bird_cloud_sequence"
+        }
+      ],
+      "incoming_edges": [
+        "TE_REF003_004_004_TO_005"
+      ],
+      "outgoing_edges": [
+        "TE_REF003_006_006_TO_007"
+      ],
+      "intra_unit_edges": [
+        "TE_REF003_005_005_TO_006"
+      ],
+      "aigc_prompt_requirements": [
+        "Use reference-003-full-op-2160p as the timing and composition source.",
+        "Replace original readable titles, credits, lyrics, subtitles, and NHK marks with clean no-text composition while preserving shot function.",
+        "Do not generate literal anime screenshots; produce a faithful live-action remake keyframe/video plan.",
+        "Preserve character age, costume color blocks, motion direction, and OP rhythm."
+      ],
+      "adversarial_tests": [
+        "If readable text, logo, credits, lyrics, subtitle, or broadcaster mark appears, reject.",
+        "If timing role or screen function no longer matches reference-003, reject.",
+        "If a montage unit becomes a false continuous one-take, reject."
+      ]
+    },
+    {
+      "unit_id": "VU_REF003_004_AIRCRAFT_BRIEF_REVEAL",
+      "unit_type": "brief_spatial_reveal",
+      "time_range": "00:14.50-00:16.50",
+      "title": "飞行器短暂露出",
+      "source_script_intent": "完整 OP 中飞行器/机翼只短促出现，不能扩成 24 秒一镜到底。",
+      "whitebox_required": true,
+      "camera_plan": {
+        "movement": "brief reveal from cloud/wing edge to small aircraft in sky",
+        "framing": "aircraft small-to-medium for a short beat, clouds still important",
+        "lens": "wide sky lens with scale proof",
+        "screen_direction": "aircraft direction continues sky motion",
+        "focus": "aircraft silhouette and cloud edge",
+        "lighting": "bright sky"
+      },
+      "continuity_strategy": "短露即可，避免飞行器抢戏；最终视频前需要比例/轴线检查。",
+      "keyframes": [
+        {
+          "item_id": "OP_SHOT_007",
+          "timecode": "00:15.00",
+          "role": "图1 / aircraft_brief_reveal",
+          "beat": "飞行器短露",
+          "shot_type": "brief aircraft reveal",
+          "frame_description": "Jean-style handmade retro aircraft or wing flashes briefly through clouded sky, scale controlled.",
+          "scene_id": "SCN_REF003_AIRCRAFT_REVEAL",
+          "prompt_label": "图1",
+          "unit_id": "VU_REF003_004_AIRCRAFT_BRIEF_REVEAL",
+          "unit_type": "brief_spatial_reveal"
+        }
+      ],
+      "incoming_edges": [
+        "TE_REF003_006_006_TO_007"
+      ],
+      "outgoing_edges": [
+        "TE_REF003_007_007_TO_008"
+      ],
+      "intra_unit_edges": [],
+      "aigc_prompt_requirements": [
+        "Use reference-003-full-op-2160p as the timing and composition source.",
+        "Replace original readable titles, credits, lyrics, subtitles, and NHK marks with clean no-text composition while preserving shot function.",
+        "Do not generate literal anime screenshots; produce a faithful live-action remake keyframe/video plan.",
+        "Preserve character age, costume color blocks, motion direction, and OP rhythm."
+      ],
+      "adversarial_tests": [
+        "If readable text, logo, credits, lyrics, subtitle, or broadcaster mark appears, reject.",
+        "If timing role or screen function no longer matches reference-003, reject.",
+        "If a montage unit becomes a false continuous one-take, reject."
+      ]
+    },
+    {
+      "unit_id": "VU_REF003_005_MAIN_TITLE_SAFE_HOLD",
+      "unit_type": "no_text_title_safe_hold",
+      "time_range": "00:17.00-00:22.00",
+      "title": "主标题功能位无字 hold",
+      "source_script_intent": "原片主标题/logo 长 hold；生成版必须替换为无字天空构图，保留标题位功能和节奏。",
+      "whitebox_required": false,
+      "camera_plan": {
+        "movement": "locked or subtle drifting sky hold",
+        "framing": "clean central title-safe negative space over sky/cloud band",
+        "lens": "wide graphic sky plate",
+        "screen_direction": "minimal drift",
+        "focus": "sky and cloud geometry",
+        "lighting": "bright blue sky"
+      },
+      "continuity_strategy": "不得生成原片标题或任何文字；只保留“这里是标题位”的构图功能。",
+      "keyframes": [
+        {
+          "item_id": "OP_SHOT_008",
+          "timecode": "00:18.50",
+          "role": "图1 / main_title_safe_no_text",
+          "beat": "主标题无字安全位",
+          "shot_type": "main title-safe sky hold",
+          "frame_description": "Clean blue sky and diagonal cloud band where the original title sits, but completely text-free.",
+          "scene_id": "SCN_REF003_TITLE_SAFE",
+          "prompt_label": "图1",
+          "unit_id": "VU_REF003_005_MAIN_TITLE_SAFE_HOLD",
+          "unit_type": "no_text_title_safe_hold"
+        }
+      ],
+      "incoming_edges": [
+        "TE_REF003_007_007_TO_008"
+      ],
+      "outgoing_edges": [
+        "TE_REF003_008_008_TO_009"
+      ],
+      "intra_unit_edges": [],
+      "aigc_prompt_requirements": [
+        "Use reference-003-full-op-2160p as the timing and composition source.",
+        "Replace original readable titles, credits, lyrics, subtitles, and NHK marks with clean no-text composition while preserving shot function.",
+        "Do not generate literal anime screenshots; produce a faithful live-action remake keyframe/video plan.",
+        "Preserve character age, costume color blocks, motion direction, and OP rhythm."
+      ],
+      "adversarial_tests": [
+        "If readable text, logo, credits, lyrics, subtitle, or broadcaster mark appears, reject.",
+        "If timing role or screen function no longer matches reference-003, reject.",
+        "If a montage unit becomes a false continuous one-take, reject."
+      ]
+    },
+    {
+      "unit_id": "VU_REF003_006_SUN_FLARE_TO_NADIA",
+      "unit_type": "light_transition_insert",
+      "time_range": "00:22.50-00:23.50",
+      "title": "太阳光转 Nadia",
+      "source_script_intent": "标题位后由蓝天和太阳光线转入 Nadia 入场。",
+      "whitebox_required": false,
+      "camera_plan": {
+        "movement": "locked sky insert with sun bloom",
+        "framing": "sky, cloud streaks, bright sun edge",
+        "lens": "wide/tele sky insert with controlled flare",
+        "screen_direction": "none; brightness drives cut",
+        "focus": "sun bloom and sky streaks",
+        "lighting": "strong daylight flare"
+      },
+      "continuity_strategy": "太阳光是进入人物段的切点，不要写入文字。",
+      "keyframes": [
+        {
+          "item_id": "OP_SHOT_009",
+          "timecode": "00:23.00",
+          "role": "图1 / sun_flare_transition",
+          "beat": "太阳光线转场",
+          "shot_type": "sun flare transition",
+          "frame_description": "Bright sun flare over clean blue sky prepares the cut to Nadia.",
+          "scene_id": "SCN_REF003_SUN_FLARE",
+          "prompt_label": "图1",
+          "unit_id": "VU_REF003_006_SUN_FLARE_TO_NADIA",
+          "unit_type": "light_transition_insert"
+        }
+      ],
+      "incoming_edges": [
+        "TE_REF003_008_008_TO_009"
+      ],
+      "outgoing_edges": [
+        "TE_REF003_009_009_TO_010"
+      ],
+      "intra_unit_edges": [],
+      "aigc_prompt_requirements": [
+        "Use reference-003-full-op-2160p as the timing and composition source.",
+        "Replace original readable titles, credits, lyrics, subtitles, and NHK marks with clean no-text composition while preserving shot function.",
+        "Do not generate literal anime screenshots; produce a faithful live-action remake keyframe/video plan.",
+        "Preserve character age, costume color blocks, motion direction, and OP rhythm."
+      ],
+      "adversarial_tests": [
+        "If readable text, logo, credits, lyrics, subtitle, or broadcaster mark appears, reject.",
+        "If timing role or screen function no longer matches reference-003, reject.",
+        "If a montage unit becomes a false continuous one-take, reject."
+      ]
+    },
+    {
+      "unit_id": "VU_REF003_007_NADIA_PROFILE_ENTRY",
+      "unit_type": "character_profile_sequence",
+      "time_range": "00:24.00-00:27.50",
+      "title": "Nadia 侧脸入场到近景",
+      "source_script_intent": "Nadia 首次人物入场，侧脸/回头/近景构成第一段角色介绍。",
+      "whitebox_required": false,
+      "camera_plan": {
+        "movement": "small portrait hold and push/angle shift",
+        "framing": "profile to closer face, sky/stone background",
+        "lens": "portrait lens",
+        "screen_direction": "Nadia gaze changes across the beat",
+        "focus": "Nadia face and earrings/pendant details",
+        "lighting": "bright sky bounce"
+      },
+      "continuity_strategy": "Nadia C 版锁定，14 岁、安全、保守；保留侧脸入场节奏。",
+      "keyframes": [
+        {
+          "item_id": "OP_SHOT_010",
+          "timecode": "00:24.50",
+          "role": "图1 / Nadia_profile",
+          "beat": "Nadia 侧脸入场",
+          "shot_type": "Nadia profile entry",
+          "frame_description": "Age-appropriate Nadia C-version in side/profile close-up after the sun transition, sky behind.",
+          "scene_id": "SCN_REF003_NADIA_ENTRY",
+          "prompt_label": "图1",
+          "unit_id": "VU_REF003_007_NADIA_PROFILE_ENTRY",
+          "unit_type": "character_profile_sequence"
+        },
+        {
+          "item_id": "OP_SHOT_011",
+          "timecode": "00:27.00",
+          "role": "图2 / Nadia_close",
+          "beat": "Nadia 正面近景",
+          "shot_type": "Nadia close-up",
+          "frame_description": "Nadia turns into a closer bright expression, Blue Water identity detail may be visible, non-sexualized.",
+          "scene_id": "SCN_REF003_NADIA_ENTRY",
+          "prompt_label": "图2",
+          "unit_id": "VU_REF003_007_NADIA_PROFILE_ENTRY",
+          "unit_type": "character_profile_sequence"
+        }
+      ],
+      "incoming_edges": [
+        "TE_REF003_009_009_TO_010"
+      ],
+      "outgoing_edges": [
+        "TE_REF003_011_011_TO_012"
+      ],
+      "intra_unit_edges": [
+        "TE_REF003_010_010_TO_011"
+      ],
+      "aigc_prompt_requirements": [
+        "Use reference-003-full-op-2160p as the timing and composition source.",
+        "Replace original readable titles, credits, lyrics, subtitles, and NHK marks with clean no-text composition while preserving shot function.",
+        "Do not generate literal anime screenshots; produce a faithful live-action remake keyframe/video plan.",
+        "Preserve character age, costume color blocks, motion direction, and OP rhythm."
+      ],
+      "adversarial_tests": [
+        "If readable text, logo, credits, lyrics, subtitle, or broadcaster mark appears, reject.",
+        "If timing role or screen function no longer matches reference-003, reject.",
+        "If a montage unit becomes a false continuous one-take, reject."
+      ]
+    },
+    {
+      "unit_id": "VU_REF003_008_JEAN_INTRO",
+      "unit_type": "character_intro_pair",
+      "time_range": "00:28.00-00:30.50",
+      "title": "Jean 帽子与少年发明家入场",
+      "source_script_intent": "Jean 从帽檐/眼睛到正面少年发明家形象入场。",
+      "whitebox_required": false,
+      "camera_plan": {
+        "movement": "hat brim/face reveal with small gesture",
+        "framing": "close to medium portrait against sky",
+        "lens": "portrait lens",
+        "screen_direction": "upward look and hat gesture",
+        "focus": "glasses and eyes",
+        "lighting": "bright outdoor daylight"
+      },
+      "continuity_strategy": "Jean 保持 14 岁少年发明家，不要成人化。",
+      "keyframes": [
+        {
+          "item_id": "OP_SHOT_012",
+          "timecode": "00:29.00",
+          "role": "图1 / Jean_hat_face",
+          "beat": "Jean 入场",
+          "shot_type": "Jean inventor intro",
+          "frame_description": "Jean, 14-year-old French inventor boy, looks up from under a blue cap with round glasses and red bow tie.",
+          "scene_id": "SCN_REF003_JEAN_INTRO",
+          "prompt_label": "图1",
+          "unit_id": "VU_REF003_008_JEAN_INTRO",
+          "unit_type": "character_intro_pair"
+        }
+      ],
+      "incoming_edges": [
+        "TE_REF003_011_011_TO_012"
+      ],
+      "outgoing_edges": [
+        "TE_REF003_012_012_TO_013"
+      ],
+      "intra_unit_edges": [],
+      "aigc_prompt_requirements": [
+        "Use reference-003-full-op-2160p as the timing and composition source.",
+        "Replace original readable titles, credits, lyrics, subtitles, and NHK marks with clean no-text composition while preserving shot function.",
+        "Do not generate literal anime screenshots; produce a faithful live-action remake keyframe/video plan.",
+        "Preserve character age, costume color blocks, motion direction, and OP rhythm."
+      ],
+      "adversarial_tests": [
+        "If readable text, logo, credits, lyrics, subtitle, or broadcaster mark appears, reject.",
+        "If timing role or screen function no longer matches reference-003, reject.",
+        "If a montage unit becomes a false continuous one-take, reject."
+      ]
+    },
+    {
+      "unit_id": "VU_REF003_009_MARIE_KING_MEADOW",
+      "unit_type": "child_animal_meadow_gag",
+      "time_range": "00:31.00-00:34.00",
+      "title": "Marie 与 King 草地段",
+      "source_script_intent": "Marie/King 在草地中做明亮儿童喜剧节奏。",
+      "whitebox_required": false,
+      "camera_plan": {
+        "movement": "low meadow hold with small playful motion",
+        "framing": "grass foreground, sky and clouds behind",
+        "lens": "low wide child-safe angle",
+        "screen_direction": "playful forward motion",
+        "focus": "Marie and King",
+        "lighting": "bright daylight meadow"
+      },
+      "continuity_strategy": "儿童安全、可爱明亮；不生成字幕。",
+      "keyframes": [
+        {
+          "item_id": "OP_SHOT_013",
+          "timecode": "00:31.50",
+          "role": "图1 / Marie_King_meadow",
+          "beat": "Marie 与 King 草地笑点",
+          "shot_type": "Marie King meadow",
+          "frame_description": "Marie and small lion cub King in a bright meadow, playful and child-safe.",
+          "scene_id": "SCN_REF003_MARIE_KING",
+          "prompt_label": "图1",
+          "unit_id": "VU_REF003_009_MARIE_KING_MEADOW",
+          "unit_type": "child_animal_meadow_gag"
+        },
+        {
+          "item_id": "OP_SHOT_014",
+          "timecode": "00:34.00",
+          "role": "图2 / Marie_King_close",
+          "beat": "Marie 与 King 近景",
+          "shot_type": "Marie King close",
+          "frame_description": "Cheerful close character beat for Marie and King, safe and non-threatening.",
+          "scene_id": "SCN_REF003_MARIE_KING",
+          "prompt_label": "图2",
+          "unit_id": "VU_REF003_009_MARIE_KING_MEADOW",
+          "unit_type": "child_animal_meadow_gag"
+        }
+      ],
+      "incoming_edges": [
+        "TE_REF003_012_012_TO_013"
+      ],
+      "outgoing_edges": [
+        "TE_REF003_014_014_TO_015"
+      ],
+      "intra_unit_edges": [
+        "TE_REF003_013_013_TO_014"
+      ],
+      "aigc_prompt_requirements": [
+        "Use reference-003-full-op-2160p as the timing and composition source.",
+        "Replace original readable titles, credits, lyrics, subtitles, and NHK marks with clean no-text composition while preserving shot function.",
+        "Do not generate literal anime screenshots; produce a faithful live-action remake keyframe/video plan.",
+        "Preserve character age, costume color blocks, motion direction, and OP rhythm."
+      ],
+      "adversarial_tests": [
+        "If readable text, logo, credits, lyrics, subtitle, or broadcaster mark appears, reject.",
+        "If timing role or screen function no longer matches reference-003, reject.",
+        "If a montage unit becomes a false continuous one-take, reject."
+      ]
+    },
+    {
+      "unit_id": "VU_REF003_010_GRANDIS_TRIO_INTRO",
+      "unit_type": "adult_trio_intro_montage",
+      "time_range": "00:34.50-00:37.50",
+      "title": "Grandis 三人组介绍",
+      "source_script_intent": "Grandis 三人组从姿态到特写，形成戏剧化成人反派/喜剧能量。",
+      "whitebox_required": false,
+      "camera_plan": {
+        "movement": "hard beat cuts and small theatrical pose shifts",
+        "framing": "wide trio then close group",
+        "lens": "medium portrait/wide plaza lens",
+        "screen_direction": "not continuous; montage rhythm",
+        "focus": "Grandis trio",
+        "lighting": "bright outdoor showy light"
+      },
+      "continuity_strategy": "成人三人组可夸张但要真人化，不混入儿童段。",
+      "keyframes": [
+        {
+          "item_id": "OP_SHOT_015",
+          "timecode": "00:35.50",
+          "role": "图1 / Grandis_trio_wide",
+          "beat": "Grandis 三人组宽景",
+          "shot_type": "Grandis trio wide",
+          "frame_description": "Grandis, Sanson, and Hanson pose theatrically in a live-action period setting.",
+          "scene_id": "SCN_REF003_GRANDIS_TRIO",
+          "prompt_label": "图1",
+          "unit_id": "VU_REF003_010_GRANDIS_TRIO_INTRO",
+          "unit_type": "adult_trio_intro_montage"
+        },
+        {
+          "item_id": "OP_SHOT_016",
+          "timecode": "00:37.00",
+          "role": "图2 / Grandis_trio_close",
+          "beat": "Grandis 三人组近景",
+          "shot_type": "Grandis trio close",
+          "frame_description": "Close energetic character beat for the adult trio, playful but grounded.",
+          "scene_id": "SCN_REF003_GRANDIS_TRIO",
+          "prompt_label": "图2",
+          "unit_id": "VU_REF003_010_GRANDIS_TRIO_INTRO",
+          "unit_type": "adult_trio_intro_montage"
+        }
+      ],
+      "incoming_edges": [
+        "TE_REF003_014_014_TO_015"
+      ],
+      "outgoing_edges": [
+        "TE_REF003_016_016_TO_017"
+      ],
+      "intra_unit_edges": [
+        "TE_REF003_015_015_TO_016"
+      ],
+      "aigc_prompt_requirements": [
+        "Use reference-003-full-op-2160p as the timing and composition source.",
+        "Replace original readable titles, credits, lyrics, subtitles, and NHK marks with clean no-text composition while preserving shot function.",
+        "Do not generate literal anime screenshots; produce a faithful live-action remake keyframe/video plan.",
+        "Preserve character age, costume color blocks, motion direction, and OP rhythm."
+      ],
+      "adversarial_tests": [
+        "If readable text, logo, credits, lyrics, subtitle, or broadcaster mark appears, reject.",
+        "If timing role or screen function no longer matches reference-003, reject.",
+        "If a montage unit becomes a false continuous one-take, reject."
+      ]
+    },
+    {
+      "unit_id": "VU_REF003_011_RUNNING_MONTAGE",
+      "unit_type": "running_montage_sequence",
+      "time_range": "00:38.00-00:47.50",
+      "title": "角色奔跑 montage",
+      "source_script_intent": "Nadia、Jean、Marie/King 和全员奔跑按音乐节拍切换；这是 montage，不是一镜到底。",
+      "whitebox_required": false,
+      "camera_plan": {
+        "movement": "hard beat cuts with matching left-right run energy",
+        "framing": "feet/torso/portrait/group wide beats",
+        "lens": "mixed close and medium-wide lenses",
+        "screen_direction": "mostly left-to-right running continuity",
+        "focus": "runner identity and motion",
+        "lighting": "bright sky/plaza daylight"
+      },
+      "continuity_strategy": "保持奔跑方向和节拍，禁止平滑成一镜到底。",
+      "keyframes": [
+        {
+          "item_id": "OP_SHOT_017",
+          "timecode": "00:38.00",
+          "role": "图1 / Nadia_run_feet",
+          "beat": "Nadia 奔跑脚步",
+          "shot_type": "Nadia run feet",
+          "frame_description": "Nadia running feet/legs beat with sky background, modest costume, no body emphasis.",
+          "scene_id": "SCN_REF003_RUNNING",
+          "prompt_label": "图1",
+          "unit_id": "VU_REF003_011_RUNNING_MONTAGE",
+          "unit_type": "running_montage_sequence"
+        },
+        {
+          "item_id": "OP_SHOT_018",
+          "timecode": "00:39.50",
+          "role": "图2 / Nadia_run_front",
+          "beat": "Nadia 奔跑正面",
+          "shot_type": "Nadia run front",
+          "frame_description": "Nadia running front/upper-body beat, determined and age-safe.",
+          "scene_id": "SCN_REF003_RUNNING",
+          "prompt_label": "图2",
+          "unit_id": "VU_REF003_011_RUNNING_MONTAGE",
+          "unit_type": "running_montage_sequence"
+        },
+        {
+          "item_id": "OP_SHOT_019",
+          "timecode": "00:41.50",
+          "role": "图3 / Jean_run",
+          "beat": "Jean 奔跑",
+          "shot_type": "Jean run",
+          "frame_description": "Jean runs with cap/glasses and inventor outfit, matching the run direction.",
+          "scene_id": "SCN_REF003_RUNNING",
+          "prompt_label": "图3",
+          "unit_id": "VU_REF003_011_RUNNING_MONTAGE",
+          "unit_type": "running_montage_sequence"
+        },
+        {
+          "item_id": "OP_SHOT_020",
+          "timecode": "00:43.50",
+          "role": "图4 / Marie_run",
+          "beat": "Marie 奔跑",
+          "shot_type": "Marie run",
+          "frame_description": "Marie runs with King nearby, playful and child-safe.",
+          "scene_id": "SCN_REF003_RUNNING",
+          "prompt_label": "图4",
+          "unit_id": "VU_REF003_011_RUNNING_MONTAGE",
+          "unit_type": "running_montage_sequence"
+        },
+        {
+          "item_id": "OP_SHOT_021",
+          "timecode": "00:45.50",
+          "role": "图5 / group_run",
+          "beat": "全员奔跑",
+          "shot_type": "group run",
+          "frame_description": "Core group runs together across a grassy ridge or open bright landscape.",
+          "scene_id": "SCN_REF003_RUNNING",
+          "prompt_label": "图5",
+          "unit_id": "VU_REF003_011_RUNNING_MONTAGE",
+          "unit_type": "running_montage_sequence"
+        },
+        {
+          "item_id": "OP_SHOT_022",
+          "timecode": "00:47.50",
+          "role": "图6 / Jean_reaction_close",
+          "beat": "Jean 反应近景",
+          "shot_type": "Jean reaction close",
+          "frame_description": "Jean close reaction on the running beat, still part of the montage.",
+          "scene_id": "SCN_REF003_RUNNING",
+          "prompt_label": "图6",
+          "unit_id": "VU_REF003_011_RUNNING_MONTAGE",
+          "unit_type": "running_montage_sequence"
+        }
+      ],
+      "incoming_edges": [
+        "TE_REF003_016_016_TO_017"
+      ],
+      "outgoing_edges": [
+        "TE_REF003_022_022_TO_023"
+      ],
+      "intra_unit_edges": [
+        "TE_REF003_017_017_TO_018",
+        "TE_REF003_018_018_TO_019",
+        "TE_REF003_019_019_TO_020",
+        "TE_REF003_020_020_TO_021",
+        "TE_REF003_021_021_TO_022"
+      ],
+      "aigc_prompt_requirements": [
+        "Use reference-003-full-op-2160p as the timing and composition source.",
+        "Replace original readable titles, credits, lyrics, subtitles, and NHK marks with clean no-text composition while preserving shot function.",
+        "Do not generate literal anime screenshots; produce a faithful live-action remake keyframe/video plan.",
+        "Preserve character age, costume color blocks, motion direction, and OP rhythm."
+      ],
+      "adversarial_tests": [
+        "If readable text, logo, credits, lyrics, subtitle, or broadcaster mark appears, reject.",
+        "If timing role or screen function no longer matches reference-003, reject.",
+        "If a montage unit becomes a false continuous one-take, reject."
+      ]
+    },
+    {
+      "unit_id": "VU_REF003_012_GRANDIS_VEHICLE_ACTION",
+      "unit_type": "vehicle_action_bridge",
+      "time_range": "00:48.00-00:51.50",
+      "title": "Grandis 车辆动作到群像",
+      "source_script_intent": "奔跑段后转 Grandis/车辆动作，形成进入 Nautilus/冒险段的桥。",
+      "whitebox_required": true,
+      "camera_plan": {
+        "movement": "fast action cut from character energy to vehicle/air movement and group lineup",
+        "framing": "vehicle sky/city action plus group pose",
+        "lens": "wide action lens",
+        "screen_direction": "vehicle momentum carries forward",
+        "focus": "vehicle scale and group identity",
+        "lighting": "bright sky/city"
+      },
+      "continuity_strategy": "车辆/飞行器比例和方向要锁；不生成文字。",
+      "keyframes": [
+        {
+          "item_id": "OP_SHOT_023",
+          "timecode": "00:48.00",
+          "role": "图1 / Grandis_action_close",
+          "beat": "Grandis 动作桥",
+          "shot_type": "Grandis action bridge",
+          "frame_description": "Grandis and companions surge into an action beat, lively but live-action grounded.",
+          "scene_id": "SCN_REF003_VEHICLE_ACTION",
+          "prompt_label": "图1",
+          "unit_id": "VU_REF003_012_GRANDIS_VEHICLE_ACTION",
+          "unit_type": "vehicle_action_bridge"
+        },
+        {
+          "item_id": "OP_SHOT_024",
+          "timecode": "00:49.50",
+          "role": "图2 / vehicle_sky_action",
+          "beat": "车辆/飞行器空中动作",
+          "shot_type": "vehicle sky action",
+          "frame_description": "A retro adventure vehicle or craft arcs through blue sky and cloud spray, energetic but readable.",
+          "scene_id": "SCN_REF003_VEHICLE_ACTION",
+          "prompt_label": "图2",
+          "unit_id": "VU_REF003_012_GRANDIS_VEHICLE_ACTION",
+          "unit_type": "vehicle_action_bridge"
+        },
+        {
+          "item_id": "OP_SHOT_025",
+          "timecode": "00:51.50",
+          "role": "图3 / group_lineup",
+          "beat": "全员群像",
+          "shot_type": "group lineup",
+          "frame_description": "Main group lineup in a bright character tableau, no text overlay.",
+          "scene_id": "SCN_REF003_VEHICLE_ACTION",
+          "prompt_label": "图3",
+          "unit_id": "VU_REF003_012_GRANDIS_VEHICLE_ACTION",
+          "unit_type": "vehicle_action_bridge"
+        }
+      ],
+      "incoming_edges": [
+        "TE_REF003_022_022_TO_023"
+      ],
+      "outgoing_edges": [
+        "TE_REF003_025_025_TO_026"
+      ],
+      "intra_unit_edges": [
+        "TE_REF003_023_023_TO_024",
+        "TE_REF003_024_024_TO_025"
+      ],
+      "aigc_prompt_requirements": [
+        "Use reference-003-full-op-2160p as the timing and composition source.",
+        "Replace original readable titles, credits, lyrics, subtitles, and NHK marks with clean no-text composition while preserving shot function.",
+        "Do not generate literal anime screenshots; produce a faithful live-action remake keyframe/video plan.",
+        "Preserve character age, costume color blocks, motion direction, and OP rhythm."
+      ],
+      "adversarial_tests": [
+        "If readable text, logo, credits, lyrics, subtitle, or broadcaster mark appears, reject.",
+        "If timing role or screen function no longer matches reference-003, reject.",
+        "If a montage unit becomes a false continuous one-take, reject."
+      ]
+    },
+    {
+      "unit_id": "VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS",
+      "unit_type": "undersea_submarine_sequence",
+      "time_range": "00:52.00-01:01.00",
+      "title": "Nautilus 海底光束段",
+      "source_script_intent": "Nautilus 在水下光束中通过，原片有职员表；生成版保留海底运动和光线，去掉文字。",
+      "whitebox_required": true,
+      "camera_plan": {
+        "movement": "slow underwater tracking pass under shafts of light",
+        "framing": "submarine silhouette and hull moving through deep blue water",
+        "lens": "wide underwater lens",
+        "screen_direction": "submarine crosses consistently",
+        "focus": "submarine scale, water shafts, silhouette",
+        "lighting": "blue underwater shafts"
+      },
+      "continuity_strategy": "潜艇空间连续和比例重要，文字全部替换为干净水下空间。",
+      "keyframes": [
+        {
+          "item_id": "OP_SHOT_026",
+          "timecode": "00:52.50",
+          "role": "图1 / undersea_start",
+          "beat": "Nautilus 水下初现",
+          "shot_type": "Nautilus undersea start",
+          "frame_description": "Deep blue underwater light shafts with Nautilus silhouette entering, no credits.",
+          "scene_id": "SCN_REF003_NAUTILUS_UNDERSEA",
+          "prompt_label": "图1",
+          "unit_id": "VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS",
+          "unit_type": "undersea_submarine_sequence"
+        },
+        {
+          "item_id": "OP_SHOT_027",
+          "timecode": "00:55.00",
+          "role": "图2 / undersea_pass",
+          "beat": "Nautilus 水下通过",
+          "shot_type": "Nautilus pass",
+          "frame_description": "Nautilus passes under shimmering surface light, large but graceful.",
+          "scene_id": "SCN_REF003_NAUTILUS_UNDERSEA",
+          "prompt_label": "图2",
+          "unit_id": "VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS",
+          "unit_type": "undersea_submarine_sequence"
+        },
+        {
+          "item_id": "OP_SHOT_028",
+          "timecode": "00:58.50",
+          "role": "图3 / undersea_shadow",
+          "beat": "Nautilus 深蓝剪影",
+          "shot_type": "Nautilus shadow",
+          "frame_description": "Submarine silhouette deepens in blue water with moving light bands, no text.",
+          "scene_id": "SCN_REF003_NAUTILUS_UNDERSEA",
+          "prompt_label": "图3",
+          "unit_id": "VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS",
+          "unit_type": "undersea_submarine_sequence"
+        }
+      ],
+      "incoming_edges": [
+        "TE_REF003_025_025_TO_026"
+      ],
+      "outgoing_edges": [
+        "TE_REF003_028_028_TO_029"
+      ],
+      "intra_unit_edges": [
+        "TE_REF003_026_026_TO_027",
+        "TE_REF003_027_027_TO_028"
+      ],
+      "aigc_prompt_requirements": [
+        "Use reference-003-full-op-2160p as the timing and composition source.",
+        "Replace original readable titles, credits, lyrics, subtitles, and NHK marks with clean no-text composition while preserving shot function.",
+        "Do not generate literal anime screenshots; produce a faithful live-action remake keyframe/video plan.",
+        "Preserve character age, costume color blocks, motion direction, and OP rhythm."
+      ],
+      "adversarial_tests": [
+        "If readable text, logo, credits, lyrics, subtitle, or broadcaster mark appears, reject.",
+        "If timing role or screen function no longer matches reference-003, reject.",
+        "If a montage unit becomes a false continuous one-take, reject."
+      ]
+    },
+    {
+      "unit_id": "VU_REF003_014_NIGHT_CITY_BLUE_GRID",
+      "unit_type": "night_city_symbolic_reveal",
+      "time_range": "01:01.50-01:04.50",
+      "title": "夜城与蓝色地面图案",
+      "source_script_intent": "夜色城市、蓝色几何地面和空中机械形成神秘科技段。",
+      "whitebox_required": true,
+      "camera_plan": {
+        "movement": "slow reveal from dark aircraft/sky to glowing blue grid and city lights",
+        "framing": "wide night city with luminous ground diagram",
+        "lens": "wide night lens",
+        "screen_direction": "vertical scale from craft to city grid",
+        "focus": "blue grid/city relation",
+        "lighting": "night blue and warm city lights"
+      },
+      "continuity_strategy": "蓝色图案可抽象但不能生成可读文字。",
+      "keyframes": [
+        {
+          "item_id": "OP_SHOT_029",
+          "timecode": "01:01.50",
+          "role": "图1 / night_city_reveal",
+          "beat": "夜城初现",
+          "shot_type": "night city reveal",
+          "frame_description": "Dark night city under hovering craft lights, blue tones and mysterious scale.",
+          "scene_id": "SCN_REF003_NIGHT_GRID",
+          "prompt_label": "图1",
+          "unit_id": "VU_REF003_014_NIGHT_CITY_BLUE_GRID",
+          "unit_type": "night_city_symbolic_reveal"
+        },
+        {
+          "item_id": "OP_SHOT_030",
+          "timecode": "01:03.50",
+          "role": "图2 / glowing_blue_grid",
+          "beat": "蓝色地面图案",
+          "shot_type": "glowing blue grid",
+          "frame_description": "Glowing blue geometric grid or diagram across the ground with city lights beyond, no readable symbols.",
+          "scene_id": "SCN_REF003_NIGHT_GRID",
+          "prompt_label": "图2",
+          "unit_id": "VU_REF003_014_NIGHT_CITY_BLUE_GRID",
+          "unit_type": "night_city_symbolic_reveal"
+        }
+      ],
+      "incoming_edges": [
+        "TE_REF003_028_028_TO_029"
+      ],
+      "outgoing_edges": [
+        "TE_REF003_030_030_TO_031"
+      ],
+      "intra_unit_edges": [
+        "TE_REF003_029_029_TO_030"
+      ],
+      "aigc_prompt_requirements": [
+        "Use reference-003-full-op-2160p as the timing and composition source.",
+        "Replace original readable titles, credits, lyrics, subtitles, and NHK marks with clean no-text composition while preserving shot function.",
+        "Do not generate literal anime screenshots; produce a faithful live-action remake keyframe/video plan.",
+        "Preserve character age, costume color blocks, motion direction, and OP rhythm."
+      ],
+      "adversarial_tests": [
+        "If readable text, logo, credits, lyrics, subtitle, or broadcaster mark appears, reject.",
+        "If timing role or screen function no longer matches reference-003, reject.",
+        "If a montage unit becomes a false continuous one-take, reject."
+      ]
+    },
+    {
+      "unit_id": "VU_REF003_015_NIGHT_AIRCRAFT_PASS",
+      "unit_type": "brief_night_vehicle_pass",
+      "time_range": "01:05.00-01:06.00",
+      "title": "夜航飞行器短切",
+      "source_script_intent": "夜间飞行器短切，为 Nemo 夕景段转场。",
+      "whitebox_required": true,
+      "camera_plan": {
+        "movement": "short dark vehicle pass",
+        "framing": "close/dark aircraft silhouette and colored lights",
+        "lens": "night action lens",
+        "screen_direction": "brief pass across frame",
+        "focus": "craft shape and lights",
+        "lighting": "dark blue night with small red/purple lights"
+      },
+      "continuity_strategy": "短促桥接，不扩成长动作。",
+      "keyframes": [
+        {
+          "item_id": "OP_SHOT_031",
+          "timecode": "01:05.50",
+          "role": "图1 / night_aircraft_pass",
+          "beat": "夜航飞行器",
+          "shot_type": "night aircraft pass",
+          "frame_description": "Dark retro aircraft passes at night with small colored lights, no text.",
+          "scene_id": "SCN_REF003_NIGHT_AIRCRAFT",
+          "prompt_label": "图1",
+          "unit_id": "VU_REF003_015_NIGHT_AIRCRAFT_PASS",
+          "unit_type": "brief_night_vehicle_pass"
+        }
+      ],
+      "incoming_edges": [
+        "TE_REF003_030_030_TO_031"
+      ],
+      "outgoing_edges": [
+        "TE_REF003_031_031_TO_032"
+      ],
+      "intra_unit_edges": [],
+      "aigc_prompt_requirements": [
+        "Use reference-003-full-op-2160p as the timing and composition source.",
+        "Replace original readable titles, credits, lyrics, subtitles, and NHK marks with clean no-text composition while preserving shot function.",
+        "Do not generate literal anime screenshots; produce a faithful live-action remake keyframe/video plan.",
+        "Preserve character age, costume color blocks, motion direction, and OP rhythm."
+      ],
+      "adversarial_tests": [
+        "If readable text, logo, credits, lyrics, subtitle, or broadcaster mark appears, reject.",
+        "If timing role or screen function no longer matches reference-003, reject.",
+        "If a montage unit becomes a false continuous one-take, reject."
+      ]
+    },
+    {
+      "unit_id": "VU_REF003_016_NEMO_SUNSET_PROFILE",
+      "unit_type": "adult_portrait_hold",
+      "time_range": "01:06.50-01:11.00",
+      "title": "Nemo 夕景船长肖像",
+      "source_script_intent": "Nemo/船长在夕景中沉稳长 hold，成人角色威严。",
+      "whitebox_required": false,
+      "camera_plan": {
+        "movement": "portrait hold with subtle push or wind",
+        "framing": "low-angle adult captain portrait at sunset",
+        "lens": "portrait/medium lens",
+        "screen_direction": "gaze off horizon",
+        "focus": "face, hat, uniform silhouette",
+        "lighting": "warm sunset sky"
+      },
+      "continuity_strategy": "成人肖像，不要加入 karaoke/credits text。",
+      "keyframes": [
+        {
+          "item_id": "OP_SHOT_032",
+          "timecode": "01:06.50",
+          "role": "图1 / Nemo_profile_start",
+          "beat": "Nemo 夕景初入",
+          "shot_type": "Nemo profile start",
+          "frame_description": "Stern adult submarine captain in dark uniform and white cap against sunset sky, no text.",
+          "scene_id": "SCN_REF003_NEMO",
+          "prompt_label": "图1",
+          "unit_id": "VU_REF003_016_NEMO_SUNSET_PROFILE",
+          "unit_type": "adult_portrait_hold"
+        },
+        {
+          "item_id": "OP_SHOT_033",
+          "timecode": "01:09.50",
+          "role": "图2 / Nemo_profile_hold",
+          "beat": "Nemo 夕景 hold",
+          "shot_type": "Nemo profile hold",
+          "frame_description": "Nemo holds a dignified profile at sunset, wind and coat shape clear.",
+          "scene_id": "SCN_REF003_NEMO",
+          "prompt_label": "图2",
+          "unit_id": "VU_REF003_016_NEMO_SUNSET_PROFILE",
+          "unit_type": "adult_portrait_hold"
+        }
+      ],
+      "incoming_edges": [
+        "TE_REF003_031_031_TO_032"
+      ],
+      "outgoing_edges": [
+        "TE_REF003_033_033_TO_034"
+      ],
+      "intra_unit_edges": [
+        "TE_REF003_032_032_TO_033"
+      ],
+      "aigc_prompt_requirements": [
+        "Use reference-003-full-op-2160p as the timing and composition source.",
+        "Replace original readable titles, credits, lyrics, subtitles, and NHK marks with clean no-text composition while preserving shot function.",
+        "Do not generate literal anime screenshots; produce a faithful live-action remake keyframe/video plan.",
+        "Preserve character age, costume color blocks, motion direction, and OP rhythm."
+      ],
+      "adversarial_tests": [
+        "If readable text, logo, credits, lyrics, subtitle, or broadcaster mark appears, reject.",
+        "If timing role or screen function no longer matches reference-003, reject.",
+        "If a montage unit becomes a false continuous one-take, reject."
+      ]
+    },
+    {
+      "unit_id": "VU_REF003_017_NADIA_SOLEMN_CLOSE",
+      "unit_type": "solemn_character_close",
+      "time_range": "01:11.50-01:13.00",
+      "title": "Nadia 庄重正面近景",
+      "source_script_intent": "Nadia 进入更严肃、静止、象征性的正面近景。",
+      "whitebox_required": false,
+      "camera_plan": {
+        "movement": "still portrait hold",
+        "framing": "front close-up, shoulders safe and modest",
+        "lens": "portrait lens",
+        "screen_direction": "direct gaze",
+        "focus": "eyes and face",
+        "lighting": "cool blue symbolic light"
+      },
+      "continuity_strategy": "Nadia C 锁定，年龄安全，服装保守。",
+      "keyframes": [
+        {
+          "item_id": "OP_SHOT_034",
+          "timecode": "01:12.00",
+          "role": "图1 / Nadia_solemn_front",
+          "beat": "Nadia 庄重正面",
+          "shot_type": "Nadia solemn front",
+          "frame_description": "Nadia C-version front close-up in cool symbolic light, serious and age-safe.",
+          "scene_id": "SCN_REF003_NADIA_SOLEMN",
+          "prompt_label": "图1",
+          "unit_id": "VU_REF003_017_NADIA_SOLEMN_CLOSE",
+          "unit_type": "solemn_character_close"
+        }
+      ],
+      "incoming_edges": [
+        "TE_REF003_033_033_TO_034"
+      ],
+      "outgoing_edges": [
+        "TE_REF003_034_034_TO_035"
+      ],
+      "intra_unit_edges": [],
+      "aigc_prompt_requirements": [
+        "Use reference-003-full-op-2160p as the timing and composition source.",
+        "Replace original readable titles, credits, lyrics, subtitles, and NHK marks with clean no-text composition while preserving shot function.",
+        "Do not generate literal anime screenshots; produce a faithful live-action remake keyframe/video plan.",
+        "Preserve character age, costume color blocks, motion direction, and OP rhythm."
+      ],
+      "adversarial_tests": [
+        "If readable text, logo, credits, lyrics, subtitle, or broadcaster mark appears, reject.",
+        "If timing role or screen function no longer matches reference-003, reject.",
+        "If a montage unit becomes a false continuous one-take, reject."
+      ]
+    },
+    {
+      "unit_id": "VU_REF003_018_BLUE_WATER_SYMBOL",
+      "unit_type": "symbolic_jewel_transition",
+      "time_range": "01:13.50-01:17.00",
+      "title": "Blue Water 象征与水下纹理",
+      "source_script_intent": "Blue Water/宝石/水下纹理承担象征性转场，原片 NHK/文字必须替换。",
+      "whitebox_required": false,
+      "camera_plan": {
+        "movement": "jewel/symbol overlay dissolves into blue underwater texture",
+        "framing": "macro jewel and abstract blue texture",
+        "lens": "macro to wide texture",
+        "screen_direction": "symbolic not geographic",
+        "focus": "jewel facets and blue energy",
+        "lighting": "cyan/blue glow"
+      },
+      "continuity_strategy": "保留 Blue Water 象征，不生成 NHK 或文字。",
+      "keyframes": [
+        {
+          "item_id": "OP_SHOT_035",
+          "timecode": "01:13.50",
+          "role": "图1 / Blue_Water_jewel_symbol",
+          "beat": "Blue Water 宝石象征",
+          "shot_type": "Blue Water symbol",
+          "frame_description": "Blue Water jewel/sapphire symbol over clean blue field, no text or marks.",
+          "scene_id": "SCN_REF003_BLUE_WATER",
+          "prompt_label": "图1",
+          "unit_id": "VU_REF003_018_BLUE_WATER_SYMBOL",
+          "unit_type": "symbolic_jewel_transition"
+        },
+        {
+          "item_id": "OP_SHOT_036",
+          "timecode": "01:15.00",
+          "role": "图2 / blue_symbol_bloom",
+          "beat": "蓝色符号光",
+          "shot_type": "blue symbol bloom",
+          "frame_description": "Cyan-blue bloom or energy texture replaces original text overlay, jewel feeling preserved.",
+          "scene_id": "SCN_REF003_BLUE_WATER",
+          "prompt_label": "图2",
+          "unit_id": "VU_REF003_018_BLUE_WATER_SYMBOL",
+          "unit_type": "symbolic_jewel_transition"
+        },
+        {
+          "item_id": "OP_SHOT_037",
+          "timecode": "01:16.50",
+          "role": "图3 / underwater_texture",
+          "beat": "水下蓝色纹理",
+          "shot_type": "underwater blue texture",
+          "frame_description": "Underwater blue texture and light pattern, clean and text-free.",
+          "scene_id": "SCN_REF003_BLUE_WATER",
+          "prompt_label": "图3",
+          "unit_id": "VU_REF003_018_BLUE_WATER_SYMBOL",
+          "unit_type": "symbolic_jewel_transition"
+        }
+      ],
+      "incoming_edges": [
+        "TE_REF003_034_034_TO_035"
+      ],
+      "outgoing_edges": [
+        "TE_REF003_037_037_TO_038"
+      ],
+      "intra_unit_edges": [
+        "TE_REF003_035_035_TO_036",
+        "TE_REF003_036_036_TO_037"
+      ],
+      "aigc_prompt_requirements": [
+        "Use reference-003-full-op-2160p as the timing and composition source.",
+        "Replace original readable titles, credits, lyrics, subtitles, and NHK marks with clean no-text composition while preserving shot function.",
+        "Do not generate literal anime screenshots; produce a faithful live-action remake keyframe/video plan.",
+        "Preserve character age, costume color blocks, motion direction, and OP rhythm."
+      ],
+      "adversarial_tests": [
+        "If readable text, logo, credits, lyrics, subtitle, or broadcaster mark appears, reject.",
+        "If timing role or screen function no longer matches reference-003, reject.",
+        "If a montage unit becomes a false continuous one-take, reject."
+      ]
+    },
+    {
+      "unit_id": "VU_REF003_019_WATER_SPLASH_TRANSITION",
+      "unit_type": "water_burst_transition",
+      "time_range": "01:17.50-01:19.50",
+      "title": "水花爆发转天空",
+      "source_script_intent": "水体/冰蓝爆发把画面带回天空终段。",
+      "whitebox_required": false,
+      "camera_plan": {
+        "movement": "bursting water transition into sky",
+        "framing": "water splash fills frame then opens to blue sky/cloud",
+        "lens": "wide dynamic transition",
+        "screen_direction": "upward energy",
+        "focus": "water edge and sky reveal",
+        "lighting": "bright blue/white"
+      },
+      "continuity_strategy": "动态水花转场，禁止文字。",
+      "keyframes": [
+        {
+          "item_id": "OP_SHOT_038",
+          "timecode": "01:18.00",
+          "role": "图1 / water_burst",
+          "beat": "水花爆发",
+          "shot_type": "water burst",
+          "frame_description": "Bright water/ice-like burst fills frame with blue-white motion, no text.",
+          "scene_id": "SCN_REF003_WATER_SPLASH",
+          "prompt_label": "图1",
+          "unit_id": "VU_REF003_019_WATER_SPLASH_TRANSITION",
+          "unit_type": "water_burst_transition"
+        },
+        {
+          "item_id": "OP_SHOT_039",
+          "timecode": "01:19.00",
+          "role": "图2 / splash_to_sky",
+          "beat": "水花转蓝天",
+          "shot_type": "splash to sky",
+          "frame_description": "Water streaks clear into blue sky and white cloud fragments.",
+          "scene_id": "SCN_REF003_WATER_SPLASH",
+          "prompt_label": "图2",
+          "unit_id": "VU_REF003_019_WATER_SPLASH_TRANSITION",
+          "unit_type": "water_burst_transition"
+        }
+      ],
+      "incoming_edges": [
+        "TE_REF003_037_037_TO_038"
+      ],
+      "outgoing_edges": [
+        "TE_REF003_039_039_TO_040"
+      ],
+      "intra_unit_edges": [
+        "TE_REF003_038_038_TO_039"
+      ],
+      "aigc_prompt_requirements": [
+        "Use reference-003-full-op-2160p as the timing and composition source.",
+        "Replace original readable titles, credits, lyrics, subtitles, and NHK marks with clean no-text composition while preserving shot function.",
+        "Do not generate literal anime screenshots; produce a faithful live-action remake keyframe/video plan.",
+        "Preserve character age, costume color blocks, motion direction, and OP rhythm."
+      ],
+      "adversarial_tests": [
+        "If readable text, logo, credits, lyrics, subtitle, or broadcaster mark appears, reject.",
+        "If timing role or screen function no longer matches reference-003, reject.",
+        "If a montage unit becomes a false continuous one-take, reject."
+      ]
+    },
+    {
+      "unit_id": "VU_REF003_020_FINAL_SKY_SAFE_HOLD",
+      "unit_type": "final_no_text_sky_hold",
+      "time_range": "01:19.50-01:23.00",
+      "title": "最终无字天空 hold",
+      "source_script_intent": "原片 NHK 结束卡在蓝天和太阳上 hold；生成版必须替换为无字最终天空构图。",
+      "whitebox_required": false,
+      "camera_plan": {
+        "movement": "locked final sky hold with sun glow",
+        "framing": "blue sky, sun orb, clean final negative space",
+        "lens": "wide sky plate",
+        "screen_direction": "none",
+        "focus": "sky/sun composition",
+        "lighting": "bright sun glow"
+      },
+      "continuity_strategy": "这里是最终 logo-safe 留白，不生成 NHK 或任何字。",
+      "keyframes": [
+        {
+          "item_id": "OP_SHOT_040",
+          "timecode": "01:20.00",
+          "role": "图1 / final_sky_safe",
+          "beat": "最终蓝天安全位",
+          "shot_type": "final sky safe",
+          "frame_description": "Clean final blue sky card with soft cloud and no text, replacing the broadcaster end card.",
+          "scene_id": "SCN_REF003_FINAL_SKY",
+          "prompt_label": "图1",
+          "unit_id": "VU_REF003_020_FINAL_SKY_SAFE_HOLD",
+          "unit_type": "final_no_text_sky_hold"
+        },
+        {
+          "item_id": "OP_SHOT_041",
+          "timecode": "01:22.00",
+          "role": "图2 / final_sun_hold",
+          "beat": "最终太阳 hold",
+          "shot_type": "final sun hold",
+          "frame_description": "Blue sky with bright sun glow and clear negative space, no logo or text.",
+          "scene_id": "SCN_REF003_FINAL_SKY",
+          "prompt_label": "图2",
+          "unit_id": "VU_REF003_020_FINAL_SKY_SAFE_HOLD",
+          "unit_type": "final_no_text_sky_hold"
+        }
+      ],
+      "incoming_edges": [
+        "TE_REF003_039_039_TO_040"
+      ],
+      "outgoing_edges": [
+        "TE_REF003_041_041_TO_042"
+      ],
+      "intra_unit_edges": [
+        "TE_REF003_040_040_TO_041"
+      ],
+      "aigc_prompt_requirements": [
+        "Use reference-003-full-op-2160p as the timing and composition source.",
+        "Replace original readable titles, credits, lyrics, subtitles, and NHK marks with clean no-text composition while preserving shot function.",
+        "Do not generate literal anime screenshots; produce a faithful live-action remake keyframe/video plan.",
+        "Preserve character age, costume color blocks, motion direction, and OP rhythm."
+      ],
+      "adversarial_tests": [
+        "If readable text, logo, credits, lyrics, subtitle, or broadcaster mark appears, reject.",
+        "If timing role or screen function no longer matches reference-003, reject.",
+        "If a montage unit becomes a false continuous one-take, reject."
+      ]
+    },
+    {
+      "unit_id": "VU_REF003_021_BLACK_TAIL",
+      "unit_type": "editorial_black_tail",
+      "time_range": "01:23.50-01:24.44",
+      "title": "黑场尾帧",
+      "source_script_intent": "OP 结束进入黑场尾帧；不需要生成复杂画面。",
+      "whitebox_required": false,
+      "camera_plan": {
+        "movement": "cut to black",
+        "framing": "full black frame",
+        "lens": "none",
+        "screen_direction": "none",
+        "focus": "none",
+        "lighting": "black"
+      },
+      "continuity_strategy": "编辑黑场，作为结尾。",
+      "keyframes": [
+        {
+          "item_id": "OP_SHOT_042",
+          "timecode": "01:23.50",
+          "role": "图1 / black_tail",
+          "beat": "黑场结尾",
+          "shot_type": "black tail",
+          "frame_description": "Clean black tail frame after the final sky hold.",
+          "scene_id": "SCN_REF003_BLACK_TAIL",
+          "prompt_label": "图1",
+          "unit_id": "VU_REF003_021_BLACK_TAIL",
+          "unit_type": "editorial_black_tail"
+        }
+      ],
+      "incoming_edges": [
+        "TE_REF003_041_041_TO_042"
+      ],
+      "outgoing_edges": [],
+      "intra_unit_edges": [],
+      "aigc_prompt_requirements": [
+        "Use reference-003-full-op-2160p as the timing and composition source.",
+        "Replace original readable titles, credits, lyrics, subtitles, and NHK marks with clean no-text composition while preserving shot function.",
+        "Do not generate literal anime screenshots; produce a faithful live-action remake keyframe/video plan.",
+        "Preserve character age, costume color blocks, motion direction, and OP rhythm."
+      ],
+      "adversarial_tests": [
+        "If readable text, logo, credits, lyrics, subtitle, or broadcaster mark appears, reject.",
+        "If timing role or screen function no longer matches reference-003, reject.",
+        "If a montage unit becomes a false continuous one-take, reject."
+      ]
+    }
+  ]
+}

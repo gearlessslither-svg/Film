@@ -1,0 +1,141 @@
+{
+  "schema_version": "reference003_r7_high_precision_video_unit_package_v1",
+  "created_at": "2026-07-01T07:36:06+08:00",
+  "status": "ready_for_external_aigc_video_generation",
+  "unit": {
+    "order": 27,
+    "unit_id": "VU_REF003_R7_027_NIGHT_CITY_GRID",
+    "title": "夜城蓝网格",
+    "start": 61.436,
+    "end": 64.94,
+    "intent": "夜城与蓝色地面/几何图案。",
+    "active_locks": [
+      [
+        "props_vehicles_symbols",
+        "blue_grid_geometry"
+      ]
+    ],
+    "mode": "high_precision_segment"
+  },
+  "reference_clip": {
+    "path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_027_NIGHT_CITY_GRID/reference_clip/VU_REF003_R7_027_NIGHT_CITY_GRID_reference.mp4",
+    "start_sec": 61.436,
+    "end_sec": 64.94,
+    "duration_sec": 3.504,
+    "ok": true,
+    "decode_ok": true,
+    "stderr_tail": "      handler_name    : VideoHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : Lavc60.31.102 mpeg4\n    Side data:\n      cpb: bitrate max/min/avg: 0/0/200000 buffer size: 0 vbv_delay: N/A\nframe=    0 fps=0.0 q=3.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    \n[out#0/mp4 @ 0x86300c9c0] video:2776kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 0.066168%\nframe=   84 fps=0.0 q=3.0 Lsize=    2778kB time=00:00:03.46 bitrate=6573.8kbits/s speed=24.2x    "
+  },
+  "ordered_generated_anchors": [
+    {
+      "order": 1,
+      "item_id": "OP_SHOT_029",
+      "kind": "official_keyframe",
+      "time_sec": 61.5,
+      "timecode": "01:01.50",
+      "role": "图1 / night_city_reveal",
+      "beat": "夜城初现",
+      "difference_reason": "",
+      "source_reference_frame": "",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_029.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_027_NIGHT_CITY_GRID/keyframes/01_OP_SHOT_029.png",
+      "exists": true,
+      "source_unit_id": "VU_REF003_014_NIGHT_CITY_BLUE_GRID"
+    },
+    {
+      "order": 2,
+      "item_id": "R5_VU_REF003_014_NIGHT_CITY_BLUE_GRID_062500ms_01",
+      "kind": "r5_adaptive_generated",
+      "time_sec": 62.5,
+      "timecode": "01:02.50",
+      "role": "adaptive_primary",
+      "beat": "夜城与蓝色地面图案: large timeline gap between existing anchors; visually different from nearest existing anchor",
+      "difference_reason": "夜城与蓝色地面图案: large timeline gap between existing anchors; visually different from nearest existing anchor",
+      "source_reference_frame": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0126.jpg",
+      "source_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_014_NIGHT_CITY_BLUE_GRID_062500ms_01.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_027_NIGHT_CITY_GRID/keyframes/02_R5_VU_REF003_014_NIGHT_CITY_BLUE_GRID_062500ms_01.png",
+      "exists": true,
+      "source_unit_id": "VU_REF003_014_NIGHT_CITY_BLUE_GRID"
+    },
+    {
+      "order": 3,
+      "item_id": "OP_SHOT_030",
+      "kind": "official_keyframe",
+      "time_sec": 63.5,
+      "timecode": "01:03.50",
+      "role": "图2 / glowing_blue_grid",
+      "beat": "蓝色地面图案",
+      "difference_reason": "",
+      "source_reference_frame": "",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_030.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_027_NIGHT_CITY_GRID/keyframes/03_OP_SHOT_030.png",
+      "exists": true,
+      "source_unit_id": "VU_REF003_014_NIGHT_CITY_BLUE_GRID"
+    },
+    {
+      "order": 4,
+      "item_id": "R5_VU_REF003_015_NIGHT_AIRCRAFT_PASS_065000ms_01",
+      "kind": "r5_adaptive_generated",
+      "time_sec": 65.0,
+      "timecode": "01:05.00",
+      "role": "adaptive_primary",
+      "beat": "Night aircraft pass is a short fast prop movement; an extra end/start state prevents the craft from popping or redesigning.",
+      "difference_reason": "Night aircraft pass is a short fast prop movement; an extra end/start state prevents the craft from popping or redesigning.",
+      "source_reference_frame": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0131.jpg",
+      "source_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_015_NIGHT_AIRCRAFT_PASS_065000ms_01.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_027_NIGHT_CITY_GRID/keyframes/04_R5_VU_REF003_015_NIGHT_AIRCRAFT_PASS_065000ms_01.png",
+      "exists": true,
+      "source_unit_id": "VU_REF003_015_NIGHT_AIRCRAFT_PASS"
+    }
+  ],
+  "candidate_reference_frames": [
+    {
+      "asset_id": "R7_CAND_027_start_061466ms",
+      "parent_video_unit_id": "VU_REF003_R7_027_NIGHT_CITY_GRID",
+      "role": "start",
+      "source_time_sec": 61.466,
+      "source_timecode": "01:01.47",
+      "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_027_NIGHT_CITY_GRID/candidate_reference_frames/R7_CAND_027_start_061466ms.jpg",
+      "priority": "P3_reference_video_or_already_handled",
+      "status": "candidate_reference_frame_review",
+      "difference_reason": "夜城蓝网格 start boundary/transition frame from R7 high-precision split.",
+      "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_027_start_061466ms.png"
+    },
+    {
+      "asset_id": "R7_CAND_027_end_064910ms",
+      "parent_video_unit_id": "VU_REF003_R7_027_NIGHT_CITY_GRID",
+      "role": "end",
+      "source_time_sec": 64.91,
+      "source_timecode": "01:04.91",
+      "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_027_NIGHT_CITY_GRID/candidate_reference_frames/R7_CAND_027_end_064910ms.jpg",
+      "priority": "P3_reference_video_or_already_handled",
+      "status": "candidate_reference_frame_review",
+      "difference_reason": "夜城蓝网格 end boundary/transition frame from R7 high-precision split.",
+      "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_027_end_064910ms.png"
+    },
+    {
+      "asset_id": "R7_CAND_027_middle_063188ms",
+      "parent_video_unit_id": "VU_REF003_R7_027_NIGHT_CITY_GRID",
+      "role": "middle",
+      "source_time_sec": 63.188,
+      "source_timecode": "01:03.19",
+      "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_027_NIGHT_CITY_GRID/candidate_reference_frames/R7_CAND_027_middle_063188ms.jpg",
+      "priority": "P3_reference_video_or_already_handled",
+      "status": "candidate_reference_frame_review",
+      "difference_reason": "夜城蓝网格 middle boundary/transition frame from R7 high-precision split.",
+      "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_027_middle_063188ms.png"
+    }
+  ],
+  "active_asset_locks": [
+    {
+      "group": "props_vehicles_symbols",
+      "asset_id": "blue_grid_geometry",
+      "status": "official_scene_symbol_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_030.png",
+      "global_lock_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_global_asset_locks/props_vehicles_symbols_blue_grid_geometry.png",
+      "exists": true
+    }
+  ],
+  "prompt_only": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_PROMPT_INDEX/PROMPT_ONLY/27_VU_REF003_R7_027_NIGHT_CITY_GRID.md",
+  "expected_video_output_path": "08_generation/outputs/video/reference003_r7_high_precision_segments/VU_REF003_R7_027_NIGHT_CITY_GRID.mp4"
+}

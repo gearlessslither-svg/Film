@@ -1,0 +1,97 @@
+{
+  "schema_version": "reference003_r7_high_precision_video_unit_package_v1",
+  "created_at": "2026-07-01T07:36:06+08:00",
+  "status": "ready_for_external_aigc_video_generation",
+  "unit": {
+    "order": 35,
+    "unit_id": "VU_REF003_R7_035_FINAL_SKY_HOLD",
+    "title": "最终天空Hold",
+    "start": 80.789,
+    "end": 83.584,
+    "intent": "最终无字天空 hold。",
+    "active_locks": [],
+    "mode": "high_precision_segment"
+  },
+  "reference_clip": {
+    "path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_035_FINAL_SKY_HOLD/reference_clip/VU_REF003_R7_035_FINAL_SKY_HOLD_reference.mp4",
+    "start_sec": 80.789,
+    "end_sec": 83.584,
+    "duration_sec": 2.795,
+    "ok": true,
+    "decode_ok": true,
+    "stderr_tail": "      handler_name    : VideoHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : Lavc60.31.102 mpeg4\n    Side data:\n      cpb: bitrate max/min/avg: 0/0/200000 buffer size: 0 vbv_delay: N/A\nframe=    0 fps=0.0 q=3.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    \n[out#0/mp4 @ 0xc9483c480] video:1107kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 0.159603%\nframe=   67 fps=0.0 q=3.0 Lsize=    1109kB time=00:00:02.75 bitrate=3299.2kbits/s speed=29.5x    "
+  },
+  "ordered_generated_anchors": [
+    {
+      "order": 1,
+      "item_id": "OP_SHOT_041",
+      "kind": "official_keyframe",
+      "time_sec": 82.0,
+      "timecode": "01:22.00",
+      "role": "图2 / final_sun_hold",
+      "beat": "最终太阳 hold",
+      "difference_reason": "",
+      "source_reference_frame": "",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_041.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_035_FINAL_SKY_HOLD/keyframes/01_OP_SHOT_041.png",
+      "exists": true,
+      "source_unit_id": "VU_REF003_020_FINAL_SKY_SAFE_HOLD"
+    },
+    {
+      "order": 2,
+      "item_id": "OP_SHOT_042",
+      "kind": "official_keyframe",
+      "time_sec": 83.5,
+      "timecode": "01:23.50",
+      "role": "图1 / black_tail",
+      "beat": "黑场结尾",
+      "difference_reason": "",
+      "source_reference_frame": "",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_042.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_035_FINAL_SKY_HOLD/keyframes/02_OP_SHOT_042.png",
+      "exists": true,
+      "source_unit_id": "VU_REF003_021_BLACK_TAIL"
+    }
+  ],
+  "candidate_reference_frames": [
+    {
+      "asset_id": "R7_CAND_035_start_080819ms",
+      "parent_video_unit_id": "VU_REF003_R7_035_FINAL_SKY_HOLD",
+      "role": "start",
+      "source_time_sec": 80.819,
+      "source_timecode": "01:20.82",
+      "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_035_FINAL_SKY_HOLD/candidate_reference_frames/R7_CAND_035_start_080819ms.jpg",
+      "priority": "P3_reference_video_or_already_handled",
+      "status": "candidate_reference_frame_review",
+      "difference_reason": "最终天空Hold start boundary/transition frame from R7 high-precision split.",
+      "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_035_start_080819ms.png"
+    },
+    {
+      "asset_id": "R7_CAND_035_end_083554ms",
+      "parent_video_unit_id": "VU_REF003_R7_035_FINAL_SKY_HOLD",
+      "role": "end",
+      "source_time_sec": 83.554,
+      "source_timecode": "01:23.55",
+      "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_035_FINAL_SKY_HOLD/candidate_reference_frames/R7_CAND_035_end_083554ms.jpg",
+      "priority": "P3_reference_video_or_already_handled",
+      "status": "candidate_reference_frame_review",
+      "difference_reason": "最终天空Hold end boundary/transition frame from R7 high-precision split.",
+      "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_035_end_083554ms.png"
+    },
+    {
+      "asset_id": "R7_CAND_035_middle_082186ms",
+      "parent_video_unit_id": "VU_REF003_R7_035_FINAL_SKY_HOLD",
+      "role": "middle",
+      "source_time_sec": 82.186,
+      "source_timecode": "01:22.19",
+      "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_035_FINAL_SKY_HOLD/candidate_reference_frames/R7_CAND_035_middle_082186ms.jpg",
+      "priority": "P3_reference_video_or_already_handled",
+      "status": "candidate_reference_frame_review",
+      "difference_reason": "最终天空Hold middle boundary/transition frame from R7 high-precision split.",
+      "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_035_middle_082186ms.png"
+    }
+  ],
+  "active_asset_locks": [],
+  "prompt_only": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_PROMPT_INDEX/PROMPT_ONLY/35_VU_REF003_R7_035_FINAL_SKY_HOLD.md",
+  "expected_video_output_path": "08_generation/outputs/video/reference003_r7_high_precision_segments/VU_REF003_R7_035_FINAL_SKY_HOLD.mp4"
+}

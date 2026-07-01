@@ -1,0 +1,38 @@
+[
+  {
+    "asset_id": "R7_CAND_029_start_066054ms",
+    "parent_video_unit_id": "VU_REF003_R7_029_NEMO_SUNSET_PROFILE",
+    "role": "start",
+    "source_time_sec": 66.054,
+    "source_timecode": "01:06.05",
+    "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_029_NEMO_SUNSET_PROFILE/candidate_reference_frames/R7_CAND_029_start_066054ms.jpg",
+    "priority": "P2_review_after_p1",
+    "status": "candidate_reference_frame_review",
+    "difference_reason": "Nemo夕景肖像长段 start boundary/transition frame from R7 high-precision split.",
+    "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_029_start_066054ms.png"
+  },
+  {
+    "asset_id": "R7_CAND_029_end_071333ms",
+    "parent_video_unit_id": "VU_REF003_R7_029_NEMO_SUNSET_PROFILE",
+    "role": "end",
+    "source_time_sec": 71.333,
+    "source_timecode": "01:11.33",
+    "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_029_NEMO_SUNSET_PROFILE/candidate_reference_frames/R7_CAND_029_end_071333ms.jpg",
+    "priority": "P2_review_after_p1",
+    "status": "candidate_reference_frame_review",
+    "difference_reason": "Nemo夕景肖像长段 end boundary/transition frame from R7 high-precision split.",
+    "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_029_end_071333ms.png"
+  },
+  {
+    "asset_id": "R7_CAND_029_middle_068694ms",
+    "parent_video_unit_id": "VU_REF003_R7_029_NEMO_SUNSET_PROFILE",
+    "role": "middle",
+    "source_time_sec": 68.694,
+    "source_timecode": "01:08.69",
+    "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_029_NEMO_SUNSET_PROFILE/candidate_reference_frames/R7_CAND_029_middle_068694ms.jpg",
+    "priority": "P2_review_after_p1",
+    "status": "candidate_reference_frame_review",
+    "difference_reason": "Nemo夕景肖像长段 middle boundary/transition frame from R7 high-precision split.",
+    "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_029_middle_068694ms.png"
+  }
+]

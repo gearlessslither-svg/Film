@@ -1,0 +1,38 @@
+[
+  {
+    "asset_id": "R7_CAND_025_start_057030ms",
+    "parent_video_unit_id": "VU_REF003_R7_025_NAUTILUS_LIGHT_SHIFT",
+    "role": "start",
+    "source_time_sec": 57.03,
+    "source_timecode": "00:57.03",
+    "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_025_NAUTILUS_LIGHT_SHIFT/candidate_reference_frames/R7_CAND_025_start_057030ms.jpg",
+    "priority": "P3_reference_video_or_already_handled",
+    "status": "candidate_reference_frame_review",
+    "difference_reason": "Nautilus光带变化 start boundary/transition frame from R7 high-precision split.",
+    "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_025_start_057030ms.png"
+  },
+  {
+    "asset_id": "R7_CAND_025_end_058470ms",
+    "parent_video_unit_id": "VU_REF003_R7_025_NAUTILUS_LIGHT_SHIFT",
+    "role": "end",
+    "source_time_sec": 58.47,
+    "source_timecode": "00:58.47",
+    "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_025_NAUTILUS_LIGHT_SHIFT/candidate_reference_frames/R7_CAND_025_end_058470ms.jpg",
+    "priority": "P3_reference_video_or_already_handled",
+    "status": "candidate_reference_frame_review",
+    "difference_reason": "Nautilus光带变化 end boundary/transition frame from R7 high-precision split.",
+    "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_025_end_058470ms.png"
+  },
+  {
+    "asset_id": "R7_CAND_025_middle_057750ms",
+    "parent_video_unit_id": "VU_REF003_R7_025_NAUTILUS_LIGHT_SHIFT",
+    "role": "middle",
+    "source_time_sec": 57.75,
+    "source_timecode": "00:57.75",
+    "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_025_NAUTILUS_LIGHT_SHIFT/candidate_reference_frames/R7_CAND_025_middle_057750ms.jpg",
+    "priority": "P1_generate_next_small_batch",
+    "status": "candidate_reference_frame_needs_prompt_and_generation",
+    "difference_reason": "Nautilus光带变化 middle boundary/transition frame from R7 high-precision split.",
+    "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_025_middle_057750ms.png"
+  }
+]

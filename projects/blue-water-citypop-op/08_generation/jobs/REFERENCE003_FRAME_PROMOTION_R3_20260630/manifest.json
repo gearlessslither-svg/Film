@@ -1,0 +1,111 @@
+{
+  "schema_version": "reference003_frame_promotion_r3_job_v1",
+  "project_slug": "blue-water-citypop-op",
+  "created_at": "2026-06-30T19:05:00+08:00",
+  "status": "p0_p1_generated_qa_pass_no_new_mp4",
+  "decision_manifest": "03_story/expanded_keyframes/reference003_frame_promotion_r3_20260630.json",
+  "report": "03_story/expanded_keyframes/reference003_frame_promotion_r3_20260630.md",
+  "p0_prompt": "08_generation/jobs/REFERENCE003_FRAME_PROMOTION_R3_20260630/prompts/OP_SHOT_010_R3_NADIA_PROFILE_BEAUTY_LOCK.md",
+  "p0_planned_output": "08_generation/jobs/REFERENCE003_FRAME_PROMOTION_R3_20260630/outputs/OP_SHOT_010_R3_NADIA_PROFILE_BEAUTY_LOCK.png",
+  "p1_prompt_count": 10,
+  "rule": "P0 replacement and P1 expansion images are generated. Do not generate a new mp4 unless explicitly requested by the director.",
+  "p0_output": "08_generation/jobs/REFERENCE003_FRAME_PROMOTION_R3_20260630/outputs/OP_SHOT_010_R3_NADIA_PROFILE_BEAUTY_LOCK.png",
+  "p0_generated_at": "2026-06-30T19:20:26+08:00",
+  "p0_qa_notes": "REFERENCE003_FRAME_PROMOTION_R3 P0 hard replacement generated and QA pass: Nadia profile face is more refined/impressive, matches OP_SHOT_011_v2 identity lock, preserves reference profile composition, conservative costume, no text/logo.",
+  "p1_generated_count": 10,
+  "p1_outputs": [
+    {
+      "asset_id": "OP_SHOT_018_R3_039750ms_NADIA_RUN_FACE_TURN",
+      "parent_item_id": "OP_SHOT_018",
+      "parent_video_unit_id": "VU_REF003_011_RUNNING_MONTAGE",
+      "output_path": "08_generation/jobs/REFERENCE003_FRAME_PROMOTION_R3_20260630/outputs/OP_SHOT_018_R3_039750ms_NADIA_RUN_FACE_TURN.png",
+      "status": "generated_reference003_r3_p1_qa_pass",
+      "generated_at": "2026-06-30T19:58:57+08:00",
+      "qa_notes": "Generated P1 expansion asset; Nadia identity/costume locked to approved Nadia image, running face/action beat preserved, no text/logo."
+    },
+    {
+      "asset_id": "OP_SHOT_018_R3_040125ms_NADIA_TO_JEAN_BRIDGE",
+      "parent_item_id": "OP_SHOT_018",
+      "parent_video_unit_id": "VU_REF003_011_RUNNING_MONTAGE",
+      "output_path": "08_generation/jobs/REFERENCE003_FRAME_PROMOTION_R3_20260630/outputs/OP_SHOT_018_R3_040125ms_NADIA_TO_JEAN_BRIDGE.png",
+      "status": "generated_reference003_r3_p1_qa_pass",
+      "generated_at": "2026-06-30T19:58:57+08:00",
+      "qa_notes": "Generated P1 bridge asset; Nadia running beat remains consistent and usable as transition toward Jean, no text/logo."
+    },
+    {
+      "asset_id": "OP_SHOT_019_R3_040750ms_JEAN_RUN_START",
+      "parent_item_id": "OP_SHOT_019",
+      "parent_video_unit_id": "VU_REF003_011_RUNNING_MONTAGE",
+      "output_path": "08_generation/jobs/REFERENCE003_FRAME_PROMOTION_R3_20260630/outputs/OP_SHOT_019_R3_040750ms_JEAN_RUN_START.png",
+      "status": "generated_reference003_r3_p1_qa_pass",
+      "generated_at": "2026-06-30T19:58:57+08:00",
+      "qa_notes": "Generated P1 expansion asset; Jean identity/costume locked, start running pose/low sky camera preserved, no text/logo."
+    },
+    {
+      "asset_id": "OP_SHOT_019_R3_042125ms_JEAN_RUN_END",
+      "parent_item_id": "OP_SHOT_019",
+      "parent_video_unit_id": "VU_REF003_011_RUNNING_MONTAGE",
+      "output_path": "08_generation/jobs/REFERENCE003_FRAME_PROMOTION_R3_20260630/outputs/OP_SHOT_019_R3_042125ms_JEAN_RUN_END.png",
+      "status": "generated_reference003_r3_p1_qa_pass",
+      "generated_at": "2026-06-30T19:58:57+08:00",
+      "qa_notes": "Generated P1 expansion asset; Jean identity/costume remains consistent, end/profile running pose preserved, no text/logo."
+    },
+    {
+      "asset_id": "OP_SHOT_020_R3_042750ms_MARIE_KING_START",
+      "parent_item_id": "OP_SHOT_020",
+      "parent_video_unit_id": "VU_REF003_011_RUNNING_MONTAGE",
+      "output_path": "08_generation/jobs/REFERENCE003_FRAME_PROMOTION_R3_20260630/outputs/OP_SHOT_020_R3_042750ms_MARIE_KING_START.png",
+      "status": "generated_reference003_r3_p1_qa_pass",
+      "generated_at": "2026-06-30T19:58:57+08:00",
+      "qa_notes": "Generated P1 expansion asset; Marie and King identities locked, close running entry energy preserved, no text/logo."
+    },
+    {
+      "asset_id": "OP_SHOT_020_R3_044375ms_MARIE_KING_END",
+      "parent_item_id": "OP_SHOT_020",
+      "parent_video_unit_id": "VU_REF003_011_RUNNING_MONTAGE",
+      "output_path": "08_generation/jobs/REFERENCE003_FRAME_PROMOTION_R3_20260630/outputs/OP_SHOT_020_R3_044375ms_MARIE_KING_END.png",
+      "status": "generated_reference003_r3_p1_qa_pass",
+      "generated_at": "2026-06-30T19:58:57+08:00",
+      "qa_notes": "Generated P1 expansion asset; Marie and King separated into wider outgoing leap/run pose, no text/logo."
+    },
+    {
+      "asset_id": "OP_SHOT_023_R3_047250ms_GRANDIS_ACTION_START",
+      "parent_item_id": "OP_SHOT_023",
+      "parent_video_unit_id": "VU_REF003_012_GRANDIS_VEHICLE_ACTION",
+      "output_path": "08_generation/jobs/REFERENCE003_FRAME_PROMOTION_R3_20260630/outputs/OP_SHOT_023_R3_047250ms_GRANDIS_ACTION_START.png",
+      "status": "generated_reference003_r3_p1_qa_pass",
+      "generated_at": "2026-06-30T19:58:57+08:00",
+      "qa_notes": "Generated P1 expansion asset; Grandis trio identities/costumes locked, action start preserved, no text/logo."
+    },
+    {
+      "asset_id": "OP_SHOT_023_R3_048625ms_GRANDIS_TO_VEHICLE_END",
+      "parent_item_id": "OP_SHOT_023",
+      "parent_video_unit_id": "VU_REF003_012_GRANDIS_VEHICLE_ACTION",
+      "output_path": "08_generation/jobs/REFERENCE003_FRAME_PROMOTION_R3_20260630/outputs/OP_SHOT_023_R3_048625ms_GRANDIS_TO_VEHICLE_END.png",
+      "status": "generated_reference003_r3_p1_qa_pass",
+      "generated_at": "2026-06-30T19:58:57+08:00",
+      "qa_notes": "Generated P1 bridge asset; Grandis trio remains identifiable while bridging into red craft/water-spray sequence, no text/logo."
+    },
+    {
+      "asset_id": "OP_SHOT_024_R3_048850ms_VEHICLE_BURST_START",
+      "parent_item_id": "OP_SHOT_024",
+      "parent_video_unit_id": "VU_REF003_012_GRANDIS_VEHICLE_ACTION",
+      "output_path": "08_generation/jobs/REFERENCE003_FRAME_PROMOTION_R3_20260630/outputs/OP_SHOT_024_R3_048850ms_VEHICLE_BURST_START.png",
+      "status": "generated_reference003_r3_p1_qa_pass",
+      "generated_at": "2026-06-30T19:58:57+08:00",
+      "qa_notes": "Generated P1 expansion asset; red retro craft design locked, close burst-through-spray start state preserved, no text/logo."
+    },
+    {
+      "asset_id": "OP_SHOT_024_R3_050225ms_VEHICLE_FAR_END",
+      "parent_item_id": "OP_SHOT_024",
+      "parent_video_unit_id": "VU_REF003_012_GRANDIS_VEHICLE_ACTION",
+      "output_path": "08_generation/jobs/REFERENCE003_FRAME_PROMOTION_R3_20260630/outputs/OP_SHOT_024_R3_050225ms_VEHICLE_FAR_END.png",
+      "status": "generated_reference003_r3_p1_qa_pass",
+      "generated_at": "2026-06-30T19:58:57+08:00",
+      "qa_notes": "Generated P1 expansion asset; same red retro craft design locked at far/end sky scale, no text/logo."
+    }
+  ],
+  "p1_generated_at": "2026-06-30T19:58:57+08:00",
+  "contact_sheet_path": "08_generation/jobs/REFERENCE003_FRAME_PROMOTION_R3_20260630/outputs/REFERENCE003_R3_generated_assets_contact_sheet.jpg",
+  "p1_qa_notes": "P1 batch generated 10/10 and contact-sheet visual QA completed. Outputs are registered for optional expanded preview/AIGC input; no mp4 was generated after the director requested image-only batch work."
+}

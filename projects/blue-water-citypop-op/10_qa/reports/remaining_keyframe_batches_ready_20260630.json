@@ -1,0 +1,76 @@
+{
+  "updated_at": "2026-06-30T06:06:28+08:00",
+  "project": "blue-water-citypop-op",
+  "status": "remaining_keyframe_batches_ready_no_generation_in_warn_window",
+  "completed_keyframes": "OP_SHOT_001 through OP_SHOT_024",
+  "remaining_keyframes": "OP_SHOT_025 through OP_SHOT_042",
+  "batches": [
+    {
+      "batch": "BATCH05",
+      "job_id": "REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY",
+      "status": "refs_prepared_no_generation_in_warn_window",
+      "shot_range": [
+        "OP_SHOT_025",
+        "OP_SHOT_030"
+      ],
+      "summary": "group lineup, Nautilus underwater start, night city/grid",
+      "reference_sheet": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/refs/REFERENCE003_QA_BATCH05_reference_sheet.jpg",
+      "prompt_pack": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/prompts/BATCH05_generation_prompt_pack.md",
+      "qa_checklist": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/BATCH05_QA_CHECKLIST.md",
+      "output_dir": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs",
+      "shots": [
+        "OP_SHOT_025",
+        "OP_SHOT_026",
+        "OP_SHOT_027",
+        "OP_SHOT_028",
+        "OP_SHOT_029",
+        "OP_SHOT_030"
+      ]
+    },
+    {
+      "batch": "BATCH06",
+      "job_id": "REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY",
+      "status": "refs_prepared_no_generation_in_warn_window",
+      "shot_range": [
+        "OP_SHOT_031",
+        "OP_SHOT_036"
+      ],
+      "summary": "night aircraft, Nemo sunset profile, Nadia solemn, Blue Water symbol",
+      "reference_sheet": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/refs/REFERENCE003_QA_BATCH06_reference_sheet.jpg",
+      "prompt_pack": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/prompts/BATCH06_generation_prompt_pack.md",
+      "qa_checklist": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/BATCH06_QA_CHECKLIST.md",
+      "output_dir": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs",
+      "shots": [
+        "OP_SHOT_031",
+        "OP_SHOT_032",
+        "OP_SHOT_033",
+        "OP_SHOT_034",
+        "OP_SHOT_035",
+        "OP_SHOT_036"
+      ]
+    },
+    {
+      "batch": "BATCH07",
+      "job_id": "REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY",
+      "status": "refs_prepared_no_generation_in_warn_window",
+      "shot_range": [
+        "OP_SHOT_037",
+        "OP_SHOT_042"
+      ],
+      "summary": "underwater blue texture, water burst, final sky, black tail",
+      "reference_sheet": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/refs/REFERENCE003_QA_BATCH07_reference_sheet.jpg",
+      "prompt_pack": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/prompts/BATCH07_generation_prompt_pack.md",
+      "qa_checklist": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/BATCH07_QA_CHECKLIST.md",
+      "output_dir": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs",
+      "shots": [
+        "OP_SHOT_037",
+        "OP_SHOT_038",
+        "OP_SHOT_039",
+        "OP_SHOT_040",
+        "OP_SHOT_041",
+        "OP_SHOT_042"
+      ]
+    }
+  ],
+  "next_window_instruction": "Open a fresh window, read HANDOFF_LATEST.md, generate BATCH05 then BATCH06 then BATCH07, QA each batch, normalize accepted outputs to 1915x821, update board/shot_list, and write reference003_qa_batch05/06/07 reports."
+}

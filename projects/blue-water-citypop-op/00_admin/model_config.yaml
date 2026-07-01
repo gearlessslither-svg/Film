@@ -1,0 +1,26 @@
+schema_version: 1
+policy:
+  routing: "local_first_remote_fallback"
+  secrets_rule: "Do not commit API keys or private tokens."
+local_models:
+  text_analysis:
+    provider: "local"
+    endpoint: ""
+    model: ""
+  vision_analysis:
+    provider: "local"
+    endpoint: ""
+    model: ""
+remote_models:
+  text_analysis:
+    provider: ""
+    model: ""
+  image_generation:
+    provider: ""
+    model: ""
+  video_generation:
+    provider: ""
+    model: ""
+fallback:
+  when_local_unavailable: "Use remote model after recording the reason in 00_admin/project_log.md."
+  when_remote_unavailable: "Continue with local draft outputs and mark outputs as provisional."

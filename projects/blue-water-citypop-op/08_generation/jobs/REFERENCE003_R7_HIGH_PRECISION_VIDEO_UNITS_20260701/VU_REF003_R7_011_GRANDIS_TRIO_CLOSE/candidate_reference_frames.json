@@ -1,0 +1,38 @@
+[
+  {
+    "asset_id": "R7_CAND_011_start_035983ms",
+    "parent_video_unit_id": "VU_REF003_R7_011_GRANDIS_TRIO_CLOSE",
+    "role": "start",
+    "source_time_sec": 35.983,
+    "source_timecode": "00:35.98",
+    "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_011_GRANDIS_TRIO_CLOSE/candidate_reference_frames/R7_CAND_011_start_035983ms.jpg",
+    "priority": "P1_generate_next_small_batch",
+    "status": "candidate_reference_frame_needs_prompt_and_generation",
+    "difference_reason": "Grandis三人组近景 start boundary/transition frame from R7 high-precision split.",
+    "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_011_start_035983ms.png"
+  },
+  {
+    "asset_id": "R7_CAND_011_end_037174ms",
+    "parent_video_unit_id": "VU_REF003_R7_011_GRANDIS_TRIO_CLOSE",
+    "role": "end",
+    "source_time_sec": 37.174,
+    "source_timecode": "00:37.17",
+    "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_011_GRANDIS_TRIO_CLOSE/candidate_reference_frames/R7_CAND_011_end_037174ms.jpg",
+    "priority": "P3_reference_video_or_already_handled",
+    "status": "candidate_reference_frame_review",
+    "difference_reason": "Grandis三人组近景 end boundary/transition frame from R7 high-precision split.",
+    "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_011_end_037174ms.png"
+  },
+  {
+    "asset_id": "R7_CAND_011_middle_036579ms",
+    "parent_video_unit_id": "VU_REF003_R7_011_GRANDIS_TRIO_CLOSE",
+    "role": "middle",
+    "source_time_sec": 36.579,
+    "source_timecode": "00:36.58",
+    "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_011_GRANDIS_TRIO_CLOSE/candidate_reference_frames/R7_CAND_011_middle_036579ms.jpg",
+    "priority": "P1_generate_next_small_batch",
+    "status": "candidate_reference_frame_needs_prompt_and_generation",
+    "difference_reason": "Grandis三人组近景 middle boundary/transition frame from R7 high-precision split.",
+    "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_011_middle_036579ms.png"
+  }
+]

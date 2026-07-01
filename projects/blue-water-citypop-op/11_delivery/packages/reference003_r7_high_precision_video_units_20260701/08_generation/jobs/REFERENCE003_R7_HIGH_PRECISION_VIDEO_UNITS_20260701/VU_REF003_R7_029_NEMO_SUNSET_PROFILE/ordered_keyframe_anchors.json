@@ -1,0 +1,32 @@
+[
+  {
+    "order": 1,
+    "item_id": "OP_SHOT_032",
+    "kind": "official_keyframe",
+    "time_sec": 66.5,
+    "timecode": "01:06.50",
+    "role": "图1 / Nemo_profile_start",
+    "beat": "Nemo 夕景初入",
+    "difference_reason": "",
+    "source_reference_frame": "",
+    "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_032.png",
+    "packaged_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_029_NEMO_SUNSET_PROFILE/keyframes/01_OP_SHOT_032.png",
+    "exists": true,
+    "source_unit_id": "VU_REF003_016_NEMO_SUNSET_PROFILE"
+  },
+  {
+    "order": 2,
+    "item_id": "OP_SHOT_033",
+    "kind": "official_keyframe",
+    "time_sec": 69.5,
+    "timecode": "01:09.50",
+    "role": "图2 / Nemo_profile_hold",
+    "beat": "Nemo 夕景 hold",
+    "difference_reason": "",
+    "source_reference_frame": "",
+    "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_033.png",
+    "packaged_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_029_NEMO_SUNSET_PROFILE/keyframes/02_OP_SHOT_033.png",
+    "exists": true,
+    "source_unit_id": "VU_REF003_016_NEMO_SUNSET_PROFILE"
+  }
+]

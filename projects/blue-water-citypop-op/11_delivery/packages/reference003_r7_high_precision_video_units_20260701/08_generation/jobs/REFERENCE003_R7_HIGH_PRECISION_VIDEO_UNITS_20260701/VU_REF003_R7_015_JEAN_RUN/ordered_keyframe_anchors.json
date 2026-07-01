@@ -1,0 +1,32 @@
+[
+  {
+    "order": 1,
+    "item_id": "OP_SHOT_019",
+    "kind": "official_keyframe",
+    "time_sec": 41.5,
+    "timecode": "00:41.50",
+    "role": "图3 / Jean_run",
+    "beat": "Jean 奔跑",
+    "difference_reason": "",
+    "source_reference_frame": "",
+    "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH04/outputs/OP_SHOT_019.png",
+    "packaged_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_015_JEAN_RUN/keyframes/01_OP_SHOT_019.png",
+    "exists": true,
+    "source_unit_id": "VU_REF003_011_RUNNING_MONTAGE"
+  },
+  {
+    "order": 2,
+    "item_id": "OP_SHOT_020",
+    "kind": "official_keyframe",
+    "time_sec": 43.5,
+    "timecode": "00:43.50",
+    "role": "图4 / Marie_run",
+    "beat": "Marie 奔跑",
+    "difference_reason": "",
+    "source_reference_frame": "",
+    "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH04/outputs/OP_SHOT_020.png",
+    "packaged_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_015_JEAN_RUN/keyframes/02_OP_SHOT_020.png",
+    "exists": true,
+    "source_unit_id": "VU_REF003_011_RUNNING_MONTAGE"
+  }
+]

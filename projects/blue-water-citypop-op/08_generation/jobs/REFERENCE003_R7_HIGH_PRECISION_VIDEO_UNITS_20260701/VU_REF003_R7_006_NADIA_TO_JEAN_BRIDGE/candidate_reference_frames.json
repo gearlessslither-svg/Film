@@ -1,0 +1,38 @@
+[
+  {
+    "asset_id": "R7_CAND_006_start_026848ms",
+    "parent_video_unit_id": "VU_REF003_R7_006_NADIA_TO_JEAN_BRIDGE",
+    "role": "start",
+    "source_time_sec": 26.848,
+    "source_timecode": "00:26.85",
+    "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_006_NADIA_TO_JEAN_BRIDGE/candidate_reference_frames/R7_CAND_006_start_026848ms.jpg",
+    "priority": "P3_reference_video_or_already_handled",
+    "status": "candidate_reference_frame_review",
+    "difference_reason": "Nadia到Jean过渡 start boundary/transition frame from R7 high-precision split.",
+    "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_006_start_026848ms.png"
+  },
+  {
+    "asset_id": "R7_CAND_006_end_028832ms",
+    "parent_video_unit_id": "VU_REF003_R7_006_NADIA_TO_JEAN_BRIDGE",
+    "role": "end",
+    "source_time_sec": 28.832,
+    "source_timecode": "00:28.83",
+    "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_006_NADIA_TO_JEAN_BRIDGE/candidate_reference_frames/R7_CAND_006_end_028832ms.jpg",
+    "priority": "P3_reference_video_or_already_handled",
+    "status": "candidate_reference_frame_review",
+    "difference_reason": "Nadia到Jean过渡 end boundary/transition frame from R7 high-precision split.",
+    "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_006_end_028832ms.png"
+  },
+  {
+    "asset_id": "R7_CAND_006_middle_027840ms",
+    "parent_video_unit_id": "VU_REF003_R7_006_NADIA_TO_JEAN_BRIDGE",
+    "role": "middle",
+    "source_time_sec": 27.84,
+    "source_timecode": "00:27.84",
+    "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_006_NADIA_TO_JEAN_BRIDGE/candidate_reference_frames/R7_CAND_006_middle_027840ms.jpg",
+    "priority": "P3_reference_video_or_already_handled",
+    "status": "candidate_reference_frame_review",
+    "difference_reason": "Nadia到Jean过渡 middle boundary/transition frame from R7 high-precision split.",
+    "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_006_middle_027840ms.png"
+  }
+]

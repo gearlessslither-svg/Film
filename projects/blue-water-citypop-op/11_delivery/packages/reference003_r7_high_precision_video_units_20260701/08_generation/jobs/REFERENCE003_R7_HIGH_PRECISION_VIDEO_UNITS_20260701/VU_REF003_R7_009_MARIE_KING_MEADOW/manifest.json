@@ -1,0 +1,108 @@
+{
+  "schema_version": "reference003_r7_high_precision_video_unit_package_v1",
+  "created_at": "2026-07-01T07:36:06+08:00",
+  "status": "ready_for_external_aigc_video_generation",
+  "unit": {
+    "order": 9,
+    "unit_id": "VU_REF003_R7_009_MARIE_KING_MEADOW",
+    "title": "Marie与King草地段",
+    "start": 31.949,
+    "end": 33.951,
+    "intent": "Marie 与 King 草地亮相，儿童/动物锁定。",
+    "active_locks": [
+      [
+        "characters",
+        "marie"
+      ],
+      [
+        "characters",
+        "king"
+      ]
+    ],
+    "mode": "high_precision_segment"
+  },
+  "reference_clip": {
+    "path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_009_MARIE_KING_MEADOW/reference_clip/VU_REF003_R7_009_MARIE_KING_MEADOW_reference.mp4",
+    "start_sec": 31.949,
+    "end_sec": 33.951,
+    "duration_sec": 2.002,
+    "ok": true,
+    "decode_ok": true,
+    "stderr_tail": "      handler_name    : VideoHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : Lavc60.31.102 mpeg4\n    Side data:\n      cpb: bitrate max/min/avg: 0/0/200000 buffer size: 0 vbv_delay: N/A\nframe=    0 fps=0.0 q=3.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    \n[out#0/mp4 @ 0x7af00c9c0] video:1933kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 0.086360%\nframe=   48 fps=0.0 q=3.0 Lsize=    1934kB time=00:00:01.96 bitrate=8083.0kbits/s speed=17.6x    "
+  },
+  "ordered_generated_anchors": [
+    {
+      "order": 1,
+      "item_id": "OP_SHOT_014",
+      "kind": "official_keyframe",
+      "time_sec": 34.0,
+      "timecode": "00:34.00",
+      "role": "图2 / Marie_King_close",
+      "beat": "Marie 与 King 近景",
+      "difference_reason": "",
+      "source_reference_frame": "",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_014.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_009_MARIE_KING_MEADOW/keyframes/01_OP_SHOT_014.png",
+      "exists": true,
+      "source_unit_id": "VU_REF003_009_MARIE_KING_MEADOW"
+    }
+  ],
+  "candidate_reference_frames": [
+    {
+      "asset_id": "R7_CAND_009_start_031979ms",
+      "parent_video_unit_id": "VU_REF003_R7_009_MARIE_KING_MEADOW",
+      "role": "start",
+      "source_time_sec": 31.979,
+      "source_timecode": "00:31.98",
+      "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_009_MARIE_KING_MEADOW/candidate_reference_frames/R7_CAND_009_start_031979ms.jpg",
+      "priority": "P1_generate_next_small_batch",
+      "status": "candidate_reference_frame_needs_prompt_and_generation",
+      "difference_reason": "Marie与King草地段 start boundary/transition frame from R7 high-precision split.",
+      "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_009_start_031979ms.png"
+    },
+    {
+      "asset_id": "R7_CAND_009_end_033921ms",
+      "parent_video_unit_id": "VU_REF003_R7_009_MARIE_KING_MEADOW",
+      "role": "end",
+      "source_time_sec": 33.921,
+      "source_timecode": "00:33.92",
+      "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_009_MARIE_KING_MEADOW/candidate_reference_frames/R7_CAND_009_end_033921ms.jpg",
+      "priority": "P3_reference_video_or_already_handled",
+      "status": "candidate_reference_frame_review",
+      "difference_reason": "Marie与King草地段 end boundary/transition frame from R7 high-precision split.",
+      "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_009_end_033921ms.png"
+    },
+    {
+      "asset_id": "R7_CAND_009_middle_032950ms",
+      "parent_video_unit_id": "VU_REF003_R7_009_MARIE_KING_MEADOW",
+      "role": "middle",
+      "source_time_sec": 32.95,
+      "source_timecode": "00:32.95",
+      "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_009_MARIE_KING_MEADOW/candidate_reference_frames/R7_CAND_009_middle_032950ms.jpg",
+      "priority": "P1_generate_next_small_batch",
+      "status": "candidate_reference_frame_needs_prompt_and_generation",
+      "difference_reason": "Marie与King草地段 middle boundary/transition frame from R7 high-precision split.",
+      "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_009_middle_032950ms.png"
+    }
+  ],
+  "active_asset_locks": [
+    {
+      "group": "characters",
+      "asset_id": "marie",
+      "status": "official_identity_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_014.png",
+      "global_lock_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_global_asset_locks/characters_marie.png",
+      "exists": true
+    },
+    {
+      "group": "characters",
+      "asset_id": "king",
+      "status": "official_identity_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_014.png",
+      "global_lock_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_global_asset_locks/characters_king.png",
+      "exists": true
+    }
+  ],
+  "prompt_only": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_PROMPT_INDEX/PROMPT_ONLY/09_VU_REF003_R7_009_MARIE_KING_MEADOW.md",
+  "expected_video_output_path": "08_generation/outputs/video/reference003_r7_high_precision_segments/VU_REF003_R7_009_MARIE_KING_MEADOW.mp4"
+}

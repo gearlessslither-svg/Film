@@ -1,0 +1,10 @@
+[
+  {
+    "group": "props_vehicles_symbols",
+    "asset_id": "white_bird",
+    "status": "official_prop_lock",
+    "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_003.png",
+    "global_lock_path": "08_generation/jobs/REFERENCE003_R6_OPENING_LONG_UNITS_20260701/_global_asset_locks/props_vehicles_symbols_white_bird.png",
+    "exists": true
+  }
+]

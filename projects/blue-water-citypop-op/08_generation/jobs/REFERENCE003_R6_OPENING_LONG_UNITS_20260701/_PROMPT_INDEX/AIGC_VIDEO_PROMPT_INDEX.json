@@ -1,0 +1,76 @@
+[
+  {
+    "order": 1,
+    "unit_id": "VU_REF003_OPENING_L01_CLOUD_BIRD_LONG",
+    "title": "开场长镜头 A：黑场云层到白鸟入画",
+    "time_range": "00:00.00-00:07.00",
+    "job_dir": "08_generation/jobs/REFERENCE003_R6_OPENING_LONG_UNITS_20260701/VU_REF003_OPENING_L01_CLOUD_BIRD_LONG",
+    "reference_clip": {
+      "path": "08_generation/jobs/REFERENCE003_R6_OPENING_LONG_UNITS_20260701/VU_REF003_OPENING_L01_CLOUD_BIRD_LONG/reference_clip/VU_REF003_OPENING_L01_CLOUD_BIRD_LONG_reference.mp4",
+      "start_sec": 0.0,
+      "end_sec": 7.0,
+      "duration_sec": 7.0,
+      "ok": true,
+      "decode_ok": true,
+      "stderr_tail": "      handler_name    : VideoHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : Lavc60.31.102 mpeg4\n    Side data:\n      cpb: bitrate max/min/avg: 0/0/200000 buffer size: 0 vbv_delay: N/A\nframe=    0 fps=0.0 q=3.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    \n[out#0/mp4 @ 0x72f05c480] video:1940kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 0.113012%\nframe=  168 fps=0.0 q=3.0 Lsize=    1942kB time=00:00:06.96 bitrate=2284.2kbits/s speed=  31x    "
+    },
+    "keyframe_anchor_count": 6,
+    "active_locks": [
+      "white_bird"
+    ],
+    "prompt_only": "08_generation/jobs/REFERENCE003_R6_OPENING_LONG_UNITS_20260701/_PROMPT_INDEX/PROMPT_ONLY/01_VU_REF003_OPENING_L01_CLOUD_BIRD_LONG.md",
+    "generation_brief": "08_generation/jobs/REFERENCE003_R6_OPENING_LONG_UNITS_20260701/VU_REF003_OPENING_L01_CLOUD_BIRD_LONG/AIGC_VIDEO_GENERATION_BRIEF.md",
+    "expected_video_output_path": "08_generation/outputs/video/reference003_r6_opening_long_segments/VU_REF003_OPENING_L01_CLOUD_BIRD_LONG.mp4",
+    "ready": true
+  },
+  {
+    "order": 2,
+    "unit_id": "VU_REF003_OPENING_L02_BIRD_CLOUD_AIRCRAFT_LONG",
+    "title": "开场长镜头 B：白鸟云层到飞行器短显",
+    "time_range": "00:07.00-00:16.50",
+    "job_dir": "08_generation/jobs/REFERENCE003_R6_OPENING_LONG_UNITS_20260701/VU_REF003_OPENING_L02_BIRD_CLOUD_AIRCRAFT_LONG",
+    "reference_clip": {
+      "path": "08_generation/jobs/REFERENCE003_R6_OPENING_LONG_UNITS_20260701/VU_REF003_OPENING_L02_BIRD_CLOUD_AIRCRAFT_LONG/reference_clip/VU_REF003_OPENING_L02_BIRD_CLOUD_AIRCRAFT_LONG_reference.mp4",
+      "start_sec": 7.0,
+      "end_sec": 16.5,
+      "duration_sec": 9.5,
+      "ok": true,
+      "decode_ok": true,
+      "stderr_tail": "      handler_name    : VideoHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : Lavc60.31.102 mpeg4\n    Side data:\n      cpb: bitrate max/min/avg: 0/0/200000 buffer size: 0 vbv_delay: N/A\nframe=    0 fps=0.0 q=3.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    \n[out#0/mp4 @ 0x9a7068480] video:3444kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 0.072042%\nframe=  228 fps=0.0 q=3.0 Lsize=    3447kB time=00:00:09.46 bitrate=2982.4kbits/s speed=31.9x    "
+    },
+    "keyframe_anchor_count": 7,
+    "active_locks": [
+      "white_bird",
+      "jean_aircraft"
+    ],
+    "prompt_only": "08_generation/jobs/REFERENCE003_R6_OPENING_LONG_UNITS_20260701/_PROMPT_INDEX/PROMPT_ONLY/02_VU_REF003_OPENING_L02_BIRD_CLOUD_AIRCRAFT_LONG.md",
+    "generation_brief": "08_generation/jobs/REFERENCE003_R6_OPENING_LONG_UNITS_20260701/VU_REF003_OPENING_L02_BIRD_CLOUD_AIRCRAFT_LONG/AIGC_VIDEO_GENERATION_BRIEF.md",
+    "expected_video_output_path": "08_generation/outputs/video/reference003_r6_opening_long_segments/VU_REF003_OPENING_L02_BIRD_CLOUD_AIRCRAFT_LONG.mp4",
+    "ready": true
+  },
+  {
+    "order": 3,
+    "unit_id": "VU_REF003_OPENING_L03_TITLE_FLARE_NADIA_LONG",
+    "title": "开场长镜头 C：标题安全位到日光转 Nadia",
+    "time_range": "00:16.50-00:24.80",
+    "job_dir": "08_generation/jobs/REFERENCE003_R6_OPENING_LONG_UNITS_20260701/VU_REF003_OPENING_L03_TITLE_FLARE_NADIA_LONG",
+    "reference_clip": {
+      "path": "08_generation/jobs/REFERENCE003_R6_OPENING_LONG_UNITS_20260701/VU_REF003_OPENING_L03_TITLE_FLARE_NADIA_LONG/reference_clip/VU_REF003_OPENING_L03_TITLE_FLARE_NADIA_LONG_reference.mp4",
+      "start_sec": 16.5,
+      "end_sec": 24.8,
+      "duration_sec": 8.3,
+      "ok": true,
+      "decode_ok": true,
+      "stderr_tail": "      handler_name    : VideoHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : Lavc60.31.102 mpeg4\n    Side data:\n      cpb: bitrate max/min/avg: 0/0/200000 buffer size: 0 vbv_delay: N/A\nframe=    0 fps=0.0 q=3.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    \n[out#0/mp4 @ 0x78d060480] video:5432kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 0.044319%\nframe=  200 fps=0.0 q=3.0 Lsize=    5434kB time=00:00:08.29 bitrate=5363.4kbits/s speed=26.6x    "
+    },
+    "keyframe_anchor_count": 5,
+    "active_locks": [
+      "nadia",
+      "blue_water_pendant"
+    ],
+    "prompt_only": "08_generation/jobs/REFERENCE003_R6_OPENING_LONG_UNITS_20260701/_PROMPT_INDEX/PROMPT_ONLY/03_VU_REF003_OPENING_L03_TITLE_FLARE_NADIA_LONG.md",
+    "generation_brief": "08_generation/jobs/REFERENCE003_R6_OPENING_LONG_UNITS_20260701/VU_REF003_OPENING_L03_TITLE_FLARE_NADIA_LONG/AIGC_VIDEO_GENERATION_BRIEF.md",
+    "expected_video_output_path": "08_generation/outputs/video/reference003_r6_opening_long_segments/VU_REF003_OPENING_L03_TITLE_FLARE_NADIA_LONG.mp4",
+    "ready": true
+  }
+]

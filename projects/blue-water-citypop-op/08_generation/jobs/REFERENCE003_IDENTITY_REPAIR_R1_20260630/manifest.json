@@ -1,0 +1,1011 @@
+{
+  "schema_version": "reference003_identity_repair_r1",
+  "project_slug": "blue-water-citypop-op",
+  "created_at": "2026-06-30T17:02:05+08:00",
+  "status": "hard_replacements_applied_to_board",
+  "boundary": "Image repair and dense reference package only. Do not assemble final video until replacement images pass identity/asset QA.",
+  "setting_chapter": "05_asset_bible/setting_chapters/reference003_setting_chapter_v1.md",
+  "asset_lock_manifest": "05_asset_bible/setting_chapters/reference003_asset_locks_v1.json",
+  "dense_reference_manifest": "01_intake/analysis/reference003_dense_repair_frames_20260630/manifest.json",
+  "combined_dense_reference_sheet": "01_intake/analysis/reference003_dense_repair_frames_20260630/reference003_identity_repair_dense_selected_sheet.jpg",
+  "packaged_asset_locks": [
+    {
+      "asset_id": "nadia",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_011_v2.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_IDENTITY_REPAIR_R1_20260630/asset_locks/nadia.png",
+      "exists": true
+    },
+    {
+      "asset_id": "jean",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_012.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_IDENTITY_REPAIR_R1_20260630/asset_locks/jean.png",
+      "exists": true
+    },
+    {
+      "asset_id": "marie",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_014.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_IDENTITY_REPAIR_R1_20260630/asset_locks/marie.png",
+      "exists": true
+    },
+    {
+      "asset_id": "king",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_014.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_IDENTITY_REPAIR_R1_20260630/asset_locks/king.png",
+      "exists": true
+    },
+    {
+      "asset_id": "grandis",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_016_v2.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_IDENTITY_REPAIR_R1_20260630/asset_locks/grandis.png",
+      "exists": true
+    },
+    {
+      "asset_id": "sanson",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_016_v2.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_IDENTITY_REPAIR_R1_20260630/asset_locks/sanson.png",
+      "exists": true
+    },
+    {
+      "asset_id": "hanson",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_016_v2.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_IDENTITY_REPAIR_R1_20260630/asset_locks/hanson.png",
+      "exists": true
+    },
+    {
+      "asset_id": "nemo",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_032.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_IDENTITY_REPAIR_R1_20260630/asset_locks/nemo.png",
+      "exists": true
+    },
+    {
+      "asset_id": "blue_water_pendant",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_035.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_IDENTITY_REPAIR_R1_20260630/asset_locks/blue_water_pendant.png",
+      "exists": true
+    },
+    {
+      "asset_id": "white_bird",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_003.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_IDENTITY_REPAIR_R1_20260630/asset_locks/white_bird.png",
+      "exists": true
+    },
+    {
+      "asset_id": "jean_aircraft",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_007.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_IDENTITY_REPAIR_R1_20260630/asset_locks/jean_aircraft.png",
+      "exists": true
+    },
+    {
+      "asset_id": "nautilus",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_026.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_IDENTITY_REPAIR_R1_20260630/asset_locks/nautilus.png",
+      "exists": true
+    },
+    {
+      "asset_id": "blue_grid_geometry",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_030.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_IDENTITY_REPAIR_R1_20260630/asset_locks/blue_grid_geometry.png",
+      "exists": true
+    },
+    {
+      "asset_id": "water_burst_transition",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_038.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_IDENTITY_REPAIR_R1_20260630/asset_locks/water_burst_transition.png",
+      "exists": true
+    }
+  ],
+  "items": [
+    {
+      "item_id": "OP_SHOT_018",
+      "priority": 4,
+      "label": "Nadia running front identity continuity",
+      "hard_replace": false,
+      "action": "regenerate_if_face_drift_after_dense_reference_review",
+      "current_output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_018.png",
+      "prompt_path": "08_generation/jobs/REFERENCE003_IDENTITY_REPAIR_R1_20260630/prompts/OP_SHOT_018_identity_repair_prompt.md",
+      "selected_reference_frames": [
+        {
+          "index": 1,
+          "time_sec": 38.75,
+          "timecode": "00:38.75",
+          "path": "01_intake/analysis/reference003_dense_repair_frames_20260630/candidates/OP_SHOT_018/OP_SHOT_018_cand_0001.jpg",
+          "sharpness": 49.1774,
+          "delta": 0.0,
+          "center_distance": 0.75,
+          "select_reason": "window_start",
+          "selected_order": 1,
+          "selected_path": "01_intake/analysis/reference003_dense_repair_frames_20260630/selected/OP_SHOT_018/OP_SHOT_018_sel_01_038750ms.jpg",
+          "item_id": "OP_SHOT_018"
+        },
+        {
+          "index": 7,
+          "time_sec": 39.5,
+          "timecode": "00:39.50",
+          "path": "01_intake/analysis/reference003_dense_repair_frames_20260630/candidates/OP_SHOT_018/OP_SHOT_018_cand_0007.jpg",
+          "sharpness": 55.1168,
+          "delta": 56.1232,
+          "center_distance": 0.0,
+          "select_reason": "center_time",
+          "selected_order": 2,
+          "selected_path": "01_intake/analysis/reference003_dense_repair_frames_20260630/selected/OP_SHOT_018/OP_SHOT_018_sel_02_039500ms.jpg",
+          "item_id": "OP_SHOT_018"
+        },
+        {
+          "index": 9,
+          "time_sec": 39.75,
+          "timecode": "00:39.75",
+          "path": "01_intake/analysis/reference003_dense_repair_frames_20260630/candidates/OP_SHOT_018/OP_SHOT_018_cand_0009.jpg",
+          "sharpness": 64.6326,
+          "delta": 80.2692,
+          "center_distance": 0.25,
+          "select_reason": "motion_change",
+          "selected_order": 3,
+          "selected_path": "01_intake/analysis/reference003_dense_repair_frames_20260630/selected/OP_SHOT_018/OP_SHOT_018_sel_03_039750ms.jpg",
+          "item_id": "OP_SHOT_018"
+        },
+        {
+          "index": 11,
+          "time_sec": 40.0,
+          "timecode": "00:40.00",
+          "path": "01_intake/analysis/reference003_dense_repair_frames_20260630/candidates/OP_SHOT_018/OP_SHOT_018_cand_0011.jpg",
+          "sharpness": 62.5503,
+          "delta": 63.8833,
+          "center_distance": 0.5,
+          "select_reason": "motion_change",
+          "selected_order": 4,
+          "selected_path": "01_intake/analysis/reference003_dense_repair_frames_20260630/selected/OP_SHOT_018/OP_SHOT_018_sel_04_040000ms.jpg",
+          "item_id": "OP_SHOT_018"
+        },
+        {
+          "index": 12,
+          "time_sec": 40.125,
+          "timecode": "00:40.12",
+          "path": "01_intake/analysis/reference003_dense_repair_frames_20260630/candidates/OP_SHOT_018/OP_SHOT_018_cand_0012.jpg",
+          "sharpness": 58.2462,
+          "delta": 32.6058,
+          "center_distance": 0.625,
+          "select_reason": "window_end",
+          "selected_order": 5,
+          "selected_path": "01_intake/analysis/reference003_dense_repair_frames_20260630/selected/OP_SHOT_018/OP_SHOT_018_sel_05_040125ms.jpg",
+          "item_id": "OP_SHOT_018"
+        }
+      ],
+      "locks": [
+        "nadia",
+        "blue_water_pendant"
+      ],
+      "notes": "Use OP_SHOT_011_v2 as Nadia face lock; preserve running pose only from video."
+    },
+    {
+      "item_id": "OP_SHOT_019",
+      "priority": 5,
+      "label": "Jean running identity continuity",
+      "hard_replace": false,
+      "action": "regenerate_if_face_or_costume_drift_after_dense_reference_review",
+      "current_output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH04/outputs/OP_SHOT_019.png",
+      "prompt_path": "08_generation/jobs/REFERENCE003_IDENTITY_REPAIR_R1_20260630/prompts/OP_SHOT_019_identity_repair_prompt.md",
+      "selected_reference_frames": [
+        {
+          "index": 1,
+          "time_sec": 40.75,
+          "timecode": "00:40.75",
+          "path": "01_intake/analysis/reference003_dense_repair_frames_20260630/candidates/OP_SHOT_019/OP_SHOT_019_cand_0001.jpg",
+          "sharpness": 64.5869,
+          "delta": 0.0,
+          "center_distance": 0.75,
+          "select_reason": "window_start",
+          "selected_order": 1,
+          "selected_path": "01_intake/analysis/reference003_dense_repair_frames_20260630/selected/OP_SHOT_019/OP_SHOT_019_sel_01_040750ms.jpg",
+          "item_id": "OP_SHOT_019"
+        },
+        {
+          "index": 2,
+          "time_sec": 40.875,
+          "timecode": "00:40.88",
+          "path": "01_intake/analysis/reference003_dense_repair_frames_20260630/candidates/OP_SHOT_019/OP_SHOT_019_cand_0002.jpg",
+          "sharpness": 69.2077,
+          "delta": 45.6864,
+          "center_distance": 0.625,
+          "select_reason": "sharp_detail",
+          "selected_order": 2,
+          "selected_path": "01_intake/analysis/reference003_dense_repair_frames_20260630/selected/OP_SHOT_019/OP_SHOT_019_sel_02_040875ms.jpg",
+          "item_id": "OP_SHOT_019"
+        },
+        {
+          "index": 3,
+          "time_sec": 41.0,
+          "timecode": "00:41.00",
+          "path": "01_intake/analysis/reference003_dense_repair_frames_20260630/candidates/OP_SHOT_019/OP_SHOT_019_cand_0003.jpg",
+          "sharpness": 61.1749,
+          "delta": 65.4337,
+          "center_distance": 0.5,
+          "select_reason": "motion_change",
+          "selected_order": 3,
+          "selected_path": "01_intake/analysis/reference003_dense_repair_frames_20260630/selected/OP_SHOT_019/OP_SHOT_019_sel_03_041000ms.jpg",
+          "item_id": "OP_SHOT_019"
+        },
+        {
+          "index": 7,
+          "time_sec": 41.5,
+          "timecode": "00:41.50",
+          "path": "01_intake/analysis/reference003_dense_repair_frames_20260630/candidates/OP_SHOT_019/OP_SHOT_019_cand_0007.jpg",
+          "sharpness": 51.7321,
+          "delta": 53.2492,
+          "center_distance": 0.0,
+          "select_reason": "center_time",
+          "selected_order": 4,
+          "selected_path": "01_intake/analysis/reference003_dense_repair_frames_20260630/selected/OP_SHOT_019/OP_SHOT_019_sel_04_041500ms.jpg",
+          "item_id": "OP_SHOT_019"
+        },
+        {
+          "index": 10,
+          "time_sec": 41.875,
+          "timecode": "00:41.88",
+          "path": "01_intake/analysis/reference003_dense_repair_frames_20260630/candidates/OP_SHOT_019/OP_SHOT_019_cand_0010.jpg",
+          "sharpness": 65.276,
+          "delta": 52.0141,
+          "center_distance": 0.375,
+          "select_reason": "sharp_detail",
+          "selected_order": 5,
+          "selected_path": "01_intake/analysis/reference003_dense_repair_frames_20260630/selected/OP_SHOT_019/OP_SHOT_019_sel_05_041875ms.jpg",
+          "item_id": "OP_SHOT_019"
+        },
+        {
+          "index": 12,
+          "time_sec": 42.125,
+          "timecode": "00:42.12",
+          "path": "01_intake/analysis/reference003_dense_repair_frames_20260630/candidates/OP_SHOT_019/OP_SHOT_019_cand_0012.jpg",
+          "sharpness": 64.1722,
+          "delta": 54.2515,
+          "center_distance": 0.625,
+          "select_reason": "window_end",
+          "selected_order": 6,
+          "selected_path": "01_intake/analysis/reference003_dense_repair_frames_20260630/selected/OP_SHOT_019/OP_SHOT_019_sel_06_042125ms.jpg",
+          "item_id": "OP_SHOT_019"
+        }
+      ],
+      "locks": [
+        "jean"
+      ],
+      "notes": "Use OP_SHOT_012 as Jean lock; preserve cap, glasses, jacket, bow tie."
+    },
+    {
+      "item_id": "OP_SHOT_020",
+      "priority": 5,
+      "label": "Marie and King running identity continuity",
+      "hard_replace": false,
+      "action": "regenerate_if_marie_or_king_drift_after_dense_reference_review",
+      "current_output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH04/outputs/OP_SHOT_020.png",
+      "prompt_path": "08_generation/jobs/REFERENCE003_IDENTITY_REPAIR_R1_20260630/prompts/OP_SHOT_020_identity_repair_prompt.md",
+      "selected_reference_frames": [
+        {
+          "index": 1,
+          "time_sec": 42.75,
+          "timecode": "00:42.75",
+          "path": "01_intake/analysis/reference003_dense_repair_frames_20260630/candidates/OP_SHOT_020/OP_SHOT_020_cand_0001.jpg",
+          "sharpness": 62.8955,
+          "delta": 0.0,
+          "center_distance": 0.75,
+          "select_reason": "window_start",
+          "selected_order": 1,
+          "selected_path": "01_intake/analysis/reference003_dense_repair_frames_20260630/selected/OP_SHOT_020/OP_SHOT_020_sel_01_042750ms.jpg",
+          "item_id": "OP_SHOT_020"
+        },
+        {
+          "index": 4,
+          "time_sec": 43.125,
+          "timecode": "00:43.12",
+          "path": "01_intake/analysis/reference003_dense_repair_frames_20260630/candidates/OP_SHOT_020/OP_SHOT_020_cand_0004.jpg",
+          "sharpness": 57.2464,
+          "delta": 60.2168,
+          "center_distance": 0.375,
+          "select_reason": "motion_change",
+          "selected_order": 2,
+          "selected_path": "01_intake/analysis/reference003_dense_repair_frames_20260630/selected/OP_SHOT_020/OP_SHOT_020_sel_02_043125ms.jpg",
+          "item_id": "OP_SHOT_020"
+        },
+        {
+          "index": 7,
+          "time_sec": 43.5,
+          "timecode": "00:43.50",
+          "path": "01_intake/analysis/reference003_dense_repair_frames_20260630/candidates/OP_SHOT_020/OP_SHOT_020_cand_0007.jpg",
+          "sharpness": 66.2806,
+          "delta": 57.1724,
+          "center_distance": 0.0,
+          "select_reason": "sharp_detail",
+          "selected_order": 3,
+          "selected_path": "01_intake/analysis/reference003_dense_repair_frames_20260630/selected/OP_SHOT_020/OP_SHOT_020_sel_03_043500ms.jpg",
+          "item_id": "OP_SHOT_020"
+        },
+        {
+          "index": 8,
+          "time_sec": 43.625,
+          "timecode": "00:43.62",
+          "path": "01_intake/analysis/reference003_dense_repair_frames_20260630/candidates/OP_SHOT_020/OP_SHOT_020_cand_0008.jpg",
+          "sharpness": 63.2671,
+          "delta": 65.4946,
+          "center_distance": 0.125,
+          "select_reason": "motion_change",
+          "selected_order": 4,
+          "selected_path": "01_intake/analysis/reference003_dense_repair_frames_20260630/selected/OP_SHOT_020/OP_SHOT_020_sel_04_043625ms.jpg",
+          "item_id": "OP_SHOT_020"
+        },
+        {
+          "index": 14,
+          "time_sec": 44.375,
+          "timecode": "00:44.38",
+          "path": "01_intake/analysis/reference003_dense_repair_frames_20260630/candidates/OP_SHOT_020/OP_SHOT_020_cand_0014.jpg",
+          "sharpness": 67.3079,
+          "delta": 50.8699,
+          "center_distance": 0.875,
+          "select_reason": "window_end",
+          "selected_order": 5,
+          "selected_path": "01_intake/analysis/reference003_dense_repair_frames_20260630/selected/OP_SHOT_020/OP_SHOT_020_sel_05_044375ms.jpg",
+          "item_id": "OP_SHOT_020"
+        }
+      ],
+      "locks": [
+        "marie",
+        "king"
+      ],
+      "notes": "Use OP_SHOT_014 as Marie/King lock; preserve child-safe age and King scarf."
+    },
+    {
+      "item_id": "OP_SHOT_021",
+      "priority": 9,
+      "label": "Accepted group-running energy reference",
+      "hard_replace": false,
+      "action": "keep_as_workprint_reference_and_use_for_group_energy",
+      "current_output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH04/outputs/OP_SHOT_021_v2.png",
+      "prompt_path": "08_generation/jobs/REFERENCE003_IDENTITY_REPAIR_R1_20260630/prompts/OP_SHOT_021_identity_repair_prompt.md",
+      "selected_reference_frames": [
+        {
+          "index": 1,
+          "time_sec": 44.75,
+          "timecode": "00:44.75",
+          "path": "01_intake/analysis/reference003_dense_repair_frames_20260630/candidates/OP_SHOT_021/OP_SHOT_021_cand_0001.jpg",
+          "sharpness": 66.203,
+          "delta": 0.0,
+          "center_distance": 0.75,
+          "select_reason": "window_start",
+          "selected_order": 1,
+          "selected_path": "01_intake/analysis/reference003_dense_repair_frames_20260630/selected/OP_SHOT_021/OP_SHOT_021_sel_01_044750ms.jpg",
+          "item_id": "OP_SHOT_021"
+        },
+        {
+          "index": 5,
+          "time_sec": 45.25,
+          "timecode": "00:45.25",
+          "path": "01_intake/analysis/reference003_dense_repair_frames_20260630/candidates/OP_SHOT_021/OP_SHOT_021_cand_0005.jpg",
+          "sharpness": 68.5886,
+          "delta": 61.2084,
+          "center_distance": 0.25,
+          "select_reason": "motion_change",
+          "selected_order": 2,
+          "selected_path": "01_intake/analysis/reference003_dense_repair_frames_20260630/selected/OP_SHOT_021/OP_SHOT_021_sel_02_045250ms.jpg",
+          "item_id": "OP_SHOT_021"
+        },
+        {
+          "index": 6,
+          "time_sec": 45.375,
+          "timecode": "00:45.38",
+          "path": "01_intake/analysis/reference003_dense_repair_frames_20260630/candidates/OP_SHOT_021/OP_SHOT_021_cand_0006.jpg",
+          "sharpness": 69.9322,
+          "delta": 30.0156,
+          "center_distance": 0.125,
+          "select_reason": "sharp_detail",
+          "selected_order": 3,
+          "selected_path": "01_intake/analysis/reference003_dense_repair_frames_20260630/selected/OP_SHOT_021/OP_SHOT_021_sel_03_045375ms.jpg",
+          "item_id": "OP_SHOT_021"
+        },
+        {
+          "index": 7,
+          "time_sec": 45.5,
+          "timecode": "00:45.50",
+          "path": "01_intake/analysis/reference003_dense_repair_frames_20260630/candidates/OP_SHOT_021/OP_SHOT_021_cand_0007.jpg",
+          "sharpness": 68.3076,
+          "delta": 30.5485,
+          "center_distance": 0.0,
+          "select_reason": "center_time",
+          "selected_order": 4,
+          "selected_path": "01_intake/analysis/reference003_dense_repair_frames_20260630/selected/OP_SHOT_021/OP_SHOT_021_sel_04_045500ms.jpg",
+          "item_id": "OP_SHOT_021"
+        },
+        {
+          "index": 13,
+          "time_sec": 46.25,
+          "timecode": "00:46.25",
+          "path": "01_intake/analysis/reference003_dense_repair_frames_20260630/candidates/OP_SHOT_021/OP_SHOT_021_cand_0013.jpg",
+          "sharpness": 70.725,
+          "delta": 32.8614,
+          "center_distance": 0.75,
+          "select_reason": "sharp_detail",
+          "selected_order": 5,
+          "selected_path": "01_intake/analysis/reference003_dense_repair_frames_20260630/selected/OP_SHOT_021/OP_SHOT_021_sel_05_046250ms.jpg",
+          "item_id": "OP_SHOT_021"
+        },
+        {
+          "index": 14,
+          "time_sec": 46.375,
+          "timecode": "00:46.38",
+          "path": "01_intake/analysis/reference003_dense_repair_frames_20260630/candidates/OP_SHOT_021/OP_SHOT_021_cand_0014.jpg",
+          "sharpness": 67.736,
+          "delta": 29.8373,
+          "center_distance": 0.875,
+          "select_reason": "window_end",
+          "selected_order": 6,
+          "selected_path": "01_intake/analysis/reference003_dense_repair_frames_20260630/selected/OP_SHOT_021/OP_SHOT_021_sel_06_046375ms.jpg",
+          "item_id": "OP_SHOT_021"
+        }
+      ],
+      "locks": [
+        "nadia",
+        "jean",
+        "marie",
+        "king",
+        "grandis",
+        "sanson",
+        "hanson"
+      ],
+      "notes": "Director accepted current OP_SHOT_021_v2 for workprint use."
+    },
+    {
+      "item_id": "OP_SHOT_023",
+      "priority": 3,
+      "label": "Grandis trio action identity continuity",
+      "hard_replace": false,
+      "action": "regenerate_or_retouch_with_grandis_trio_locks",
+      "current_output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH04/outputs/OP_SHOT_023.png",
+      "prompt_path": "08_generation/jobs/REFERENCE003_IDENTITY_REPAIR_R1_20260630/prompts/OP_SHOT_023_identity_repair_prompt.md",
+      "selected_reference_frames": [
+        {
+          "index": 1,
+          "time_sec": 47.25,
+          "timecode": "00:47.25",
+          "path": "01_intake/analysis/reference003_dense_repair_frames_20260630/candidates/OP_SHOT_023/OP_SHOT_023_cand_0001.jpg",
+          "sharpness": 66.6753,
+          "delta": 0.0,
+          "center_distance": 0.75,
+          "select_reason": "window_start",
+          "selected_order": 1,
+          "selected_path": "01_intake/analysis/reference003_dense_repair_frames_20260630/selected/OP_SHOT_023/OP_SHOT_023_sel_01_047250ms.jpg",
+          "item_id": "OP_SHOT_023"
+        },
+        {
+          "index": 7,
+          "time_sec": 48.0,
+          "timecode": "00:48.00",
+          "path": "01_intake/analysis/reference003_dense_repair_frames_20260630/candidates/OP_SHOT_023/OP_SHOT_023_cand_0007.jpg",
+          "sharpness": 70.8242,
+          "delta": 11.9256,
+          "center_distance": 0.0,
+          "select_reason": "center_time",
+          "selected_order": 2,
+          "selected_path": "01_intake/analysis/reference003_dense_repair_frames_20260630/selected/OP_SHOT_023/OP_SHOT_023_sel_02_048000ms.jpg",
+          "item_id": "OP_SHOT_023"
+        },
+        {
+          "index": 8,
+          "time_sec": 48.125,
+          "timecode": "00:48.12",
+          "path": "01_intake/analysis/reference003_dense_repair_frames_20260630/candidates/OP_SHOT_023/OP_SHOT_023_cand_0008.jpg",
+          "sharpness": 76.0857,
+          "delta": 91.0978,
+          "center_distance": 0.125,
+          "select_reason": "motion_change",
+          "selected_order": 3,
+          "selected_path": "01_intake/analysis/reference003_dense_repair_frames_20260630/selected/OP_SHOT_023/OP_SHOT_023_sel_03_048125ms.jpg",
+          "item_id": "OP_SHOT_023"
+        },
+        {
+          "index": 10,
+          "time_sec": 48.375,
+          "timecode": "00:48.38",
+          "path": "01_intake/analysis/reference003_dense_repair_frames_20260630/candidates/OP_SHOT_023/OP_SHOT_023_cand_0010.jpg",
+          "sharpness": 76.3716,
+          "delta": 0.3774,
+          "center_distance": 0.375,
+          "select_reason": "sharp_detail",
+          "selected_order": 4,
+          "selected_path": "01_intake/analysis/reference003_dense_repair_frames_20260630/selected/OP_SHOT_023/OP_SHOT_023_sel_04_048375ms.jpg",
+          "item_id": "OP_SHOT_023"
+        },
+        {
+          "index": 11,
+          "time_sec": 48.5,
+          "timecode": "00:48.50",
+          "path": "01_intake/analysis/reference003_dense_repair_frames_20260630/candidates/OP_SHOT_023/OP_SHOT_023_cand_0011.jpg",
+          "sharpness": 76.3672,
+          "delta": 0.3326,
+          "center_distance": 0.5,
+          "select_reason": "sharp_detail",
+          "selected_order": 5,
+          "selected_path": "01_intake/analysis/reference003_dense_repair_frames_20260630/selected/OP_SHOT_023/OP_SHOT_023_sel_05_048500ms.jpg",
+          "item_id": "OP_SHOT_023"
+        },
+        {
+          "index": 12,
+          "time_sec": 48.625,
+          "timecode": "00:48.62",
+          "path": "01_intake/analysis/reference003_dense_repair_frames_20260630/candidates/OP_SHOT_023/OP_SHOT_023_cand_0012.jpg",
+          "sharpness": 42.2066,
+          "delta": 71.167,
+          "center_distance": 0.625,
+          "select_reason": "window_end",
+          "selected_order": 6,
+          "selected_path": "01_intake/analysis/reference003_dense_repair_frames_20260630/selected/OP_SHOT_023/OP_SHOT_023_sel_06_048625ms.jpg",
+          "item_id": "OP_SHOT_023"
+        }
+      ],
+      "locks": [
+        "grandis",
+        "sanson",
+        "hanson"
+      ],
+      "notes": "Use OP_SHOT_016_v2 as trio lock; do not redesign faces during action."
+    },
+    {
+      "item_id": "OP_SHOT_024",
+      "priority": 2,
+      "label": "Grandis vehicle/action craft design lock",
+      "hard_replace": true,
+      "action": "create_new_grandis_vehicle_action_craft_lock",
+      "current_output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH04/outputs/OP_SHOT_024.png",
+      "prompt_path": "08_generation/jobs/REFERENCE003_IDENTITY_REPAIR_R1_20260630/prompts/OP_SHOT_024_identity_repair_prompt.md",
+      "selected_reference_frames": [
+        {
+          "index": 1,
+          "time_sec": 48.85,
+          "timecode": "00:48.85",
+          "path": "01_intake/analysis/reference003_dense_repair_frames_20260630/candidates/OP_SHOT_024/OP_SHOT_024_cand_0001.jpg",
+          "sharpness": 40.2253,
+          "delta": 0.0,
+          "center_distance": 0.65,
+          "select_reason": "window_start",
+          "selected_order": 1,
+          "selected_path": "01_intake/analysis/reference003_dense_repair_frames_20260630/selected/OP_SHOT_024/OP_SHOT_024_sel_01_048850ms.jpg",
+          "item_id": "OP_SHOT_024"
+        },
+        {
+          "index": 5,
+          "time_sec": 49.35,
+          "timecode": "00:49.35",
+          "path": "01_intake/analysis/reference003_dense_repair_frames_20260630/candidates/OP_SHOT_024/OP_SHOT_024_cand_0005.jpg",
+          "sharpness": 57.5368,
+          "delta": 63.2563,
+          "center_distance": 0.15,
+          "select_reason": "motion_change",
+          "selected_order": 2,
+          "selected_path": "01_intake/analysis/reference003_dense_repair_frames_20260630/selected/OP_SHOT_024/OP_SHOT_024_sel_02_049350ms.jpg",
+          "item_id": "OP_SHOT_024"
+        },
+        {
+          "index": 6,
+          "time_sec": 49.475,
+          "timecode": "00:49.48",
+          "path": "01_intake/analysis/reference003_dense_repair_frames_20260630/candidates/OP_SHOT_024/OP_SHOT_024_cand_0006.jpg",
+          "sharpness": 68.8999,
+          "delta": 70.2435,
+          "center_distance": 0.025,
+          "select_reason": "motion_change",
+          "selected_order": 3,
+          "selected_path": "01_intake/analysis/reference003_dense_repair_frames_20260630/selected/OP_SHOT_024/OP_SHOT_024_sel_03_049475ms.jpg",
+          "item_id": "OP_SHOT_024"
+        },
+        {
+          "index": 7,
+          "time_sec": 49.6,
+          "timecode": "00:49.60",
+          "path": "01_intake/analysis/reference003_dense_repair_frames_20260630/candidates/OP_SHOT_024/OP_SHOT_024_cand_0007.jpg",
+          "sharpness": 66.293,
+          "delta": 56.3738,
+          "center_distance": 0.1,
+          "select_reason": "sharp_detail",
+          "selected_order": 4,
+          "selected_path": "01_intake/analysis/reference003_dense_repair_frames_20260630/selected/OP_SHOT_024/OP_SHOT_024_sel_04_049600ms.jpg",
+          "item_id": "OP_SHOT_024"
+        },
+        {
+          "index": 12,
+          "time_sec": 50.225,
+          "timecode": "00:50.23",
+          "path": "01_intake/analysis/reference003_dense_repair_frames_20260630/candidates/OP_SHOT_024/OP_SHOT_024_cand_0012.jpg",
+          "sharpness": 37.2549,
+          "delta": 20.8433,
+          "center_distance": 0.725,
+          "select_reason": "window_end",
+          "selected_order": 5,
+          "selected_path": "01_intake/analysis/reference003_dense_repair_frames_20260630/selected/OP_SHOT_024/OP_SHOT_024_sel_05_050225ms.jpg",
+          "item_id": "OP_SHOT_024"
+        }
+      ],
+      "locks": [
+        "grandis",
+        "sanson",
+        "hanson"
+      ],
+      "notes": "Create a new vehicle/action craft lock. Do not use rejected OP_SHOT_025."
+    },
+    {
+      "item_id": "OP_SHOT_025",
+      "priority": 1,
+      "label": "Rejected group lineup and vehicle tableau",
+      "hard_replace": true,
+      "action": "hard_replace_rebuild_locked_group_tableau",
+      "current_output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_025.png",
+      "prompt_path": "08_generation/jobs/REFERENCE003_IDENTITY_REPAIR_R1_20260630/prompts/OP_SHOT_025_identity_repair_prompt.md",
+      "selected_reference_frames": [
+        {
+          "index": 1,
+          "time_sec": 50.7,
+          "timecode": "00:50.70",
+          "path": "01_intake/analysis/reference003_dense_repair_frames_20260630/candidates/OP_SHOT_025/OP_SHOT_025_cand_0001.jpg",
+          "sharpness": 59.3916,
+          "delta": 0.0,
+          "center_distance": 0.8,
+          "select_reason": "window_start",
+          "selected_order": 1,
+          "selected_path": "01_intake/analysis/reference003_dense_repair_frames_20260630/selected/OP_SHOT_025/OP_SHOT_025_sel_01_050700ms.jpg",
+          "item_id": "OP_SHOT_025"
+        },
+        {
+          "index": 7,
+          "time_sec": 51.45,
+          "timecode": "00:51.45",
+          "path": "01_intake/analysis/reference003_dense_repair_frames_20260630/candidates/OP_SHOT_025/OP_SHOT_025_cand_0007.jpg",
+          "sharpness": 68.3789,
+          "delta": 16.7616,
+          "center_distance": 0.05,
+          "select_reason": "center_time",
+          "selected_order": 2,
+          "selected_path": "01_intake/analysis/reference003_dense_repair_frames_20260630/selected/OP_SHOT_025/OP_SHOT_025_sel_02_051450ms.jpg",
+          "item_id": "OP_SHOT_025"
+        },
+        {
+          "index": 8,
+          "time_sec": 51.575,
+          "timecode": "00:51.58",
+          "path": "01_intake/analysis/reference003_dense_repair_frames_20260630/candidates/OP_SHOT_025/OP_SHOT_025_cand_0008.jpg",
+          "sharpness": 81.0935,
+          "delta": 84.5965,
+          "center_distance": 0.075,
+          "select_reason": "motion_change",
+          "selected_order": 3,
+          "selected_path": "01_intake/analysis/reference003_dense_repair_frames_20260630/selected/OP_SHOT_025/OP_SHOT_025_sel_03_051575ms.jpg",
+          "item_id": "OP_SHOT_025"
+        },
+        {
+          "index": 9,
+          "time_sec": 51.7,
+          "timecode": "00:51.70",
+          "path": "01_intake/analysis/reference003_dense_repair_frames_20260630/candidates/OP_SHOT_025/OP_SHOT_025_cand_0009.jpg",
+          "sharpness": 81.2104,
+          "delta": 1.2497,
+          "center_distance": 0.2,
+          "select_reason": "sharp_detail",
+          "selected_order": 4,
+          "selected_path": "01_intake/analysis/reference003_dense_repair_frames_20260630/selected/OP_SHOT_025/OP_SHOT_025_sel_04_051700ms.jpg",
+          "item_id": "OP_SHOT_025"
+        },
+        {
+          "index": 10,
+          "time_sec": 51.825,
+          "timecode": "00:51.83",
+          "path": "01_intake/analysis/reference003_dense_repair_frames_20260630/candidates/OP_SHOT_025/OP_SHOT_025_cand_0010.jpg",
+          "sharpness": 81.2265,
+          "delta": 0.5458,
+          "center_distance": 0.325,
+          "select_reason": "sharp_detail",
+          "selected_order": 5,
+          "selected_path": "01_intake/analysis/reference003_dense_repair_frames_20260630/selected/OP_SHOT_025/OP_SHOT_025_sel_05_051825ms.jpg",
+          "item_id": "OP_SHOT_025"
+        },
+        {
+          "index": 14,
+          "time_sec": 52.325,
+          "timecode": "00:52.33",
+          "path": "01_intake/analysis/reference003_dense_repair_frames_20260630/candidates/OP_SHOT_025/OP_SHOT_025_cand_0014.jpg",
+          "sharpness": 77.3043,
+          "delta": 0.5204,
+          "center_distance": 0.825,
+          "select_reason": "window_end",
+          "selected_order": 6,
+          "selected_path": "01_intake/analysis/reference003_dense_repair_frames_20260630/selected/OP_SHOT_025/OP_SHOT_025_sel_06_052325ms.jpg",
+          "item_id": "OP_SHOT_025"
+        }
+      ],
+      "locks": [
+        "nadia",
+        "jean",
+        "marie",
+        "king",
+        "grandis",
+        "sanson",
+        "hanson",
+        "blue_water_pendant"
+      ],
+      "notes": "Director rejected current OP_SHOT_025 as the worst group image; rebuild from locks."
+    },
+    {
+      "item_id": "OP_SHOT_032",
+      "priority": 6,
+      "label": "Nemo sunset identity lock",
+      "hard_replace": false,
+      "action": "regenerate_if_nemo_drift_after_dense_reference_review",
+      "current_output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_032.png",
+      "prompt_path": "08_generation/jobs/REFERENCE003_IDENTITY_REPAIR_R1_20260630/prompts/OP_SHOT_032_identity_repair_prompt.md",
+      "selected_reference_frames": [
+        {
+          "index": 1,
+          "time_sec": 65.75,
+          "timecode": "01:05.75",
+          "path": "01_intake/analysis/reference003_dense_repair_frames_20260630/candidates/OP_SHOT_032/OP_SHOT_032_cand_0001.jpg",
+          "sharpness": 23.1791,
+          "delta": 0.0,
+          "center_distance": 0.75,
+          "select_reason": "window_start",
+          "selected_order": 1,
+          "selected_path": "01_intake/analysis/reference003_dense_repair_frames_20260630/selected/OP_SHOT_032/OP_SHOT_032_sel_01_065750ms.jpg",
+          "item_id": "OP_SHOT_032"
+        },
+        {
+          "index": 5,
+          "time_sec": 66.25,
+          "timecode": "01:06.25",
+          "path": "01_intake/analysis/reference003_dense_repair_frames_20260630/candidates/OP_SHOT_032/OP_SHOT_032_cand_0005.jpg",
+          "sharpness": 20.2694,
+          "delta": 23.6637,
+          "center_distance": 0.25,
+          "select_reason": "motion_change",
+          "selected_order": 2,
+          "selected_path": "01_intake/analysis/reference003_dense_repair_frames_20260630/selected/OP_SHOT_032/OP_SHOT_032_sel_02_066250ms.jpg",
+          "item_id": "OP_SHOT_032"
+        },
+        {
+          "index": 7,
+          "time_sec": 66.5,
+          "timecode": "01:06.50",
+          "path": "01_intake/analysis/reference003_dense_repair_frames_20260630/candidates/OP_SHOT_032/OP_SHOT_032_cand_0007.jpg",
+          "sharpness": 65.4335,
+          "delta": 71.79,
+          "center_distance": 0.0,
+          "select_reason": "motion_change",
+          "selected_order": 3,
+          "selected_path": "01_intake/analysis/reference003_dense_repair_frames_20260630/selected/OP_SHOT_032/OP_SHOT_032_sel_03_066500ms.jpg",
+          "item_id": "OP_SHOT_032"
+        },
+        {
+          "index": 11,
+          "time_sec": 67.0,
+          "timecode": "01:07.00",
+          "path": "01_intake/analysis/reference003_dense_repair_frames_20260630/candidates/OP_SHOT_032/OP_SHOT_032_cand_0011.jpg",
+          "sharpness": 65.4354,
+          "delta": 18.1825,
+          "center_distance": 0.5,
+          "select_reason": "sharp_detail",
+          "selected_order": 4,
+          "selected_path": "01_intake/analysis/reference003_dense_repair_frames_20260630/selected/OP_SHOT_032/OP_SHOT_032_sel_04_067000ms.jpg",
+          "item_id": "OP_SHOT_032"
+        },
+        {
+          "index": 14,
+          "time_sec": 67.375,
+          "timecode": "01:07.38",
+          "path": "01_intake/analysis/reference003_dense_repair_frames_20260630/candidates/OP_SHOT_032/OP_SHOT_032_cand_0014.jpg",
+          "sharpness": 62.538,
+          "delta": 14.9767,
+          "center_distance": 0.875,
+          "select_reason": "window_end",
+          "selected_order": 5,
+          "selected_path": "01_intake/analysis/reference003_dense_repair_frames_20260630/selected/OP_SHOT_032/OP_SHOT_032_sel_05_067375ms.jpg",
+          "item_id": "OP_SHOT_032"
+        }
+      ],
+      "locks": [
+        "nemo"
+      ],
+      "notes": "Use OP_SHOT_032 as current Nemo lock; preserve uniform, cap, stern adult face."
+    },
+    {
+      "item_id": "OP_SHOT_033",
+      "priority": 6,
+      "label": "Nemo sunset continuation",
+      "hard_replace": false,
+      "action": "regenerate_if_nemo_continuity_drift_after_dense_reference_review",
+      "current_output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_033.png",
+      "prompt_path": "08_generation/jobs/REFERENCE003_IDENTITY_REPAIR_R1_20260630/prompts/OP_SHOT_033_identity_repair_prompt.md",
+      "selected_reference_frames": [
+        {
+          "index": 1,
+          "time_sec": 68.75,
+          "timecode": "01:08.75",
+          "path": "01_intake/analysis/reference003_dense_repair_frames_20260630/candidates/OP_SHOT_033/OP_SHOT_033_cand_0001.jpg",
+          "sharpness": 57.2801,
+          "delta": 0.0,
+          "center_distance": 0.75,
+          "select_reason": "window_start",
+          "selected_order": 1,
+          "selected_path": "01_intake/analysis/reference003_dense_repair_frames_20260630/selected/OP_SHOT_033/OP_SHOT_033_sel_01_068750ms.jpg",
+          "item_id": "OP_SHOT_033"
+        },
+        {
+          "index": 2,
+          "time_sec": 68.875,
+          "timecode": "01:08.88",
+          "path": "01_intake/analysis/reference003_dense_repair_frames_20260630/candidates/OP_SHOT_033/OP_SHOT_033_cand_0002.jpg",
+          "sharpness": 57.1148,
+          "delta": 10.0037,
+          "center_distance": 0.625,
+          "select_reason": "sharp_detail",
+          "selected_order": 2,
+          "selected_path": "01_intake/analysis/reference003_dense_repair_frames_20260630/selected/OP_SHOT_033/OP_SHOT_033_sel_02_068875ms.jpg",
+          "item_id": "OP_SHOT_033"
+        },
+        {
+          "index": 3,
+          "time_sec": 69.0,
+          "timecode": "01:09.00",
+          "path": "01_intake/analysis/reference003_dense_repair_frames_20260630/candidates/OP_SHOT_033/OP_SHOT_033_cand_0003.jpg",
+          "sharpness": 56.9815,
+          "delta": 10.2692,
+          "center_distance": 0.5,
+          "select_reason": "motion_change",
+          "selected_order": 3,
+          "selected_path": "01_intake/analysis/reference003_dense_repair_frames_20260630/selected/OP_SHOT_033/OP_SHOT_033_sel_03_069000ms.jpg",
+          "item_id": "OP_SHOT_033"
+        },
+        {
+          "index": 7,
+          "time_sec": 69.5,
+          "timecode": "01:09.50",
+          "path": "01_intake/analysis/reference003_dense_repair_frames_20260630/candidates/OP_SHOT_033/OP_SHOT_033_cand_0007.jpg",
+          "sharpness": 56.6147,
+          "delta": 9.3755,
+          "center_distance": 0.0,
+          "select_reason": "center_time",
+          "selected_order": 4,
+          "selected_path": "01_intake/analysis/reference003_dense_repair_frames_20260630/selected/OP_SHOT_033/OP_SHOT_033_sel_04_069500ms.jpg",
+          "item_id": "OP_SHOT_033"
+        },
+        {
+          "index": 8,
+          "time_sec": 69.625,
+          "timecode": "01:09.62",
+          "path": "01_intake/analysis/reference003_dense_repair_frames_20260630/candidates/OP_SHOT_033/OP_SHOT_033_cand_0008.jpg",
+          "sharpness": 55.91,
+          "delta": 10.0069,
+          "center_distance": 0.125,
+          "select_reason": "motion_change",
+          "selected_order": 5,
+          "selected_path": "01_intake/analysis/reference003_dense_repair_frames_20260630/selected/OP_SHOT_033/OP_SHOT_033_sel_05_069625ms.jpg",
+          "item_id": "OP_SHOT_033"
+        },
+        {
+          "index": 14,
+          "time_sec": 70.375,
+          "timecode": "01:10.38",
+          "path": "01_intake/analysis/reference003_dense_repair_frames_20260630/candidates/OP_SHOT_033/OP_SHOT_033_cand_0014.jpg",
+          "sharpness": 56.1989,
+          "delta": 8.0754,
+          "center_distance": 0.875,
+          "select_reason": "window_end",
+          "selected_order": 6,
+          "selected_path": "01_intake/analysis/reference003_dense_repair_frames_20260630/selected/OP_SHOT_033/OP_SHOT_033_sel_06_070375ms.jpg",
+          "item_id": "OP_SHOT_033"
+        }
+      ],
+      "locks": [
+        "nemo"
+      ],
+      "notes": "Match OP_SHOT_032 exactly; only angle/lighting may change."
+    },
+    {
+      "item_id": "OP_SHOT_034",
+      "priority": 1,
+      "label": "Rejected Nadia solemn front close-up",
+      "hard_replace": true,
+      "action": "hard_replace_with_nadia_face_lock",
+      "current_output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_034.png",
+      "prompt_path": "08_generation/jobs/REFERENCE003_IDENTITY_REPAIR_R1_20260630/prompts/OP_SHOT_034_identity_repair_prompt.md",
+      "selected_reference_frames": [
+        {
+          "index": 1,
+          "time_sec": 71.2,
+          "timecode": "01:11.20",
+          "path": "01_intake/analysis/reference003_dense_repair_frames_20260630/candidates/OP_SHOT_034/OP_SHOT_034_cand_0001.jpg",
+          "sharpness": 51.4211,
+          "delta": 0.0,
+          "center_distance": 0.8,
+          "select_reason": "window_start",
+          "selected_order": 1,
+          "selected_path": "01_intake/analysis/reference003_dense_repair_frames_20260630/selected/OP_SHOT_034/OP_SHOT_034_sel_01_071200ms.jpg",
+          "item_id": "OP_SHOT_034"
+        },
+        {
+          "index": 2,
+          "time_sec": 71.325,
+          "timecode": "01:11.33",
+          "path": "01_intake/analysis/reference003_dense_repair_frames_20260630/candidates/OP_SHOT_034/OP_SHOT_034_cand_0002.jpg",
+          "sharpness": 46.6595,
+          "delta": 93.58,
+          "center_distance": 0.675,
+          "select_reason": "motion_change",
+          "selected_order": 2,
+          "selected_path": "01_intake/analysis/reference003_dense_repair_frames_20260630/selected/OP_SHOT_034/OP_SHOT_034_sel_02_071325ms.jpg",
+          "item_id": "OP_SHOT_034"
+        },
+        {
+          "index": 7,
+          "time_sec": 71.95,
+          "timecode": "01:11.95",
+          "path": "01_intake/analysis/reference003_dense_repair_frames_20260630/candidates/OP_SHOT_034/OP_SHOT_034_cand_0007.jpg",
+          "sharpness": 47.0174,
+          "delta": 5.0146,
+          "center_distance": 0.05,
+          "select_reason": "center_time",
+          "selected_order": 3,
+          "selected_path": "01_intake/analysis/reference003_dense_repair_frames_20260630/selected/OP_SHOT_034/OP_SHOT_034_sel_03_071950ms.jpg",
+          "item_id": "OP_SHOT_034"
+        },
+        {
+          "index": 8,
+          "time_sec": 72.075,
+          "timecode": "01:12.08",
+          "path": "01_intake/analysis/reference003_dense_repair_frames_20260630/candidates/OP_SHOT_034/OP_SHOT_034_cand_0008.jpg",
+          "sharpness": 47.675,
+          "delta": 6.8854,
+          "center_distance": 0.075,
+          "select_reason": "sharp_detail",
+          "selected_order": 4,
+          "selected_path": "01_intake/analysis/reference003_dense_repair_frames_20260630/selected/OP_SHOT_034/OP_SHOT_034_sel_04_072075ms.jpg",
+          "item_id": "OP_SHOT_034"
+        },
+        {
+          "index": 14,
+          "time_sec": 72.825,
+          "timecode": "01:12.83",
+          "path": "01_intake/analysis/reference003_dense_repair_frames_20260630/candidates/OP_SHOT_034/OP_SHOT_034_cand_0014.jpg",
+          "sharpness": 45.3373,
+          "delta": 8.0718,
+          "center_distance": 0.825,
+          "select_reason": "window_end",
+          "selected_order": 5,
+          "selected_path": "01_intake/analysis/reference003_dense_repair_frames_20260630/selected/OP_SHOT_034/OP_SHOT_034_sel_05_072825ms.jpg",
+          "item_id": "OP_SHOT_034"
+        }
+      ],
+      "locks": [
+        "nadia",
+        "blue_water_pendant"
+      ],
+      "notes": "Director rejected current OP_SHOT_034; Nadia must match OP_SHOT_011_v2."
+    }
+  ],
+  "applied_at": "2026-06-30T17:18:27+08:00",
+  "applied_outputs": [
+    {
+      "item_id": "OP_SHOT_024",
+      "old_output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH04/outputs/OP_SHOT_024.png",
+      "new_output_path": "08_generation/jobs/REFERENCE003_IDENTITY_REPAIR_R1_20260630/outputs/OP_SHOT_024_VEHICLE_LOCK_R1.png",
+      "status_kept_for_pipeline": "generated_reference003_qa_pass",
+      "repair_status": "generated_reference003_identity_repair_r1_pass",
+      "size": "1915x821"
+    },
+    {
+      "item_id": "OP_SHOT_025",
+      "old_output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_025.png",
+      "new_output_path": "08_generation/jobs/REFERENCE003_IDENTITY_REPAIR_R1_20260630/outputs/OP_SHOT_025_R1.png",
+      "status_kept_for_pipeline": "generated_reference003_qa_pass",
+      "repair_status": "generated_reference003_identity_repair_r1_pass",
+      "size": "1915x821"
+    },
+    {
+      "item_id": "OP_SHOT_034",
+      "old_output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_034.png",
+      "new_output_path": "08_generation/jobs/REFERENCE003_IDENTITY_REPAIR_R1_20260630/outputs/OP_SHOT_034_R1.png",
+      "status_kept_for_pipeline": "generated_reference003_qa_pass",
+      "repair_status": "generated_reference003_identity_repair_r1_pass",
+      "size": "1915x821"
+    }
+  ]
+}

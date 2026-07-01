@@ -1,0 +1,55 @@
+{
+  "schema_version": "reference003_identity_repair_r1_application_v1",
+  "project_slug": "blue-water-citypop-op",
+  "applied_at": "2026-06-30T17:18:27+08:00",
+  "status": "hard_replacements_applied",
+  "board": "03_story/idea_board/idea_board.json",
+  "asset_locks": "05_asset_bible/setting_chapters/reference003_asset_locks_v1.json",
+  "applied": [
+    {
+      "item_id": "OP_SHOT_024",
+      "old_output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH04/outputs/OP_SHOT_024.png",
+      "new_output_path": "08_generation/jobs/REFERENCE003_IDENTITY_REPAIR_R1_20260630/outputs/OP_SHOT_024_VEHICLE_LOCK_R1.png",
+      "status_kept_for_pipeline": "generated_reference003_qa_pass",
+      "repair_status": "generated_reference003_identity_repair_r1_pass",
+      "size": "1915x821"
+    },
+    {
+      "item_id": "OP_SHOT_025",
+      "old_output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_025.png",
+      "new_output_path": "08_generation/jobs/REFERENCE003_IDENTITY_REPAIR_R1_20260630/outputs/OP_SHOT_025_R1.png",
+      "status_kept_for_pipeline": "generated_reference003_qa_pass",
+      "repair_status": "generated_reference003_identity_repair_r1_pass",
+      "size": "1915x821"
+    },
+    {
+      "item_id": "OP_SHOT_034",
+      "old_output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_034.png",
+      "new_output_path": "08_generation/jobs/REFERENCE003_IDENTITY_REPAIR_R1_20260630/outputs/OP_SHOT_034_R1.png",
+      "status_kept_for_pipeline": "generated_reference003_qa_pass",
+      "repair_status": "generated_reference003_identity_repair_r1_pass",
+      "size": "1915x821"
+    }
+  ],
+  "asset_updates": {
+    "OP_SHOT_024": {
+      "status": "generated_reference003_identity_repair_r1_pass",
+      "output_path": "08_generation/jobs/REFERENCE003_IDENTITY_REPAIR_R1_20260630/outputs/OP_SHOT_024_VEHICLE_LOCK_R1.png",
+      "decision": "R1 Grandis vehicle/action craft lock generated from dense OP24 reference frames; use as new vehicle/action craft continuity source."
+    },
+    "OP_SHOT_025": {
+      "status": "generated_reference003_identity_repair_r1_pass",
+      "output_path": "08_generation/jobs/REFERENCE003_IDENTITY_REPAIR_R1_20260630/outputs/OP_SHOT_025_R1.png",
+      "decision": "R1 hard replacement for director-rejected large group portrait; uses locked character identities and new Grandis vehicle craft lock."
+    },
+    "OP_SHOT_034": {
+      "status": "generated_reference003_identity_repair_r1_pass",
+      "output_path": "08_generation/jobs/REFERENCE003_IDENTITY_REPAIR_R1_20260630/outputs/OP_SHOT_034_R1.png",
+      "decision": "R1 hard replacement for director-rejected sea-background Nadia; uses OP_SHOT_011_v2 as Nadia face lock."
+    }
+  },
+  "remaining_before_video": [
+    "Run identity QA on OP_SHOT_018, OP_SHOT_019, OP_SHOT_020, OP_SHOT_023, OP_SHOT_032, OP_SHOT_033.",
+    "Only assemble a new preview video after the image replacement pass is accepted."
+  ]
+}

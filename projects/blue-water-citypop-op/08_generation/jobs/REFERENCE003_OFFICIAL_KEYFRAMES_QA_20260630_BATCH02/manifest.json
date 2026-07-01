@@ -1,0 +1,88 @@
+{
+  "job_id": "REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02",
+  "status": "qa_done_6_pass",
+  "source_reference": "reference-003-full-op-2160p",
+  "items": [
+    {
+      "item_id": "OP_SHOT_007",
+      "timecode": "00:15.00",
+      "reference_frame": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/refs/OP_SHOT_007_ref_001500.jpg",
+      "label": "brief aircraft reveal"
+    },
+    {
+      "item_id": "OP_SHOT_008",
+      "timecode": "00:18.50",
+      "reference_frame": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/refs/OP_SHOT_008_ref_001850.jpg",
+      "label": "main title-safe sky hold"
+    },
+    {
+      "item_id": "OP_SHOT_009",
+      "timecode": "00:23.00",
+      "reference_frame": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/refs/OP_SHOT_009_ref_002300.jpg",
+      "label": "sun flare transition"
+    },
+    {
+      "item_id": "OP_SHOT_010",
+      "timecode": "00:24.50",
+      "reference_frame": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/refs/OP_SHOT_010_ref_002450.jpg",
+      "label": "Nadia profile entry"
+    },
+    {
+      "item_id": "OP_SHOT_011",
+      "timecode": "00:27.00",
+      "reference_frame": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/refs/OP_SHOT_011_ref_002700.jpg",
+      "label": "Nadia close-up"
+    },
+    {
+      "item_id": "OP_SHOT_012",
+      "timecode": "00:29.00",
+      "reference_frame": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/refs/OP_SHOT_012_ref_002900.jpg",
+      "label": "Jean inventor intro"
+    }
+  ],
+  "reference_sheet": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/refs/REFERENCE003_QA_BATCH02_reference_sheet.jpg",
+  "output_dir": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs",
+  "generated_at": "2026-06-30T05:10:33+0800",
+  "outputs": [
+    {
+      "item_id": "OP_SHOT_007",
+      "status": "generated_reference003_qa_pass",
+      "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_007.png",
+      "note": "REFERENCE003_QA_BATCH02 official keyframe generated from full video reference. Visual QA pass: small handmade aircraft revealed in bright cloud field, no text/logo."
+    },
+    {
+      "item_id": "OP_SHOT_008",
+      "status": "generated_reference003_qa_pass",
+      "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_008_v2.png",
+      "note": "REFERENCE003_QA_BATCH02 R2 official keyframe generated from full video reference. Visual QA pass: title-safe blue sky and diagonal cloud band, source title removed, no sun flare."
+    },
+    {
+      "item_id": "OP_SHOT_009",
+      "status": "generated_reference003_qa_pass",
+      "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_009.png",
+      "note": "REFERENCE003_QA_BATCH02 official keyframe generated from full video reference. Visual QA pass: sun flare transition over clean sky, no text/logo."
+    },
+    {
+      "item_id": "OP_SHOT_010",
+      "status": "generated_reference003_qa_pass",
+      "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_010_v2.png",
+      "note": "REFERENCE003_QA_BATCH02 R2 official keyframe generated from full video reference. Visual QA pass: Nadia side profile, age-appropriate, conservative costume, no text/logo."
+    },
+    {
+      "item_id": "OP_SHOT_011",
+      "status": "generated_reference003_qa_pass",
+      "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_011_v2.png",
+      "note": "REFERENCE003_QA_BATCH02 R2 official keyframe generated from full video reference. Visual QA pass: Nadia close-up, age-appropriate, conservative costume, no text/logo."
+    },
+    {
+      "item_id": "OP_SHOT_012",
+      "status": "generated_reference003_qa_pass",
+      "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_012.png",
+      "note": "REFERENCE003_QA_BATCH02 official keyframe generated from full video reference. Visual QA pass: Jean young inventor intro, age-appropriate, no text/logo."
+    }
+  ],
+  "generated_sheet": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/REFERENCE003_QA_BATCH02_generated_sheet.jpg",
+  "qa_report": "10_qa/reports/reference003_qa_batch02_keyframes_20260630.md",
+  "compare_sheet": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/REFERENCE003_QA_BATCH02_ref_vs_generated.jpg",
+  "updated_at": "2026-06-30T05:13:08+08:00"
+}

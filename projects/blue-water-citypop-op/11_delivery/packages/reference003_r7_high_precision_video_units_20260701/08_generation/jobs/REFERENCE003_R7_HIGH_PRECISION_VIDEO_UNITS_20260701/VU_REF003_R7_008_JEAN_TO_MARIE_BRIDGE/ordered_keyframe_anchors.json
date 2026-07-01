@@ -1,0 +1,47 @@
+[
+  {
+    "order": 1,
+    "item_id": "R5_VU_REF003_008_JEAN_INTRO_030500ms_01",
+    "kind": "r5_adaptive_generated",
+    "time_sec": 30.5,
+    "timecode": "00:30.50",
+    "role": "adaptive_primary",
+    "beat": "Jean intro has fast entry/pose changes; extra frame carries different body/hat/face orientation and protects Jean identity.",
+    "difference_reason": "Jean intro has fast entry/pose changes; extra frame carries different body/hat/face orientation and protects Jean identity.",
+    "source_reference_frame": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0062.jpg",
+    "source_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_008_JEAN_INTRO_030500ms_01.png",
+    "packaged_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_008_JEAN_TO_MARIE_BRIDGE/keyframes/01_R5_VU_REF003_008_JEAN_INTRO_030500ms_01.png",
+    "exists": true,
+    "source_unit_id": "VU_REF003_008_JEAN_INTRO"
+  },
+  {
+    "order": 2,
+    "item_id": "R5_VU_REF003_009_MARIE_KING_MEADOW_031000ms_01",
+    "kind": "r5_adaptive_generated",
+    "time_sec": 31.0,
+    "timecode": "00:31.00",
+    "role": "adaptive_primary",
+    "beat": "Marie 与 King 草地段: scene-boundary / hard visual turn; visually different from nearest existing anchor; local motion/color change peak",
+    "difference_reason": "Marie 与 King 草地段: scene-boundary / hard visual turn; visually different from nearest existing anchor; local motion/color change peak",
+    "source_reference_frame": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0063.jpg",
+    "source_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_009_MARIE_KING_MEADOW_031000ms_01.png",
+    "packaged_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_008_JEAN_TO_MARIE_BRIDGE/keyframes/02_R5_VU_REF003_009_MARIE_KING_MEADOW_031000ms_01.png",
+    "exists": true,
+    "source_unit_id": "VU_REF003_009_MARIE_KING_MEADOW"
+  },
+  {
+    "order": 3,
+    "item_id": "OP_SHOT_013",
+    "kind": "official_keyframe",
+    "time_sec": 31.5,
+    "timecode": "00:31.50",
+    "role": "图1 / Marie_King_meadow",
+    "beat": "Marie 与 King 草地笑点",
+    "difference_reason": "",
+    "source_reference_frame": "",
+    "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_013.png",
+    "packaged_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_008_JEAN_TO_MARIE_BRIDGE/keyframes/03_OP_SHOT_013.png",
+    "exists": true,
+    "source_unit_id": "VU_REF003_009_MARIE_KING_MEADOW"
+  }
+]

@@ -1,0 +1,10 @@
+[
+  {
+    "group": "props_vehicles_symbols",
+    "asset_id": "grandis_vehicle",
+    "status": "official_prop_lock",
+    "source_path": "08_generation/jobs/REFERENCE003_IDENTITY_REPAIR_R1_20260630/outputs/OP_SHOT_024_VEHICLE_LOCK_R1.png",
+    "global_lock_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_global_asset_locks/props_vehicles_symbols_grandis_vehicle.png",
+    "exists": true
+  }
+]

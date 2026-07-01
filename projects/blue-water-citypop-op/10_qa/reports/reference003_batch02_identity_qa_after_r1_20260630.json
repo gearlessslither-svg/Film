@@ -1,0 +1,58 @@
+{
+  "schema_version": "reference003_batch02_identity_qa_after_r1_v1",
+  "project_slug": "blue-water-citypop-op",
+  "created_at": "2026-06-30",
+  "status": "preliminary_pass_dense_refs_ready",
+  "video_assembly_gate": "wait_until_image_pass_accepted",
+  "inputs": {
+    "setting_chapter": "05_asset_bible/setting_chapters/reference003_setting_chapter_v1.md",
+    "asset_locks": "05_asset_bible/setting_chapters/reference003_asset_locks_v1.json",
+    "dense_reference_manifest": "01_intake/analysis/reference003_dense_repair_frames_20260630/manifest.json",
+    "r1_application_report": "10_qa/reports/reference003_identity_repair_r1_application_20260630.md",
+    "updated_status_sheet": "10_qa/reference_match/REFERENCE003_OFFICIAL_KEYFRAME_STATUS_20260630/reference003_official_keyframe_status_sheet_42up.jpg"
+  },
+  "decisions": [
+    {
+      "item_id": "OP_SHOT_018",
+      "decision": "keep_current",
+      "reason": "Nadia running face remains close enough to OP_SHOT_011_v2; dense refs are available if a more source-exact motion pose is needed.",
+      "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_018.png"
+    },
+    {
+      "item_id": "OP_SHOT_019",
+      "decision": "keep_current",
+      "reason": "Jean still reads as the OP_SHOT_012 boy inventor lock.",
+      "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH04/outputs/OP_SHOT_019.png"
+    },
+    {
+      "item_id": "OP_SHOT_020",
+      "decision": "keep_current",
+      "reason": "Marie and King remain close enough to OP_SHOT_014; child-safe handling preserved.",
+      "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH04/outputs/OP_SHOT_020.png"
+    },
+    {
+      "item_id": "OP_SHOT_023",
+      "decision": "keep_current",
+      "reason": "Grandis trio remains readable from OP_SHOT_016_v2; vehicle continuity is now handled by the new OP24 R1 craft lock.",
+      "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH04/outputs/OP_SHOT_023.png"
+    },
+    {
+      "item_id": "OP_SHOT_024",
+      "decision": "replaced_and_locked",
+      "reason": "New R1 vehicle/action craft lock applied.",
+      "output_path": "08_generation/jobs/REFERENCE003_IDENTITY_REPAIR_R1_20260630/outputs/OP_SHOT_024_VEHICLE_LOCK_R1.png"
+    },
+    {
+      "item_id": "OP_SHOT_032",
+      "decision": "keep_current",
+      "reason": "Nemo lock source remains the best current identity anchor.",
+      "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_032.png"
+    },
+    {
+      "item_id": "OP_SHOT_033",
+      "decision": "keep_current",
+      "reason": "Nemo continuation remains consistent enough with OP_SHOT_032; dense refs are available for later retouch if needed.",
+      "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_033.png"
+    }
+  ]
+}

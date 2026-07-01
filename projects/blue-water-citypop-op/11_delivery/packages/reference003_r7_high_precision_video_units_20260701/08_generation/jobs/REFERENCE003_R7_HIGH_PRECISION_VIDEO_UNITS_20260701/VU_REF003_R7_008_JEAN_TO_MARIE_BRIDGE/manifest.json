@@ -1,0 +1,150 @@
+{
+  "schema_version": "reference003_r7_high_precision_video_unit_package_v1",
+  "created_at": "2026-07-01T07:36:06+08:00",
+  "status": "ready_for_external_aigc_video_generation",
+  "unit": {
+    "order": 8,
+    "unit_id": "VU_REF003_R7_008_JEAN_TO_MARIE_BRIDGE",
+    "title": "Jean到Marie草地过渡",
+    "start": 29.488,
+    "end": 31.949,
+    "intent": "Jean 段落过渡到 Marie/King 草地段。",
+    "active_locks": [
+      [
+        "characters",
+        "jean"
+      ],
+      [
+        "characters",
+        "marie"
+      ],
+      [
+        "characters",
+        "king"
+      ]
+    ],
+    "mode": "high_precision_segment"
+  },
+  "reference_clip": {
+    "path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_008_JEAN_TO_MARIE_BRIDGE/reference_clip/VU_REF003_R7_008_JEAN_TO_MARIE_BRIDGE_reference.mp4",
+    "start_sec": 29.488,
+    "end_sec": 31.949,
+    "duration_sec": 2.461,
+    "ok": true,
+    "decode_ok": true,
+    "stderr_tail": "      handler_name    : VideoHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : Lavc60.31.102 mpeg4\n    Side data:\n      cpb: bitrate max/min/avg: 0/0/200000 buffer size: 0 vbv_delay: N/A\nframe=    0 fps=0.0 q=3.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    \n[out#0/mp4 @ 0x76500c9c0] video:3853kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 0.045753%\nframe=   59 fps=0.0 q=3.0 Lsize=    3854kB time=00:00:02.41 bitrate=13052.7kbits/s speed=14.5x    "
+  },
+  "ordered_generated_anchors": [
+    {
+      "order": 1,
+      "item_id": "R5_VU_REF003_008_JEAN_INTRO_030500ms_01",
+      "kind": "r5_adaptive_generated",
+      "time_sec": 30.5,
+      "timecode": "00:30.50",
+      "role": "adaptive_primary",
+      "beat": "Jean intro has fast entry/pose changes; extra frame carries different body/hat/face orientation and protects Jean identity.",
+      "difference_reason": "Jean intro has fast entry/pose changes; extra frame carries different body/hat/face orientation and protects Jean identity.",
+      "source_reference_frame": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0062.jpg",
+      "source_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_008_JEAN_INTRO_030500ms_01.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_008_JEAN_TO_MARIE_BRIDGE/keyframes/01_R5_VU_REF003_008_JEAN_INTRO_030500ms_01.png",
+      "exists": true,
+      "source_unit_id": "VU_REF003_008_JEAN_INTRO"
+    },
+    {
+      "order": 2,
+      "item_id": "R5_VU_REF003_009_MARIE_KING_MEADOW_031000ms_01",
+      "kind": "r5_adaptive_generated",
+      "time_sec": 31.0,
+      "timecode": "00:31.00",
+      "role": "adaptive_primary",
+      "beat": "Marie 与 King 草地段: scene-boundary / hard visual turn; visually different from nearest existing anchor; local motion/color change peak",
+      "difference_reason": "Marie 与 King 草地段: scene-boundary / hard visual turn; visually different from nearest existing anchor; local motion/color change peak",
+      "source_reference_frame": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0063.jpg",
+      "source_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_009_MARIE_KING_MEADOW_031000ms_01.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_008_JEAN_TO_MARIE_BRIDGE/keyframes/02_R5_VU_REF003_009_MARIE_KING_MEADOW_031000ms_01.png",
+      "exists": true,
+      "source_unit_id": "VU_REF003_009_MARIE_KING_MEADOW"
+    },
+    {
+      "order": 3,
+      "item_id": "OP_SHOT_013",
+      "kind": "official_keyframe",
+      "time_sec": 31.5,
+      "timecode": "00:31.50",
+      "role": "图1 / Marie_King_meadow",
+      "beat": "Marie 与 King 草地笑点",
+      "difference_reason": "",
+      "source_reference_frame": "",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_013.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_008_JEAN_TO_MARIE_BRIDGE/keyframes/03_OP_SHOT_013.png",
+      "exists": true,
+      "source_unit_id": "VU_REF003_009_MARIE_KING_MEADOW"
+    }
+  ],
+  "candidate_reference_frames": [
+    {
+      "asset_id": "R7_CAND_008_start_029518ms",
+      "parent_video_unit_id": "VU_REF003_R7_008_JEAN_TO_MARIE_BRIDGE",
+      "role": "start",
+      "source_time_sec": 29.518,
+      "source_timecode": "00:29.52",
+      "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_008_JEAN_TO_MARIE_BRIDGE/candidate_reference_frames/R7_CAND_008_start_029518ms.jpg",
+      "priority": "P2_review_after_p1",
+      "status": "candidate_reference_frame_review",
+      "difference_reason": "Jean到Marie草地过渡 start boundary/transition frame from R7 high-precision split.",
+      "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_008_start_029518ms.png"
+    },
+    {
+      "asset_id": "R7_CAND_008_end_031919ms",
+      "parent_video_unit_id": "VU_REF003_R7_008_JEAN_TO_MARIE_BRIDGE",
+      "role": "end",
+      "source_time_sec": 31.919,
+      "source_timecode": "00:31.92",
+      "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_008_JEAN_TO_MARIE_BRIDGE/candidate_reference_frames/R7_CAND_008_end_031919ms.jpg",
+      "priority": "P2_review_after_p1",
+      "status": "candidate_reference_frame_review",
+      "difference_reason": "Jean到Marie草地过渡 end boundary/transition frame from R7 high-precision split.",
+      "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_008_end_031919ms.png"
+    },
+    {
+      "asset_id": "R7_CAND_008_middle_030718ms",
+      "parent_video_unit_id": "VU_REF003_R7_008_JEAN_TO_MARIE_BRIDGE",
+      "role": "middle",
+      "source_time_sec": 30.718,
+      "source_timecode": "00:30.72",
+      "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_008_JEAN_TO_MARIE_BRIDGE/candidate_reference_frames/R7_CAND_008_middle_030718ms.jpg",
+      "priority": "P3_reference_video_or_already_handled",
+      "status": "candidate_reference_frame_review",
+      "difference_reason": "Jean到Marie草地过渡 middle boundary/transition frame from R7 high-precision split.",
+      "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_008_middle_030718ms.png"
+    }
+  ],
+  "active_asset_locks": [
+    {
+      "group": "characters",
+      "asset_id": "jean",
+      "status": "official_identity_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_012.png",
+      "global_lock_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_global_asset_locks/characters_jean.png",
+      "exists": true
+    },
+    {
+      "group": "characters",
+      "asset_id": "marie",
+      "status": "official_identity_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_014.png",
+      "global_lock_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_global_asset_locks/characters_marie.png",
+      "exists": true
+    },
+    {
+      "group": "characters",
+      "asset_id": "king",
+      "status": "official_identity_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_014.png",
+      "global_lock_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_global_asset_locks/characters_king.png",
+      "exists": true
+    }
+  ],
+  "prompt_only": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_PROMPT_INDEX/PROMPT_ONLY/08_VU_REF003_R7_008_JEAN_TO_MARIE_BRIDGE.md",
+  "expected_video_output_path": "08_generation/outputs/video/reference003_r7_high_precision_segments/VU_REF003_R7_008_JEAN_TO_MARIE_BRIDGE.mp4"
+}

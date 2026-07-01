@@ -1,0 +1,47 @@
+[
+  {
+    "order": 1,
+    "item_id": "OP_SHOT_016",
+    "kind": "official_keyframe",
+    "time_sec": 37.0,
+    "timecode": "00:37.00",
+    "role": "图2 / Grandis_trio_close",
+    "beat": "Grandis 三人组近景",
+    "difference_reason": "",
+    "source_reference_frame": "",
+    "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_016_v2.png",
+    "packaged_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_012_RUN_MONTAGE_ENTRY/keyframes/01_OP_SHOT_016.png",
+    "exists": true,
+    "source_unit_id": "VU_REF003_010_GRANDIS_TRIO_INTRO"
+  },
+  {
+    "order": 2,
+    "item_id": "R5_VU_REF003_010_GRANDIS_TRIO_INTRO_037500ms_02",
+    "kind": "r5_adaptive_generated",
+    "time_sec": 37.5,
+    "timecode": "00:37.50",
+    "role": "adaptive_middle",
+    "beat": "Grandis trio introduction changes blocking and group pose; extra frame protects three-person identity and screen direction.",
+    "difference_reason": "Grandis trio introduction changes blocking and group pose; extra frame protects three-person identity and screen direction.",
+    "source_reference_frame": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0076.jpg",
+    "source_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_010_GRANDIS_TRIO_INTRO_037500ms_02.png",
+    "packaged_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_012_RUN_MONTAGE_ENTRY/keyframes/02_R5_VU_REF003_010_GRANDIS_TRIO_INTRO_037500ms_02.png",
+    "exists": true,
+    "source_unit_id": "VU_REF003_010_GRANDIS_TRIO_INTRO"
+  },
+  {
+    "order": 3,
+    "item_id": "OP_SHOT_017",
+    "kind": "official_keyframe",
+    "time_sec": 38.0,
+    "timecode": "00:38.00",
+    "role": "图1 / Nadia_run_feet",
+    "beat": "Nadia 奔跑脚步",
+    "difference_reason": "",
+    "source_reference_frame": "",
+    "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_017.png",
+    "packaged_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_012_RUN_MONTAGE_ENTRY/keyframes/03_OP_SHOT_017.png",
+    "exists": true,
+    "source_unit_id": "VU_REF003_011_RUNNING_MONTAGE"
+  }
+]

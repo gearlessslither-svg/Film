@@ -1,0 +1,27 @@
+schema_version: 1
+autofill:
+  max_rounds: 3
+  stop_when_audit_status: "pass"
+  allow_external_tools: false
+  allow_plugin_install: false
+  require_external_completion: false
+  timeout_seconds: 1800
+  adapters:
+    codex:
+      enabled: false
+      command: []
+    image2:
+      enabled: false
+      command: []
+    blender:
+      enabled: false
+      command: []
+    plugin_installer:
+      enabled: false
+      command: []
+
+# Adapter command placeholders:
+# - {prompt_path}: task prompt file
+# - {output_dir}: target output directory
+# - {project_path}: project root
+# - {run_dir}: current autofill run directory

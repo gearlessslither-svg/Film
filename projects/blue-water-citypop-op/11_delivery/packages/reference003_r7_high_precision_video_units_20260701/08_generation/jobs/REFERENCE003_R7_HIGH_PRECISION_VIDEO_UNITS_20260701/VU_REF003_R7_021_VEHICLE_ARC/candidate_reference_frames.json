@@ -1,0 +1,26 @@
+[
+  {
+    "asset_id": "R7_CAND_021_start_049705ms",
+    "parent_video_unit_id": "VU_REF003_R7_021_VEHICLE_ARC",
+    "role": "start",
+    "source_time_sec": 49.705,
+    "source_timecode": "00:49.70",
+    "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_021_VEHICLE_ARC/candidate_reference_frames/R7_CAND_021_start_049705ms.jpg",
+    "priority": "P3_reference_video_or_already_handled",
+    "status": "candidate_reference_frame_review",
+    "difference_reason": "车辆飞行动作 start boundary/transition frame from R7 high-precision split.",
+    "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_021_start_049705ms.png"
+  },
+  {
+    "asset_id": "R7_CAND_021_end_050646ms",
+    "parent_video_unit_id": "VU_REF003_R7_021_VEHICLE_ARC",
+    "role": "end",
+    "source_time_sec": 50.646,
+    "source_timecode": "00:50.65",
+    "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_021_VEHICLE_ARC/candidate_reference_frames/R7_CAND_021_end_050646ms.jpg",
+    "priority": "P1_generate_next_small_batch",
+    "status": "candidate_reference_frame_needs_prompt_and_generation",
+    "difference_reason": "车辆飞行动作 end boundary/transition frame from R7 high-precision split.",
+    "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_021_end_050646ms.png"
+  }
+]

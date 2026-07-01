@@ -1,0 +1,38 @@
+[
+  {
+    "asset_id": "R7_CAND_001_start_000030ms",
+    "parent_video_unit_id": "VU_REF003_R7_001_OPENING_CLOUD_BIRD_LONG",
+    "role": "start",
+    "source_time_sec": 0.03,
+    "source_timecode": "00:00.03",
+    "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_001_OPENING_CLOUD_BIRD_LONG/candidate_reference_frames/R7_CAND_001_start_000030ms.jpg",
+    "priority": "P3_reference_video_or_already_handled",
+    "status": "candidate_reference_frame_review",
+    "difference_reason": "开场长段A：黑场云层到白鸟入画 start boundary/transition frame from R7 high-precision split.",
+    "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_001_start_000030ms.png"
+  },
+  {
+    "asset_id": "R7_CAND_001_end_006970ms",
+    "parent_video_unit_id": "VU_REF003_R7_001_OPENING_CLOUD_BIRD_LONG",
+    "role": "end",
+    "source_time_sec": 6.97,
+    "source_timecode": "00:06.97",
+    "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_001_OPENING_CLOUD_BIRD_LONG/candidate_reference_frames/R7_CAND_001_end_006970ms.jpg",
+    "priority": "P3_reference_video_or_already_handled",
+    "status": "candidate_reference_frame_review",
+    "difference_reason": "开场长段A：黑场云层到白鸟入画 end boundary/transition frame from R7 high-precision split.",
+    "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_001_end_006970ms.png"
+  },
+  {
+    "asset_id": "R7_CAND_001_middle_003500ms",
+    "parent_video_unit_id": "VU_REF003_R7_001_OPENING_CLOUD_BIRD_LONG",
+    "role": "middle",
+    "source_time_sec": 3.5,
+    "source_timecode": "00:03.50",
+    "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_001_OPENING_CLOUD_BIRD_LONG/candidate_reference_frames/R7_CAND_001_middle_003500ms.jpg",
+    "priority": "P3_reference_video_or_already_handled",
+    "status": "candidate_reference_frame_review",
+    "difference_reason": "开场长段A：黑场云层到白鸟入画 middle boundary/transition frame from R7 high-precision split.",
+    "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_001_middle_003500ms.png"
+  }
+]

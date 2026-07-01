@@ -1,0 +1,140 @@
+{
+  "schema_version": "reference003_r7_high_precision_video_unit_package_v1",
+  "created_at": "2026-07-01T07:36:06+08:00",
+  "status": "ready_for_external_aigc_video_generation",
+  "unit": {
+    "order": 19,
+    "unit_id": "VU_REF003_R7_019_GRANDIS_ACTION_INSERT",
+    "title": "Grandis动作短插",
+    "start": 48.173,
+    "end": 48.674,
+    "intent": "Grandis 阵营动作一闪短插。",
+    "active_locks": [
+      [
+        "characters",
+        "grandis"
+      ],
+      [
+        "characters",
+        "sanson"
+      ],
+      [
+        "characters",
+        "hanson"
+      ]
+    ],
+    "mode": "high_precision_segment"
+  },
+  "reference_clip": {
+    "path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_019_GRANDIS_ACTION_INSERT/reference_clip/VU_REF003_R7_019_GRANDIS_ACTION_INSERT_reference.mp4",
+    "start_sec": 48.173,
+    "end_sec": 48.674,
+    "duration_sec": 0.501,
+    "ok": true,
+    "decode_ok": true,
+    "stderr_tail": "      handler_name    : VideoHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : Lavc60.31.102 mpeg4\n    Side data:\n      cpb: bitrate max/min/avg: 0/0/200000 buffer size: 0 vbv_delay: N/A\nframe=    0 fps=0.0 q=3.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    \n[out#0/mp4 @ 0x764c4c480] video:307kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 0.492968%\nframe=   12 fps=0.0 q=3.0 Lsize=     308kB time=00:00:00.45 bitrate=5506.1kbits/s speed=5.65x    "
+  },
+  "ordered_generated_anchors": [
+    {
+      "order": 1,
+      "item_id": "OP_SHOT_023",
+      "kind": "official_keyframe",
+      "time_sec": 48.0,
+      "timecode": "00:48.00",
+      "role": "图1 / Grandis_action_close",
+      "beat": "Grandis 动作桥",
+      "difference_reason": "",
+      "source_reference_frame": "",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH04/outputs/OP_SHOT_023.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_019_GRANDIS_ACTION_INSERT/keyframes/01_OP_SHOT_023.png",
+      "exists": true,
+      "source_unit_id": "VU_REF003_012_GRANDIS_VEHICLE_ACTION"
+    }
+  ],
+  "candidate_reference_frames": [
+    {
+      "asset_id": "R7_CAND_019_start_048203ms",
+      "parent_video_unit_id": "VU_REF003_R7_019_GRANDIS_ACTION_INSERT",
+      "role": "start",
+      "source_time_sec": 48.203,
+      "source_timecode": "00:48.20",
+      "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_019_GRANDIS_ACTION_INSERT/candidate_reference_frames/R7_CAND_019_start_048203ms.jpg",
+      "priority": "P3_reference_video_or_already_handled",
+      "status": "candidate_reference_frame_review",
+      "difference_reason": "Grandis动作短插 start boundary/transition frame from R7 high-precision split.",
+      "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_019_start_048203ms.png"
+    },
+    {
+      "asset_id": "R7_CAND_019_end_048644ms",
+      "parent_video_unit_id": "VU_REF003_R7_019_GRANDIS_ACTION_INSERT",
+      "role": "end",
+      "source_time_sec": 48.644,
+      "source_timecode": "00:48.64",
+      "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_019_GRANDIS_ACTION_INSERT/candidate_reference_frames/R7_CAND_019_end_048644ms.jpg",
+      "priority": "P1_generate_next_small_batch",
+      "status": "candidate_reference_frame_needs_prompt_and_generation",
+      "difference_reason": "Grandis动作短插 end boundary/transition frame from R7 high-precision split.",
+      "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_019_end_048644ms.png"
+    }
+  ],
+  "active_asset_locks": [
+    {
+      "group": "characters",
+      "asset_id": "grandis",
+      "status": "official_identity_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_016_v2.png",
+      "global_lock_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_global_asset_locks/characters_grandis.png",
+      "exists": true
+    },
+    {
+      "group": "characters",
+      "asset_id": "sanson",
+      "status": "official_identity_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_016_v2.png",
+      "global_lock_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_global_asset_locks/characters_sanson.png",
+      "exists": true
+    },
+    {
+      "group": "characters",
+      "asset_id": "hanson",
+      "status": "official_identity_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_016_v2.png",
+      "global_lock_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_global_asset_locks/characters_hanson.png",
+      "exists": true
+    }
+  ],
+  "prompt_only": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_PROMPT_INDEX/PROMPT_ONLY/19_VU_REF003_R7_019_GRANDIS_ACTION_INSERT.md",
+  "expected_video_output_path": "08_generation/outputs/video/reference003_r7_high_precision_segments/VU_REF003_R7_019_GRANDIS_ACTION_INSERT.mp4",
+  "production_prompt": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_PROMPT_INDEX/PRODUCTION_READY_PROMPT_ONLY/19_VU_REF003_R7_019_GRANDIS_ACTION_INSERT_PRODUCTION_READY.md",
+  "production_ready_readme": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_019_GRANDIS_ACTION_INSERT/AIGC_VIDEO_PRODUCTION_READY.md",
+  "r7_generated_candidate_images": [
+    {
+      "asset_id": "R7_CAND_019_start_048203ms",
+      "role": "start",
+      "source_time_sec": 48.203,
+      "source_timecode": "00:48.20",
+      "priority": "P3_reference_video_or_already_handled",
+      "status": "generated_asset_ready_pending_review",
+      "unit_title": "Grandis动作短插",
+      "difference_reason": "Grandis动作短插 start boundary/transition frame from R7 high-precision split.",
+      "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_019_GRANDIS_ACTION_INSERT/candidate_reference_frames/R7_CAND_019_start_048203ms.jpg",
+      "generated_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_019_start_048203ms.png",
+      "image_prompt": "21:9 anamorphic live-action keyframe, faithful high-end live-action remake of the reference-003 OP, pure image only, no readable text/logo/subtitle/watermark. Use source frame `08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_019_GRANDIS_ACTION_INSERT/candidate_reference_frames/R7_CAND_019_start_048203ms.jpg` at 00:48.20 as composition/timing reference. Video unit: VU_REF003_R7_019_GRANDIS_ACTION_INSERT (Grandis动作短插). Shot intent: Grandis 阵营动作一闪短插。 Preserve active locks when visible: grandis, sanson, hanson. Nearest generated anchors for continuity: OP_SHOT_023. Do not copy anime line art; create a clean live-action remake frame. Negative prompt: readable text, title letters, lyrics, credits, broadcaster mark, subtitle, watermark, random symbols, distorted face or hands, changed identity, changed prop design, sexualized minor.",
+      "exists": true
+    },
+    {
+      "asset_id": "R7_CAND_019_end_048644ms",
+      "role": "end",
+      "source_time_sec": 48.644,
+      "source_timecode": "00:48.64",
+      "priority": "P1_generate_next_small_batch",
+      "status": "generated_asset_ready",
+      "unit_title": "Grandis动作短插",
+      "difference_reason": "Grandis动作短插 end boundary/transition frame from R7 high-precision split.",
+      "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_019_GRANDIS_ACTION_INSERT/candidate_reference_frames/R7_CAND_019_end_048644ms.jpg",
+      "generated_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_019_end_048644ms.png",
+      "image_prompt": "21:9 anamorphic live-action keyframe, faithful high-end live-action remake of the reference-003 OP, pure image only, no readable text/logo/subtitle/watermark. Use source frame `08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_019_GRANDIS_ACTION_INSERT/candidate_reference_frames/R7_CAND_019_end_048644ms.jpg` at 00:48.64 as composition/timing reference. Video unit: VU_REF003_R7_019_GRANDIS_ACTION_INSERT (Grandis动作短插). Shot intent: Grandis 阵营动作一闪短插。 Preserve active locks when visible: grandis, sanson, hanson. Nearest generated anchors for continuity: OP_SHOT_023. Do not copy anime line art; create a clean live-action remake frame. Negative prompt: readable text, title letters, lyrics, credits, broadcaster mark, subtitle, watermark, random symbols, distorted face or hands, changed identity, changed prop design, sexualized minor.",
+      "exists": true
+    }
+  ]
+}

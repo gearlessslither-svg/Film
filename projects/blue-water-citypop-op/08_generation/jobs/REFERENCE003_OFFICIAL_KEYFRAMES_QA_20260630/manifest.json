@@ -1,0 +1,88 @@
+{
+  "job_id": "REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630",
+  "status": "qa_done_6_pass",
+  "source_reference": "reference-003-full-op-2160p",
+  "items": [
+    {
+      "item_id": "OP_SHOT_001",
+      "timecode": "00:00.00",
+      "reference_frame": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/refs/OP_SHOT_001_ref_000000.jpg",
+      "label": "black cloud fade-in"
+    },
+    {
+      "item_id": "OP_SHOT_002",
+      "timecode": "00:01.50",
+      "reference_frame": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/refs/OP_SHOT_002_ref_000150.jpg",
+      "label": "bright cloud sky reveal"
+    },
+    {
+      "item_id": "OP_SHOT_003",
+      "timecode": "00:02.50",
+      "reference_frame": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/refs/OP_SHOT_003_ref_000250.jpg",
+      "label": "white bird entry"
+    },
+    {
+      "item_id": "OP_SHOT_004",
+      "timecode": "00:05.00",
+      "reference_frame": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/refs/OP_SHOT_004_ref_000500.jpg",
+      "label": "white bird glide"
+    },
+    {
+      "item_id": "OP_SHOT_005",
+      "timecode": "00:07.50",
+      "reference_frame": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/refs/OP_SHOT_005_ref_000750.jpg",
+      "label": "bird credit-safe sky"
+    },
+    {
+      "item_id": "OP_SHOT_006",
+      "timecode": "00:11.50",
+      "reference_frame": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/refs/OP_SHOT_006_ref_001150.jpg",
+      "label": "cloud bank growth"
+    }
+  ],
+  "reference_sheet": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/refs/REFERENCE003_QA_BATCH01_reference_sheet.jpg",
+  "output_dir": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs",
+  "generated_at": "2026-06-30T04:55:07+0800",
+  "outputs": [
+    {
+      "item_id": "OP_SHOT_001",
+      "status": "generated_reference003_qa_pass",
+      "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_001.png",
+      "note": "REFERENCE003_QA_BATCH01 official keyframe generated from full video reference. Visual QA pass: dark fade-in frame, no text/logo."
+    },
+    {
+      "item_id": "OP_SHOT_002",
+      "status": "generated_reference003_qa_pass",
+      "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_002.png",
+      "note": "REFERENCE003_QA_BATCH01 official keyframe generated from full video reference. Visual QA pass: bright cloud/blue-sky reveal, no text/logo."
+    },
+    {
+      "item_id": "OP_SHOT_003",
+      "status": "generated_reference003_qa_pass",
+      "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_003.png",
+      "note": "REFERENCE003_QA_BATCH01 official keyframe generated from full video reference. Visual QA pass: white bird entry on clean sky, reference text removed."
+    },
+    {
+      "item_id": "OP_SHOT_004",
+      "status": "generated_reference003_qa_pass",
+      "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_004.png",
+      "note": "REFERENCE003_QA_BATCH01 official keyframe generated from full video reference. Visual QA pass: white bird glide on clean sky, reference text removed."
+    },
+    {
+      "item_id": "OP_SHOT_005",
+      "status": "generated_reference003_qa_pass",
+      "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_005.png",
+      "note": "REFERENCE003_QA_BATCH01 official keyframe generated from full video reference. Visual QA pass: credit-safe empty sky with tiny bird, all text removed."
+    },
+    {
+      "item_id": "OP_SHOT_006",
+      "status": "generated_reference003_qa_pass",
+      "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_006_v2.png",
+      "note": "REFERENCE003_QA_BATCH01 R2 official keyframe generated from full video reference. Visual QA pass: right-side cloud bank, visible tiny bird, no text/logo."
+    }
+  ],
+  "generated_sheet": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/REFERENCE003_QA_BATCH01_generated_sheet.jpg",
+  "qa_report": "10_qa/reports/reference003_qa_batch01_keyframes_20260630.md",
+  "updated_at": "2026-06-30T04:59:36+08:00",
+  "compare_sheet": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/REFERENCE003_QA_BATCH01_ref_vs_generated.jpg"
+}

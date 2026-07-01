@@ -1,0 +1,26 @@
+[
+  {
+    "asset_id": "R7_CAND_012_start_037234ms",
+    "parent_video_unit_id": "VU_REF003_R7_012_RUN_MONTAGE_ENTRY",
+    "role": "start",
+    "source_time_sec": 37.234,
+    "source_timecode": "00:37.23",
+    "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_012_RUN_MONTAGE_ENTRY/candidate_reference_frames/R7_CAND_012_start_037234ms.jpg",
+    "priority": "P3_reference_video_or_already_handled",
+    "status": "candidate_reference_frame_review",
+    "difference_reason": "奔跑Montage入场 start boundary/transition frame from R7 high-precision split.",
+    "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_012_start_037234ms.png"
+  },
+  {
+    "asset_id": "R7_CAND_012_end_038091ms",
+    "parent_video_unit_id": "VU_REF003_R7_012_RUN_MONTAGE_ENTRY",
+    "role": "end",
+    "source_time_sec": 38.091,
+    "source_timecode": "00:38.09",
+    "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_012_RUN_MONTAGE_ENTRY/candidate_reference_frames/R7_CAND_012_end_038091ms.jpg",
+    "priority": "P3_reference_video_or_already_handled",
+    "status": "candidate_reference_frame_review",
+    "difference_reason": "奔跑Montage入场 end boundary/transition frame from R7 high-precision split.",
+    "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_012_end_038091ms.png"
+  }
+]

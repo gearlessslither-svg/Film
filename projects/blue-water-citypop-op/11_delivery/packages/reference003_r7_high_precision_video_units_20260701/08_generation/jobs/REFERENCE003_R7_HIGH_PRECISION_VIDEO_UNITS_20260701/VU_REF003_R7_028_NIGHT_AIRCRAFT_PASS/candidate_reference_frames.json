@@ -1,0 +1,26 @@
+[
+  {
+    "asset_id": "R7_CAND_028_start_064970ms",
+    "parent_video_unit_id": "VU_REF003_R7_028_NIGHT_AIRCRAFT_PASS",
+    "role": "start",
+    "source_time_sec": 64.97,
+    "source_timecode": "01:04.97",
+    "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_028_NIGHT_AIRCRAFT_PASS/candidate_reference_frames/R7_CAND_028_start_064970ms.jpg",
+    "priority": "P3_reference_video_or_already_handled",
+    "status": "candidate_reference_frame_review",
+    "difference_reason": "夜航飞行器短切 start boundary/transition frame from R7 high-precision split.",
+    "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_028_start_064970ms.png"
+  },
+  {
+    "asset_id": "R7_CAND_028_end_065994ms",
+    "parent_video_unit_id": "VU_REF003_R7_028_NIGHT_AIRCRAFT_PASS",
+    "role": "end",
+    "source_time_sec": 65.994,
+    "source_timecode": "01:05.99",
+    "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_028_NIGHT_AIRCRAFT_PASS/candidate_reference_frames/R7_CAND_028_end_065994ms.jpg",
+    "priority": "P1_generate_next_small_batch",
+    "status": "candidate_reference_frame_needs_prompt_and_generation",
+    "difference_reason": "夜航飞行器短切 end boundary/transition frame from R7 high-precision split.",
+    "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_028_end_065994ms.png"
+  }
+]

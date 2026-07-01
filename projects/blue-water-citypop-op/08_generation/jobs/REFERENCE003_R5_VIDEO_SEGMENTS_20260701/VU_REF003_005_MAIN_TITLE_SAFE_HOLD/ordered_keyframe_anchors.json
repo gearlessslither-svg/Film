@@ -1,0 +1,30 @@
+[
+  {
+    "order": 1,
+    "item_id": "R5_VU_REF003_005_MAIN_TITLE_SAFE_HOLD_017000ms_01",
+    "kind": "r5_adaptive_generated",
+    "time_sec": 17.0,
+    "timecode": "00:17.00",
+    "role": "adaptive_primary",
+    "beat": "主标题功能位无字 hold: large timeline gap between existing anchors; visually different from nearest existing anchor; local motion/color change peak",
+    "difference_reason": "主标题功能位无字 hold: large timeline gap between existing anchors; visually different from nearest existing anchor; local motion/color change peak",
+    "source_reference_frame": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0035.jpg",
+    "source_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_005_MAIN_TITLE_SAFE_HOLD_017000ms_01.png",
+    "packaged_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_005_MAIN_TITLE_SAFE_HOLD/keyframes/01_R5_VU_REF003_005_MAIN_TITLE_SAFE_HOLD_017000ms_01.png",
+    "exists": true
+  },
+  {
+    "order": 2,
+    "item_id": "OP_SHOT_008",
+    "kind": "official_keyframe",
+    "time_sec": 18.5,
+    "timecode": "00:18.50",
+    "role": "图1 / main_title_safe_no_text",
+    "beat": "主标题无字安全位",
+    "difference_reason": "",
+    "source_reference_frame": "",
+    "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_008_v2.png",
+    "packaged_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_005_MAIN_TITLE_SAFE_HOLD/keyframes/02_OP_SHOT_008.png",
+    "exists": true
+  }
+]

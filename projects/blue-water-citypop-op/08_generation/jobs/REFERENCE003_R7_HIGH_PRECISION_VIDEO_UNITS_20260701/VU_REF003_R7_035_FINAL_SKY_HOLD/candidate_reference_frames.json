@@ -1,0 +1,38 @@
+[
+  {
+    "asset_id": "R7_CAND_035_start_080819ms",
+    "parent_video_unit_id": "VU_REF003_R7_035_FINAL_SKY_HOLD",
+    "role": "start",
+    "source_time_sec": 80.819,
+    "source_timecode": "01:20.82",
+    "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_035_FINAL_SKY_HOLD/candidate_reference_frames/R7_CAND_035_start_080819ms.jpg",
+    "priority": "P3_reference_video_or_already_handled",
+    "status": "candidate_reference_frame_review",
+    "difference_reason": "最终天空Hold start boundary/transition frame from R7 high-precision split.",
+    "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_035_start_080819ms.png"
+  },
+  {
+    "asset_id": "R7_CAND_035_end_083554ms",
+    "parent_video_unit_id": "VU_REF003_R7_035_FINAL_SKY_HOLD",
+    "role": "end",
+    "source_time_sec": 83.554,
+    "source_timecode": "01:23.55",
+    "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_035_FINAL_SKY_HOLD/candidate_reference_frames/R7_CAND_035_end_083554ms.jpg",
+    "priority": "P3_reference_video_or_already_handled",
+    "status": "candidate_reference_frame_review",
+    "difference_reason": "最终天空Hold end boundary/transition frame from R7 high-precision split.",
+    "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_035_end_083554ms.png"
+  },
+  {
+    "asset_id": "R7_CAND_035_middle_082186ms",
+    "parent_video_unit_id": "VU_REF003_R7_035_FINAL_SKY_HOLD",
+    "role": "middle",
+    "source_time_sec": 82.186,
+    "source_timecode": "01:22.19",
+    "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_035_FINAL_SKY_HOLD/candidate_reference_frames/R7_CAND_035_middle_082186ms.jpg",
+    "priority": "P3_reference_video_or_already_handled",
+    "status": "candidate_reference_frame_review",
+    "difference_reason": "最终天空Hold middle boundary/transition frame from R7 high-precision split.",
+    "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_035_middle_082186ms.png"
+  }
+]

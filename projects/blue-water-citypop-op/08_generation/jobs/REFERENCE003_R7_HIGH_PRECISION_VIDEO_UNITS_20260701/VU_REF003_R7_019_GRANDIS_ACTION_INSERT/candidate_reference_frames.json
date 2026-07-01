@@ -1,0 +1,26 @@
+[
+  {
+    "asset_id": "R7_CAND_019_start_048203ms",
+    "parent_video_unit_id": "VU_REF003_R7_019_GRANDIS_ACTION_INSERT",
+    "role": "start",
+    "source_time_sec": 48.203,
+    "source_timecode": "00:48.20",
+    "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_019_GRANDIS_ACTION_INSERT/candidate_reference_frames/R7_CAND_019_start_048203ms.jpg",
+    "priority": "P3_reference_video_or_already_handled",
+    "status": "candidate_reference_frame_review",
+    "difference_reason": "Grandis动作短插 start boundary/transition frame from R7 high-precision split.",
+    "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_019_start_048203ms.png"
+  },
+  {
+    "asset_id": "R7_CAND_019_end_048644ms",
+    "parent_video_unit_id": "VU_REF003_R7_019_GRANDIS_ACTION_INSERT",
+    "role": "end",
+    "source_time_sec": 48.644,
+    "source_timecode": "00:48.64",
+    "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_019_GRANDIS_ACTION_INSERT/candidate_reference_frames/R7_CAND_019_end_048644ms.jpg",
+    "priority": "P1_generate_next_small_batch",
+    "status": "candidate_reference_frame_needs_prompt_and_generation",
+    "difference_reason": "Grandis动作短插 end boundary/transition frame from R7 high-precision split.",
+    "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_019_end_048644ms.png"
+  }
+]

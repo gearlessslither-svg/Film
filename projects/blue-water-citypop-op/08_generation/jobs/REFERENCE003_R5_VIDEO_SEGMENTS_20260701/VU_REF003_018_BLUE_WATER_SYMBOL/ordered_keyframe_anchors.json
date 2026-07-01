@@ -1,0 +1,58 @@
+[
+  {
+    "order": 1,
+    "item_id": "OP_SHOT_035",
+    "kind": "official_keyframe",
+    "time_sec": 73.5,
+    "timecode": "01:13.50",
+    "role": "图1 / Blue_Water_jewel_symbol",
+    "beat": "Blue Water 宝石象征",
+    "difference_reason": "",
+    "source_reference_frame": "",
+    "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_035.png",
+    "packaged_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_018_BLUE_WATER_SYMBOL/keyframes/01_OP_SHOT_035.png",
+    "exists": true
+  },
+  {
+    "order": 2,
+    "item_id": "R5_VU_REF003_018_BLUE_WATER_SYMBOL_074000ms_01",
+    "kind": "r5_adaptive_generated",
+    "time_sec": 74.0,
+    "timecode": "01:14.00",
+    "role": "adaptive_primary",
+    "beat": "Blue Water 象征与水下纹理: scene-boundary / hard visual turn; visually different from nearest existing anchor; local motion/color change peak",
+    "difference_reason": "Blue Water 象征与水下纹理: scene-boundary / hard visual turn; visually different from nearest existing anchor; local motion/color change peak",
+    "source_reference_frame": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0149.jpg",
+    "source_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_018_BLUE_WATER_SYMBOL_074000ms_01.png",
+    "packaged_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_018_BLUE_WATER_SYMBOL/keyframes/02_R5_VU_REF003_018_BLUE_WATER_SYMBOL_074000ms_01.png",
+    "exists": true
+  },
+  {
+    "order": 3,
+    "item_id": "OP_SHOT_036",
+    "kind": "official_keyframe",
+    "time_sec": 75.0,
+    "timecode": "01:15.00",
+    "role": "图2 / blue_symbol_bloom",
+    "beat": "蓝色符号光",
+    "difference_reason": "",
+    "source_reference_frame": "",
+    "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_036.png",
+    "packaged_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_018_BLUE_WATER_SYMBOL/keyframes/03_OP_SHOT_036.png",
+    "exists": true
+  },
+  {
+    "order": 4,
+    "item_id": "OP_SHOT_037",
+    "kind": "official_keyframe",
+    "time_sec": 76.5,
+    "timecode": "01:16.50",
+    "role": "图3 / underwater_texture",
+    "beat": "水下蓝色纹理",
+    "difference_reason": "",
+    "source_reference_frame": "",
+    "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_037.png",
+    "packaged_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_018_BLUE_WATER_SYMBOL/keyframes/04_OP_SHOT_037.png",
+    "exists": true
+  }
+]

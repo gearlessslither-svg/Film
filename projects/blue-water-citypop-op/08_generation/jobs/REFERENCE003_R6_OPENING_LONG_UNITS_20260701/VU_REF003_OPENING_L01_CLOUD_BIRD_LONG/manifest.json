@@ -1,0 +1,137 @@
+{
+  "schema_version": "reference003_r6_opening_long_unit_package_v1",
+  "created_at": "2026-07-01T07:23:27+08:00",
+  "status": "ready_for_external_aigc_video_generation",
+  "unit": {
+    "order": 1,
+    "unit_id": "VU_REF003_OPENING_L01_CLOUD_BIRD_LONG",
+    "title": "开场长镜头 A：黑场云层到白鸟入画",
+    "time_range": "00:00.00-00:07.00",
+    "intent": "把原 0-7 秒作为同一连续天空/白鸟开场，不再拆成黑场、云层、白鸟短段。",
+    "anchor_ids": [
+      "OP_SHOT_001",
+      "OP_SHOT_002",
+      "OP_SHOT_003",
+      "R5_VU_REF003_002_WHITE_BIRD_SKY_003500ms_02",
+      "OP_SHOT_004",
+      "R5_VU_REF003_002_WHITE_BIRD_SKY_007000ms_01"
+    ],
+    "active_locks": [
+      [
+        "props_vehicles_symbols",
+        "white_bird"
+      ]
+    ],
+    "motion": "fade from black into bright clouds, then continue into white-bird sky motion as one long, graceful opening move"
+  },
+  "reference_clip": {
+    "path": "08_generation/jobs/REFERENCE003_R6_OPENING_LONG_UNITS_20260701/VU_REF003_OPENING_L01_CLOUD_BIRD_LONG/reference_clip/VU_REF003_OPENING_L01_CLOUD_BIRD_LONG_reference.mp4",
+    "start_sec": 0.0,
+    "end_sec": 7.0,
+    "duration_sec": 7.0,
+    "ok": true,
+    "decode_ok": true,
+    "stderr_tail": "      handler_name    : VideoHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : Lavc60.31.102 mpeg4\n    Side data:\n      cpb: bitrate max/min/avg: 0/0/200000 buffer size: 0 vbv_delay: N/A\nframe=    0 fps=0.0 q=3.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    \n[out#0/mp4 @ 0x72f05c480] video:1940kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 0.113012%\nframe=  168 fps=0.0 q=3.0 Lsize=    1942kB time=00:00:06.96 bitrate=2284.2kbits/s speed=  31x    "
+  },
+  "keyframe_anchors": [
+    {
+      "order": 1,
+      "item_id": "OP_SHOT_001",
+      "kind": "official_keyframe",
+      "time_sec": 0.0,
+      "timecode": "00:00.00",
+      "role": "图1 / black_to_cloud_start",
+      "beat": "黑场/云层淡入",
+      "difference_reason": "",
+      "source_reference_frame": "",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_001.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R6_OPENING_LONG_UNITS_20260701/VU_REF003_OPENING_L01_CLOUD_BIRD_LONG/keyframes/01_OP_SHOT_001.png",
+      "exists": true
+    },
+    {
+      "order": 2,
+      "item_id": "OP_SHOT_002",
+      "kind": "official_keyframe",
+      "time_sec": 1.5,
+      "timecode": "00:01.50",
+      "role": "图2 / bright_cloud_sky_reveal",
+      "beat": "云层蓝天显现",
+      "difference_reason": "",
+      "source_reference_frame": "",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_002.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R6_OPENING_LONG_UNITS_20260701/VU_REF003_OPENING_L01_CLOUD_BIRD_LONG/keyframes/02_OP_SHOT_002.png",
+      "exists": true
+    },
+    {
+      "order": 3,
+      "item_id": "OP_SHOT_003",
+      "kind": "official_keyframe",
+      "time_sec": 2.5,
+      "timecode": "00:02.50",
+      "role": "图1 / bird_entry",
+      "beat": "白鸟首次入画",
+      "difference_reason": "",
+      "source_reference_frame": "",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_003.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R6_OPENING_LONG_UNITS_20260701/VU_REF003_OPENING_L01_CLOUD_BIRD_LONG/keyframes/03_OP_SHOT_003.png",
+      "exists": true
+    },
+    {
+      "order": 4,
+      "item_id": "R5_VU_REF003_002_WHITE_BIRD_SKY_003500ms_02",
+      "kind": "r5_adaptive_generated",
+      "time_sec": 3.5,
+      "timecode": "00:03.50",
+      "role": "adaptive_middle",
+      "beat": "White bird glide changes screen position/scale within a long sky movement; useful middle/final action anchor without generating every frame.",
+      "difference_reason": "White bird glide changes screen position/scale within a long sky movement; useful middle/final action anchor without generating every frame.",
+      "source_reference_frame": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0008.jpg",
+      "source_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_002_WHITE_BIRD_SKY_003500ms_02.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R6_OPENING_LONG_UNITS_20260701/VU_REF003_OPENING_L01_CLOUD_BIRD_LONG/keyframes/04_R5_VU_REF003_002_WHITE_BIRD_SKY_003500ms_02.png",
+      "exists": true
+    },
+    {
+      "order": 5,
+      "item_id": "OP_SHOT_004",
+      "kind": "official_keyframe",
+      "time_sec": 5.0,
+      "timecode": "00:05.00",
+      "role": "图2 / bird_glide",
+      "beat": "白鸟滑翔延续",
+      "difference_reason": "",
+      "source_reference_frame": "",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_004.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R6_OPENING_LONG_UNITS_20260701/VU_REF003_OPENING_L01_CLOUD_BIRD_LONG/keyframes/05_OP_SHOT_004.png",
+      "exists": true
+    },
+    {
+      "order": 6,
+      "item_id": "R5_VU_REF003_002_WHITE_BIRD_SKY_007000ms_01",
+      "kind": "r5_adaptive_generated",
+      "time_sec": 7.0,
+      "timecode": "00:07.00",
+      "role": "adaptive_primary",
+      "beat": "White bird glide changes screen position/scale within a long sky movement; useful middle/final action anchor without generating every frame.",
+      "difference_reason": "White bird glide changes screen position/scale within a long sky movement; useful middle/final action anchor without generating every frame.",
+      "source_reference_frame": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0015.jpg",
+      "source_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_002_WHITE_BIRD_SKY_007000ms_01.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R6_OPENING_LONG_UNITS_20260701/VU_REF003_OPENING_L01_CLOUD_BIRD_LONG/keyframes/06_R5_VU_REF003_002_WHITE_BIRD_SKY_007000ms_01.png",
+      "exists": true
+    }
+  ],
+  "active_asset_locks": [
+    {
+      "group": "props_vehicles_symbols",
+      "asset_id": "white_bird",
+      "status": "official_prop_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_003.png",
+      "global_lock_path": "08_generation/jobs/REFERENCE003_R6_OPENING_LONG_UNITS_20260701/_global_asset_locks/props_vehicles_symbols_white_bird.png",
+      "exists": true
+    }
+  ],
+  "prompt_only": "08_generation/jobs/REFERENCE003_R6_OPENING_LONG_UNITS_20260701/_PROMPT_INDEX/PROMPT_ONLY/01_VU_REF003_OPENING_L01_CLOUD_BIRD_LONG.md",
+  "generation_brief": "08_generation/jobs/REFERENCE003_R6_OPENING_LONG_UNITS_20260701/VU_REF003_OPENING_L01_CLOUD_BIRD_LONG/AIGC_VIDEO_GENERATION_BRIEF.md",
+  "ordered_keyframe_contact_sheet": "08_generation/jobs/REFERENCE003_R6_OPENING_LONG_UNITS_20260701/VU_REF003_OPENING_L01_CLOUD_BIRD_LONG/ordered_keyframe_contact_sheet.jpg",
+  "expected_video_output_path": "08_generation/outputs/video/reference003_r6_opening_long_segments/VU_REF003_OPENING_L01_CLOUD_BIRD_LONG.mp4",
+  "boundary_refine_report": "01_intake/analysis/reference003_frame_boundary_refine_r6_20260701/reference003_frame_boundary_refine_r6_20260701.json"
+}

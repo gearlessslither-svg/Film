@@ -1,0 +1,30 @@
+[
+  {
+    "order": 1,
+    "item_id": "OP_SHOT_001",
+    "kind": "official_keyframe",
+    "time_sec": 0.0,
+    "timecode": "00:00.00",
+    "role": "图1 / black_to_cloud_start",
+    "beat": "黑场/云层淡入",
+    "difference_reason": "",
+    "source_reference_frame": "",
+    "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_001.png",
+    "packaged_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_001_BLACK_CLOUD_FADEIN/keyframes/01_OP_SHOT_001.png",
+    "exists": true
+  },
+  {
+    "order": 2,
+    "item_id": "OP_SHOT_002",
+    "kind": "official_keyframe",
+    "time_sec": 1.5,
+    "timecode": "00:01.50",
+    "role": "图2 / bright_cloud_sky_reveal",
+    "beat": "云层蓝天显现",
+    "difference_reason": "",
+    "source_reference_frame": "",
+    "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_002.png",
+    "packaged_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_001_BLACK_CLOUD_FADEIN/keyframes/02_OP_SHOT_002.png",
+    "exists": true
+  }
+]

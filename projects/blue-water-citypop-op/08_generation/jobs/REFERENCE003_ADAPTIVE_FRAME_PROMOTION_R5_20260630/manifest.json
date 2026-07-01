@@ -1,0 +1,717 @@
+{
+  "schema_version": "reference003_adaptive_frame_promotion_r5_job_v1",
+  "project_slug": "blue-water-citypop-op",
+  "created_at": "2026-06-30T20:59:54+08:00",
+  "status": "all_21_generated_pending_director_review",
+  "source_r5_manifest": "03_story/expanded_keyframes/reference003_adaptive_frame_promotion_r5_20260630.json",
+  "candidate_contact_sheet": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/refs/reference003_r5_p1_small_batch_candidate_sheet.jpg",
+  "p1_candidate_count": 13,
+  "rule": "Generate in a fresh/low-weight session or in two small batches. Reference screenshots are not assets until regenerated as pure images and QA-passed.",
+  "items": [
+    {
+      "asset_id": "R5_VU_REF003_002_WHITE_BIRD_SKY_003500ms_02",
+      "parent_video_unit_id": "VU_REF003_002_WHITE_BIRD_SKY",
+      "source_time_sec": 3.5,
+      "source_timecode": "00:03.50",
+      "reference_frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0008.jpg",
+      "keyframe_role": "adaptive_middle",
+      "score": 34.11,
+      "novelty_to_existing_anchor": 10.28,
+      "color_composition_novelty": 4.68,
+      "distance_to_nearest_existing_anchor_sec": 1.0,
+      "reason_tags": [
+        "coverage_gap"
+      ],
+      "difference_reason": "White bird glide changes screen position/scale within a long sky movement; useful middle/final action anchor without generating every frame.",
+      "required_locks": [
+        "white_bird",
+        "opening_sky_clouds"
+      ],
+      "status": "generated_pending_director_review",
+      "lock_paths": [
+        "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_003.png",
+        "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_002.png"
+      ],
+      "planned_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_002_WHITE_BIRD_SKY_003500ms_02.png",
+      "reference_board_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/refs/r5_reference_boards/R5_VU_REF003_002_WHITE_BIRD_SKY_003500ms_02_board.jpg",
+      "prompt_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/prompts/R5_VU_REF003_002_WHITE_BIRD_SKY_003500ms_02.md",
+      "output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_002_WHITE_BIRD_SKY_003500ms_02.png",
+      "generated_at": "2026-06-30T22:28:41+08:00",
+      "qa_status": "contact_sheet_local_pass_pending_director_review",
+      "qa_notes": "Output exists; no obvious text/watermark/collage should be checked on R5 full contact sheet. Character identity remains director-review item."
+    },
+    {
+      "asset_id": "R5_VU_REF003_002_WHITE_BIRD_SKY_007000ms_01",
+      "parent_video_unit_id": "VU_REF003_002_WHITE_BIRD_SKY",
+      "source_time_sec": 7.0,
+      "source_timecode": "00:07.00",
+      "reference_frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0015.jpg",
+      "keyframe_role": "adaptive_primary",
+      "score": 39.08,
+      "novelty_to_existing_anchor": 6.03,
+      "color_composition_novelty": 7.58,
+      "distance_to_nearest_existing_anchor_sec": 2.0,
+      "reason_tags": [
+        "coverage_gap"
+      ],
+      "difference_reason": "White bird glide changes screen position/scale within a long sky movement; useful middle/final action anchor without generating every frame.",
+      "required_locks": [
+        "white_bird",
+        "opening_sky_clouds"
+      ],
+      "status": "generated_pending_director_review",
+      "lock_paths": [
+        "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_003.png",
+        "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_002.png"
+      ],
+      "planned_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_002_WHITE_BIRD_SKY_007000ms_01.png",
+      "reference_board_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/refs/r5_reference_boards/R5_VU_REF003_002_WHITE_BIRD_SKY_007000ms_01_board.jpg",
+      "prompt_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/prompts/R5_VU_REF003_002_WHITE_BIRD_SKY_007000ms_01.md",
+      "output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_002_WHITE_BIRD_SKY_007000ms_01.png",
+      "generated_at": "2026-06-30T22:28:41+08:00",
+      "qa_status": "contact_sheet_local_pass_pending_director_review",
+      "qa_notes": "Output exists; no obvious text/watermark/collage should be checked on R5 full contact sheet. Character identity remains director-review item."
+    },
+    {
+      "asset_id": "R5_VU_REF003_003_CREDIT_SAFE_BIRD_CLOUDS_014000ms_01",
+      "parent_video_unit_id": "VU_REF003_003_CREDIT_SAFE_BIRD_CLOUDS",
+      "source_time_sec": 14.0,
+      "source_timecode": "00:14.00",
+      "reference_frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0029.jpg",
+      "keyframe_role": "adaptive_primary",
+      "score": 195.45,
+      "novelty_to_existing_anchor": 93.49,
+      "color_composition_novelty": 100.52,
+      "distance_to_nearest_existing_anchor_sec": 2.5,
+      "reason_tags": [
+        "coverage_gap",
+        "novelty"
+      ],
+      "difference_reason": "Cloud/bird/title-safe composition changes over a long no-text sky section; adds clean sky state for preview and AIGC prompt.",
+      "required_locks": [
+        "white_bird",
+        "opening_sky_clouds"
+      ],
+      "status": "generated_pending_director_review",
+      "lock_paths": [
+        "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_003.png",
+        "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_002.png"
+      ],
+      "planned_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_003_CREDIT_SAFE_BIRD_CLOUDS_014000ms_01.png",
+      "reference_board_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/refs/r5_reference_boards/R5_VU_REF003_003_CREDIT_SAFE_BIRD_CLOUDS_014000ms_01_board.jpg",
+      "prompt_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/prompts/R5_VU_REF003_003_CREDIT_SAFE_BIRD_CLOUDS_014000ms_01.md",
+      "output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_003_CREDIT_SAFE_BIRD_CLOUDS_014000ms_01.png",
+      "generated_at": "2026-07-01T00:07:31+08:00",
+      "qa_status": "contact_sheet_local_pass_pending_director_review",
+      "qa_notes": "Output exists; no obvious text/watermark/collage should be checked on R5 full contact sheet. Character identity remains director-review item."
+    },
+    {
+      "asset_id": "R5_VU_REF003_004_AIRCRAFT_BRIEF_REVEAL_014500ms_02",
+      "parent_video_unit_id": "VU_REF003_004_AIRCRAFT_BRIEF_REVEAL",
+      "source_time_sec": 14.5,
+      "source_timecode": "00:14.50",
+      "reference_frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0030.jpg",
+      "keyframe_role": "adaptive_middle",
+      "score": 253.02,
+      "novelty_to_existing_anchor": 88.84,
+      "color_composition_novelty": 95.46,
+      "distance_to_nearest_existing_anchor_sec": 0.5,
+      "reason_tags": [
+        "scene_boundary",
+        "novelty",
+        "local_delta"
+      ],
+      "difference_reason": "Brief aircraft reveal is a fast prop/camera state change; current single anchor does not cover entry and exit/reveal phase.",
+      "required_locks": [
+        "jean_aircraft",
+        "opening_sky_clouds"
+      ],
+      "status": "generated_pending_director_review",
+      "lock_paths": [
+        "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_007.png",
+        "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_002.png"
+      ],
+      "planned_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_004_AIRCRAFT_BRIEF_REVEAL_014500ms_02.png",
+      "reference_board_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/refs/r5_reference_boards/R5_VU_REF003_004_AIRCRAFT_BRIEF_REVEAL_014500ms_02_board.jpg",
+      "prompt_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/prompts/R5_VU_REF003_004_AIRCRAFT_BRIEF_REVEAL_014500ms_02.md",
+      "output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_004_AIRCRAFT_BRIEF_REVEAL_014500ms_02.png",
+      "generated_at": "2026-06-30T22:28:41+08:00",
+      "qa_status": "contact_sheet_local_pass_pending_director_review",
+      "qa_notes": "Output exists; no obvious text/watermark/collage should be checked on R5 full contact sheet. Character identity remains director-review item."
+    },
+    {
+      "asset_id": "R5_VU_REF003_004_AIRCRAFT_BRIEF_REVEAL_016000ms_01",
+      "parent_video_unit_id": "VU_REF003_004_AIRCRAFT_BRIEF_REVEAL",
+      "source_time_sec": 16.0,
+      "source_timecode": "00:16.00",
+      "reference_frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0033.jpg",
+      "keyframe_role": "adaptive_primary",
+      "score": 257.88,
+      "novelty_to_existing_anchor": 104.86,
+      "color_composition_novelty": 103.71,
+      "distance_to_nearest_existing_anchor_sec": 1.0,
+      "reason_tags": [
+        "coverage_gap",
+        "novelty",
+        "local_delta"
+      ],
+      "difference_reason": "Brief aircraft reveal is a fast prop/camera state change; current single anchor does not cover entry and exit/reveal phase.",
+      "required_locks": [
+        "jean_aircraft",
+        "opening_sky_clouds"
+      ],
+      "status": "generated_pending_director_review",
+      "lock_paths": [
+        "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_007.png",
+        "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_002.png"
+      ],
+      "planned_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_004_AIRCRAFT_BRIEF_REVEAL_016000ms_01.png",
+      "reference_board_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/refs/r5_reference_boards/R5_VU_REF003_004_AIRCRAFT_BRIEF_REVEAL_016000ms_01_board.jpg",
+      "prompt_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/prompts/R5_VU_REF003_004_AIRCRAFT_BRIEF_REVEAL_016000ms_01.md",
+      "output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_004_AIRCRAFT_BRIEF_REVEAL_016000ms_01.png",
+      "generated_at": "2026-06-30T22:28:41+08:00",
+      "qa_status": "contact_sheet_local_pass_pending_director_review",
+      "qa_notes": "Output exists; no obvious text/watermark/collage should be checked on R5 full contact sheet. Character identity remains director-review item."
+    },
+    {
+      "asset_id": "R5_VU_REF003_005_MAIN_TITLE_SAFE_HOLD_017000ms_01",
+      "parent_video_unit_id": "VU_REF003_005_MAIN_TITLE_SAFE_HOLD",
+      "source_time_sec": 17.0,
+      "source_timecode": "00:17.00",
+      "reference_frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0035.jpg",
+      "keyframe_role": "adaptive_primary",
+      "score": 70.47,
+      "novelty_to_existing_anchor": 19.85,
+      "color_composition_novelty": 19.67,
+      "distance_to_nearest_existing_anchor_sec": 1.5,
+      "reason_tags": [
+        "coverage_gap",
+        "novelty",
+        "local_delta"
+      ],
+      "difference_reason": "主标题功能位无字 hold: large timeline gap between existing anchors; visually different from nearest existing anchor; local motion/color change peak",
+      "required_locks": [],
+      "status": "generated_pending_director_review",
+      "lock_paths": [
+        "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_002.png",
+        "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_007.png"
+      ],
+      "planned_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_005_MAIN_TITLE_SAFE_HOLD_017000ms_01.png",
+      "reference_board_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/refs/r5_reference_boards/R5_VU_REF003_005_MAIN_TITLE_SAFE_HOLD_017000ms_01_board.jpg",
+      "prompt_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/prompts/R5_VU_REF003_005_MAIN_TITLE_SAFE_HOLD_017000ms_01.md",
+      "output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_005_MAIN_TITLE_SAFE_HOLD_017000ms_01.png",
+      "generated_at": "2026-07-01T00:07:31+08:00",
+      "qa_status": "contact_sheet_local_pass_pending_director_review",
+      "qa_notes": "Output exists; no obvious text/watermark/collage should be checked on R5 full contact sheet. Character identity remains director-review item."
+    },
+    {
+      "asset_id": "R5_VU_REF003_006_SUN_FLARE_TO_NADIA_023500ms_01",
+      "parent_video_unit_id": "VU_REF003_006_SUN_FLARE_TO_NADIA",
+      "source_time_sec": 23.5,
+      "source_timecode": "00:23.50",
+      "reference_frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0048.jpg",
+      "keyframe_role": "adaptive_primary",
+      "score": 100.82,
+      "novelty_to_existing_anchor": 27.5,
+      "color_composition_novelty": 26.03,
+      "distance_to_nearest_existing_anchor_sec": 0.5,
+      "reason_tags": [
+        "scene_boundary",
+        "novelty",
+        "local_delta"
+      ],
+      "difference_reason": "Transition edge from sun flare into Nadia needs a clean bridge frame so AIGC does not invent the cut or lose Nadia lock.",
+      "required_locks": [
+        "nadia",
+        "opening_sky_clouds"
+      ],
+      "status": "generated_pending_director_review",
+      "lock_paths": [
+        "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_011_v2.png",
+        "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_002.png"
+      ],
+      "planned_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_006_SUN_FLARE_TO_NADIA_023500ms_01.png",
+      "reference_board_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/refs/r5_reference_boards/R5_VU_REF003_006_SUN_FLARE_TO_NADIA_023500ms_01_board.jpg",
+      "prompt_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/prompts/R5_VU_REF003_006_SUN_FLARE_TO_NADIA_023500ms_01.md",
+      "output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_006_SUN_FLARE_TO_NADIA_023500ms_01.png",
+      "generated_at": "2026-07-01T00:07:31+08:00",
+      "qa_status": "contact_sheet_local_pass_pending_director_review",
+      "qa_notes": "Output exists; no obvious text/watermark/collage should be checked on R5 full contact sheet. Character identity remains director-review item."
+    },
+    {
+      "asset_id": "R5_VU_REF003_007_NADIA_PROFILE_ENTRY_027500ms_01",
+      "parent_video_unit_id": "VU_REF003_007_NADIA_PROFILE_ENTRY",
+      "source_time_sec": 27.5,
+      "source_timecode": "00:27.50",
+      "reference_frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0056.jpg",
+      "keyframe_role": "adaptive_primary",
+      "score": 195.2,
+      "novelty_to_existing_anchor": 56.38,
+      "color_composition_novelty": 66.97,
+      "distance_to_nearest_existing_anchor_sec": 0.5,
+      "reason_tags": [
+        "scene_boundary",
+        "novelty",
+        "local_delta"
+      ],
+      "difference_reason": "Nadia 侧脸入场到近景: scene-boundary / hard visual turn; visually different from nearest existing anchor; local motion/color change peak",
+      "required_locks": [],
+      "status": "generated_pending_director_review",
+      "lock_paths": [
+        "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_011_v2.png"
+      ],
+      "planned_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_007_NADIA_PROFILE_ENTRY_027500ms_01.png",
+      "reference_board_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/refs/r5_reference_boards/R5_VU_REF003_007_NADIA_PROFILE_ENTRY_027500ms_01_board.jpg",
+      "prompt_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/prompts/R5_VU_REF003_007_NADIA_PROFILE_ENTRY_027500ms_01.md",
+      "output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_007_NADIA_PROFILE_ENTRY_027500ms_01.png",
+      "generated_at": "2026-07-01T00:07:31+08:00",
+      "qa_status": "contact_sheet_local_pass_pending_director_review",
+      "qa_notes": "Output exists; no obvious text/watermark/collage should be checked on R5 full contact sheet. Character identity remains director-review item."
+    },
+    {
+      "asset_id": "R5_VU_REF003_008_JEAN_INTRO_028500ms_02",
+      "parent_video_unit_id": "VU_REF003_008_JEAN_INTRO",
+      "source_time_sec": 28.5,
+      "source_timecode": "00:28.50",
+      "reference_frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0058.jpg",
+      "keyframe_role": "adaptive_middle",
+      "score": 206.16,
+      "novelty_to_existing_anchor": 74.18,
+      "color_composition_novelty": 62.36,
+      "distance_to_nearest_existing_anchor_sec": 0.5,
+      "reason_tags": [
+        "scene_boundary",
+        "novelty",
+        "local_delta"
+      ],
+      "difference_reason": "Jean intro has fast entry/pose changes; extra frame carries different body/hat/face orientation and protects Jean identity.",
+      "required_locks": [
+        "jean"
+      ],
+      "status": "generated_pending_director_review",
+      "lock_paths": [
+        "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_012.png"
+      ],
+      "planned_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_008_JEAN_INTRO_028500ms_02.png",
+      "reference_board_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/refs/r5_reference_boards/R5_VU_REF003_008_JEAN_INTRO_028500ms_02_board.jpg",
+      "prompt_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/prompts/R5_VU_REF003_008_JEAN_INTRO_028500ms_02.md",
+      "output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_008_JEAN_INTRO_028500ms_02.png",
+      "generated_at": "2026-06-30T22:28:41+08:00",
+      "qa_status": "contact_sheet_local_pass_pending_director_review",
+      "qa_notes": "Output exists; no obvious text/watermark/collage should be checked on R5 full contact sheet. Character identity remains director-review item."
+    },
+    {
+      "asset_id": "R5_VU_REF003_008_JEAN_INTRO_030500ms_01",
+      "parent_video_unit_id": "VU_REF003_008_JEAN_INTRO",
+      "source_time_sec": 30.5,
+      "source_timecode": "00:30.50",
+      "reference_frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0062.jpg",
+      "keyframe_role": "adaptive_primary",
+      "score": 212.28,
+      "novelty_to_existing_anchor": 66.48,
+      "color_composition_novelty": 65.41,
+      "distance_to_nearest_existing_anchor_sec": 1.5,
+      "reason_tags": [
+        "scene_boundary",
+        "coverage_gap",
+        "novelty",
+        "local_delta"
+      ],
+      "difference_reason": "Jean intro has fast entry/pose changes; extra frame carries different body/hat/face orientation and protects Jean identity.",
+      "required_locks": [
+        "jean"
+      ],
+      "status": "generated_pending_director_review",
+      "lock_paths": [
+        "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_012.png"
+      ],
+      "planned_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_008_JEAN_INTRO_030500ms_01.png",
+      "reference_board_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/refs/r5_reference_boards/R5_VU_REF003_008_JEAN_INTRO_030500ms_01_board.jpg",
+      "prompt_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/prompts/R5_VU_REF003_008_JEAN_INTRO_030500ms_01.md",
+      "output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_008_JEAN_INTRO_030500ms_01.png",
+      "generated_at": "2026-06-30T22:28:41+08:00",
+      "qa_status": "contact_sheet_local_pass_pending_director_review",
+      "qa_notes": "Output exists; no obvious text/watermark/collage should be checked on R5 full contact sheet. Character identity remains director-review item."
+    },
+    {
+      "asset_id": "R5_VU_REF003_009_MARIE_KING_MEADOW_031000ms_01",
+      "parent_video_unit_id": "VU_REF003_009_MARIE_KING_MEADOW",
+      "source_time_sec": 31.0,
+      "source_timecode": "00:31.00",
+      "reference_frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0063.jpg",
+      "keyframe_role": "adaptive_primary",
+      "score": 131.91,
+      "novelty_to_existing_anchor": 45.01,
+      "color_composition_novelty": 31.14,
+      "distance_to_nearest_existing_anchor_sec": 0.5,
+      "reason_tags": [
+        "scene_boundary",
+        "novelty",
+        "local_delta"
+      ],
+      "difference_reason": "Marie 与 King 草地段: scene-boundary / hard visual turn; visually different from nearest existing anchor; local motion/color change peak",
+      "required_locks": [
+        "marie",
+        "king",
+        "meadow_child_animal_beat"
+      ],
+      "status": "generated_pending_director_review",
+      "lock_paths": [
+        "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_014.png"
+      ],
+      "planned_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_009_MARIE_KING_MEADOW_031000ms_01.png",
+      "reference_board_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/refs/r5_reference_boards/R5_VU_REF003_009_MARIE_KING_MEADOW_031000ms_01_board.jpg",
+      "prompt_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/prompts/R5_VU_REF003_009_MARIE_KING_MEADOW_031000ms_01.md",
+      "output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_009_MARIE_KING_MEADOW_031000ms_01.png",
+      "generated_at": "2026-07-01T00:07:31+08:00",
+      "qa_status": "contact_sheet_local_pass_pending_director_review",
+      "qa_notes": "Output exists; no obvious text/watermark/collage should be checked on R5 full contact sheet. Character identity remains director-review item."
+    },
+    {
+      "asset_id": "R5_VU_REF003_010_GRANDIS_TRIO_INTRO_034500ms_01",
+      "parent_video_unit_id": "VU_REF003_010_GRANDIS_TRIO_INTRO",
+      "source_time_sec": 34.5,
+      "source_timecode": "00:34.50",
+      "reference_frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0070.jpg",
+      "keyframe_role": "adaptive_primary",
+      "score": 201.54,
+      "novelty_to_existing_anchor": 77.68,
+      "color_composition_novelty": 40.72,
+      "distance_to_nearest_existing_anchor_sec": 1.0,
+      "reason_tags": [
+        "scene_boundary",
+        "coverage_gap",
+        "novelty",
+        "local_delta"
+      ],
+      "difference_reason": "Grandis trio introduction changes blocking and group pose; extra frame protects three-person identity and screen direction.",
+      "required_locks": [
+        "grandis",
+        "sanson",
+        "hanson"
+      ],
+      "status": "generated_pending_director_review",
+      "lock_paths": [
+        "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_016_v2.png"
+      ],
+      "planned_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_010_GRANDIS_TRIO_INTRO_034500ms_01.png",
+      "reference_board_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/refs/r5_reference_boards/R5_VU_REF003_010_GRANDIS_TRIO_INTRO_034500ms_01_board.jpg",
+      "prompt_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/prompts/R5_VU_REF003_010_GRANDIS_TRIO_INTRO_034500ms_01.md",
+      "output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_010_GRANDIS_TRIO_INTRO_034500ms_01.png",
+      "generated_at": "2026-06-30T22:28:41+08:00",
+      "qa_status": "contact_sheet_local_pass_pending_director_review",
+      "qa_notes": "Output exists; no obvious text/watermark/collage should be checked on R5 full contact sheet. Character identity remains director-review item."
+    },
+    {
+      "asset_id": "R5_VU_REF003_010_GRANDIS_TRIO_INTRO_037500ms_02",
+      "parent_video_unit_id": "VU_REF003_010_GRANDIS_TRIO_INTRO",
+      "source_time_sec": 37.5,
+      "source_timecode": "00:37.50",
+      "reference_frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0076.jpg",
+      "keyframe_role": "adaptive_middle",
+      "score": 162.94,
+      "novelty_to_existing_anchor": 65.93,
+      "color_composition_novelty": 26.41,
+      "distance_to_nearest_existing_anchor_sec": 0.5,
+      "reason_tags": [
+        "scene_boundary",
+        "novelty",
+        "local_delta"
+      ],
+      "difference_reason": "Grandis trio introduction changes blocking and group pose; extra frame protects three-person identity and screen direction.",
+      "required_locks": [
+        "grandis",
+        "sanson",
+        "hanson"
+      ],
+      "status": "generated_pending_director_review",
+      "lock_paths": [
+        "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_016_v2.png"
+      ],
+      "planned_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_010_GRANDIS_TRIO_INTRO_037500ms_02.png",
+      "reference_board_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/refs/r5_reference_boards/R5_VU_REF003_010_GRANDIS_TRIO_INTRO_037500ms_02_board.jpg",
+      "prompt_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/prompts/R5_VU_REF003_010_GRANDIS_TRIO_INTRO_037500ms_02.md",
+      "output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_010_GRANDIS_TRIO_INTRO_037500ms_02.png",
+      "generated_at": "2026-06-30T22:28:41+08:00",
+      "qa_status": "contact_sheet_local_pass_pending_director_review",
+      "qa_notes": "Output exists; no obvious text/watermark/collage should be checked on R5 full contact sheet. Character identity remains director-review item."
+    },
+    {
+      "asset_id": "R5_VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS_052000ms_01",
+      "parent_video_unit_id": "VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS",
+      "source_time_sec": 52.0,
+      "source_timecode": "00:52.00",
+      "reference_frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0105.jpg",
+      "keyframe_role": "adaptive_primary",
+      "score": 195.54,
+      "novelty_to_existing_anchor": 77.43,
+      "color_composition_novelty": 56.28,
+      "distance_to_nearest_existing_anchor_sec": 0.5,
+      "reason_tags": [
+        "scene_boundary",
+        "novelty",
+        "local_delta"
+      ],
+      "difference_reason": "Long undersea Nautilus light-pass has distinct submarine/lighting positions; extra frames preserve scale and light-beam progression.",
+      "required_locks": [
+        "nautilus",
+        "undersea_nautilus_space"
+      ],
+      "status": "generated_pending_director_review",
+      "lock_paths": [
+        "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_026.png"
+      ],
+      "planned_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS_052000ms_01.png",
+      "reference_board_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/refs/r5_reference_boards/R5_VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS_052000ms_01_board.jpg",
+      "prompt_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/prompts/R5_VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS_052000ms_01.md",
+      "output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS_052000ms_01.png",
+      "generated_at": "2026-06-30T22:28:41+08:00",
+      "qa_status": "contact_sheet_local_pass_pending_director_review",
+      "qa_notes": "Output exists; no obvious text/watermark/collage should be checked on R5 full contact sheet. Character identity remains director-review item."
+    },
+    {
+      "asset_id": "R5_VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS_057000ms_03",
+      "parent_video_unit_id": "VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS",
+      "source_time_sec": 57.0,
+      "source_timecode": "00:57.00",
+      "reference_frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0115.jpg",
+      "keyframe_role": "adaptive_middle",
+      "score": 48.17,
+      "novelty_to_existing_anchor": 16.5,
+      "color_composition_novelty": 10.66,
+      "distance_to_nearest_existing_anchor_sec": 1.5,
+      "reason_tags": [
+        "coverage_gap"
+      ],
+      "difference_reason": "Long undersea Nautilus light-pass has distinct submarine/lighting positions; extra frames preserve scale and light-beam progression.",
+      "required_locks": [
+        "nautilus",
+        "undersea_nautilus_space"
+      ],
+      "status": "generated_pending_director_review",
+      "lock_paths": [
+        "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_026.png"
+      ],
+      "planned_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS_057000ms_03.png",
+      "reference_board_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/refs/r5_reference_boards/R5_VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS_057000ms_03_board.jpg",
+      "prompt_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/prompts/R5_VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS_057000ms_03.md",
+      "output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS_057000ms_03.png",
+      "generated_at": "2026-06-30T22:28:41+08:00",
+      "qa_status": "contact_sheet_local_pass_pending_director_review",
+      "qa_notes": "Output exists; no obvious text/watermark/collage should be checked on R5 full contact sheet. Character identity remains director-review item."
+    },
+    {
+      "asset_id": "R5_VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS_060500ms_02",
+      "parent_video_unit_id": "VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS",
+      "source_time_sec": 60.5,
+      "source_timecode": "01:00.50",
+      "reference_frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0122.jpg",
+      "keyframe_role": "adaptive_middle",
+      "score": 51.93,
+      "novelty_to_existing_anchor": 16.69,
+      "color_composition_novelty": 8.58,
+      "distance_to_nearest_existing_anchor_sec": 2.0,
+      "reason_tags": [
+        "coverage_gap"
+      ],
+      "difference_reason": "Long undersea Nautilus light-pass has distinct submarine/lighting positions; extra frames preserve scale and light-beam progression.",
+      "required_locks": [
+        "nautilus",
+        "undersea_nautilus_space"
+      ],
+      "status": "generated_pending_director_review",
+      "lock_paths": [
+        "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_026.png"
+      ],
+      "planned_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS_060500ms_02.png",
+      "reference_board_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/refs/r5_reference_boards/R5_VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS_060500ms_02_board.jpg",
+      "prompt_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/prompts/R5_VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS_060500ms_02.md",
+      "output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS_060500ms_02.png",
+      "generated_at": "2026-06-30T22:28:41+08:00",
+      "qa_status": "contact_sheet_local_pass_pending_director_review",
+      "qa_notes": "Output exists; no obvious text/watermark/collage should be checked on R5 full contact sheet. Character identity remains director-review item."
+    },
+    {
+      "asset_id": "R5_VU_REF003_014_NIGHT_CITY_BLUE_GRID_062500ms_01",
+      "parent_video_unit_id": "VU_REF003_014_NIGHT_CITY_BLUE_GRID",
+      "source_time_sec": 62.5,
+      "source_timecode": "01:02.50",
+      "reference_frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0126.jpg",
+      "keyframe_role": "adaptive_primary",
+      "score": 64.23,
+      "novelty_to_existing_anchor": 23.72,
+      "color_composition_novelty": 34.01,
+      "distance_to_nearest_existing_anchor_sec": 1.0,
+      "reason_tags": [
+        "coverage_gap",
+        "novelty"
+      ],
+      "difference_reason": "夜城与蓝色地面图案: large timeline gap between existing anchors; visually different from nearest existing anchor",
+      "required_locks": [
+        "blue_grid_geometry"
+      ],
+      "status": "generated_pending_director_review",
+      "lock_paths": [
+        "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_030.png"
+      ],
+      "planned_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_014_NIGHT_CITY_BLUE_GRID_062500ms_01.png",
+      "reference_board_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/refs/r5_reference_boards/R5_VU_REF003_014_NIGHT_CITY_BLUE_GRID_062500ms_01_board.jpg",
+      "prompt_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/prompts/R5_VU_REF003_014_NIGHT_CITY_BLUE_GRID_062500ms_01.md",
+      "output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_014_NIGHT_CITY_BLUE_GRID_062500ms_01.png",
+      "generated_at": "2026-07-01T00:07:31+08:00",
+      "qa_status": "contact_sheet_local_pass_pending_director_review",
+      "qa_notes": "Output exists; no obvious text/watermark/collage should be checked on R5 full contact sheet. Character identity remains director-review item."
+    },
+    {
+      "asset_id": "R5_VU_REF003_015_NIGHT_AIRCRAFT_PASS_065000ms_01",
+      "parent_video_unit_id": "VU_REF003_015_NIGHT_AIRCRAFT_PASS",
+      "source_time_sec": 65.0,
+      "source_timecode": "01:05.00",
+      "reference_frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0131.jpg",
+      "keyframe_role": "adaptive_primary",
+      "score": 67.63,
+      "novelty_to_existing_anchor": 10.26,
+      "color_composition_novelty": 9.09,
+      "distance_to_nearest_existing_anchor_sec": 0.5,
+      "reason_tags": [
+        "local_delta"
+      ],
+      "difference_reason": "Night aircraft pass is a short fast prop movement; an extra end/start state prevents the craft from popping or redesigning.",
+      "required_locks": [
+        "jean_aircraft",
+        "night_city_blue_grid"
+      ],
+      "status": "generated_pending_director_review",
+      "lock_paths": [
+        "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_007.png",
+        "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_030.png"
+      ],
+      "planned_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_015_NIGHT_AIRCRAFT_PASS_065000ms_01.png",
+      "reference_board_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/refs/r5_reference_boards/R5_VU_REF003_015_NIGHT_AIRCRAFT_PASS_065000ms_01_board.jpg",
+      "prompt_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/prompts/R5_VU_REF003_015_NIGHT_AIRCRAFT_PASS_065000ms_01.md",
+      "output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_015_NIGHT_AIRCRAFT_PASS_065000ms_01.png",
+      "generated_at": "2026-07-01T00:07:31+08:00",
+      "qa_status": "contact_sheet_local_pass_pending_director_review",
+      "qa_notes": "Output exists; no obvious text/watermark/collage should be checked on R5 full contact sheet. Character identity remains director-review item."
+    },
+    {
+      "asset_id": "R5_VU_REF003_018_BLUE_WATER_SYMBOL_074000ms_01",
+      "parent_video_unit_id": "VU_REF003_018_BLUE_WATER_SYMBOL",
+      "source_time_sec": 74.0,
+      "source_timecode": "01:14.00",
+      "reference_frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0149.jpg",
+      "keyframe_role": "adaptive_primary",
+      "score": 134.09,
+      "novelty_to_existing_anchor": 40.79,
+      "color_composition_novelty": 29.94,
+      "distance_to_nearest_existing_anchor_sec": 0.5,
+      "reason_tags": [
+        "scene_boundary",
+        "novelty",
+        "local_delta"
+      ],
+      "difference_reason": "Blue Water 象征与水下纹理: scene-boundary / hard visual turn; visually different from nearest existing anchor; local motion/color change peak",
+      "required_locks": [
+        "blue_water_pendant",
+        "blue_grid_geometry"
+      ],
+      "status": "generated_pending_director_review",
+      "lock_paths": [
+        "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_035.png",
+        "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_030.png"
+      ],
+      "planned_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_018_BLUE_WATER_SYMBOL_074000ms_01.png",
+      "reference_board_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/refs/r5_reference_boards/R5_VU_REF003_018_BLUE_WATER_SYMBOL_074000ms_01_board.jpg",
+      "prompt_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/prompts/R5_VU_REF003_018_BLUE_WATER_SYMBOL_074000ms_01.md",
+      "output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_018_BLUE_WATER_SYMBOL_074000ms_01.png",
+      "generated_at": "2026-07-01T00:07:31+08:00",
+      "qa_status": "contact_sheet_local_pass_pending_director_review",
+      "qa_notes": "Output exists; no obvious text/watermark/collage should be checked on R5 full contact sheet. Character identity remains director-review item."
+    },
+    {
+      "asset_id": "R5_VU_REF003_019_WATER_SPLASH_TRANSITION_077500ms_02",
+      "parent_video_unit_id": "VU_REF003_019_WATER_SPLASH_TRANSITION",
+      "source_time_sec": 77.5,
+      "source_timecode": "01:17.50",
+      "reference_frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0156.jpg",
+      "keyframe_role": "adaptive_middle",
+      "score": 145.06,
+      "novelty_to_existing_anchor": 53.39,
+      "color_composition_novelty": 49.34,
+      "distance_to_nearest_existing_anchor_sec": 0.5,
+      "reason_tags": [
+        "scene_boundary",
+        "novelty",
+        "local_delta"
+      ],
+      "difference_reason": "Water burst transition has materially different splash/sky states; extra anchor helps preserve transition logic.",
+      "required_locks": [
+        "water_burst_transition"
+      ],
+      "status": "generated_pending_director_review",
+      "lock_paths": [
+        "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_038.png"
+      ],
+      "planned_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_019_WATER_SPLASH_TRANSITION_077500ms_02.png",
+      "reference_board_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/refs/r5_reference_boards/R5_VU_REF003_019_WATER_SPLASH_TRANSITION_077500ms_02_board.jpg",
+      "prompt_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/prompts/R5_VU_REF003_019_WATER_SPLASH_TRANSITION_077500ms_02.md",
+      "output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_019_WATER_SPLASH_TRANSITION_077500ms_02.png",
+      "generated_at": "2026-06-30T22:28:41+08:00",
+      "qa_status": "contact_sheet_local_pass_pending_director_review",
+      "qa_notes": "Output exists; no obvious text/watermark/collage should be checked on R5 full contact sheet. Character identity remains director-review item."
+    },
+    {
+      "asset_id": "R5_VU_REF003_019_WATER_SPLASH_TRANSITION_078500ms_01",
+      "parent_video_unit_id": "VU_REF003_019_WATER_SPLASH_TRANSITION",
+      "source_time_sec": 78.5,
+      "source_timecode": "01:18.50",
+      "reference_frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0158.jpg",
+      "keyframe_role": "adaptive_primary",
+      "score": 198.99,
+      "novelty_to_existing_anchor": 66.74,
+      "color_composition_novelty": 65.78,
+      "distance_to_nearest_existing_anchor_sec": 0.5,
+      "reason_tags": [
+        "scene_boundary",
+        "novelty",
+        "local_delta"
+      ],
+      "difference_reason": "Water burst transition has materially different splash/sky states; extra anchor helps preserve transition logic.",
+      "required_locks": [
+        "water_burst_transition"
+      ],
+      "status": "generated_pending_director_review",
+      "lock_paths": [
+        "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_038.png"
+      ],
+      "planned_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_019_WATER_SPLASH_TRANSITION_078500ms_01.png",
+      "reference_board_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/refs/r5_reference_boards/R5_VU_REF003_019_WATER_SPLASH_TRANSITION_078500ms_01_board.jpg",
+      "prompt_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/prompts/R5_VU_REF003_019_WATER_SPLASH_TRANSITION_078500ms_01.md",
+      "output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_019_WATER_SPLASH_TRANSITION_078500ms_01.png",
+      "generated_at": "2026-06-30T22:28:41+08:00",
+      "qa_status": "contact_sheet_local_pass_pending_director_review",
+      "qa_notes": "Output exists; no obvious text/watermark/collage should be checked on R5 full contact sheet. Character identity remains director-review item."
+    }
+  ],
+  "generated_at": "2026-06-30T22:28:41+08:00",
+  "generated_count": 21,
+  "generated_contact_sheet": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/reference003_r5_generated_21up_sheet.jpg",
+  "qa_summary": {
+    "status": "full_contact_sheet_pending_director_review",
+    "reviewed_at": "2026-07-01T00:07:31+08:00",
+    "notes": "21/21 R5 generated outputs present. One output is 1672x940 and will be normalized during preview assembly. Director should review identity/beauty before external AIGC video generation."
+  },
+  "r5_total_candidate_count": 21,
+  "remaining_candidate_count": 8,
+  "remaining_prompted_at": "2026-06-30T23:48:20+08:00",
+  "remaining_candidate_contact_sheet": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/refs/reference003_r5_remaining_candidate_sheet.jpg",
+  "all_generated_at": "2026-07-01T00:07:31+08:00",
+  "expanded_preview_status": "decode_ok",
+  "expanded_preview_updated_at": "2026-07-01T00:10:53+08:00",
+  "expanded_preview_output_mp4": "09_edit/rough_cut/reference003_r5_expanded_63frame_animatic_1080p_with_music_20260630.mp4",
+  "expanded_preview_manifest": "09_edit/rough_cut/r5_expanded_preview/reference003_r5_expanded_preview_manifest.json",
+  "expanded_preview_report": "09_edit/rough_cut/r5_expanded_preview/reference003_r5_expanded_preview_manifest.md",
+  "expanded_preview_frame_count": 63,
+  "expanded_preview_official_keyframe_count": 42,
+  "expanded_preview_r5_adaptive_generated_count": 21
+}

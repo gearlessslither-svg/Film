@@ -1,0 +1,26 @@
+[
+  {
+    "asset_id": "R7_CAND_007_start_028892ms",
+    "parent_video_unit_id": "VU_REF003_R7_007_JEAN_FACE_FLASH",
+    "role": "start",
+    "source_time_sec": 28.892,
+    "source_timecode": "00:28.89",
+    "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_007_JEAN_FACE_FLASH/candidate_reference_frames/R7_CAND_007_start_028892ms.jpg",
+    "priority": "P3_reference_video_or_already_handled",
+    "status": "candidate_reference_frame_review",
+    "difference_reason": "Jean帽子正脸短插 start boundary/transition frame from R7 high-precision split.",
+    "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_007_start_028892ms.png"
+  },
+  {
+    "asset_id": "R7_CAND_007_end_029458ms",
+    "parent_video_unit_id": "VU_REF003_R7_007_JEAN_FACE_FLASH",
+    "role": "end",
+    "source_time_sec": 29.458,
+    "source_timecode": "00:29.46",
+    "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_007_JEAN_FACE_FLASH/candidate_reference_frames/R7_CAND_007_end_029458ms.jpg",
+    "priority": "P1_generate_next_small_batch",
+    "status": "candidate_reference_frame_needs_prompt_and_generation",
+    "difference_reason": "Jean帽子正脸短插 end boundary/transition frame from R7 high-precision split.",
+    "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_007_end_029458ms.png"
+  }
+]

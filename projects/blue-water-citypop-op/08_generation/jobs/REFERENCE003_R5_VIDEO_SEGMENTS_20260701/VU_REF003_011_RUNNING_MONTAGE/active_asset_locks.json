@@ -1,0 +1,37 @@
+[
+  {
+    "group": "characters",
+    "asset_id": "nadia",
+    "status": "official_identity_lock",
+    "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_011_v2.png",
+    "global_lock_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/_global_asset_locks/characters_nadia.png"
+  },
+  {
+    "group": "characters",
+    "asset_id": "jean",
+    "status": "official_identity_lock",
+    "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_012.png",
+    "global_lock_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/_global_asset_locks/characters_jean.png"
+  },
+  {
+    "group": "characters",
+    "asset_id": "marie",
+    "status": "official_identity_lock",
+    "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_014.png",
+    "global_lock_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/_global_asset_locks/characters_marie.png"
+  },
+  {
+    "group": "characters",
+    "asset_id": "king",
+    "status": "official_identity_lock",
+    "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_014.png",
+    "global_lock_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/_global_asset_locks/characters_king.png"
+  },
+  {
+    "group": "props_vehicles_symbols",
+    "asset_id": "blue_water_pendant",
+    "status": "official_prop_lock",
+    "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_035.png",
+    "global_lock_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/_global_asset_locks/props_vehicles_symbols_blue_water_pendant.png"
+  }
+]

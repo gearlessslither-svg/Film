@@ -1,0 +1,34 @@
+[
+  {
+    "group": "characters",
+    "asset_id": "grandis",
+    "status": "official_identity_lock",
+    "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_016_v2.png",
+    "global_lock_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_global_asset_locks/characters_grandis.png",
+    "exists": true
+  },
+  {
+    "group": "characters",
+    "asset_id": "sanson",
+    "status": "official_identity_lock",
+    "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_016_v2.png",
+    "global_lock_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_global_asset_locks/characters_sanson.png",
+    "exists": true
+  },
+  {
+    "group": "characters",
+    "asset_id": "hanson",
+    "status": "official_identity_lock",
+    "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_016_v2.png",
+    "global_lock_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_global_asset_locks/characters_hanson.png",
+    "exists": true
+  },
+  {
+    "group": "props_vehicles_symbols",
+    "asset_id": "grandis_vehicle",
+    "status": "official_prop_lock",
+    "source_path": "08_generation/jobs/REFERENCE003_IDENTITY_REPAIR_R1_20260630/outputs/OP_SHOT_024_VEHICLE_LOCK_R1.png",
+    "global_lock_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_global_asset_locks/props_vehicles_symbols_grandis_vehicle.png",
+    "exists": true
+  }
+]

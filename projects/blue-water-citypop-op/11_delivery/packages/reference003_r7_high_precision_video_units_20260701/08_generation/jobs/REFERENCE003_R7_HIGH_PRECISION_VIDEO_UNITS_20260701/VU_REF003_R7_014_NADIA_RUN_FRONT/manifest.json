@@ -1,0 +1,123 @@
+{
+  "schema_version": "reference003_r7_high_precision_video_unit_package_v1",
+  "created_at": "2026-07-01T07:36:06+08:00",
+  "status": "ready_for_external_aigc_video_generation",
+  "unit": {
+    "order": 14,
+    "unit_id": "VU_REF003_R7_014_NADIA_RUN_FRONT",
+    "title": "Nadia正面奔跑",
+    "start": 39.5,
+    "end": 41.5,
+    "intent": "Nadia 正面奔跑节拍。",
+    "active_locks": [
+      [
+        "characters",
+        "nadia"
+      ],
+      [
+        "props_vehicles_symbols",
+        "blue_water_pendant"
+      ]
+    ],
+    "mode": "high_precision_segment"
+  },
+  "reference_clip": {
+    "path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_014_NADIA_RUN_FRONT/reference_clip/VU_REF003_R7_014_NADIA_RUN_FRONT_reference.mp4",
+    "start_sec": 39.5,
+    "end_sec": 41.5,
+    "duration_sec": 2.0,
+    "ok": true,
+    "decode_ok": true,
+    "stderr_tail": "      handler_name    : VideoHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : Lavc60.31.102 mpeg4\n    Side data:\n      cpb: bitrate max/min/avg: 0/0/200000 buffer size: 0 vbv_delay: N/A\nframe=    1 fps=0.0 q=3.0 size=       0kB time=00:00:00.04 bitrate=   8.4kbits/s dup=1 drop=0 speed=0.577x    \n[out#0/mp4 @ 0x70505c480] video:3054kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 0.056057%\nframe=   48 fps=0.0 q=3.0 Lsize=    3056kB time=00:00:01.96 bitrate=12769.3kbits/s dup=1 drop=0 speed=12.3x    "
+  },
+  "ordered_generated_anchors": [
+    {
+      "order": 1,
+      "item_id": "OP_SHOT_018",
+      "kind": "official_keyframe",
+      "time_sec": 39.5,
+      "timecode": "00:39.50",
+      "role": "图2 / Nadia_run_front",
+      "beat": "Nadia 奔跑正面",
+      "difference_reason": "",
+      "source_reference_frame": "",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_018.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_014_NADIA_RUN_FRONT/keyframes/01_OP_SHOT_018.png",
+      "exists": true,
+      "source_unit_id": "VU_REF003_011_RUNNING_MONTAGE"
+    },
+    {
+      "order": 2,
+      "item_id": "OP_SHOT_019",
+      "kind": "official_keyframe",
+      "time_sec": 41.5,
+      "timecode": "00:41.50",
+      "role": "图3 / Jean_run",
+      "beat": "Jean 奔跑",
+      "difference_reason": "",
+      "source_reference_frame": "",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH04/outputs/OP_SHOT_019.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_014_NADIA_RUN_FRONT/keyframes/02_OP_SHOT_019.png",
+      "exists": true,
+      "source_unit_id": "VU_REF003_011_RUNNING_MONTAGE"
+    }
+  ],
+  "candidate_reference_frames": [
+    {
+      "asset_id": "R7_CAND_014_start_039530ms",
+      "parent_video_unit_id": "VU_REF003_R7_014_NADIA_RUN_FRONT",
+      "role": "start",
+      "source_time_sec": 39.53,
+      "source_timecode": "00:39.53",
+      "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_014_NADIA_RUN_FRONT/candidate_reference_frames/R7_CAND_014_start_039530ms.jpg",
+      "priority": "P3_reference_video_or_already_handled",
+      "status": "candidate_reference_frame_review",
+      "difference_reason": "Nadia正面奔跑 start boundary/transition frame from R7 high-precision split.",
+      "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_014_start_039530ms.png"
+    },
+    {
+      "asset_id": "R7_CAND_014_end_041470ms",
+      "parent_video_unit_id": "VU_REF003_R7_014_NADIA_RUN_FRONT",
+      "role": "end",
+      "source_time_sec": 41.47,
+      "source_timecode": "00:41.47",
+      "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_014_NADIA_RUN_FRONT/candidate_reference_frames/R7_CAND_014_end_041470ms.jpg",
+      "priority": "P3_reference_video_or_already_handled",
+      "status": "candidate_reference_frame_review",
+      "difference_reason": "Nadia正面奔跑 end boundary/transition frame from R7 high-precision split.",
+      "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_014_end_041470ms.png"
+    },
+    {
+      "asset_id": "R7_CAND_014_middle_040500ms",
+      "parent_video_unit_id": "VU_REF003_R7_014_NADIA_RUN_FRONT",
+      "role": "middle",
+      "source_time_sec": 40.5,
+      "source_timecode": "00:40.50",
+      "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_014_NADIA_RUN_FRONT/candidate_reference_frames/R7_CAND_014_middle_040500ms.jpg",
+      "priority": "P2_review_after_p1",
+      "status": "candidate_reference_frame_review",
+      "difference_reason": "Nadia正面奔跑 middle boundary/transition frame from R7 high-precision split.",
+      "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_014_middle_040500ms.png"
+    }
+  ],
+  "active_asset_locks": [
+    {
+      "group": "characters",
+      "asset_id": "nadia",
+      "status": "official_identity_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_011_v2.png",
+      "global_lock_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_global_asset_locks/characters_nadia.png",
+      "exists": true
+    },
+    {
+      "group": "props_vehicles_symbols",
+      "asset_id": "blue_water_pendant",
+      "status": "official_prop_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_035.png",
+      "global_lock_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_global_asset_locks/props_vehicles_symbols_blue_water_pendant.png",
+      "exists": true
+    }
+  ],
+  "prompt_only": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_PROMPT_INDEX/PROMPT_ONLY/14_VU_REF003_R7_014_NADIA_RUN_FRONT.md",
+  "expected_video_output_path": "08_generation/outputs/video/reference003_r7_high_precision_segments/VU_REF003_R7_014_NADIA_RUN_FRONT.mp4"
+}

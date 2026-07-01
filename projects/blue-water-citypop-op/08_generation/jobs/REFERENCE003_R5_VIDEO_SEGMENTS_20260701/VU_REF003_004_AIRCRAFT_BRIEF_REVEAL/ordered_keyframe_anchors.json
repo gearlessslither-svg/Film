@@ -1,0 +1,44 @@
+[
+  {
+    "order": 1,
+    "item_id": "R5_VU_REF003_004_AIRCRAFT_BRIEF_REVEAL_014500ms_02",
+    "kind": "r5_adaptive_generated",
+    "time_sec": 14.5,
+    "timecode": "00:14.50",
+    "role": "adaptive_middle",
+    "beat": "Brief aircraft reveal is a fast prop/camera state change; current single anchor does not cover entry and exit/reveal phase.",
+    "difference_reason": "Brief aircraft reveal is a fast prop/camera state change; current single anchor does not cover entry and exit/reveal phase.",
+    "source_reference_frame": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0030.jpg",
+    "source_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_004_AIRCRAFT_BRIEF_REVEAL_014500ms_02.png",
+    "packaged_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_004_AIRCRAFT_BRIEF_REVEAL/keyframes/01_R5_VU_REF003_004_AIRCRAFT_BRIEF_REVEAL_014500ms_02.png",
+    "exists": true
+  },
+  {
+    "order": 2,
+    "item_id": "OP_SHOT_007",
+    "kind": "official_keyframe",
+    "time_sec": 15.0,
+    "timecode": "00:15.00",
+    "role": "图1 / aircraft_brief_reveal",
+    "beat": "飞行器短露",
+    "difference_reason": "",
+    "source_reference_frame": "",
+    "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_007.png",
+    "packaged_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_004_AIRCRAFT_BRIEF_REVEAL/keyframes/02_OP_SHOT_007.png",
+    "exists": true
+  },
+  {
+    "order": 3,
+    "item_id": "R5_VU_REF003_004_AIRCRAFT_BRIEF_REVEAL_016000ms_01",
+    "kind": "r5_adaptive_generated",
+    "time_sec": 16.0,
+    "timecode": "00:16.00",
+    "role": "adaptive_primary",
+    "beat": "Brief aircraft reveal is a fast prop/camera state change; current single anchor does not cover entry and exit/reveal phase.",
+    "difference_reason": "Brief aircraft reveal is a fast prop/camera state change; current single anchor does not cover entry and exit/reveal phase.",
+    "source_reference_frame": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0033.jpg",
+    "source_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_004_AIRCRAFT_BRIEF_REVEAL_016000ms_01.png",
+    "packaged_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_004_AIRCRAFT_BRIEF_REVEAL/keyframes/03_R5_VU_REF003_004_AIRCRAFT_BRIEF_REVEAL_016000ms_01.png",
+    "exists": true
+  }
+]

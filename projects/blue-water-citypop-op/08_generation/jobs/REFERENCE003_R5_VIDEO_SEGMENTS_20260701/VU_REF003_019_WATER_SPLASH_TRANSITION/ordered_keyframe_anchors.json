@@ -1,0 +1,58 @@
+[
+  {
+    "order": 1,
+    "item_id": "R5_VU_REF003_019_WATER_SPLASH_TRANSITION_077500ms_02",
+    "kind": "r5_adaptive_generated",
+    "time_sec": 77.5,
+    "timecode": "01:17.50",
+    "role": "adaptive_middle",
+    "beat": "Water burst transition has materially different splash/sky states; extra anchor helps preserve transition logic.",
+    "difference_reason": "Water burst transition has materially different splash/sky states; extra anchor helps preserve transition logic.",
+    "source_reference_frame": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0156.jpg",
+    "source_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_019_WATER_SPLASH_TRANSITION_077500ms_02.png",
+    "packaged_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_019_WATER_SPLASH_TRANSITION/keyframes/01_R5_VU_REF003_019_WATER_SPLASH_TRANSITION_077500ms_02.png",
+    "exists": true
+  },
+  {
+    "order": 2,
+    "item_id": "OP_SHOT_038",
+    "kind": "official_keyframe",
+    "time_sec": 78.0,
+    "timecode": "01:18.00",
+    "role": "图1 / water_burst",
+    "beat": "水花爆发",
+    "difference_reason": "",
+    "source_reference_frame": "",
+    "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_038.png",
+    "packaged_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_019_WATER_SPLASH_TRANSITION/keyframes/02_OP_SHOT_038.png",
+    "exists": true
+  },
+  {
+    "order": 3,
+    "item_id": "R5_VU_REF003_019_WATER_SPLASH_TRANSITION_078500ms_01",
+    "kind": "r5_adaptive_generated",
+    "time_sec": 78.5,
+    "timecode": "01:18.50",
+    "role": "adaptive_primary",
+    "beat": "Water burst transition has materially different splash/sky states; extra anchor helps preserve transition logic.",
+    "difference_reason": "Water burst transition has materially different splash/sky states; extra anchor helps preserve transition logic.",
+    "source_reference_frame": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0158.jpg",
+    "source_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_019_WATER_SPLASH_TRANSITION_078500ms_01.png",
+    "packaged_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_019_WATER_SPLASH_TRANSITION/keyframes/03_R5_VU_REF003_019_WATER_SPLASH_TRANSITION_078500ms_01.png",
+    "exists": true
+  },
+  {
+    "order": 4,
+    "item_id": "OP_SHOT_039",
+    "kind": "official_keyframe",
+    "time_sec": 79.0,
+    "timecode": "01:19.00",
+    "role": "图2 / splash_to_sky",
+    "beat": "水花转蓝天",
+    "difference_reason": "",
+    "source_reference_frame": "",
+    "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_039.png",
+    "packaged_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_019_WATER_SPLASH_TRANSITION/keyframes/04_OP_SHOT_039.png",
+    "exists": true
+  }
+]

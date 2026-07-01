@@ -1,0 +1,1804 @@
+{
+  "schema_version": "reference003_adaptive_frame_promotion_r5_v1",
+  "project_slug": "blue-water-citypop-op",
+  "created_at": "2026-06-30T20:57:23+08:00",
+  "status": "all_21_generated_pending_director_review",
+  "source_reference_video": "01_intake/references/reference-003-full-op-2160p.mp4",
+  "available_sources": [
+    "full-video 0.5s sampled frames",
+    "existing local scene-detection logs",
+    "R3 dense manifests for selected repair targets",
+    "approved setting chapter locks"
+  ],
+  "limitation": "No ffmpeg/cv2/moviepy decoder is currently available in this session, so R5 cannot extract fresh 8-12fps frames from mp4. It performs shot-level adaptive promotion using existing sampled frames and marks units that need denser extraction before final generation.",
+  "r4_previous_candidate_count": 25,
+  "r5_selected_candidate_count": 21,
+  "r5_p1_candidate_count": 13,
+  "selection_principle": "Shot/video-unit first. Use desired per-unit density and novelty-to-existing-anchor, then promote only frames with new film function and required asset locks.",
+  "units": [
+    {
+      "order": 1,
+      "unit_id": "VU_REF003_001_BLACK_CLOUD_FADEIN",
+      "title": "黑场到云层蓝天淡入",
+      "time_range": "00:00.00-00:02.00",
+      "duration_sec": 2.0,
+      "complexity_class": "low_change",
+      "desired_analysis_fps": 2,
+      "available_sample_fps": 2.0,
+      "needs_more_extraction_for_final_decision": false,
+      "official_anchor_count": 2,
+      "r3_extra_count": 0,
+      "selected_candidate_count": 0,
+      "priority": "P4_no_new_asset_now",
+      "required_locks": [],
+      "candidates": [],
+      "decision_note": "No new image asset needed at current preview density."
+    },
+    {
+      "order": 2,
+      "unit_id": "VU_REF003_002_WHITE_BIRD_SKY",
+      "title": "白鸟入画与蓝天滑翔",
+      "time_range": "00:02.50-00:07.00",
+      "duration_sec": 4.5,
+      "complexity_class": "high_change",
+      "desired_analysis_fps": 6,
+      "available_sample_fps": 2.0,
+      "needs_more_extraction_for_final_decision": true,
+      "official_anchor_count": 2,
+      "r3_extra_count": 0,
+      "selected_candidate_count": 2,
+      "priority": "P1_generate_next_small_batch",
+      "required_locks": [
+        "white_bird",
+        "opening_sky_clouds"
+      ],
+      "candidates": [
+        {
+          "asset_id": "R5_VU_REF003_002_WHITE_BIRD_SKY_007000ms_01",
+          "parent_video_unit_id": "VU_REF003_002_WHITE_BIRD_SKY",
+          "source_time_sec": 7.0,
+          "source_timecode": "00:07.00",
+          "reference_frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0015.jpg",
+          "keyframe_role": "adaptive_primary",
+          "score": 39.08,
+          "novelty_to_existing_anchor": 6.03,
+          "color_composition_novelty": 7.58,
+          "distance_to_nearest_existing_anchor_sec": 2.0,
+          "reason_tags": [
+            "coverage_gap"
+          ],
+          "difference_reason": "White bird glide changes screen position/scale within a long sky movement; useful middle/final action anchor without generating every frame.",
+          "required_locks": [
+            "white_bird",
+            "opening_sky_clouds"
+          ],
+          "status": "generated_pending_director_review",
+          "generated_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_002_WHITE_BIRD_SKY_007000ms_01.png",
+          "generated_at": "2026-06-30T22:28:41+08:00",
+          "qa_status": "contact_sheet_local_pass_pending_director_review",
+          "planned_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_002_WHITE_BIRD_SKY_007000ms_01.png",
+          "reference_board_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/refs/r5_reference_boards/R5_VU_REF003_002_WHITE_BIRD_SKY_007000ms_01_board.jpg",
+          "prompt_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/prompts/R5_VU_REF003_002_WHITE_BIRD_SKY_007000ms_01.md",
+          "lock_paths": [
+            "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_003.png",
+            "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_002.png"
+          ]
+        },
+        {
+          "asset_id": "R5_VU_REF003_002_WHITE_BIRD_SKY_003500ms_02",
+          "parent_video_unit_id": "VU_REF003_002_WHITE_BIRD_SKY",
+          "source_time_sec": 3.5,
+          "source_timecode": "00:03.50",
+          "reference_frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0008.jpg",
+          "keyframe_role": "adaptive_middle",
+          "score": 34.11,
+          "novelty_to_existing_anchor": 10.28,
+          "color_composition_novelty": 4.68,
+          "distance_to_nearest_existing_anchor_sec": 1.0,
+          "reason_tags": [
+            "coverage_gap"
+          ],
+          "difference_reason": "White bird glide changes screen position/scale within a long sky movement; useful middle/final action anchor without generating every frame.",
+          "required_locks": [
+            "white_bird",
+            "opening_sky_clouds"
+          ],
+          "status": "generated_pending_director_review",
+          "generated_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_002_WHITE_BIRD_SKY_003500ms_02.png",
+          "generated_at": "2026-06-30T22:28:41+08:00",
+          "qa_status": "contact_sheet_local_pass_pending_director_review",
+          "planned_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_002_WHITE_BIRD_SKY_003500ms_02.png",
+          "reference_board_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/refs/r5_reference_boards/R5_VU_REF003_002_WHITE_BIRD_SKY_003500ms_02_board.jpg",
+          "prompt_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/prompts/R5_VU_REF003_002_WHITE_BIRD_SKY_003500ms_02.md",
+          "lock_paths": [
+            "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_003.png",
+            "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_002.png"
+          ]
+        }
+      ],
+      "decision_note": "Promote these only after prompt/identity-lock job is created and pure images are generated."
+    },
+    {
+      "order": 3,
+      "unit_id": "VU_REF003_003_CREDIT_SAFE_BIRD_CLOUDS",
+      "title": "白鸟字幕安全位与云层增长",
+      "time_range": "00:07.00-00:14.00",
+      "duration_sec": 7.0,
+      "complexity_class": "moderate_long",
+      "desired_analysis_fps": 4,
+      "available_sample_fps": 2.0,
+      "needs_more_extraction_for_final_decision": true,
+      "official_anchor_count": 2,
+      "r3_extra_count": 0,
+      "selected_candidate_count": 1,
+      "priority": "P2_review_after_p1",
+      "required_locks": [
+        "white_bird",
+        "opening_sky_clouds"
+      ],
+      "candidates": [
+        {
+          "asset_id": "R5_VU_REF003_003_CREDIT_SAFE_BIRD_CLOUDS_014000ms_01",
+          "parent_video_unit_id": "VU_REF003_003_CREDIT_SAFE_BIRD_CLOUDS",
+          "source_time_sec": 14.0,
+          "source_timecode": "00:14.00",
+          "reference_frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0029.jpg",
+          "keyframe_role": "adaptive_primary",
+          "score": 195.45,
+          "novelty_to_existing_anchor": 93.49,
+          "color_composition_novelty": 100.52,
+          "distance_to_nearest_existing_anchor_sec": 2.5,
+          "reason_tags": [
+            "coverage_gap",
+            "novelty"
+          ],
+          "difference_reason": "Cloud/bird/title-safe composition changes over a long no-text sky section; adds clean sky state for preview and AIGC prompt.",
+          "required_locks": [
+            "white_bird",
+            "opening_sky_clouds"
+          ],
+          "status": "generated_pending_director_review",
+          "generated_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_003_CREDIT_SAFE_BIRD_CLOUDS_014000ms_01.png",
+          "planned_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_003_CREDIT_SAFE_BIRD_CLOUDS_014000ms_01.png",
+          "reference_board_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/refs/r5_reference_boards/R5_VU_REF003_003_CREDIT_SAFE_BIRD_CLOUDS_014000ms_01_board.jpg",
+          "prompt_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/prompts/R5_VU_REF003_003_CREDIT_SAFE_BIRD_CLOUDS_014000ms_01.md",
+          "lock_paths": [
+            "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_003.png",
+            "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_002.png"
+          ],
+          "generated_at": "2026-07-01T00:07:31+08:00",
+          "qa_status": "contact_sheet_local_pass_pending_director_review"
+        }
+      ],
+      "decision_note": "Promote these only after prompt/identity-lock job is created and pure images are generated."
+    },
+    {
+      "order": 4,
+      "unit_id": "VU_REF003_004_AIRCRAFT_BRIEF_REVEAL",
+      "title": "飞行器短暂露出",
+      "time_range": "00:14.50-00:16.50",
+      "duration_sec": 2.0,
+      "complexity_class": "high_change_short",
+      "desired_analysis_fps": 8,
+      "available_sample_fps": 2.0,
+      "needs_more_extraction_for_final_decision": true,
+      "official_anchor_count": 1,
+      "r3_extra_count": 0,
+      "selected_candidate_count": 2,
+      "priority": "P1_generate_next_small_batch",
+      "required_locks": [
+        "jean_aircraft",
+        "opening_sky_clouds"
+      ],
+      "candidates": [
+        {
+          "asset_id": "R5_VU_REF003_004_AIRCRAFT_BRIEF_REVEAL_016000ms_01",
+          "parent_video_unit_id": "VU_REF003_004_AIRCRAFT_BRIEF_REVEAL",
+          "source_time_sec": 16.0,
+          "source_timecode": "00:16.00",
+          "reference_frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0033.jpg",
+          "keyframe_role": "adaptive_primary",
+          "score": 257.88,
+          "novelty_to_existing_anchor": 104.86,
+          "color_composition_novelty": 103.71,
+          "distance_to_nearest_existing_anchor_sec": 1.0,
+          "reason_tags": [
+            "coverage_gap",
+            "novelty",
+            "local_delta"
+          ],
+          "difference_reason": "Brief aircraft reveal is a fast prop/camera state change; current single anchor does not cover entry and exit/reveal phase.",
+          "required_locks": [
+            "jean_aircraft",
+            "opening_sky_clouds"
+          ],
+          "status": "generated_pending_director_review",
+          "generated_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_004_AIRCRAFT_BRIEF_REVEAL_016000ms_01.png",
+          "generated_at": "2026-06-30T22:28:41+08:00",
+          "qa_status": "contact_sheet_local_pass_pending_director_review",
+          "planned_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_004_AIRCRAFT_BRIEF_REVEAL_016000ms_01.png",
+          "reference_board_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/refs/r5_reference_boards/R5_VU_REF003_004_AIRCRAFT_BRIEF_REVEAL_016000ms_01_board.jpg",
+          "prompt_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/prompts/R5_VU_REF003_004_AIRCRAFT_BRIEF_REVEAL_016000ms_01.md",
+          "lock_paths": [
+            "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_007.png",
+            "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_002.png"
+          ]
+        },
+        {
+          "asset_id": "R5_VU_REF003_004_AIRCRAFT_BRIEF_REVEAL_014500ms_02",
+          "parent_video_unit_id": "VU_REF003_004_AIRCRAFT_BRIEF_REVEAL",
+          "source_time_sec": 14.5,
+          "source_timecode": "00:14.50",
+          "reference_frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0030.jpg",
+          "keyframe_role": "adaptive_middle",
+          "score": 253.02,
+          "novelty_to_existing_anchor": 88.84,
+          "color_composition_novelty": 95.46,
+          "distance_to_nearest_existing_anchor_sec": 0.5,
+          "reason_tags": [
+            "scene_boundary",
+            "novelty",
+            "local_delta"
+          ],
+          "difference_reason": "Brief aircraft reveal is a fast prop/camera state change; current single anchor does not cover entry and exit/reveal phase.",
+          "required_locks": [
+            "jean_aircraft",
+            "opening_sky_clouds"
+          ],
+          "status": "generated_pending_director_review",
+          "generated_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_004_AIRCRAFT_BRIEF_REVEAL_014500ms_02.png",
+          "generated_at": "2026-06-30T22:28:41+08:00",
+          "qa_status": "contact_sheet_local_pass_pending_director_review",
+          "planned_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_004_AIRCRAFT_BRIEF_REVEAL_014500ms_02.png",
+          "reference_board_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/refs/r5_reference_boards/R5_VU_REF003_004_AIRCRAFT_BRIEF_REVEAL_014500ms_02_board.jpg",
+          "prompt_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/prompts/R5_VU_REF003_004_AIRCRAFT_BRIEF_REVEAL_014500ms_02.md",
+          "lock_paths": [
+            "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_007.png",
+            "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_002.png"
+          ]
+        }
+      ],
+      "decision_note": "Promote these only after prompt/identity-lock job is created and pure images are generated."
+    },
+    {
+      "order": 5,
+      "unit_id": "VU_REF003_005_MAIN_TITLE_SAFE_HOLD",
+      "title": "主标题功能位无字 hold",
+      "time_range": "00:17.00-00:22.00",
+      "duration_sec": 5.0,
+      "complexity_class": "moderate",
+      "desired_analysis_fps": 4,
+      "available_sample_fps": 2.0,
+      "needs_more_extraction_for_final_decision": true,
+      "official_anchor_count": 1,
+      "r3_extra_count": 0,
+      "selected_candidate_count": 1,
+      "priority": "P2_review_after_p1",
+      "required_locks": [],
+      "candidates": [
+        {
+          "asset_id": "R5_VU_REF003_005_MAIN_TITLE_SAFE_HOLD_017000ms_01",
+          "parent_video_unit_id": "VU_REF003_005_MAIN_TITLE_SAFE_HOLD",
+          "source_time_sec": 17.0,
+          "source_timecode": "00:17.00",
+          "reference_frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0035.jpg",
+          "keyframe_role": "adaptive_primary",
+          "score": 70.47,
+          "novelty_to_existing_anchor": 19.85,
+          "color_composition_novelty": 19.67,
+          "distance_to_nearest_existing_anchor_sec": 1.5,
+          "reason_tags": [
+            "coverage_gap",
+            "novelty",
+            "local_delta"
+          ],
+          "difference_reason": "主标题功能位无字 hold: large timeline gap between existing anchors; visually different from nearest existing anchor; local motion/color change peak",
+          "required_locks": [],
+          "status": "generated_pending_director_review",
+          "generated_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_005_MAIN_TITLE_SAFE_HOLD_017000ms_01.png",
+          "planned_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_005_MAIN_TITLE_SAFE_HOLD_017000ms_01.png",
+          "reference_board_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/refs/r5_reference_boards/R5_VU_REF003_005_MAIN_TITLE_SAFE_HOLD_017000ms_01_board.jpg",
+          "prompt_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/prompts/R5_VU_REF003_005_MAIN_TITLE_SAFE_HOLD_017000ms_01.md",
+          "lock_paths": [
+            "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_002.png",
+            "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_007.png"
+          ],
+          "generated_at": "2026-07-01T00:07:31+08:00",
+          "qa_status": "contact_sheet_local_pass_pending_director_review"
+        }
+      ],
+      "decision_note": "Promote these only after prompt/identity-lock job is created and pure images are generated."
+    },
+    {
+      "order": 6,
+      "unit_id": "VU_REF003_006_SUN_FLARE_TO_NADIA",
+      "title": "太阳光转 Nadia",
+      "time_range": "00:22.50-00:23.50",
+      "duration_sec": 1.0,
+      "complexity_class": "high_change_short",
+      "desired_analysis_fps": 8,
+      "available_sample_fps": 2.0,
+      "needs_more_extraction_for_final_decision": true,
+      "official_anchor_count": 1,
+      "r3_extra_count": 0,
+      "selected_candidate_count": 1,
+      "priority": "P2_review_after_p1",
+      "required_locks": [
+        "nadia",
+        "opening_sky_clouds"
+      ],
+      "candidates": [
+        {
+          "asset_id": "R5_VU_REF003_006_SUN_FLARE_TO_NADIA_023500ms_01",
+          "parent_video_unit_id": "VU_REF003_006_SUN_FLARE_TO_NADIA",
+          "source_time_sec": 23.5,
+          "source_timecode": "00:23.50",
+          "reference_frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0048.jpg",
+          "keyframe_role": "adaptive_primary",
+          "score": 100.82,
+          "novelty_to_existing_anchor": 27.5,
+          "color_composition_novelty": 26.03,
+          "distance_to_nearest_existing_anchor_sec": 0.5,
+          "reason_tags": [
+            "scene_boundary",
+            "novelty",
+            "local_delta"
+          ],
+          "difference_reason": "Transition edge from sun flare into Nadia needs a clean bridge frame so AIGC does not invent the cut or lose Nadia lock.",
+          "required_locks": [
+            "nadia",
+            "opening_sky_clouds"
+          ],
+          "status": "generated_pending_director_review",
+          "generated_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_006_SUN_FLARE_TO_NADIA_023500ms_01.png",
+          "planned_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_006_SUN_FLARE_TO_NADIA_023500ms_01.png",
+          "reference_board_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/refs/r5_reference_boards/R5_VU_REF003_006_SUN_FLARE_TO_NADIA_023500ms_01_board.jpg",
+          "prompt_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/prompts/R5_VU_REF003_006_SUN_FLARE_TO_NADIA_023500ms_01.md",
+          "lock_paths": [
+            "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_011_v2.png",
+            "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_002.png"
+          ],
+          "generated_at": "2026-07-01T00:07:31+08:00",
+          "qa_status": "contact_sheet_local_pass_pending_director_review"
+        }
+      ],
+      "decision_note": "Promote these only after prompt/identity-lock job is created and pure images are generated."
+    },
+    {
+      "order": 7,
+      "unit_id": "VU_REF003_007_NADIA_PROFILE_ENTRY",
+      "title": "Nadia 侧脸入场到近景",
+      "time_range": "00:24.00-00:27.50",
+      "duration_sec": 3.5,
+      "complexity_class": "high_change",
+      "desired_analysis_fps": 6,
+      "available_sample_fps": 2.0,
+      "needs_more_extraction_for_final_decision": true,
+      "official_anchor_count": 2,
+      "r3_extra_count": 1,
+      "selected_candidate_count": 1,
+      "priority": "P2_review_after_p1",
+      "required_locks": [],
+      "candidates": [
+        {
+          "asset_id": "R5_VU_REF003_007_NADIA_PROFILE_ENTRY_027500ms_01",
+          "parent_video_unit_id": "VU_REF003_007_NADIA_PROFILE_ENTRY",
+          "source_time_sec": 27.5,
+          "source_timecode": "00:27.50",
+          "reference_frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0056.jpg",
+          "keyframe_role": "adaptive_primary",
+          "score": 195.2,
+          "novelty_to_existing_anchor": 56.38,
+          "color_composition_novelty": 66.97,
+          "distance_to_nearest_existing_anchor_sec": 0.5,
+          "reason_tags": [
+            "scene_boundary",
+            "novelty",
+            "local_delta"
+          ],
+          "difference_reason": "Nadia 侧脸入场到近景: scene-boundary / hard visual turn; visually different from nearest existing anchor; local motion/color change peak",
+          "required_locks": [],
+          "status": "generated_pending_director_review",
+          "generated_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_007_NADIA_PROFILE_ENTRY_027500ms_01.png",
+          "planned_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_007_NADIA_PROFILE_ENTRY_027500ms_01.png",
+          "reference_board_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/refs/r5_reference_boards/R5_VU_REF003_007_NADIA_PROFILE_ENTRY_027500ms_01_board.jpg",
+          "prompt_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/prompts/R5_VU_REF003_007_NADIA_PROFILE_ENTRY_027500ms_01.md",
+          "lock_paths": [
+            "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_011_v2.png"
+          ],
+          "generated_at": "2026-07-01T00:07:31+08:00",
+          "qa_status": "contact_sheet_local_pass_pending_director_review"
+        }
+      ],
+      "decision_note": "Promote these only after prompt/identity-lock job is created and pure images are generated."
+    },
+    {
+      "order": 8,
+      "unit_id": "VU_REF003_008_JEAN_INTRO",
+      "title": "Jean 帽子与少年发明家入场",
+      "time_range": "00:28.00-00:30.50",
+      "duration_sec": 2.5,
+      "complexity_class": "high_change_short",
+      "desired_analysis_fps": 8,
+      "available_sample_fps": 2.0,
+      "needs_more_extraction_for_final_decision": true,
+      "official_anchor_count": 1,
+      "r3_extra_count": 0,
+      "selected_candidate_count": 2,
+      "priority": "P1_generate_next_small_batch",
+      "required_locks": [
+        "jean"
+      ],
+      "candidates": [
+        {
+          "asset_id": "R5_VU_REF003_008_JEAN_INTRO_030500ms_01",
+          "parent_video_unit_id": "VU_REF003_008_JEAN_INTRO",
+          "source_time_sec": 30.5,
+          "source_timecode": "00:30.50",
+          "reference_frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0062.jpg",
+          "keyframe_role": "adaptive_primary",
+          "score": 212.28,
+          "novelty_to_existing_anchor": 66.48,
+          "color_composition_novelty": 65.41,
+          "distance_to_nearest_existing_anchor_sec": 1.5,
+          "reason_tags": [
+            "scene_boundary",
+            "coverage_gap",
+            "novelty",
+            "local_delta"
+          ],
+          "difference_reason": "Jean intro has fast entry/pose changes; extra frame carries different body/hat/face orientation and protects Jean identity.",
+          "required_locks": [
+            "jean"
+          ],
+          "status": "generated_pending_director_review",
+          "generated_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_008_JEAN_INTRO_030500ms_01.png",
+          "generated_at": "2026-06-30T22:28:41+08:00",
+          "qa_status": "contact_sheet_local_pass_pending_director_review",
+          "planned_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_008_JEAN_INTRO_030500ms_01.png",
+          "reference_board_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/refs/r5_reference_boards/R5_VU_REF003_008_JEAN_INTRO_030500ms_01_board.jpg",
+          "prompt_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/prompts/R5_VU_REF003_008_JEAN_INTRO_030500ms_01.md",
+          "lock_paths": [
+            "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_012.png"
+          ]
+        },
+        {
+          "asset_id": "R5_VU_REF003_008_JEAN_INTRO_028500ms_02",
+          "parent_video_unit_id": "VU_REF003_008_JEAN_INTRO",
+          "source_time_sec": 28.5,
+          "source_timecode": "00:28.50",
+          "reference_frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0058.jpg",
+          "keyframe_role": "adaptive_middle",
+          "score": 206.16,
+          "novelty_to_existing_anchor": 74.18,
+          "color_composition_novelty": 62.36,
+          "distance_to_nearest_existing_anchor_sec": 0.5,
+          "reason_tags": [
+            "scene_boundary",
+            "novelty",
+            "local_delta"
+          ],
+          "difference_reason": "Jean intro has fast entry/pose changes; extra frame carries different body/hat/face orientation and protects Jean identity.",
+          "required_locks": [
+            "jean"
+          ],
+          "status": "generated_pending_director_review",
+          "generated_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_008_JEAN_INTRO_028500ms_02.png",
+          "generated_at": "2026-06-30T22:28:41+08:00",
+          "qa_status": "contact_sheet_local_pass_pending_director_review",
+          "planned_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_008_JEAN_INTRO_028500ms_02.png",
+          "reference_board_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/refs/r5_reference_boards/R5_VU_REF003_008_JEAN_INTRO_028500ms_02_board.jpg",
+          "prompt_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/prompts/R5_VU_REF003_008_JEAN_INTRO_028500ms_02.md",
+          "lock_paths": [
+            "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_012.png"
+          ]
+        }
+      ],
+      "decision_note": "Promote these only after prompt/identity-lock job is created and pure images are generated."
+    },
+    {
+      "order": 9,
+      "unit_id": "VU_REF003_009_MARIE_KING_MEADOW",
+      "title": "Marie 与 King 草地段",
+      "time_range": "00:31.00-00:34.00",
+      "duration_sec": 3.0,
+      "complexity_class": "low_change",
+      "desired_analysis_fps": 2,
+      "available_sample_fps": 2.0,
+      "needs_more_extraction_for_final_decision": false,
+      "official_anchor_count": 2,
+      "r3_extra_count": 0,
+      "selected_candidate_count": 1,
+      "priority": "P2_review_after_p1",
+      "required_locks": [
+        "marie",
+        "king",
+        "meadow_child_animal_beat"
+      ],
+      "candidates": [
+        {
+          "asset_id": "R5_VU_REF003_009_MARIE_KING_MEADOW_031000ms_01",
+          "parent_video_unit_id": "VU_REF003_009_MARIE_KING_MEADOW",
+          "source_time_sec": 31.0,
+          "source_timecode": "00:31.00",
+          "reference_frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0063.jpg",
+          "keyframe_role": "adaptive_primary",
+          "score": 131.91,
+          "novelty_to_existing_anchor": 45.01,
+          "color_composition_novelty": 31.14,
+          "distance_to_nearest_existing_anchor_sec": 0.5,
+          "reason_tags": [
+            "scene_boundary",
+            "novelty",
+            "local_delta"
+          ],
+          "difference_reason": "Marie 与 King 草地段: scene-boundary / hard visual turn; visually different from nearest existing anchor; local motion/color change peak",
+          "required_locks": [
+            "marie",
+            "king",
+            "meadow_child_animal_beat"
+          ],
+          "status": "generated_pending_director_review",
+          "generated_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_009_MARIE_KING_MEADOW_031000ms_01.png",
+          "planned_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_009_MARIE_KING_MEADOW_031000ms_01.png",
+          "reference_board_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/refs/r5_reference_boards/R5_VU_REF003_009_MARIE_KING_MEADOW_031000ms_01_board.jpg",
+          "prompt_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/prompts/R5_VU_REF003_009_MARIE_KING_MEADOW_031000ms_01.md",
+          "lock_paths": [
+            "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_014.png"
+          ],
+          "generated_at": "2026-07-01T00:07:31+08:00",
+          "qa_status": "contact_sheet_local_pass_pending_director_review"
+        }
+      ],
+      "decision_note": "Promote these only after prompt/identity-lock job is created and pure images are generated."
+    },
+    {
+      "order": 10,
+      "unit_id": "VU_REF003_010_GRANDIS_TRIO_INTRO",
+      "title": "Grandis 三人组介绍",
+      "time_range": "00:34.50-00:37.50",
+      "duration_sec": 3.0,
+      "complexity_class": "high_change",
+      "desired_analysis_fps": 6,
+      "available_sample_fps": 2.0,
+      "needs_more_extraction_for_final_decision": true,
+      "official_anchor_count": 2,
+      "r3_extra_count": 0,
+      "selected_candidate_count": 2,
+      "priority": "P1_generate_next_small_batch",
+      "required_locks": [
+        "grandis",
+        "sanson",
+        "hanson"
+      ],
+      "candidates": [
+        {
+          "asset_id": "R5_VU_REF003_010_GRANDIS_TRIO_INTRO_034500ms_01",
+          "parent_video_unit_id": "VU_REF003_010_GRANDIS_TRIO_INTRO",
+          "source_time_sec": 34.5,
+          "source_timecode": "00:34.50",
+          "reference_frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0070.jpg",
+          "keyframe_role": "adaptive_primary",
+          "score": 201.54,
+          "novelty_to_existing_anchor": 77.68,
+          "color_composition_novelty": 40.72,
+          "distance_to_nearest_existing_anchor_sec": 1.0,
+          "reason_tags": [
+            "scene_boundary",
+            "coverage_gap",
+            "novelty",
+            "local_delta"
+          ],
+          "difference_reason": "Grandis trio introduction changes blocking and group pose; extra frame protects three-person identity and screen direction.",
+          "required_locks": [
+            "grandis",
+            "sanson",
+            "hanson"
+          ],
+          "status": "generated_pending_director_review",
+          "generated_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_010_GRANDIS_TRIO_INTRO_034500ms_01.png",
+          "generated_at": "2026-06-30T22:28:41+08:00",
+          "qa_status": "contact_sheet_local_pass_pending_director_review",
+          "planned_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_010_GRANDIS_TRIO_INTRO_034500ms_01.png",
+          "reference_board_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/refs/r5_reference_boards/R5_VU_REF003_010_GRANDIS_TRIO_INTRO_034500ms_01_board.jpg",
+          "prompt_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/prompts/R5_VU_REF003_010_GRANDIS_TRIO_INTRO_034500ms_01.md",
+          "lock_paths": [
+            "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_016_v2.png"
+          ]
+        },
+        {
+          "asset_id": "R5_VU_REF003_010_GRANDIS_TRIO_INTRO_037500ms_02",
+          "parent_video_unit_id": "VU_REF003_010_GRANDIS_TRIO_INTRO",
+          "source_time_sec": 37.5,
+          "source_timecode": "00:37.50",
+          "reference_frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0076.jpg",
+          "keyframe_role": "adaptive_middle",
+          "score": 162.94,
+          "novelty_to_existing_anchor": 65.93,
+          "color_composition_novelty": 26.41,
+          "distance_to_nearest_existing_anchor_sec": 0.5,
+          "reason_tags": [
+            "scene_boundary",
+            "novelty",
+            "local_delta"
+          ],
+          "difference_reason": "Grandis trio introduction changes blocking and group pose; extra frame protects three-person identity and screen direction.",
+          "required_locks": [
+            "grandis",
+            "sanson",
+            "hanson"
+          ],
+          "status": "generated_pending_director_review",
+          "generated_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_010_GRANDIS_TRIO_INTRO_037500ms_02.png",
+          "generated_at": "2026-06-30T22:28:41+08:00",
+          "qa_status": "contact_sheet_local_pass_pending_director_review",
+          "planned_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_010_GRANDIS_TRIO_INTRO_037500ms_02.png",
+          "reference_board_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/refs/r5_reference_boards/R5_VU_REF003_010_GRANDIS_TRIO_INTRO_037500ms_02_board.jpg",
+          "prompt_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/prompts/R5_VU_REF003_010_GRANDIS_TRIO_INTRO_037500ms_02.md",
+          "lock_paths": [
+            "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_016_v2.png"
+          ]
+        }
+      ],
+      "decision_note": "Promote these only after prompt/identity-lock job is created and pure images are generated."
+    },
+    {
+      "order": 11,
+      "unit_id": "VU_REF003_011_RUNNING_MONTAGE",
+      "title": "角色奔跑 montage",
+      "time_range": "00:38.00-00:47.50",
+      "duration_sec": 9.5,
+      "complexity_class": "already_handled",
+      "desired_analysis_fps": 0,
+      "available_sample_fps": 2.0,
+      "needs_more_extraction_for_final_decision": false,
+      "official_anchor_count": 6,
+      "r3_extra_count": 7,
+      "selected_candidate_count": 0,
+      "priority": "P3_reference_video_or_already_handled",
+      "required_locks": [],
+      "candidates": [],
+      "decision_note": "Already covered by R3 or intentionally collapsed to reference video."
+    },
+    {
+      "order": 12,
+      "unit_id": "VU_REF003_012_GRANDIS_VEHICLE_ACTION",
+      "title": "Grandis 车辆动作到群像",
+      "time_range": "00:48.00-00:51.50",
+      "duration_sec": 3.5,
+      "complexity_class": "already_handled",
+      "desired_analysis_fps": 0,
+      "available_sample_fps": 2.0,
+      "needs_more_extraction_for_final_decision": false,
+      "official_anchor_count": 3,
+      "r3_extra_count": 3,
+      "selected_candidate_count": 0,
+      "priority": "P3_reference_video_or_already_handled",
+      "required_locks": [],
+      "candidates": [],
+      "decision_note": "Already covered by R3 or intentionally collapsed to reference video."
+    },
+    {
+      "order": 13,
+      "unit_id": "VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS",
+      "title": "Nautilus 海底光束段",
+      "time_range": "00:52.00-01:01.00",
+      "duration_sec": 9.0,
+      "complexity_class": "moderate_long",
+      "desired_analysis_fps": 4,
+      "available_sample_fps": 2.0,
+      "needs_more_extraction_for_final_decision": true,
+      "official_anchor_count": 3,
+      "r3_extra_count": 0,
+      "selected_candidate_count": 3,
+      "priority": "P1_generate_next_small_batch",
+      "required_locks": [
+        "nautilus",
+        "undersea_nautilus_space"
+      ],
+      "candidates": [
+        {
+          "asset_id": "R5_VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS_052000ms_01",
+          "parent_video_unit_id": "VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS",
+          "source_time_sec": 52.0,
+          "source_timecode": "00:52.00",
+          "reference_frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0105.jpg",
+          "keyframe_role": "adaptive_primary",
+          "score": 195.54,
+          "novelty_to_existing_anchor": 77.43,
+          "color_composition_novelty": 56.28,
+          "distance_to_nearest_existing_anchor_sec": 0.5,
+          "reason_tags": [
+            "scene_boundary",
+            "novelty",
+            "local_delta"
+          ],
+          "difference_reason": "Long undersea Nautilus light-pass has distinct submarine/lighting positions; extra frames preserve scale and light-beam progression.",
+          "required_locks": [
+            "nautilus",
+            "undersea_nautilus_space"
+          ],
+          "status": "generated_pending_director_review",
+          "generated_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS_052000ms_01.png",
+          "generated_at": "2026-06-30T22:28:41+08:00",
+          "qa_status": "contact_sheet_local_pass_pending_director_review",
+          "planned_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS_052000ms_01.png",
+          "reference_board_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/refs/r5_reference_boards/R5_VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS_052000ms_01_board.jpg",
+          "prompt_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/prompts/R5_VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS_052000ms_01.md",
+          "lock_paths": [
+            "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_026.png"
+          ]
+        },
+        {
+          "asset_id": "R5_VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS_060500ms_02",
+          "parent_video_unit_id": "VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS",
+          "source_time_sec": 60.5,
+          "source_timecode": "01:00.50",
+          "reference_frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0122.jpg",
+          "keyframe_role": "adaptive_middle",
+          "score": 51.93,
+          "novelty_to_existing_anchor": 16.69,
+          "color_composition_novelty": 8.58,
+          "distance_to_nearest_existing_anchor_sec": 2.0,
+          "reason_tags": [
+            "coverage_gap"
+          ],
+          "difference_reason": "Long undersea Nautilus light-pass has distinct submarine/lighting positions; extra frames preserve scale and light-beam progression.",
+          "required_locks": [
+            "nautilus",
+            "undersea_nautilus_space"
+          ],
+          "status": "generated_pending_director_review",
+          "generated_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS_060500ms_02.png",
+          "generated_at": "2026-06-30T22:28:41+08:00",
+          "qa_status": "contact_sheet_local_pass_pending_director_review",
+          "planned_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS_060500ms_02.png",
+          "reference_board_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/refs/r5_reference_boards/R5_VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS_060500ms_02_board.jpg",
+          "prompt_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/prompts/R5_VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS_060500ms_02.md",
+          "lock_paths": [
+            "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_026.png"
+          ]
+        },
+        {
+          "asset_id": "R5_VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS_057000ms_03",
+          "parent_video_unit_id": "VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS",
+          "source_time_sec": 57.0,
+          "source_timecode": "00:57.00",
+          "reference_frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0115.jpg",
+          "keyframe_role": "adaptive_middle",
+          "score": 48.17,
+          "novelty_to_existing_anchor": 16.5,
+          "color_composition_novelty": 10.66,
+          "distance_to_nearest_existing_anchor_sec": 1.5,
+          "reason_tags": [
+            "coverage_gap"
+          ],
+          "difference_reason": "Long undersea Nautilus light-pass has distinct submarine/lighting positions; extra frames preserve scale and light-beam progression.",
+          "required_locks": [
+            "nautilus",
+            "undersea_nautilus_space"
+          ],
+          "status": "generated_pending_director_review",
+          "generated_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS_057000ms_03.png",
+          "generated_at": "2026-06-30T22:28:41+08:00",
+          "qa_status": "contact_sheet_local_pass_pending_director_review",
+          "planned_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS_057000ms_03.png",
+          "reference_board_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/refs/r5_reference_boards/R5_VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS_057000ms_03_board.jpg",
+          "prompt_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/prompts/R5_VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS_057000ms_03.md",
+          "lock_paths": [
+            "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_026.png"
+          ]
+        }
+      ],
+      "decision_note": "Promote these only after prompt/identity-lock job is created and pure images are generated."
+    },
+    {
+      "order": 14,
+      "unit_id": "VU_REF003_014_NIGHT_CITY_BLUE_GRID",
+      "title": "夜城与蓝色地面图案",
+      "time_range": "01:01.50-01:04.50",
+      "duration_sec": 3.0,
+      "complexity_class": "low_change",
+      "desired_analysis_fps": 2,
+      "available_sample_fps": 2.0,
+      "needs_more_extraction_for_final_decision": false,
+      "official_anchor_count": 2,
+      "r3_extra_count": 0,
+      "selected_candidate_count": 1,
+      "priority": "P2_review_after_p1",
+      "required_locks": [
+        "blue_grid_geometry"
+      ],
+      "candidates": [
+        {
+          "asset_id": "R5_VU_REF003_014_NIGHT_CITY_BLUE_GRID_062500ms_01",
+          "parent_video_unit_id": "VU_REF003_014_NIGHT_CITY_BLUE_GRID",
+          "source_time_sec": 62.5,
+          "source_timecode": "01:02.50",
+          "reference_frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0126.jpg",
+          "keyframe_role": "adaptive_primary",
+          "score": 64.23,
+          "novelty_to_existing_anchor": 23.72,
+          "color_composition_novelty": 34.01,
+          "distance_to_nearest_existing_anchor_sec": 1.0,
+          "reason_tags": [
+            "coverage_gap",
+            "novelty"
+          ],
+          "difference_reason": "夜城与蓝色地面图案: large timeline gap between existing anchors; visually different from nearest existing anchor",
+          "required_locks": [
+            "blue_grid_geometry"
+          ],
+          "status": "generated_pending_director_review",
+          "generated_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_014_NIGHT_CITY_BLUE_GRID_062500ms_01.png",
+          "planned_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_014_NIGHT_CITY_BLUE_GRID_062500ms_01.png",
+          "reference_board_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/refs/r5_reference_boards/R5_VU_REF003_014_NIGHT_CITY_BLUE_GRID_062500ms_01_board.jpg",
+          "prompt_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/prompts/R5_VU_REF003_014_NIGHT_CITY_BLUE_GRID_062500ms_01.md",
+          "lock_paths": [
+            "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_030.png"
+          ],
+          "generated_at": "2026-07-01T00:07:31+08:00",
+          "qa_status": "contact_sheet_local_pass_pending_director_review"
+        }
+      ],
+      "decision_note": "Promote these only after prompt/identity-lock job is created and pure images are generated."
+    },
+    {
+      "order": 15,
+      "unit_id": "VU_REF003_015_NIGHT_AIRCRAFT_PASS",
+      "title": "夜航飞行器短切",
+      "time_range": "01:05.00-01:06.00",
+      "duration_sec": 1.0,
+      "complexity_class": "high_change_short",
+      "desired_analysis_fps": 8,
+      "available_sample_fps": 2.0,
+      "needs_more_extraction_for_final_decision": true,
+      "official_anchor_count": 1,
+      "r3_extra_count": 0,
+      "selected_candidate_count": 1,
+      "priority": "P2_review_after_p1",
+      "required_locks": [
+        "jean_aircraft",
+        "night_city_blue_grid"
+      ],
+      "candidates": [
+        {
+          "asset_id": "R5_VU_REF003_015_NIGHT_AIRCRAFT_PASS_065000ms_01",
+          "parent_video_unit_id": "VU_REF003_015_NIGHT_AIRCRAFT_PASS",
+          "source_time_sec": 65.0,
+          "source_timecode": "01:05.00",
+          "reference_frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0131.jpg",
+          "keyframe_role": "adaptive_primary",
+          "score": 67.63,
+          "novelty_to_existing_anchor": 10.26,
+          "color_composition_novelty": 9.09,
+          "distance_to_nearest_existing_anchor_sec": 0.5,
+          "reason_tags": [
+            "local_delta"
+          ],
+          "difference_reason": "Night aircraft pass is a short fast prop movement; an extra end/start state prevents the craft from popping or redesigning.",
+          "required_locks": [
+            "jean_aircraft",
+            "night_city_blue_grid"
+          ],
+          "status": "generated_pending_director_review",
+          "generated_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_015_NIGHT_AIRCRAFT_PASS_065000ms_01.png",
+          "planned_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_015_NIGHT_AIRCRAFT_PASS_065000ms_01.png",
+          "reference_board_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/refs/r5_reference_boards/R5_VU_REF003_015_NIGHT_AIRCRAFT_PASS_065000ms_01_board.jpg",
+          "prompt_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/prompts/R5_VU_REF003_015_NIGHT_AIRCRAFT_PASS_065000ms_01.md",
+          "lock_paths": [
+            "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_007.png",
+            "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_030.png"
+          ],
+          "generated_at": "2026-07-01T00:07:31+08:00",
+          "qa_status": "contact_sheet_local_pass_pending_director_review"
+        }
+      ],
+      "decision_note": "Promote these only after prompt/identity-lock job is created and pure images are generated."
+    },
+    {
+      "order": 16,
+      "unit_id": "VU_REF003_016_NEMO_SUNSET_PROFILE",
+      "title": "Nemo 夕景船长肖像",
+      "time_range": "01:06.50-01:11.00",
+      "duration_sec": 4.5,
+      "complexity_class": "collapse_reference_video",
+      "desired_analysis_fps": 0,
+      "available_sample_fps": 2.0,
+      "needs_more_extraction_for_final_decision": false,
+      "official_anchor_count": 2,
+      "r3_extra_count": 0,
+      "selected_candidate_count": 0,
+      "priority": "P3_reference_video_or_already_handled",
+      "required_locks": [],
+      "candidates": [],
+      "decision_note": "Already covered by R3 or intentionally collapsed to reference video."
+    },
+    {
+      "order": 17,
+      "unit_id": "VU_REF003_017_NADIA_SOLEMN_CLOSE",
+      "title": "Nadia 庄重正面近景",
+      "time_range": "01:11.50-01:13.00",
+      "duration_sec": 1.5,
+      "complexity_class": "short_accepted_hold",
+      "desired_analysis_fps": 1,
+      "available_sample_fps": 2.0,
+      "needs_more_extraction_for_final_decision": false,
+      "official_anchor_count": 1,
+      "r3_extra_count": 0,
+      "selected_candidate_count": 0,
+      "priority": "P4_no_new_asset_now",
+      "required_locks": [],
+      "candidates": [],
+      "decision_note": "No new image asset needed at current preview density."
+    },
+    {
+      "order": 18,
+      "unit_id": "VU_REF003_018_BLUE_WATER_SYMBOL",
+      "title": "Blue Water 象征与水下纹理",
+      "time_range": "01:13.50-01:17.00",
+      "duration_sec": 3.5,
+      "complexity_class": "high_change",
+      "desired_analysis_fps": 6,
+      "available_sample_fps": 2.0,
+      "needs_more_extraction_for_final_decision": true,
+      "official_anchor_count": 3,
+      "r3_extra_count": 0,
+      "selected_candidate_count": 1,
+      "priority": "P2_review_after_p1",
+      "required_locks": [
+        "blue_water_pendant",
+        "blue_grid_geometry"
+      ],
+      "candidates": [
+        {
+          "asset_id": "R5_VU_REF003_018_BLUE_WATER_SYMBOL_074000ms_01",
+          "parent_video_unit_id": "VU_REF003_018_BLUE_WATER_SYMBOL",
+          "source_time_sec": 74.0,
+          "source_timecode": "01:14.00",
+          "reference_frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0149.jpg",
+          "keyframe_role": "adaptive_primary",
+          "score": 134.09,
+          "novelty_to_existing_anchor": 40.79,
+          "color_composition_novelty": 29.94,
+          "distance_to_nearest_existing_anchor_sec": 0.5,
+          "reason_tags": [
+            "scene_boundary",
+            "novelty",
+            "local_delta"
+          ],
+          "difference_reason": "Blue Water 象征与水下纹理: scene-boundary / hard visual turn; visually different from nearest existing anchor; local motion/color change peak",
+          "required_locks": [
+            "blue_water_pendant",
+            "blue_grid_geometry"
+          ],
+          "status": "generated_pending_director_review",
+          "generated_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_018_BLUE_WATER_SYMBOL_074000ms_01.png",
+          "planned_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_018_BLUE_WATER_SYMBOL_074000ms_01.png",
+          "reference_board_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/refs/r5_reference_boards/R5_VU_REF003_018_BLUE_WATER_SYMBOL_074000ms_01_board.jpg",
+          "prompt_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/prompts/R5_VU_REF003_018_BLUE_WATER_SYMBOL_074000ms_01.md",
+          "lock_paths": [
+            "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_035.png",
+            "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_030.png"
+          ],
+          "generated_at": "2026-07-01T00:07:31+08:00",
+          "qa_status": "contact_sheet_local_pass_pending_director_review"
+        }
+      ],
+      "decision_note": "Promote these only after prompt/identity-lock job is created and pure images are generated."
+    },
+    {
+      "order": 19,
+      "unit_id": "VU_REF003_019_WATER_SPLASH_TRANSITION",
+      "title": "水花爆发转天空",
+      "time_range": "01:17.50-01:19.50",
+      "duration_sec": 2.0,
+      "complexity_class": "high_change_short",
+      "desired_analysis_fps": 8,
+      "available_sample_fps": 2.0,
+      "needs_more_extraction_for_final_decision": true,
+      "official_anchor_count": 2,
+      "r3_extra_count": 0,
+      "selected_candidate_count": 2,
+      "priority": "P1_generate_next_small_batch",
+      "required_locks": [
+        "water_burst_transition"
+      ],
+      "candidates": [
+        {
+          "asset_id": "R5_VU_REF003_019_WATER_SPLASH_TRANSITION_078500ms_01",
+          "parent_video_unit_id": "VU_REF003_019_WATER_SPLASH_TRANSITION",
+          "source_time_sec": 78.5,
+          "source_timecode": "01:18.50",
+          "reference_frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0158.jpg",
+          "keyframe_role": "adaptive_primary",
+          "score": 198.99,
+          "novelty_to_existing_anchor": 66.74,
+          "color_composition_novelty": 65.78,
+          "distance_to_nearest_existing_anchor_sec": 0.5,
+          "reason_tags": [
+            "scene_boundary",
+            "novelty",
+            "local_delta"
+          ],
+          "difference_reason": "Water burst transition has materially different splash/sky states; extra anchor helps preserve transition logic.",
+          "required_locks": [
+            "water_burst_transition"
+          ],
+          "status": "generated_pending_director_review",
+          "generated_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_019_WATER_SPLASH_TRANSITION_078500ms_01.png",
+          "generated_at": "2026-06-30T22:28:41+08:00",
+          "qa_status": "contact_sheet_local_pass_pending_director_review",
+          "planned_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_019_WATER_SPLASH_TRANSITION_078500ms_01.png",
+          "reference_board_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/refs/r5_reference_boards/R5_VU_REF003_019_WATER_SPLASH_TRANSITION_078500ms_01_board.jpg",
+          "prompt_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/prompts/R5_VU_REF003_019_WATER_SPLASH_TRANSITION_078500ms_01.md",
+          "lock_paths": [
+            "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_038.png"
+          ]
+        },
+        {
+          "asset_id": "R5_VU_REF003_019_WATER_SPLASH_TRANSITION_077500ms_02",
+          "parent_video_unit_id": "VU_REF003_019_WATER_SPLASH_TRANSITION",
+          "source_time_sec": 77.5,
+          "source_timecode": "01:17.50",
+          "reference_frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0156.jpg",
+          "keyframe_role": "adaptive_middle",
+          "score": 145.06,
+          "novelty_to_existing_anchor": 53.39,
+          "color_composition_novelty": 49.34,
+          "distance_to_nearest_existing_anchor_sec": 0.5,
+          "reason_tags": [
+            "scene_boundary",
+            "novelty",
+            "local_delta"
+          ],
+          "difference_reason": "Water burst transition has materially different splash/sky states; extra anchor helps preserve transition logic.",
+          "required_locks": [
+            "water_burst_transition"
+          ],
+          "status": "generated_pending_director_review",
+          "generated_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_019_WATER_SPLASH_TRANSITION_077500ms_02.png",
+          "generated_at": "2026-06-30T22:28:41+08:00",
+          "qa_status": "contact_sheet_local_pass_pending_director_review",
+          "planned_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_019_WATER_SPLASH_TRANSITION_077500ms_02.png",
+          "reference_board_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/refs/r5_reference_boards/R5_VU_REF003_019_WATER_SPLASH_TRANSITION_077500ms_02_board.jpg",
+          "prompt_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/prompts/R5_VU_REF003_019_WATER_SPLASH_TRANSITION_077500ms_02.md",
+          "lock_paths": [
+            "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_038.png"
+          ]
+        }
+      ],
+      "decision_note": "Promote these only after prompt/identity-lock job is created and pure images are generated."
+    },
+    {
+      "order": 20,
+      "unit_id": "VU_REF003_020_FINAL_SKY_SAFE_HOLD",
+      "title": "最终无字天空 hold",
+      "time_range": "01:19.50-01:23.00",
+      "duration_sec": 3.5,
+      "complexity_class": "moderate",
+      "desired_analysis_fps": 4,
+      "available_sample_fps": 2.0,
+      "needs_more_extraction_for_final_decision": true,
+      "official_anchor_count": 2,
+      "r3_extra_count": 0,
+      "selected_candidate_count": 0,
+      "priority": "P4_no_new_asset_now",
+      "required_locks": [
+        "final_sky_horizon"
+      ],
+      "candidates": [],
+      "decision_note": "No new image asset needed at current preview density."
+    },
+    {
+      "order": 21,
+      "unit_id": "VU_REF003_021_BLACK_TAIL",
+      "title": "黑场尾帧",
+      "time_range": "01:23.50-01:24.44",
+      "duration_sec": 0.94,
+      "complexity_class": "collapse_reference_video",
+      "desired_analysis_fps": 0,
+      "available_sample_fps": 1.06,
+      "needs_more_extraction_for_final_decision": false,
+      "official_anchor_count": 1,
+      "r3_extra_count": 0,
+      "selected_candidate_count": 0,
+      "priority": "P3_reference_video_or_already_handled",
+      "required_locks": [],
+      "candidates": [],
+      "decision_note": "Already covered by R3 or intentionally collapsed to reference video."
+    }
+  ],
+  "promoted_candidate_reference_frames": [
+    {
+      "asset_id": "R5_VU_REF003_002_WHITE_BIRD_SKY_007000ms_01",
+      "parent_video_unit_id": "VU_REF003_002_WHITE_BIRD_SKY",
+      "source_time_sec": 7.0,
+      "source_timecode": "00:07.00",
+      "reference_frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0015.jpg",
+      "keyframe_role": "adaptive_primary",
+      "score": 39.08,
+      "novelty_to_existing_anchor": 6.03,
+      "color_composition_novelty": 7.58,
+      "distance_to_nearest_existing_anchor_sec": 2.0,
+      "reason_tags": [
+        "coverage_gap"
+      ],
+      "difference_reason": "White bird glide changes screen position/scale within a long sky movement; useful middle/final action anchor without generating every frame.",
+      "required_locks": [
+        "white_bird",
+        "opening_sky_clouds"
+      ],
+      "status": "generated_pending_director_review",
+      "lock_paths": [
+        "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_003.png",
+        "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_002.png"
+      ],
+      "planned_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_002_WHITE_BIRD_SKY_007000ms_01.png",
+      "reference_board_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/refs/r5_reference_boards/R5_VU_REF003_002_WHITE_BIRD_SKY_007000ms_01_board.jpg",
+      "prompt_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/prompts/R5_VU_REF003_002_WHITE_BIRD_SKY_007000ms_01.md",
+      "generated_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_002_WHITE_BIRD_SKY_007000ms_01.png",
+      "generated_at": "2026-06-30T22:28:41+08:00",
+      "qa_status": "contact_sheet_local_pass_pending_director_review"
+    },
+    {
+      "asset_id": "R5_VU_REF003_002_WHITE_BIRD_SKY_003500ms_02",
+      "parent_video_unit_id": "VU_REF003_002_WHITE_BIRD_SKY",
+      "source_time_sec": 3.5,
+      "source_timecode": "00:03.50",
+      "reference_frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0008.jpg",
+      "keyframe_role": "adaptive_middle",
+      "score": 34.11,
+      "novelty_to_existing_anchor": 10.28,
+      "color_composition_novelty": 4.68,
+      "distance_to_nearest_existing_anchor_sec": 1.0,
+      "reason_tags": [
+        "coverage_gap"
+      ],
+      "difference_reason": "White bird glide changes screen position/scale within a long sky movement; useful middle/final action anchor without generating every frame.",
+      "required_locks": [
+        "white_bird",
+        "opening_sky_clouds"
+      ],
+      "status": "generated_pending_director_review",
+      "lock_paths": [
+        "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_003.png",
+        "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_002.png"
+      ],
+      "planned_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_002_WHITE_BIRD_SKY_003500ms_02.png",
+      "reference_board_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/refs/r5_reference_boards/R5_VU_REF003_002_WHITE_BIRD_SKY_003500ms_02_board.jpg",
+      "prompt_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/prompts/R5_VU_REF003_002_WHITE_BIRD_SKY_003500ms_02.md",
+      "generated_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_002_WHITE_BIRD_SKY_003500ms_02.png",
+      "generated_at": "2026-06-30T22:28:41+08:00",
+      "qa_status": "contact_sheet_local_pass_pending_director_review"
+    },
+    {
+      "asset_id": "R5_VU_REF003_003_CREDIT_SAFE_BIRD_CLOUDS_014000ms_01",
+      "parent_video_unit_id": "VU_REF003_003_CREDIT_SAFE_BIRD_CLOUDS",
+      "source_time_sec": 14.0,
+      "source_timecode": "00:14.00",
+      "reference_frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0029.jpg",
+      "keyframe_role": "adaptive_primary",
+      "score": 195.45,
+      "novelty_to_existing_anchor": 93.49,
+      "color_composition_novelty": 100.52,
+      "distance_to_nearest_existing_anchor_sec": 2.5,
+      "reason_tags": [
+        "coverage_gap",
+        "novelty"
+      ],
+      "difference_reason": "Cloud/bird/title-safe composition changes over a long no-text sky section; adds clean sky state for preview and AIGC prompt.",
+      "required_locks": [
+        "white_bird",
+        "opening_sky_clouds"
+      ],
+      "status": "generated_pending_director_review",
+      "lock_paths": [
+        "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_003.png",
+        "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_002.png"
+      ],
+      "planned_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_003_CREDIT_SAFE_BIRD_CLOUDS_014000ms_01.png",
+      "reference_board_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/refs/r5_reference_boards/R5_VU_REF003_003_CREDIT_SAFE_BIRD_CLOUDS_014000ms_01_board.jpg",
+      "prompt_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/prompts/R5_VU_REF003_003_CREDIT_SAFE_BIRD_CLOUDS_014000ms_01.md",
+      "generated_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_003_CREDIT_SAFE_BIRD_CLOUDS_014000ms_01.png",
+      "generated_at": "2026-07-01T00:07:31+08:00",
+      "qa_status": "contact_sheet_local_pass_pending_director_review"
+    },
+    {
+      "asset_id": "R5_VU_REF003_004_AIRCRAFT_BRIEF_REVEAL_016000ms_01",
+      "parent_video_unit_id": "VU_REF003_004_AIRCRAFT_BRIEF_REVEAL",
+      "source_time_sec": 16.0,
+      "source_timecode": "00:16.00",
+      "reference_frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0033.jpg",
+      "keyframe_role": "adaptive_primary",
+      "score": 257.88,
+      "novelty_to_existing_anchor": 104.86,
+      "color_composition_novelty": 103.71,
+      "distance_to_nearest_existing_anchor_sec": 1.0,
+      "reason_tags": [
+        "coverage_gap",
+        "novelty",
+        "local_delta"
+      ],
+      "difference_reason": "Brief aircraft reveal is a fast prop/camera state change; current single anchor does not cover entry and exit/reveal phase.",
+      "required_locks": [
+        "jean_aircraft",
+        "opening_sky_clouds"
+      ],
+      "status": "generated_pending_director_review",
+      "lock_paths": [
+        "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_007.png",
+        "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_002.png"
+      ],
+      "planned_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_004_AIRCRAFT_BRIEF_REVEAL_016000ms_01.png",
+      "reference_board_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/refs/r5_reference_boards/R5_VU_REF003_004_AIRCRAFT_BRIEF_REVEAL_016000ms_01_board.jpg",
+      "prompt_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/prompts/R5_VU_REF003_004_AIRCRAFT_BRIEF_REVEAL_016000ms_01.md",
+      "generated_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_004_AIRCRAFT_BRIEF_REVEAL_016000ms_01.png",
+      "generated_at": "2026-06-30T22:28:41+08:00",
+      "qa_status": "contact_sheet_local_pass_pending_director_review"
+    },
+    {
+      "asset_id": "R5_VU_REF003_004_AIRCRAFT_BRIEF_REVEAL_014500ms_02",
+      "parent_video_unit_id": "VU_REF003_004_AIRCRAFT_BRIEF_REVEAL",
+      "source_time_sec": 14.5,
+      "source_timecode": "00:14.50",
+      "reference_frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0030.jpg",
+      "keyframe_role": "adaptive_middle",
+      "score": 253.02,
+      "novelty_to_existing_anchor": 88.84,
+      "color_composition_novelty": 95.46,
+      "distance_to_nearest_existing_anchor_sec": 0.5,
+      "reason_tags": [
+        "scene_boundary",
+        "novelty",
+        "local_delta"
+      ],
+      "difference_reason": "Brief aircraft reveal is a fast prop/camera state change; current single anchor does not cover entry and exit/reveal phase.",
+      "required_locks": [
+        "jean_aircraft",
+        "opening_sky_clouds"
+      ],
+      "status": "generated_pending_director_review",
+      "lock_paths": [
+        "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_007.png",
+        "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_002.png"
+      ],
+      "planned_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_004_AIRCRAFT_BRIEF_REVEAL_014500ms_02.png",
+      "reference_board_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/refs/r5_reference_boards/R5_VU_REF003_004_AIRCRAFT_BRIEF_REVEAL_014500ms_02_board.jpg",
+      "prompt_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/prompts/R5_VU_REF003_004_AIRCRAFT_BRIEF_REVEAL_014500ms_02.md",
+      "generated_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_004_AIRCRAFT_BRIEF_REVEAL_014500ms_02.png",
+      "generated_at": "2026-06-30T22:28:41+08:00",
+      "qa_status": "contact_sheet_local_pass_pending_director_review"
+    },
+    {
+      "asset_id": "R5_VU_REF003_005_MAIN_TITLE_SAFE_HOLD_017000ms_01",
+      "parent_video_unit_id": "VU_REF003_005_MAIN_TITLE_SAFE_HOLD",
+      "source_time_sec": 17.0,
+      "source_timecode": "00:17.00",
+      "reference_frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0035.jpg",
+      "keyframe_role": "adaptive_primary",
+      "score": 70.47,
+      "novelty_to_existing_anchor": 19.85,
+      "color_composition_novelty": 19.67,
+      "distance_to_nearest_existing_anchor_sec": 1.5,
+      "reason_tags": [
+        "coverage_gap",
+        "novelty",
+        "local_delta"
+      ],
+      "difference_reason": "主标题功能位无字 hold: large timeline gap between existing anchors; visually different from nearest existing anchor; local motion/color change peak",
+      "required_locks": [],
+      "status": "generated_pending_director_review",
+      "lock_paths": [
+        "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_002.png",
+        "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_007.png"
+      ],
+      "planned_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_005_MAIN_TITLE_SAFE_HOLD_017000ms_01.png",
+      "reference_board_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/refs/r5_reference_boards/R5_VU_REF003_005_MAIN_TITLE_SAFE_HOLD_017000ms_01_board.jpg",
+      "prompt_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/prompts/R5_VU_REF003_005_MAIN_TITLE_SAFE_HOLD_017000ms_01.md",
+      "generated_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_005_MAIN_TITLE_SAFE_HOLD_017000ms_01.png",
+      "generated_at": "2026-07-01T00:07:31+08:00",
+      "qa_status": "contact_sheet_local_pass_pending_director_review"
+    },
+    {
+      "asset_id": "R5_VU_REF003_006_SUN_FLARE_TO_NADIA_023500ms_01",
+      "parent_video_unit_id": "VU_REF003_006_SUN_FLARE_TO_NADIA",
+      "source_time_sec": 23.5,
+      "source_timecode": "00:23.50",
+      "reference_frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0048.jpg",
+      "keyframe_role": "adaptive_primary",
+      "score": 100.82,
+      "novelty_to_existing_anchor": 27.5,
+      "color_composition_novelty": 26.03,
+      "distance_to_nearest_existing_anchor_sec": 0.5,
+      "reason_tags": [
+        "scene_boundary",
+        "novelty",
+        "local_delta"
+      ],
+      "difference_reason": "Transition edge from sun flare into Nadia needs a clean bridge frame so AIGC does not invent the cut or lose Nadia lock.",
+      "required_locks": [
+        "nadia",
+        "opening_sky_clouds"
+      ],
+      "status": "generated_pending_director_review",
+      "lock_paths": [
+        "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_011_v2.png",
+        "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_002.png"
+      ],
+      "planned_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_006_SUN_FLARE_TO_NADIA_023500ms_01.png",
+      "reference_board_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/refs/r5_reference_boards/R5_VU_REF003_006_SUN_FLARE_TO_NADIA_023500ms_01_board.jpg",
+      "prompt_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/prompts/R5_VU_REF003_006_SUN_FLARE_TO_NADIA_023500ms_01.md",
+      "generated_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_006_SUN_FLARE_TO_NADIA_023500ms_01.png",
+      "generated_at": "2026-07-01T00:07:31+08:00",
+      "qa_status": "contact_sheet_local_pass_pending_director_review"
+    },
+    {
+      "asset_id": "R5_VU_REF003_007_NADIA_PROFILE_ENTRY_027500ms_01",
+      "parent_video_unit_id": "VU_REF003_007_NADIA_PROFILE_ENTRY",
+      "source_time_sec": 27.5,
+      "source_timecode": "00:27.50",
+      "reference_frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0056.jpg",
+      "keyframe_role": "adaptive_primary",
+      "score": 195.2,
+      "novelty_to_existing_anchor": 56.38,
+      "color_composition_novelty": 66.97,
+      "distance_to_nearest_existing_anchor_sec": 0.5,
+      "reason_tags": [
+        "scene_boundary",
+        "novelty",
+        "local_delta"
+      ],
+      "difference_reason": "Nadia 侧脸入场到近景: scene-boundary / hard visual turn; visually different from nearest existing anchor; local motion/color change peak",
+      "required_locks": [],
+      "status": "generated_pending_director_review",
+      "lock_paths": [
+        "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_011_v2.png"
+      ],
+      "planned_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_007_NADIA_PROFILE_ENTRY_027500ms_01.png",
+      "reference_board_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/refs/r5_reference_boards/R5_VU_REF003_007_NADIA_PROFILE_ENTRY_027500ms_01_board.jpg",
+      "prompt_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/prompts/R5_VU_REF003_007_NADIA_PROFILE_ENTRY_027500ms_01.md",
+      "generated_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_007_NADIA_PROFILE_ENTRY_027500ms_01.png",
+      "generated_at": "2026-07-01T00:07:31+08:00",
+      "qa_status": "contact_sheet_local_pass_pending_director_review"
+    },
+    {
+      "asset_id": "R5_VU_REF003_008_JEAN_INTRO_030500ms_01",
+      "parent_video_unit_id": "VU_REF003_008_JEAN_INTRO",
+      "source_time_sec": 30.5,
+      "source_timecode": "00:30.50",
+      "reference_frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0062.jpg",
+      "keyframe_role": "adaptive_primary",
+      "score": 212.28,
+      "novelty_to_existing_anchor": 66.48,
+      "color_composition_novelty": 65.41,
+      "distance_to_nearest_existing_anchor_sec": 1.5,
+      "reason_tags": [
+        "scene_boundary",
+        "coverage_gap",
+        "novelty",
+        "local_delta"
+      ],
+      "difference_reason": "Jean intro has fast entry/pose changes; extra frame carries different body/hat/face orientation and protects Jean identity.",
+      "required_locks": [
+        "jean"
+      ],
+      "status": "generated_pending_director_review",
+      "lock_paths": [
+        "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_012.png"
+      ],
+      "planned_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_008_JEAN_INTRO_030500ms_01.png",
+      "reference_board_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/refs/r5_reference_boards/R5_VU_REF003_008_JEAN_INTRO_030500ms_01_board.jpg",
+      "prompt_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/prompts/R5_VU_REF003_008_JEAN_INTRO_030500ms_01.md",
+      "generated_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_008_JEAN_INTRO_030500ms_01.png",
+      "generated_at": "2026-06-30T22:28:41+08:00",
+      "qa_status": "contact_sheet_local_pass_pending_director_review"
+    },
+    {
+      "asset_id": "R5_VU_REF003_008_JEAN_INTRO_028500ms_02",
+      "parent_video_unit_id": "VU_REF003_008_JEAN_INTRO",
+      "source_time_sec": 28.5,
+      "source_timecode": "00:28.50",
+      "reference_frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0058.jpg",
+      "keyframe_role": "adaptive_middle",
+      "score": 206.16,
+      "novelty_to_existing_anchor": 74.18,
+      "color_composition_novelty": 62.36,
+      "distance_to_nearest_existing_anchor_sec": 0.5,
+      "reason_tags": [
+        "scene_boundary",
+        "novelty",
+        "local_delta"
+      ],
+      "difference_reason": "Jean intro has fast entry/pose changes; extra frame carries different body/hat/face orientation and protects Jean identity.",
+      "required_locks": [
+        "jean"
+      ],
+      "status": "generated_pending_director_review",
+      "lock_paths": [
+        "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_012.png"
+      ],
+      "planned_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_008_JEAN_INTRO_028500ms_02.png",
+      "reference_board_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/refs/r5_reference_boards/R5_VU_REF003_008_JEAN_INTRO_028500ms_02_board.jpg",
+      "prompt_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/prompts/R5_VU_REF003_008_JEAN_INTRO_028500ms_02.md",
+      "generated_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_008_JEAN_INTRO_028500ms_02.png",
+      "generated_at": "2026-06-30T22:28:41+08:00",
+      "qa_status": "contact_sheet_local_pass_pending_director_review"
+    },
+    {
+      "asset_id": "R5_VU_REF003_009_MARIE_KING_MEADOW_031000ms_01",
+      "parent_video_unit_id": "VU_REF003_009_MARIE_KING_MEADOW",
+      "source_time_sec": 31.0,
+      "source_timecode": "00:31.00",
+      "reference_frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0063.jpg",
+      "keyframe_role": "adaptive_primary",
+      "score": 131.91,
+      "novelty_to_existing_anchor": 45.01,
+      "color_composition_novelty": 31.14,
+      "distance_to_nearest_existing_anchor_sec": 0.5,
+      "reason_tags": [
+        "scene_boundary",
+        "novelty",
+        "local_delta"
+      ],
+      "difference_reason": "Marie 与 King 草地段: scene-boundary / hard visual turn; visually different from nearest existing anchor; local motion/color change peak",
+      "required_locks": [
+        "marie",
+        "king",
+        "meadow_child_animal_beat"
+      ],
+      "status": "generated_pending_director_review",
+      "lock_paths": [
+        "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_014.png"
+      ],
+      "planned_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_009_MARIE_KING_MEADOW_031000ms_01.png",
+      "reference_board_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/refs/r5_reference_boards/R5_VU_REF003_009_MARIE_KING_MEADOW_031000ms_01_board.jpg",
+      "prompt_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/prompts/R5_VU_REF003_009_MARIE_KING_MEADOW_031000ms_01.md",
+      "generated_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_009_MARIE_KING_MEADOW_031000ms_01.png",
+      "generated_at": "2026-07-01T00:07:31+08:00",
+      "qa_status": "contact_sheet_local_pass_pending_director_review"
+    },
+    {
+      "asset_id": "R5_VU_REF003_010_GRANDIS_TRIO_INTRO_034500ms_01",
+      "parent_video_unit_id": "VU_REF003_010_GRANDIS_TRIO_INTRO",
+      "source_time_sec": 34.5,
+      "source_timecode": "00:34.50",
+      "reference_frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0070.jpg",
+      "keyframe_role": "adaptive_primary",
+      "score": 201.54,
+      "novelty_to_existing_anchor": 77.68,
+      "color_composition_novelty": 40.72,
+      "distance_to_nearest_existing_anchor_sec": 1.0,
+      "reason_tags": [
+        "scene_boundary",
+        "coverage_gap",
+        "novelty",
+        "local_delta"
+      ],
+      "difference_reason": "Grandis trio introduction changes blocking and group pose; extra frame protects three-person identity and screen direction.",
+      "required_locks": [
+        "grandis",
+        "sanson",
+        "hanson"
+      ],
+      "status": "generated_pending_director_review",
+      "lock_paths": [
+        "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_016_v2.png"
+      ],
+      "planned_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_010_GRANDIS_TRIO_INTRO_034500ms_01.png",
+      "reference_board_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/refs/r5_reference_boards/R5_VU_REF003_010_GRANDIS_TRIO_INTRO_034500ms_01_board.jpg",
+      "prompt_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/prompts/R5_VU_REF003_010_GRANDIS_TRIO_INTRO_034500ms_01.md",
+      "generated_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_010_GRANDIS_TRIO_INTRO_034500ms_01.png",
+      "generated_at": "2026-06-30T22:28:41+08:00",
+      "qa_status": "contact_sheet_local_pass_pending_director_review"
+    },
+    {
+      "asset_id": "R5_VU_REF003_010_GRANDIS_TRIO_INTRO_037500ms_02",
+      "parent_video_unit_id": "VU_REF003_010_GRANDIS_TRIO_INTRO",
+      "source_time_sec": 37.5,
+      "source_timecode": "00:37.50",
+      "reference_frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0076.jpg",
+      "keyframe_role": "adaptive_middle",
+      "score": 162.94,
+      "novelty_to_existing_anchor": 65.93,
+      "color_composition_novelty": 26.41,
+      "distance_to_nearest_existing_anchor_sec": 0.5,
+      "reason_tags": [
+        "scene_boundary",
+        "novelty",
+        "local_delta"
+      ],
+      "difference_reason": "Grandis trio introduction changes blocking and group pose; extra frame protects three-person identity and screen direction.",
+      "required_locks": [
+        "grandis",
+        "sanson",
+        "hanson"
+      ],
+      "status": "generated_pending_director_review",
+      "lock_paths": [
+        "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_016_v2.png"
+      ],
+      "planned_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_010_GRANDIS_TRIO_INTRO_037500ms_02.png",
+      "reference_board_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/refs/r5_reference_boards/R5_VU_REF003_010_GRANDIS_TRIO_INTRO_037500ms_02_board.jpg",
+      "prompt_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/prompts/R5_VU_REF003_010_GRANDIS_TRIO_INTRO_037500ms_02.md",
+      "generated_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_010_GRANDIS_TRIO_INTRO_037500ms_02.png",
+      "generated_at": "2026-06-30T22:28:41+08:00",
+      "qa_status": "contact_sheet_local_pass_pending_director_review"
+    },
+    {
+      "asset_id": "R5_VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS_052000ms_01",
+      "parent_video_unit_id": "VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS",
+      "source_time_sec": 52.0,
+      "source_timecode": "00:52.00",
+      "reference_frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0105.jpg",
+      "keyframe_role": "adaptive_primary",
+      "score": 195.54,
+      "novelty_to_existing_anchor": 77.43,
+      "color_composition_novelty": 56.28,
+      "distance_to_nearest_existing_anchor_sec": 0.5,
+      "reason_tags": [
+        "scene_boundary",
+        "novelty",
+        "local_delta"
+      ],
+      "difference_reason": "Long undersea Nautilus light-pass has distinct submarine/lighting positions; extra frames preserve scale and light-beam progression.",
+      "required_locks": [
+        "nautilus",
+        "undersea_nautilus_space"
+      ],
+      "status": "generated_pending_director_review",
+      "lock_paths": [
+        "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_026.png"
+      ],
+      "planned_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS_052000ms_01.png",
+      "reference_board_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/refs/r5_reference_boards/R5_VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS_052000ms_01_board.jpg",
+      "prompt_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/prompts/R5_VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS_052000ms_01.md",
+      "generated_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS_052000ms_01.png",
+      "generated_at": "2026-06-30T22:28:41+08:00",
+      "qa_status": "contact_sheet_local_pass_pending_director_review"
+    },
+    {
+      "asset_id": "R5_VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS_060500ms_02",
+      "parent_video_unit_id": "VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS",
+      "source_time_sec": 60.5,
+      "source_timecode": "01:00.50",
+      "reference_frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0122.jpg",
+      "keyframe_role": "adaptive_middle",
+      "score": 51.93,
+      "novelty_to_existing_anchor": 16.69,
+      "color_composition_novelty": 8.58,
+      "distance_to_nearest_existing_anchor_sec": 2.0,
+      "reason_tags": [
+        "coverage_gap"
+      ],
+      "difference_reason": "Long undersea Nautilus light-pass has distinct submarine/lighting positions; extra frames preserve scale and light-beam progression.",
+      "required_locks": [
+        "nautilus",
+        "undersea_nautilus_space"
+      ],
+      "status": "generated_pending_director_review",
+      "lock_paths": [
+        "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_026.png"
+      ],
+      "planned_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS_060500ms_02.png",
+      "reference_board_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/refs/r5_reference_boards/R5_VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS_060500ms_02_board.jpg",
+      "prompt_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/prompts/R5_VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS_060500ms_02.md",
+      "generated_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS_060500ms_02.png",
+      "generated_at": "2026-06-30T22:28:41+08:00",
+      "qa_status": "contact_sheet_local_pass_pending_director_review"
+    },
+    {
+      "asset_id": "R5_VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS_057000ms_03",
+      "parent_video_unit_id": "VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS",
+      "source_time_sec": 57.0,
+      "source_timecode": "00:57.00",
+      "reference_frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0115.jpg",
+      "keyframe_role": "adaptive_middle",
+      "score": 48.17,
+      "novelty_to_existing_anchor": 16.5,
+      "color_composition_novelty": 10.66,
+      "distance_to_nearest_existing_anchor_sec": 1.5,
+      "reason_tags": [
+        "coverage_gap"
+      ],
+      "difference_reason": "Long undersea Nautilus light-pass has distinct submarine/lighting positions; extra frames preserve scale and light-beam progression.",
+      "required_locks": [
+        "nautilus",
+        "undersea_nautilus_space"
+      ],
+      "status": "generated_pending_director_review",
+      "lock_paths": [
+        "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_026.png"
+      ],
+      "planned_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS_057000ms_03.png",
+      "reference_board_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/refs/r5_reference_boards/R5_VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS_057000ms_03_board.jpg",
+      "prompt_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/prompts/R5_VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS_057000ms_03.md",
+      "generated_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS_057000ms_03.png",
+      "generated_at": "2026-06-30T22:28:41+08:00",
+      "qa_status": "contact_sheet_local_pass_pending_director_review"
+    },
+    {
+      "asset_id": "R5_VU_REF003_014_NIGHT_CITY_BLUE_GRID_062500ms_01",
+      "parent_video_unit_id": "VU_REF003_014_NIGHT_CITY_BLUE_GRID",
+      "source_time_sec": 62.5,
+      "source_timecode": "01:02.50",
+      "reference_frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0126.jpg",
+      "keyframe_role": "adaptive_primary",
+      "score": 64.23,
+      "novelty_to_existing_anchor": 23.72,
+      "color_composition_novelty": 34.01,
+      "distance_to_nearest_existing_anchor_sec": 1.0,
+      "reason_tags": [
+        "coverage_gap",
+        "novelty"
+      ],
+      "difference_reason": "夜城与蓝色地面图案: large timeline gap between existing anchors; visually different from nearest existing anchor",
+      "required_locks": [
+        "blue_grid_geometry"
+      ],
+      "status": "generated_pending_director_review",
+      "lock_paths": [
+        "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_030.png"
+      ],
+      "planned_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_014_NIGHT_CITY_BLUE_GRID_062500ms_01.png",
+      "reference_board_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/refs/r5_reference_boards/R5_VU_REF003_014_NIGHT_CITY_BLUE_GRID_062500ms_01_board.jpg",
+      "prompt_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/prompts/R5_VU_REF003_014_NIGHT_CITY_BLUE_GRID_062500ms_01.md",
+      "generated_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_014_NIGHT_CITY_BLUE_GRID_062500ms_01.png",
+      "generated_at": "2026-07-01T00:07:31+08:00",
+      "qa_status": "contact_sheet_local_pass_pending_director_review"
+    },
+    {
+      "asset_id": "R5_VU_REF003_015_NIGHT_AIRCRAFT_PASS_065000ms_01",
+      "parent_video_unit_id": "VU_REF003_015_NIGHT_AIRCRAFT_PASS",
+      "source_time_sec": 65.0,
+      "source_timecode": "01:05.00",
+      "reference_frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0131.jpg",
+      "keyframe_role": "adaptive_primary",
+      "score": 67.63,
+      "novelty_to_existing_anchor": 10.26,
+      "color_composition_novelty": 9.09,
+      "distance_to_nearest_existing_anchor_sec": 0.5,
+      "reason_tags": [
+        "local_delta"
+      ],
+      "difference_reason": "Night aircraft pass is a short fast prop movement; an extra end/start state prevents the craft from popping or redesigning.",
+      "required_locks": [
+        "jean_aircraft",
+        "night_city_blue_grid"
+      ],
+      "status": "generated_pending_director_review",
+      "lock_paths": [
+        "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_007.png",
+        "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_030.png"
+      ],
+      "planned_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_015_NIGHT_AIRCRAFT_PASS_065000ms_01.png",
+      "reference_board_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/refs/r5_reference_boards/R5_VU_REF003_015_NIGHT_AIRCRAFT_PASS_065000ms_01_board.jpg",
+      "prompt_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/prompts/R5_VU_REF003_015_NIGHT_AIRCRAFT_PASS_065000ms_01.md",
+      "generated_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_015_NIGHT_AIRCRAFT_PASS_065000ms_01.png",
+      "generated_at": "2026-07-01T00:07:31+08:00",
+      "qa_status": "contact_sheet_local_pass_pending_director_review"
+    },
+    {
+      "asset_id": "R5_VU_REF003_018_BLUE_WATER_SYMBOL_074000ms_01",
+      "parent_video_unit_id": "VU_REF003_018_BLUE_WATER_SYMBOL",
+      "source_time_sec": 74.0,
+      "source_timecode": "01:14.00",
+      "reference_frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0149.jpg",
+      "keyframe_role": "adaptive_primary",
+      "score": 134.09,
+      "novelty_to_existing_anchor": 40.79,
+      "color_composition_novelty": 29.94,
+      "distance_to_nearest_existing_anchor_sec": 0.5,
+      "reason_tags": [
+        "scene_boundary",
+        "novelty",
+        "local_delta"
+      ],
+      "difference_reason": "Blue Water 象征与水下纹理: scene-boundary / hard visual turn; visually different from nearest existing anchor; local motion/color change peak",
+      "required_locks": [
+        "blue_water_pendant",
+        "blue_grid_geometry"
+      ],
+      "status": "generated_pending_director_review",
+      "lock_paths": [
+        "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_035.png",
+        "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_030.png"
+      ],
+      "planned_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_018_BLUE_WATER_SYMBOL_074000ms_01.png",
+      "reference_board_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/refs/r5_reference_boards/R5_VU_REF003_018_BLUE_WATER_SYMBOL_074000ms_01_board.jpg",
+      "prompt_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/prompts/R5_VU_REF003_018_BLUE_WATER_SYMBOL_074000ms_01.md",
+      "generated_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_018_BLUE_WATER_SYMBOL_074000ms_01.png",
+      "generated_at": "2026-07-01T00:07:31+08:00",
+      "qa_status": "contact_sheet_local_pass_pending_director_review"
+    },
+    {
+      "asset_id": "R5_VU_REF003_019_WATER_SPLASH_TRANSITION_078500ms_01",
+      "parent_video_unit_id": "VU_REF003_019_WATER_SPLASH_TRANSITION",
+      "source_time_sec": 78.5,
+      "source_timecode": "01:18.50",
+      "reference_frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0158.jpg",
+      "keyframe_role": "adaptive_primary",
+      "score": 198.99,
+      "novelty_to_existing_anchor": 66.74,
+      "color_composition_novelty": 65.78,
+      "distance_to_nearest_existing_anchor_sec": 0.5,
+      "reason_tags": [
+        "scene_boundary",
+        "novelty",
+        "local_delta"
+      ],
+      "difference_reason": "Water burst transition has materially different splash/sky states; extra anchor helps preserve transition logic.",
+      "required_locks": [
+        "water_burst_transition"
+      ],
+      "status": "generated_pending_director_review",
+      "lock_paths": [
+        "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_038.png"
+      ],
+      "planned_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_019_WATER_SPLASH_TRANSITION_078500ms_01.png",
+      "reference_board_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/refs/r5_reference_boards/R5_VU_REF003_019_WATER_SPLASH_TRANSITION_078500ms_01_board.jpg",
+      "prompt_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/prompts/R5_VU_REF003_019_WATER_SPLASH_TRANSITION_078500ms_01.md",
+      "generated_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_019_WATER_SPLASH_TRANSITION_078500ms_01.png",
+      "generated_at": "2026-06-30T22:28:41+08:00",
+      "qa_status": "contact_sheet_local_pass_pending_director_review"
+    },
+    {
+      "asset_id": "R5_VU_REF003_019_WATER_SPLASH_TRANSITION_077500ms_02",
+      "parent_video_unit_id": "VU_REF003_019_WATER_SPLASH_TRANSITION",
+      "source_time_sec": 77.5,
+      "source_timecode": "01:17.50",
+      "reference_frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0156.jpg",
+      "keyframe_role": "adaptive_middle",
+      "score": 145.06,
+      "novelty_to_existing_anchor": 53.39,
+      "color_composition_novelty": 49.34,
+      "distance_to_nearest_existing_anchor_sec": 0.5,
+      "reason_tags": [
+        "scene_boundary",
+        "novelty",
+        "local_delta"
+      ],
+      "difference_reason": "Water burst transition has materially different splash/sky states; extra anchor helps preserve transition logic.",
+      "required_locks": [
+        "water_burst_transition"
+      ],
+      "status": "generated_pending_director_review",
+      "lock_paths": [
+        "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_038.png"
+      ],
+      "planned_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_019_WATER_SPLASH_TRANSITION_077500ms_02.png",
+      "reference_board_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/refs/r5_reference_boards/R5_VU_REF003_019_WATER_SPLASH_TRANSITION_077500ms_02_board.jpg",
+      "prompt_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/prompts/R5_VU_REF003_019_WATER_SPLASH_TRANSITION_077500ms_02.md",
+      "generated_output_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_019_WATER_SPLASH_TRANSITION_077500ms_02.png",
+      "generated_at": "2026-06-30T22:28:41+08:00",
+      "qa_status": "contact_sheet_local_pass_pending_director_review"
+    }
+  ],
+  "candidate_contact_sheet": "01_intake/analysis/reference003_adaptive_frame_audit_r5_20260630/reference003_r5_adaptive_candidates_sheet.jpg",
+  "visual_review_at": "2026-06-30T20:59:54+08:00",
+  "visual_review_status": "reviewed_p1_small_batch_prepared",
+  "r5_p1_job_dir": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630",
+  "r5_p1_candidate_sheet": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/refs/reference003_r5_p1_small_batch_candidate_sheet.jpg",
+  "r5_p1_generation_candidate_count": 13,
+  "visual_review_notes": "R5 contact sheet reviewed. P2/title-safe/empty-sky/accepted-hold candidates are not in the first generation batch. P1 job keeps only 13 higher-value candidates: white bird, aircraft reveal, Jean intro, Grandis intro, Nautilus, and water-splash transition.",
+  "p1_generated_at": "2026-06-30T22:28:41+08:00",
+  "p1_generated_count": 13,
+  "p1_generated_contact_sheet": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/reference003_r5_generated_p1_sheet.jpg",
+  "p1_generation_job_manifest": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/manifest.json",
+  "p1_generation_notes": "P1 candidates have been promoted from reference screenshots to generated pure-image assets; not yet merged into the official 42-card preview.",
+  "p1_promoted_candidate_status_note": "13 P1 promoted candidates are generated_pending_director_review; remaining promoted_candidate_reference_frames stay as candidates for later P2/P3 review.",
+  "r5_generated_count": 21,
+  "r5_total_candidate_count": 21,
+  "r5_all_generated_at": "2026-07-01T00:07:31+08:00",
+  "r5_generated_contact_sheet": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/reference003_r5_generated_21up_sheet.jpg",
+  "r5_generation_job_manifest": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/manifest.json",
+  "r5_generation_notes": "All 21 promoted candidates have generated pure image outputs. Expanded preview may now be rebuilt from official assets plus these generated R5 assets.",
+  "expanded_preview_status": "decode_ok",
+  "expanded_preview_updated_at": "2026-07-01T00:10:53+08:00",
+  "expanded_preview_output_mp4": "09_edit/rough_cut/reference003_r5_expanded_63frame_animatic_1080p_with_music_20260630.mp4",
+  "expanded_preview_manifest": "09_edit/rough_cut/r5_expanded_preview/reference003_r5_expanded_preview_manifest.json",
+  "expanded_preview_report": "09_edit/rough_cut/r5_expanded_preview/reference003_r5_expanded_preview_manifest.md",
+  "expanded_preview_frame_count": 63,
+  "expanded_preview_official_keyframe_count": 42,
+  "expanded_preview_r5_adaptive_generated_count": 21
+}

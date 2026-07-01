@@ -1,0 +1,23 @@
+[
+  {
+    "group": "characters",
+    "asset_id": "grandis",
+    "status": "official_identity_lock",
+    "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_016_v2.png",
+    "global_lock_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/_global_asset_locks/characters_grandis.png"
+  },
+  {
+    "group": "characters",
+    "asset_id": "sanson",
+    "status": "official_identity_lock",
+    "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_016_v2.png",
+    "global_lock_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/_global_asset_locks/characters_sanson.png"
+  },
+  {
+    "group": "characters",
+    "asset_id": "hanson",
+    "status": "official_identity_lock",
+    "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_016_v2.png",
+    "global_lock_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/_global_asset_locks/characters_hanson.png"
+  }
+]

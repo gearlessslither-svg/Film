@@ -1,0 +1,225 @@
+{
+  "schema_version": "reference003_video_segment_generation_job_v1",
+  "project_slug": "blue-water-citypop-op",
+  "created_at": "2026-06-30T17:32:23+08:00",
+  "status": "ready_for_external_aigc_video_generation",
+  "unit": {
+    "order": 4,
+    "unit_id": "VU_REF003_004_AIRCRAFT_BRIEF_REVEAL",
+    "title": "飞行器短暂露出",
+    "time_range": "00:14.50-00:16.50",
+    "stage_now": "ready_for_video_generation",
+    "blocking_keyframes": [],
+    "video_prompt_path": "07_shots/video_prompts_by_unit/VU_REF003_004_AIRCRAFT_BRIEF_REVEAL.md",
+    "expected_video_job_dir": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_004_AIRCRAFT_BRIEF_REVEAL",
+    "expected_video_output_path": "08_generation/outputs/video/reference003_segments/VU_REF003_004_AIRCRAFT_BRIEF_REVEAL.mp4",
+    "roughcut_slot": 4,
+    "whitebox_required": true,
+    "keyframes": [
+      {
+        "item_id": "OP_SHOT_007",
+        "status": "generated_reference003_qa_pass",
+        "qa_pass": true,
+        "current_output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_007.png",
+        "expected_output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_007.png",
+        "timecode": "00:15.00",
+        "role": "图1 / aircraft_brief_reveal",
+        "beat": "飞行器短露"
+      }
+    ],
+    "transition_edges": [
+      {
+        "edge_id": "TE_REF003_006_006_TO_007",
+        "from": "OP_SHOT_006",
+        "to": "OP_SHOT_007",
+        "transition_type": "reference_cut_or_match",
+        "visual_bridge": "云层增长填画 -> 飞行器短露",
+        "incoming_instruction": "OP_SHOT_007 begins from the reference-003 timing after OP_SHOT_006: preserve the cut/motion function, but keep the generated remake no-text/no-logo."
+      },
+      {
+        "edge_id": "TE_REF003_007_007_TO_008",
+        "from": "OP_SHOT_007",
+        "to": "OP_SHOT_008",
+        "transition_type": "reference_cut_or_match",
+        "visual_bridge": "飞行器短露 -> 主标题无字安全位",
+        "incoming_instruction": "OP_SHOT_008 begins from the reference-003 timing after OP_SHOT_007: preserve the cut/motion function, but keep the generated remake no-text/no-logo."
+      }
+    ],
+    "generation_gate": "ready",
+    "qa_checklist": [
+      "segment uses only QA-pass Reference-003 keyframes as anchors",
+      "time range and motion function match reference-003-full-op-2160p",
+      "no readable text, credits, titles, lyrics, NHK mark, subtitle, watermark, or random symbols",
+      "incoming/outgoing/intra-unit transitions match declared transition_edges.json intent",
+      "minor characters remain age-appropriate, modest, non-sexualized",
+      "segment MP4 complete-decodes before roughcut assembly"
+    ]
+  },
+  "setting_chapter": "05_asset_bible/setting_chapters/reference003_setting_chapter_v1.md",
+  "asset_lock_manifest": "05_asset_bible/setting_chapters/reference003_asset_locks_v1.json",
+  "packaged_asset_locks": [
+    {
+      "group": "characters",
+      "asset_id": "nadia",
+      "status": "official_identity_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_011_v2.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_004_AIRCRAFT_BRIEF_REVEAL/asset_locks/characters_nadia.png",
+      "exists": true
+    },
+    {
+      "group": "characters",
+      "asset_id": "jean",
+      "status": "official_identity_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_012.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_004_AIRCRAFT_BRIEF_REVEAL/asset_locks/characters_jean.png",
+      "exists": true
+    },
+    {
+      "group": "characters",
+      "asset_id": "marie",
+      "status": "official_identity_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_014.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_004_AIRCRAFT_BRIEF_REVEAL/asset_locks/characters_marie.png",
+      "exists": true
+    },
+    {
+      "group": "characters",
+      "asset_id": "king",
+      "status": "official_identity_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_014.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_004_AIRCRAFT_BRIEF_REVEAL/asset_locks/characters_king.png",
+      "exists": true
+    },
+    {
+      "group": "characters",
+      "asset_id": "grandis",
+      "status": "official_identity_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_016_v2.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_004_AIRCRAFT_BRIEF_REVEAL/asset_locks/characters_grandis.png",
+      "exists": true
+    },
+    {
+      "group": "characters",
+      "asset_id": "sanson",
+      "status": "official_identity_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_016_v2.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_004_AIRCRAFT_BRIEF_REVEAL/asset_locks/characters_sanson.png",
+      "exists": true
+    },
+    {
+      "group": "characters",
+      "asset_id": "hanson",
+      "status": "official_identity_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_016_v2.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_004_AIRCRAFT_BRIEF_REVEAL/asset_locks/characters_hanson.png",
+      "exists": true
+    },
+    {
+      "group": "characters",
+      "asset_id": "nemo",
+      "status": "official_identity_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_032.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_004_AIRCRAFT_BRIEF_REVEAL/asset_locks/characters_nemo.png",
+      "exists": true
+    },
+    {
+      "group": "characters",
+      "asset_id": "electra",
+      "status": "needs_setting_lock",
+      "source_path": "",
+      "packaged_path": "",
+      "exists": false
+    },
+    {
+      "group": "characters",
+      "asset_id": "gargoyle",
+      "status": "needs_setting_lock",
+      "source_path": "",
+      "packaged_path": "",
+      "exists": false
+    },
+    {
+      "group": "props_vehicles_symbols",
+      "asset_id": "blue_water_pendant",
+      "status": "official_prop_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_035.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_004_AIRCRAFT_BRIEF_REVEAL/asset_locks/props_vehicles_symbols_blue_water_pendant.png",
+      "exists": true
+    },
+    {
+      "group": "props_vehicles_symbols",
+      "asset_id": "white_bird",
+      "status": "official_prop_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_003.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_004_AIRCRAFT_BRIEF_REVEAL/asset_locks/props_vehicles_symbols_white_bird.png",
+      "exists": true
+    },
+    {
+      "group": "props_vehicles_symbols",
+      "asset_id": "jean_aircraft",
+      "status": "official_prop_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_007.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_004_AIRCRAFT_BRIEF_REVEAL/asset_locks/props_vehicles_symbols_jean_aircraft.png",
+      "exists": true
+    },
+    {
+      "group": "props_vehicles_symbols",
+      "asset_id": "grandis_vehicle",
+      "status": "official_prop_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_IDENTITY_REPAIR_R1_20260630/outputs/OP_SHOT_024_VEHICLE_LOCK_R1.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_004_AIRCRAFT_BRIEF_REVEAL/asset_locks/props_vehicles_symbols_grandis_vehicle.png",
+      "exists": true
+    },
+    {
+      "group": "props_vehicles_symbols",
+      "asset_id": "nautilus",
+      "status": "official_prop_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_026.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_004_AIRCRAFT_BRIEF_REVEAL/asset_locks/props_vehicles_symbols_nautilus.png",
+      "exists": true
+    },
+    {
+      "group": "props_vehicles_symbols",
+      "asset_id": "blue_grid_geometry",
+      "status": "official_scene_symbol_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_030.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_004_AIRCRAFT_BRIEF_REVEAL/asset_locks/props_vehicles_symbols_blue_grid_geometry.png",
+      "exists": true
+    },
+    {
+      "group": "props_vehicles_symbols",
+      "asset_id": "water_burst_transition",
+      "status": "official_transition_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_038.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_004_AIRCRAFT_BRIEF_REVEAL/asset_locks/props_vehicles_symbols_water_burst_transition.png",
+      "exists": true
+    }
+  ],
+  "reference_video_source": "01_intake/references/reference-003-full-op-2160p.mp4",
+  "reference_clip": {
+    "attempted": true,
+    "ok": true,
+    "path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_004_AIRCRAFT_BRIEF_REVEAL/reference_clip/VU_REF003_004_AIRCRAFT_BRIEF_REVEAL_reference.mp4",
+    "start_sec": 14.5,
+    "end_sec": 16.5,
+    "duration_sec": 2.0,
+    "stderr_tail": "",
+    "decode_ok": true
+  },
+  "keyframe_anchors": [
+    {
+      "order": 1,
+      "item_id": "OP_SHOT_007",
+      "timecode": "00:15.00",
+      "role": "图1 / aircraft_brief_reveal",
+      "beat": "飞行器短露",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_007.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_004_AIRCRAFT_BRIEF_REVEAL/keyframes/01_OP_SHOT_007.png",
+      "exists": true
+    }
+  ],
+  "generation_brief": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_004_AIRCRAFT_BRIEF_REVEAL/AIGC_VIDEO_GENERATION_BRIEF.md",
+  "qa_checklist": "08_generation/jobs/REFERENCE003_VIDEO_SEGMENTS_20260630/VU_REF003_004_AIRCRAFT_BRIEF_REVEAL/SEGMENT_QA_CHECKLIST.md",
+  "expected_video_output_path": "08_generation/outputs/video/reference003_segments/VU_REF003_004_AIRCRAFT_BRIEF_REVEAL.mp4",
+  "boundary": "This package prepares inputs only; it does not claim that AIGC video has been generated."
+}

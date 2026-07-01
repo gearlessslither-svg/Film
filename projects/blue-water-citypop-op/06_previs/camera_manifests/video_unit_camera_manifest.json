@@ -1,0 +1,543 @@
+{
+  "schema_version": "video_unit_camera_manifest_v1",
+  "project_slug": "blue-water-citypop-op",
+  "updated_at": "2026-06-30T04:45:05+08:00",
+  "source_of_truth": "07_shots/video_units.json",
+  "whitebox_gate_policy": {
+    "required_when": [
+      "one_take_group with multiple characters",
+      "continuous_reveal with spatial scale change",
+      "multi_shot_continuity around vehicle/geography",
+      "camera axis or screen direction risk"
+    ],
+    "current_project_status": "This manifest is a director camera plan, not rendered Blender whitebox. Units marked whitebox_required should receive previs before final video generation if precision matters."
+  },
+  "units": [
+    {
+      "unit_id": "VU_REF003_001_BLACK_CLOUD_FADEIN",
+      "unit_type": "fadein_establishing_pair",
+      "keyframes": [
+        "OP_SHOT_001",
+        "OP_SHOT_002"
+      ],
+      "whitebox_required": false,
+      "camera_plan": {
+        "movement": "fade from black into bright cloud plate, then reveal blue sky opening",
+        "framing": "sky/cloud establishing, no character",
+        "lens": "wide sky plate",
+        "screen_direction": "none yet",
+        "focus": "cloud mass and sky gradient",
+        "lighting": "bright daylight emerging from black"
+      },
+      "continuity_strategy": "建立天空舞台，为白鸟入画预留空间；不要提前出现标题、人物或飞机。",
+      "blocking_axis_risk": "low_to_medium"
+    },
+    {
+      "unit_id": "VU_REF003_002_WHITE_BIRD_SKY",
+      "unit_type": "single_subject_motion_sequence",
+      "keyframes": [
+        "OP_SHOT_003",
+        "OP_SHOT_004"
+      ],
+      "whitebox_required": false,
+      "camera_plan": {
+        "movement": "locked/gentle follow on bird crossing blue sky",
+        "framing": "wide blue sky with white bird medium to small scale",
+        "lens": "wide anamorphic sky lens",
+        "screen_direction": "bird glides consistently across frame",
+        "focus": "bird silhouette against blue sky",
+        "lighting": "clean daylight"
+      },
+      "continuity_strategy": "同一只白鸟连续运动；原片字幕区域在生成版变成干净天空。",
+      "blocking_axis_risk": "low_to_medium"
+    },
+    {
+      "unit_id": "VU_REF003_003_CREDIT_SAFE_BIRD_CLOUDS",
+      "unit_type": "title_safe_bird_cloud_sequence",
+      "keyframes": [
+        "OP_SHOT_005",
+        "OP_SHOT_006"
+      ],
+      "whitebox_required": false,
+      "camera_plan": {
+        "movement": "mostly locked sky hold with bird drift and cloud bank growth",
+        "framing": "clean center negative space, bird small, clouds entering",
+        "lens": "wide graphic sky field",
+        "screen_direction": "same bird direction from previous unit",
+        "focus": "bird and cloud bank",
+        "lighting": "even blue daylight"
+      },
+      "continuity_strategy": "用无字留白替代职员表；云层从边缘进入并逐渐占据画面。",
+      "blocking_axis_risk": "low_to_medium"
+    },
+    {
+      "unit_id": "VU_REF003_004_AIRCRAFT_BRIEF_REVEAL",
+      "unit_type": "brief_spatial_reveal",
+      "keyframes": [
+        "OP_SHOT_007"
+      ],
+      "whitebox_required": true,
+      "camera_plan": {
+        "movement": "brief reveal from cloud/wing edge to small aircraft in sky",
+        "framing": "aircraft small-to-medium for a short beat, clouds still important",
+        "lens": "wide sky lens with scale proof",
+        "screen_direction": "aircraft direction continues sky motion",
+        "focus": "aircraft silhouette and cloud edge",
+        "lighting": "bright sky"
+      },
+      "continuity_strategy": "短露即可，避免飞行器抢戏；最终视频前需要比例/轴线检查。",
+      "blocking_axis_risk": "high"
+    },
+    {
+      "unit_id": "VU_REF003_005_MAIN_TITLE_SAFE_HOLD",
+      "unit_type": "no_text_title_safe_hold",
+      "keyframes": [
+        "OP_SHOT_008"
+      ],
+      "whitebox_required": false,
+      "camera_plan": {
+        "movement": "locked or subtle drifting sky hold",
+        "framing": "clean central title-safe negative space over sky/cloud band",
+        "lens": "wide graphic sky plate",
+        "screen_direction": "minimal drift",
+        "focus": "sky and cloud geometry",
+        "lighting": "bright blue sky"
+      },
+      "continuity_strategy": "不得生成原片标题或任何文字；只保留“这里是标题位”的构图功能。",
+      "blocking_axis_risk": "low_to_medium"
+    },
+    {
+      "unit_id": "VU_REF003_006_SUN_FLARE_TO_NADIA",
+      "unit_type": "light_transition_insert",
+      "keyframes": [
+        "OP_SHOT_009"
+      ],
+      "whitebox_required": false,
+      "camera_plan": {
+        "movement": "locked sky insert with sun bloom",
+        "framing": "sky, cloud streaks, bright sun edge",
+        "lens": "wide/tele sky insert with controlled flare",
+        "screen_direction": "none; brightness drives cut",
+        "focus": "sun bloom and sky streaks",
+        "lighting": "strong daylight flare"
+      },
+      "continuity_strategy": "太阳光是进入人物段的切点，不要写入文字。",
+      "blocking_axis_risk": "low_to_medium"
+    },
+    {
+      "unit_id": "VU_REF003_007_NADIA_PROFILE_ENTRY",
+      "unit_type": "character_profile_sequence",
+      "keyframes": [
+        "OP_SHOT_010",
+        "OP_SHOT_011"
+      ],
+      "whitebox_required": false,
+      "camera_plan": {
+        "movement": "small portrait hold and push/angle shift",
+        "framing": "profile to closer face, sky/stone background",
+        "lens": "portrait lens",
+        "screen_direction": "Nadia gaze changes across the beat",
+        "focus": "Nadia face and earrings/pendant details",
+        "lighting": "bright sky bounce"
+      },
+      "continuity_strategy": "Nadia C 版锁定，14 岁、安全、保守；保留侧脸入场节奏。",
+      "blocking_axis_risk": "low_to_medium"
+    },
+    {
+      "unit_id": "VU_REF003_008_JEAN_INTRO",
+      "unit_type": "character_intro_pair",
+      "keyframes": [
+        "OP_SHOT_012"
+      ],
+      "whitebox_required": false,
+      "camera_plan": {
+        "movement": "hat brim/face reveal with small gesture",
+        "framing": "close to medium portrait against sky",
+        "lens": "portrait lens",
+        "screen_direction": "upward look and hat gesture",
+        "focus": "glasses and eyes",
+        "lighting": "bright outdoor daylight"
+      },
+      "continuity_strategy": "Jean 保持 14 岁少年发明家，不要成人化。",
+      "blocking_axis_risk": "low_to_medium"
+    },
+    {
+      "unit_id": "VU_REF003_009_MARIE_KING_MEADOW",
+      "unit_type": "child_animal_meadow_gag",
+      "keyframes": [
+        "OP_SHOT_013",
+        "OP_SHOT_014"
+      ],
+      "whitebox_required": false,
+      "camera_plan": {
+        "movement": "low meadow hold with small playful motion",
+        "framing": "grass foreground, sky and clouds behind",
+        "lens": "low wide child-safe angle",
+        "screen_direction": "playful forward motion",
+        "focus": "Marie and King",
+        "lighting": "bright daylight meadow"
+      },
+      "continuity_strategy": "儿童安全、可爱明亮；不生成字幕。",
+      "blocking_axis_risk": "low_to_medium"
+    },
+    {
+      "unit_id": "VU_REF003_010_GRANDIS_TRIO_INTRO",
+      "unit_type": "adult_trio_intro_montage",
+      "keyframes": [
+        "OP_SHOT_015",
+        "OP_SHOT_016"
+      ],
+      "whitebox_required": false,
+      "camera_plan": {
+        "movement": "hard beat cuts and small theatrical pose shifts",
+        "framing": "wide trio then close group",
+        "lens": "medium portrait/wide plaza lens",
+        "screen_direction": "not continuous; montage rhythm",
+        "focus": "Grandis trio",
+        "lighting": "bright outdoor showy light"
+      },
+      "continuity_strategy": "成人三人组可夸张但要真人化，不混入儿童段。",
+      "blocking_axis_risk": "low_to_medium"
+    },
+    {
+      "unit_id": "VU_REF003_011_RUNNING_MONTAGE",
+      "unit_type": "running_montage_sequence",
+      "keyframes": [
+        "OP_SHOT_017",
+        "OP_SHOT_018",
+        "OP_SHOT_019",
+        "OP_SHOT_020",
+        "OP_SHOT_021",
+        "OP_SHOT_022"
+      ],
+      "whitebox_required": false,
+      "camera_plan": {
+        "movement": "hard beat cuts with matching left-right run energy",
+        "framing": "feet/torso/portrait/group wide beats",
+        "lens": "mixed close and medium-wide lenses",
+        "screen_direction": "mostly left-to-right running continuity",
+        "focus": "runner identity and motion",
+        "lighting": "bright sky/plaza daylight"
+      },
+      "continuity_strategy": "保持奔跑方向和节拍，禁止平滑成一镜到底。",
+      "blocking_axis_risk": "low_to_medium"
+    },
+    {
+      "unit_id": "VU_REF003_012_GRANDIS_VEHICLE_ACTION",
+      "unit_type": "vehicle_action_bridge",
+      "keyframes": [
+        "OP_SHOT_023",
+        "OP_SHOT_024",
+        "OP_SHOT_025"
+      ],
+      "whitebox_required": true,
+      "camera_plan": {
+        "movement": "fast action cut from character energy to vehicle/air movement and group lineup",
+        "framing": "vehicle sky/city action plus group pose",
+        "lens": "wide action lens",
+        "screen_direction": "vehicle momentum carries forward",
+        "focus": "vehicle scale and group identity",
+        "lighting": "bright sky/city"
+      },
+      "continuity_strategy": "车辆/飞行器比例和方向要锁；不生成文字。",
+      "blocking_axis_risk": "high"
+    },
+    {
+      "unit_id": "VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS",
+      "unit_type": "undersea_submarine_sequence",
+      "keyframes": [
+        "OP_SHOT_026",
+        "OP_SHOT_027",
+        "OP_SHOT_028"
+      ],
+      "whitebox_required": true,
+      "camera_plan": {
+        "movement": "slow underwater tracking pass under shafts of light",
+        "framing": "submarine silhouette and hull moving through deep blue water",
+        "lens": "wide underwater lens",
+        "screen_direction": "submarine crosses consistently",
+        "focus": "submarine scale, water shafts, silhouette",
+        "lighting": "blue underwater shafts"
+      },
+      "continuity_strategy": "潜艇空间连续和比例重要，文字全部替换为干净水下空间。",
+      "blocking_axis_risk": "high"
+    },
+    {
+      "unit_id": "VU_REF003_014_NIGHT_CITY_BLUE_GRID",
+      "unit_type": "night_city_symbolic_reveal",
+      "keyframes": [
+        "OP_SHOT_029",
+        "OP_SHOT_030"
+      ],
+      "whitebox_required": true,
+      "camera_plan": {
+        "movement": "slow reveal from dark aircraft/sky to glowing blue grid and city lights",
+        "framing": "wide night city with luminous ground diagram",
+        "lens": "wide night lens",
+        "screen_direction": "vertical scale from craft to city grid",
+        "focus": "blue grid/city relation",
+        "lighting": "night blue and warm city lights"
+      },
+      "continuity_strategy": "蓝色图案可抽象但不能生成可读文字。",
+      "blocking_axis_risk": "high"
+    },
+    {
+      "unit_id": "VU_REF003_015_NIGHT_AIRCRAFT_PASS",
+      "unit_type": "brief_night_vehicle_pass",
+      "keyframes": [
+        "OP_SHOT_031"
+      ],
+      "whitebox_required": true,
+      "camera_plan": {
+        "movement": "short dark vehicle pass",
+        "framing": "close/dark aircraft silhouette and colored lights",
+        "lens": "night action lens",
+        "screen_direction": "brief pass across frame",
+        "focus": "craft shape and lights",
+        "lighting": "dark blue night with small red/purple lights"
+      },
+      "continuity_strategy": "短促桥接，不扩成长动作。",
+      "blocking_axis_risk": "high"
+    },
+    {
+      "unit_id": "VU_REF003_016_NEMO_SUNSET_PROFILE",
+      "unit_type": "adult_portrait_hold",
+      "keyframes": [
+        "OP_SHOT_032",
+        "OP_SHOT_033"
+      ],
+      "whitebox_required": false,
+      "camera_plan": {
+        "movement": "portrait hold with subtle push or wind",
+        "framing": "low-angle adult captain portrait at sunset",
+        "lens": "portrait/medium lens",
+        "screen_direction": "gaze off horizon",
+        "focus": "face, hat, uniform silhouette",
+        "lighting": "warm sunset sky"
+      },
+      "continuity_strategy": "成人肖像，不要加入 karaoke/credits text。",
+      "blocking_axis_risk": "low_to_medium"
+    },
+    {
+      "unit_id": "VU_REF003_017_NADIA_SOLEMN_CLOSE",
+      "unit_type": "solemn_character_close",
+      "keyframes": [
+        "OP_SHOT_034"
+      ],
+      "whitebox_required": false,
+      "camera_plan": {
+        "movement": "still portrait hold",
+        "framing": "front close-up, shoulders safe and modest",
+        "lens": "portrait lens",
+        "screen_direction": "direct gaze",
+        "focus": "eyes and face",
+        "lighting": "cool blue symbolic light"
+      },
+      "continuity_strategy": "Nadia C 锁定，年龄安全，服装保守。",
+      "blocking_axis_risk": "low_to_medium"
+    },
+    {
+      "unit_id": "VU_REF003_018_BLUE_WATER_SYMBOL",
+      "unit_type": "symbolic_jewel_transition",
+      "keyframes": [
+        "OP_SHOT_035",
+        "OP_SHOT_036",
+        "OP_SHOT_037"
+      ],
+      "whitebox_required": false,
+      "camera_plan": {
+        "movement": "jewel/symbol overlay dissolves into blue underwater texture",
+        "framing": "macro jewel and abstract blue texture",
+        "lens": "macro to wide texture",
+        "screen_direction": "symbolic not geographic",
+        "focus": "jewel facets and blue energy",
+        "lighting": "cyan/blue glow"
+      },
+      "continuity_strategy": "保留 Blue Water 象征，不生成 NHK 或文字。",
+      "blocking_axis_risk": "low_to_medium"
+    },
+    {
+      "unit_id": "VU_REF003_019_WATER_SPLASH_TRANSITION",
+      "unit_type": "water_burst_transition",
+      "keyframes": [
+        "OP_SHOT_038",
+        "OP_SHOT_039"
+      ],
+      "whitebox_required": false,
+      "camera_plan": {
+        "movement": "bursting water transition into sky",
+        "framing": "water splash fills frame then opens to blue sky/cloud",
+        "lens": "wide dynamic transition",
+        "screen_direction": "upward energy",
+        "focus": "water edge and sky reveal",
+        "lighting": "bright blue/white"
+      },
+      "continuity_strategy": "动态水花转场，禁止文字。",
+      "blocking_axis_risk": "low_to_medium"
+    },
+    {
+      "unit_id": "VU_REF003_020_FINAL_SKY_SAFE_HOLD",
+      "unit_type": "final_no_text_sky_hold",
+      "keyframes": [
+        "OP_SHOT_040",
+        "OP_SHOT_041"
+      ],
+      "whitebox_required": false,
+      "camera_plan": {
+        "movement": "locked final sky hold with sun glow",
+        "framing": "blue sky, sun orb, clean final negative space",
+        "lens": "wide sky plate",
+        "screen_direction": "none",
+        "focus": "sky/sun composition",
+        "lighting": "bright sun glow"
+      },
+      "continuity_strategy": "这里是最终 logo-safe 留白，不生成 NHK 或任何字。",
+      "blocking_axis_risk": "low_to_medium"
+    },
+    {
+      "unit_id": "VU_REF003_021_BLACK_TAIL",
+      "unit_type": "editorial_black_tail",
+      "keyframes": [
+        "OP_SHOT_042"
+      ],
+      "whitebox_required": false,
+      "camera_plan": {
+        "movement": "cut to black",
+        "framing": "full black frame",
+        "lens": "none",
+        "screen_direction": "none",
+        "focus": "none",
+        "lighting": "black"
+      },
+      "continuity_strategy": "编辑黑场，作为结尾。",
+      "blocking_axis_risk": "low_to_medium"
+    }
+  ],
+  "opening_24s_blender_previs": {
+    "unit_id": "VU_001_024_OPENING_SKY_BIRD_PLANE_ONETAKE",
+    "status": "superseded_by_reference_002_opening_recut_v1",
+    "time_range": "00:00-00:24",
+    "unit_type": "one_take_blender_previs",
+    "title": "蓝天白云、跟拍白鸟、带出 Jean 式飞行器、回到蓝天白鸟的一镜到底",
+    "source_script_intent": "用户指出参考版本开场第一段应为约 24 秒天空一镜到底；本次 Blender 预演先锁摄影机、空间和运动关系，再决定是否重排前 24 秒分镜卡。",
+    "supersedes_for_review": [
+      "VU_001_CLOUD_PRELUDE",
+      "VU_002_BIRD_PLANE_SKY_CHAIN",
+      "VU_003_SUN_FLASH_WIPE",
+      "VU_004_CHARACTER_INTRO_MONTAGE:00:12-00:24"
+    ],
+    "requires_timeline_recut_if_approved": true,
+    "keyframes": [
+      {
+        "frame": 1,
+        "timecode": "00:00",
+        "role": "图1 / start",
+        "description": "白鸟已在蓝天白云中起势，天空占主导，作为一镜到底起幅。"
+      },
+      {
+        "frame": 49,
+        "timecode": "00:02",
+        "role": "图2 / white_bird_enters",
+        "description": "白鸟入画，成为摄影机跟拍动因。"
+      },
+      {
+        "frame": 145,
+        "timecode": "00:06",
+        "role": "图3 / tracking_midpoint",
+        "description": "摄影机跟随白鸟穿过云层，保持天空连续。"
+      },
+      {
+        "frame": 217,
+        "timecode": "00:09",
+        "role": "图4 / aircraft_reveal",
+        "description": "Jean 式复古飞行器从云间被带出。"
+      },
+      {
+        "frame": 313,
+        "timecode": "00:13",
+        "role": "图5 / bird_aircraft_cross",
+        "description": "白鸟与飞行器同一天空空间交叉，确认相对位置。"
+      },
+      {
+        "frame": 433,
+        "timecode": "00:18",
+        "role": "图6 / return_to_sky",
+        "description": "镜头离开飞行器，回到蓝天、云和白鸟。"
+      },
+      {
+        "frame": 576,
+        "timecode": "00:24",
+        "role": "图7 / end_state",
+        "description": "最终回到蓝天白云与白鸟状态，为下一段剪辑留口。"
+      }
+    ],
+    "camera_plan": {
+      "movement": "single continuous aerial follow camera; no hard cut; start with the white bird already gliding in blue sky, lock onto it, pan/track to reveal retro flying machine, then drift back to sky and bird.",
+      "framing": "21:9 wide sky, bird foreground/midground, aircraft revealed mid-distance, final negative sky space.",
+      "lens": "wide anamorphic 22-31mm equivalent with subtle lens changes keyed in Blender.",
+      "screen_direction": "white bird motivates camera; aircraft crosses within the same sky axis; final camera returns without axis flip.",
+      "focus": "infinity cloud plate to bird/flying-machine readable depth, then back to sky/bird.",
+      "lighting": "clean saturated blue daylight, soft white clouds, warm sun fill."
+    },
+    "previs_assets": {
+      "blend": "06_previs/blender/opening_24s_onetake_previs.blend",
+      "build_script": "06_previs/blender/scripts/build_opening_24s_onetake_previs.py",
+      "video_script": "06_previs/blender/scripts/render_opening_24s_onetake_video.py",
+      "playblast_mp4": "06_previs/playblasts/opening_24s_onetake_previs.mp4",
+      "frame_sequence": "06_previs/renders/opening_24s_onetake_animation_frames/opening_24s_0001.png..opening_24s_0576.png",
+      "keyframe_contact_sheet": "10_qa/reports/contact_sheet_OPENING_24S_ONETAKE_PREVIS_KEYFRAMES.jpg",
+      "render_log": "06_previs/playblasts/opening_24s_blender_render.log",
+      "video_log": "06_previs/playblasts/opening_24s_blender_video.log"
+    },
+    "aigc_prompt_requirements": [
+      "视频提示词必须按一镜到底写，不允许拆成孤立的天空图、鸟图、飞机图。",
+      "提示词显式列出图1到图7：每一图都是同一摄影机路径上的关键时刻。",
+      "AIGC 渲染应以 Blender playblast/camera path 作为空间与运动真相；生成图只做首帧、关键帧、质感参考。",
+      "若审批通过，前 24 秒的现有分镜、提示词和 timing 必须整体重排。"
+    ],
+    "adversarial_tests": [
+      "如果把任意中间图独立生成后无法解释前后空间关系，则失败。",
+      "如果飞行器出现像硬切插入而非被白鸟和摄影机带出，则失败。",
+      "如果结尾不能回到蓝天白云和白鸟状态，则失败。",
+      "如果出现标题字、Logo、字幕或动画逐帧截图感，则失败。"
+    ],
+    "review_outcome": "Reference-002 evidence shows segmented bird/cloud/brief-aircraft/title-safe/flare/Nadia rhythm, not a continuous aircraft-led 24s one-take."
+  },
+  "reference_002_opening_recut": {
+    "status": "superseded_by_reference_003_full_op_2160p",
+    "reference_id": "reference-002-opening",
+    "evidence": [
+      "01_intake/analysis/video_reference_packages/reference-002-opening/contact_sheets/reference-002-opening_contact_sheet_2fps.jpg",
+      "01_intake/analysis/video_reference_packages/reference-002-opening/frame_index.csv",
+      "01_intake/analysis/video_reference_packages/reference-002-opening/roughcuts/reference-002-opening_frame_stack_2fps.mp4",
+      "00_admin/ai_bridge/packets/20260630_023556_reference-002-opening_pixel_remake.json"
+    ],
+    "decision": "Use segmented reference rhythm for 00:00-00:23; do not use the 24s one-take aircraft-heavy candidate as accepted timing.",
+    "unit_ids": [
+      "VU_REF002_001_WHITE_BIRD_OPENING",
+      "VU_REF002_002_BIRD_CREDIT_SAFE_SKY",
+      "VU_REF002_003_CLOUD_BANK_AIRCRAFT_REVEAL",
+      "VU_REF002_004_TITLE_SAFE_HOLD_TO_FLARE",
+      "VU_REF002_005_NADIA_CLOSEUP_ENTRY"
+    ],
+    "uncertainties": [
+      "Only a 2fps sampled contact sheet was reviewed locally; sub-frame cut points remain approximate.",
+      "Post-23s character/run timing remains provisional until more reference evidence is ingested."
+    ]
+  },
+  "reference_003_full_op_1to1_plan": {
+    "status": "active_units_applied_v1",
+    "reference_id": "reference-003-full-op-2160p",
+    "source_video": "/Users/jaychoupp/Library/Containers/com.tencent.qq/Data/Downloads/[2160P] 蓝宝石之谜OP 修复..mp4",
+    "project_video": "01_intake/references/reference-003-full-op-2160p.mp4",
+    "decision": "This full 84.44s OP video is now the authoritative timing/composition source for the 1:1 remake plan.",
+    "decision_file": "00_admin/ai_bridge/decisions/reference_003_full_op_1to1_unit_plan_v1.md",
+    "contact_sheet": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/contact_sheets/reference-003-full-op-2160p_contact_sheet_2fps.jpg",
+    "roughcut": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/roughcuts/reference-003-full-op-2160p_frame_stack_2fps.mp4",
+    "unit_count": 21,
+    "next_action": "Rewrite units/edges/camera manifest/shot_list/prompts from the full-op table before official generation.",
+    "applied_at": "2026-06-30T04:45:05+08:00",
+    "keyframe_count": 42,
+    "source_of_units": "full OP 2fps contact sheet + section sheets + local bounded analysis"
+  }
+}

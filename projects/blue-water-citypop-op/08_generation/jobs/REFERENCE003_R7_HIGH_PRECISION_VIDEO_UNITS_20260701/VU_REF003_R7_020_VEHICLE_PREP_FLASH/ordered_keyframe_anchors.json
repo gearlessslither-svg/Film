@@ -1,0 +1,17 @@
+[
+  {
+    "order": 1,
+    "item_id": "OP_SHOT_024",
+    "kind": "official_keyframe",
+    "time_sec": 49.5,
+    "timecode": "00:49.50",
+    "role": "图2 / vehicle_sky_action",
+    "beat": "车辆/飞行器空中动作",
+    "difference_reason": "",
+    "source_reference_frame": "",
+    "source_path": "08_generation/jobs/REFERENCE003_IDENTITY_REPAIR_R1_20260630/outputs/OP_SHOT_024_VEHICLE_LOCK_R1.png",
+    "packaged_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_020_VEHICLE_PREP_FLASH/keyframes/01_OP_SHOT_024.png",
+    "exists": true,
+    "source_unit_id": "VU_REF003_012_GRANDIS_VEHICLE_ACTION"
+  }
+]

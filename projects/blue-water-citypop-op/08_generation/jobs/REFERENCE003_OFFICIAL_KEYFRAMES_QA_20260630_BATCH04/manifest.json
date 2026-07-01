@@ -1,0 +1,88 @@
+{
+  "job_id": "REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH04",
+  "status": "qa_done_6_pass",
+  "source_reference": "reference-003-full-op-2160p",
+  "items": [
+    {
+      "item_id": "OP_SHOT_019",
+      "timecode": "00:41.50",
+      "reference_frame": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH04/refs/OP_SHOT_019_ref_004150.jpg",
+      "label": "Jean run"
+    },
+    {
+      "item_id": "OP_SHOT_020",
+      "timecode": "00:43.50",
+      "reference_frame": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH04/refs/OP_SHOT_020_ref_004350.jpg",
+      "label": "Marie and King run"
+    },
+    {
+      "item_id": "OP_SHOT_021",
+      "timecode": "00:45.50",
+      "reference_frame": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH04/refs/OP_SHOT_021_ref_004550.jpg",
+      "label": "group run"
+    },
+    {
+      "item_id": "OP_SHOT_022",
+      "timecode": "00:47.50",
+      "reference_frame": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH04/refs/OP_SHOT_022_ref_004750.jpg",
+      "label": "Jean reaction close"
+    },
+    {
+      "item_id": "OP_SHOT_023",
+      "timecode": "00:48.00",
+      "reference_frame": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH04/refs/OP_SHOT_023_ref_004800.jpg",
+      "label": "Grandis action bridge"
+    },
+    {
+      "item_id": "OP_SHOT_024",
+      "timecode": "00:49.50",
+      "reference_frame": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH04/refs/OP_SHOT_024_ref_004950.jpg",
+      "label": "vehicle sky action"
+    }
+  ],
+  "reference_sheet": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH04/refs/REFERENCE003_QA_BATCH04_reference_sheet.jpg",
+  "output_dir": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH04/outputs",
+  "generated_at": "2026-06-30T05:47:00+0800",
+  "outputs": [
+    {
+      "item_id": "OP_SHOT_019",
+      "status": "generated_reference003_qa_pass",
+      "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH04/outputs/OP_SHOT_019.png",
+      "note": "REFERENCE003_QA_BATCH04 official keyframe generated from full video reference. Visual QA pass: Jean running montage beat, age-appropriate, no text/logo."
+    },
+    {
+      "item_id": "OP_SHOT_020",
+      "status": "generated_reference003_qa_pass",
+      "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH04/outputs/OP_SHOT_020.png",
+      "note": "REFERENCE003_QA_BATCH04 official keyframe generated from full video reference. Visual QA pass: Marie and King running, child-safe and friendly, no text/logo."
+    },
+    {
+      "item_id": "OP_SHOT_021",
+      "status": "generated_reference003_qa_pass",
+      "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH04/outputs/OP_SHOT_021_v2.png",
+      "note": "REFERENCE003_QA_BATCH04 R2 official keyframe generated from full video reference. Visual QA pass: full group run, minors age-safe, Nadia torso covered, no text/logo; normalized to 1915x821."
+    },
+    {
+      "item_id": "OP_SHOT_022",
+      "status": "generated_reference003_qa_pass",
+      "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH04/outputs/OP_SHOT_022.png",
+      "note": "REFERENCE003_QA_BATCH04 official keyframe generated from full video reference. Visual QA pass: Jean thumbs-up close reaction, age-appropriate, no text/logo."
+    },
+    {
+      "item_id": "OP_SHOT_023",
+      "status": "generated_reference003_qa_pass",
+      "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH04/outputs/OP_SHOT_023.png",
+      "note": "REFERENCE003_QA_BATCH04 official keyframe generated from full video reference. Visual QA pass: Grandis trio action beat, adult trio, no text/logo."
+    },
+    {
+      "item_id": "OP_SHOT_024",
+      "status": "generated_reference003_qa_pass",
+      "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH04/outputs/OP_SHOT_024.png",
+      "note": "REFERENCE003_QA_BATCH04 official keyframe generated from full video reference. Visual QA pass: retro craft in sky/cloud spray, no text/logo."
+    }
+  ],
+  "generated_sheet": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH04/outputs/REFERENCE003_QA_BATCH04_generated_sheet.jpg",
+  "qa_report": "10_qa/reports/reference003_qa_batch04_keyframes_20260630.md",
+  "compare_sheet": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH04/outputs/REFERENCE003_QA_BATCH04_ref_vs_generated.jpg",
+  "updated_at": "2026-06-30T05:50:06+08:00"
+}

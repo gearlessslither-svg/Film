@@ -1,0 +1,527 @@
+{
+  "schema_version": "reference003_full_video_gap_audit_r4_v1",
+  "project_slug": "blue-water-citypop-op",
+  "created_at": "2026-06-30T20:37:04+08:00",
+  "status": "analysis_ready_not_generated_assets",
+  "source_frame_index": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frame_index.csv",
+  "sample_rate_sec": 0.5,
+  "sampled_frames_reviewed": 169,
+  "video_units_reviewed": 21,
+  "r3_generated_assets_total": 11,
+  "r4_proposed_new_image_assets_total": 25,
+  "r4_p1_next_batch_units": [
+    "VU_REF003_002_WHITE_BIRD_SKY",
+    "VU_REF003_003_CREDIT_SAFE_BIRD_CLOUDS",
+    "VU_REF003_004_AIRCRAFT_BRIEF_REVEAL",
+    "VU_REF003_006_SUN_FLARE_TO_NADIA",
+    "VU_REF003_008_JEAN_INTRO",
+    "VU_REF003_010_GRANDIS_TRIO_INTRO",
+    "VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS",
+    "VU_REF003_015_NIGHT_AIRCRAFT_PASS",
+    "VU_REF003_019_WATER_SPLASH_TRANSITION"
+  ],
+  "rule": "Candidate reference frames are not assets. Generate only after visual/semantic promotion and identity/setting lock prompt creation.",
+  "units": [
+    {
+      "order": 1,
+      "unit_id": "VU_REF003_001_BLACK_CLOUD_FADEIN",
+      "title": "黑场到云层蓝天淡入",
+      "time_range": "00:00.00-00:02.00",
+      "duration_sec": 2.0,
+      "official_anchor_count": 2,
+      "r3_extra_count": 0,
+      "sample_frame_count": 5,
+      "max_delta": 242.59,
+      "mean_delta": 81.53,
+      "proposed_new_assets": 0,
+      "priority": "P2_review_later",
+      "candidate_frames": [],
+      "audit_note": "2 official anchors cover fade-in; keep reference-video guidance, no new generated image now."
+    },
+    {
+      "order": 2,
+      "unit_id": "VU_REF003_002_WHITE_BIRD_SKY",
+      "title": "白鸟入画与蓝天滑翔",
+      "time_range": "00:02.50-00:07.00",
+      "duration_sec": 4.5,
+      "official_anchor_count": 2,
+      "r3_extra_count": 0,
+      "sample_frame_count": 10,
+      "max_delta": 20.52,
+      "mean_delta": 6.96,
+      "proposed_new_assets": 3,
+      "priority": "P1_generate_next_if_expanding_preview",
+      "candidate_frames": [
+        {
+          "time_sec": 3.5,
+          "timecode": "00:03.50",
+          "delta_prev": 3.4,
+          "frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0008.jpg"
+        },
+        {
+          "time_sec": 6.0,
+          "timecode": "00:06.00",
+          "delta_prev": 4.86,
+          "frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0013.jpg"
+        },
+        {
+          "time_sec": 4.5,
+          "timecode": "00:04.50",
+          "delta_prev": 6.78,
+          "frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0010.jpg"
+        }
+      ],
+      "audit_note": "Needs generated image candidates before expanded still preview."
+    },
+    {
+      "order": 3,
+      "unit_id": "VU_REF003_003_CREDIT_SAFE_BIRD_CLOUDS",
+      "title": "白鸟字幕安全位与云层增长",
+      "time_range": "00:07.00-00:14.00",
+      "duration_sec": 7.0,
+      "official_anchor_count": 2,
+      "r3_extra_count": 0,
+      "sample_frame_count": 15,
+      "max_delta": 40.74,
+      "mean_delta": 13.03,
+      "proposed_new_assets": 2,
+      "priority": "P1_generate_next_if_expanding_preview",
+      "candidate_frames": [
+        {
+          "time_sec": 9.5,
+          "timecode": "00:09.50",
+          "delta_prev": 1.06,
+          "frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0020.jpg"
+        },
+        {
+          "time_sec": 12.5,
+          "timecode": "00:12.50",
+          "delta_prev": 36.23,
+          "frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0026.jpg"
+        }
+      ],
+      "audit_note": "Needs generated image candidates before expanded still preview."
+    },
+    {
+      "order": 4,
+      "unit_id": "VU_REF003_004_AIRCRAFT_BRIEF_REVEAL",
+      "title": "飞行器短暂露出",
+      "time_range": "00:14.50-00:16.50",
+      "duration_sec": 2.0,
+      "official_anchor_count": 1,
+      "r3_extra_count": 0,
+      "sample_frame_count": 5,
+      "max_delta": 89.98,
+      "mean_delta": 67.04,
+      "proposed_new_assets": 2,
+      "priority": "P1_generate_next_if_expanding_preview",
+      "candidate_frames": [
+        {
+          "time_sec": 16.0,
+          "timecode": "00:16.00",
+          "delta_prev": 89.98,
+          "frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0033.jpg"
+        },
+        {
+          "time_sec": 14.5,
+          "timecode": "00:14.50",
+          "delta_prev": 86.42,
+          "frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0030.jpg"
+        }
+      ],
+      "audit_note": "Needs generated image candidates before expanded still preview."
+    },
+    {
+      "order": 5,
+      "unit_id": "VU_REF003_005_MAIN_TITLE_SAFE_HOLD",
+      "title": "主标题功能位无字 hold",
+      "time_range": "00:17.00-00:22.00",
+      "duration_sec": 5.0,
+      "official_anchor_count": 1,
+      "r3_extra_count": 0,
+      "sample_frame_count": 11,
+      "max_delta": 36.25,
+      "mean_delta": 14.19,
+      "proposed_new_assets": 1,
+      "priority": "P2_review_later",
+      "candidate_frames": [
+        {
+          "time_sec": 20.0,
+          "timecode": "00:20.00",
+          "delta_prev": 15.84,
+          "frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0041.jpg"
+        }
+      ],
+      "audit_note": "Long no-text/title-safe hold; one mid background state may help PPT preview, but do not over-generate text-zone variants."
+    },
+    {
+      "order": 6,
+      "unit_id": "VU_REF003_006_SUN_FLARE_TO_NADIA",
+      "title": "太阳光转 Nadia",
+      "time_range": "00:22.50-00:23.50",
+      "duration_sec": 1.0,
+      "official_anchor_count": 1,
+      "r3_extra_count": 0,
+      "sample_frame_count": 3,
+      "max_delta": 27.49,
+      "mean_delta": 20.65,
+      "proposed_new_assets": 2,
+      "priority": "P1_generate_next_if_expanding_preview",
+      "candidate_frames": [
+        {
+          "time_sec": 23.5,
+          "timecode": "00:23.50",
+          "delta_prev": 27.49,
+          "frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0048.jpg"
+        },
+        {
+          "time_sec": 22.5,
+          "timecode": "00:22.50",
+          "delta_prev": 20.32,
+          "frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0046.jpg"
+        }
+      ],
+      "audit_note": "Needs generated image candidates before expanded still preview."
+    },
+    {
+      "order": 7,
+      "unit_id": "VU_REF003_007_NADIA_PROFILE_ENTRY",
+      "title": "Nadia 侧脸入场到近景",
+      "time_range": "00:24.00-00:27.50",
+      "duration_sec": 3.5,
+      "official_anchor_count": 2,
+      "r3_extra_count": 1,
+      "sample_frame_count": 8,
+      "max_delta": 78.66,
+      "mean_delta": 36.97,
+      "proposed_new_assets": 0,
+      "priority": "P2_review_later",
+      "candidate_frames": [],
+      "audit_note": "Reference/video-only or static enough for current stage."
+    },
+    {
+      "order": 8,
+      "unit_id": "VU_REF003_008_JEAN_INTRO",
+      "title": "Jean 帽子与少年发明家入场",
+      "time_range": "00:28.00-00:30.50",
+      "duration_sec": 2.5,
+      "official_anchor_count": 1,
+      "r3_extra_count": 0,
+      "sample_frame_count": 6,
+      "max_delta": 83.69,
+      "mean_delta": 49.9,
+      "proposed_new_assets": 2,
+      "priority": "P1_generate_next_if_expanding_preview",
+      "candidate_frames": [
+        {
+          "time_sec": 30.5,
+          "timecode": "00:30.50",
+          "delta_prev": 83.69,
+          "frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0062.jpg"
+        },
+        {
+          "time_sec": 28.5,
+          "timecode": "00:28.50",
+          "delta_prev": 71.54,
+          "frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0058.jpg"
+        }
+      ],
+      "audit_note": "Needs generated image candidates before expanded still preview."
+    },
+    {
+      "order": 9,
+      "unit_id": "VU_REF003_009_MARIE_KING_MEADOW",
+      "title": "Marie 与 King 草地段",
+      "time_range": "00:31.00-00:34.00",
+      "duration_sec": 3.0,
+      "official_anchor_count": 2,
+      "r3_extra_count": 0,
+      "sample_frame_count": 7,
+      "max_delta": 74.37,
+      "mean_delta": 38.43,
+      "proposed_new_assets": 1,
+      "priority": "P2_review_later",
+      "candidate_frames": [
+        {
+          "time_sec": 32.5,
+          "timecode": "00:32.50",
+          "delta_prev": 12.87,
+          "frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0066.jpg"
+        }
+      ],
+      "audit_note": "Needs generated image candidates before expanded still preview."
+    },
+    {
+      "order": 10,
+      "unit_id": "VU_REF003_010_GRANDIS_TRIO_INTRO",
+      "title": "Grandis 三人组介绍",
+      "time_range": "00:34.50-00:37.50",
+      "duration_sec": 3.0,
+      "official_anchor_count": 2,
+      "r3_extra_count": 0,
+      "sample_frame_count": 7,
+      "max_delta": 82.11,
+      "mean_delta": 62.46,
+      "proposed_new_assets": 2,
+      "priority": "P1_generate_next_if_expanding_preview",
+      "candidate_frames": [
+        {
+          "time_sec": 34.5,
+          "timecode": "00:34.50",
+          "delta_prev": 82.11,
+          "frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0070.jpg"
+        },
+        {
+          "time_sec": 37.5,
+          "timecode": "00:37.50",
+          "delta_prev": 68.87,
+          "frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0076.jpg"
+        }
+      ],
+      "audit_note": "Needs generated image candidates before expanded still preview."
+    },
+    {
+      "order": 11,
+      "unit_id": "VU_REF003_011_RUNNING_MONTAGE",
+      "title": "角色奔跑 montage",
+      "time_range": "00:38.00-00:47.50",
+      "duration_sec": 9.5,
+      "official_anchor_count": 6,
+      "r3_extra_count": 7,
+      "sample_frame_count": 20,
+      "max_delta": 79.54,
+      "mean_delta": 54.87,
+      "proposed_new_assets": 0,
+      "priority": "P3_reference_video_or_already_handled",
+      "candidate_frames": [],
+      "audit_note": "Already R3-generated 6 running montage assets and deliberately collapsed OP_SHOT_021 repetition."
+    },
+    {
+      "order": 12,
+      "unit_id": "VU_REF003_012_GRANDIS_VEHICLE_ACTION",
+      "title": "Grandis 车辆动作到群像",
+      "time_range": "00:48.00-00:51.50",
+      "duration_sec": 3.5,
+      "official_anchor_count": 3,
+      "r3_extra_count": 3,
+      "sample_frame_count": 8,
+      "max_delta": 89.47,
+      "mean_delta": 68.08,
+      "proposed_new_assets": 0,
+      "priority": "P3_reference_video_or_already_handled",
+      "candidate_frames": [],
+      "audit_note": "Already R3-generated Grandis/vehicle start/end bridge assets and deliberately collapsed OP_SHOT_025 repetition."
+    },
+    {
+      "order": 13,
+      "unit_id": "VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS",
+      "title": "Nautilus 海底光束段",
+      "time_range": "00:52.00-01:01.00",
+      "duration_sec": 9.0,
+      "official_anchor_count": 3,
+      "r3_extra_count": 0,
+      "sample_frame_count": 19,
+      "max_delta": 79.41,
+      "mean_delta": 19.16,
+      "proposed_new_assets": 3,
+      "priority": "P1_generate_next_if_expanding_preview",
+      "candidate_frames": [
+        {
+          "time_sec": 53.5,
+          "timecode": "00:53.50",
+          "delta_prev": 9.11,
+          "frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0108.jpg"
+        },
+        {
+          "time_sec": 56.5,
+          "timecode": "00:56.50",
+          "delta_prev": 10.62,
+          "frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0114.jpg"
+        },
+        {
+          "time_sec": 59.5,
+          "timecode": "00:59.50",
+          "delta_prev": 13.58,
+          "frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0120.jpg"
+        }
+      ],
+      "audit_note": "Needs generated image candidates before expanded still preview."
+    },
+    {
+      "order": 14,
+      "unit_id": "VU_REF003_014_NIGHT_CITY_BLUE_GRID",
+      "title": "夜城与蓝色地面图案",
+      "time_range": "01:01.50-01:04.50",
+      "duration_sec": 3.0,
+      "official_anchor_count": 2,
+      "r3_extra_count": 0,
+      "sample_frame_count": 7,
+      "max_delta": 65.41,
+      "mean_delta": 20.3,
+      "proposed_new_assets": 1,
+      "priority": "P2_review_later",
+      "candidate_frames": [
+        {
+          "time_sec": 62.5,
+          "timecode": "01:02.50",
+          "delta_prev": 12.14,
+          "frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0126.jpg"
+        }
+      ],
+      "audit_note": "Needs generated image candidates before expanded still preview."
+    },
+    {
+      "order": 15,
+      "unit_id": "VU_REF003_015_NIGHT_AIRCRAFT_PASS",
+      "title": "夜航飞行器短切",
+      "time_range": "01:05.00-01:06.00",
+      "duration_sec": 1.0,
+      "official_anchor_count": 1,
+      "r3_extra_count": 0,
+      "sample_frame_count": 3,
+      "max_delta": 49.72,
+      "mean_delta": 25.95,
+      "proposed_new_assets": 2,
+      "priority": "P1_generate_next_if_expanding_preview",
+      "candidate_frames": [
+        {
+          "time_sec": 65.0,
+          "timecode": "01:05.00",
+          "delta_prev": 49.72,
+          "frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0131.jpg"
+        },
+        {
+          "time_sec": 66.0,
+          "timecode": "01:06.00",
+          "delta_prev": 17.55,
+          "frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0133.jpg"
+        }
+      ],
+      "audit_note": "Needs generated image candidates before expanded still preview."
+    },
+    {
+      "order": 16,
+      "unit_id": "VU_REF003_016_NEMO_SUNSET_PROFILE",
+      "title": "Nemo 夕景船长肖像",
+      "time_range": "01:06.50-01:11.00",
+      "duration_sec": 4.5,
+      "official_anchor_count": 2,
+      "r3_extra_count": 0,
+      "sample_frame_count": 10,
+      "max_delta": 88.01,
+      "mean_delta": 28.26,
+      "proposed_new_assets": 0,
+      "priority": "P3_reference_video_or_already_handled",
+      "candidate_frames": [],
+      "audit_note": "Director marked Nemo portrait as one-take/repetitive; keep existing start/end plus precise prompt/video reference."
+    },
+    {
+      "order": 17,
+      "unit_id": "VU_REF003_017_NADIA_SOLEMN_CLOSE",
+      "title": "Nadia 庄重正面近景",
+      "time_range": "01:11.50-01:13.00",
+      "duration_sec": 1.5,
+      "official_anchor_count": 1,
+      "r3_extra_count": 0,
+      "sample_frame_count": 4,
+      "max_delta": 90.65,
+      "mean_delta": 34.42,
+      "proposed_new_assets": 0,
+      "priority": "P2_review_later",
+      "candidate_frames": [],
+      "audit_note": "Short solemn close-up with accepted R1 repair; no new still unless face quality is rejected."
+    },
+    {
+      "order": 18,
+      "unit_id": "VU_REF003_018_BLUE_WATER_SYMBOL",
+      "title": "Blue Water 象征与水下纹理",
+      "time_range": "01:13.50-01:17.00",
+      "duration_sec": 3.5,
+      "official_anchor_count": 3,
+      "r3_extra_count": 0,
+      "sample_frame_count": 8,
+      "max_delta": 51.29,
+      "mean_delta": 29.28,
+      "proposed_new_assets": 1,
+      "priority": "P2_review_later",
+      "candidate_frames": [
+        {
+          "time_sec": 75.5,
+          "timecode": "01:15.50",
+          "delta_prev": 51.29,
+          "frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0152.jpg"
+        }
+      ],
+      "audit_note": "Needs generated image candidates before expanded still preview."
+    },
+    {
+      "order": 19,
+      "unit_id": "VU_REF003_019_WATER_SPLASH_TRANSITION",
+      "title": "水花爆发转天空",
+      "time_range": "01:17.50-01:19.50",
+      "duration_sec": 2.0,
+      "official_anchor_count": 2,
+      "r3_extra_count": 0,
+      "sample_frame_count": 5,
+      "max_delta": 72.56,
+      "mean_delta": 53.66,
+      "proposed_new_assets": 2,
+      "priority": "P1_generate_next_if_expanding_preview",
+      "candidate_frames": [
+        {
+          "time_sec": 78.5,
+          "timecode": "01:18.50",
+          "delta_prev": 72.56,
+          "frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0158.jpg"
+        },
+        {
+          "time_sec": 79.5,
+          "timecode": "01:19.50",
+          "delta_prev": 42.83,
+          "frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0160.jpg"
+        }
+      ],
+      "audit_note": "Needs generated image candidates before expanded still preview."
+    },
+    {
+      "order": 20,
+      "unit_id": "VU_REF003_020_FINAL_SKY_SAFE_HOLD",
+      "title": "最终无字天空 hold",
+      "time_range": "01:19.50-01:23.00",
+      "duration_sec": 3.5,
+      "official_anchor_count": 2,
+      "r3_extra_count": 0,
+      "sample_frame_count": 8,
+      "max_delta": 67.72,
+      "mean_delta": 31.87,
+      "proposed_new_assets": 1,
+      "priority": "P2_review_later",
+      "candidate_frames": [
+        {
+          "time_sec": 81.0,
+          "timecode": "01:21.00",
+          "delta_prev": 23.32,
+          "frame_path": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0163.jpg"
+        }
+      ],
+      "audit_note": "Needs generated image candidates before expanded still preview."
+    },
+    {
+      "order": 21,
+      "unit_id": "VU_REF003_021_BLACK_TAIL",
+      "title": "黑场尾帧",
+      "time_range": "01:23.50-01:24.44",
+      "duration_sec": 0.94,
+      "official_anchor_count": 1,
+      "r3_extra_count": 0,
+      "sample_frame_count": 2,
+      "max_delta": 34.28,
+      "mean_delta": 17.14,
+      "proposed_new_assets": 0,
+      "priority": "P3_reference_video_or_already_handled",
+      "candidate_frames": [],
+      "audit_note": "Black tail, no generated asset needed."
+    }
+  ],
+  "candidate_contact_sheet": "01_intake/analysis/reference003_full_video_gap_audit_r4_20260630/reference003_r4_candidate_reference_frames_sheet.jpg"
+}

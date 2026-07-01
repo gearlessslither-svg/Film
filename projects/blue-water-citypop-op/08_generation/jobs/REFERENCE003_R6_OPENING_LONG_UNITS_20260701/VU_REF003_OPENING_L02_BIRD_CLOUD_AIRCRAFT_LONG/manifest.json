@@ -1,0 +1,164 @@
+{
+  "schema_version": "reference003_r6_opening_long_unit_package_v1",
+  "created_at": "2026-07-01T07:23:27+08:00",
+  "status": "ready_for_external_aigc_video_generation",
+  "unit": {
+    "order": 2,
+    "unit_id": "VU_REF003_OPENING_L02_BIRD_CLOUD_AIRCRAFT_LONG",
+    "title": "开场长镜头 B：白鸟云层到飞行器短显",
+    "time_range": "00:07.00-00:16.50",
+    "intent": "保留白鸟/云层/飞行器的一体化运动，重点抓住一闪而过的飞行器，不把它丢到前后镜头里。",
+    "anchor_ids": [
+      "R5_VU_REF003_002_WHITE_BIRD_SKY_007000ms_01",
+      "OP_SHOT_005",
+      "OP_SHOT_006",
+      "R5_VU_REF003_003_CREDIT_SAFE_BIRD_CLOUDS_014000ms_01",
+      "R5_VU_REF003_004_AIRCRAFT_BRIEF_REVEAL_014500ms_02",
+      "OP_SHOT_007",
+      "R5_VU_REF003_004_AIRCRAFT_BRIEF_REVEAL_016000ms_01"
+    ],
+    "active_locks": [
+      [
+        "props_vehicles_symbols",
+        "white_bird"
+      ],
+      [
+        "props_vehicles_symbols",
+        "jean_aircraft"
+      ]
+    ],
+    "motion": "continuous sky move with white bird/cloud composition, then a brief aircraft reveal treated as an insert inside the same long opening phrase"
+  },
+  "reference_clip": {
+    "path": "08_generation/jobs/REFERENCE003_R6_OPENING_LONG_UNITS_20260701/VU_REF003_OPENING_L02_BIRD_CLOUD_AIRCRAFT_LONG/reference_clip/VU_REF003_OPENING_L02_BIRD_CLOUD_AIRCRAFT_LONG_reference.mp4",
+    "start_sec": 7.0,
+    "end_sec": 16.5,
+    "duration_sec": 9.5,
+    "ok": true,
+    "decode_ok": true,
+    "stderr_tail": "      handler_name    : VideoHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : Lavc60.31.102 mpeg4\n    Side data:\n      cpb: bitrate max/min/avg: 0/0/200000 buffer size: 0 vbv_delay: N/A\nframe=    0 fps=0.0 q=3.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    \n[out#0/mp4 @ 0x9a7068480] video:3444kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 0.072042%\nframe=  228 fps=0.0 q=3.0 Lsize=    3447kB time=00:00:09.46 bitrate=2982.4kbits/s speed=31.9x    "
+  },
+  "keyframe_anchors": [
+    {
+      "order": 1,
+      "item_id": "R5_VU_REF003_002_WHITE_BIRD_SKY_007000ms_01",
+      "kind": "r5_adaptive_generated",
+      "time_sec": 7.0,
+      "timecode": "00:07.00",
+      "role": "adaptive_primary",
+      "beat": "White bird glide changes screen position/scale within a long sky movement; useful middle/final action anchor without generating every frame.",
+      "difference_reason": "White bird glide changes screen position/scale within a long sky movement; useful middle/final action anchor without generating every frame.",
+      "source_reference_frame": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0015.jpg",
+      "source_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_002_WHITE_BIRD_SKY_007000ms_01.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R6_OPENING_LONG_UNITS_20260701/VU_REF003_OPENING_L02_BIRD_CLOUD_AIRCRAFT_LONG/keyframes/01_R5_VU_REF003_002_WHITE_BIRD_SKY_007000ms_01.png",
+      "exists": true
+    },
+    {
+      "order": 2,
+      "item_id": "OP_SHOT_005",
+      "kind": "official_keyframe",
+      "time_sec": 7.5,
+      "timecode": "00:07.50",
+      "role": "图1 / no_text_credit_safe_bird",
+      "beat": "无字职员表安全位",
+      "difference_reason": "",
+      "source_reference_frame": "",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_005.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R6_OPENING_LONG_UNITS_20260701/VU_REF003_OPENING_L02_BIRD_CLOUD_AIRCRAFT_LONG/keyframes/02_OP_SHOT_005.png",
+      "exists": true
+    },
+    {
+      "order": 3,
+      "item_id": "OP_SHOT_006",
+      "kind": "official_keyframe",
+      "time_sec": 11.5,
+      "timecode": "00:11.50",
+      "role": "图2 / cloud_bank_growth",
+      "beat": "云层增长填画",
+      "difference_reason": "",
+      "source_reference_frame": "",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_006_v2.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R6_OPENING_LONG_UNITS_20260701/VU_REF003_OPENING_L02_BIRD_CLOUD_AIRCRAFT_LONG/keyframes/03_OP_SHOT_006.png",
+      "exists": true
+    },
+    {
+      "order": 4,
+      "item_id": "R5_VU_REF003_003_CREDIT_SAFE_BIRD_CLOUDS_014000ms_01",
+      "kind": "r5_adaptive_generated",
+      "time_sec": 14.0,
+      "timecode": "00:14.00",
+      "role": "adaptive_primary",
+      "beat": "Cloud/bird/title-safe composition changes over a long no-text sky section; adds clean sky state for preview and AIGC prompt.",
+      "difference_reason": "Cloud/bird/title-safe composition changes over a long no-text sky section; adds clean sky state for preview and AIGC prompt.",
+      "source_reference_frame": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0029.jpg",
+      "source_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_003_CREDIT_SAFE_BIRD_CLOUDS_014000ms_01.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R6_OPENING_LONG_UNITS_20260701/VU_REF003_OPENING_L02_BIRD_CLOUD_AIRCRAFT_LONG/keyframes/04_R5_VU_REF003_003_CREDIT_SAFE_BIRD_CLOUDS_014000ms_01.png",
+      "exists": true
+    },
+    {
+      "order": 5,
+      "item_id": "R5_VU_REF003_004_AIRCRAFT_BRIEF_REVEAL_014500ms_02",
+      "kind": "r5_adaptive_generated",
+      "time_sec": 14.5,
+      "timecode": "00:14.50",
+      "role": "adaptive_middle",
+      "beat": "Brief aircraft reveal is a fast prop/camera state change; current single anchor does not cover entry and exit/reveal phase.",
+      "difference_reason": "Brief aircraft reveal is a fast prop/camera state change; current single anchor does not cover entry and exit/reveal phase.",
+      "source_reference_frame": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0030.jpg",
+      "source_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_004_AIRCRAFT_BRIEF_REVEAL_014500ms_02.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R6_OPENING_LONG_UNITS_20260701/VU_REF003_OPENING_L02_BIRD_CLOUD_AIRCRAFT_LONG/keyframes/05_R5_VU_REF003_004_AIRCRAFT_BRIEF_REVEAL_014500ms_02.png",
+      "exists": true
+    },
+    {
+      "order": 6,
+      "item_id": "OP_SHOT_007",
+      "kind": "official_keyframe",
+      "time_sec": 15.0,
+      "timecode": "00:15.00",
+      "role": "图1 / aircraft_brief_reveal",
+      "beat": "飞行器短露",
+      "difference_reason": "",
+      "source_reference_frame": "",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_007.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R6_OPENING_LONG_UNITS_20260701/VU_REF003_OPENING_L02_BIRD_CLOUD_AIRCRAFT_LONG/keyframes/06_OP_SHOT_007.png",
+      "exists": true
+    },
+    {
+      "order": 7,
+      "item_id": "R5_VU_REF003_004_AIRCRAFT_BRIEF_REVEAL_016000ms_01",
+      "kind": "r5_adaptive_generated",
+      "time_sec": 16.0,
+      "timecode": "00:16.00",
+      "role": "adaptive_primary",
+      "beat": "Brief aircraft reveal is a fast prop/camera state change; current single anchor does not cover entry and exit/reveal phase.",
+      "difference_reason": "Brief aircraft reveal is a fast prop/camera state change; current single anchor does not cover entry and exit/reveal phase.",
+      "source_reference_frame": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0033.jpg",
+      "source_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_004_AIRCRAFT_BRIEF_REVEAL_016000ms_01.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R6_OPENING_LONG_UNITS_20260701/VU_REF003_OPENING_L02_BIRD_CLOUD_AIRCRAFT_LONG/keyframes/07_R5_VU_REF003_004_AIRCRAFT_BRIEF_REVEAL_016000ms_01.png",
+      "exists": true
+    }
+  ],
+  "active_asset_locks": [
+    {
+      "group": "props_vehicles_symbols",
+      "asset_id": "white_bird",
+      "status": "official_prop_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630/outputs/OP_SHOT_003.png",
+      "global_lock_path": "08_generation/jobs/REFERENCE003_R6_OPENING_LONG_UNITS_20260701/_global_asset_locks/props_vehicles_symbols_white_bird.png",
+      "exists": true
+    },
+    {
+      "group": "props_vehicles_symbols",
+      "asset_id": "jean_aircraft",
+      "status": "official_prop_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_007.png",
+      "global_lock_path": "08_generation/jobs/REFERENCE003_R6_OPENING_LONG_UNITS_20260701/_global_asset_locks/props_vehicles_symbols_jean_aircraft.png",
+      "exists": true
+    }
+  ],
+  "prompt_only": "08_generation/jobs/REFERENCE003_R6_OPENING_LONG_UNITS_20260701/_PROMPT_INDEX/PROMPT_ONLY/02_VU_REF003_OPENING_L02_BIRD_CLOUD_AIRCRAFT_LONG.md",
+  "generation_brief": "08_generation/jobs/REFERENCE003_R6_OPENING_LONG_UNITS_20260701/VU_REF003_OPENING_L02_BIRD_CLOUD_AIRCRAFT_LONG/AIGC_VIDEO_GENERATION_BRIEF.md",
+  "ordered_keyframe_contact_sheet": "08_generation/jobs/REFERENCE003_R6_OPENING_LONG_UNITS_20260701/VU_REF003_OPENING_L02_BIRD_CLOUD_AIRCRAFT_LONG/ordered_keyframe_contact_sheet.jpg",
+  "expected_video_output_path": "08_generation/outputs/video/reference003_r6_opening_long_segments/VU_REF003_OPENING_L02_BIRD_CLOUD_AIRCRAFT_LONG.mp4",
+  "boundary_refine_report": "01_intake/analysis/reference003_frame_boundary_refine_r6_20260701/reference003_frame_boundary_refine_r6_20260701.json"
+}

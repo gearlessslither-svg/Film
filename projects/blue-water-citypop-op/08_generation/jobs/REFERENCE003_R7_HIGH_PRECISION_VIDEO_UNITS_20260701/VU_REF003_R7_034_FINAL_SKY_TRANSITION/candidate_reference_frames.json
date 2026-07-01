@@ -1,0 +1,38 @@
+[
+  {
+    "asset_id": "R7_CAND_034_start_079234ms",
+    "parent_video_unit_id": "VU_REF003_R7_034_FINAL_SKY_TRANSITION",
+    "role": "start",
+    "source_time_sec": 79.234,
+    "source_timecode": "01:19.23",
+    "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_034_FINAL_SKY_TRANSITION/candidate_reference_frames/R7_CAND_034_start_079234ms.jpg",
+    "priority": "P3_reference_video_or_already_handled",
+    "status": "candidate_reference_frame_review",
+    "difference_reason": "最终天空转场 start boundary/transition frame from R7 high-precision split.",
+    "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_034_start_079234ms.png"
+  },
+  {
+    "asset_id": "R7_CAND_034_end_080759ms",
+    "parent_video_unit_id": "VU_REF003_R7_034_FINAL_SKY_TRANSITION",
+    "role": "end",
+    "source_time_sec": 80.759,
+    "source_timecode": "01:20.76",
+    "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_034_FINAL_SKY_TRANSITION/candidate_reference_frames/R7_CAND_034_end_080759ms.jpg",
+    "priority": "P3_reference_video_or_already_handled",
+    "status": "candidate_reference_frame_review",
+    "difference_reason": "最终天空转场 end boundary/transition frame from R7 high-precision split.",
+    "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_034_end_080759ms.png"
+  },
+  {
+    "asset_id": "R7_CAND_034_middle_079996ms",
+    "parent_video_unit_id": "VU_REF003_R7_034_FINAL_SKY_TRANSITION",
+    "role": "middle",
+    "source_time_sec": 79.996,
+    "source_timecode": "01:20.00",
+    "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_034_FINAL_SKY_TRANSITION/candidate_reference_frames/R7_CAND_034_middle_079996ms.jpg",
+    "priority": "P3_reference_video_or_already_handled",
+    "status": "candidate_reference_frame_review",
+    "difference_reason": "最终天空转场 middle boundary/transition frame from R7 high-precision split.",
+    "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_034_middle_079996ms.png"
+  }
+]

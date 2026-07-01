@@ -1,0 +1,17 @@
+[
+  {
+    "order": 1,
+    "item_id": "OP_SHOT_023",
+    "kind": "official_keyframe",
+    "time_sec": 48.0,
+    "timecode": "00:48.00",
+    "role": "图1 / Grandis_action_close",
+    "beat": "Grandis 动作桥",
+    "difference_reason": "",
+    "source_reference_frame": "",
+    "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH04/outputs/OP_SHOT_023.png",
+    "packaged_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_019_GRANDIS_ACTION_INSERT/keyframes/01_OP_SHOT_023.png",
+    "exists": true,
+    "source_unit_id": "VU_REF003_012_GRANDIS_VEHICLE_ACTION"
+  }
+]

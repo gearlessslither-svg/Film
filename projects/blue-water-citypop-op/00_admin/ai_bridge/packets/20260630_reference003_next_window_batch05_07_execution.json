@@ -1,0 +1,558 @@
+{
+  "schema_version": "reference003_next_window_batch05_07_execution_v1",
+  "project_slug": "blue-water-citypop-op",
+  "created_at": "2026-06-30T06:23:01+08:00",
+  "status": "ready_for_fresh_window_image_generation",
+  "why_fresh_window": "Current source window is WARN and has already handled many images; do not continue image generation in it.",
+  "source_reference": "reference-003-full-op-2160p",
+  "current_counts": {
+    "board_rows": 42,
+    "generated_reference003_qa_pass": 24,
+    "prompt_ready_reference003": 18,
+    "remaining_items_in_this_packet": 18
+  },
+  "global_rules": [
+    "Generate in a fresh Codex window/session before starting Batch05.",
+    "Read HANDOFF_LATEST.md first; do not re-analyze the whole project from scratch.",
+    "Use the reference frame and prompt file listed for each item; keep source timing and composition function from reference-003-full-op-2160p.",
+    "Return and record only output_path plus compact row_updates; never paste or POST base64 or the whole board.",
+    "No readable text, titles, credits, lyrics, NHK marks, subtitles, watermarks, or random symbols in any generated output.",
+    "Keep Nadia and all minor characters age-appropriate, modestly clothed, and non-sexualized.",
+    "After every batch, write QA report, update board/shot_list statuses, rerun validate_aigc_project.py, and refresh handoff."
+  ],
+  "batch_sequence": [
+    {
+      "batch_order": 1,
+      "job_id": "REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY",
+      "status_now": "refs_prepared_no_generation_in_warn_window",
+      "manifest": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/manifest.json",
+      "job_dir": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY",
+      "reference_sheet": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/refs/REFERENCE003_QA_BATCH05_reference_sheet.jpg",
+      "prompt_pack": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/prompts/BATCH05_generation_prompt_pack.md",
+      "qa_checklist": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/BATCH05_QA_CHECKLIST.md",
+      "items": [
+        {
+          "item_id": "OP_SHOT_025",
+          "timecode": "00:51.50",
+          "title": "group lineup tableau",
+          "description": "Main group lineup in a bright character tableau, no text overlay.",
+          "status_now": "prompt_ready_reference003",
+          "video_unit_id": "VU_REF003_012_GRANDIS_VEHICLE_ACTION",
+          "video_unit_title": "Grandis 车辆动作到群像",
+          "reference_frame": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/refs/OP_SHOT_025_ref_005150.jpg",
+          "generation_prompt_file": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/prompts/OP_SHOT_025_generation_prompt.md",
+          "expected_output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_025.png",
+          "board_update_after_pass": {
+            "status": "generated_reference003_qa_pass",
+            "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_025.png",
+            "output_notes": "reference-003 official keyframe QA pass; generated in fresh window from Batch05-07 execution packet"
+          },
+          "hard_qa_checks": [
+            "composition and timecode function match reference-003 frame",
+            "no readable text, title letters, credits, lyrics, NHK mark, watermark, subtitle, or random symbols",
+            "do not use superseded reference-002 or old remake-v3 images as official output",
+            "if Nadia or other minors are visible, keep age-appropriate, modest, non-sexualized framing",
+            "output must be saved under the expected batch outputs folder and recorded as output_path only"
+          ]
+        },
+        {
+          "item_id": "OP_SHOT_026",
+          "timecode": "00:52.50",
+          "title": "Nautilus undersea start",
+          "description": "Deep blue underwater light shafts with Nautilus silhouette entering, no credits.",
+          "status_now": "prompt_ready_reference003",
+          "video_unit_id": "VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS",
+          "video_unit_title": "Nautilus 海底光束段",
+          "reference_frame": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/refs/OP_SHOT_026_ref_005250.jpg",
+          "generation_prompt_file": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/prompts/OP_SHOT_026_generation_prompt.md",
+          "expected_output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_026.png",
+          "board_update_after_pass": {
+            "status": "generated_reference003_qa_pass",
+            "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_026.png",
+            "output_notes": "reference-003 official keyframe QA pass; generated in fresh window from Batch05-07 execution packet"
+          },
+          "hard_qa_checks": [
+            "composition and timecode function match reference-003 frame",
+            "no readable text, title letters, credits, lyrics, NHK mark, watermark, subtitle, or random symbols",
+            "do not use superseded reference-002 or old remake-v3 images as official output",
+            "if Nadia or other minors are visible, keep age-appropriate, modest, non-sexualized framing",
+            "output must be saved under the expected batch outputs folder and recorded as output_path only"
+          ]
+        },
+        {
+          "item_id": "OP_SHOT_027",
+          "timecode": "00:55.00",
+          "title": "Nautilus pass",
+          "description": "Nautilus passes under shimmering surface light, large but graceful.",
+          "status_now": "prompt_ready_reference003",
+          "video_unit_id": "VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS",
+          "video_unit_title": "Nautilus 海底光束段",
+          "reference_frame": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/refs/OP_SHOT_027_ref_005500.jpg",
+          "generation_prompt_file": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/prompts/OP_SHOT_027_generation_prompt.md",
+          "expected_output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_027.png",
+          "board_update_after_pass": {
+            "status": "generated_reference003_qa_pass",
+            "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_027.png",
+            "output_notes": "reference-003 official keyframe QA pass; generated in fresh window from Batch05-07 execution packet"
+          },
+          "hard_qa_checks": [
+            "composition and timecode function match reference-003 frame",
+            "no readable text, title letters, credits, lyrics, NHK mark, watermark, subtitle, or random symbols",
+            "do not use superseded reference-002 or old remake-v3 images as official output",
+            "if Nadia or other minors are visible, keep age-appropriate, modest, non-sexualized framing",
+            "output must be saved under the expected batch outputs folder and recorded as output_path only"
+          ]
+        },
+        {
+          "item_id": "OP_SHOT_028",
+          "timecode": "00:58.50",
+          "title": "Nautilus shadow",
+          "description": "Submarine silhouette deepens in blue water with moving light bands, no text.",
+          "status_now": "prompt_ready_reference003",
+          "video_unit_id": "VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS",
+          "video_unit_title": "Nautilus 海底光束段",
+          "reference_frame": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/refs/OP_SHOT_028_ref_005850.jpg",
+          "generation_prompt_file": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/prompts/OP_SHOT_028_generation_prompt.md",
+          "expected_output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_028.png",
+          "board_update_after_pass": {
+            "status": "generated_reference003_qa_pass",
+            "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_028.png",
+            "output_notes": "reference-003 official keyframe QA pass; generated in fresh window from Batch05-07 execution packet"
+          },
+          "hard_qa_checks": [
+            "composition and timecode function match reference-003 frame",
+            "no readable text, title letters, credits, lyrics, NHK mark, watermark, subtitle, or random symbols",
+            "do not use superseded reference-002 or old remake-v3 images as official output",
+            "if Nadia or other minors are visible, keep age-appropriate, modest, non-sexualized framing",
+            "output must be saved under the expected batch outputs folder and recorded as output_path only"
+          ]
+        },
+        {
+          "item_id": "OP_SHOT_029",
+          "timecode": "01:01.50",
+          "title": "night city reveal",
+          "description": "Dark night city under hovering craft lights, blue tones and mysterious scale.",
+          "status_now": "prompt_ready_reference003",
+          "video_unit_id": "VU_REF003_014_NIGHT_CITY_BLUE_GRID",
+          "video_unit_title": "夜城与蓝色地面图案",
+          "reference_frame": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/refs/OP_SHOT_029_ref_010150.jpg",
+          "generation_prompt_file": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/prompts/OP_SHOT_029_generation_prompt.md",
+          "expected_output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_029.png",
+          "board_update_after_pass": {
+            "status": "generated_reference003_qa_pass",
+            "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_029.png",
+            "output_notes": "reference-003 official keyframe QA pass; generated in fresh window from Batch05-07 execution packet"
+          },
+          "hard_qa_checks": [
+            "composition and timecode function match reference-003 frame",
+            "no readable text, title letters, credits, lyrics, NHK mark, watermark, subtitle, or random symbols",
+            "do not use superseded reference-002 or old remake-v3 images as official output",
+            "if Nadia or other minors are visible, keep age-appropriate, modest, non-sexualized framing",
+            "output must be saved under the expected batch outputs folder and recorded as output_path only"
+          ]
+        },
+        {
+          "item_id": "OP_SHOT_030",
+          "timecode": "01:03.50",
+          "title": "glowing blue grid",
+          "description": "Glowing blue geometric grid or diagram across the ground with city lights beyond, no readable symbols.",
+          "status_now": "prompt_ready_reference003",
+          "video_unit_id": "VU_REF003_014_NIGHT_CITY_BLUE_GRID",
+          "video_unit_title": "夜城与蓝色地面图案",
+          "reference_frame": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/refs/OP_SHOT_030_ref_010350.jpg",
+          "generation_prompt_file": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/prompts/OP_SHOT_030_generation_prompt.md",
+          "expected_output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_030.png",
+          "board_update_after_pass": {
+            "status": "generated_reference003_qa_pass",
+            "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_030.png",
+            "output_notes": "reference-003 official keyframe QA pass; generated in fresh window from Batch05-07 execution packet"
+          },
+          "hard_qa_checks": [
+            "composition and timecode function match reference-003 frame",
+            "no readable text, title letters, credits, lyrics, NHK mark, watermark, subtitle, or random symbols",
+            "do not use superseded reference-002 or old remake-v3 images as official output",
+            "if Nadia or other minors are visible, keep age-appropriate, modest, non-sexualized framing",
+            "output must be saved under the expected batch outputs folder and recorded as output_path only"
+          ]
+        }
+      ],
+      "expected_after_pass": {
+        "items_generated": 6,
+        "status": "qa_done_6_pass",
+        "qa_report_md": "10_qa/reports/reference003_qa_batch05_keyframes_20260630.md",
+        "qa_report_json": "10_qa/reports/reference003_qa_batch05_keyframes_20260630.json"
+      }
+    },
+    {
+      "batch_order": 2,
+      "job_id": "REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY",
+      "status_now": "refs_prepared_no_generation_in_warn_window",
+      "manifest": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/manifest.json",
+      "job_dir": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY",
+      "reference_sheet": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/refs/REFERENCE003_QA_BATCH06_reference_sheet.jpg",
+      "prompt_pack": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/prompts/BATCH06_generation_prompt_pack.md",
+      "qa_checklist": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/BATCH06_QA_CHECKLIST.md",
+      "items": [
+        {
+          "item_id": "OP_SHOT_031",
+          "timecode": "01:05.50",
+          "title": "night aircraft pass",
+          "description": "Dark retro aircraft passes at night with small colored lights, no text",
+          "status_now": "prompt_ready_reference003",
+          "video_unit_id": "VU_REF003_015_NIGHT_AIRCRAFT_PASS",
+          "video_unit_title": "夜航飞行器短切",
+          "reference_frame": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/refs/OP_SHOT_031_ref_010550.jpg",
+          "generation_prompt_file": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/prompts/OP_SHOT_031_generation_prompt.md",
+          "expected_output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_031.png",
+          "board_update_after_pass": {
+            "status": "generated_reference003_qa_pass",
+            "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_031.png",
+            "output_notes": "reference-003 official keyframe QA pass; generated in fresh window from Batch05-07 execution packet"
+          },
+          "hard_qa_checks": [
+            "composition and timecode function match reference-003 frame",
+            "no readable text, title letters, credits, lyrics, NHK mark, watermark, subtitle, or random symbols",
+            "do not use superseded reference-002 or old remake-v3 images as official output",
+            "if Nadia or other minors are visible, keep age-appropriate, modest, non-sexualized framing",
+            "output must be saved under the expected batch outputs folder and recorded as output_path only"
+          ]
+        },
+        {
+          "item_id": "OP_SHOT_032",
+          "timecode": "01:06.50",
+          "title": "Nemo profile start",
+          "description": "Stern adult submarine captain in dark uniform and white cap against sunset sky, no text",
+          "status_now": "prompt_ready_reference003",
+          "video_unit_id": "VU_REF003_016_NEMO_SUNSET_PROFILE",
+          "video_unit_title": "Nemo 夕景船长肖像",
+          "reference_frame": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/refs/OP_SHOT_032_ref_010650.jpg",
+          "generation_prompt_file": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/prompts/OP_SHOT_032_generation_prompt.md",
+          "expected_output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_032.png",
+          "board_update_after_pass": {
+            "status": "generated_reference003_qa_pass",
+            "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_032.png",
+            "output_notes": "reference-003 official keyframe QA pass; generated in fresh window from Batch05-07 execution packet"
+          },
+          "hard_qa_checks": [
+            "composition and timecode function match reference-003 frame",
+            "no readable text, title letters, credits, lyrics, NHK mark, watermark, subtitle, or random symbols",
+            "do not use superseded reference-002 or old remake-v3 images as official output",
+            "if Nadia or other minors are visible, keep age-appropriate, modest, non-sexualized framing",
+            "output must be saved under the expected batch outputs folder and recorded as output_path only"
+          ]
+        },
+        {
+          "item_id": "OP_SHOT_033",
+          "timecode": "01:09.50",
+          "title": "Nemo profile hold",
+          "description": "Nemo holds a dignified profile at sunset, wind and coat shape clear",
+          "status_now": "prompt_ready_reference003",
+          "video_unit_id": "VU_REF003_016_NEMO_SUNSET_PROFILE",
+          "video_unit_title": "Nemo 夕景船长肖像",
+          "reference_frame": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/refs/OP_SHOT_033_ref_010950.jpg",
+          "generation_prompt_file": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/prompts/OP_SHOT_033_generation_prompt.md",
+          "expected_output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_033.png",
+          "board_update_after_pass": {
+            "status": "generated_reference003_qa_pass",
+            "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_033.png",
+            "output_notes": "reference-003 official keyframe QA pass; generated in fresh window from Batch05-07 execution packet"
+          },
+          "hard_qa_checks": [
+            "composition and timecode function match reference-003 frame",
+            "no readable text, title letters, credits, lyrics, NHK mark, watermark, subtitle, or random symbols",
+            "do not use superseded reference-002 or old remake-v3 images as official output",
+            "if Nadia or other minors are visible, keep age-appropriate, modest, non-sexualized framing",
+            "output must be saved under the expected batch outputs folder and recorded as output_path only"
+          ]
+        },
+        {
+          "item_id": "OP_SHOT_034",
+          "timecode": "01:12.00",
+          "title": "Nadia solemn front",
+          "description": "Nadia C-version front close-up in cool symbolic light, serious and age-safe",
+          "status_now": "prompt_ready_reference003",
+          "video_unit_id": "VU_REF003_017_NADIA_SOLEMN_CLOSE",
+          "video_unit_title": "Nadia 庄重正面近景",
+          "reference_frame": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/refs/OP_SHOT_034_ref_011200.jpg",
+          "generation_prompt_file": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/prompts/OP_SHOT_034_generation_prompt.md",
+          "expected_output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_034.png",
+          "board_update_after_pass": {
+            "status": "generated_reference003_qa_pass",
+            "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_034.png",
+            "output_notes": "reference-003 official keyframe QA pass; generated in fresh window from Batch05-07 execution packet"
+          },
+          "hard_qa_checks": [
+            "composition and timecode function match reference-003 frame",
+            "no readable text, title letters, credits, lyrics, NHK mark, watermark, subtitle, or random symbols",
+            "do not use superseded reference-002 or old remake-v3 images as official output",
+            "if Nadia or other minors are visible, keep age-appropriate, modest, non-sexualized framing",
+            "output must be saved under the expected batch outputs folder and recorded as output_path only"
+          ]
+        },
+        {
+          "item_id": "OP_SHOT_035",
+          "timecode": "01:13.50",
+          "title": "Blue Water symbol",
+          "description": "Blue Water jewel/sapphire symbol over clean blue field, no text or marks",
+          "status_now": "prompt_ready_reference003",
+          "video_unit_id": "VU_REF003_018_BLUE_WATER_SYMBOL",
+          "video_unit_title": "Blue Water 象征与水下纹理",
+          "reference_frame": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/refs/OP_SHOT_035_ref_011350.jpg",
+          "generation_prompt_file": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/prompts/OP_SHOT_035_generation_prompt.md",
+          "expected_output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_035.png",
+          "board_update_after_pass": {
+            "status": "generated_reference003_qa_pass",
+            "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_035.png",
+            "output_notes": "reference-003 official keyframe QA pass; generated in fresh window from Batch05-07 execution packet"
+          },
+          "hard_qa_checks": [
+            "composition and timecode function match reference-003 frame",
+            "no readable text, title letters, credits, lyrics, NHK mark, watermark, subtitle, or random symbols",
+            "do not use superseded reference-002 or old remake-v3 images as official output",
+            "if Nadia or other minors are visible, keep age-appropriate, modest, non-sexualized framing",
+            "output must be saved under the expected batch outputs folder and recorded as output_path only"
+          ]
+        },
+        {
+          "item_id": "OP_SHOT_036",
+          "timecode": "01:15.00",
+          "title": "blue symbol bloom",
+          "description": "Cyan-blue bloom or energy texture replaces original text overlay, jewel feeling preserved",
+          "status_now": "prompt_ready_reference003",
+          "video_unit_id": "VU_REF003_018_BLUE_WATER_SYMBOL",
+          "video_unit_title": "Blue Water 象征与水下纹理",
+          "reference_frame": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/refs/OP_SHOT_036_ref_011500.jpg",
+          "generation_prompt_file": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/prompts/OP_SHOT_036_generation_prompt.md",
+          "expected_output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_036.png",
+          "board_update_after_pass": {
+            "status": "generated_reference003_qa_pass",
+            "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_036.png",
+            "output_notes": "reference-003 official keyframe QA pass; generated in fresh window from Batch05-07 execution packet"
+          },
+          "hard_qa_checks": [
+            "composition and timecode function match reference-003 frame",
+            "no readable text, title letters, credits, lyrics, NHK mark, watermark, subtitle, or random symbols",
+            "do not use superseded reference-002 or old remake-v3 images as official output",
+            "if Nadia or other minors are visible, keep age-appropriate, modest, non-sexualized framing",
+            "output must be saved under the expected batch outputs folder and recorded as output_path only"
+          ]
+        }
+      ],
+      "expected_after_pass": {
+        "items_generated": 6,
+        "status": "qa_done_6_pass",
+        "qa_report_md": "10_qa/reports/reference003_qa_batch06_keyframes_20260630.md",
+        "qa_report_json": "10_qa/reports/reference003_qa_batch06_keyframes_20260630.json"
+      }
+    },
+    {
+      "batch_order": 3,
+      "job_id": "REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY",
+      "status_now": "refs_prepared_no_generation_in_warn_window",
+      "manifest": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/manifest.json",
+      "job_dir": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY",
+      "reference_sheet": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/refs/REFERENCE003_QA_BATCH07_reference_sheet.jpg",
+      "prompt_pack": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/prompts/BATCH07_generation_prompt_pack.md",
+      "qa_checklist": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/BATCH07_QA_CHECKLIST.md",
+      "items": [
+        {
+          "item_id": "OP_SHOT_037",
+          "timecode": "01:16.50",
+          "title": "underwater blue texture",
+          "description": "Underwater blue texture and light pattern, clean and text-free",
+          "status_now": "prompt_ready_reference003",
+          "video_unit_id": "VU_REF003_018_BLUE_WATER_SYMBOL",
+          "video_unit_title": "Blue Water 象征与水下纹理",
+          "reference_frame": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/refs/OP_SHOT_037_ref_011650.jpg",
+          "generation_prompt_file": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/prompts/OP_SHOT_037_generation_prompt.md",
+          "expected_output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_037.png",
+          "board_update_after_pass": {
+            "status": "generated_reference003_qa_pass",
+            "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_037.png",
+            "output_notes": "reference-003 official keyframe QA pass; generated in fresh window from Batch05-07 execution packet"
+          },
+          "hard_qa_checks": [
+            "composition and timecode function match reference-003 frame",
+            "no readable text, title letters, credits, lyrics, NHK mark, watermark, subtitle, or random symbols",
+            "do not use superseded reference-002 or old remake-v3 images as official output",
+            "if Nadia or other minors are visible, keep age-appropriate, modest, non-sexualized framing",
+            "output must be saved under the expected batch outputs folder and recorded as output_path only"
+          ]
+        },
+        {
+          "item_id": "OP_SHOT_038",
+          "timecode": "01:18.00",
+          "title": "water burst",
+          "description": "Bright water/ice-like burst fills frame with blue-white motion, no text",
+          "status_now": "prompt_ready_reference003",
+          "video_unit_id": "VU_REF003_019_WATER_SPLASH_TRANSITION",
+          "video_unit_title": "水花爆发转天空",
+          "reference_frame": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/refs/OP_SHOT_038_ref_011800.jpg",
+          "generation_prompt_file": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/prompts/OP_SHOT_038_generation_prompt.md",
+          "expected_output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_038.png",
+          "board_update_after_pass": {
+            "status": "generated_reference003_qa_pass",
+            "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_038.png",
+            "output_notes": "reference-003 official keyframe QA pass; generated in fresh window from Batch05-07 execution packet"
+          },
+          "hard_qa_checks": [
+            "composition and timecode function match reference-003 frame",
+            "no readable text, title letters, credits, lyrics, NHK mark, watermark, subtitle, or random symbols",
+            "do not use superseded reference-002 or old remake-v3 images as official output",
+            "if Nadia or other minors are visible, keep age-appropriate, modest, non-sexualized framing",
+            "output must be saved under the expected batch outputs folder and recorded as output_path only"
+          ]
+        },
+        {
+          "item_id": "OP_SHOT_039",
+          "timecode": "01:19.00",
+          "title": "splash to sky",
+          "description": "Water streaks clear into blue sky and white cloud fragments",
+          "status_now": "prompt_ready_reference003",
+          "video_unit_id": "VU_REF003_019_WATER_SPLASH_TRANSITION",
+          "video_unit_title": "水花爆发转天空",
+          "reference_frame": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/refs/OP_SHOT_039_ref_011900.jpg",
+          "generation_prompt_file": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/prompts/OP_SHOT_039_generation_prompt.md",
+          "expected_output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_039.png",
+          "board_update_after_pass": {
+            "status": "generated_reference003_qa_pass",
+            "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_039.png",
+            "output_notes": "reference-003 official keyframe QA pass; generated in fresh window from Batch05-07 execution packet"
+          },
+          "hard_qa_checks": [
+            "composition and timecode function match reference-003 frame",
+            "no readable text, title letters, credits, lyrics, NHK mark, watermark, subtitle, or random symbols",
+            "do not use superseded reference-002 or old remake-v3 images as official output",
+            "if Nadia or other minors are visible, keep age-appropriate, modest, non-sexualized framing",
+            "output must be saved under the expected batch outputs folder and recorded as output_path only"
+          ]
+        },
+        {
+          "item_id": "OP_SHOT_040",
+          "timecode": "01:20.00",
+          "title": "final sky safe",
+          "description": "Clean final blue sky card with soft cloud and no text, replacing the broadcaster end card",
+          "status_now": "prompt_ready_reference003",
+          "video_unit_id": "VU_REF003_020_FINAL_SKY_SAFE_HOLD",
+          "video_unit_title": "最终无字天空 hold",
+          "reference_frame": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/refs/OP_SHOT_040_ref_012000.jpg",
+          "generation_prompt_file": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/prompts/OP_SHOT_040_generation_prompt.md",
+          "expected_output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_040.png",
+          "board_update_after_pass": {
+            "status": "generated_reference003_qa_pass",
+            "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_040.png",
+            "output_notes": "reference-003 official keyframe QA pass; generated in fresh window from Batch05-07 execution packet"
+          },
+          "hard_qa_checks": [
+            "composition and timecode function match reference-003 frame",
+            "no readable text, title letters, credits, lyrics, NHK mark, watermark, subtitle, or random symbols",
+            "do not use superseded reference-002 or old remake-v3 images as official output",
+            "if Nadia or other minors are visible, keep age-appropriate, modest, non-sexualized framing",
+            "output must be saved under the expected batch outputs folder and recorded as output_path only"
+          ]
+        },
+        {
+          "item_id": "OP_SHOT_041",
+          "timecode": "01:22.00",
+          "title": "final sun hold",
+          "description": "Blue sky with bright sun glow and clear negative space, no logo or text",
+          "status_now": "prompt_ready_reference003",
+          "video_unit_id": "VU_REF003_020_FINAL_SKY_SAFE_HOLD",
+          "video_unit_title": "最终无字天空 hold",
+          "reference_frame": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/refs/OP_SHOT_041_ref_012200.jpg",
+          "generation_prompt_file": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/prompts/OP_SHOT_041_generation_prompt.md",
+          "expected_output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_041.png",
+          "board_update_after_pass": {
+            "status": "generated_reference003_qa_pass",
+            "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_041.png",
+            "output_notes": "reference-003 official keyframe QA pass; generated in fresh window from Batch05-07 execution packet"
+          },
+          "hard_qa_checks": [
+            "composition and timecode function match reference-003 frame",
+            "no readable text, title letters, credits, lyrics, NHK mark, watermark, subtitle, or random symbols",
+            "do not use superseded reference-002 or old remake-v3 images as official output",
+            "if Nadia or other minors are visible, keep age-appropriate, modest, non-sexualized framing",
+            "output must be saved under the expected batch outputs folder and recorded as output_path only"
+          ]
+        },
+        {
+          "item_id": "OP_SHOT_042",
+          "timecode": "01:23.50",
+          "title": "black tail",
+          "description": "Clean black tail frame after the final sky hold",
+          "status_now": "prompt_ready_reference003",
+          "video_unit_id": "VU_REF003_021_BLACK_TAIL",
+          "video_unit_title": "黑场尾帧",
+          "reference_frame": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/refs/OP_SHOT_042_ref_012350.jpg",
+          "generation_prompt_file": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/prompts/OP_SHOT_042_generation_prompt.md",
+          "expected_output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_042.png",
+          "board_update_after_pass": {
+            "status": "generated_reference003_qa_pass",
+            "output_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_042.png",
+            "output_notes": "reference-003 official keyframe QA pass; generated in fresh window from Batch05-07 execution packet"
+          },
+          "hard_qa_checks": [
+            "composition and timecode function match reference-003 frame",
+            "no readable text, title letters, credits, lyrics, NHK mark, watermark, subtitle, or random symbols",
+            "do not use superseded reference-002 or old remake-v3 images as official output",
+            "if Nadia or other minors are visible, keep age-appropriate, modest, non-sexualized framing",
+            "output must be saved under the expected batch outputs folder and recorded as output_path only"
+          ]
+        }
+      ],
+      "expected_after_pass": {
+        "items_generated": 6,
+        "status": "qa_done_6_pass",
+        "qa_report_md": "10_qa/reports/reference003_qa_batch07_keyframes_20260630.md",
+        "qa_report_json": "10_qa/reports/reference003_qa_batch07_keyframes_20260630.json"
+      }
+    }
+  ],
+  "post_batch05_07_gates": [
+    {
+      "gate": "board_42_keyframes_qa_pass",
+      "expected": "42/42 rows in idea_board and shot_list are generated_reference003_qa_pass",
+      "evidence": "03_story/idea_board/idea_board.json, 07_shots/shot_list.csv, QA reports batch01-batch07"
+    },
+    {
+      "gate": "official_outputs_exist",
+      "expected": "all 42 official output_path files exist on disk",
+      "evidence": "reference003 status inventory rebuilt after Batch07"
+    },
+    {
+      "gate": "status_previs_rebuilt",
+      "expected": "10_qa/reference_match/REFERENCE003_OFFICIAL_KEYFRAME_STATUS_20260630/manifest.json reports 42 official generated keyframes and decode_ok=true",
+      "evidence": "rebuilt status sheet + status animatic MP4",
+      "command_after_batch07": "python3 /Users/jaychoupp/Story/Film/projects/blue-water-citypop-op/10_qa/reference_match/REFERENCE003_OFFICIAL_KEYFRAME_STATUS_20260630/rebuild_reference003_keyframe_status_previs.py"
+    },
+    {
+      "gate": "video_units_unblocked",
+      "expected": "08_generation/jobs/REFERENCE003_VIDEO_UNITS_READY_20260630/manifest.json can be refreshed to 21/21 ready_for_video_generation",
+      "evidence": "all video unit keyframes have generated_reference003_qa_pass outputs"
+    }
+  ],
+  "next_after_keyframes": "Start 21 VU_REF003 video segment generation in video_units.json order, then transition review, roughcut assembly, full decode QA, and final completion audit.",
+  "supporting_tools": {
+    "rebuild_keyframe_status_previs_script": "10_qa/reference_match/REFERENCE003_OFFICIAL_KEYFRAME_STATUS_20260630/rebuild_reference003_keyframe_status_previs.py",
+    "project_validator": "/Users/jaychoupp/Story/Film/scripts/validate_aigc_project.py",
+    "relay_status": "/Users/jaychoupp/Story/Film/skills/film-session-relay/scripts/relay.py status",
+    "apply_batch05_07_keyframes_after_generation": "00_admin/ai_bridge/packets/apply_reference003_batch05_07_keyframes.py",
+    "remaining_keyframe_generation_queue": "00_admin/ai_bridge/packets/20260630_reference003_remaining_keyframe_generation_queue.md",
+    "next_window_preflight": "00_admin/ai_bridge/packets/run_reference003_next_window_preflight.py"
+  },
+  "post_generation_apply": {
+    "dry_run_command": "python3 00_admin/ai_bridge/packets/apply_reference003_batch05_07_keyframes.py --batch all",
+    "apply_single_batch_command": "python3 00_admin/ai_bridge/packets/apply_reference003_batch05_07_keyframes.py --batch 05 --apply",
+    "apply_all_command": "python3 00_admin/ai_bridge/packets/apply_reference003_batch05_07_keyframes.py --batch all --apply",
+    "safety": "Default is dry-run. --apply refuses missing outputs unless --allow-partial is explicit."
+  },
+  "remaining_keyframe_generation_queue": {
+    "markdown": "00_admin/ai_bridge/packets/20260630_reference003_remaining_keyframe_generation_queue.md",
+    "json": "00_admin/ai_bridge/packets/20260630_reference003_remaining_keyframe_generation_queue.json",
+    "report_markdown": "10_qa/reports/reference003_remaining_keyframe_generation_queue_20260630.md",
+    "report_json": "10_qa/reports/reference003_remaining_keyframe_generation_queue_20260630.json",
+    "preflight_report_markdown": "10_qa/reports/reference003_next_window_preflight_20260630.md",
+    "preflight_report_json": "10_qa/reports/reference003_next_window_preflight_20260630.json",
+    "purpose": "Contains full per-item prompt text, reference frame paths, expected output paths, and post-generation apply commands for OP_SHOT_025-042."
+  }
+}

@@ -1,0 +1,32 @@
+[
+  {
+    "order": 1,
+    "item_id": "OP_SHOT_039",
+    "kind": "official_keyframe",
+    "time_sec": 79.0,
+    "timecode": "01:19.00",
+    "role": "图2 / splash_to_sky",
+    "beat": "水花转蓝天",
+    "difference_reason": "",
+    "source_reference_frame": "",
+    "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_039.png",
+    "packaged_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_034_FINAL_SKY_TRANSITION/keyframes/01_OP_SHOT_039.png",
+    "exists": true,
+    "source_unit_id": "VU_REF003_019_WATER_SPLASH_TRANSITION"
+  },
+  {
+    "order": 2,
+    "item_id": "OP_SHOT_040",
+    "kind": "official_keyframe",
+    "time_sec": 80.0,
+    "timecode": "01:20.00",
+    "role": "图1 / final_sky_safe",
+    "beat": "最终蓝天安全位",
+    "difference_reason": "",
+    "source_reference_frame": "",
+    "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_040.png",
+    "packaged_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_034_FINAL_SKY_TRANSITION/keyframes/02_OP_SHOT_040.png",
+    "exists": true,
+    "source_unit_id": "VU_REF003_020_FINAL_SKY_SAFE_HOLD"
+  }
+]

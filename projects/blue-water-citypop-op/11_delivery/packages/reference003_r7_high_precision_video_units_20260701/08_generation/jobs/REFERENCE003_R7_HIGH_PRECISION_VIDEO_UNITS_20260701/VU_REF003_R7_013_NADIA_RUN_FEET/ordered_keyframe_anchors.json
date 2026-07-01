@@ -1,0 +1,32 @@
+[
+  {
+    "order": 1,
+    "item_id": "OP_SHOT_017",
+    "kind": "official_keyframe",
+    "time_sec": 38.0,
+    "timecode": "00:38.00",
+    "role": "图1 / Nadia_run_feet",
+    "beat": "Nadia 奔跑脚步",
+    "difference_reason": "",
+    "source_reference_frame": "",
+    "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_017.png",
+    "packaged_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_013_NADIA_RUN_FEET/keyframes/01_OP_SHOT_017.png",
+    "exists": true,
+    "source_unit_id": "VU_REF003_011_RUNNING_MONTAGE"
+  },
+  {
+    "order": 2,
+    "item_id": "OP_SHOT_018",
+    "kind": "official_keyframe",
+    "time_sec": 39.5,
+    "timecode": "00:39.50",
+    "role": "图2 / Nadia_run_front",
+    "beat": "Nadia 奔跑正面",
+    "difference_reason": "",
+    "source_reference_frame": "",
+    "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH03/outputs/OP_SHOT_018.png",
+    "packaged_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_013_NADIA_RUN_FEET/keyframes/02_OP_SHOT_018.png",
+    "exists": true,
+    "source_unit_id": "VU_REF003_011_RUNNING_MONTAGE"
+  }
+]

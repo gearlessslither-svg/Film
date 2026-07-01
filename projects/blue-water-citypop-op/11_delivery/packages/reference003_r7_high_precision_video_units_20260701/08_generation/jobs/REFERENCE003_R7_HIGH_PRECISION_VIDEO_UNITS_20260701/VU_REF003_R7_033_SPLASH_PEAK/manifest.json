@@ -1,0 +1,126 @@
+{
+  "schema_version": "reference003_r7_high_precision_video_unit_package_v1",
+  "created_at": "2026-07-01T07:36:06+08:00",
+  "status": "ready_for_external_aigc_video_generation",
+  "unit": {
+    "order": 33,
+    "unit_id": "VU_REF003_R7_033_SPLASH_PEAK",
+    "title": "水花爆发峰值",
+    "start": 77.786,
+    "end": 79.204,
+    "intent": "水花爆发峰值与天空转场。",
+    "active_locks": [
+      [
+        "props_vehicles_symbols",
+        "water_burst_transition"
+      ]
+    ],
+    "mode": "high_precision_segment"
+  },
+  "reference_clip": {
+    "path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_033_SPLASH_PEAK/reference_clip/VU_REF003_R7_033_SPLASH_PEAK_reference.mp4",
+    "start_sec": 77.786,
+    "end_sec": 79.204,
+    "duration_sec": 1.418,
+    "ok": true,
+    "decode_ok": true,
+    "stderr_tail": "      handler_name    : VideoHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : Lavc60.31.102 mpeg4\n    Side data:\n      cpb: bitrate max/min/avg: 0/0/200000 buffer size: 0 vbv_delay: N/A\nframe=    0 fps=0.0 q=3.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    \n[out#0/mp4 @ 0x79700c9c0] video:1295kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 0.125819%\nframe=   34 fps=0.0 q=3.0 Lsize=    1297kB time=00:00:01.37 bitrate=7719.8kbits/s speed=13.7x    "
+  },
+  "ordered_generated_anchors": [
+    {
+      "order": 1,
+      "item_id": "OP_SHOT_038",
+      "kind": "official_keyframe",
+      "time_sec": 78.0,
+      "timecode": "01:18.00",
+      "role": "图1 / water_burst",
+      "beat": "水花爆发",
+      "difference_reason": "",
+      "source_reference_frame": "",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_038.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_033_SPLASH_PEAK/keyframes/01_OP_SHOT_038.png",
+      "exists": true,
+      "source_unit_id": "VU_REF003_019_WATER_SPLASH_TRANSITION"
+    },
+    {
+      "order": 2,
+      "item_id": "R5_VU_REF003_019_WATER_SPLASH_TRANSITION_078500ms_01",
+      "kind": "r5_adaptive_generated",
+      "time_sec": 78.5,
+      "timecode": "01:18.50",
+      "role": "adaptive_primary",
+      "beat": "Water burst transition has materially different splash/sky states; extra anchor helps preserve transition logic.",
+      "difference_reason": "Water burst transition has materially different splash/sky states; extra anchor helps preserve transition logic.",
+      "source_reference_frame": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0158.jpg",
+      "source_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_019_WATER_SPLASH_TRANSITION_078500ms_01.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_033_SPLASH_PEAK/keyframes/02_R5_VU_REF003_019_WATER_SPLASH_TRANSITION_078500ms_01.png",
+      "exists": true,
+      "source_unit_id": "VU_REF003_019_WATER_SPLASH_TRANSITION"
+    },
+    {
+      "order": 3,
+      "item_id": "OP_SHOT_039",
+      "kind": "official_keyframe",
+      "time_sec": 79.0,
+      "timecode": "01:19.00",
+      "role": "图2 / splash_to_sky",
+      "beat": "水花转蓝天",
+      "difference_reason": "",
+      "source_reference_frame": "",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_039.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_033_SPLASH_PEAK/keyframes/03_OP_SHOT_039.png",
+      "exists": true,
+      "source_unit_id": "VU_REF003_019_WATER_SPLASH_TRANSITION"
+    }
+  ],
+  "candidate_reference_frames": [
+    {
+      "asset_id": "R7_CAND_033_start_077816ms",
+      "parent_video_unit_id": "VU_REF003_R7_033_SPLASH_PEAK",
+      "role": "start",
+      "source_time_sec": 77.816,
+      "source_timecode": "01:17.82",
+      "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_033_SPLASH_PEAK/candidate_reference_frames/R7_CAND_033_start_077816ms.jpg",
+      "priority": "P3_reference_video_or_already_handled",
+      "status": "candidate_reference_frame_review",
+      "difference_reason": "水花爆发峰值 start boundary/transition frame from R7 high-precision split.",
+      "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_033_start_077816ms.png"
+    },
+    {
+      "asset_id": "R7_CAND_033_end_079174ms",
+      "parent_video_unit_id": "VU_REF003_R7_033_SPLASH_PEAK",
+      "role": "end",
+      "source_time_sec": 79.174,
+      "source_timecode": "01:19.17",
+      "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_033_SPLASH_PEAK/candidate_reference_frames/R7_CAND_033_end_079174ms.jpg",
+      "priority": "P3_reference_video_or_already_handled",
+      "status": "candidate_reference_frame_review",
+      "difference_reason": "水花爆发峰值 end boundary/transition frame from R7 high-precision split.",
+      "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_033_end_079174ms.png"
+    },
+    {
+      "asset_id": "R7_CAND_033_middle_078495ms",
+      "parent_video_unit_id": "VU_REF003_R7_033_SPLASH_PEAK",
+      "role": "middle",
+      "source_time_sec": 78.495,
+      "source_timecode": "01:18.50",
+      "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_033_SPLASH_PEAK/candidate_reference_frames/R7_CAND_033_middle_078495ms.jpg",
+      "priority": "P3_reference_video_or_already_handled",
+      "status": "candidate_reference_frame_review",
+      "difference_reason": "水花爆发峰值 middle boundary/transition frame from R7 high-precision split.",
+      "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_033_middle_078495ms.png"
+    }
+  ],
+  "active_asset_locks": [
+    {
+      "group": "props_vehicles_symbols",
+      "asset_id": "water_burst_transition",
+      "status": "official_transition_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_038.png",
+      "global_lock_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_global_asset_locks/props_vehicles_symbols_water_burst_transition.png",
+      "exists": true
+    }
+  ],
+  "prompt_only": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_PROMPT_INDEX/PROMPT_ONLY/33_VU_REF003_R7_033_SPLASH_PEAK.md",
+  "expected_video_output_path": "08_generation/outputs/video/reference003_r7_high_precision_segments/VU_REF003_R7_033_SPLASH_PEAK.mp4"
+}

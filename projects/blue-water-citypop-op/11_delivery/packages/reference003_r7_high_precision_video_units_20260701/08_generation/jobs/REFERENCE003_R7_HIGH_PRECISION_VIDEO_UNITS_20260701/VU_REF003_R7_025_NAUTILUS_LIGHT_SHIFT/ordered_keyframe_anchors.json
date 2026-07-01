@@ -1,0 +1,32 @@
+[
+  {
+    "order": 1,
+    "item_id": "R5_VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS_057000ms_03",
+    "kind": "r5_adaptive_generated",
+    "time_sec": 57.0,
+    "timecode": "00:57.00",
+    "role": "adaptive_middle",
+    "beat": "Long undersea Nautilus light-pass has distinct submarine/lighting positions; extra frames preserve scale and light-beam progression.",
+    "difference_reason": "Long undersea Nautilus light-pass has distinct submarine/lighting positions; extra frames preserve scale and light-beam progression.",
+    "source_reference_frame": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0115.jpg",
+    "source_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS_057000ms_03.png",
+    "packaged_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_025_NAUTILUS_LIGHT_SHIFT/keyframes/01_R5_VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS_057000ms_03.png",
+    "exists": true,
+    "source_unit_id": "VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS"
+  },
+  {
+    "order": 2,
+    "item_id": "OP_SHOT_028",
+    "kind": "official_keyframe",
+    "time_sec": 58.5,
+    "timecode": "00:58.50",
+    "role": "图3 / undersea_shadow",
+    "beat": "Nautilus 深蓝剪影",
+    "difference_reason": "",
+    "source_reference_frame": "",
+    "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_028.png",
+    "packaged_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_025_NAUTILUS_LIGHT_SHIFT/keyframes/02_OP_SHOT_028.png",
+    "exists": true,
+    "source_unit_id": "VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS"
+  }
+]

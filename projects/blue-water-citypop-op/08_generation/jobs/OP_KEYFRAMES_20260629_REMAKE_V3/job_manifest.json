@@ -1,0 +1,10 @@
+{
+  "job_id": "OP_KEYFRAMES_20260629_REMAKE_V3",
+  "created_at": "2026-06-29T02:37:21+08:00",
+  "project_slug": "blue-water-citypop-op",
+  "purpose": "Generate 42 still keyframes for OP-accurate live-action remake v3 after age/costume/OP-structure correction.",
+  "output_dir": "08_generation/jobs/OP_KEYFRAMES_20260629_REMAKE_V3/outputs",
+  "shot_count": 42,
+  "callback": "http://127.0.0.1:8787/api/projects/blue-water-citypop-op/card-image-output",
+  "notes": "Only compact output_path callbacks. No base64. No full-board POST."
+}

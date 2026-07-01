@@ -1,0 +1,38 @@
+[
+  {
+    "asset_id": "R7_CAND_002_start_007030ms",
+    "parent_video_unit_id": "VU_REF003_R7_002_OPENING_AIRCRAFT_FLASH_LONG",
+    "role": "start",
+    "source_time_sec": 7.03,
+    "source_timecode": "00:07.03",
+    "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_002_OPENING_AIRCRAFT_FLASH_LONG/candidate_reference_frames/R7_CAND_002_start_007030ms.jpg",
+    "priority": "P3_reference_video_or_already_handled",
+    "status": "candidate_reference_frame_review",
+    "difference_reason": "开场长段B：白鸟云层到飞行器闪现 start boundary/transition frame from R7 high-precision split.",
+    "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_002_start_007030ms.png"
+  },
+  {
+    "asset_id": "R7_CAND_002_end_016470ms",
+    "parent_video_unit_id": "VU_REF003_R7_002_OPENING_AIRCRAFT_FLASH_LONG",
+    "role": "end",
+    "source_time_sec": 16.47,
+    "source_timecode": "00:16.47",
+    "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_002_OPENING_AIRCRAFT_FLASH_LONG/candidate_reference_frames/R7_CAND_002_end_016470ms.jpg",
+    "priority": "P2_review_after_p1",
+    "status": "candidate_reference_frame_review",
+    "difference_reason": "开场长段B：白鸟云层到飞行器闪现 end boundary/transition frame from R7 high-precision split.",
+    "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_002_end_016470ms.png"
+  },
+  {
+    "asset_id": "R7_CAND_002_middle_011750ms",
+    "parent_video_unit_id": "VU_REF003_R7_002_OPENING_AIRCRAFT_FLASH_LONG",
+    "role": "middle",
+    "source_time_sec": 11.75,
+    "source_timecode": "00:11.75",
+    "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_002_OPENING_AIRCRAFT_FLASH_LONG/candidate_reference_frames/R7_CAND_002_middle_011750ms.jpg",
+    "priority": "P3_reference_video_or_already_handled",
+    "status": "candidate_reference_frame_review",
+    "difference_reason": "开场长段B：白鸟云层到飞行器闪现 middle boundary/transition frame from R7 high-precision split.",
+    "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_002_middle_011750ms.png"
+  }
+]

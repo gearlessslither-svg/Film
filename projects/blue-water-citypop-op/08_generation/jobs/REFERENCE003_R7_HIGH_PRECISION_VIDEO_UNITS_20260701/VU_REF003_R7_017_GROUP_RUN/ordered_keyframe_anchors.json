@@ -1,0 +1,32 @@
+[
+  {
+    "order": 1,
+    "item_id": "OP_SHOT_021",
+    "kind": "official_keyframe",
+    "time_sec": 45.5,
+    "timecode": "00:45.50",
+    "role": "图5 / group_run",
+    "beat": "全员奔跑",
+    "difference_reason": "",
+    "source_reference_frame": "",
+    "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH04/outputs/OP_SHOT_021_v2.png",
+    "packaged_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_017_GROUP_RUN/keyframes/01_OP_SHOT_021.png",
+    "exists": true,
+    "source_unit_id": "VU_REF003_011_RUNNING_MONTAGE"
+  },
+  {
+    "order": 2,
+    "item_id": "OP_SHOT_022",
+    "kind": "official_keyframe",
+    "time_sec": 47.5,
+    "timecode": "00:47.50",
+    "role": "图6 / Jean_reaction_close",
+    "beat": "Jean 反应近景",
+    "difference_reason": "",
+    "source_reference_frame": "",
+    "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH04/outputs/OP_SHOT_022.png",
+    "packaged_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_017_GROUP_RUN/keyframes/02_OP_SHOT_022.png",
+    "exists": true,
+    "source_unit_id": "VU_REF003_011_RUNNING_MONTAGE"
+  }
+]

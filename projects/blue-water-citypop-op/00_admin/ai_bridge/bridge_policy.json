@@ -1,0 +1,35 @@
+{
+  "schema_version": "codex_gpt_bridge_policy_v1",
+  "project_slug": "blue-water-citypop-op",
+  "principle": "Codex owns local execution; GPT owns compact reasoning from bounded evidence packets.",
+  "codex_keep": [
+    "local_file_edits",
+    "media_probe",
+    "frame_extraction",
+    "contact_sheet_generation",
+    "scene_detection_logs",
+    "blender_previs",
+    "pipeline_hub_api",
+    "project_validation",
+    "handoff_updates"
+  ],
+  "gpt_delegate": [
+    "reference_shot_rhythm_interpretation",
+    "one_take_vs_montage_judgment",
+    "script_first_video_unit_design",
+    "prompt_rewrite",
+    "adversarial_review",
+    "director_facing_options"
+  ],
+  "packet_limits": {
+    "no_base64": true,
+    "no_full_video": true,
+    "no_full_image_batch": true,
+    "prefer_paths_counts_contact_sheets_short_snippets": true,
+    "one_packet_one_decision": true
+  },
+  "current_project_focus": {
+    "reference_video": "01_intake/references/nadia_op_reference_002.mp4",
+    "first_packet_goal": "Analyze the real opening 23s rhythm and decide how the Blender opening previs must be rebuilt."
+  }
+}

@@ -1,0 +1,32 @@
+[
+  {
+    "order": 1,
+    "item_id": "R5_VU_REF003_015_NIGHT_AIRCRAFT_PASS_065000ms_01",
+    "kind": "r5_adaptive_generated",
+    "time_sec": 65.0,
+    "timecode": "01:05.00",
+    "role": "adaptive_primary",
+    "beat": "Night aircraft pass is a short fast prop movement; an extra end/start state prevents the craft from popping or redesigning.",
+    "difference_reason": "Night aircraft pass is a short fast prop movement; an extra end/start state prevents the craft from popping or redesigning.",
+    "source_reference_frame": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0131.jpg",
+    "source_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_015_NIGHT_AIRCRAFT_PASS_065000ms_01.png",
+    "packaged_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_028_NIGHT_AIRCRAFT_PASS/keyframes/01_R5_VU_REF003_015_NIGHT_AIRCRAFT_PASS_065000ms_01.png",
+    "exists": true,
+    "source_unit_id": "VU_REF003_015_NIGHT_AIRCRAFT_PASS"
+  },
+  {
+    "order": 2,
+    "item_id": "OP_SHOT_031",
+    "kind": "official_keyframe",
+    "time_sec": 65.5,
+    "timecode": "01:05.50",
+    "role": "图1 / night_aircraft_pass",
+    "beat": "夜航飞行器",
+    "difference_reason": "",
+    "source_reference_frame": "",
+    "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_031.png",
+    "packaged_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_028_NIGHT_AIRCRAFT_PASS/keyframes/02_OP_SHOT_031.png",
+    "exists": true,
+    "source_unit_id": "VU_REF003_015_NIGHT_AIRCRAFT_PASS"
+  }
+]

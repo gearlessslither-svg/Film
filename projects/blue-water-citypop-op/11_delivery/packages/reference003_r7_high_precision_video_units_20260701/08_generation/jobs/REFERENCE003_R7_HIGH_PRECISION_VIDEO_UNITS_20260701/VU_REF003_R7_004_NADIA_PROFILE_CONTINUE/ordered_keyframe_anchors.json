@@ -1,0 +1,17 @@
+[
+  {
+    "order": 1,
+    "item_id": "OP_SHOT_010",
+    "kind": "official_keyframe",
+    "time_sec": 24.5,
+    "timecode": "00:24.50",
+    "role": "图1 / Nadia_profile",
+    "beat": "Nadia 侧脸入场",
+    "difference_reason": "",
+    "source_reference_frame": "",
+    "source_path": "08_generation/jobs/REFERENCE003_FRAME_PROMOTION_R3_20260630/outputs/OP_SHOT_010_R3_NADIA_PROFILE_BEAUTY_LOCK.png",
+    "packaged_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_004_NADIA_PROFILE_CONTINUE/keyframes/01_OP_SHOT_010.png",
+    "exists": true,
+    "source_unit_id": "VU_REF003_007_NADIA_PROFILE_ENTRY"
+  }
+]

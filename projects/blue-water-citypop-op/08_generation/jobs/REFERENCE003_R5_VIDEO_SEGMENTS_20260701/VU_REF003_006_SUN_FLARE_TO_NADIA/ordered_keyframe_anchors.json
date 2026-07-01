@@ -1,0 +1,30 @@
+[
+  {
+    "order": 1,
+    "item_id": "OP_SHOT_009",
+    "kind": "official_keyframe",
+    "time_sec": 23.0,
+    "timecode": "00:23.00",
+    "role": "图1 / sun_flare_transition",
+    "beat": "太阳光线转场",
+    "difference_reason": "",
+    "source_reference_frame": "",
+    "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_009.png",
+    "packaged_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_006_SUN_FLARE_TO_NADIA/keyframes/01_OP_SHOT_009.png",
+    "exists": true
+  },
+  {
+    "order": 2,
+    "item_id": "R5_VU_REF003_006_SUN_FLARE_TO_NADIA_023500ms_01",
+    "kind": "r5_adaptive_generated",
+    "time_sec": 23.5,
+    "timecode": "00:23.50",
+    "role": "adaptive_primary",
+    "beat": "Transition edge from sun flare into Nadia needs a clean bridge frame so AIGC does not invent the cut or lose Nadia lock.",
+    "difference_reason": "Transition edge from sun flare into Nadia needs a clean bridge frame so AIGC does not invent the cut or lose Nadia lock.",
+    "source_reference_frame": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0048.jpg",
+    "source_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_006_SUN_FLARE_TO_NADIA_023500ms_01.png",
+    "packaged_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_006_SUN_FLARE_TO_NADIA/keyframes/02_R5_VU_REF003_006_SUN_FLARE_TO_NADIA_023500ms_01.png",
+    "exists": true
+  }
+]

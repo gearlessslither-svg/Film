@@ -1,0 +1,423 @@
+{
+  "schema_version": "reference003_roughcut_assembly_v1",
+  "project_slug": "blue-water-citypop-op",
+  "created_at": "2026-06-30T15:49:56+08:00",
+  "status": "waiting_for_segments",
+  "source_packet": "00_admin/ai_bridge/packets/20260630_reference003_video_segment_execution.json",
+  "ffmpeg": "/Applications/Bitwig Studio.app/Contents/MacOS/ffmpeg",
+  "expected_roughcut": "09_edit/rough_cut/reference003_full_op_roughcut_20260630.mp4",
+  "expected_reference_duration_sec": 84.437333,
+  "check_only": true,
+  "summary": {
+    "segments_total": 21,
+    "segments_existing": 0,
+    "segments_decode_pass": 0,
+    "missing_segments": 21,
+    "failed_decode_segments": 0,
+    "ready_for_assembly": false,
+    "roughcut_exists": false,
+    "roughcut_decode_ok": false,
+    "roughcut_duration_sec": null,
+    "roughcut_duration_delta_sec": null,
+    "roughcut_duration_match_within_1s": false
+  },
+  "segments": [
+    {
+      "slot": 1,
+      "unit_id": "VU_REF003_001_BLACK_CLOUD_FADEIN",
+      "title": "黑场到云层蓝天淡入",
+      "time_range": "00:00.00-00:02.00",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_segments/VU_REF003_001_BLACK_CLOUD_FADEIN.mp4",
+      "generation_gate": "ready",
+      "blocking_keyframes": [],
+      "probe": {
+        "path": "08_generation/outputs/video/reference003_segments/VU_REF003_001_BLACK_CLOUD_FADEIN.mp4",
+        "exists": false,
+        "decode_ok": false,
+        "duration_sec": null,
+        "duration_line": "",
+        "error": "missing"
+      }
+    },
+    {
+      "slot": 2,
+      "unit_id": "VU_REF003_002_WHITE_BIRD_SKY",
+      "title": "白鸟入画与蓝天滑翔",
+      "time_range": "00:02.50-00:07.00",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_segments/VU_REF003_002_WHITE_BIRD_SKY.mp4",
+      "generation_gate": "ready",
+      "blocking_keyframes": [],
+      "probe": {
+        "path": "08_generation/outputs/video/reference003_segments/VU_REF003_002_WHITE_BIRD_SKY.mp4",
+        "exists": false,
+        "decode_ok": false,
+        "duration_sec": null,
+        "duration_line": "",
+        "error": "missing"
+      }
+    },
+    {
+      "slot": 3,
+      "unit_id": "VU_REF003_003_CREDIT_SAFE_BIRD_CLOUDS",
+      "title": "白鸟字幕安全位与云层增长",
+      "time_range": "00:07.00-00:14.00",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_segments/VU_REF003_003_CREDIT_SAFE_BIRD_CLOUDS.mp4",
+      "generation_gate": "ready",
+      "blocking_keyframes": [],
+      "probe": {
+        "path": "08_generation/outputs/video/reference003_segments/VU_REF003_003_CREDIT_SAFE_BIRD_CLOUDS.mp4",
+        "exists": false,
+        "decode_ok": false,
+        "duration_sec": null,
+        "duration_line": "",
+        "error": "missing"
+      }
+    },
+    {
+      "slot": 4,
+      "unit_id": "VU_REF003_004_AIRCRAFT_BRIEF_REVEAL",
+      "title": "飞行器短暂露出",
+      "time_range": "00:14.50-00:16.50",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_segments/VU_REF003_004_AIRCRAFT_BRIEF_REVEAL.mp4",
+      "generation_gate": "ready",
+      "blocking_keyframes": [],
+      "probe": {
+        "path": "08_generation/outputs/video/reference003_segments/VU_REF003_004_AIRCRAFT_BRIEF_REVEAL.mp4",
+        "exists": false,
+        "decode_ok": false,
+        "duration_sec": null,
+        "duration_line": "",
+        "error": "missing"
+      }
+    },
+    {
+      "slot": 5,
+      "unit_id": "VU_REF003_005_MAIN_TITLE_SAFE_HOLD",
+      "title": "主标题功能位无字 hold",
+      "time_range": "00:17.00-00:22.00",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_segments/VU_REF003_005_MAIN_TITLE_SAFE_HOLD.mp4",
+      "generation_gate": "ready",
+      "blocking_keyframes": [],
+      "probe": {
+        "path": "08_generation/outputs/video/reference003_segments/VU_REF003_005_MAIN_TITLE_SAFE_HOLD.mp4",
+        "exists": false,
+        "decode_ok": false,
+        "duration_sec": null,
+        "duration_line": "",
+        "error": "missing"
+      }
+    },
+    {
+      "slot": 6,
+      "unit_id": "VU_REF003_006_SUN_FLARE_TO_NADIA",
+      "title": "太阳光转 Nadia",
+      "time_range": "00:22.50-00:23.50",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_segments/VU_REF003_006_SUN_FLARE_TO_NADIA.mp4",
+      "generation_gate": "ready",
+      "blocking_keyframes": [],
+      "probe": {
+        "path": "08_generation/outputs/video/reference003_segments/VU_REF003_006_SUN_FLARE_TO_NADIA.mp4",
+        "exists": false,
+        "decode_ok": false,
+        "duration_sec": null,
+        "duration_line": "",
+        "error": "missing"
+      }
+    },
+    {
+      "slot": 7,
+      "unit_id": "VU_REF003_007_NADIA_PROFILE_ENTRY",
+      "title": "Nadia 侧脸入场到近景",
+      "time_range": "00:24.00-00:27.50",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_segments/VU_REF003_007_NADIA_PROFILE_ENTRY.mp4",
+      "generation_gate": "ready",
+      "blocking_keyframes": [],
+      "probe": {
+        "path": "08_generation/outputs/video/reference003_segments/VU_REF003_007_NADIA_PROFILE_ENTRY.mp4",
+        "exists": false,
+        "decode_ok": false,
+        "duration_sec": null,
+        "duration_line": "",
+        "error": "missing"
+      }
+    },
+    {
+      "slot": 8,
+      "unit_id": "VU_REF003_008_JEAN_INTRO",
+      "title": "Jean 帽子与少年发明家入场",
+      "time_range": "00:28.00-00:30.50",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_segments/VU_REF003_008_JEAN_INTRO.mp4",
+      "generation_gate": "ready",
+      "blocking_keyframes": [],
+      "probe": {
+        "path": "08_generation/outputs/video/reference003_segments/VU_REF003_008_JEAN_INTRO.mp4",
+        "exists": false,
+        "decode_ok": false,
+        "duration_sec": null,
+        "duration_line": "",
+        "error": "missing"
+      }
+    },
+    {
+      "slot": 9,
+      "unit_id": "VU_REF003_009_MARIE_KING_MEADOW",
+      "title": "Marie 与 King 草地段",
+      "time_range": "00:31.00-00:34.00",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_segments/VU_REF003_009_MARIE_KING_MEADOW.mp4",
+      "generation_gate": "ready",
+      "blocking_keyframes": [],
+      "probe": {
+        "path": "08_generation/outputs/video/reference003_segments/VU_REF003_009_MARIE_KING_MEADOW.mp4",
+        "exists": false,
+        "decode_ok": false,
+        "duration_sec": null,
+        "duration_line": "",
+        "error": "missing"
+      }
+    },
+    {
+      "slot": 10,
+      "unit_id": "VU_REF003_010_GRANDIS_TRIO_INTRO",
+      "title": "Grandis 三人组介绍",
+      "time_range": "00:34.50-00:37.50",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_segments/VU_REF003_010_GRANDIS_TRIO_INTRO.mp4",
+      "generation_gate": "ready",
+      "blocking_keyframes": [],
+      "probe": {
+        "path": "08_generation/outputs/video/reference003_segments/VU_REF003_010_GRANDIS_TRIO_INTRO.mp4",
+        "exists": false,
+        "decode_ok": false,
+        "duration_sec": null,
+        "duration_line": "",
+        "error": "missing"
+      }
+    },
+    {
+      "slot": 11,
+      "unit_id": "VU_REF003_011_RUNNING_MONTAGE",
+      "title": "角色奔跑 montage",
+      "time_range": "00:38.00-00:47.50",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_segments/VU_REF003_011_RUNNING_MONTAGE.mp4",
+      "generation_gate": "ready",
+      "blocking_keyframes": [],
+      "probe": {
+        "path": "08_generation/outputs/video/reference003_segments/VU_REF003_011_RUNNING_MONTAGE.mp4",
+        "exists": false,
+        "decode_ok": false,
+        "duration_sec": null,
+        "duration_line": "",
+        "error": "missing"
+      }
+    },
+    {
+      "slot": 12,
+      "unit_id": "VU_REF003_012_GRANDIS_VEHICLE_ACTION",
+      "title": "Grandis 车辆动作到群像",
+      "time_range": "00:48.00-00:51.50",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_segments/VU_REF003_012_GRANDIS_VEHICLE_ACTION.mp4",
+      "generation_gate": "blocked_until_keyframes_complete",
+      "blocking_keyframes": [
+        "OP_SHOT_025"
+      ],
+      "probe": {
+        "path": "08_generation/outputs/video/reference003_segments/VU_REF003_012_GRANDIS_VEHICLE_ACTION.mp4",
+        "exists": false,
+        "decode_ok": false,
+        "duration_sec": null,
+        "duration_line": "",
+        "error": "missing"
+      }
+    },
+    {
+      "slot": 13,
+      "unit_id": "VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS",
+      "title": "Nautilus 海底光束段",
+      "time_range": "00:52.00-01:01.00",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_segments/VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS.mp4",
+      "generation_gate": "blocked_until_keyframes_complete",
+      "blocking_keyframes": [
+        "OP_SHOT_026",
+        "OP_SHOT_027",
+        "OP_SHOT_028"
+      ],
+      "probe": {
+        "path": "08_generation/outputs/video/reference003_segments/VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS.mp4",
+        "exists": false,
+        "decode_ok": false,
+        "duration_sec": null,
+        "duration_line": "",
+        "error": "missing"
+      }
+    },
+    {
+      "slot": 14,
+      "unit_id": "VU_REF003_014_NIGHT_CITY_BLUE_GRID",
+      "title": "夜城与蓝色地面图案",
+      "time_range": "01:01.50-01:04.50",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_segments/VU_REF003_014_NIGHT_CITY_BLUE_GRID.mp4",
+      "generation_gate": "blocked_until_keyframes_complete",
+      "blocking_keyframes": [
+        "OP_SHOT_029",
+        "OP_SHOT_030"
+      ],
+      "probe": {
+        "path": "08_generation/outputs/video/reference003_segments/VU_REF003_014_NIGHT_CITY_BLUE_GRID.mp4",
+        "exists": false,
+        "decode_ok": false,
+        "duration_sec": null,
+        "duration_line": "",
+        "error": "missing"
+      }
+    },
+    {
+      "slot": 15,
+      "unit_id": "VU_REF003_015_NIGHT_AIRCRAFT_PASS",
+      "title": "夜航飞行器短切",
+      "time_range": "01:05.00-01:06.00",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_segments/VU_REF003_015_NIGHT_AIRCRAFT_PASS.mp4",
+      "generation_gate": "blocked_until_keyframes_complete",
+      "blocking_keyframes": [
+        "OP_SHOT_031"
+      ],
+      "probe": {
+        "path": "08_generation/outputs/video/reference003_segments/VU_REF003_015_NIGHT_AIRCRAFT_PASS.mp4",
+        "exists": false,
+        "decode_ok": false,
+        "duration_sec": null,
+        "duration_line": "",
+        "error": "missing"
+      }
+    },
+    {
+      "slot": 16,
+      "unit_id": "VU_REF003_016_NEMO_SUNSET_PROFILE",
+      "title": "Nemo 夕景船长肖像",
+      "time_range": "01:06.50-01:11.00",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_segments/VU_REF003_016_NEMO_SUNSET_PROFILE.mp4",
+      "generation_gate": "blocked_until_keyframes_complete",
+      "blocking_keyframes": [
+        "OP_SHOT_032",
+        "OP_SHOT_033"
+      ],
+      "probe": {
+        "path": "08_generation/outputs/video/reference003_segments/VU_REF003_016_NEMO_SUNSET_PROFILE.mp4",
+        "exists": false,
+        "decode_ok": false,
+        "duration_sec": null,
+        "duration_line": "",
+        "error": "missing"
+      }
+    },
+    {
+      "slot": 17,
+      "unit_id": "VU_REF003_017_NADIA_SOLEMN_CLOSE",
+      "title": "Nadia 庄重正面近景",
+      "time_range": "01:11.50-01:13.00",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_segments/VU_REF003_017_NADIA_SOLEMN_CLOSE.mp4",
+      "generation_gate": "blocked_until_keyframes_complete",
+      "blocking_keyframes": [
+        "OP_SHOT_034"
+      ],
+      "probe": {
+        "path": "08_generation/outputs/video/reference003_segments/VU_REF003_017_NADIA_SOLEMN_CLOSE.mp4",
+        "exists": false,
+        "decode_ok": false,
+        "duration_sec": null,
+        "duration_line": "",
+        "error": "missing"
+      }
+    },
+    {
+      "slot": 18,
+      "unit_id": "VU_REF003_018_BLUE_WATER_SYMBOL",
+      "title": "Blue Water 象征与水下纹理",
+      "time_range": "01:13.50-01:17.00",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_segments/VU_REF003_018_BLUE_WATER_SYMBOL.mp4",
+      "generation_gate": "blocked_until_keyframes_complete",
+      "blocking_keyframes": [
+        "OP_SHOT_035",
+        "OP_SHOT_036",
+        "OP_SHOT_037"
+      ],
+      "probe": {
+        "path": "08_generation/outputs/video/reference003_segments/VU_REF003_018_BLUE_WATER_SYMBOL.mp4",
+        "exists": false,
+        "decode_ok": false,
+        "duration_sec": null,
+        "duration_line": "",
+        "error": "missing"
+      }
+    },
+    {
+      "slot": 19,
+      "unit_id": "VU_REF003_019_WATER_SPLASH_TRANSITION",
+      "title": "水花爆发转天空",
+      "time_range": "01:17.50-01:19.50",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_segments/VU_REF003_019_WATER_SPLASH_TRANSITION.mp4",
+      "generation_gate": "blocked_until_keyframes_complete",
+      "blocking_keyframes": [
+        "OP_SHOT_038",
+        "OP_SHOT_039"
+      ],
+      "probe": {
+        "path": "08_generation/outputs/video/reference003_segments/VU_REF003_019_WATER_SPLASH_TRANSITION.mp4",
+        "exists": false,
+        "decode_ok": false,
+        "duration_sec": null,
+        "duration_line": "",
+        "error": "missing"
+      }
+    },
+    {
+      "slot": 20,
+      "unit_id": "VU_REF003_020_FINAL_SKY_SAFE_HOLD",
+      "title": "最终无字天空 hold",
+      "time_range": "01:19.50-01:23.00",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_segments/VU_REF003_020_FINAL_SKY_SAFE_HOLD.mp4",
+      "generation_gate": "blocked_until_keyframes_complete",
+      "blocking_keyframes": [
+        "OP_SHOT_040",
+        "OP_SHOT_041"
+      ],
+      "probe": {
+        "path": "08_generation/outputs/video/reference003_segments/VU_REF003_020_FINAL_SKY_SAFE_HOLD.mp4",
+        "exists": false,
+        "decode_ok": false,
+        "duration_sec": null,
+        "duration_line": "",
+        "error": "missing"
+      }
+    },
+    {
+      "slot": 21,
+      "unit_id": "VU_REF003_021_BLACK_TAIL",
+      "title": "黑场尾帧",
+      "time_range": "01:23.50-01:24.44",
+      "expected_video_output_path": "08_generation/outputs/video/reference003_segments/VU_REF003_021_BLACK_TAIL.mp4",
+      "generation_gate": "blocked_until_keyframes_complete",
+      "blocking_keyframes": [
+        "OP_SHOT_042"
+      ],
+      "probe": {
+        "path": "08_generation/outputs/video/reference003_segments/VU_REF003_021_BLACK_TAIL.mp4",
+        "exists": false,
+        "decode_ok": false,
+        "duration_sec": null,
+        "duration_line": "",
+        "error": "missing"
+      }
+    }
+  ],
+  "assembly": null,
+  "roughcut_probe": {
+    "path": "09_edit/rough_cut/reference003_full_op_roughcut_20260630.mp4",
+    "exists": false,
+    "decode_ok": false,
+    "duration_sec": null,
+    "duration_line": "",
+    "error": "missing"
+  },
+  "transition_audit_refresh": null,
+  "next_action": "Generate/copy the missing segment MP4s to their expected paths.",
+  "rebuild_script": "09_edit/rough_cut/assemble_reference003_roughcut_from_segments.py"
+}

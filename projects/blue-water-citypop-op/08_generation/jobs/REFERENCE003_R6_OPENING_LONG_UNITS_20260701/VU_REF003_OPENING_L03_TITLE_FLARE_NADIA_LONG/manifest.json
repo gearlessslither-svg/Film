@@ -1,0 +1,134 @@
+{
+  "schema_version": "reference003_r6_opening_long_unit_package_v1",
+  "created_at": "2026-07-01T07:23:27+08:00",
+  "status": "ready_for_external_aigc_video_generation",
+  "unit": {
+    "order": 3,
+    "unit_id": "VU_REF003_OPENING_L03_TITLE_FLARE_NADIA_LONG",
+    "title": "开场长镜头 C：标题安全位到日光转 Nadia",
+    "time_range": "00:16.50-00:24.80",
+    "intent": "把主标题安全位、日光耀斑、Nadia 首次显影作为开场长镜头收束段，避免 1 秒转场被单独切碎。",
+    "anchor_ids": [
+      "R5_VU_REF003_005_MAIN_TITLE_SAFE_HOLD_017000ms_01",
+      "OP_SHOT_008",
+      "OP_SHOT_009",
+      "R5_VU_REF003_006_SUN_FLARE_TO_NADIA_023500ms_01",
+      "OP_SHOT_010"
+    ],
+    "active_locks": [
+      [
+        "characters",
+        "nadia"
+      ],
+      [
+        "props_vehicles_symbols",
+        "blue_water_pendant"
+      ]
+    ],
+    "motion": "hold the no-text title-safe sky space, bloom into sun flare, then bridge into Nadia's first profile reveal"
+  },
+  "reference_clip": {
+    "path": "08_generation/jobs/REFERENCE003_R6_OPENING_LONG_UNITS_20260701/VU_REF003_OPENING_L03_TITLE_FLARE_NADIA_LONG/reference_clip/VU_REF003_OPENING_L03_TITLE_FLARE_NADIA_LONG_reference.mp4",
+    "start_sec": 16.5,
+    "end_sec": 24.8,
+    "duration_sec": 8.3,
+    "ok": true,
+    "decode_ok": true,
+    "stderr_tail": "      handler_name    : VideoHandler\n      vendor_id       : [0][0][0][0]\n      encoder         : Lavc60.31.102 mpeg4\n    Side data:\n      cpb: bitrate max/min/avg: 0/0/200000 buffer size: 0 vbv_delay: N/A\nframe=    0 fps=0.0 q=3.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    \n[out#0/mp4 @ 0x78d060480] video:5432kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 0.044319%\nframe=  200 fps=0.0 q=3.0 Lsize=    5434kB time=00:00:08.29 bitrate=5363.4kbits/s speed=26.6x    "
+  },
+  "keyframe_anchors": [
+    {
+      "order": 1,
+      "item_id": "R5_VU_REF003_005_MAIN_TITLE_SAFE_HOLD_017000ms_01",
+      "kind": "r5_adaptive_generated",
+      "time_sec": 17.0,
+      "timecode": "00:17.00",
+      "role": "adaptive_primary",
+      "beat": "主标题功能位无字 hold: large timeline gap between existing anchors; visually different from nearest existing anchor; local motion/color change peak",
+      "difference_reason": "主标题功能位无字 hold: large timeline gap between existing anchors; visually different from nearest existing anchor; local motion/color change peak",
+      "source_reference_frame": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0035.jpg",
+      "source_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_005_MAIN_TITLE_SAFE_HOLD_017000ms_01.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R6_OPENING_LONG_UNITS_20260701/VU_REF003_OPENING_L03_TITLE_FLARE_NADIA_LONG/keyframes/01_R5_VU_REF003_005_MAIN_TITLE_SAFE_HOLD_017000ms_01.png",
+      "exists": true
+    },
+    {
+      "order": 2,
+      "item_id": "OP_SHOT_008",
+      "kind": "official_keyframe",
+      "time_sec": 18.5,
+      "timecode": "00:18.50",
+      "role": "图1 / main_title_safe_no_text",
+      "beat": "主标题无字安全位",
+      "difference_reason": "",
+      "source_reference_frame": "",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_008_v2.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R6_OPENING_LONG_UNITS_20260701/VU_REF003_OPENING_L03_TITLE_FLARE_NADIA_LONG/keyframes/02_OP_SHOT_008.png",
+      "exists": true
+    },
+    {
+      "order": 3,
+      "item_id": "OP_SHOT_009",
+      "kind": "official_keyframe",
+      "time_sec": 23.0,
+      "timecode": "00:23.00",
+      "role": "图1 / sun_flare_transition",
+      "beat": "太阳光线转场",
+      "difference_reason": "",
+      "source_reference_frame": "",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_009.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R6_OPENING_LONG_UNITS_20260701/VU_REF003_OPENING_L03_TITLE_FLARE_NADIA_LONG/keyframes/03_OP_SHOT_009.png",
+      "exists": true
+    },
+    {
+      "order": 4,
+      "item_id": "R5_VU_REF003_006_SUN_FLARE_TO_NADIA_023500ms_01",
+      "kind": "r5_adaptive_generated",
+      "time_sec": 23.5,
+      "timecode": "00:23.50",
+      "role": "adaptive_primary",
+      "beat": "Transition edge from sun flare into Nadia needs a clean bridge frame so AIGC does not invent the cut or lose Nadia lock.",
+      "difference_reason": "Transition edge from sun flare into Nadia needs a clean bridge frame so AIGC does not invent the cut or lose Nadia lock.",
+      "source_reference_frame": "01_intake/analysis/video_reference_packages/reference-003-full-op-2160p/frames_sampled/reference-003-full-op-2160p_0048.jpg",
+      "source_path": "08_generation/jobs/REFERENCE003_ADAPTIVE_FRAME_PROMOTION_R5_20260630/outputs/R5_VU_REF003_006_SUN_FLARE_TO_NADIA_023500ms_01.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R6_OPENING_LONG_UNITS_20260701/VU_REF003_OPENING_L03_TITLE_FLARE_NADIA_LONG/keyframes/04_R5_VU_REF003_006_SUN_FLARE_TO_NADIA_023500ms_01.png",
+      "exists": true
+    },
+    {
+      "order": 5,
+      "item_id": "OP_SHOT_010",
+      "kind": "official_keyframe",
+      "time_sec": 24.5,
+      "timecode": "00:24.50",
+      "role": "图1 / Nadia_profile",
+      "beat": "Nadia 侧脸入场",
+      "difference_reason": "",
+      "source_reference_frame": "",
+      "source_path": "08_generation/jobs/REFERENCE003_FRAME_PROMOTION_R3_20260630/outputs/OP_SHOT_010_R3_NADIA_PROFILE_BEAUTY_LOCK.png",
+      "packaged_path": "08_generation/jobs/REFERENCE003_R6_OPENING_LONG_UNITS_20260701/VU_REF003_OPENING_L03_TITLE_FLARE_NADIA_LONG/keyframes/05_OP_SHOT_010.png",
+      "exists": true
+    }
+  ],
+  "active_asset_locks": [
+    {
+      "group": "characters",
+      "asset_id": "nadia",
+      "status": "official_identity_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_011_v2.png",
+      "global_lock_path": "08_generation/jobs/REFERENCE003_R6_OPENING_LONG_UNITS_20260701/_global_asset_locks/characters_nadia.png",
+      "exists": true
+    },
+    {
+      "group": "props_vehicles_symbols",
+      "asset_id": "blue_water_pendant",
+      "status": "official_prop_lock",
+      "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH06_READY/outputs/OP_SHOT_035.png",
+      "global_lock_path": "08_generation/jobs/REFERENCE003_R6_OPENING_LONG_UNITS_20260701/_global_asset_locks/props_vehicles_symbols_blue_water_pendant.png",
+      "exists": true
+    }
+  ],
+  "prompt_only": "08_generation/jobs/REFERENCE003_R6_OPENING_LONG_UNITS_20260701/_PROMPT_INDEX/PROMPT_ONLY/03_VU_REF003_OPENING_L03_TITLE_FLARE_NADIA_LONG.md",
+  "generation_brief": "08_generation/jobs/REFERENCE003_R6_OPENING_LONG_UNITS_20260701/VU_REF003_OPENING_L03_TITLE_FLARE_NADIA_LONG/AIGC_VIDEO_GENERATION_BRIEF.md",
+  "ordered_keyframe_contact_sheet": "08_generation/jobs/REFERENCE003_R6_OPENING_LONG_UNITS_20260701/VU_REF003_OPENING_L03_TITLE_FLARE_NADIA_LONG/ordered_keyframe_contact_sheet.jpg",
+  "expected_video_output_path": "08_generation/outputs/video/reference003_r6_opening_long_segments/VU_REF003_OPENING_L03_TITLE_FLARE_NADIA_LONG.mp4",
+  "boundary_refine_report": "01_intake/analysis/reference003_frame_boundary_refine_r6_20260701/reference003_frame_boundary_refine_r6_20260701.json"
+}

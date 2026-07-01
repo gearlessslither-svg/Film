@@ -1,0 +1,17 @@
+[
+  {
+    "order": 1,
+    "item_id": "OP_SHOT_042",
+    "kind": "official_keyframe",
+    "time_sec": 83.5,
+    "timecode": "01:23.50",
+    "role": "图1 / black_tail",
+    "beat": "黑场结尾",
+    "difference_reason": "",
+    "source_reference_frame": "",
+    "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_042.png",
+    "packaged_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_036_BLACK_TAIL/keyframes/01_OP_SHOT_042.png",
+    "exists": true,
+    "source_unit_id": "VU_REF003_021_BLACK_TAIL"
+  }
+]

@@ -1,0 +1,95 @@
+{
+  "schema_version": "reference003_identity_detail_pass_queue_v1",
+  "project_slug": "blue-water-citypop-op",
+  "created_at": "2026-06-30",
+  "status": "batch01_hard_replacements_applied_batch02_identity_qa_pending",
+  "director_confirmation_required": false,
+  "setting_chapter": "05_asset_bible/setting_chapters/reference003_setting_chapter_v1.md",
+  "asset_locks": "05_asset_bible/setting_chapters/reference003_asset_locks_v1.json",
+  "global_rules": [
+    "Nadia must match OP_SHOT_011_v2 in all later appearances.",
+    "Other characters use first accepted appearance or close appearance as current locks.",
+    "Director accepts OP_SHOT_021_v2 for current workprint use.",
+    "Director rejects OP_SHOT_025 and OP_SHOT_034 for the current version.",
+    "Recurring props, vehicles, animals, symbols, locations, and scene environments must not redesign themselves between shots.",
+    "generated_reference003_qa_pass is composition/no-text/timing pass, not final video_ready_pass."
+  ],
+  "batch01_must_fix": [
+    {
+      "item_id": "OP_SHOT_025",
+      "priority": 1,
+      "issue": "director rejected the large group portrait; group identity and vehicle/prop continuity fail",
+      "action": "rebuild_as_locked_tableau_or_layered_retouch_with_new_vehicle_lock",
+      "locks": [
+        "OP_SHOT_011_v2",
+        "OP_SHOT_012",
+        "OP_SHOT_014",
+        "OP_SHOT_016_v2",
+        "new_grandis_vehicle_lock"
+      ]
+    },
+    {
+      "item_id": "OP_SHOT_034",
+      "priority": 2,
+      "issue": "director rejected blue/sea-background Nadia; must match OP_SHOT_011_v2 face lock",
+      "action": "regenerate_or_retouch_solemn_close_with_nadia_face_lock",
+      "locks": [
+        "OP_SHOT_011_v2",
+        "OP_SHOT_035"
+      ]
+    }
+  ],
+  "director_accepted_workprint_frames": [
+    {
+      "item_id": "OP_SHOT_011",
+      "path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH02/outputs/OP_SHOT_011_v2.png",
+      "decision": "excellent; Nadia official face lock"
+    },
+    {
+      "item_id": "OP_SHOT_021",
+      "path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH04/outputs/OP_SHOT_021_v2.png",
+      "decision": "very good for current workprint"
+    }
+  ],
+  "batch02_identity_qa": [
+    "OP_SHOT_018",
+    "OP_SHOT_019",
+    "OP_SHOT_020",
+    "OP_SHOT_023",
+    "OP_SHOT_024",
+    "OP_SHOT_032",
+    "OP_SHOT_033"
+  ],
+  "batch03_detail_density_targets": [
+    "00:07.50-00:23.00",
+    "00:55.00-01:01.50",
+    "running/action montage"
+  ],
+  "batch01_applied_outputs": [
+    {
+      "item_id": "OP_SHOT_024",
+      "status": "applied_new_grandis_vehicle_lock",
+      "output_path": "08_generation/jobs/REFERENCE003_IDENTITY_REPAIR_R1_20260630/outputs/OP_SHOT_024_VEHICLE_LOCK_R1.png"
+    },
+    {
+      "item_id": "OP_SHOT_025",
+      "status": "applied_hard_replacement",
+      "output_path": "08_generation/jobs/REFERENCE003_IDENTITY_REPAIR_R1_20260630/outputs/OP_SHOT_025_R1.png"
+    },
+    {
+      "item_id": "OP_SHOT_034",
+      "status": "applied_hard_replacement",
+      "output_path": "08_generation/jobs/REFERENCE003_IDENTITY_REPAIR_R1_20260630/outputs/OP_SHOT_034_R1.png"
+    }
+  ],
+  "dense_reference_package": {
+    "manifest": "01_intake/analysis/reference003_dense_repair_frames_20260630/manifest.json",
+    "combined_sheet": "01_intake/analysis/reference003_dense_repair_frames_20260630/reference003_identity_repair_dense_selected_sheet.jpg",
+    "image_repair_job": "08_generation/jobs/REFERENCE003_IDENTITY_REPAIR_R1_20260630/manifest.json"
+  },
+  "batch02_identity_qa_status": {
+    "status": "preliminary_pass_keep_current_unless_director_requests_more_source_exact_motion",
+    "report": "10_qa/reports/reference003_batch02_identity_qa_after_r1_20260630.json"
+  },
+  "batch02_identity_qa_report": "10_qa/reports/reference003_batch02_identity_qa_after_r1_20260630.json"
+}

@@ -1,0 +1,30 @@
+[
+  {
+    "order": 1,
+    "item_id": "OP_SHOT_040",
+    "kind": "official_keyframe",
+    "time_sec": 80.0,
+    "timecode": "01:20.00",
+    "role": "图1 / final_sky_safe",
+    "beat": "最终蓝天安全位",
+    "difference_reason": "",
+    "source_reference_frame": "",
+    "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_040.png",
+    "packaged_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_020_FINAL_SKY_SAFE_HOLD/keyframes/01_OP_SHOT_040.png",
+    "exists": true
+  },
+  {
+    "order": 2,
+    "item_id": "OP_SHOT_041",
+    "kind": "official_keyframe",
+    "time_sec": 82.0,
+    "timecode": "01:22.00",
+    "role": "图2 / final_sun_hold",
+    "beat": "最终太阳 hold",
+    "difference_reason": "",
+    "source_reference_frame": "",
+    "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH07_READY/outputs/OP_SHOT_041.png",
+    "packaged_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/VU_REF003_020_FINAL_SKY_SAFE_HOLD/keyframes/02_OP_SHOT_041.png",
+    "exists": true
+  }
+]

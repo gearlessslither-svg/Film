@@ -1,0 +1,9 @@
+[
+  {
+    "group": "props_vehicles_symbols",
+    "asset_id": "blue_grid_geometry",
+    "status": "official_scene_symbol_lock",
+    "source_path": "08_generation/jobs/REFERENCE003_OFFICIAL_KEYFRAMES_QA_20260630_BATCH05_READY/outputs/OP_SHOT_030.png",
+    "global_lock_path": "08_generation/jobs/REFERENCE003_R5_VIDEO_SEGMENTS_20260701/_global_asset_locks/props_vehicles_symbols_blue_grid_geometry.png"
+  }
+]

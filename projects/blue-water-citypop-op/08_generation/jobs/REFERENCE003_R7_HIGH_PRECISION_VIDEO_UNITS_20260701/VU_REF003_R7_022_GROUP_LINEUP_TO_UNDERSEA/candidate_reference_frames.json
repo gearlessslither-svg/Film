@@ -1,0 +1,38 @@
+[
+  {
+    "asset_id": "R7_CAND_022_start_050706ms",
+    "parent_video_unit_id": "VU_REF003_R7_022_GROUP_LINEUP_TO_UNDERSEA",
+    "role": "start",
+    "source_time_sec": 50.706,
+    "source_timecode": "00:50.71",
+    "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_022_GROUP_LINEUP_TO_UNDERSEA/candidate_reference_frames/R7_CAND_022_start_050706ms.jpg",
+    "priority": "P2_review_after_p1",
+    "status": "candidate_reference_frame_review",
+    "difference_reason": "群像到海底过渡 start boundary/transition frame from R7 high-precision split.",
+    "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_022_start_050706ms.png"
+  },
+  {
+    "asset_id": "R7_CAND_022_end_052397ms",
+    "parent_video_unit_id": "VU_REF003_R7_022_GROUP_LINEUP_TO_UNDERSEA",
+    "role": "end",
+    "source_time_sec": 52.397,
+    "source_timecode": "00:52.40",
+    "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_022_GROUP_LINEUP_TO_UNDERSEA/candidate_reference_frames/R7_CAND_022_end_052397ms.jpg",
+    "priority": "P3_reference_video_or_already_handled",
+    "status": "candidate_reference_frame_review",
+    "difference_reason": "群像到海底过渡 end boundary/transition frame from R7 high-precision split.",
+    "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_022_end_052397ms.png"
+  },
+  {
+    "asset_id": "R7_CAND_022_middle_051552ms",
+    "parent_video_unit_id": "VU_REF003_R7_022_GROUP_LINEUP_TO_UNDERSEA",
+    "role": "middle",
+    "source_time_sec": 51.552,
+    "source_timecode": "00:51.55",
+    "reference_frame_path": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_022_GROUP_LINEUP_TO_UNDERSEA/candidate_reference_frames/R7_CAND_022_middle_051552ms.jpg",
+    "priority": "P3_reference_video_or_already_handled",
+    "status": "candidate_reference_frame_review",
+    "difference_reason": "群像到海底过渡 middle boundary/transition frame from R7 high-precision split.",
+    "planned_output_path": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_022_middle_051552ms.png"
+  }
+]
