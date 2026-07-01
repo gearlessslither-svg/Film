@@ -1,0 +1,188 @@
+{
+  "created_at": "2026-07-02T00:29:26+08:00",
+  "status": "lean_input_folder_r7_reference_only_pending_visual_qa",
+  "unit": {
+    "order": 2,
+    "unit_id": "VU_REF003_R7_002_OPENING_AIRCRAFT_FLASH_LONG",
+    "title": "开场长段B：白鸟云层到飞行器闪现",
+    "start": 7.0,
+    "end": 16.5,
+    "intent": "保留白鸟/云层长运动，并精准抓住 00:14.72 飞行器一闪。",
+    "active_locks": [
+      [
+        "props_vehicles_symbols",
+        "white_bird"
+      ],
+      [
+        "props_vehicles_symbols",
+        "jean_aircraft"
+      ]
+    ],
+    "mode": "long_opening_flash"
+  },
+  "source_unit_manifest": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_002_OPENING_AIRCRAFT_FLASH_LONG/manifest.json",
+  "reference_clip": {
+    "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_002_OPENING_AIRCRAFT_FLASH_LONG/reference_clip/VU_REF003_R7_002_OPENING_AIRCRAFT_FLASH_LONG_reference.mp4",
+    "local": "01_reference_clip/VU_REF003_R7_002_OPENING_AIRCRAFT_FLASH_LONG_reference_upload_h264_aac.mp4",
+    "exists": true,
+    "encoding": "H.264 video + silent AAC audio, yuv420p, faststart, metadata stripped",
+    "reference_material_rule": "regular_upload_only_if_original_independent_reference_is_2s_or_longer",
+    "original_encoding_note": "source split clips were MP4 container with mpeg4/mp4v video and no audio",
+    "source_duration_seconds": 9.51,
+    "output_duration_seconds": 9.52,
+    "minimum_reference_material_seconds": 2.0,
+    "encoding_floor_seconds": 2.05,
+    "padded_last_frame_seconds": 0.0
+  },
+  "prompt_doc": "AIGC_PROMPT.md",
+  "keyframes_for_upload": [
+    {
+      "kind": "r5_adaptive_generated",
+      "id": "R5_VU_REF003_002_WHITE_BIRD_SKY_007000ms_01",
+      "timecode": "00:07.00",
+      "role": "adaptive_primary",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_002_OPENING_AIRCRAFT_FLASH_LONG/keyframes/01_R5_VU_REF003_002_WHITE_BIRD_SKY_007000ms_01.png",
+      "local": "02_keyframes_for_upload/01_r5_adaptive_generated_R5_VU_REF003_002_WHITE_BIRD_SKY_007000ms_01.png",
+      "exists": true
+    },
+    {
+      "kind": "r5_adaptive_generated",
+      "id": "R5_VU_REF003_003_CREDIT_SAFE_BIRD_CLOUDS_014000ms_01",
+      "timecode": "00:14.00",
+      "role": "adaptive_primary",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_002_OPENING_AIRCRAFT_FLASH_LONG/keyframes/04_R5_VU_REF003_003_CREDIT_SAFE_BIRD_CLOUDS_014000ms_01.png",
+      "local": "02_keyframes_for_upload/02_r5_adaptive_generated_R5_VU_REF003_003_CREDIT_SAFE_BIRD_CLOUDS_014000ms_01.png",
+      "exists": true
+    },
+    {
+      "kind": "r5_adaptive_generated",
+      "id": "R5_VU_REF003_004_AIRCRAFT_BRIEF_REVEAL_014500ms_02",
+      "timecode": "00:14.50",
+      "role": "adaptive_middle",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_002_OPENING_AIRCRAFT_FLASH_LONG/keyframes/05_R5_VU_REF003_004_AIRCRAFT_BRIEF_REVEAL_014500ms_02.png",
+      "local": "02_keyframes_for_upload/03_r5_adaptive_generated_R5_VU_REF003_004_AIRCRAFT_BRIEF_REVEAL_014500ms_02.png",
+      "exists": true
+    },
+    {
+      "kind": "r5_adaptive_generated",
+      "id": "R5_VU_REF003_004_AIRCRAFT_BRIEF_REVEAL_016000ms_01",
+      "timecode": "00:16.00",
+      "role": "adaptive_primary",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_002_OPENING_AIRCRAFT_FLASH_LONG/keyframes/07_R5_VU_REF003_004_AIRCRAFT_BRIEF_REVEAL_016000ms_01.png",
+      "local": "02_keyframes_for_upload/04_r5_adaptive_generated_R5_VU_REF003_004_AIRCRAFT_BRIEF_REVEAL_016000ms_01.png",
+      "exists": true
+    }
+  ],
+  "asset_locks_for_upload": [
+    {
+      "group": "props_vehicles_symbols",
+      "id": "white_bird",
+      "status": "official_prop_lock",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_global_asset_locks/props_vehicles_symbols_white_bird.png",
+      "local": "03_asset_locks_for_upload/01_props_vehicles_symbols_white_bird.png",
+      "exists": true
+    },
+    {
+      "group": "props_vehicles_symbols",
+      "id": "jean_aircraft",
+      "status": "official_prop_lock",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_global_asset_locks/props_vehicles_symbols_jean_aircraft.png",
+      "local": "03_asset_locks_for_upload/02_props_vehicles_symbols_jean_aircraft.png",
+      "exists": true
+    }
+  ],
+  "source_reference_frames_audit_only": [
+    {
+      "id": "R7_CAND_002_start_007030ms",
+      "timecode": "00:07.03",
+      "role": "start",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_002_OPENING_AIRCRAFT_FLASH_LONG/candidate_reference_frames/R7_CAND_002_start_007030ms.jpg",
+      "local": "04_source_reference_frames_audit_only/01_R7_CAND_002_start_007030ms.jpg",
+      "exists": true
+    },
+    {
+      "id": "R7_CAND_002_middle_011750ms",
+      "timecode": "00:11.75",
+      "role": "middle",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_002_OPENING_AIRCRAFT_FLASH_LONG/candidate_reference_frames/R7_CAND_002_middle_011750ms.jpg",
+      "local": "04_source_reference_frames_audit_only/02_R7_CAND_002_middle_011750ms.jpg",
+      "exists": true
+    },
+    {
+      "id": "R7_CAND_002_end_016470ms",
+      "timecode": "00:16.47",
+      "role": "end",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_002_OPENING_AIRCRAFT_FLASH_LONG/candidate_reference_frames/R7_CAND_002_end_016470ms.jpg",
+      "local": "04_source_reference_frames_audit_only/03_R7_CAND_002_end_016470ms.jpg",
+      "exists": true
+    }
+  ],
+  "r7_generated_candidates_reference_only": [
+    {
+      "kind": "r7_generated_candidate_reference_only",
+      "id": "R7_CAND_002_start_007030ms",
+      "timecode": "00:07.03",
+      "role": "start",
+      "priority": "P3_reference_video_or_already_handled",
+      "source": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_002_start_007030ms.png",
+      "local": "05_r7_generated_candidates_reference_only/01_R7_CAND_002_start_007030ms.png",
+      "exists": true,
+      "r8_status": "reference_only_pending_director_reapproval"
+    },
+    {
+      "kind": "r7_generated_candidate_reference_only",
+      "id": "R7_CAND_002_middle_011750ms",
+      "timecode": "00:11.75",
+      "role": "middle",
+      "priority": "P3_reference_video_or_already_handled",
+      "source": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_002_middle_011750ms.png",
+      "local": "05_r7_generated_candidates_reference_only/02_R7_CAND_002_middle_011750ms.png",
+      "exists": true,
+      "r8_status": "reference_only_pending_director_reapproval"
+    },
+    {
+      "kind": "r7_generated_candidate_reference_only",
+      "id": "R7_CAND_002_end_016470ms",
+      "timecode": "00:16.47",
+      "role": "end",
+      "priority": "P2_review_after_p1",
+      "source": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_002_end_016470ms.png",
+      "local": "05_r7_generated_candidates_reference_only/03_R7_CAND_002_end_016470ms.png",
+      "exists": true,
+      "r8_status": "reference_only_pending_director_reapproval"
+    }
+  ],
+  "official_original_keyframes_reference_only": [
+    {
+      "kind": "official_keyframe",
+      "id": "OP_SHOT_005",
+      "timecode": "00:07.50",
+      "role": "图1 / no_text_credit_safe_bird",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_002_OPENING_AIRCRAFT_FLASH_LONG/keyframes/02_OP_SHOT_005.png",
+      "local": "06_official_original_keyframes_reference_only/01_official_keyframe_OP_SHOT_005.png",
+      "exists": true,
+      "r8_status": "reference_only_not_for_default_upload"
+    },
+    {
+      "kind": "official_keyframe",
+      "id": "OP_SHOT_006",
+      "timecode": "00:11.50",
+      "role": "图2 / cloud_bank_growth",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_002_OPENING_AIRCRAFT_FLASH_LONG/keyframes/03_OP_SHOT_006.png",
+      "local": "06_official_original_keyframes_reference_only/02_official_keyframe_OP_SHOT_006.png",
+      "exists": true,
+      "r8_status": "reference_only_not_for_default_upload"
+    },
+    {
+      "kind": "official_keyframe",
+      "id": "OP_SHOT_007",
+      "timecode": "00:15.00",
+      "role": "图1 / aircraft_brief_reveal",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_002_OPENING_AIRCRAFT_FLASH_LONG/keyframes/06_OP_SHOT_007.png",
+      "local": "06_official_original_keyframes_reference_only/03_official_keyframe_OP_SHOT_007.png",
+      "exists": true,
+      "r8_status": "reference_only_not_for_default_upload"
+    }
+  ],
+  "expected_video_output_path": "08_generation/outputs/video/reference003_r7_high_precision_segments/VU_REF003_R7_002_OPENING_AIRCRAFT_FLASH_LONG.mp4"
+}

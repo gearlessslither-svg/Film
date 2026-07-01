@@ -1,0 +1,139 @@
+{
+  "created_at": "2026-07-02T00:29:26+08:00",
+  "status": "lean_input_folder_r7_reference_only_pending_visual_qa",
+  "unit": {
+    "order": 31,
+    "unit_id": "VU_REF003_R7_031_BLUE_WATER_BLOOM",
+    "title": "Blue Water蓝色绽放",
+    "start": 74.074,
+    "end": 76.451,
+    "intent": "Blue Water 象征蓝色绽放/水下纹理。",
+    "active_locks": [
+      [
+        "props_vehicles_symbols",
+        "blue_water_pendant"
+      ]
+    ],
+    "mode": "high_precision_segment"
+  },
+  "source_unit_manifest": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_031_BLUE_WATER_BLOOM/manifest.json",
+  "reference_clip": {
+    "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_031_BLUE_WATER_BLOOM/reference_clip/VU_REF003_R7_031_BLUE_WATER_BLOOM_reference.mp4",
+    "local": "01_reference_clip/VU_REF003_R7_031_BLUE_WATER_BLOOM_reference_upload_h264_aac.mp4",
+    "exists": true,
+    "encoding": "H.264 video + silent AAC audio, yuv420p, faststart, metadata stripped",
+    "reference_material_rule": "regular_upload_only_if_original_independent_reference_is_2s_or_longer",
+    "original_encoding_note": "source split clips were MP4 container with mpeg4/mp4v video and no audio",
+    "source_duration_seconds": 2.38,
+    "output_duration_seconds": 2.39,
+    "minimum_reference_material_seconds": 2.0,
+    "encoding_floor_seconds": 2.05,
+    "padded_last_frame_seconds": 0.0
+  },
+  "prompt_doc": "AIGC_PROMPT.md",
+  "keyframes_for_upload": [
+    {
+      "kind": "r5_adaptive_generated",
+      "id": "R5_VU_REF003_018_BLUE_WATER_SYMBOL_074000ms_01",
+      "timecode": "01:14.00",
+      "role": "adaptive_primary",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_031_BLUE_WATER_BLOOM/keyframes/01_R5_VU_REF003_018_BLUE_WATER_SYMBOL_074000ms_01.png",
+      "local": "02_keyframes_for_upload/01_r5_adaptive_generated_R5_VU_REF003_018_BLUE_WATER_SYMBOL_074000ms_01.png",
+      "exists": true
+    }
+  ],
+  "asset_locks_for_upload": [
+    {
+      "group": "props_vehicles_symbols",
+      "id": "blue_water_pendant",
+      "status": "official_prop_lock",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_global_asset_locks/props_vehicles_symbols_blue_water_pendant.png",
+      "local": "03_asset_locks_for_upload/01_props_vehicles_symbols_blue_water_pendant.png",
+      "exists": true
+    }
+  ],
+  "source_reference_frames_audit_only": [
+    {
+      "id": "R7_CAND_031_start_074104ms",
+      "timecode": "01:14.10",
+      "role": "start",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_031_BLUE_WATER_BLOOM/candidate_reference_frames/R7_CAND_031_start_074104ms.jpg",
+      "local": "04_source_reference_frames_audit_only/01_R7_CAND_031_start_074104ms.jpg",
+      "exists": true
+    },
+    {
+      "id": "R7_CAND_031_middle_075262ms",
+      "timecode": "01:15.26",
+      "role": "middle",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_031_BLUE_WATER_BLOOM/candidate_reference_frames/R7_CAND_031_middle_075262ms.jpg",
+      "local": "04_source_reference_frames_audit_only/02_R7_CAND_031_middle_075262ms.jpg",
+      "exists": true
+    },
+    {
+      "id": "R7_CAND_031_end_076421ms",
+      "timecode": "01:16.42",
+      "role": "end",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_031_BLUE_WATER_BLOOM/candidate_reference_frames/R7_CAND_031_end_076421ms.jpg",
+      "local": "04_source_reference_frames_audit_only/03_R7_CAND_031_end_076421ms.jpg",
+      "exists": true
+    }
+  ],
+  "r7_generated_candidates_reference_only": [
+    {
+      "kind": "r7_generated_candidate_reference_only",
+      "id": "R7_CAND_031_start_074104ms",
+      "timecode": "01:14.10",
+      "role": "start",
+      "priority": "P3_reference_video_or_already_handled",
+      "source": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_031_start_074104ms.png",
+      "local": "05_r7_generated_candidates_reference_only/01_R7_CAND_031_start_074104ms.png",
+      "exists": true,
+      "r8_status": "reference_only_pending_director_reapproval"
+    },
+    {
+      "kind": "r7_generated_candidate_reference_only",
+      "id": "R7_CAND_031_middle_075262ms",
+      "timecode": "01:15.26",
+      "role": "middle",
+      "priority": "P3_reference_video_or_already_handled",
+      "source": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_031_middle_075262ms.png",
+      "local": "05_r7_generated_candidates_reference_only/02_R7_CAND_031_middle_075262ms.png",
+      "exists": true,
+      "r8_status": "reference_only_pending_director_reapproval"
+    },
+    {
+      "kind": "r7_generated_candidate_reference_only",
+      "id": "R7_CAND_031_end_076421ms",
+      "timecode": "01:16.42",
+      "role": "end",
+      "priority": "P3_reference_video_or_already_handled",
+      "source": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_031_end_076421ms.png",
+      "local": "05_r7_generated_candidates_reference_only/03_R7_CAND_031_end_076421ms.png",
+      "exists": true,
+      "r8_status": "reference_only_pending_director_reapproval"
+    }
+  ],
+  "official_original_keyframes_reference_only": [
+    {
+      "kind": "official_keyframe",
+      "id": "OP_SHOT_036",
+      "timecode": "01:15.00",
+      "role": "图2 / blue_symbol_bloom",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_031_BLUE_WATER_BLOOM/keyframes/02_OP_SHOT_036.png",
+      "local": "06_official_original_keyframes_reference_only/01_official_keyframe_OP_SHOT_036.png",
+      "exists": true,
+      "r8_status": "reference_only_not_for_default_upload"
+    },
+    {
+      "kind": "official_keyframe",
+      "id": "OP_SHOT_037",
+      "timecode": "01:16.50",
+      "role": "图3 / underwater_texture",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_031_BLUE_WATER_BLOOM/keyframes/03_OP_SHOT_037.png",
+      "local": "06_official_original_keyframes_reference_only/02_official_keyframe_OP_SHOT_037.png",
+      "exists": true,
+      "r8_status": "reference_only_not_for_default_upload"
+    }
+  ],
+  "expected_video_output_path": "08_generation/outputs/video/reference003_r7_high_precision_segments/VU_REF003_R7_031_BLUE_WATER_BLOOM.mp4"
+}

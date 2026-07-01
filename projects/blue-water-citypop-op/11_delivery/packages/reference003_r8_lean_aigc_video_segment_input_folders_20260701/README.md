@@ -1,7 +1,12 @@
 # Reference-003 R8 Lean AIGC Video Segment Input Folders
 
+- DO NOT USE AS CURRENT UPLOAD ENTRY: superseded by the 20260702 split packages.
+- Regular >=2s source materials: `../reference003_r8_lean_regular_reference_materials_min2s_20260702/`
+- Short <2s source materials: `../reference003_r8_lean_short_reference_materials_under2s_20260702/`
+- Reason: shot content integrity has priority over the 2-second upload rule; short reference materials must be handled separately, not mixed with regular upload units.
+
 - Created: 2026-07-02T00:08:00+08:00
-- Status: `lean_input_folders_r7_reference_only_pending_visual_qa`
+- Status: `superseded_by_min2s_split_packages`
 - Unit folders: 36/36
 - Reference clips: 36/36
 - Prompt docs: 36/36

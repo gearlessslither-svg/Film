@@ -1,0 +1,20 @@
+{
+  "created_at": "2026-07-02T00:36:00+08:00",
+  "status": "segmentation_plan_ready_for_director_review",
+  "project": "blue-water-citypop-op",
+  "policy": {
+    "priority_1": "shot/story content integrity",
+    "priority_2": "platform 2-second single-reference-material rule",
+    "do_not": "merge or splice neighboring shots merely to satisfy duration"
+  },
+  "hard_cut_version": {
+    "unit_count": 36,
+    "purpose": "technical boundary audit, frame-level repair, source tracing",
+    "recommended_for_external_aigc_video_generation": false
+  },
+  "director_semantic_version": {
+    "unit_count": 16,
+    "purpose": "external AIGC video generation and story-continuity review",
+    "recommended_for_external_aigc_video_generation": true
+  }
+}

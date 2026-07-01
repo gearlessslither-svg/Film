@@ -1,0 +1,147 @@
+{
+  "created_at": "2026-07-02T00:29:33+08:00",
+  "status": "lean_short_under2s_reference_material_folder_pending_special_handling",
+  "unit": {
+    "order": 11,
+    "unit_id": "VU_REF003_R7_011_GRANDIS_TRIO_CLOSE",
+    "title": "Grandis三人组近景",
+    "start": 35.953,
+    "end": 37.204,
+    "intent": "Grandis 三人组近景/表演状态，不能和前一广角混成同一镜。",
+    "active_locks": [
+      [
+        "characters",
+        "grandis"
+      ],
+      [
+        "characters",
+        "sanson"
+      ],
+      [
+        "characters",
+        "hanson"
+      ]
+    ],
+    "mode": "high_precision_segment"
+  },
+  "source_unit_manifest": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_011_GRANDIS_TRIO_CLOSE/manifest.json",
+  "reference_clip": {
+    "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_011_GRANDIS_TRIO_CLOSE/reference_clip/VU_REF003_R7_011_GRANDIS_TRIO_CLOSE_reference.mp4",
+    "local": "01_reference_clip_same_shot_hold_min2s_optional/VU_REF003_R7_011_GRANDIS_TRIO_CLOSE_reference_same_shot_hold_min2s_h264_aac.mp4",
+    "original_independent_local": "00_original_independent_reference_clip/VU_REF003_R7_011_GRANDIS_TRIO_CLOSE_reference_independent_original_duration_h264_aac.mp4",
+    "exists": true,
+    "original_independent_exists": true,
+    "encoding": "H.264 video + silent AAC audio, yuv420p, faststart, metadata stripped",
+    "reference_material_rule": "short_under_2s_packaged_separately; no adjacent shots spliced",
+    "short_material_handling": "optional same-shot last-frame hold to satisfy 2s upload floor",
+    "original_independent_duration_seconds": 1.26,
+    "original_encoding_note": "source split clips were MP4 container with mpeg4/mp4v video and no audio",
+    "source_duration_seconds": 1.25,
+    "output_duration_seconds": 2.05,
+    "minimum_reference_material_seconds": 2.0,
+    "encoding_floor_seconds": 2.05,
+    "padded_last_frame_seconds": 0.8
+  },
+  "prompt_doc": "AIGC_PROMPT.md",
+  "keyframes_for_upload": [],
+  "asset_locks_for_upload": [
+    {
+      "group": "characters",
+      "id": "grandis",
+      "status": "official_identity_lock",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_global_asset_locks/characters_grandis.png",
+      "local": "03_asset_locks_for_upload/01_characters_grandis.png",
+      "exists": true
+    },
+    {
+      "group": "characters",
+      "id": "sanson",
+      "status": "official_identity_lock",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_global_asset_locks/characters_sanson.png",
+      "local": "03_asset_locks_for_upload/02_characters_sanson.png",
+      "exists": true
+    },
+    {
+      "group": "characters",
+      "id": "hanson",
+      "status": "official_identity_lock",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_global_asset_locks/characters_hanson.png",
+      "local": "03_asset_locks_for_upload/03_characters_hanson.png",
+      "exists": true
+    }
+  ],
+  "source_reference_frames_audit_only": [
+    {
+      "id": "R7_CAND_011_start_035983ms",
+      "timecode": "00:35.98",
+      "role": "start",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_011_GRANDIS_TRIO_CLOSE/candidate_reference_frames/R7_CAND_011_start_035983ms.jpg",
+      "local": "04_source_reference_frames_audit_only/01_R7_CAND_011_start_035983ms.jpg",
+      "exists": true
+    },
+    {
+      "id": "R7_CAND_011_middle_036579ms",
+      "timecode": "00:36.58",
+      "role": "middle",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_011_GRANDIS_TRIO_CLOSE/candidate_reference_frames/R7_CAND_011_middle_036579ms.jpg",
+      "local": "04_source_reference_frames_audit_only/02_R7_CAND_011_middle_036579ms.jpg",
+      "exists": true
+    },
+    {
+      "id": "R7_CAND_011_end_037174ms",
+      "timecode": "00:37.17",
+      "role": "end",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_011_GRANDIS_TRIO_CLOSE/candidate_reference_frames/R7_CAND_011_end_037174ms.jpg",
+      "local": "04_source_reference_frames_audit_only/03_R7_CAND_011_end_037174ms.jpg",
+      "exists": true
+    }
+  ],
+  "r7_generated_candidates_reference_only": [
+    {
+      "kind": "r7_generated_candidate_reference_only",
+      "id": "R7_CAND_011_start_035983ms",
+      "timecode": "00:35.98",
+      "role": "start",
+      "priority": "P1_generate_next_small_batch",
+      "source": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_011_start_035983ms.png",
+      "local": "05_r7_generated_candidates_reference_only/01_R7_CAND_011_start_035983ms.png",
+      "exists": true,
+      "r8_status": "reference_only_pending_director_reapproval"
+    },
+    {
+      "kind": "r7_generated_candidate_reference_only",
+      "id": "R7_CAND_011_middle_036579ms",
+      "timecode": "00:36.58",
+      "role": "middle",
+      "priority": "P1_generate_next_small_batch",
+      "source": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_011_middle_036579ms.png",
+      "local": "05_r7_generated_candidates_reference_only/02_R7_CAND_011_middle_036579ms.png",
+      "exists": true,
+      "r8_status": "reference_only_pending_director_reapproval"
+    },
+    {
+      "kind": "r7_generated_candidate_reference_only",
+      "id": "R7_CAND_011_end_037174ms",
+      "timecode": "00:37.17",
+      "role": "end",
+      "priority": "P3_reference_video_or_already_handled",
+      "source": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_011_end_037174ms.png",
+      "local": "05_r7_generated_candidates_reference_only/03_R7_CAND_011_end_037174ms.png",
+      "exists": true,
+      "r8_status": "reference_only_pending_director_reapproval"
+    }
+  ],
+  "official_original_keyframes_reference_only": [
+    {
+      "kind": "official_keyframe",
+      "id": "OP_SHOT_016",
+      "timecode": "00:37.00",
+      "role": "图2 / Grandis_trio_close",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_011_GRANDIS_TRIO_CLOSE/keyframes/01_OP_SHOT_016.png",
+      "local": "06_official_original_keyframes_reference_only/01_official_keyframe_OP_SHOT_016.png",
+      "exists": true,
+      "r8_status": "reference_only_not_for_default_upload"
+    }
+  ],
+  "expected_video_output_path": "08_generation/outputs/video/reference003_r7_high_precision_segments/VU_REF003_R7_011_GRANDIS_TRIO_CLOSE.mp4"
+}

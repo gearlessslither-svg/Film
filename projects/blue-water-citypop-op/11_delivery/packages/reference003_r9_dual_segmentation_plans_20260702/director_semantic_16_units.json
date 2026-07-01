@@ -1,0 +1,332 @@
+{
+  "units": [
+    {
+      "order": 1,
+      "unit_id": "DS_REF003_001_OPENING_SKY_BIRD",
+      "title": "开场天空与白鸟长运动",
+      "start": 0.0,
+      "end": 7.0,
+      "duration": 7.0,
+      "source_hard_cut_orders": [
+        1
+      ],
+      "source_hard_cut_unit_ids": [
+        "VU_REF003_R7_001_OPENING_CLOUD_BIRD_LONG"
+      ],
+      "director_function": "establishing_atmosphere",
+      "decision": "keep",
+      "rationale": "天空开场是单一气口，保留为长镜头。",
+      "upload_recommendation": "regular_generation_unit"
+    },
+    {
+      "order": 2,
+      "unit_id": "DS_REF003_002_SKY_AIRCRAFT_REVEAL",
+      "title": "白鸟云层到飞行器一闪",
+      "start": 7.0,
+      "end": 16.5,
+      "duration": 9.5,
+      "source_hard_cut_orders": [
+        2
+      ],
+      "source_hard_cut_unit_ids": [
+        "VU_REF003_R7_002_OPENING_AIRCRAFT_FLASH_LONG"
+      ],
+      "director_function": "sky_motion_to_vehicle_flash",
+      "decision": "keep",
+      "rationale": "虽然含飞行器闪现，但仍属于同一云层/天空运动短语。",
+      "upload_recommendation": "regular_generation_unit"
+    },
+    {
+      "order": 3,
+      "unit_id": "DS_REF003_003_TITLE_FLARE_NADIA_REVEAL",
+      "title": "标题安全位、日光与Nadia首显",
+      "start": 16.5,
+      "end": 24.8,
+      "duration": 8.3,
+      "source_hard_cut_orders": [
+        3
+      ],
+      "source_hard_cut_unit_ids": [
+        "VU_REF003_R7_003_OPENING_TITLE_FLARE_NADIA"
+      ],
+      "director_function": "title_safe_to_character_reveal",
+      "decision": "keep",
+      "rationale": "开场收束到 Nadia 首次显影，是一个完整引入。",
+      "upload_recommendation": "regular_generation_unit"
+    },
+    {
+      "order": 4,
+      "unit_id": "DS_REF003_004_NADIA_CONTINUOUS_CLOSE",
+      "title": "Nadia侧脸到近景连续段",
+      "start": 24.8,
+      "end": 26.818,
+      "duration": 2.018,
+      "source_hard_cut_orders": [
+        4,
+        5
+      ],
+      "source_hard_cut_unit_ids": [
+        "VU_REF003_R7_004_NADIA_PROFILE_CONTINUE",
+        "VU_REF003_R7_005_NADIA_CLOSE_INSERT"
+      ],
+      "director_function": "single_character_emotional_continuity",
+      "decision": "merge",
+      "rationale": "同一人物、同一情绪、同一亮相功能，硬切拆分会破坏人脸连续性。",
+      "upload_recommendation": "regular_generation_unit"
+    },
+    {
+      "order": 5,
+      "unit_id": "DS_REF003_005_NADIA_JEAN_MARIE_BRIDGE",
+      "title": "Nadia到Jean再到Marie的角色桥",
+      "start": 26.818,
+      "end": 31.949,
+      "duration": 5.131,
+      "source_hard_cut_orders": [
+        6,
+        7,
+        8
+      ],
+      "source_hard_cut_unit_ids": [
+        "VU_REF003_R7_006_NADIA_TO_JEAN_BRIDGE",
+        "VU_REF003_R7_007_JEAN_FACE_FLASH",
+        "VU_REF003_R7_008_JEAN_TO_MARIE_BRIDGE"
+      ],
+      "director_function": "character_handoff_bridge",
+      "decision": "merge",
+      "rationale": "这是一组角色接力桥，硬切点用于审计，但外部生成应保持转场功能完整。",
+      "upload_recommendation": "regular_generation_unit"
+    },
+    {
+      "order": 6,
+      "unit_id": "DS_REF003_006_MARIE_KING_MEADOW",
+      "title": "Marie与King草地亮相",
+      "start": 31.949,
+      "end": 33.951,
+      "duration": 2.002,
+      "source_hard_cut_orders": [
+        9
+      ],
+      "source_hard_cut_unit_ids": [
+        "VU_REF003_R7_009_MARIE_KING_MEADOW"
+      ],
+      "director_function": "character_pair_intro",
+      "decision": "keep",
+      "rationale": "Marie/King 是独立人物关系镜头。",
+      "upload_recommendation": "regular_generation_unit"
+    },
+    {
+      "order": 7,
+      "unit_id": "DS_REF003_007_GRANDIS_TRIO_REVEAL",
+      "title": "Grandis三人组广角到近景",
+      "start": 33.951,
+      "end": 37.204,
+      "duration": 3.253,
+      "source_hard_cut_orders": [
+        10,
+        11
+      ],
+      "source_hard_cut_unit_ids": [
+        "VU_REF003_R7_010_GRANDIS_TRIO_WIDE",
+        "VU_REF003_R7_011_GRANDIS_TRIO_CLOSE"
+      ],
+      "director_function": "group_character_reveal",
+      "decision": "merge",
+      "rationale": "同一三人组亮相，广角到近景属于同一表演段。",
+      "upload_recommendation": "regular_generation_unit"
+    },
+    {
+      "order": 8,
+      "unit_id": "DS_REF003_008_NADIA_RUN_PHRASE",
+      "title": "Nadia奔跑入场与正面节拍",
+      "start": 37.204,
+      "end": 41.5,
+      "duration": 4.296,
+      "source_hard_cut_orders": [
+        12,
+        13,
+        14
+      ],
+      "source_hard_cut_unit_ids": [
+        "VU_REF003_R7_012_RUN_MONTAGE_ENTRY",
+        "VU_REF003_R7_013_NADIA_RUN_FEET",
+        "VU_REF003_R7_014_NADIA_RUN_FRONT"
+      ],
+      "director_function": "run_montage_nadia_phrase",
+      "decision": "merge",
+      "rationale": "奔跑入场、脚步、正面是 Nadia 动作短语，不应按身体局部硬拆。",
+      "upload_recommendation": "regular_generation_unit"
+    },
+    {
+      "order": 9,
+      "unit_id": "DS_REF003_009_RUN_MONTAGE_GROUP_PHRASE",
+      "title": "Jean、Marie/King到群像奔跑",
+      "start": 41.5,
+      "end": 47.422,
+      "duration": 5.922,
+      "source_hard_cut_orders": [
+        15,
+        16,
+        17
+      ],
+      "source_hard_cut_unit_ids": [
+        "VU_REF003_R7_015_JEAN_RUN",
+        "VU_REF003_R7_016_MARIE_KING_RUN",
+        "VU_REF003_R7_017_GROUP_RUN"
+      ],
+      "director_function": "run_montage_group_phrase",
+      "decision": "merge",
+      "rationale": "奔跑 montage 的接力后半段，按角色节奏合并减少身份跳变。",
+      "upload_recommendation": "regular_generation_unit"
+    },
+    {
+      "order": 10,
+      "unit_id": "DS_REF003_010_ACTION_VEHICLE_BRIDGE",
+      "title": "反应、Grandis动作、车辆与群像转海底",
+      "start": 47.422,
+      "end": 52.427,
+      "duration": 5.005,
+      "source_hard_cut_orders": [
+        18,
+        19,
+        20,
+        21,
+        22
+      ],
+      "source_hard_cut_unit_ids": [
+        "VU_REF003_R7_018_REACTION_TO_ACTION_CLUSTER",
+        "VU_REF003_R7_019_GRANDIS_ACTION_INSERT",
+        "VU_REF003_R7_020_VEHICLE_PREP_FLASH",
+        "VU_REF003_R7_021_VEHICLE_ARC",
+        "VU_REF003_R7_022_GROUP_LINEUP_TO_UNDERSEA"
+      ],
+      "director_function": "action_bridge_to_undersea",
+      "decision": "merge",
+      "rationale": "这是一个快速动作桥，硬切适合定位闪帧，不适合外部逐段生成。",
+      "upload_recommendation": "regular_generation_unit"
+    },
+    {
+      "order": 11,
+      "unit_id": "DS_REF003_011_NAUTILUS_UNDERSEA_PASSAGE",
+      "title": "Nautilus海底连续通过",
+      "start": 52.427,
+      "end": 61.436,
+      "duration": 9.009,
+      "source_hard_cut_orders": [
+        23,
+        24,
+        25,
+        26
+      ],
+      "source_hard_cut_unit_ids": [
+        "VU_REF003_R7_023_NAUTILUS_UNDERSEA_ENTRY",
+        "VU_REF003_R7_024_NAUTILUS_PASS",
+        "VU_REF003_R7_025_NAUTILUS_LIGHT_SHIFT",
+        "VU_REF003_R7_026_NAUTILUS_EXIT"
+      ],
+      "director_function": "vehicle_environment_passage",
+      "decision": "merge",
+      "rationale": "潜艇、水下光带和尾段属于同一环境运动。",
+      "upload_recommendation": "regular_generation_unit"
+    },
+    {
+      "order": 12,
+      "unit_id": "DS_REF003_012_NIGHT_CITY_AIRCRAFT",
+      "title": "夜城蓝网格与夜航飞行器",
+      "start": 61.436,
+      "end": 66.024,
+      "duration": 4.588,
+      "source_hard_cut_orders": [
+        27,
+        28
+      ],
+      "source_hard_cut_unit_ids": [
+        "VU_REF003_R7_027_NIGHT_CITY_GRID",
+        "VU_REF003_R7_028_NIGHT_AIRCRAFT_PASS"
+      ],
+      "director_function": "night_city_motion",
+      "decision": "merge",
+      "rationale": "同一夜间空间与飞行器运动，合并更利于环境连续。",
+      "upload_recommendation": "regular_generation_unit"
+    },
+    {
+      "order": 13,
+      "unit_id": "DS_REF003_013_NEMO_SUNSET_PORTRAIT",
+      "title": "Nemo夕景肖像长段",
+      "start": 66.024,
+      "end": 71.363,
+      "duration": 5.339,
+      "source_hard_cut_orders": [
+        29
+      ],
+      "source_hard_cut_unit_ids": [
+        "VU_REF003_R7_029_NEMO_SUNSET_PROFILE"
+      ],
+      "director_function": "portrait_hold",
+      "decision": "keep",
+      "rationale": "完整人物肖像长段，保持独立。",
+      "upload_recommendation": "regular_generation_unit"
+    },
+    {
+      "order": 14,
+      "unit_id": "DS_REF003_014_NADIA_BLUE_WATER_OMEN",
+      "title": "Nadia庄重到Blue Water绽放",
+      "start": 71.363,
+      "end": 76.451,
+      "duration": 5.088,
+      "source_hard_cut_orders": [
+        30,
+        31
+      ],
+      "source_hard_cut_unit_ids": [
+        "VU_REF003_R7_030_NADIA_SOLEMN_TO_JEWEL",
+        "VU_REF003_R7_031_BLUE_WATER_BLOOM"
+      ],
+      "director_function": "symbolic_character_to_object",
+      "decision": "merge",
+      "rationale": "Nadia 情绪与宝石象征是一组意义连续的神秘提示。",
+      "upload_recommendation": "regular_generation_unit"
+    },
+    {
+      "order": 15,
+      "unit_id": "DS_REF003_015_WATER_SPLASH_FINAL_SKY",
+      "title": "水下纹理、水花爆发到最终天空",
+      "start": 76.451,
+      "end": 83.584,
+      "duration": 7.133,
+      "source_hard_cut_orders": [
+        32,
+        33,
+        34,
+        35
+      ],
+      "source_hard_cut_unit_ids": [
+        "VU_REF003_R7_032_UNDERWATER_TO_SPLASH",
+        "VU_REF003_R7_033_SPLASH_PEAK",
+        "VU_REF003_R7_034_FINAL_SKY_TRANSITION",
+        "VU_REF003_R7_035_FINAL_SKY_HOLD"
+      ],
+      "director_function": "final_transition_phrase",
+      "decision": "merge",
+      "rationale": "水下到水花再到天空是结尾转场短语，硬拆会破坏收束。",
+      "upload_recommendation": "regular_generation_unit"
+    },
+    {
+      "order": 16,
+      "unit_id": "DS_REF003_016_BLACK_TAIL",
+      "title": "黑场尾帧",
+      "start": 83.584,
+      "end": 84.418,
+      "duration": 0.834,
+      "source_hard_cut_orders": [
+        36
+      ],
+      "source_hard_cut_unit_ids": [
+        "VU_REF003_R7_036_BLACK_TAIL"
+      ],
+      "director_function": "edit_tail_only",
+      "decision": "keep_special",
+      "rationale": "黑场尾帧是剪辑尾巴，不建议作为普通外部生成素材；单独后期处理。",
+      "upload_recommendation": "edit_tail_or_special_short_material"
+    }
+  ]
+}

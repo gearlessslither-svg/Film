@@ -7,6 +7,7 @@ import argparse
 import datetime as dt
 import json
 import os
+import re
 import shutil
 import subprocess
 from pathlib import Path
@@ -28,11 +29,20 @@ LEAN_OUTPUT_ROOT = (
     PROJECT_ROOT
     / "11_delivery/packages/reference003_r8_lean_aigc_video_segment_input_folders_20260701"
 )
+REGULAR_MIN2S_OUTPUT_ROOT = (
+    PROJECT_ROOT
+    / "11_delivery/packages/reference003_r8_lean_regular_reference_materials_min2s_20260702"
+)
+SHORT_UNDER2S_OUTPUT_ROOT = (
+    PROJECT_ROOT
+    / "11_delivery/packages/reference003_r8_lean_short_reference_materials_under2s_20260702"
+)
 FFMPEG_CANDIDATES = [
     Path("/Users/jaychoupp/Library/Application Support/bilibili/ffmpeg/ffmpeg"),
     Path("/opt/homebrew/bin/ffmpeg"),
     Path("/usr/local/bin/ffmpeg"),
 ]
+MIN_REFERENCE_MATERIAL_SECONDS = 2.05
 
 
 def rel(path: Path) -> str:
@@ -99,12 +109,35 @@ def find_ffmpeg() -> Path:
     raise RuntimeError("ffmpeg not found; cannot build upload-compatible reference clips")
 
 
-def transcode_reference_clip(src: Path, dst: Path) -> None:
-    """Write a website-friendly H.264/AAC MP4 with silent audio and faststart metadata."""
+def probe_duration_seconds(src: Path) -> float | None:
+    ffmpeg = find_ffmpeg()
+    result = subprocess.run(
+        [str(ffmpeg), "-hide_banner", "-i", str(src)],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+        check=False,
+    )
+    match = re.search(r"Duration:\s*(\d+):(\d+):(\d+(?:\.\d+)?)", result.stderr)
+    if not match:
+        return None
+    hours, minutes, seconds = match.groups()
+    return int(hours) * 3600 + int(minutes) * 60 + float(seconds)
+
+
+def transcode_reference_clip(src: Path, dst: Path, pad_short_to_min: bool) -> dict[str, Any]:
+    """Write a website-friendly H.264/AAC MP4; optionally hold the last frame to >=2s."""
     dst.parent.mkdir(parents=True, exist_ok=True)
     if dst.exists() or dst.is_symlink():
         dst.unlink()
     ffmpeg = find_ffmpeg()
+    source_duration = probe_duration_seconds(src)
+    pad_seconds = 0.0
+    if pad_short_to_min and source_duration is not None and source_duration < MIN_REFERENCE_MATERIAL_SECONDS:
+        pad_seconds = MIN_REFERENCE_MATERIAL_SECONDS - source_duration
+    vf = "scale=trunc(iw/2)*2:trunc(ih/2)*2,format=yuv420p"
+    if pad_seconds > 0:
+        vf += f",tpad=stop_mode=clone:stop_duration={pad_seconds:.3f}"
     cmd = [
         str(ffmpeg),
         "-y",
@@ -122,7 +155,7 @@ def transcode_reference_clip(src: Path, dst: Path) -> None:
         "-map",
         "1:a:0",
         "-vf",
-        "scale=trunc(iw/2)*2:trunc(ih/2)*2,format=yuv420p",
+        vf,
         "-r",
         "24000/1001",
         "-c:v",
@@ -147,10 +180,24 @@ def transcode_reference_clip(src: Path, dst: Path) -> None:
         str(dst),
     ]
     subprocess.run(cmd, check=True)
+    output_duration = probe_duration_seconds(dst)
+    return {
+        "source_duration_seconds": source_duration,
+        "output_duration_seconds": output_duration,
+        "minimum_reference_material_seconds": 2.0,
+        "encoding_floor_seconds": MIN_REFERENCE_MATERIAL_SECONDS,
+        "padded_last_frame_seconds": round(pad_seconds, 3),
+    }
 
 
 def safe_name(index: int, unit_id: str) -> str:
     return f"{index:02d}_{unit_id}"
+
+
+def fmt_seconds(value: float | int | None) -> str:
+    if value is None:
+        return "unknown"
+    return f"{float(value):.2f}"
 
 
 def load_units() -> list[dict[str, Any]]:
@@ -161,6 +208,15 @@ def load_units() -> list[dict[str, Any]]:
         manifest["_unit_dir"] = manifest_path.parent
         units.append(manifest)
     return sorted(units, key=lambda item: item["unit"]["order"])
+
+
+def reference_source_path(unit_manifest: dict[str, Any]) -> Path:
+    return PROJECT_ROOT / unit_manifest["reference_clip"]["path"]
+
+
+def is_short_reference_material(unit_manifest: dict[str, Any]) -> bool:
+    duration = unit_manifest["unit"].get("end", 0) - unit_manifest["unit"].get("start", 0)
+    return float(duration) < 2.0
 
 
 def load_candidates_by_unit() -> dict[str, list[dict[str, Any]]]:
@@ -179,18 +235,52 @@ def load_candidates_by_unit() -> dict[str, list[dict[str, Any]]]:
     return by_unit
 
 
-def copy_reference_clip(unit_manifest: dict[str, Any], unit_dir: Path) -> dict[str, Any]:
+def copy_reference_clip(
+    unit_manifest: dict[str, Any],
+    unit_dir: Path,
+    short_material_package: bool,
+) -> dict[str, Any]:
     ref = unit_manifest["reference_clip"]["path"]
-    src = PROJECT_ROOT / ref
+    src = reference_source_path(unit_manifest)
+    if short_material_package:
+        original_dst = (
+            unit_dir
+            / "00_original_independent_reference_clip"
+            / f"{src.stem}_independent_original_duration_h264_aac.mp4"
+        )
+        original_info = transcode_reference_clip(src, original_dst, pad_short_to_min=False)
+        dst = (
+            unit_dir
+            / "01_reference_clip_same_shot_hold_min2s_optional"
+            / f"{src.stem}_same_shot_hold_min2s_h264_aac.mp4"
+        )
+        transcode_info = transcode_reference_clip(src, dst, pad_short_to_min=True)
+        return {
+            "source": ref,
+            "local": dst.relative_to(unit_dir).as_posix(),
+            "original_independent_local": original_dst.relative_to(unit_dir).as_posix(),
+            "exists": dst.exists(),
+            "original_independent_exists": original_dst.exists(),
+            "encoding": "H.264 video + silent AAC audio, yuv420p, faststart, metadata stripped",
+            "reference_material_rule": "short_under_2s_packaged_separately; no adjacent shots spliced",
+            "short_material_handling": "optional same-shot last-frame hold to satisfy 2s upload floor",
+            "original_independent_duration_seconds": original_info.get("output_duration_seconds"),
+            "original_encoding_note": "source split clips were MP4 container with mpeg4/mp4v video and no audio",
+            **transcode_info,
+        }
+
     dst = unit_dir / "01_reference_clip" / f"{src.stem}_upload_h264_aac.mp4"
-    transcode_reference_clip(src, dst)
-    return {
+    transcode_info = transcode_reference_clip(src, dst, pad_short_to_min=False)
+    result = {
         "source": ref,
         "local": dst.relative_to(unit_dir).as_posix(),
         "exists": dst.exists(),
         "encoding": "H.264 video + silent AAC audio, yuv420p, faststart, metadata stripped",
+        "reference_material_rule": "regular_upload_only_if_original_independent_reference_is_2s_or_longer",
         "original_encoding_note": "source split clips were MP4 container with mpeg4/mp4v video and no audio",
+        **transcode_info,
     }
+    return result
 
 
 def anchor_sort_key(anchor: dict[str, Any]) -> tuple[float, str]:
@@ -384,6 +474,17 @@ def write_prompt(
         "3. Asset locks in `03_asset_locks_for_upload/`, if any.",
         "4. This prompt document.",
         "",
+    ]
+    if reference_clip.get("original_independent_local"):
+        lines += [
+            "Short reference material note: this unit is under 2 seconds in the source timeline and is packaged separately.",
+            f"- Original independent clip: `{reference_clip['original_independent_local']}`",
+            f"- Optional upload workaround: `{reference_clip['local']}`",
+            "- The optional workaround only holds this same shot's last frame; it does not splice neighboring shots.",
+            "- Preserve the original shot content and do not merge this unit with adjacent units.",
+            "",
+        ]
+    lines += [
         "## Keyframes / Images For Upload",
         "",
     ]
@@ -459,6 +560,8 @@ def write_prompt(
         "screen direction, shot duration, and edit rhythm. Use the listed keyframes/images",
         "as visual anchors for identity, props, vehicles, scene geometry, palette, and",
         "continuity. Preserve active asset locks exactly when visible.",
+        "Shot content integrity has higher priority than the 2-second upload constraint:",
+        "do not merge, splice, or borrow content from neighboring shots to satisfy duration.",
         "",
         f"Shot intent: {unit.get('intent', '')}",
         "",
@@ -489,6 +592,7 @@ def write_unit_readme(unit_manifest: dict[str, Any], unit_dir: Path, manifest: d
         f"- Title: {unit['title']}",
         f"- Time range: `{unit_time_range(unit)}`",
         f"- Reference clip: `{manifest['reference_clip']['local']}`",
+        f"- Original independent reference clip: `{manifest['reference_clip'].get('original_independent_local', 'same as reference clip')}`",
         f"- Prompt: `{manifest['prompt_doc']}`",
         f"- Keyframes/images for upload: {len(manifest['keyframes_for_upload'])}",
         f"- Asset locks: {len(manifest['asset_locks_for_upload'])}",
@@ -499,6 +603,8 @@ def write_unit_readme(unit_manifest: dict[str, Any], unit_dir: Path, manifest: d
         "Folder order:",
         "",
         "- `01_reference_clip/`: split reference video for this segment.",
+        "- `00_original_independent_reference_clip/`: original-duration independent clip, present only for short-material units.",
+        "- `01_reference_clip_same_shot_hold_min2s_optional/`: optional same-shot hold version, present only for short-material units.",
         "- `02_keyframes_for_upload/`: ordered target-style generated keyframe inputs only in lean packages.",
         "- `03_asset_locks_for_upload/`: identity/prop/scene locks for this segment.",
         "- `04_source_reference_frames_audit_only/`: original-video screenshots for audit only.",
@@ -510,10 +616,17 @@ def write_unit_readme(unit_manifest: dict[str, Any], unit_dir: Path, manifest: d
     (unit_dir / "README.md").write_text("\n".join(lines), encoding="utf-8")
 
 
-def build(clean: bool, output_root: Path, include_r7_upload: bool) -> dict[str, Any]:
+def build(
+    clean: bool,
+    output_root: Path,
+    include_r7_upload: bool,
+    units_override: list[dict[str, Any]] | None = None,
+    short_material_package: bool = False,
+    package_title: str | None = None,
+) -> dict[str, Any]:
     now = dt.datetime.now(dt.timezone(dt.timedelta(hours=8))).isoformat(timespec="seconds")
     ensure_clean_dir(output_root, clean=clean)
-    units = load_units()
+    units = units_override if units_override is not None else load_units()
     candidates_by_unit = load_candidates_by_unit()
     unit_rows = []
     missing = []
@@ -525,7 +638,7 @@ def build(clean: bool, output_root: Path, include_r7_upload: bool) -> dict[str, 
         ensure_clean_dir(folder, clean=clean)
         candidates = candidates_by_unit.get(unit_id, [])
 
-        reference_clip = copy_reference_clip(unit_manifest, folder)
+        reference_clip = copy_reference_clip(unit_manifest, folder, short_material_package=short_material_package)
         ordered, official_reference_only = copy_ordered_anchors(
             unit_manifest,
             folder,
@@ -552,7 +665,11 @@ def build(clean: bool, output_root: Path, include_r7_upload: bool) -> dict[str, 
             "created_at": now,
             "status": "organized_input_folder_pending_visual_qa"
             if include_r7_upload
-            else "lean_input_folder_r7_reference_only_pending_visual_qa",
+            else (
+                "lean_short_under2s_reference_material_folder_pending_special_handling"
+                if short_material_package
+                else "lean_input_folder_r7_reference_only_pending_visual_qa"
+            ),
             "unit": unit,
             "source_unit_manifest": rel(unit_manifest["_manifest_path"]),
             "reference_clip": reference_clip,
@@ -592,6 +709,11 @@ def build(clean: bool, output_root: Path, include_r7_upload: bool) -> dict[str, 
                 "time_range": unit_time_range(unit),
                 "folder": folder.relative_to(output_root).as_posix(),
                 "reference_clip": reference_clip["local"],
+                "original_independent_reference_clip": reference_clip.get("original_independent_local", ""),
+                "source_duration_seconds": reference_clip.get("source_duration_seconds"),
+                "output_duration_seconds": reference_clip.get("output_duration_seconds"),
+                "padded_last_frame_seconds": reference_clip.get("padded_last_frame_seconds", 0),
+                "is_short_reference_material": is_short_reference_material(unit_manifest),
                 "prompt_doc": prompt_doc,
                 "keyframe_count": len(keyframes),
                 "asset_lock_count": len(locks),
@@ -607,13 +729,24 @@ def build(clean: bool, output_root: Path, include_r7_upload: bool) -> dict[str, 
         "status": (
             "organized_input_folders_pending_visual_qa"
             if include_r7_upload
-            else "lean_input_folders_r7_reference_only_pending_visual_qa"
+            else (
+                "lean_short_under2s_reference_materials_pending_special_handling"
+                if short_material_package
+                else "lean_regular_reference_materials_min2s_ready_for_upload"
+            )
         )
         if not missing
         else "missing_files",
         "package_root": rel(output_root),
         "include_r7_candidates_as_upload_images": include_r7_upload,
+        "short_reference_material_package": short_material_package,
+        "reference_material_policy": (
+            "short materials are separated; optional min2s files use same-shot last-frame hold only"
+            if short_material_package
+            else "regular package contains only original independent reference materials that are 2s or longer"
+        ),
         "unit_count": len(unit_rows),
+        "short_reference_material_count": sum(1 for row in unit_rows if row["is_short_reference_material"]),
         "reference_clip_count": len(unit_rows),
         "prompt_doc_count": len(unit_rows),
         "keyframe_image_count": sum(row["keyframe_count"] for row in unit_rows),
@@ -633,15 +766,19 @@ def build(clean: bool, output_root: Path, include_r7_upload: bool) -> dict[str, 
     )
 
     lines = [
-        "# Reference-003 R7 AIGC Video Segment Input Folders"
-        if include_r7_upload
-        else "# Reference-003 R8 Lean AIGC Video Segment Input Folders",
+        package_title
+        or (
+            "# Reference-003 R7 AIGC Video Segment Input Folders"
+            if include_r7_upload
+            else "# Reference-003 R8 Lean AIGC Video Segment Input Folders"
+        ),
         "",
         f"- Created: {now}",
         f"- Status: `{package_manifest['status']}`",
-        f"- Unit folders: {len(unit_rows)}/36",
-        f"- Reference clips: {package_manifest['reference_clip_count']}/36",
-        f"- Prompt docs: {package_manifest['prompt_doc_count']}/36",
+        f"- Unit folders: {len(unit_rows)}",
+        f"- Short reference materials under 2s: {package_manifest['short_reference_material_count']}",
+        f"- Reference clips: {package_manifest['reference_clip_count']}",
+        f"- Prompt docs: {package_manifest['prompt_doc_count']}",
         f"- Keyframe/image inputs: {package_manifest['keyframe_image_count']}",
         f"- Asset lock images: {package_manifest['asset_lock_image_count']}",
         f"- Source reference frames, audit only: {package_manifest['source_reference_frame_count']}",
@@ -654,16 +791,21 @@ def build(clean: bool, output_root: Path, include_r7_upload: bool) -> dict[str, 
         "This package is organized first, per director request. It does not mean every generated image is visually approved.",
         "Use it as a clean folder handoff, then continue visual QA and repair decisions."
         if include_r7_upload
-        else "R7 generated candidates and official/original keyframes are held as reference-only after the 161-frame R7 preview failed director QA. Default upload images are limited to ordered target-style generated anchors.",
+        else (
+            "Short reference materials are packaged separately. Shot content integrity is higher priority than the 2-second upload constraint: do not merge, splice, or borrow neighboring shots."
+            if short_material_package
+            else "This regular package excludes source-independent reference clips shorter than 2 seconds. R7 generated candidates and official/original keyframes are held as reference-only."
+        ),
         "",
         "## Folders",
         "",
-        "| # | Unit | Time | Folder | Upload keyframes | Locks | R7 ref-only | Official ref-only | Prompt |",
-        "|---:|---|---:|---|---:|---:|---:|---:|---|",
+        "| # | Unit | Time | Source seconds | Folder | Upload keyframes | Locks | R7 ref-only | Official ref-only | Prompt |",
+        "|---:|---|---:|---:|---|---:|---:|---:|---:|---|",
     ]
     for row in unit_rows:
         lines.append(
             f"| {row['order']} | `{row['unit_id']}` | {row['time_range']} | "
+            f"{fmt_seconds(row['source_duration_seconds'])} | "
             f"`{row['folder']}` | {row['keyframe_count']} | {row['asset_lock_count']} | "
             f"{row['r7_reference_only_count']} | {row['official_reference_only_count']} | `{row['prompt_doc']}` |"
         )
@@ -681,7 +823,42 @@ def main() -> None:
         action="store_true",
         help="Build R8 lean folders: exclude R7 generated candidates from upload images and keep them reference-only.",
     )
+    parser.add_argument(
+        "--split-min2s",
+        action="store_true",
+        help="Build two lean packages: regular >=2s reference materials and separate <2s short materials.",
+    )
     args = parser.parse_args()
+    if args.split_min2s:
+        all_units = load_units()
+        regular_units = [unit for unit in all_units if not is_short_reference_material(unit)]
+        short_units = [unit for unit in all_units if is_short_reference_material(unit)]
+        regular = build(
+            clean=not args.no_clean,
+            output_root=REGULAR_MIN2S_OUTPUT_ROOT,
+            include_r7_upload=False,
+            units_override=regular_units,
+            short_material_package=False,
+            package_title="# Reference-003 R8 Lean Regular Reference Materials Min2s",
+        )
+        short = build(
+            clean=not args.no_clean,
+            output_root=SHORT_UNDER2S_OUTPUT_ROOT,
+            include_r7_upload=False,
+            units_override=short_units,
+            short_material_package=True,
+            package_title="# Reference-003 R8 Lean Short Reference Materials Under 2s",
+        )
+        print(json.dumps({
+            "regular_package_root": regular["package_root"],
+            "regular_unit_count": regular["unit_count"],
+            "regular_short_reference_material_count": regular["short_reference_material_count"],
+            "short_package_root": short["package_root"],
+            "short_unit_count": short["unit_count"],
+            "short_reference_material_count": short["short_reference_material_count"],
+            "missing_count": regular["missing_count"] + short["missing_count"],
+        }, ensure_ascii=False, indent=2))
+        return
     result = build(
         clean=not args.no_clean,
         output_root=LEAN_OUTPUT_ROOT if args.lean_approved else OUTPUT_ROOT,

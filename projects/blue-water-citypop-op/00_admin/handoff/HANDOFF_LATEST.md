@@ -7,6 +7,45 @@
 - 生成时间: 2026-07-01 07:45
 - 备注: Completed Reference-003 R7 full high-precision repack: all 84.42s rebuilt into 36 source-FPS/PySceneDetect-informed AIGC video units; prompt-only files now explicitly list current ordered official + R5 generated anchors; 14 P1 candidate screenshots queued for new pure-image generation.
 
+## 最新更新 / Latest Update — 2026-07-02 00:36 CST
+- Director clarified that the issue is not only Nadia: the whole film needs director/story-minded segmentation, not technical hard-cut segmentation.
+- New dual segmentation plan package:
+  - `11_delivery/packages/reference003_r9_dual_segmentation_plans_20260702/`
+  - README: `11_delivery/packages/reference003_r9_dual_segmentation_plans_20260702/README.md`
+  - hard cut JSON: `11_delivery/packages/reference003_r9_dual_segmentation_plans_20260702/hard_cut_36_units.json`
+  - director semantic JSON: `11_delivery/packages/reference003_r9_dual_segmentation_plans_20260702/director_semantic_16_units.json`
+  - manifest: `11_delivery/packages/reference003_r9_dual_segmentation_plans_20260702/SEGMENTATION_PLAN_MANIFEST.json`
+- QA/report mirror:
+  - `10_qa/reports/reference003_r9_dual_segmentation_plan_20260702.md`
+- Policy:
+  - Keep the 36-unit hard cut as a technical/audit layer only.
+  - Use the 16-unit director semantic cut as the next candidate structure for external AIGC video generation.
+  - Shot/story content integrity remains higher priority than the 2-second platform rule.
+  - Do not merge or splice neighboring shots merely to satisfy duration.
+- Current director semantic grouping count: 16 units. Black tail is marked as special edit-tail handling, not a normal generation unit.
+
+## 最新更新 / Latest Update — 2026-07-02 00:30 CST
+- Director clarified the new upload rule: each single reference material must be at least 2 seconds, but shot content integrity has higher priority than the 2-second platform rule.
+- Do not merge, splice, or borrow neighboring shots just to satisfy a 2-second upload floor.
+- The previous 36-unit R8 lean package is superseded as the current upload entry:
+  - `11_delivery/packages/reference003_r8_lean_aigc_video_segment_input_folders_20260701/`
+- Current split packages:
+  - Regular upload package, source-independent reference clips already >=2s:
+    `11_delivery/packages/reference003_r8_lean_regular_reference_materials_min2s_20260702/`
+  - Short reference material package, source-independent reference clips <2s:
+    `11_delivery/packages/reference003_r8_lean_short_reference_materials_under2s_20260702/`
+- Counts:
+  - Regular package: 18 unit folders, 18 reference clips, 0 short materials, missing 0.
+  - Short package: 18 unit folders, 18 short materials, missing 0.
+- Short package handling:
+  - `00_original_independent_reference_clip/`: original-duration independent clip re-encoded as H.264/AAC for review.
+  - `01_reference_clip_same_shot_hold_min2s_optional/`: optional upload workaround that only holds the same shot's final frame to pass the 2s floor; it does not splice adjacent shots.
+- Verification:
+  - Regular package has 0 reference clips under 2s.
+  - Short package classification errors: 0.
+  - Short original clips are all under 2s.
+  - Short optional same-shot hold clips are all >=2s.
+
 ## 最新更新 / Latest Update — 2026-07-02 00:10 CST
 - Director caught two additional packaging failures in the first per-segment handoff package:
   1. reference clips could not upload reliably because they were hardlinked source MP4s using `mp4v/mpeg4 Simple Profile` video and no audio;

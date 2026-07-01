@@ -1,0 +1,191 @@
+{
+  "created_at": "2026-07-02T00:29:33+08:00",
+  "status": "lean_short_under2s_reference_material_folder_pending_special_handling",
+  "unit": {
+    "order": 22,
+    "unit_id": "VU_REF003_R7_022_GROUP_LINEUP_TO_UNDERSEA",
+    "title": "群像到海底过渡",
+    "start": 50.676,
+    "end": 52.427,
+    "intent": "群像 tableau 过渡进入 Nautilus 海底段。",
+    "active_locks": [
+      [
+        "characters",
+        "nadia"
+      ],
+      [
+        "characters",
+        "jean"
+      ],
+      [
+        "characters",
+        "marie"
+      ],
+      [
+        "characters",
+        "king"
+      ],
+      [
+        "props_vehicles_symbols",
+        "nautilus"
+      ]
+    ],
+    "mode": "high_precision_segment"
+  },
+  "source_unit_manifest": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_022_GROUP_LINEUP_TO_UNDERSEA/manifest.json",
+  "reference_clip": {
+    "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_022_GROUP_LINEUP_TO_UNDERSEA/reference_clip/VU_REF003_R7_022_GROUP_LINEUP_TO_UNDERSEA_reference.mp4",
+    "local": "01_reference_clip_same_shot_hold_min2s_optional/VU_REF003_R7_022_GROUP_LINEUP_TO_UNDERSEA_reference_same_shot_hold_min2s_h264_aac.mp4",
+    "original_independent_local": "00_original_independent_reference_clip/VU_REF003_R7_022_GROUP_LINEUP_TO_UNDERSEA_reference_independent_original_duration_h264_aac.mp4",
+    "exists": true,
+    "original_independent_exists": true,
+    "encoding": "H.264 video + silent AAC audio, yuv420p, faststart, metadata stripped",
+    "reference_material_rule": "short_under_2s_packaged_separately; no adjacent shots spliced",
+    "short_material_handling": "optional same-shot last-frame hold to satisfy 2s upload floor",
+    "original_independent_duration_seconds": 1.77,
+    "original_encoding_note": "source split clips were MP4 container with mpeg4/mp4v video and no audio",
+    "source_duration_seconds": 1.75,
+    "output_duration_seconds": 2.05,
+    "minimum_reference_material_seconds": 2.0,
+    "encoding_floor_seconds": 2.05,
+    "padded_last_frame_seconds": 0.3
+  },
+  "prompt_doc": "AIGC_PROMPT.md",
+  "keyframes_for_upload": [
+    {
+      "kind": "r5_adaptive_generated",
+      "id": "R5_VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS_052000ms_01",
+      "timecode": "00:52.00",
+      "role": "adaptive_primary",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_022_GROUP_LINEUP_TO_UNDERSEA/keyframes/02_R5_VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS_052000ms_01.png",
+      "local": "02_keyframes_for_upload/01_r5_adaptive_generated_R5_VU_REF003_013_NAUTILUS_UNDERSEA_CREDITS_052000ms_01.png",
+      "exists": true
+    }
+  ],
+  "asset_locks_for_upload": [
+    {
+      "group": "characters",
+      "id": "nadia",
+      "status": "official_identity_lock",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_global_asset_locks/characters_nadia.png",
+      "local": "03_asset_locks_for_upload/01_characters_nadia.png",
+      "exists": true
+    },
+    {
+      "group": "characters",
+      "id": "jean",
+      "status": "official_identity_lock",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_global_asset_locks/characters_jean.png",
+      "local": "03_asset_locks_for_upload/02_characters_jean.png",
+      "exists": true
+    },
+    {
+      "group": "characters",
+      "id": "marie",
+      "status": "official_identity_lock",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_global_asset_locks/characters_marie.png",
+      "local": "03_asset_locks_for_upload/03_characters_marie.png",
+      "exists": true
+    },
+    {
+      "group": "characters",
+      "id": "king",
+      "status": "official_identity_lock",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_global_asset_locks/characters_king.png",
+      "local": "03_asset_locks_for_upload/04_characters_king.png",
+      "exists": true
+    },
+    {
+      "group": "props_vehicles_symbols",
+      "id": "nautilus",
+      "status": "official_prop_lock",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_global_asset_locks/props_vehicles_symbols_nautilus.png",
+      "local": "03_asset_locks_for_upload/05_props_vehicles_symbols_nautilus.png",
+      "exists": true
+    }
+  ],
+  "source_reference_frames_audit_only": [
+    {
+      "id": "R7_CAND_022_start_050706ms",
+      "timecode": "00:50.71",
+      "role": "start",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_022_GROUP_LINEUP_TO_UNDERSEA/candidate_reference_frames/R7_CAND_022_start_050706ms.jpg",
+      "local": "04_source_reference_frames_audit_only/01_R7_CAND_022_start_050706ms.jpg",
+      "exists": true
+    },
+    {
+      "id": "R7_CAND_022_middle_051552ms",
+      "timecode": "00:51.55",
+      "role": "middle",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_022_GROUP_LINEUP_TO_UNDERSEA/candidate_reference_frames/R7_CAND_022_middle_051552ms.jpg",
+      "local": "04_source_reference_frames_audit_only/02_R7_CAND_022_middle_051552ms.jpg",
+      "exists": true
+    },
+    {
+      "id": "R7_CAND_022_end_052397ms",
+      "timecode": "00:52.40",
+      "role": "end",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_022_GROUP_LINEUP_TO_UNDERSEA/candidate_reference_frames/R7_CAND_022_end_052397ms.jpg",
+      "local": "04_source_reference_frames_audit_only/03_R7_CAND_022_end_052397ms.jpg",
+      "exists": true
+    }
+  ],
+  "r7_generated_candidates_reference_only": [
+    {
+      "kind": "r7_generated_candidate_reference_only",
+      "id": "R7_CAND_022_start_050706ms",
+      "timecode": "00:50.71",
+      "role": "start",
+      "priority": "P2_review_after_p1",
+      "source": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_022_start_050706ms.png",
+      "local": "05_r7_generated_candidates_reference_only/01_R7_CAND_022_start_050706ms.png",
+      "exists": true,
+      "r8_status": "reference_only_pending_director_reapproval"
+    },
+    {
+      "kind": "r7_generated_candidate_reference_only",
+      "id": "R7_CAND_022_middle_051552ms",
+      "timecode": "00:51.55",
+      "role": "middle",
+      "priority": "P3_reference_video_or_already_handled",
+      "source": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_022_middle_051552ms.png",
+      "local": "05_r7_generated_candidates_reference_only/02_R7_CAND_022_middle_051552ms.png",
+      "exists": true,
+      "r8_status": "reference_only_pending_director_reapproval"
+    },
+    {
+      "kind": "r7_generated_candidate_reference_only",
+      "id": "R7_CAND_022_end_052397ms",
+      "timecode": "00:52.40",
+      "role": "end",
+      "priority": "P3_reference_video_or_already_handled",
+      "source": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_022_end_052397ms.png",
+      "local": "05_r7_generated_candidates_reference_only/03_R7_CAND_022_end_052397ms.png",
+      "exists": true,
+      "r8_status": "reference_only_pending_director_reapproval"
+    }
+  ],
+  "official_original_keyframes_reference_only": [
+    {
+      "kind": "official_keyframe",
+      "id": "OP_SHOT_025",
+      "timecode": "00:51.50",
+      "role": "图3 / group_lineup",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_022_GROUP_LINEUP_TO_UNDERSEA/keyframes/01_OP_SHOT_025.png",
+      "local": "06_official_original_keyframes_reference_only/01_official_keyframe_OP_SHOT_025.png",
+      "exists": true,
+      "r8_status": "reference_only_not_for_default_upload"
+    },
+    {
+      "kind": "official_keyframe",
+      "id": "OP_SHOT_026",
+      "timecode": "00:52.50",
+      "role": "图1 / undersea_start",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_022_GROUP_LINEUP_TO_UNDERSEA/keyframes/03_OP_SHOT_026.png",
+      "local": "06_official_original_keyframes_reference_only/02_official_keyframe_OP_SHOT_026.png",
+      "exists": true,
+      "r8_status": "reference_only_not_for_default_upload"
+    }
+  ],
+  "expected_video_output_path": "08_generation/outputs/video/reference003_r7_high_precision_segments/VU_REF003_R7_022_GROUP_LINEUP_TO_UNDERSEA.mp4"
+}
