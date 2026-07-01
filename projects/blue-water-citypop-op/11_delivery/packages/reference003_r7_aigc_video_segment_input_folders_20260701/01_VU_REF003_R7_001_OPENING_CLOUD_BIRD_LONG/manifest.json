@@ -1,0 +1,155 @@
+{
+  "created_at": "2026-07-01T23:29:49+08:00",
+  "status": "organized_input_folder_pending_visual_qa",
+  "unit": {
+    "order": 1,
+    "unit_id": "VU_REF003_R7_001_OPENING_CLOUD_BIRD_LONG",
+    "title": "开场长段A：黑场云层到白鸟入画",
+    "start": 0.0,
+    "end": 7.0,
+    "intent": "连续天空开场，黑场/云层/白鸟作为一个长运动短语处理。",
+    "active_locks": [
+      [
+        "props_vehicles_symbols",
+        "white_bird"
+      ]
+    ],
+    "mode": "long_opening"
+  },
+  "source_unit_manifest": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_001_OPENING_CLOUD_BIRD_LONG/manifest.json",
+  "reference_clip": {
+    "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_001_OPENING_CLOUD_BIRD_LONG/reference_clip/VU_REF003_R7_001_OPENING_CLOUD_BIRD_LONG_reference.mp4",
+    "local": "01_reference_clip/VU_REF003_R7_001_OPENING_CLOUD_BIRD_LONG_reference.mp4",
+    "exists": true
+  },
+  "prompt_doc": "AIGC_PROMPT.md",
+  "keyframes_for_upload": [
+    {
+      "kind": "official_keyframe",
+      "id": "OP_SHOT_001",
+      "timecode": "00:00.00",
+      "role": "图1 / black_to_cloud_start",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_001_OPENING_CLOUD_BIRD_LONG/keyframes/01_OP_SHOT_001.png",
+      "local": "02_keyframes_for_upload/01_official_keyframe_OP_SHOT_001.png",
+      "exists": true
+    },
+    {
+      "kind": "official_keyframe",
+      "id": "OP_SHOT_002",
+      "timecode": "00:01.50",
+      "role": "图2 / bright_cloud_sky_reveal",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_001_OPENING_CLOUD_BIRD_LONG/keyframes/02_OP_SHOT_002.png",
+      "local": "02_keyframes_for_upload/02_official_keyframe_OP_SHOT_002.png",
+      "exists": true
+    },
+    {
+      "kind": "official_keyframe",
+      "id": "OP_SHOT_003",
+      "timecode": "00:02.50",
+      "role": "图1 / bird_entry",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_001_OPENING_CLOUD_BIRD_LONG/keyframes/03_OP_SHOT_003.png",
+      "local": "02_keyframes_for_upload/03_official_keyframe_OP_SHOT_003.png",
+      "exists": true
+    },
+    {
+      "kind": "r5_adaptive_generated",
+      "id": "R5_VU_REF003_002_WHITE_BIRD_SKY_003500ms_02",
+      "timecode": "00:03.50",
+      "role": "adaptive_middle",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_001_OPENING_CLOUD_BIRD_LONG/keyframes/04_R5_VU_REF003_002_WHITE_BIRD_SKY_003500ms_02.png",
+      "local": "02_keyframes_for_upload/04_r5_adaptive_generated_R5_VU_REF003_002_WHITE_BIRD_SKY_003500ms_02.png",
+      "exists": true
+    },
+    {
+      "kind": "official_keyframe",
+      "id": "OP_SHOT_004",
+      "timecode": "00:05.00",
+      "role": "图2 / bird_glide",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_001_OPENING_CLOUD_BIRD_LONG/keyframes/05_OP_SHOT_004.png",
+      "local": "02_keyframes_for_upload/05_official_keyframe_OP_SHOT_004.png",
+      "exists": true
+    },
+    {
+      "kind": "r5_adaptive_generated",
+      "id": "R5_VU_REF003_002_WHITE_BIRD_SKY_007000ms_01",
+      "timecode": "00:07.00",
+      "role": "adaptive_primary",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_001_OPENING_CLOUD_BIRD_LONG/keyframes/06_R5_VU_REF003_002_WHITE_BIRD_SKY_007000ms_01.png",
+      "local": "02_keyframes_for_upload/06_r5_adaptive_generated_R5_VU_REF003_002_WHITE_BIRD_SKY_007000ms_01.png",
+      "exists": true
+    },
+    {
+      "kind": "r7_generated_candidate",
+      "id": "R7_CAND_001_start_000030ms",
+      "timecode": "00:00.03",
+      "role": "start",
+      "priority": "P3_reference_video_or_already_handled",
+      "status": "generated_asset_ready_pending_review",
+      "source": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_001_start_000030ms.png",
+      "local": "02_keyframes_for_upload/07_r7_generated_R7_CAND_001_start_000030ms.png",
+      "exists": true,
+      "difference_reason": "开场长段A：黑场云层到白鸟入画 start boundary/transition frame from R7 high-precision split."
+    },
+    {
+      "kind": "r7_generated_candidate",
+      "id": "R7_CAND_001_middle_003500ms",
+      "timecode": "00:03.50",
+      "role": "middle",
+      "priority": "P3_reference_video_or_already_handled",
+      "status": "generated_asset_ready_pending_review",
+      "source": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_001_middle_003500ms.png",
+      "local": "02_keyframes_for_upload/08_r7_generated_R7_CAND_001_middle_003500ms.png",
+      "exists": true,
+      "difference_reason": "开场长段A：黑场云层到白鸟入画 middle boundary/transition frame from R7 high-precision split."
+    },
+    {
+      "kind": "r7_generated_candidate",
+      "id": "R7_CAND_001_end_006970ms",
+      "timecode": "00:06.97",
+      "role": "end",
+      "priority": "P3_reference_video_or_already_handled",
+      "status": "generated_asset_ready_pending_review",
+      "source": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_001_end_006970ms.png",
+      "local": "02_keyframes_for_upload/09_r7_generated_R7_CAND_001_end_006970ms.png",
+      "exists": true,
+      "difference_reason": "开场长段A：黑场云层到白鸟入画 end boundary/transition frame from R7 high-precision split."
+    }
+  ],
+  "asset_locks_for_upload": [
+    {
+      "group": "props_vehicles_symbols",
+      "id": "white_bird",
+      "status": "official_prop_lock",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_global_asset_locks/props_vehicles_symbols_white_bird.png",
+      "local": "03_asset_locks_for_upload/01_props_vehicles_symbols_white_bird.png",
+      "exists": true
+    }
+  ],
+  "source_reference_frames_audit_only": [
+    {
+      "id": "R7_CAND_001_start_000030ms",
+      "timecode": "00:00.03",
+      "role": "start",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_001_OPENING_CLOUD_BIRD_LONG/candidate_reference_frames/R7_CAND_001_start_000030ms.jpg",
+      "local": "04_source_reference_frames_audit_only/01_R7_CAND_001_start_000030ms.jpg",
+      "exists": true
+    },
+    {
+      "id": "R7_CAND_001_middle_003500ms",
+      "timecode": "00:03.50",
+      "role": "middle",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_001_OPENING_CLOUD_BIRD_LONG/candidate_reference_frames/R7_CAND_001_middle_003500ms.jpg",
+      "local": "04_source_reference_frames_audit_only/02_R7_CAND_001_middle_003500ms.jpg",
+      "exists": true
+    },
+    {
+      "id": "R7_CAND_001_end_006970ms",
+      "timecode": "00:06.97",
+      "role": "end",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_001_OPENING_CLOUD_BIRD_LONG/candidate_reference_frames/R7_CAND_001_end_006970ms.jpg",
+      "local": "04_source_reference_frames_audit_only/03_R7_CAND_001_end_006970ms.jpg",
+      "exists": true
+    }
+  ],
+  "expected_video_output_path": "08_generation/outputs/video/reference003_r7_high_precision_segments/VU_REF003_R7_001_OPENING_CLOUD_BIRD_LONG.mp4"
+}

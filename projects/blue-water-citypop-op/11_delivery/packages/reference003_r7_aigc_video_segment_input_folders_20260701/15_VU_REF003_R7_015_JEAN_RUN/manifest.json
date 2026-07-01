@@ -1,0 +1,119 @@
+{
+  "created_at": "2026-07-01T23:29:49+08:00",
+  "status": "organized_input_folder_pending_visual_qa",
+  "unit": {
+    "order": 15,
+    "unit_id": "VU_REF003_R7_015_JEAN_RUN",
+    "title": "Jean奔跑",
+    "start": 41.5,
+    "end": 43.5,
+    "intent": "Jean 独立奔跑节拍。",
+    "active_locks": [
+      [
+        "characters",
+        "jean"
+      ]
+    ],
+    "mode": "high_precision_segment"
+  },
+  "source_unit_manifest": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_015_JEAN_RUN/manifest.json",
+  "reference_clip": {
+    "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_015_JEAN_RUN/reference_clip/VU_REF003_R7_015_JEAN_RUN_reference.mp4",
+    "local": "01_reference_clip/VU_REF003_R7_015_JEAN_RUN_reference.mp4",
+    "exists": true
+  },
+  "prompt_doc": "AIGC_PROMPT.md",
+  "keyframes_for_upload": [
+    {
+      "kind": "official_keyframe",
+      "id": "OP_SHOT_019",
+      "timecode": "00:41.50",
+      "role": "图3 / Jean_run",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_015_JEAN_RUN/keyframes/01_OP_SHOT_019.png",
+      "local": "02_keyframes_for_upload/01_official_keyframe_OP_SHOT_019.png",
+      "exists": true
+    },
+    {
+      "kind": "official_keyframe",
+      "id": "OP_SHOT_020",
+      "timecode": "00:43.50",
+      "role": "图4 / Marie_run",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_015_JEAN_RUN/keyframes/02_OP_SHOT_020.png",
+      "local": "02_keyframes_for_upload/02_official_keyframe_OP_SHOT_020.png",
+      "exists": true
+    },
+    {
+      "kind": "r7_generated_candidate",
+      "id": "R7_CAND_015_start_041530ms",
+      "timecode": "00:41.53",
+      "role": "start",
+      "priority": "P3_reference_video_or_already_handled",
+      "status": "generated_asset_ready_pending_review",
+      "source": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_015_start_041530ms.png",
+      "local": "02_keyframes_for_upload/03_r7_generated_R7_CAND_015_start_041530ms.png",
+      "exists": true,
+      "difference_reason": "Jean奔跑 start boundary/transition frame from R7 high-precision split."
+    },
+    {
+      "kind": "r7_generated_candidate",
+      "id": "R7_CAND_015_middle_042500ms",
+      "timecode": "00:42.50",
+      "role": "middle",
+      "priority": "P2_review_after_p1",
+      "status": "generated_asset_ready",
+      "source": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_015_middle_042500ms.png",
+      "local": "02_keyframes_for_upload/04_r7_generated_R7_CAND_015_middle_042500ms.png",
+      "exists": true,
+      "difference_reason": "Jean奔跑 middle boundary/transition frame from R7 high-precision split."
+    },
+    {
+      "kind": "r7_generated_candidate",
+      "id": "R7_CAND_015_end_043470ms",
+      "timecode": "00:43.47",
+      "role": "end",
+      "priority": "P3_reference_video_or_already_handled",
+      "status": "generated_asset_ready_pending_review",
+      "source": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_015_end_043470ms.png",
+      "local": "02_keyframes_for_upload/05_r7_generated_R7_CAND_015_end_043470ms.png",
+      "exists": true,
+      "difference_reason": "Jean奔跑 end boundary/transition frame from R7 high-precision split."
+    }
+  ],
+  "asset_locks_for_upload": [
+    {
+      "group": "characters",
+      "id": "jean",
+      "status": "official_identity_lock",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_global_asset_locks/characters_jean.png",
+      "local": "03_asset_locks_for_upload/01_characters_jean.png",
+      "exists": true
+    }
+  ],
+  "source_reference_frames_audit_only": [
+    {
+      "id": "R7_CAND_015_start_041530ms",
+      "timecode": "00:41.53",
+      "role": "start",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_015_JEAN_RUN/candidate_reference_frames/R7_CAND_015_start_041530ms.jpg",
+      "local": "04_source_reference_frames_audit_only/01_R7_CAND_015_start_041530ms.jpg",
+      "exists": true
+    },
+    {
+      "id": "R7_CAND_015_middle_042500ms",
+      "timecode": "00:42.50",
+      "role": "middle",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_015_JEAN_RUN/candidate_reference_frames/R7_CAND_015_middle_042500ms.jpg",
+      "local": "04_source_reference_frames_audit_only/02_R7_CAND_015_middle_042500ms.jpg",
+      "exists": true
+    },
+    {
+      "id": "R7_CAND_015_end_043470ms",
+      "timecode": "00:43.47",
+      "role": "end",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_015_JEAN_RUN/candidate_reference_frames/R7_CAND_015_end_043470ms.jpg",
+      "local": "04_source_reference_frames_audit_only/03_R7_CAND_015_end_043470ms.jpg",
+      "exists": true
+    }
+  ],
+  "expected_video_output_path": "08_generation/outputs/video/reference003_r7_high_precision_segments/VU_REF003_R7_015_JEAN_RUN.mp4"
+}

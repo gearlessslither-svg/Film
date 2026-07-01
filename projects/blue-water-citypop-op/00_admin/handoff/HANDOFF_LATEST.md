@@ -7,7 +7,62 @@
 - 生成时间: 2026-07-01 07:45
 - 备注: Completed Reference-003 R7 full high-precision repack: all 84.42s rebuilt into 36 source-FPS/PySceneDetect-informed AIGC video units; prompt-only files now explicitly list current ordered official + R5 generated anchors; 14 P1 candidate screenshots queued for new pure-image generation.
 
-## 最新更新 / Latest Update — 2026-07-01 17:50 CST
+## 最新更新 / Latest Update — 2026-07-02 00:10 CST
+- Director caught two additional packaging failures in the first per-segment handoff package:
+  1. reference clips could not upload reliably because they were hardlinked source MP4s using `mp4v/mpeg4 Simple Profile` video and no audio;
+  2. `02_keyframes_for_upload/` mixed official/original frames, R5 target-style generated frames, and R7 generated candidates, causing style confusion and bad ordering for external AIGC video sites.
+- Old package is now explicitly superseded/do-not-use:
+  - `11_delivery/packages/reference003_r7_aigc_video_segment_input_folders_20260701/`
+- Correct current package to use:
+  - `11_delivery/packages/reference003_r8_lean_aigc_video_segment_input_folders_20260701/`
+  - Index: `11_delivery/packages/reference003_r8_lean_aigc_video_segment_input_folders_20260701/README.md`
+  - Manifest: `11_delivery/packages/reference003_r8_lean_aigc_video_segment_input_folders_20260701/PACKAGE_MANIFEST.json`
+- R8 lean package behavior:
+  - `01_reference_clip/`: upload-compatible H.264/AAC MP4, yuv420p, faststart, metadata stripped, with silent AAC audio.
+  - `02_keyframes_for_upload/`: target-style generated anchors only; no official/original frames and no R7 candidates.
+  - `05_r7_generated_candidates_reference_only/`: all 98 R7 generated candidates are retained for audit/reference only.
+  - `06_official_original_keyframes_reference_only/`: 63 official/original keyframes retained for composition/timing reference only.
+- R8 lean counts and verification:
+  - 36/36 unit folders, 36/36 reference clips, 36/36 prompt docs.
+  - Upload keyframes: 25 target-style generated anchors.
+  - Asset locks: 66.
+  - Source reference frames, audit only: 98.
+  - R7 reference-only generated candidates: 98.
+  - Official/original reference-only keyframes: 63.
+  - Missing files: 0.
+  - Clip decode failures: 0/36.
+  - Non-H.264/AAC reference clips: 0/36.
+  - Non-target-style rows in `02_keyframes_for_upload`: 0.
+  - Upload keyframe ordering violations: 0.
+- Important next step: before external AIGC generation, units with `Upload keyframes = 0` should either use only reference clip + locks + prompt, or receive newly approved target-style keyframes. Do not re-add official/original or R7 candidate images to default upload unless approved per unit.
+
+## 最新更新 / Latest Update — 2026-07-01 23:35 CST
+- Director reviewed the newly assembled R7 candidate preview and flagged it as a workflow-level QA failure:
+  1. some frames are placed/weighted incorrectly in the timeline, e.g. Nadia entrance is disrupted by earlier sky/cloud material;
+  2. faces flicker/mutate, likely worsened by excessive inserted candidate frames;
+  3. mid/late sections drift into a different realism/style family.
+- Immediate hold: do not treat the previous `production_ready` package as visually approved for external AIGC video generation.
+- QA failure report added: `10_qa/reports/reference003_r7_generated_candidate_preview_qa_failure_20260701.md`
+- Evidence contact sheets added:
+  - `10_qa/reports/r7_preview_audit_nadia_23_29.jpg`
+  - `10_qa/reports/r7_preview_audit_late_129_161.jpg`
+- Per director priority, a clean per-segment folder package was created before further repairs:
+  - Folder root: `11_delivery/packages/reference003_r7_aigc_video_segment_input_folders_20260701/`
+  - Index: `11_delivery/packages/reference003_r7_aigc_video_segment_input_folders_20260701/README.md`
+  - Manifest: `11_delivery/packages/reference003_r7_aigc_video_segment_input_folders_20260701/PACKAGE_MANIFEST.json`
+  - Counts: 36/36 unit folders, 36/36 reference clips, 36/36 `AIGC_PROMPT.md` docs, 186 keyframe/image inputs, 66 asset lock images, 98 source reference frames for audit, missing 0.
+  - Each unit folder contains:
+    - `01_reference_clip/`
+    - `02_keyframes_for_upload/`
+    - `03_asset_locks_for_upload/`
+    - `04_source_reference_frames_audit_only/`
+    - `AIGC_PROMPT.md`
+    - `manifest.json`
+    - `README.md`
+- New packaging script: `08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/build_reference003_r7_segment_input_folders.py`
+- Next work should continue from QA recovery, not external video generation: select/approve a lean set of anchors per unit, quarantine bad style/identity frames, rebuild a reduced R8 preview, then regenerate final production prompts.
+
+## Previous Update — 2026-07-01 17:50 CST
 - R7 promoted candidate pure image generation is complete: P1 14/14, P2 20/20, P3 64/64, total 98/98.
 - Candidate queue JSON now records status `all_generated_assets_ready`.
 - R7 P1/P2/P3 generated assets live under `08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/`.

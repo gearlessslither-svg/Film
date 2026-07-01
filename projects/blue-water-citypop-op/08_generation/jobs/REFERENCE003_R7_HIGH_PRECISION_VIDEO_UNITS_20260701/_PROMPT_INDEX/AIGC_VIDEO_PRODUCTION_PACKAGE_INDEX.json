@@ -1,6 +1,8 @@
 {
   "created_at": "2026-07-01T17:55:37+08:00",
-  "status": "production_ready",
+  "status": "qa_hold_do_not_use_as_approved_production_input",
+  "qa_hold_reason": "Director review on 2026-07-01 found timeline weighting, face flicker, and style drift failures in the generated-candidate preview. Treat this file as historical material inventory only.",
+  "current_segment_folder_package": "11_delivery/packages/reference003_r7_aigc_video_segment_input_folders_20260701",
   "project_slug": "blue-water-citypop-op",
   "preview_mp4": "09_edit/rough_cut/reference003_r7_generated_candidate_animatic_1080p_with_music_20260701.mp4",
   "preview_manifest": "09_edit/rough_cut/r7_generated_candidate_preview/reference003_r7_generated_candidate_preview_manifest.json",

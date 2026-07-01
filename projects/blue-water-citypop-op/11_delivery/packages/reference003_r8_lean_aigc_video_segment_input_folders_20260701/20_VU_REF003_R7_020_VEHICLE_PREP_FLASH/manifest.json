@@ -1,0 +1,130 @@
+{
+  "created_at": "2026-07-02T00:08:00+08:00",
+  "status": "lean_input_folder_r7_reference_only_pending_visual_qa",
+  "unit": {
+    "order": 20,
+    "unit_id": "VU_REF003_R7_020_VEHICLE_PREP_FLASH",
+    "title": "车辆动作预备闪帧",
+    "start": 48.674,
+    "end": 49.675,
+    "intent": "车辆动作前的短暂准备/闪帧。",
+    "active_locks": [
+      [
+        "characters",
+        "grandis"
+      ],
+      [
+        "characters",
+        "sanson"
+      ],
+      [
+        "characters",
+        "hanson"
+      ],
+      [
+        "props_vehicles_symbols",
+        "grandis_vehicle"
+      ]
+    ],
+    "mode": "high_precision_segment"
+  },
+  "source_unit_manifest": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_020_VEHICLE_PREP_FLASH/manifest.json",
+  "reference_clip": {
+    "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_020_VEHICLE_PREP_FLASH/reference_clip/VU_REF003_R7_020_VEHICLE_PREP_FLASH_reference.mp4",
+    "local": "01_reference_clip/VU_REF003_R7_020_VEHICLE_PREP_FLASH_reference_upload_h264_aac.mp4",
+    "exists": true,
+    "encoding": "H.264 video + silent AAC audio, yuv420p, faststart, metadata stripped",
+    "original_encoding_note": "source split clips were MP4 container with mpeg4/mp4v video and no audio"
+  },
+  "prompt_doc": "AIGC_PROMPT.md",
+  "keyframes_for_upload": [],
+  "asset_locks_for_upload": [
+    {
+      "group": "characters",
+      "id": "grandis",
+      "status": "official_identity_lock",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_global_asset_locks/characters_grandis.png",
+      "local": "03_asset_locks_for_upload/01_characters_grandis.png",
+      "exists": true
+    },
+    {
+      "group": "characters",
+      "id": "sanson",
+      "status": "official_identity_lock",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_global_asset_locks/characters_sanson.png",
+      "local": "03_asset_locks_for_upload/02_characters_sanson.png",
+      "exists": true
+    },
+    {
+      "group": "characters",
+      "id": "hanson",
+      "status": "official_identity_lock",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_global_asset_locks/characters_hanson.png",
+      "local": "03_asset_locks_for_upload/03_characters_hanson.png",
+      "exists": true
+    },
+    {
+      "group": "props_vehicles_symbols",
+      "id": "grandis_vehicle",
+      "status": "official_prop_lock",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_global_asset_locks/props_vehicles_symbols_grandis_vehicle.png",
+      "local": "03_asset_locks_for_upload/04_props_vehicles_symbols_grandis_vehicle.png",
+      "exists": true
+    }
+  ],
+  "source_reference_frames_audit_only": [
+    {
+      "id": "R7_CAND_020_start_048704ms",
+      "timecode": "00:48.70",
+      "role": "start",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_020_VEHICLE_PREP_FLASH/candidate_reference_frames/R7_CAND_020_start_048704ms.jpg",
+      "local": "04_source_reference_frames_audit_only/01_R7_CAND_020_start_048704ms.jpg",
+      "exists": true
+    },
+    {
+      "id": "R7_CAND_020_end_049645ms",
+      "timecode": "00:49.64",
+      "role": "end",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_020_VEHICLE_PREP_FLASH/candidate_reference_frames/R7_CAND_020_end_049645ms.jpg",
+      "local": "04_source_reference_frames_audit_only/02_R7_CAND_020_end_049645ms.jpg",
+      "exists": true
+    }
+  ],
+  "r7_generated_candidates_reference_only": [
+    {
+      "kind": "r7_generated_candidate_reference_only",
+      "id": "R7_CAND_020_start_048704ms",
+      "timecode": "00:48.70",
+      "role": "start",
+      "priority": "P1_generate_next_small_batch",
+      "source": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_020_start_048704ms.png",
+      "local": "05_r7_generated_candidates_reference_only/01_R7_CAND_020_start_048704ms.png",
+      "exists": true,
+      "r8_status": "reference_only_pending_director_reapproval"
+    },
+    {
+      "kind": "r7_generated_candidate_reference_only",
+      "id": "R7_CAND_020_end_049645ms",
+      "timecode": "00:49.64",
+      "role": "end",
+      "priority": "P3_reference_video_or_already_handled",
+      "source": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_020_end_049645ms.png",
+      "local": "05_r7_generated_candidates_reference_only/02_R7_CAND_020_end_049645ms.png",
+      "exists": true,
+      "r8_status": "reference_only_pending_director_reapproval"
+    }
+  ],
+  "official_original_keyframes_reference_only": [
+    {
+      "kind": "official_keyframe",
+      "id": "OP_SHOT_024",
+      "timecode": "00:49.50",
+      "role": "图2 / vehicle_sky_action",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_020_VEHICLE_PREP_FLASH/keyframes/01_OP_SHOT_024.png",
+      "local": "06_official_original_keyframes_reference_only/01_official_keyframe_OP_SHOT_024.png",
+      "exists": true,
+      "r8_status": "reference_only_not_for_default_upload"
+    }
+  ],
+  "expected_video_output_path": "08_generation/outputs/video/reference003_r7_high_precision_segments/VU_REF003_R7_020_VEHICLE_PREP_FLASH.mp4"
+}

@@ -1,5 +1,9 @@
 # Reference-003 R7 AIGC Video Production Package Index
 
+> QA HOLD / DO NOT USE AS APPROVED PRODUCTION INPUT.
+>
+> Director review on 2026-07-01 found timeline weighting, face flicker, and style drift failures in the generated-candidate preview. Use this file only as a historical material inventory. The clean per-segment folder package is now at `11_delivery/packages/reference003_r7_aigc_video_segment_input_folders_20260701/`, and visual QA/reduction is still pending.
+
 - Created: 2026-07-01T17:55:37+08:00
 - Status: production-ready
 - Full generated-candidate preview MP4: `09_edit/rough_cut/reference003_r7_generated_candidate_animatic_1080p_with_music_20260701.mp4`

@@ -1,0 +1,114 @@
+{
+  "created_at": "2026-07-02T00:08:00+08:00",
+  "status": "lean_input_folder_r7_reference_only_pending_visual_qa",
+  "unit": {
+    "order": 12,
+    "unit_id": "VU_REF003_R7_012_RUN_MONTAGE_ENTRY",
+    "title": "奔跑Montage入场",
+    "start": 37.204,
+    "end": 38.121,
+    "intent": "奔跑 montage 入场短切。",
+    "active_locks": [
+      [
+        "characters",
+        "nadia"
+      ]
+    ],
+    "mode": "high_precision_segment"
+  },
+  "source_unit_manifest": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_012_RUN_MONTAGE_ENTRY/manifest.json",
+  "reference_clip": {
+    "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_012_RUN_MONTAGE_ENTRY/reference_clip/VU_REF003_R7_012_RUN_MONTAGE_ENTRY_reference.mp4",
+    "local": "01_reference_clip/VU_REF003_R7_012_RUN_MONTAGE_ENTRY_reference_upload_h264_aac.mp4",
+    "exists": true,
+    "encoding": "H.264 video + silent AAC audio, yuv420p, faststart, metadata stripped",
+    "original_encoding_note": "source split clips were MP4 container with mpeg4/mp4v video and no audio"
+  },
+  "prompt_doc": "AIGC_PROMPT.md",
+  "keyframes_for_upload": [
+    {
+      "kind": "r5_adaptive_generated",
+      "id": "R5_VU_REF003_010_GRANDIS_TRIO_INTRO_037500ms_02",
+      "timecode": "00:37.50",
+      "role": "adaptive_middle",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_012_RUN_MONTAGE_ENTRY/keyframes/02_R5_VU_REF003_010_GRANDIS_TRIO_INTRO_037500ms_02.png",
+      "local": "02_keyframes_for_upload/01_r5_adaptive_generated_R5_VU_REF003_010_GRANDIS_TRIO_INTRO_037500ms_02.png",
+      "exists": true
+    }
+  ],
+  "asset_locks_for_upload": [
+    {
+      "group": "characters",
+      "id": "nadia",
+      "status": "official_identity_lock",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_global_asset_locks/characters_nadia.png",
+      "local": "03_asset_locks_for_upload/01_characters_nadia.png",
+      "exists": true
+    }
+  ],
+  "source_reference_frames_audit_only": [
+    {
+      "id": "R7_CAND_012_start_037234ms",
+      "timecode": "00:37.23",
+      "role": "start",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_012_RUN_MONTAGE_ENTRY/candidate_reference_frames/R7_CAND_012_start_037234ms.jpg",
+      "local": "04_source_reference_frames_audit_only/01_R7_CAND_012_start_037234ms.jpg",
+      "exists": true
+    },
+    {
+      "id": "R7_CAND_012_end_038091ms",
+      "timecode": "00:38.09",
+      "role": "end",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_012_RUN_MONTAGE_ENTRY/candidate_reference_frames/R7_CAND_012_end_038091ms.jpg",
+      "local": "04_source_reference_frames_audit_only/02_R7_CAND_012_end_038091ms.jpg",
+      "exists": true
+    }
+  ],
+  "r7_generated_candidates_reference_only": [
+    {
+      "kind": "r7_generated_candidate_reference_only",
+      "id": "R7_CAND_012_start_037234ms",
+      "timecode": "00:37.23",
+      "role": "start",
+      "priority": "P3_reference_video_or_already_handled",
+      "source": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_012_start_037234ms.png",
+      "local": "05_r7_generated_candidates_reference_only/01_R7_CAND_012_start_037234ms.png",
+      "exists": true,
+      "r8_status": "reference_only_pending_director_reapproval"
+    },
+    {
+      "kind": "r7_generated_candidate_reference_only",
+      "id": "R7_CAND_012_end_038091ms",
+      "timecode": "00:38.09",
+      "role": "end",
+      "priority": "P3_reference_video_or_already_handled",
+      "source": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_012_end_038091ms.png",
+      "local": "05_r7_generated_candidates_reference_only/02_R7_CAND_012_end_038091ms.png",
+      "exists": true,
+      "r8_status": "reference_only_pending_director_reapproval"
+    }
+  ],
+  "official_original_keyframes_reference_only": [
+    {
+      "kind": "official_keyframe",
+      "id": "OP_SHOT_016",
+      "timecode": "00:37.00",
+      "role": "图2 / Grandis_trio_close",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_012_RUN_MONTAGE_ENTRY/keyframes/01_OP_SHOT_016.png",
+      "local": "06_official_original_keyframes_reference_only/01_official_keyframe_OP_SHOT_016.png",
+      "exists": true,
+      "r8_status": "reference_only_not_for_default_upload"
+    },
+    {
+      "kind": "official_keyframe",
+      "id": "OP_SHOT_017",
+      "timecode": "00:38.00",
+      "role": "图1 / Nadia_run_feet",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_012_RUN_MONTAGE_ENTRY/keyframes/03_OP_SHOT_017.png",
+      "local": "06_official_original_keyframes_reference_only/02_official_keyframe_OP_SHOT_017.png",
+      "exists": true,
+      "r8_status": "reference_only_not_for_default_upload"
+    }
+  ],
+  "expected_video_output_path": "08_generation/outputs/video/reference003_r7_high_precision_segments/VU_REF003_R7_012_RUN_MONTAGE_ENTRY.mp4"
+}

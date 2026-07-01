@@ -1,0 +1,107 @@
+# Reference-003 R8 R7 Candidate Selection Manifest
+
+- Status: `all_r7_candidates_reference_only_pending_reapproval`
+- R7 candidates: 98
+- Approved R8 timeline anchors: 0
+- Reason: R7 candidate preview failed director QA; all R7 images are reference-only until individually reapproved.
+
+| Time | Asset | Unit | Role | Priority | R8 status |
+|---:|---|---|---|---|---|
+| 00:25.87 | `R7_CAND_004_end_025871ms` | `VU_REF003_R7_004_NADIA_PROFILE_CONTINUE` | end | `P1_generate_next_small_batch` | `reference_only_pending_director_reapproval` |
+| 00:25.93 | `R7_CAND_005_start_025931ms` | `VU_REF003_R7_005_NADIA_CLOSE_INSERT` | start | `P1_generate_next_small_batch` | `reference_only_pending_director_reapproval` |
+| 00:29.46 | `R7_CAND_007_end_029458ms` | `VU_REF003_R7_007_JEAN_FACE_FLASH` | end | `P1_generate_next_small_batch` | `reference_only_pending_director_reapproval` |
+| 00:31.98 | `R7_CAND_009_start_031979ms` | `VU_REF003_R7_009_MARIE_KING_MEADOW` | start | `P1_generate_next_small_batch` | `reference_only_pending_director_reapproval` |
+| 00:32.95 | `R7_CAND_009_middle_032950ms` | `VU_REF003_R7_009_MARIE_KING_MEADOW` | middle | `P1_generate_next_small_batch` | `reference_only_pending_director_reapproval` |
+| 00:35.98 | `R7_CAND_011_start_035983ms` | `VU_REF003_R7_011_GRANDIS_TRIO_CLOSE` | start | `P1_generate_next_small_batch` | `reference_only_pending_director_reapproval` |
+| 00:36.58 | `R7_CAND_011_middle_036579ms` | `VU_REF003_R7_011_GRANDIS_TRIO_CLOSE` | middle | `P1_generate_next_small_batch` | `reference_only_pending_director_reapproval` |
+| 00:38.81 | `R7_CAND_013_middle_038811ms` | `VU_REF003_R7_013_NADIA_RUN_FEET` | middle | `P1_generate_next_small_batch` | `reference_only_pending_director_reapproval` |
+| 00:48.64 | `R7_CAND_019_end_048644ms` | `VU_REF003_R7_019_GRANDIS_ACTION_INSERT` | end | `P1_generate_next_small_batch` | `reference_only_pending_director_reapproval` |
+| 00:48.70 | `R7_CAND_020_start_048704ms` | `VU_REF003_R7_020_VEHICLE_PREP_FLASH` | start | `P1_generate_next_small_batch` | `reference_only_pending_director_reapproval` |
+| 00:50.65 | `R7_CAND_021_end_050646ms` | `VU_REF003_R7_021_VEHICLE_ARC` | end | `P1_generate_next_small_batch` | `reference_only_pending_director_reapproval` |
+| 00:57.75 | `R7_CAND_025_middle_057750ms` | `VU_REF003_R7_025_NAUTILUS_LIGHT_SHIFT` | middle | `P1_generate_next_small_batch` | `reference_only_pending_director_reapproval` |
+| 01:05.99 | `R7_CAND_028_end_065994ms` | `VU_REF003_R7_028_NIGHT_AIRCRAFT_PASS` | end | `P1_generate_next_small_batch` | `reference_only_pending_director_reapproval` |
+| 01:17.12 | `R7_CAND_032_middle_077118ms` | `VU_REF003_R7_032_UNDERWATER_TO_SPLASH` | middle | `P1_generate_next_small_batch` | `reference_only_pending_director_reapproval` |
+| 00:00.03 | `R7_CAND_001_start_000030ms` | `VU_REF003_R7_001_OPENING_CLOUD_BIRD_LONG` | start | `P3_reference_video_or_already_handled` | `reference_only_pending_director_reapproval` |
+| 00:03.50 | `R7_CAND_001_middle_003500ms` | `VU_REF003_R7_001_OPENING_CLOUD_BIRD_LONG` | middle | `P3_reference_video_or_already_handled` | `reference_only_pending_director_reapproval` |
+| 00:06.97 | `R7_CAND_001_end_006970ms` | `VU_REF003_R7_001_OPENING_CLOUD_BIRD_LONG` | end | `P3_reference_video_or_already_handled` | `reference_only_pending_director_reapproval` |
+| 00:07.03 | `R7_CAND_002_start_007030ms` | `VU_REF003_R7_002_OPENING_AIRCRAFT_FLASH_LONG` | start | `P3_reference_video_or_already_handled` | `reference_only_pending_director_reapproval` |
+| 00:11.75 | `R7_CAND_002_middle_011750ms` | `VU_REF003_R7_002_OPENING_AIRCRAFT_FLASH_LONG` | middle | `P3_reference_video_or_already_handled` | `reference_only_pending_director_reapproval` |
+| 00:16.47 | `R7_CAND_002_end_016470ms` | `VU_REF003_R7_002_OPENING_AIRCRAFT_FLASH_LONG` | end | `P2_review_after_p1` | `reference_only_pending_director_reapproval` |
+| 00:16.53 | `R7_CAND_003_start_016530ms` | `VU_REF003_R7_003_OPENING_TITLE_FLARE_NADIA` | start | `P2_review_after_p1` | `reference_only_pending_director_reapproval` |
+| 00:20.65 | `R7_CAND_003_middle_020650ms` | `VU_REF003_R7_003_OPENING_TITLE_FLARE_NADIA` | middle | `P2_review_after_p1` | `reference_only_pending_director_reapproval` |
+| 00:24.77 | `R7_CAND_003_end_024770ms` | `VU_REF003_R7_003_OPENING_TITLE_FLARE_NADIA` | end | `P3_reference_video_or_already_handled` | `reference_only_pending_director_reapproval` |
+| 00:24.83 | `R7_CAND_004_start_024830ms` | `VU_REF003_R7_004_NADIA_PROFILE_CONTINUE` | start | `P3_reference_video_or_already_handled` | `reference_only_pending_director_reapproval` |
+| 00:26.79 | `R7_CAND_005_end_026788ms` | `VU_REF003_R7_005_NADIA_CLOSE_INSERT` | end | `P3_reference_video_or_already_handled` | `reference_only_pending_director_reapproval` |
+| 00:26.85 | `R7_CAND_006_start_026848ms` | `VU_REF003_R7_006_NADIA_TO_JEAN_BRIDGE` | start | `P3_reference_video_or_already_handled` | `reference_only_pending_director_reapproval` |
+| 00:27.84 | `R7_CAND_006_middle_027840ms` | `VU_REF003_R7_006_NADIA_TO_JEAN_BRIDGE` | middle | `P3_reference_video_or_already_handled` | `reference_only_pending_director_reapproval` |
+| 00:28.83 | `R7_CAND_006_end_028832ms` | `VU_REF003_R7_006_NADIA_TO_JEAN_BRIDGE` | end | `P3_reference_video_or_already_handled` | `reference_only_pending_director_reapproval` |
+| 00:28.89 | `R7_CAND_007_start_028892ms` | `VU_REF003_R7_007_JEAN_FACE_FLASH` | start | `P3_reference_video_or_already_handled` | `reference_only_pending_director_reapproval` |
+| 00:29.52 | `R7_CAND_008_start_029518ms` | `VU_REF003_R7_008_JEAN_TO_MARIE_BRIDGE` | start | `P2_review_after_p1` | `reference_only_pending_director_reapproval` |
+| 00:30.72 | `R7_CAND_008_middle_030718ms` | `VU_REF003_R7_008_JEAN_TO_MARIE_BRIDGE` | middle | `P3_reference_video_or_already_handled` | `reference_only_pending_director_reapproval` |
+| 00:31.92 | `R7_CAND_008_end_031919ms` | `VU_REF003_R7_008_JEAN_TO_MARIE_BRIDGE` | end | `P2_review_after_p1` | `reference_only_pending_director_reapproval` |
+| 00:33.92 | `R7_CAND_009_end_033921ms` | `VU_REF003_R7_009_MARIE_KING_MEADOW` | end | `P3_reference_video_or_already_handled` | `reference_only_pending_director_reapproval` |
+| 00:33.98 | `R7_CAND_010_start_033981ms` | `VU_REF003_R7_010_GRANDIS_TRIO_WIDE` | start | `P3_reference_video_or_already_handled` | `reference_only_pending_director_reapproval` |
+| 00:34.95 | `R7_CAND_010_middle_034952ms` | `VU_REF003_R7_010_GRANDIS_TRIO_WIDE` | middle | `P2_review_after_p1` | `reference_only_pending_director_reapproval` |
+| 00:35.92 | `R7_CAND_010_end_035923ms` | `VU_REF003_R7_010_GRANDIS_TRIO_WIDE` | end | `P2_review_after_p1` | `reference_only_pending_director_reapproval` |
+| 00:37.17 | `R7_CAND_011_end_037174ms` | `VU_REF003_R7_011_GRANDIS_TRIO_CLOSE` | end | `P3_reference_video_or_already_handled` | `reference_only_pending_director_reapproval` |
+| 00:37.23 | `R7_CAND_012_start_037234ms` | `VU_REF003_R7_012_RUN_MONTAGE_ENTRY` | start | `P3_reference_video_or_already_handled` | `reference_only_pending_director_reapproval` |
+| 00:38.09 | `R7_CAND_012_end_038091ms` | `VU_REF003_R7_012_RUN_MONTAGE_ENTRY` | end | `P3_reference_video_or_already_handled` | `reference_only_pending_director_reapproval` |
+| 00:38.15 | `R7_CAND_013_start_038151ms` | `VU_REF003_R7_013_NADIA_RUN_FEET` | start | `P3_reference_video_or_already_handled` | `reference_only_pending_director_reapproval` |
+| 00:39.47 | `R7_CAND_013_end_039470ms` | `VU_REF003_R7_013_NADIA_RUN_FEET` | end | `P3_reference_video_or_already_handled` | `reference_only_pending_director_reapproval` |
+| 00:39.53 | `R7_CAND_014_start_039530ms` | `VU_REF003_R7_014_NADIA_RUN_FRONT` | start | `P3_reference_video_or_already_handled` | `reference_only_pending_director_reapproval` |
+| 00:40.50 | `R7_CAND_014_middle_040500ms` | `VU_REF003_R7_014_NADIA_RUN_FRONT` | middle | `P2_review_after_p1` | `reference_only_pending_director_reapproval` |
+| 00:41.47 | `R7_CAND_014_end_041470ms` | `VU_REF003_R7_014_NADIA_RUN_FRONT` | end | `P3_reference_video_or_already_handled` | `reference_only_pending_director_reapproval` |
+| 00:41.53 | `R7_CAND_015_start_041530ms` | `VU_REF003_R7_015_JEAN_RUN` | start | `P3_reference_video_or_already_handled` | `reference_only_pending_director_reapproval` |
+| 00:42.50 | `R7_CAND_015_middle_042500ms` | `VU_REF003_R7_015_JEAN_RUN` | middle | `P2_review_after_p1` | `reference_only_pending_director_reapproval` |
+| 00:43.47 | `R7_CAND_015_end_043470ms` | `VU_REF003_R7_015_JEAN_RUN` | end | `P3_reference_video_or_already_handled` | `reference_only_pending_director_reapproval` |
+| 00:43.53 | `R7_CAND_016_start_043530ms` | `VU_REF003_R7_016_MARIE_KING_RUN` | start | `P3_reference_video_or_already_handled` | `reference_only_pending_director_reapproval` |
+| 00:44.50 | `R7_CAND_016_middle_044500ms` | `VU_REF003_R7_016_MARIE_KING_RUN` | middle | `P2_review_after_p1` | `reference_only_pending_director_reapproval` |
+| 00:45.47 | `R7_CAND_016_end_045470ms` | `VU_REF003_R7_016_MARIE_KING_RUN` | end | `P3_reference_video_or_already_handled` | `reference_only_pending_director_reapproval` |
+| 00:45.53 | `R7_CAND_017_start_045530ms` | `VU_REF003_R7_017_GROUP_RUN` | start | `P3_reference_video_or_already_handled` | `reference_only_pending_director_reapproval` |
+| 00:46.46 | `R7_CAND_017_middle_046461ms` | `VU_REF003_R7_017_GROUP_RUN` | middle | `P2_review_after_p1` | `reference_only_pending_director_reapproval` |
+| 00:47.39 | `R7_CAND_017_end_047392ms` | `VU_REF003_R7_017_GROUP_RUN` | end | `P3_reference_video_or_already_handled` | `reference_only_pending_director_reapproval` |
+| 00:47.45 | `R7_CAND_018_start_047452ms` | `VU_REF003_R7_018_REACTION_TO_ACTION_CLUSTER` | start | `P3_reference_video_or_already_handled` | `reference_only_pending_director_reapproval` |
+| 00:48.14 | `R7_CAND_018_end_048143ms` | `VU_REF003_R7_018_REACTION_TO_ACTION_CLUSTER` | end | `P3_reference_video_or_already_handled` | `reference_only_pending_director_reapproval` |
+| 00:48.20 | `R7_CAND_019_start_048203ms` | `VU_REF003_R7_019_GRANDIS_ACTION_INSERT` | start | `P3_reference_video_or_already_handled` | `reference_only_pending_director_reapproval` |
+| 00:49.64 | `R7_CAND_020_end_049645ms` | `VU_REF003_R7_020_VEHICLE_PREP_FLASH` | end | `P3_reference_video_or_already_handled` | `reference_only_pending_director_reapproval` |
+| 00:49.70 | `R7_CAND_021_start_049705ms` | `VU_REF003_R7_021_VEHICLE_ARC` | start | `P3_reference_video_or_already_handled` | `reference_only_pending_director_reapproval` |
+| 00:50.71 | `R7_CAND_022_start_050706ms` | `VU_REF003_R7_022_GROUP_LINEUP_TO_UNDERSEA` | start | `P2_review_after_p1` | `reference_only_pending_director_reapproval` |
+| 00:51.55 | `R7_CAND_022_middle_051552ms` | `VU_REF003_R7_022_GROUP_LINEUP_TO_UNDERSEA` | middle | `P3_reference_video_or_already_handled` | `reference_only_pending_director_reapproval` |
+| 00:52.40 | `R7_CAND_022_end_052397ms` | `VU_REF003_R7_022_GROUP_LINEUP_TO_UNDERSEA` | end | `P3_reference_video_or_already_handled` | `reference_only_pending_director_reapproval` |
+| 00:52.46 | `R7_CAND_023_start_052457ms` | `VU_REF003_R7_023_NAUTILUS_UNDERSEA_ENTRY` | start | `P3_reference_video_or_already_handled` | `reference_only_pending_director_reapproval` |
+| 00:53.71 | `R7_CAND_023_middle_053713ms` | `VU_REF003_R7_023_NAUTILUS_UNDERSEA_ENTRY` | middle | `P2_review_after_p1` | `reference_only_pending_director_reapproval` |
+| 00:54.97 | `R7_CAND_023_end_054970ms` | `VU_REF003_R7_023_NAUTILUS_UNDERSEA_ENTRY` | end | `P3_reference_video_or_already_handled` | `reference_only_pending_director_reapproval` |
+| 00:55.03 | `R7_CAND_024_start_055030ms` | `VU_REF003_R7_024_NAUTILUS_PASS` | start | `P3_reference_video_or_already_handled` | `reference_only_pending_director_reapproval` |
+| 00:56.00 | `R7_CAND_024_middle_056000ms` | `VU_REF003_R7_024_NAUTILUS_PASS` | middle | `P2_review_after_p1` | `reference_only_pending_director_reapproval` |
+| 00:56.97 | `R7_CAND_024_end_056970ms` | `VU_REF003_R7_024_NAUTILUS_PASS` | end | `P3_reference_video_or_already_handled` | `reference_only_pending_director_reapproval` |
+| 00:57.03 | `R7_CAND_025_start_057030ms` | `VU_REF003_R7_025_NAUTILUS_LIGHT_SHIFT` | start | `P3_reference_video_or_already_handled` | `reference_only_pending_director_reapproval` |
+| 00:58.47 | `R7_CAND_025_end_058470ms` | `VU_REF003_R7_025_NAUTILUS_LIGHT_SHIFT` | end | `P3_reference_video_or_already_handled` | `reference_only_pending_director_reapproval` |
+| 00:58.53 | `R7_CAND_026_start_058530ms` | `VU_REF003_R7_026_NAUTILUS_EXIT` | start | `P3_reference_video_or_already_handled` | `reference_only_pending_director_reapproval` |
+| 00:59.97 | `R7_CAND_026_middle_059968ms` | `VU_REF003_R7_026_NAUTILUS_EXIT` | middle | `P2_review_after_p1` | `reference_only_pending_director_reapproval` |
+| 01:01.41 | `R7_CAND_026_end_061406ms` | `VU_REF003_R7_026_NAUTILUS_EXIT` | end | `P3_reference_video_or_already_handled` | `reference_only_pending_director_reapproval` |
+| 01:01.47 | `R7_CAND_027_start_061466ms` | `VU_REF003_R7_027_NIGHT_CITY_GRID` | start | `P3_reference_video_or_already_handled` | `reference_only_pending_director_reapproval` |
+| 01:03.19 | `R7_CAND_027_middle_063188ms` | `VU_REF003_R7_027_NIGHT_CITY_GRID` | middle | `P3_reference_video_or_already_handled` | `reference_only_pending_director_reapproval` |
+| 01:04.91 | `R7_CAND_027_end_064910ms` | `VU_REF003_R7_027_NIGHT_CITY_GRID` | end | `P3_reference_video_or_already_handled` | `reference_only_pending_director_reapproval` |
+| 01:04.97 | `R7_CAND_028_start_064970ms` | `VU_REF003_R7_028_NIGHT_AIRCRAFT_PASS` | start | `P3_reference_video_or_already_handled` | `reference_only_pending_director_reapproval` |
+| 01:06.05 | `R7_CAND_029_start_066054ms` | `VU_REF003_R7_029_NEMO_SUNSET_PROFILE` | start | `P2_review_after_p1` | `reference_only_pending_director_reapproval` |
+| 01:08.69 | `R7_CAND_029_middle_068694ms` | `VU_REF003_R7_029_NEMO_SUNSET_PROFILE` | middle | `P2_review_after_p1` | `reference_only_pending_director_reapproval` |
+| 01:11.33 | `R7_CAND_029_end_071333ms` | `VU_REF003_R7_029_NEMO_SUNSET_PROFILE` | end | `P2_review_after_p1` | `reference_only_pending_director_reapproval` |
+| 01:11.39 | `R7_CAND_030_start_071393ms` | `VU_REF003_R7_030_NADIA_SOLEMN_TO_JEWEL` | start | `P2_review_after_p1` | `reference_only_pending_director_reapproval` |
+| 01:12.72 | `R7_CAND_030_middle_072718ms` | `VU_REF003_R7_030_NADIA_SOLEMN_TO_JEWEL` | middle | `P2_review_after_p1` | `reference_only_pending_director_reapproval` |
+| 01:14.04 | `R7_CAND_030_end_074044ms` | `VU_REF003_R7_030_NADIA_SOLEMN_TO_JEWEL` | end | `P3_reference_video_or_already_handled` | `reference_only_pending_director_reapproval` |
+| 01:14.10 | `R7_CAND_031_start_074104ms` | `VU_REF003_R7_031_BLUE_WATER_BLOOM` | start | `P3_reference_video_or_already_handled` | `reference_only_pending_director_reapproval` |
+| 01:15.26 | `R7_CAND_031_middle_075262ms` | `VU_REF003_R7_031_BLUE_WATER_BLOOM` | middle | `P3_reference_video_or_already_handled` | `reference_only_pending_director_reapproval` |
+| 01:16.42 | `R7_CAND_031_end_076421ms` | `VU_REF003_R7_031_BLUE_WATER_BLOOM` | end | `P3_reference_video_or_already_handled` | `reference_only_pending_director_reapproval` |
+| 01:16.48 | `R7_CAND_032_start_076481ms` | `VU_REF003_R7_032_UNDERWATER_TO_SPLASH` | start | `P3_reference_video_or_already_handled` | `reference_only_pending_director_reapproval` |
+| 01:17.76 | `R7_CAND_032_end_077756ms` | `VU_REF003_R7_032_UNDERWATER_TO_SPLASH` | end | `P3_reference_video_or_already_handled` | `reference_only_pending_director_reapproval` |
+| 01:17.82 | `R7_CAND_033_start_077816ms` | `VU_REF003_R7_033_SPLASH_PEAK` | start | `P3_reference_video_or_already_handled` | `reference_only_pending_director_reapproval` |
+| 01:18.50 | `R7_CAND_033_middle_078495ms` | `VU_REF003_R7_033_SPLASH_PEAK` | middle | `P3_reference_video_or_already_handled` | `reference_only_pending_director_reapproval` |
+| 01:19.17 | `R7_CAND_033_end_079174ms` | `VU_REF003_R7_033_SPLASH_PEAK` | end | `P3_reference_video_or_already_handled` | `reference_only_pending_director_reapproval` |
+| 01:19.23 | `R7_CAND_034_start_079234ms` | `VU_REF003_R7_034_FINAL_SKY_TRANSITION` | start | `P3_reference_video_or_already_handled` | `reference_only_pending_director_reapproval` |
+| 01:20.00 | `R7_CAND_034_middle_079996ms` | `VU_REF003_R7_034_FINAL_SKY_TRANSITION` | middle | `P3_reference_video_or_already_handled` | `reference_only_pending_director_reapproval` |
+| 01:20.76 | `R7_CAND_034_end_080759ms` | `VU_REF003_R7_034_FINAL_SKY_TRANSITION` | end | `P3_reference_video_or_already_handled` | `reference_only_pending_director_reapproval` |
+| 01:20.82 | `R7_CAND_035_start_080819ms` | `VU_REF003_R7_035_FINAL_SKY_HOLD` | start | `P3_reference_video_or_already_handled` | `reference_only_pending_director_reapproval` |
+| 01:22.19 | `R7_CAND_035_middle_082186ms` | `VU_REF003_R7_035_FINAL_SKY_HOLD` | middle | `P3_reference_video_or_already_handled` | `reference_only_pending_director_reapproval` |
+| 01:23.55 | `R7_CAND_035_end_083554ms` | `VU_REF003_R7_035_FINAL_SKY_HOLD` | end | `P3_reference_video_or_already_handled` | `reference_only_pending_director_reapproval` |
+| 01:23.61 | `R7_CAND_036_start_083614ms` | `VU_REF003_R7_036_BLACK_TAIL` | start | `P3_reference_video_or_already_handled` | `reference_only_pending_director_reapproval` |
+| 01:24.39 | `R7_CAND_036_end_084388ms` | `VU_REF003_R7_036_BLACK_TAIL` | end | `P3_reference_video_or_already_handled` | `reference_only_pending_director_reapproval` |

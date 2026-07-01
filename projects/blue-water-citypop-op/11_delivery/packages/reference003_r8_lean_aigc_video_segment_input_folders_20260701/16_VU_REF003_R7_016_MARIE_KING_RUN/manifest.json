@@ -1,0 +1,135 @@
+{
+  "created_at": "2026-07-02T00:08:00+08:00",
+  "status": "lean_input_folder_r7_reference_only_pending_visual_qa",
+  "unit": {
+    "order": 16,
+    "unit_id": "VU_REF003_R7_016_MARIE_KING_RUN",
+    "title": "Marie与King奔跑",
+    "start": 43.5,
+    "end": 45.5,
+    "intent": "Marie/King 独立奔跑节拍。",
+    "active_locks": [
+      [
+        "characters",
+        "marie"
+      ],
+      [
+        "characters",
+        "king"
+      ]
+    ],
+    "mode": "high_precision_segment"
+  },
+  "source_unit_manifest": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_016_MARIE_KING_RUN/manifest.json",
+  "reference_clip": {
+    "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_016_MARIE_KING_RUN/reference_clip/VU_REF003_R7_016_MARIE_KING_RUN_reference.mp4",
+    "local": "01_reference_clip/VU_REF003_R7_016_MARIE_KING_RUN_reference_upload_h264_aac.mp4",
+    "exists": true,
+    "encoding": "H.264 video + silent AAC audio, yuv420p, faststart, metadata stripped",
+    "original_encoding_note": "source split clips were MP4 container with mpeg4/mp4v video and no audio"
+  },
+  "prompt_doc": "AIGC_PROMPT.md",
+  "keyframes_for_upload": [],
+  "asset_locks_for_upload": [
+    {
+      "group": "characters",
+      "id": "marie",
+      "status": "official_identity_lock",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_global_asset_locks/characters_marie.png",
+      "local": "03_asset_locks_for_upload/01_characters_marie.png",
+      "exists": true
+    },
+    {
+      "group": "characters",
+      "id": "king",
+      "status": "official_identity_lock",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_global_asset_locks/characters_king.png",
+      "local": "03_asset_locks_for_upload/02_characters_king.png",
+      "exists": true
+    }
+  ],
+  "source_reference_frames_audit_only": [
+    {
+      "id": "R7_CAND_016_start_043530ms",
+      "timecode": "00:43.53",
+      "role": "start",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_016_MARIE_KING_RUN/candidate_reference_frames/R7_CAND_016_start_043530ms.jpg",
+      "local": "04_source_reference_frames_audit_only/01_R7_CAND_016_start_043530ms.jpg",
+      "exists": true
+    },
+    {
+      "id": "R7_CAND_016_middle_044500ms",
+      "timecode": "00:44.50",
+      "role": "middle",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_016_MARIE_KING_RUN/candidate_reference_frames/R7_CAND_016_middle_044500ms.jpg",
+      "local": "04_source_reference_frames_audit_only/02_R7_CAND_016_middle_044500ms.jpg",
+      "exists": true
+    },
+    {
+      "id": "R7_CAND_016_end_045470ms",
+      "timecode": "00:45.47",
+      "role": "end",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_016_MARIE_KING_RUN/candidate_reference_frames/R7_CAND_016_end_045470ms.jpg",
+      "local": "04_source_reference_frames_audit_only/03_R7_CAND_016_end_045470ms.jpg",
+      "exists": true
+    }
+  ],
+  "r7_generated_candidates_reference_only": [
+    {
+      "kind": "r7_generated_candidate_reference_only",
+      "id": "R7_CAND_016_start_043530ms",
+      "timecode": "00:43.53",
+      "role": "start",
+      "priority": "P3_reference_video_or_already_handled",
+      "source": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_016_start_043530ms.png",
+      "local": "05_r7_generated_candidates_reference_only/01_R7_CAND_016_start_043530ms.png",
+      "exists": true,
+      "r8_status": "reference_only_pending_director_reapproval"
+    },
+    {
+      "kind": "r7_generated_candidate_reference_only",
+      "id": "R7_CAND_016_middle_044500ms",
+      "timecode": "00:44.50",
+      "role": "middle",
+      "priority": "P2_review_after_p1",
+      "source": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_016_middle_044500ms.png",
+      "local": "05_r7_generated_candidates_reference_only/02_R7_CAND_016_middle_044500ms.png",
+      "exists": true,
+      "r8_status": "reference_only_pending_director_reapproval"
+    },
+    {
+      "kind": "r7_generated_candidate_reference_only",
+      "id": "R7_CAND_016_end_045470ms",
+      "timecode": "00:45.47",
+      "role": "end",
+      "priority": "P3_reference_video_or_already_handled",
+      "source": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_016_end_045470ms.png",
+      "local": "05_r7_generated_candidates_reference_only/03_R7_CAND_016_end_045470ms.png",
+      "exists": true,
+      "r8_status": "reference_only_pending_director_reapproval"
+    }
+  ],
+  "official_original_keyframes_reference_only": [
+    {
+      "kind": "official_keyframe",
+      "id": "OP_SHOT_020",
+      "timecode": "00:43.50",
+      "role": "图4 / Marie_run",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_016_MARIE_KING_RUN/keyframes/01_OP_SHOT_020.png",
+      "local": "06_official_original_keyframes_reference_only/01_official_keyframe_OP_SHOT_020.png",
+      "exists": true,
+      "r8_status": "reference_only_not_for_default_upload"
+    },
+    {
+      "kind": "official_keyframe",
+      "id": "OP_SHOT_021",
+      "timecode": "00:45.50",
+      "role": "图5 / group_run",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_016_MARIE_KING_RUN/keyframes/02_OP_SHOT_021.png",
+      "local": "06_official_original_keyframes_reference_only/02_official_keyframe_OP_SHOT_021.png",
+      "exists": true,
+      "r8_status": "reference_only_not_for_default_upload"
+    }
+  ],
+  "expected_video_output_path": "08_generation/outputs/video/reference003_r7_high_precision_segments/VU_REF003_R7_016_MARIE_KING_RUN.mp4"
+}

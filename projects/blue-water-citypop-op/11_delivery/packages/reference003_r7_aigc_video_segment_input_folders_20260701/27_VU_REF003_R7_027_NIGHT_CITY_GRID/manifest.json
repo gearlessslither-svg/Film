@@ -1,0 +1,137 @@
+{
+  "created_at": "2026-07-01T23:29:49+08:00",
+  "status": "organized_input_folder_pending_visual_qa",
+  "unit": {
+    "order": 27,
+    "unit_id": "VU_REF003_R7_027_NIGHT_CITY_GRID",
+    "title": "夜城蓝网格",
+    "start": 61.436,
+    "end": 64.94,
+    "intent": "夜城与蓝色地面/几何图案。",
+    "active_locks": [
+      [
+        "props_vehicles_symbols",
+        "blue_grid_geometry"
+      ]
+    ],
+    "mode": "high_precision_segment"
+  },
+  "source_unit_manifest": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_027_NIGHT_CITY_GRID/manifest.json",
+  "reference_clip": {
+    "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_027_NIGHT_CITY_GRID/reference_clip/VU_REF003_R7_027_NIGHT_CITY_GRID_reference.mp4",
+    "local": "01_reference_clip/VU_REF003_R7_027_NIGHT_CITY_GRID_reference.mp4",
+    "exists": true
+  },
+  "prompt_doc": "AIGC_PROMPT.md",
+  "keyframes_for_upload": [
+    {
+      "kind": "official_keyframe",
+      "id": "OP_SHOT_029",
+      "timecode": "01:01.50",
+      "role": "图1 / night_city_reveal",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_027_NIGHT_CITY_GRID/keyframes/01_OP_SHOT_029.png",
+      "local": "02_keyframes_for_upload/01_official_keyframe_OP_SHOT_029.png",
+      "exists": true
+    },
+    {
+      "kind": "r5_adaptive_generated",
+      "id": "R5_VU_REF003_014_NIGHT_CITY_BLUE_GRID_062500ms_01",
+      "timecode": "01:02.50",
+      "role": "adaptive_primary",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_027_NIGHT_CITY_GRID/keyframes/02_R5_VU_REF003_014_NIGHT_CITY_BLUE_GRID_062500ms_01.png",
+      "local": "02_keyframes_for_upload/02_r5_adaptive_generated_R5_VU_REF003_014_NIGHT_CITY_BLUE_GRID_062500ms_01.png",
+      "exists": true
+    },
+    {
+      "kind": "official_keyframe",
+      "id": "OP_SHOT_030",
+      "timecode": "01:03.50",
+      "role": "图2 / glowing_blue_grid",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_027_NIGHT_CITY_GRID/keyframes/03_OP_SHOT_030.png",
+      "local": "02_keyframes_for_upload/03_official_keyframe_OP_SHOT_030.png",
+      "exists": true
+    },
+    {
+      "kind": "r5_adaptive_generated",
+      "id": "R5_VU_REF003_015_NIGHT_AIRCRAFT_PASS_065000ms_01",
+      "timecode": "01:05.00",
+      "role": "adaptive_primary",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_027_NIGHT_CITY_GRID/keyframes/04_R5_VU_REF003_015_NIGHT_AIRCRAFT_PASS_065000ms_01.png",
+      "local": "02_keyframes_for_upload/04_r5_adaptive_generated_R5_VU_REF003_015_NIGHT_AIRCRAFT_PASS_065000ms_01.png",
+      "exists": true
+    },
+    {
+      "kind": "r7_generated_candidate",
+      "id": "R7_CAND_027_start_061466ms",
+      "timecode": "01:01.47",
+      "role": "start",
+      "priority": "P3_reference_video_or_already_handled",
+      "status": "generated_asset_ready_pending_review",
+      "source": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_027_start_061466ms.png",
+      "local": "02_keyframes_for_upload/05_r7_generated_R7_CAND_027_start_061466ms.png",
+      "exists": true,
+      "difference_reason": "夜城蓝网格 start boundary/transition frame from R7 high-precision split."
+    },
+    {
+      "kind": "r7_generated_candidate",
+      "id": "R7_CAND_027_middle_063188ms",
+      "timecode": "01:03.19",
+      "role": "middle",
+      "priority": "P3_reference_video_or_already_handled",
+      "status": "generated_asset_ready_pending_review",
+      "source": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_027_middle_063188ms.png",
+      "local": "02_keyframes_for_upload/06_r7_generated_R7_CAND_027_middle_063188ms.png",
+      "exists": true,
+      "difference_reason": "夜城蓝网格 middle boundary/transition frame from R7 high-precision split."
+    },
+    {
+      "kind": "r7_generated_candidate",
+      "id": "R7_CAND_027_end_064910ms",
+      "timecode": "01:04.91",
+      "role": "end",
+      "priority": "P3_reference_video_or_already_handled",
+      "status": "generated_asset_ready_pending_review",
+      "source": "08_generation/jobs/REFERENCE003_R7_PROMOTED_CANDIDATES_20260701/outputs/R7_CAND_027_end_064910ms.png",
+      "local": "02_keyframes_for_upload/07_r7_generated_R7_CAND_027_end_064910ms.png",
+      "exists": true,
+      "difference_reason": "夜城蓝网格 end boundary/transition frame from R7 high-precision split."
+    }
+  ],
+  "asset_locks_for_upload": [
+    {
+      "group": "props_vehicles_symbols",
+      "id": "blue_grid_geometry",
+      "status": "official_scene_symbol_lock",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/_global_asset_locks/props_vehicles_symbols_blue_grid_geometry.png",
+      "local": "03_asset_locks_for_upload/01_props_vehicles_symbols_blue_grid_geometry.png",
+      "exists": true
+    }
+  ],
+  "source_reference_frames_audit_only": [
+    {
+      "id": "R7_CAND_027_start_061466ms",
+      "timecode": "01:01.47",
+      "role": "start",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_027_NIGHT_CITY_GRID/candidate_reference_frames/R7_CAND_027_start_061466ms.jpg",
+      "local": "04_source_reference_frames_audit_only/01_R7_CAND_027_start_061466ms.jpg",
+      "exists": true
+    },
+    {
+      "id": "R7_CAND_027_middle_063188ms",
+      "timecode": "01:03.19",
+      "role": "middle",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_027_NIGHT_CITY_GRID/candidate_reference_frames/R7_CAND_027_middle_063188ms.jpg",
+      "local": "04_source_reference_frames_audit_only/02_R7_CAND_027_middle_063188ms.jpg",
+      "exists": true
+    },
+    {
+      "id": "R7_CAND_027_end_064910ms",
+      "timecode": "01:04.91",
+      "role": "end",
+      "source": "08_generation/jobs/REFERENCE003_R7_HIGH_PRECISION_VIDEO_UNITS_20260701/VU_REF003_R7_027_NIGHT_CITY_GRID/candidate_reference_frames/R7_CAND_027_end_064910ms.jpg",
+      "local": "04_source_reference_frames_audit_only/03_R7_CAND_027_end_064910ms.jpg",
+      "exists": true
+    }
+  ],
+  "expected_video_output_path": "08_generation/outputs/video/reference003_r7_high_precision_segments/VU_REF003_R7_027_NIGHT_CITY_GRID.mp4"
+}
