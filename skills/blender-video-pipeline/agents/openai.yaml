@@ -1,0 +1,4 @@
+interface:
+  display_name: "Blender Video Pipeline"
+  short_description: "Build, render, encode, and package Blender videos"
+  default_prompt: "Use $blender-video-pipeline to build a Blender video workflow, render frames, encode the result, and package it for review or AIGC use."
