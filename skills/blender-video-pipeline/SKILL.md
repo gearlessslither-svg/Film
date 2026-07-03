@@ -46,6 +46,8 @@ When using Blender video plus keyframes for AIGC video:
 - Treat keyframes/reference images as style, composition, materials, palette, and final visual target.
 - Treat the Blender video as camera path, object movement, spatial continuity, timing, parallax, and construction logic.
 - Tell the AIGC model not to copy Blender's plain preview materials unless those materials are intentional.
+- Explicitly separate final-picture elements from control-only elements in every prompt. Name which lines, color markers, arrows, labels, guide objects, proxy shapes, camera paths, or debug overlays should appear in the final video and which are only motion/reference aids.
+- If a guide element appears in the Blender video but should not appear in the final render, say so in both the positive instructions and negative prompt. Do not rely on the phrase "motion reference only" by itself.
 - Use negative prompts against hard cuts, scene jumps, rubbery geometry, melting mechanics, random camera shake, and style drift.
 - If the motion is complex, generate a second Blender pass with simpler high-contrast materials or labeled color groups for control, while keeping the final aesthetic keyframes separate.
 
