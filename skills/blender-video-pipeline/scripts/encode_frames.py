@@ -23,7 +23,7 @@ def find_ffmpeg(explicit=None):
 def main():
     parser = argparse.ArgumentParser(description="Encode an image sequence to video.")
     parser.add_argument("--frames-dir", required=True, help="Directory containing frames.")
-    parser.add_argument("--pattern", default="frame_%04d.png", help="FFmpeg input pattern, e.g. frame_%04d.png.")
+    parser.add_argument("--pattern", default="frame_%04d.png", help="FFmpeg input pattern, e.g. frame_%%04d.png.")
     parser.add_argument("--start-number", type=int, default=1, help="First frame number.")
     parser.add_argument("--fps", type=float, default=24, help="Frames per second.")
     parser.add_argument("--output", required=True, help="Output video path.")

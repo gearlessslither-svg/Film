@@ -16,6 +16,8 @@ Use a single reproducible scene script:
 8. Save the `.blend`.
 9. Render frames only after the scene is saved.
 
+When normalizing interpolation, guard for Blender API differences. In newer Blender versions an action may not expose `action.fcurves` the same way older scripts expect; use `getattr(action, "fcurves", None)` before iterating, and skip interpolation forcing if no curves are available.
+
 ## Modeling For Motion References
 
 Motion-reference geometry should be readable:
@@ -34,6 +36,8 @@ For one-shot movement:
 - Add a `TRACK_TO` constraint on the camera.
 - Keyframe camera location, target location, lens, and sometimes depth of field.
 - Use 4-6 camera beats for a 10s shot rather than dozens of micro keys.
+- For title/opening map shots, make the beats describe a route, not only a build: low foreground start, lateral or forward travel, mid-shot parallax through raised forms, crane/dolly reveal, and a final wide or aerial settle.
+- If the user's reference is a famous title sequence or map-mechanism language, preserve the feeling through spatial travel, reveal rhythm, and scale changes rather than copying a static composition.
 - Check start, midpoint, and end frames before full render.
 
 Example timing for 10s at 24fps:

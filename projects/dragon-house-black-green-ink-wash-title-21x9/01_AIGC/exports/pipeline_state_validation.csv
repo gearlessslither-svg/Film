@@ -1,0 +1,9 @@
+check,value,status,notes
+required_files,0,fail,missing=TASK_LOG.md;README.md;01_AIGC/19_micro_storyboard_188_panels.csv;01_AIGC/exports/real_image_generation_queue.csv;01_AIGC/exports/micro_storyboard_pure_image_prompts.csv;01_AIGC/exports/visual_asset_qa_checklist.csv;01_AIGC/exports/visual_asset_dual_version_plan.csv;01_AIGC/exports/final_delivery_validation_v002.csv;01_AIGC/tools/build_final_storyboard_panels.py;01_AIGC/tools/build_final_storyboard_video.py;01_AIGC/tools/validate_final_delivery.py;01_AIGC/35_full_pipeline_operating_manual_v1.md;01_AIGC/36_runtime_resilience_and_keepawake_v1.md;scripts/keep-codex-awake.ps1
+micro_storyboard_rows,0,fail,
+pure_prompt_rows,0,fail,
+real_image_queue_rows,0,fail,
+final_delivery_validation,0,fail,
+final_video_exists,False,fail,
+clean_audio_exists,False,fail,
+review_package_exists,False,fail,

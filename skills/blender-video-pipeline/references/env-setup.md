@@ -62,4 +62,5 @@ Use H.264 MP4 for AIGC upload. Use a higher-quality intermediate such as ProRes 
 - If `blender` is not on PATH, call `/Applications/Blender.app/Contents/MacOS/Blender` directly.
 - If Blender direct MP4 output changes across versions, render frames and encode externally.
 - If FFmpeg is missing, bootstrap the venv and let `imageio-ffmpeg` provide the executable.
+- If `encode_frames.py --help` fails on Python 3.14 with `ValueError: badly formed help string`, inspect argparse help text for unescaped printf tokens. Use `%%04d` inside help strings while keeping the actual default pattern as `frame_%04d.png`.
 - If a render is too slow, render a motion-reference pass first using Eevee, simpler materials, lower samples, and frame-step previews before final quality.

@@ -10,7 +10,16 @@
 2. 再和最容易混淆的相邻角色并排比较。
 3. 遮住衣服颜色和道具后，只看脸、头发、体态和手势。
 4. 缩小到 contact sheet 尺寸后，确认 3 秒内能认出角色。
-5. 不合格图只能降级为 rejected/reference，不能进入 pure 分镜生产。
+5. 和导演批准的 `official_identity_lock` 并排比较；没有锁图的角色不能进入正式多角色图。
+6. 不合格图只能降级为 rejected/reference，不能进入 pure 分镜生产。
+
+## 官方身份锁规则
+
+- 导演明确喜欢的角色图优先成为 `official_identity_lock`。
+- 角色第一次满意亮相图必须写入资产圣经或 manifest；后续镜头必须引用它。
+- 多角色、远景、小脸、奔跑、合照和 montage 镜头必须额外检查身份一致性，不能只看构图。
+- 角色可以有阶段状态变化，但不能换脸、换年龄、换发型、换核心服装识别、换关键饰品或换体态锚点。
+- 如果一张图的角色更漂亮但不像锁图，判定为 `identity_continuity_fail`。
 
 ## 三兄弟差异基准
 
@@ -48,6 +57,9 @@
 ## 资产状态规则
 
 - `approved`：可进入 pure 分镜和关键帧生产。
+- `official_identity_lock`：导演批准的正式角色身份源，后续生产必须引用。
+- `needs_identity_lock`：构图或氛围可用，但尚未建立身份锁，不能进入正式群像/视频生成。
+- `identity_continuity_fail`：脸、发型、年龄、服装识别或体态锚点漂移，不得进入视频生成。
 - `generated_needs_review`：可人工复核，不能默认进入最终分镜。
 - `rejected_similarity`：相似度失败，不得作为正式角色参考。
 - `stage_reference_only`：可作为某个后段状态氛围参考，但不能作为开场基础人设。

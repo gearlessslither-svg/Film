@@ -16,6 +16,7 @@ Use this skill for complete Blender video workflows, from environment setup thro
    - `renders/frames/` for PNG or EXR frame sequences.
    - `outputs/` for encoded MP4/ProRes/WebM/GIF deliverables.
    - `docs/` for prompts, shot notes, render notes, QA notes.
+   - Treat all visual inputs as per-job parameters. Do not hard-code specific start/end/style images in the skill; resolve them from the current user request, handoff, job manifest, or newly generated assets.
 3. Check or bootstrap the environment. Read `references/env-setup.md`, then run `scripts/check_env.py`. If video encoding packages are missing, use `scripts/bootstrap_video_env.py` in a project-local virtual environment.
 4. Build a Blender automation script. Read `references/blender-automation.md` before writing scene-generation code.
 5. Render a small sample first: start, midpoint, and final frame, or a 24-48 frame motion slice. Inspect framing, scale, blank frames, camera target, and major motion before full render.
@@ -36,6 +37,7 @@ Use this skill for complete Blender video workflows, from environment setup thro
 - Model enough geometry for the task's purpose. A motion-reference video needs clear spatial relationships, silhouettes, scale, occlusion, and mechanical beats more than final surfacing.
 - Animate named control objects, not many raw meshes, when pieces must rise, fold, rotate, or track together.
 - Use a camera target object and a tracking constraint for one-take shots. Keyframe both camera and target.
+- For title-sequence, map-mechanism, or opening-credits shots, design an actual camera journey with displacement, parallax layers, foreground/midground/background reveals, and a final scale escalation. Do not settle for static in-place construction unless the user explicitly wants a locked-off mechanism shot.
 - Use frame-accurate timing notes. For a 10s 24fps shot, speak in frames as well as seconds: `1-72`, `73-144`, `145-240`.
 - Save the `.blend`, the Blender script, the frame sequence, and the encoded video. AIGC failures are easier to repair when the control source is reproducible.
 
@@ -44,11 +46,14 @@ Use this skill for complete Blender video workflows, from environment setup thro
 When using Blender video plus keyframes for AIGC video:
 
 - Treat keyframes/reference images as style, composition, materials, palette, and final visual target.
+- Treat start frame, end frame, and style references as slots supplied by the current job, not as fixed files baked into this skill.
+- For one-take AIGC generation, lock the start frame as the exact first-frame target. Treat the end frame as a final-reveal destination unless the current brief explicitly requires pixel-exact last-frame matching; prioritizing motion stability can prevent jitter and morphing.
 - Treat the Blender video as camera path, object movement, spatial continuity, timing, parallax, and construction logic.
 - Tell the AIGC model not to copy Blender's plain preview materials unless those materials are intentional.
 - Explicitly separate final-picture elements from control-only elements in every prompt. Name which lines, color markers, arrows, labels, guide objects, proxy shapes, camera paths, or debug overlays should appear in the final video and which are only motion/reference aids.
 - If a guide element appears in the Blender video but should not appear in the final render, say so in both the positive instructions and negative prompt. Do not rely on the phrase "motion reference only" by itself.
 - Use negative prompts against hard cuts, scene jumps, rubbery geometry, melting mechanics, random camera shake, and style drift.
+- Add the global AIGC Film audio rule to every video prompt: sound effects / ambience only; no music, no BGM, no soundtrack.
 - If the motion is complex, generate a second Blender pass with simpler high-contrast materials or labeled color groups for control, while keeping the final aesthetic keyframes separate.
 
 ## Useful Scripts

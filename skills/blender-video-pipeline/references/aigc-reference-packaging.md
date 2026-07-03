@@ -4,7 +4,7 @@ Use this reference when Blender output will guide an AIGC video model.
 
 ## Package Layout
 
-Use a compact package:
+Use a compact package. The filenames below are conventional slots, not fixed skill-level assets. For each job, populate them from the current user request, project handoff, job manifest, or newly generated keyframes:
 
 ```text
 project-slug/
@@ -30,9 +30,11 @@ project-slug/
 The prompt must tell the video model how to use each input:
 
 - Start frame: first-frame composition, palette, materials, and world design.
-- End frame: final reveal, composition, scale, and destination.
+- End frame: final reveal, composition, scale, and destination. For one-take generation, it may be a loose destination reference when exact last-frame matching would cause jitter, morphing, or a fake camera jump.
 - Blender video: camera movement, object motion, construction order, spatial continuity, timing, and parallax.
 - Text prompt: final art direction and constraints.
+
+Do not reference a previous project's start frame, end frame, or style image unless the current user request explicitly names that asset.
 
 Do not let the model confuse the Blender pass for final style when the Blender pass is only previs.
 
@@ -56,7 +58,7 @@ The red path line in the Blender reference is a control guide for camera directi
 
 ```text
 Use the uploaded start frame as the exact first-frame visual target.
-Use the uploaded end frame as the exact final-frame visual target.
+Use the uploaded end frame as the final-reveal destination and loose composition/material/scale reference unless this brief explicitly asks for exact last-frame matching. Prioritize a stable one-take camera move over pixel-perfect end-frame matching.
 Use the uploaded Blender reference video only for camera path, spatial layout, object motion, construction timing, parallax, and one-take continuity.
 Do not copy the Blender preview materials, plain lighting, or simplified geometry literally; reinterpret them in the style of the keyframes and style references.
 
@@ -77,6 +79,9 @@ Motion beats:
 Visual style:
 <style, palette, material, lighting, texture, atmosphere>
 
+Audio hard rule:
+Sound effects and ambience only. No music, no BGM, no soundtrack.
+
 Negative prompt:
 No text, no logo, no watermark, no hard cut, no scene jump, no random camera shake, no melting geometry, no rubbery mechanics, no style drift, no extra characters unless specified, no visible control guides, no colored blocking markers, no camera-path lines, no debug arrows, no labels, no proxy geometry copied from the Blender reference.
 ```
@@ -90,3 +95,4 @@ No text, no logo, no watermark, no hard cut, no scene jump, no random camera sha
 - Does the prompt list reference-only elements that must not appear in the final picture?
 - Are strong guide elements repeated in the negative prompt so the model does not copy them?
 - Does the final video request mention aspect ratio, duration, fps if needed, and one-take continuity?
+- Does the prompt include the hard audio rule: sound effects / ambience only; no music, no BGM, no soundtrack?

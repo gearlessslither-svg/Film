@@ -1,0 +1,5 @@
+**/.venv-video/
+**/__pycache__/
+**/renders/frames/
+11_delivery/packages/*conversation_export*.zip
+.DS_Store
