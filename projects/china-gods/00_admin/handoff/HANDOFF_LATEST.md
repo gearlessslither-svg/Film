@@ -28,8 +28,8 @@ _(no idea_board.json found)_
 - 图片输出目录：`08_generation/jobs/style_cards_60_batch01/outputs/`
 - 当前打包文件：`11_delivery/packages/china_gods_style_cards_001_075_20260706.zip`
 - 打包说明：`11_delivery/packages/CHINA_GODS_STYLE_CARDS_001_075_PACKAGE.md`
-- Git 远端：本批待提交/推送；上一版 `001-065` 已推送到提交 `4c4c79c`。
-- 远程下载 ZIP：推送后使用 `https://github.com/gearlessslither-svg/Film/raw/main/projects/china-gods/11_delivery/packages/china_gods_style_cards_001_075_20260706.zip`
+- Git 远端：本批 `001-075` 已推送到提交 `fdb00fd`。
+- 远程下载 ZIP：`https://github.com/gearlessslither-svg/Film/raw/main/projects/china-gods/11_delivery/packages/china_gods_style_cards_001_075_20260706.zip`
 - 远程图片目录：`https://github.com/gearlessslither-svg/Film/tree/main/projects/china-gods/08_generation/jobs/style_cards_60_batch01/outputs`
 - 导演反馈：`022` 离婚窗口中文标牌版很好，已恢复为正式版；无字版作为备选保留。
 - 用户确认：中文标牌可保留，只要不是真实品牌、商标、真实机构敏感标识或破坏画面。后续不要过度无字化。
