@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "project_slug": "new-project",
+  "updated_at": "",
+  "acts": [
+    {
+      "act_id": "ACT01",
+      "title": "第一幕 / Act 1",
+      "status": "draft",
+      "scenes": [
+        {
+          "scene_id": "SCN_001",
+          "scene_slug": "scn-001",
+          "title": "第一场 / Scene 1",
+          "story_stage": "",
+          "status": "draft",
+          "shot_ids": [],
+          "primary_steps": ["03_story", "04_lookdev", "05_asset_bible", "06_previs", "07_shots", "08_generation", "09_edit", "10_qa", "11_delivery"]
+        }
+      ]
+    }
+  ]
+}

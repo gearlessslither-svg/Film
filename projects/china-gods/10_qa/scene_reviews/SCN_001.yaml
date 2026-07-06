@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "scene_id": "SCN_001",
+  "reviews": [
+    {
+      "review_id": "RV_SCN_001_YYYYMMDD_001",
+      "scene_id": "SCN_001",
+      "status": "draft",
+      "notes": "初始审片记录模板 / Initial review record template.",
+      "change_request_id": "",
+      "created_at": ""
+    }
+  ]
+}

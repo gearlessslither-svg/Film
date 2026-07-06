@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "project_slug": "new-project",
+  "scene_id": "SCN_001",
+  "current_scene_iteration": "scene_iter_001",
+  "updated_at": "",
+  "versions": [
+    {
+      "asset_id": "SCN_001_ASSET",
+      "scene_id": "SCN_001",
+      "stage_id": "06_previs",
+      "version": "v001",
+      "status": "current",
+      "created_at": "",
+      "change_request_id": "initial",
+      "trigger_step": "06_previs",
+      "trigger_asset_id": "",
+      "action": "modify",
+      "parent_version": "",
+      "target_path": "",
+      "output_path": "",
+      "final_output_path": "",
+      "packet_path": "",
+      "output_exists": false,
+      "notes": "版本状态可为 queued、candidate、current、superseded / Version status can be queued, candidate, current, or superseded."
+    }
+  ]
+}

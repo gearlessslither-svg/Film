@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "snapshot_id": "SNAP_SCN_001_YYYYMMDD_HHMMSS",
+  "project_slug": "new-project",
+  "scene_id": "SCN_001",
+  "scene_title": "第一场 / Scene 1",
+  "status": "approved",
+  "notes": "本快照示例用于记录某一轮通过时的场戏基线 / This snapshot example records the scene baseline for an approved iteration.",
+  "change_request_id": "CR_SCN_001_YYYYMMDD_HHMMSS",
+  "created_at": "",
+  "shot_ids": [
+    "SHOT_001"
+  ],
+  "primary_steps": [
+    "03_story",
+    "04_lookdev",
+    "05_asset_bible",
+    "06_previs",
+    "07_shots",
+    "08_generation",
+    "09_edit",
+    "10_qa",
+    "11_delivery"
+  ],
+  "current_versions": [
+    {
+      "asset_id": "SCN_001_ASSET",
+      "scene_id": "SCN_001",
+      "stage_id": "06_previs",
+      "version": "v001",
+      "status": "current",
+      "change_request_id": "initial",
+      "trigger_step": "06_previs",
+      "final_output_path": ""
+    }
+  ],
+  "candidate_versions": [],
+  "change_requests": [
+    {
+      "change_request_id": "CR_SCN_001_YYYYMMDD_HHMMSS",
+      "status": "review_ready",
+      "trigger_step": "06_previs",
+      "creative_direction": "示例创作方向 / Example creative direction."
+    }
+  ],
+  "review_tail": [
+    {
+      "review_id": "RV_SCN_001_YYYYMMDD_HHMMSS",
+      "scene_id": "SCN_001",
+      "status": "approved",
+      "notes": "人工确认本轮通过 / Human reviewer approved this iteration.",
+      "change_request_id": "CR_SCN_001_YYYYMMDD_HHMMSS",
+      "created_at": ""
+    }
+  ],
+  "resource_manifest": {
+    "scene_id": "SCN_001",
+    "stage_assets": {}
+  }
+}
