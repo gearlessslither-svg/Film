@@ -4,8 +4,8 @@
 
 - 项目根: `/Users/jaychoupp/Story/Film/projects/china-gods`
 - 工具: AIGC Film Pipeline（Pipeline Hub `http://127.0.0.1:8787`），skill `aigc-film-pipeline`
-- 生成时间: 2026-07-06 10:20
-- 备注: 已创建正式项目，完成 60 张风格卡清单与 001-028 当前图片输出，并打包 `china_gods_style_cards_001_028_20260706.zip` 准备上传 Git。
+- 生成时间: 2026-07-06 17:05
+- 备注: 项目已从 60 张扩展到 100 张，完成 001-040 当前图片输出，并打包 `china_gods_style_cards_001_040_20260706.zip` 准备上传 Git。当前窗口已累计接近图像生成预算，下一窗口建议从 041 继续。
 
 ## 当前 board 状态 / Current board
 _(no idea_board.json found)_
@@ -21,16 +21,17 @@ _(no idea_board.json found)_
 
 ## 已完成 / Done
 - 正式项目目录：`Film/projects/china-gods/`
-- 60 张风格卡与详细 10s 提示词：`07_shots/CHINA_GODS_60_STYLE_CARDS.md`
+- 原 60 张风格卡与详细 10s 提示词：`07_shots/CHINA_GODS_60_STYLE_CARDS.md`
+- 061-100 扩展风格卡与详细 10s 提示词：`07_shots/CHINA_GODS_100_EXPANSION_061_100.md`
 - 风格 Bible：`04_lookdev/STYLE_BIBLE.md`
-- 当前已生成图片：`001-028`
+- 当前已生成图片：`001-040`（另有 `022` 无字备选）
 - 图片输出目录：`08_generation/jobs/style_cards_60_batch01/outputs/`
-- 当前打包文件：`11_delivery/packages/china_gods_style_cards_001_028_20260706.zip`
-- 打包说明：`11_delivery/packages/CHINA_GODS_STYLE_CARDS_001_028_PACKAGE.md`
+- 当前打包文件：`11_delivery/packages/china_gods_style_cards_001_040_20260706.zip`
+- 打包说明：`11_delivery/packages/CHINA_GODS_STYLE_CARDS_001_040_PACKAGE.md`
 - 导演反馈：`022` 离婚窗口中文标牌版很好，已恢复为正式版；无字版作为备选保留。
 
 ## 下一批 / NEXT
-继续生成 `029-060`，从 `029 阴司判官在网约车后座` 开始。每 12 张一批做联系表、QA、更新 `07_shots/shot_list.csv` 状态和本交接。
+继续生成 `041-100`，从 `041 后土在城市地下管廊` 开始。每 8-12 张一批检查窗口体积、更新 `07_shots/shot_list.csv` 状态和本交接；不要重新生成 `001-040`。
 
 ## 怎么继续 / Resume
 1. 启动 Pipeline Hub：`/Users/jaychoupp/Story/Film_Tool_Launcher.command`
