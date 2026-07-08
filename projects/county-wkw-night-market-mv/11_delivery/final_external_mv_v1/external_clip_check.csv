@@ -1,0 +1,15 @@
+vp_id,kf_id,expected_clip,exists,status
+VP001,KF001,09_edit/external_clips/external_i2v_clips_v1/VP001_KF001_external_i2v.mp4,False,missing
+VP002,KF002,09_edit/external_clips/external_i2v_clips_v1/VP002_KF002_external_i2v.mp4,False,missing
+VP003,KF003,09_edit/external_clips/external_i2v_clips_v1/VP003_KF003_external_i2v.mp4,False,missing
+VP004,KF004,09_edit/external_clips/external_i2v_clips_v1/VP004_KF004_external_i2v.mp4,False,missing
+VP005,KF005,09_edit/external_clips/external_i2v_clips_v1/VP005_KF005_external_i2v.mp4,False,missing
+VP006,KF006,09_edit/external_clips/external_i2v_clips_v1/VP006_KF006_external_i2v.mp4,False,missing
+VP007,KF007,09_edit/external_clips/external_i2v_clips_v1/VP007_KF007_external_i2v.mp4,False,missing
+VP008,KF008,09_edit/external_clips/external_i2v_clips_v1/VP008_KF008_external_i2v.mp4,False,missing
+VP009,KF009,09_edit/external_clips/external_i2v_clips_v1/VP009_KF009_external_i2v.mp4,False,missing
+VP010,KF010,09_edit/external_clips/external_i2v_clips_v1/VP010_KF010_external_i2v.mp4,False,missing
+VP011,KF011,09_edit/external_clips/external_i2v_clips_v1/VP011_KF011_external_i2v.mp4,False,missing
+VP012,KF012,09_edit/external_clips/external_i2v_clips_v1/VP012_KF012_external_i2v.mp4,False,missing
+VP013,KF013,09_edit/external_clips/external_i2v_clips_v1/VP013_KF013_external_i2v.mp4,False,missing
+VP014,KF014,09_edit/external_clips/external_i2v_clips_v1/VP014_KF014_external_i2v.mp4,False,missing

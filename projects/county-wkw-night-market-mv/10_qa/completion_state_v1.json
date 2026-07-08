@@ -1,0 +1,132 @@
+{
+  "project": "county-wkw-night-market-mv",
+  "generated_at": "2026-07-08T17:08:21",
+  "summary": {
+    "overall_status": "pending_director_or_external_i2v",
+    "blocking_failures": "0",
+    "director_acceptance": "pending",
+    "next_action": "Either accept proxy style as final, or return 14 external I2V clips and assemble the final external MV."
+  },
+  "checks": [
+    {
+      "category": "core",
+      "name": "required_text_files",
+      "expected": "15 files",
+      "observed": "15 present",
+      "status": "pass",
+      "details": ""
+    },
+    {
+      "category": "assets",
+      "name": "lookdev_moodframes",
+      "expected": "8",
+      "observed": "8",
+      "status": "pass",
+      "details": "08_generation/jobs/lookdev_moodframes_v1/outputs"
+    },
+    {
+      "category": "assets",
+      "name": "hardlock_candidates",
+      "expected": "4",
+      "observed": "4",
+      "status": "pass",
+      "details": "08_generation/jobs/hardlocks_v1/outputs"
+    },
+    {
+      "category": "assets",
+      "name": "formal_keyframes",
+      "expected": "14",
+      "observed": "14",
+      "status": "pass",
+      "details": "08_generation/jobs/keyframes_v1/outputs"
+    },
+    {
+      "category": "assets",
+      "name": "local_proxy_clips",
+      "expected": "14",
+      "observed": "14",
+      "status": "pass",
+      "details": "09_edit/proxy_clips/local_proxy_clips_v1/outputs"
+    },
+    {
+      "category": "assets",
+      "name": "local_proxy_ambience_wavs",
+      "expected": "14",
+      "observed": "14",
+      "status": "pass",
+      "details": "09_edit/proxy_clips/local_proxy_clips_v1/audio"
+    },
+    {
+      "category": "prompts",
+      "name": "bilingual_video_prompts_and_audio_rule",
+      "expected": "14 VP sections, CN/EN prompts, source refs, no-music rule",
+      "observed": "sections=14, cn=14, en=14, sources=14, audio_rule=14",
+      "status": "pass",
+      "details": "08_generation/jobs/video_prompts_v1/PROMPTS.md"
+    },
+    {
+      "category": "video",
+      "name": "required_local_video_outputs",
+      "expected": "6 files",
+      "observed": "6 present",
+      "status": "pass",
+      "details": ""
+    },
+    {
+      "category": "packages",
+      "name": "zip_integrity",
+      "expected": "6 valid zip packages",
+      "observed": "6 ok",
+      "status": "pass",
+      "details": ""
+    },
+    {
+      "category": "packages",
+      "name": "final_proxy_candidate_checksums",
+      "expected": "all checksum rows match current files",
+      "observed": "6 rows checked",
+      "status": "pass",
+      "details": ""
+    },
+    {
+      "category": "external_i2v",
+      "name": "upload_units",
+      "expected": "14 units, 14 prompts, 14 source keyframes",
+      "observed": "units=14, prompts=14, source_keyframes=14",
+      "status": "pass",
+      "details": "11_delivery/packages/external_i2v_upload_v1/units"
+    },
+    {
+      "category": "external_i2v",
+      "name": "returned_external_clips",
+      "expected": "14 returned external I2V clips",
+      "observed": "0 present, 14 missing",
+      "status": "pending",
+      "details": "09_edit/external_clips/external_i2v_clips_v1/VP001_KF001_external_i2v.mp4; 09_edit/external_clips/external_i2v_clips_v1/VP002_KF002_external_i2v.mp4; 09_edit/external_clips/external_i2v_clips_v1/VP003_KF003_external_i2v.mp4; 09_edit/external_clips/external_i2v_clips_v1/VP004_KF004_external_i2v.mp4; 09_edit/external_clips/external_i2v_clips_v1/VP005_KF005_external_i2v.mp4; ..."
+    },
+    {
+      "category": "external_i2v",
+      "name": "final_external_mv_outputs",
+      "expected": "2 assembled external-MV files",
+      "observed": "0 present",
+      "status": "pending",
+      "details": "11_delivery/final_external_mv_v1/county_wkw_external_mv_v1_ambience_only.mp4; 11_delivery/final_external_mv_v1/county_wkw_external_mv_v1_with_scratch_music.mp4"
+    },
+    {
+      "category": "external_i2v",
+      "name": "final_external_mv_package",
+      "expected": "assembled final external-MV zip package",
+      "observed": "missing",
+      "status": "pending",
+      "details": "11_delivery/packages/final_external_mv_v1/county_wkw_final_external_mv_v1.zip"
+    },
+    {
+      "category": "director_gate",
+      "name": "proxy_style_acceptance",
+      "expected": "Status: accepted, if proxy style is final",
+      "observed": "Status: pending.",
+      "status": "pending",
+      "details": "11_delivery/final_proxy_candidate_v1/DIRECTOR_ACCEPTANCE_NOTE.md"
+    }
+  ]
+}

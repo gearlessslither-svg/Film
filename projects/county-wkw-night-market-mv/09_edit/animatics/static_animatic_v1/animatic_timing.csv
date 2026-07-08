@@ -1,0 +1,15 @@
+item_id,time_range,beat,source_keyframe,duration_sec
+KF001,0-5s,Night-market entry,KF001_night_market_entry.png,5.0
+KF002,5-10s,Boy and motorcycle anchor,KF002_boy_led_awning.png,5.0
+KF003,10-15s,Girl game-booth anchor,KF003_girl_game_booth.png,5.0
+KF004,15-20s,Beer-stall crossing,KF004_beer_stall_crossing.png,5.0
+KF005,20-25s,Motorcycle start detail,KF005_motorcycle_start.png,5.0
+KF006,25-31s,Wet alley ride,KF006_alley_ride.png,6.0
+KF007,31-37s,Repair-shop reflection,KF007_repair_reflection.png,6.0
+KF008,37-43s,Girl rain curtain,KF008_girl_rain_curtain.png,6.0
+KF009,43-50s,Wholesale standoff,KF009_wholesale_standoff.png,7.0
+KF010,50-55s,Memory details,KF010_memory_details.png,5.0
+KF011,55-61s,Ride out,KF011_ride_out.png,6.0
+KF012,61-67s,Field road,KF012_field_road.png,6.0
+KF013,67-72s,Girl departure,KF013_girl_departure.png,5.0
+KF014,72-75s,Boy stops,KF014_boy_stops.png,3.0

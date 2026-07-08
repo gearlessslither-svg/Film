@@ -1,0 +1,16 @@
+category,name,expected,observed,status,details
+core,required_text_files,15 files,15 present,pass,
+assets,lookdev_moodframes,8,8,pass,08_generation/jobs/lookdev_moodframes_v1/outputs
+assets,hardlock_candidates,4,4,pass,08_generation/jobs/hardlocks_v1/outputs
+assets,formal_keyframes,14,14,pass,08_generation/jobs/keyframes_v1/outputs
+assets,local_proxy_clips,14,14,pass,09_edit/proxy_clips/local_proxy_clips_v1/outputs
+assets,local_proxy_ambience_wavs,14,14,pass,09_edit/proxy_clips/local_proxy_clips_v1/audio
+prompts,bilingual_video_prompts_and_audio_rule,"14 VP sections, CN/EN prompts, source refs, no-music rule","sections=14, cn=14, en=14, sources=14, audio_rule=14",pass,08_generation/jobs/video_prompts_v1/PROMPTS.md
+video,required_local_video_outputs,6 files,6 present,pass,
+packages,zip_integrity,6 valid zip packages,6 ok,pass,
+packages,final_proxy_candidate_checksums,all checksum rows match current files,6 rows checked,pass,
+external_i2v,upload_units,"14 units, 14 prompts, 14 source keyframes","units=14, prompts=14, source_keyframes=14",pass,11_delivery/packages/external_i2v_upload_v1/units
+external_i2v,returned_external_clips,14 returned external I2V clips,"0 present, 14 missing",pending,09_edit/external_clips/external_i2v_clips_v1/VP001_KF001_external_i2v.mp4; 09_edit/external_clips/external_i2v_clips_v1/VP002_KF002_external_i2v.mp4; 09_edit/external_clips/external_i2v_clips_v1/VP003_KF003_external_i2v.mp4; 09_edit/external_clips/external_i2v_clips_v1/VP004_KF004_external_i2v.mp4; 09_edit/external_clips/external_i2v_clips_v1/VP005_KF005_external_i2v.mp4; ...
+external_i2v,final_external_mv_outputs,2 assembled external-MV files,0 present,pending,11_delivery/final_external_mv_v1/county_wkw_external_mv_v1_ambience_only.mp4; 11_delivery/final_external_mv_v1/county_wkw_external_mv_v1_with_scratch_music.mp4
+external_i2v,final_external_mv_package,assembled final external-MV zip package,missing,pending,11_delivery/packages/final_external_mv_v1/county_wkw_final_external_mv_v1.zip
+director_gate,proxy_style_acceptance,"Status: accepted, if proxy style is final",Status: pending.,pending,11_delivery/final_proxy_candidate_v1/DIRECTOR_ACCEPTANCE_NOTE.md

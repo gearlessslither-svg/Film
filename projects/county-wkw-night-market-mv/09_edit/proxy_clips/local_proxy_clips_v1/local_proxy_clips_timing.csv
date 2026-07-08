@@ -1,0 +1,15 @@
+vp_id,kf_id,beat,source_keyframe,duration_sec,clip_path,audio_rule
+VP001,KF001,Night-market entry,KF001_night_market_entry.png,5.00,09_edit/proxy_clips/local_proxy_clips_v1/outputs/VP001_KF001_local_proxy_clip.mp4,ambience/SFX only; no music/BGM/soundtrack
+VP002,KF002,Boy LED awning,KF002_boy_led_awning.png,5.00,09_edit/proxy_clips/local_proxy_clips_v1/outputs/VP002_KF002_local_proxy_clip.mp4,ambience/SFX only; no music/BGM/soundtrack
+VP003,KF003,Girl game booth,KF003_girl_game_booth.png,5.00,09_edit/proxy_clips/local_proxy_clips_v1/outputs/VP003_KF003_local_proxy_clip.mp4,ambience/SFX only; no music/BGM/soundtrack
+VP004,KF004,Beer-stall crossing,KF004_beer_stall_crossing.png,5.00,09_edit/proxy_clips/local_proxy_clips_v1/outputs/VP004_KF004_local_proxy_clip.mp4,ambience/SFX only; no music/BGM/soundtrack
+VP005,KF005,Motorcycle start,KF005_motorcycle_start.png,5.00,09_edit/proxy_clips/local_proxy_clips_v1/outputs/VP005_KF005_local_proxy_clip.mp4,ambience/SFX only; no music/BGM/soundtrack
+VP006,KF006,Alley ride,KF006_alley_ride.png,6.00,09_edit/proxy_clips/local_proxy_clips_v1/outputs/VP006_KF006_local_proxy_clip.mp4,ambience/SFX only; no music/BGM/soundtrack
+VP007,KF007,Repair reflection,KF007_repair_reflection.png,6.00,09_edit/proxy_clips/local_proxy_clips_v1/outputs/VP007_KF007_local_proxy_clip.mp4,ambience/SFX only; no music/BGM/soundtrack
+VP008,KF008,Girl rain curtain,KF008_girl_rain_curtain.png,6.00,09_edit/proxy_clips/local_proxy_clips_v1/outputs/VP008_KF008_local_proxy_clip.mp4,ambience/SFX only; no music/BGM/soundtrack
+VP009,KF009,Wholesale standoff,KF009_wholesale_standoff.png,7.00,09_edit/proxy_clips/local_proxy_clips_v1/outputs/VP009_KF009_local_proxy_clip.mp4,ambience/SFX only; no music/BGM/soundtrack
+VP010,KF010,Memory details,KF010_memory_details.png,5.00,09_edit/proxy_clips/local_proxy_clips_v1/outputs/VP010_KF010_local_proxy_clip.mp4,ambience/SFX only; no music/BGM/soundtrack
+VP011,KF011,Ride out,KF011_ride_out.png,6.00,09_edit/proxy_clips/local_proxy_clips_v1/outputs/VP011_KF011_local_proxy_clip.mp4,ambience/SFX only; no music/BGM/soundtrack
+VP012,KF012,Field road,KF012_field_road.png,6.00,09_edit/proxy_clips/local_proxy_clips_v1/outputs/VP012_KF012_local_proxy_clip.mp4,ambience/SFX only; no music/BGM/soundtrack
+VP013,KF013,Girl departure,KF013_girl_departure.png,5.00,09_edit/proxy_clips/local_proxy_clips_v1/outputs/VP013_KF013_local_proxy_clip.mp4,ambience/SFX only; no music/BGM/soundtrack
+VP014,KF014,Boy stops,KF014_boy_stops.png,3.00,09_edit/proxy_clips/local_proxy_clips_v1/outputs/VP014_KF014_local_proxy_clip.mp4,ambience/SFX only; no music/BGM/soundtrack

@@ -1,0 +1,33 @@
+{
+  "schema_version": "setting_chapter_index_v1",
+  "project_slug": "county-wkw-night-market-mv",
+  "updated_at": "2026-07-08",
+  "chapters": [
+    {
+      "chapter_id": "CH00_PROJECT_RULES",
+      "title": "Project Rules",
+      "path": "05_asset_bible/setting_chapters/00_project_rules.md",
+      "status": "active"
+    },
+    {
+      "chapter_id": "CH01_CHARACTER_LOCKS",
+      "title": "Boy and Girl Character Locks",
+      "path": "05_asset_bible/setting_chapters/01_character_locks.md",
+      "status": "candidate_image_ready"
+    },
+    {
+      "chapter_id": "CH02_ENVIRONMENT_PROPS_LIGHTING",
+      "title": "Environment, Props, and Lighting Locks",
+      "path": "05_asset_bible/setting_chapters/02_environment_props_lighting.md",
+      "status": "active"
+    }
+  ],
+  "asset_files": [
+    "05_asset_bible/characters/BOY_LOCK_V1.md",
+    "05_asset_bible/characters/GIRL_LOCK_V1.md",
+    "05_asset_bible/props/MOTORCYCLE_LOCK_V1.md",
+    "05_asset_bible/locations/COUNTY_NIGHT_MARKET_LOCK_V1.md",
+    "05_asset_bible/visual_direction/COLOR_LIGHTING_LOCK_V1.md",
+    "05_asset_bible/continuity/LOOKDEV_CONTINUITY_V1.md"
+  ]
+}

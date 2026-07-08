@@ -1,0 +1,196 @@
+{
+  "schema_version": "aigc_idea_board_v1",
+  "project_slug": "county-wkw-night-market-mv",
+  "updated_at": "2026-07-08",
+  "idea": "县城夜市版复古未来 MV：男孩骑旧机车穿过雨后夜市、游戏摊、啤酒摊、小巷、KTV 门口、批发市场和田野小路，遇见一个女孩，像一场没有说完的夏夜梦。",
+  "story_title": "县城王家卫",
+  "logline": "一个县城机车男孩在雨后夜市里遇见女孩，廉价霓虹和田野晨光把普通夏夜变成暧昧复古未来 MV。",
+  "story_outline": "音乐 MV，弱剧情、强情绪。男孩进入夜市，看见女孩；两人隔着灯泡、烟、雨布、塑料凳和机车灯反复错身；他们穿过小巷、KTV 门口、修车铺、批发市场，最后到县城外田野小路，清晨前女孩消失，男孩停在路边。",
+  "style_notes": "1990s Hong Kong romantic neon cinema mood translated into explicit visual language: county-town objects, rain-wet reflections, cheap LED, red/green/amber/cyan fluorescent spill, smoke, plastic rain curtains, shallow depth of field, telephoto compression, off-center framing, no readable signage, no luxury cyberpunk.",
+  "project_bible": [
+    "01_intake/PROJECT_BRIEF.md",
+    "02_direction/TOPIC_SELECTION_GATE.md",
+    "03_story/outlines/STORY_SPINE.md",
+    "04_lookdev/STYLE_BIBLE.md",
+    "04_lookdev/LOOKDEV_MOOD_FRAMES_V1.md"
+  ],
+  "global_references": [],
+  "completed_handoff_ids": [],
+  "rows": [
+    {
+      "card_uid": "CARD_LD001",
+      "item_id": "LD001",
+      "act_id": "LOOKDEV",
+      "scene_id": "NIGHT_MARKET_ENTRANCE",
+      "beat": "夜市入口雨后霓虹",
+      "shot_type": "lookdev_wide_establishing",
+      "frame_description": "雨刚停的县城夜市入口，湿路反射廉价 LED，男孩骑旧机车进入，远处女孩在雨棚灯下成为半清楚的背影。",
+      "linked_cards": [
+        "LD002",
+        "LD003"
+      ],
+      "spatial_logic": "建立夜市入口、雨棚、水坑、电瓶车和游戏摊灯泡；男孩从县城夜路进入，女孩先作为远处情绪锚点出现。",
+      "image_prompt": "中文：电影感 21:9 宽银幕关键帧。雨刚停的中国商贸县城夜市入口，湿漉漉的柏油路和水坑反射红绿黄廉价 LED，塑料雨棚、啤酒箱、电瓶车、套圈摊灯泡和模糊人影形成县城质感。男孩骑一辆旧街车从画面左下进入，车灯被水面拖成一道长光，远处女孩只是一道半清楚的背影，站在雨棚灯下。长焦压缩，浅景深，前景有透明塑料雨布和水珠遮挡，慢门拖影，暧昧、夏夜、像一场刚开始的梦。所有招牌文字都变成不可读的色块。\nEnglish: Cinematic 21:9 wide keyframe still. A Chinese county-town night-market entrance right after rain, wet asphalt and puddles reflecting cheap red, green, and amber LED lights; plastic tarps, beer crates, e-bikes, ring-toss booth bulbs, and blurred silhouettes create a grounded county-town texture. A quiet boy rides a used street motorcycle into frame from the lower left, the headlight stretching into a long reflection on the wet road; in the distance, the girl is only a half-clear back view under the tarp lights. Telephoto compression, shallow depth of field, transparent plastic rain curtain and water droplets in the foreground, slow-shutter motion blur, romantic summer-night ambiguity, like a dream just beginning. All signage is unreadable colored blocks.\nNegative: no glossy international metropolis skyline, no luxury sci-fi vehicle, no clean laboratory futurism, no readable Chinese shop signs, no real brands, no logos, no watermarks, no subtitles, no celebrity likeness, no anime face, no heavy crowd, no fake cyberpunk skyscraper background.",
+      "video_prompt": "中文：从夜市入口低机位缓慢推入，男孩的旧机车低速驶进画面，水坑反射被车灯拉长，远处女孩背影短暂回头但不露脸。只要雨后环境声、机车低频声、摊位远处人声和塑料雨布滴水声；不要音乐，不要 BGM。\nEnglish: Slow low-angle push into the night-market entrance as the boy's used motorcycle rolls into frame; puddle reflections stretch under the headlight, and the distant girl briefly turns without revealing her face. Sound effects and ambience only: post-rain room tone, low motorcycle engine, distant stall chatter, water dripping from plastic tarps; no music, no BGM, no soundtrack.",
+      "lock_requirement": "county-town night-market objects, used motorcycle, boy/girl age and styling, unreadable signage",
+      "references": [],
+      "selected": true,
+      "status": "image_ready",
+      "output_path": "08_generation/jobs/lookdev_moodframes_v1/outputs/LD001_night_market_entrance.png",
+      "notes": "First lookdev mood frame; establish county-town romance and rain-neon language."
+    },
+    {
+      "card_uid": "CARD_LD002",
+      "item_id": "LD002",
+      "act_id": "LOOKDEV",
+      "scene_id": "LED_AWNING_MOTORCYCLE",
+      "beat": "廉价 LED 雨棚下的男孩和机车",
+      "shot_type": "lookdev_character_vehicle_anchor",
+      "frame_description": "男孩停在廉价 LED 雨棚下，半身靠近旧街车，湿铬和后视镜映出夜市灯，背景是啤酒箱、塑料凳和烧烤烟。",
+      "linked_cards": [
+        "LD001",
+        "LD005"
+      ],
+      "spatial_logic": "建立男孩和机车作为后续连续性锁；灯光来自雨棚 LED、烧烤摊和湿车身反射。",
+      "image_prompt": "中文：电影感 21:9 宽银幕关键帧。男孩停在廉价 LED 雨棚下，半身靠近旧街车，深色旧夹克微湿，头发被雨水压住，神情安静。雨棚上红绿 LED 管和黄色灯泡照在他的脸侧，旧机车的湿铬、后视镜和塑料外壳映出夜市灯。背景是啤酒箱、塑料凳、模糊烧烤烟、不可读店招和电瓶车。偏心构图，前景用雨布边缘遮住一部分脸，像被偷看到的一瞬。真实县城，不要豪车，不要都市高楼。\nEnglish: Cinematic 21:9 wide keyframe still. The boy pauses under a cheap LED awning beside a used street motorcycle, wearing a slightly wet dark worn jacket, hair pressed down by rain, quiet expression. Red-green LED tubes and amber bulbs on the tarp edge graze the side of his face; wet chrome, mirrors, and plastic bodywork on the bike reflect night-market lights. Background details include beer crates, plastic stools, blurred barbecue smoke, unreadable signage, and e-bikes. Off-center framing, the edge of a plastic rain tarp partially obscuring his face, as if the moment is secretly glimpsed. Grounded county town, no luxury vehicle, no big-city skyline.\nNegative: no luxury superbike, no glossy metropolis, no readable signage, no logos, no celebrity likeness, no anime face, no fashion editorial perfection, no clean futuristic lab look.",
+      "video_prompt": "中文：镜头手持轻微晃动，绕过雨布边缘靠近男孩和机车，LED 管在湿车身上闪烁，男孩只抬眼看向画外。只要机车怠速、雨棚滴水、远处烧烤摊声音和电流轻响；不要音乐，不要 BGM。\nEnglish: Slight handheld drift past the edge of the plastic tarp toward the boy and motorcycle; LED tubes flicker across the wet bike body, and the boy only lifts his eyes toward something offscreen. Sound effects and ambience only: motorcycle idle, tarp drips, distant barbecue stall noise, faint electrical buzz; no music, no BGM, no soundtrack.",
+      "lock_requirement": "boy face age/style, dark worn jacket, wet used street motorcycle, cheap LED awning",
+      "references": [],
+      "selected": true,
+      "status": "image_ready",
+      "output_path": "08_generation/jobs/lookdev_moodframes_v1/outputs/LD002_boy_motorcycle_led_awning.png",
+      "notes": "Primary boy and motorcycle lookdev anchor."
+    },
+    {
+      "card_uid": "CARD_LD003",
+      "item_id": "LD003",
+      "act_id": "LOOKDEV",
+      "scene_id": "GAME_BOOTH_GIRL",
+      "beat": "游戏摊灯泡后的女孩回头",
+      "shot_type": "lookdev_character_anchor",
+      "frame_description": "女孩站在游戏摊灯泡和塑料奖品后回头，男孩和机车只在背景水面里隐约出现。",
+      "linked_cards": [
+        "LD001",
+        "LD004"
+      ],
+      "spatial_logic": "建立女孩作为灯泡、塑料奖品、玻璃柜和雨布反射中的情绪锚点；男孩仍保持间接出现。",
+      "image_prompt": "中文：电影感 21:9 宽银幕关键帧。县城夜市游戏摊，挂满暖黄灯泡、塑料玩具、套圈、气球和廉价彩灯，所有文字不可读。女孩站在灯泡和塑料奖品后面回头，二十出头，简单浅色外套或夏夜裙装，眼神反光，神秘但真实，不性感化。前景灯泡严重虚化，玻璃柜面和雨布产生重叠反射，男孩和机车只在背景水面里隐约出现。红绿黄荧光、浅景深、长焦压缩、暧昧错过感。\nEnglish: Cinematic 21:9 wide keyframe still. A county-town night-market game booth filled with warm hanging bulbs, plastic toys, ring-toss props, balloons, and cheap colored lights, with all text unreadable. The girl stands behind bulbs and plastic prizes and turns back, early 20s, simple light jacket or summer-night dress, reflective eyes, mysterious but grounded, not sexualized. Large blurred bulbs in the foreground, overlapping reflections from a glass counter and plastic rain curtain; the boy and motorcycle appear only faintly in puddle reflections behind her. Red, green, and amber fluorescent spill, shallow depth of field, telephoto compression, romantic almost-missed encounter.\nNegative: no sexualized pose or styling, no readable booth text, no brand logos, no anime face, no celebrity likeness, no clean fashion shoot, no luxury nightlife.",
+      "video_prompt": "中文：镜头从虚焦灯泡后慢慢找焦到女孩回头，她的视线掠过镜头又移开，背景水面里一闪而过机车灯。只要灯泡电流声、游戏摊塑料碰撞声、远处人群和雨后脚步声；不要音乐，不要 BGM。\nEnglish: Focus slowly shifts from blurred foreground bulbs to the girl turning back; her eyes pass across camera and then move away, while a motorcycle light flashes in a puddle reflection behind her. Sound effects and ambience only: bulb buzz, plastic game-booth props clacking, distant crowd, footsteps on wet ground; no music, no BGM, no soundtrack.",
+      "lock_requirement": "girl age/style, grounded county-town summer clothing, game-booth bulbs and plastic prizes, non-sexualized framing",
+      "references": [],
+      "selected": true,
+      "status": "image_ready",
+      "output_path": "08_generation/jobs/lookdev_moodframes_v1/outputs/LD003_girl_game_booth_bulbs.png",
+      "notes": "Primary girl lookdev anchor."
+    },
+    {
+      "card_uid": "CARD_LD004",
+      "item_id": "LD004",
+      "act_id": "LOOKDEV",
+      "scene_id": "BEER_STALL_CROSSING",
+      "beat": "啤酒摊塑料凳和烧烤烟的错身",
+      "shot_type": "lookdev_two_character_crossing",
+      "frame_description": "男孩推着旧机车从啤酒摊前景经过，女孩在另一侧塑料凳旁转身，两人隔着烧烤烟和雨布错身。",
+      "linked_cards": [
+        "LD002",
+        "LD003"
+      ],
+      "spatial_logic": "用啤酒摊、塑料凳、烧烤烟和雨布制造第一次近距离错身；保持人群可控、符号具体。",
+      "image_prompt": "中文：电影感 21:9 宽银幕关键帧。县城啤酒摊和烧烤摊交界，蓝红塑料凳、绿色啤酒箱、一次性桌布、炭火烟、雨后水迹和廉价棚灯。男孩从画面前景推着旧机车经过，女孩在另一侧塑料凳旁端着饮料转身，两个人隔着烧烤烟和雨布错身，几乎相遇但没有说话。镜头像长焦偷拍，前景肩膀和椅背遮挡，烟雾把霓虹变成柔软色块。县城真实、暧昧、拥挤但可控。\nEnglish: Cinematic 21:9 wide keyframe still. A county-town beer stall meeting a barbecue stall: blue and red plastic stools, green beer crates, disposable table covers, charcoal smoke, post-rain wet marks, and cheap canopy lights. The boy pushes his used motorcycle through the foreground while the girl turns beside a plastic stool holding a drink on the other side; they pass through barbecue smoke and a plastic rain curtain, almost meeting without speaking. Telephoto candid framing, foreground shoulders and chair backs partially blocking the view, smoke turning neon into soft color patches. Grounded county-town romance, intimate, crowded but controlled.\nNegative: no heavy uncontrolled crowd, no readable beer brands, no logos, no celebrity likeness, no explicit romance pose, no luxury restaurant, no glossy metropolis.",
+      "video_prompt": "中文：长焦跟随男孩推车穿过啤酒摊前景，女孩在烟后转身，两人错身时被烟和塑料雨布短暂遮住。只要烧烤滋滋声、塑料凳拖动声、人群远声、机车推行金属声和雨后环境声；不要音乐，不要 BGM。\nEnglish: Telephoto follow as the boy pushes the bike through the beer-stall foreground; the girl turns behind smoke, and they are briefly hidden by smoke and a plastic rain curtain as they pass. Sound effects and ambience only: barbecue sizzling, plastic stools scraping, distant crowd, bike metal rolling, post-rain ambience; no music, no BGM, no soundtrack.",
+      "lock_requirement": "beer stall objects, plastic stools, barbecue smoke, two-character almost-meeting without dialogue",
+      "references": [],
+      "selected": true,
+      "status": "image_ready",
+      "output_path": "08_generation/jobs/lookdev_moodframes_v1/outputs/LD004_beer_stall_smoke_crossing.png",
+      "notes": "Tests romantic crossing through county-town clutter."
+    },
+    {
+      "card_uid": "CARD_LD005",
+      "item_id": "LD005",
+      "act_id": "LOOKDEV",
+      "scene_id": "RED_GREEN_ALLEY_RIDE",
+      "beat": "红绿反光小巷机车跟拍",
+      "shot_type": "lookdev_motion_frame",
+      "frame_description": "湿小巷里红绿反光拉长，男孩低速骑旧机车，女孩在后座或画面边缘跟上，像低速、潮湿的暧昧逃离。",
+      "linked_cards": [
+        "LD002",
+        "LD006"
+      ],
+      "spatial_logic": "从夜市转入后巷，保持低速和空间压迫，不做未来都市飙车。",
+      "image_prompt": "中文：电影感 21:9 宽银幕关键帧。县城夜市后面狭窄小巷，湿墙、排水沟、杂乱电线、蓝色卷帘门、红绿小灯和远处 KTV 光。男孩骑旧机车低速穿过小巷，女孩坐在后座或在画面边缘奔跑跟上，只看见侧脸和头发被风吹起。红绿反光贴着墙面拉长，慢门拖影制造速度感但保持人物可读。镜头低位跟拍，前景有雨水飞溅和墙面反射。不要拍成未来都市飙车，速度要低、暧昧、潮湿。\nEnglish: Cinematic 21:9 wide keyframe still. A narrow alley behind the county-town night market: wet walls, drainage channel, tangled wires, blue rolling shutter, small red-green lights, and distant KTV glow. The boy rides a used motorcycle slowly through the alley; the girl is either on the back seat or running at the frame edge to catch up, only a side profile and wind-tossed hair visible. Red and green reflections stretch along the wall; slow-shutter motion blur gives movement while keeping the characters readable. Low tracking angle with water splash and wall reflections in the foreground. Not a futuristic street race; keep it slow, humid, intimate.\nNegative: no high-speed stunt, no cyberpunk super-bike, no futuristic skyline, no readable shop signs, no action-movie chase, no helmet-logo branding, no luxury vehicle.",
+      "video_prompt": "中文：低机位跟拍旧机车慢速穿过湿小巷，墙面红绿反光滑过人物，女孩的发梢和外套被风带起，镜头轻微拖影。只要低速机车声、轮胎压过水声、小巷回声、远处 KTV 门口人声；不要音乐，不要 BGM。\nEnglish: Low tracking shot following the used motorcycle slowly through the wet alley; red-green wall reflections slide over the characters, the girl's hair and jacket lift in the wind, with slight motion smear. Sound effects and ambience only: low-speed motorcycle engine, tires through water, alley echo, distant KTV crowd; no music, no BGM, no soundtrack.",
+      "lock_requirement": "narrow wet alley, red-green reflections, low-speed motorcycle motion, readable characters",
+      "references": [],
+      "selected": true,
+      "status": "image_ready",
+      "output_path": "08_generation/jobs/lookdev_moodframes_v1/outputs/LD005_red_green_alley_ride.png",
+      "notes": "Motion-language lookdev for future image-to-video clips."
+    },
+    {
+      "card_uid": "CARD_LD006",
+      "item_id": "LD006",
+      "act_id": "LOOKDEV",
+      "scene_id": "KTV_REPAIR_REFLECTION",
+      "beat": "KTV 门口与修车铺角落",
+      "shot_type": "lookdev_reflection_two_character",
+      "frame_description": "KTV 门口挨着小修车铺，男孩在修车铺角落停车，女孩站在 KTV 彩灯边缘，两人被红霓虹和反光玻璃隔开。",
+      "linked_cards": [
+        "LD005",
+        "LD007"
+      ],
+      "spatial_logic": "把廉价娱乐场所和修车铺现实物件叠在同一画面，用反射制造暧昧距离。",
+      "image_prompt": "中文：电影感 21:9 宽银幕关键帧。县城 KTV 门口旁边挨着小修车铺，过曝彩色灯箱不可读，卷帘门半开，地上有轮胎、工具箱、油污水迹、旧电瓶车和塑料花盆。男孩把机车停在修车铺角落，女孩站在 KTV 彩灯边缘，两个人被一根红色霓虹和一块反光玻璃隔开。画面通过修车铺镜子或车窗反射构成双重人物，红、青、琥珀色混合，现实廉价但拍得高级。不要可读店名，不要豪华夜店。\nEnglish: Cinematic 21:9 wide keyframe still. A county-town KTV entrance pressed against a small repair-shop corner; overexposed colored light boxes are unreadable, a rolling shutter half open, tires, toolboxes, oily rainwater, an old e-bike, and plastic flower pots on the ground. The boy parks the used motorcycle in the repair-shop corner while the girl stands at the edge of the KTV colored lights; a red neon strip and reflective glass separate them. Compose through a repair-shop mirror or vehicle window reflection to create a double image of both characters. Red, cyan, and amber light mix; cheap reality made cinematic. No readable shop name, no luxury nightclub.\nNegative: no readable KTV text, no real brands, no luxury nightclub, no glossy metropolis, no clean futuristic interior, no celebrity likeness, no overly sexy styling.",
+      "video_prompt": "中文：镜头透过修车铺玻璃或后视镜慢慢横移，男孩停车，女孩站在 KTV 灯边，红色霓虹把两人分开又连在同一块反射里。只要机车熄火声、远处 KTV 门口人声、霓虹电流声、工具轻碰声和夜风；不要音乐，不要 BGM。\nEnglish: Slow lateral move through repair-shop glass or a rear-view mirror; the boy parks the bike, the girl stands by the KTV lights, and a red neon strip separates them while holding both in one reflection. Sound effects and ambience only: motorcycle shutting off, distant KTV entrance voices, neon buzz, small tool clinks, night wind; no music, no BGM, no soundtrack.",
+      "lock_requirement": "KTV entrance, repair-shop props, reflection composition, two-character separation",
+      "references": [],
+      "selected": true,
+      "status": "image_ready",
+      "output_path": "08_generation/jobs/lookdev_moodframes_v1/outputs/LD006_ktv_repair_shop_reflection.png",
+      "notes": "Tests reflection language and county-town entertainment texture."
+    },
+    {
+      "card_uid": "CARD_LD007",
+      "item_id": "LD007",
+      "act_id": "LOOKDEV",
+      "scene_id": "WHOLESALE_MARKET_GATE",
+      "beat": "空旷批发市场门头夜景",
+      "shot_type": "lookdev_empty_wide",
+      "frame_description": "凌晨前的批发市场门头，卷帘门和不可读灯块前，男孩女孩隔着湿地面站在不同灯色里，机车停在中间。",
+      "linked_cards": [
+        "LD006",
+        "LD008"
+      ],
+      "spatial_logic": "夜市散场后的大空间，情绪从暧昧热闹转向空旷孤独，为田野清晨过渡。",
+      "image_prompt": "中文：电影感 21:9 宽银幕关键帧。凌晨前的县城批发市场门头，巨大的门楼和一排关门卷帘门，招牌全部不可读，只剩过曝红绿白灯块。地面大面积积水，电瓶车倒影、塑料筐、货架影子、空啤酒箱和远处昏黄路灯。男孩和女孩隔着宽阔湿地面站在不同灯色里，旧机车停在中间，像一场快结束的梦。构图更空、更孤独，长焦压缩，空气里有水汽和夜市散场后的冷清。\nEnglish: Cinematic 21:9 wide keyframe still. A county-town wholesale-market gate before dawn, a large entrance structure and rows of closed rolling shutters; all signs are unreadable, reduced to overexposed red, green, and white light blocks. Wide wet ground with puddles, e-bike reflections, plastic crates, shelf shadows, empty beer boxes, and distant amber streetlights. The boy and girl stand apart in different pools of colored light, with the used motorcycle stopped between them, like a dream nearing its end. More empty and lonely composition, telephoto compression, humid air and the quiet after the night market closes.\nNegative: no readable market text, no big-city skyline, no luxury car, no crowd spectacle, no fantasy architecture, no clean sci-fi plaza, no logos.",
+      "video_prompt": "中文：固定长焦镜头，空旷批发市场门头前，男孩和女孩隔着湿地面停住，旧机车在中间，远处卷帘门和灯牌轻微闪烁。只要凌晨环境声、远处货车声、水滴声、灯牌电流声和机车冷却声；不要音乐，不要 BGM。\nEnglish: Locked telephoto shot at the empty wholesale-market gate; the boy and girl stop across the wet ground with the used motorcycle between them, while distant shutters and light boxes flicker softly. Sound effects and ambience only: pre-dawn ambience, distant truck, water drips, light-box hum, motorcycle cooling ticks; no music, no BGM, no soundtrack.",
+      "lock_requirement": "empty wholesale-market gate, wet ground, unreadable light boxes, lonely two-character spacing",
+      "references": [],
+      "selected": true,
+      "status": "image_ready",
+      "output_path": "08_generation/jobs/lookdev_moodframes_v1/outputs/LD007_wholesale_market_gate.png",
+      "notes": "Late-night emptiness and transition away from market density."
+    },
+    {
+      "card_uid": "CARD_LD008",
+      "item_id": "LD008",
+      "act_id": "LOOKDEV",
+      "scene_id": "FIELD_ROAD_BEFORE_DAWN",
+      "beat": "县城外田野小路天快亮",
+      "shot_type": "lookdev_final_mood",
+      "frame_description": "县城外田野小路天快亮，男孩和旧机车停在路边，女孩远处轮廓快消失，县城霓虹成为远处残光。",
+      "linked_cards": [
+        "LD007"
+      ],
+      "spatial_logic": "从县城灯光退出到田野晨光，完成首版情绪线终点。",
+      "image_prompt": "中文：电影感 21:9 宽银幕关键帧。县城外田野小路，天快亮但还没亮，路边水田或玉米地、低矮路灯、远处县城霓虹变成小光点，湿水泥路反射微弱青蓝晨光。男孩把旧机车停在路边，背影安静，女孩在远处路口或公交站成为快消失的轮廓。夜市的红绿黄不再强烈，只剩远处残光和田野风，情绪是暧昧结束、青春末班车、没说出口的话。真实中国县城边缘，不要大山奇观，不要都市天际线。\nEnglish: Cinematic 21:9 wide keyframe still. A field road outside the county town just before dawn, not fully light yet; rice paddies or cornfields beside the road, low streetlights, distant county-town neon reduced to tiny points, wet concrete reflecting faint cyan-blue morning light. The boy parks the used motorcycle at the roadside, quiet back view, while the girl becomes a nearly disappearing silhouette at a far intersection or small bus stop. The night-market red, green, and amber lights are fading, leaving only distant afterglow and field wind; the emotion is the end of an ambiguous summer night, the last ride of youth, words left unsaid. Real Chinese county-town edge, no grand mountain spectacle, no urban skyline.\nNegative: no urban skyline, no grand mountain spectacle, no luxury vehicle, no readable signs, no fantasy sunrise, no melodramatic embrace, no logos, no watermarks.",
+      "video_prompt": "中文：清晨前的静止长镜头，男孩停在田野小路边，女孩远处轮廓慢慢变小，县城霓虹在远方熄弱，风吹过田野。只要晨前虫鸣、远处狗叫或货车声、轻风、机车冷却声和湿路脚步声；不要音乐，不要 BGM。\nEnglish: Still long take before dawn: the boy stops beside the field road, the girl's distant silhouette slowly gets smaller, county-town neon fades far behind, wind moves across the fields. Sound effects and ambience only: pre-dawn insects, distant dog or truck, light wind, motorcycle cooling ticks, footsteps on wet road; no music, no BGM, no soundtrack.",
+      "lock_requirement": "field road outside county town, fading neon, used motorcycle, unresolved separation mood",
+      "references": [],
+      "selected": true,
+      "status": "image_ready",
+      "output_path": "08_generation/jobs/lookdev_moodframes_v1/outputs/LD008_field_road_before_dawn.png",
+      "notes": "Final mood frame of first lookdev batch."
+    }
+  ]
+}
