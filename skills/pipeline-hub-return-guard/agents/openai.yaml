@@ -1,0 +1,7 @@
+interface:
+  display_name: "电影工具回传守卫"
+  short_description: "按剧本幕结构安全回传电影图片、版本、提示词并完成验收"
+  default_prompt: "Use $pipeline-hub-return-guard to validate and return this film project to Pipeline Hub."
+
+policy:
+  allow_implicit_invocation: true

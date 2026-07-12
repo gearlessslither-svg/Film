@@ -1,0 +1,4 @@
+interface:
+  display_name: "AIGC Film Project Memory"
+  short_description: "Use past film lessons before new projects"
+  default_prompt: "Use $aigc-film-project-memory to scan prior AIGC film lessons before starting this project."

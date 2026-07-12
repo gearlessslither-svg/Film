@@ -1,0 +1,539 @@
+{
+  "schema_version": "aigc_film_project_memory_v1",
+  "updated_at": "2026-07-12",
+  "conflict_policy": {
+    "resolution_order": [
+      "current director feedback",
+      "completed-project evidence with QA outcome",
+      "newer lesson from the same workflow area",
+      "narrower and more relevant scope",
+      "current verified tool or platform policy",
+      "human review"
+    ],
+    "required_output_when_conflicting": [
+      "state what conflicts",
+      "state which lesson is preferred",
+      "state why it is preferred",
+      "state remaining risk"
+    ]
+  },
+  "lessons": [
+    {
+      "lesson_id": "global-aigc-professional-production-spec-hard-rule",
+      "project_slug": "global",
+      "created_at": "2026-07-12",
+      "workflow_area": "prompt_and_generation_global",
+      "original_claim": "这些规则应该变成跨项目硬规则：每次生图、生文字都必须动态读取当前项目和参考图，但必须用专业电影级提示词，不能省略。",
+      "review_verdict": "accepted_as_global_method_after_dynamic_scoping",
+      "claim": "All AIGC film storyboard text, image prompts/generation, and video prompts/generation must pass a professional production-spec gate whose fields are global but whose style, content, duration, and negatives are dynamically derived from the current project.",
+      "recommendation": "Use `$aigc-production-hard-rules` as the parent gate. For storyboards and image prompts, require dramatic beat, subject performance, camera/shot/lens/composition/focus, lighting, spatial logic, continuity, dynamic style fingerprint, and source-specific negatives. For video, additionally invoke `$aigc-video-style-lock`, choose duration from the actual shot, justify it, and cover the full duration with professional time-coded beats. Never reuse a fixed project style or duration across unrelated projects.",
+      "evidence": [
+        "The director explicitly confirmed on 2026-07-12 that these are cross-project hard rules, flexible in project-specific values but mandatory in execution.",
+        "Earlier global rules existed for story/dialogue gating, audio, project routing, whitebox use, and prompt packaging, but professional image/video specification was distributed across skills and therefore inconsistently triggered."
+      ],
+      "scope": "All AIGC Film projects; production storyboard text, image prompts, image generation, video prompts, video generation, packaging, and return workflows",
+      "status": "active",
+      "hard_rule": true,
+      "reliability": "high",
+      "review_after": "2027-01-12"
+    },
+    {
+      "lesson_id": "global-video-full-duration-timeline-hard-lock",
+      "project_slug": "buy-dreamer",
+      "created_at": "2026-07-12",
+      "workflow_area": "video_prompt_global",
+      "original_claim": "目前的AIGC视频提示词不够详细；如果一张图片生成5秒视频，需要详细描述5秒内的所有变化。",
+      "review_verdict": "correct_and_generalizable",
+      "claim": "A production-ready AIGC video prompt must first choose a shot-specific duration from the actual image and intended action, then account for that complete duration with ordered, gap-free visual beats rather than default to 5 seconds or describe only a general action.",
+      "recommendation": "Analyze performance complexity, camera travel, shot/focus/lighting changes, reveal or transformation needs, edit handles, and generation stability to choose the shortest readable duration. State a duration rationale. Then cover the clip from 0.0s to the exact endpoint with non-uniform beats allocated by dramatic weight. Every beat must specify character performance/blocking/eye line; camera height/side/axis/lens/distance/movement; shot size/composition/focus/exposure; key/fill/rim/practical lighting and shadow changes; environment/material/secondary motion; continuity locks; and a settled final-frame state. Explicitly state fields that hold unchanged.",
+      "evidence": [
+        "Director found existing project video prompts too broad to control all visible changes across a five-second generation.",
+        "Time-coded beats make motion, continuity, and final-frame QA directly testable."
+      ],
+      "scope": "All AIGC film video prompts and image-to-video generation workflows",
+      "status": "active",
+      "hard_rule": true,
+      "reliability": "high",
+      "review_after": "2027-01-12"
+    },
+    {
+      "lesson_id": "global-video-source-style-inheritance-hard-lock",
+      "project_slug": "buy-dreamer",
+      "created_at": "2026-07-12",
+      "workflow_area": "video_prompt_global",
+      "original_claim": "AIGC视频模型生成内容时美术风格容易跑偏成普通日漫；所有视频生成都必须保持输入图片的美术风格不变。不是禁止日漫，而是图片是什么风格，视频就保持什么风格。",
+      "review_verdict": "correct_and_generalizable",
+      "claim": "Every AIGC video must inherit the exact visual language of its approved source image or keyframe instead of falling back to a model-default style.",
+      "recommendation": "Put an explicit source-style inheritance hard lock before motion instructions. Preserve medium, edge/line language, texture, palette, lighting logic, character proportions and facial construction, costume/prop design, environment geometry, and composition density across all frames. Only requested motion may change. Do not impose a universal anime ban: preserve anime sources as anime and reject only migration away from the actual source style. QA the first, middle, and final frames; reject clips with unresolved style drift.",
+      "evidence": [
+        "Director observed AIGC video outputs drifting from approved artwork into generic anime during production.",
+        "The failure concerns reference adherence and medium conversion, so the rule applies across style families rather than privileging one aesthetic."
+      ],
+      "scope": "All AIGC film image-to-video, keyframe-to-video, storyboard animation, and video-reference generation workflows",
+      "status": "active",
+      "hard_rule": true,
+      "reliability": "high",
+      "review_after": "2027-01-12"
+    },
+    {
+      "lesson_id": "coin-slot-setting-chapters-global-locks",
+      "project_slug": "coin-slot",
+      "created_at": "2026-07-02",
+      "workflow_area": "asset_continuity",
+      "original_claim": "人设，场景，道具必须先统一建立一个设定章节，并作全局锁，否则只靠文字每次形状都会飘",
+      "review_verdict": "correct_after_scoping",
+      "claim": "Before batch generation, establish unified setting chapters for characters, locations, props, lighting, and continuity, then bind them to global locks.",
+      "recommendation": "Do not rely on prose prompts alone for recurring characters, scenes, or props. Create asset bible / setting chapter files and global locks before large image or video batches.",
+      "evidence": [
+        "coin-slot has 05_asset_bible character, location, prop, and continuity files.",
+        "coin-slot scene lock packs state that reference image, whitebox, camera table, and prompts must point to the same space.",
+        "coin-slot director review identified character stage locks and space consistency as key risks."
+      ],
+      "scope": "AIGC film projects with recurring characters, locations, props, or multi-shot continuity",
+      "status": "active",
+      "hard_rule": false,
+      "reliability": "high",
+      "review_after": "2026-10-02"
+    },
+    {
+      "lesson_id": "coin-slot-teen-minor-topic-risk",
+      "project_slug": "coin-slot",
+      "created_at": "2026-07-02",
+      "workflow_area": "topic_selection",
+      "original_claim": "青少年题材少碰，因为会有各种各样生成限制",
+      "review_verdict": "directionally_correct_but_overbroad",
+      "claim": "Youth or minor-centered subjects carry extra generation-policy and review friction.",
+      "recommendation": "Avoid minor-centered concepts when the project does not need them. If the story needs minors, plan age-appropriate framing, conservative styling, non-sexualized prompts, and extra QA from the start.",
+      "evidence": [
+        "coin-slot character bible required the children to remain clearly readable as children and distinct.",
+        "blue-water-citypop-op repeatedly required age-appropriate and non-sexualized handling for Nadia, Jean, and Marie."
+      ],
+      "scope": "Topic selection and prompt safety for AIGC film projects",
+      "status": "active",
+      "hard_rule": false,
+      "reliability": "medium",
+      "review_after": "2026-10-02"
+    },
+    {
+      "lesson_id": "coin-slot-blender-whitebox-video-spatial-control",
+      "project_slug": "coin-slot",
+      "created_at": "2026-07-02",
+      "workflow_area": "previs_spatial_control",
+      "original_claim": "blender白模+镜头位移可以进行一镜到底的镜头渲染，以视频为单位让aigc理解空间和镜头关系，但是静态生成即使有白模，也会生成不一样的图，只能固定基础的空间关系",
+      "review_verdict": "mostly_correct_with_limits",
+      "claim": "Blender whitebox plus camera movement is stronger as a video/spatial-control reference than isolated stills, but it does not guarantee exact image continuity.",
+      "recommendation": "Use animated whitebox or camera-move video when the model must understand space, axis, movement, and one-take continuity. Use static whitebox stills to constrain broad geometry only; still expect local detail drift.",
+      "evidence": [
+        "coin-slot previs notes require checking screen direction, child scale, foreground occlusion, camera height, and lens logic.",
+        "coin-slot director review states whitebox precision is a workflow shortboard and image models may reinvent spatial relationships if the whitebox is weak."
+      ],
+      "scope": "Previs, control layers, and spatial continuity for image/video generation",
+      "status": "active",
+      "hard_rule": false,
+      "reliability": "medium",
+      "review_after": "2026-10-02"
+    },
+    {
+      "lesson_id": "coin-slot-free-video-quota-observation-20260702",
+      "project_slug": "coin-slot",
+      "created_at": "2026-07-02",
+      "workflow_area": "tool_quota",
+      "original_claim": "免费视频：小云雀每天1个视频，豆包每天5个视频，即梦需要vip，每天1个视频",
+      "review_verdict": "time_sensitive_unverified_as_rule",
+      "claim": "As a user-observed 2026-07 note, free or low-cost video quotas differed across 小云雀, 豆包, and 即梦.",
+      "recommendation": "Before planning any new project around free video quota, re-check the current app limits and VIP rules inside the tools or official pages. Do not treat these numbers as durable.",
+      "evidence": [
+        "User reported observed quotas on 2026-07-02.",
+        "Tool quotas and VIP rules are platform-controlled and may change without notice."
+      ],
+      "scope": "Tool budgeting and daily generation planning",
+      "status": "needs_current_verification",
+      "hard_rule": false,
+      "reliability": "low",
+      "review_after": "before_each_new_project"
+    },
+    {
+      "lesson_id": "blue-water-video-reference-style-transfer-use-case",
+      "project_slug": "blue-water-citypop-op",
+      "created_at": "2026-07-02",
+      "workflow_area": "video_reference_generation",
+      "original_claim": "小云雀和即梦可以参考视频，分析视频，然后上传想要的美术风格和人设替换视频内容，效果还可以，适合某些动作，表情比较复杂的场景",
+      "review_verdict": "valid_as_user_observed_tool_pattern",
+      "claim": "Video-reference tools can be useful when action or expression is too complex to describe with still images alone.",
+      "recommendation": "For complex motion, acting, or facial-expression scenes, test video-reference workflows that preserve timing and movement while replacing style and character design. Re-check current tool support before committing a full pipeline.",
+      "evidence": [
+        "blue-water-citypop-op final package separates full uncut reference video, per-shot reference clips, character locks, and style/keyframe inputs.",
+        "User observed 小云雀 and 即梦 performing acceptably for some complex action/expression scenes."
+      ],
+      "scope": "Video reference remake workflows",
+      "status": "active",
+      "hard_rule": false,
+      "reliability": "medium",
+      "review_after": "2026-09-02"
+    },
+    {
+      "lesson_id": "blue-water-nostalgia-traffic-caution",
+      "project_slug": "blue-water-citypop-op",
+      "created_at": "2026-07-02",
+      "workflow_area": "topic_selection",
+      "original_claim": "怀旧项目流量口并不大，也可能是这个动漫本身在国内相对小众，如果为了流量，还是要选一些有时效性的内容",
+      "review_verdict": "reasonable_but_not_universal",
+      "claim": "Nostalgia alone is not a reliable traffic strategy, especially for niche IPs or audiences.",
+      "recommendation": "If the goal is traffic, compare nostalgia concepts against timely topics, broader public recognition, and current platform conversation before production. Do not assume craft quality will overcome weak topic demand.",
+      "evidence": [
+        "User observed limited traffic for the blue-water-citypop-op nostalgia project.",
+        "The claim is project-specific and should not be generalized to all nostalgia/IP content."
+      ],
+      "scope": "Topic selection and distribution strategy",
+      "status": "active",
+      "hard_rule": false,
+      "reliability": "medium",
+      "review_after": "2026-09-02"
+    },
+    {
+      "lesson_id": "blue-water-wechat-bean-promotion-roi-caution",
+      "project_slug": "blue-water-citypop-op",
+      "created_at": "2026-07-02",
+      "workflow_area": "promotion",
+      "original_claim": "100微信豆也只能买300左右的播放，而且最终只换来一个点赞，也就是如果一个项目自然流不行，其实没太多推广的必要",
+      "review_verdict": "valid_observation_insufficient_for_general_rule",
+      "claim": "One low-performing paid-promotion test had poor engagement return.",
+      "recommendation": "Treat paid boosting as an experiment with explicit stop-loss metrics. Do not keep promoting a project whose organic signal and first paid test are both weak unless there is a separate strategic reason.",
+      "evidence": [
+        "User reported 100 WeChat beans produced about 300 plays and one like.",
+        "Single-campaign evidence is not enough to define a universal promotion rule."
+      ],
+      "scope": "Small-budget promotion experiments",
+      "status": "experimental",
+      "hard_rule": false,
+      "reliability": "low",
+      "review_after": "after_three_more_campaigns"
+    },
+    {
+      "lesson_id": "blue-water-capcut-effects-transitions-useful",
+      "project_slug": "blue-water-citypop-op",
+      "created_at": "2026-07-02",
+      "workflow_area": "editing",
+      "original_claim": "剪映里的特效和转场效果非常好用",
+      "review_verdict": "valid_as_tool_observation",
+      "claim": "CapCut/Jianying effects and transitions can materially improve polish and rhythm.",
+      "recommendation": "Consider CapCut/Jianying effects and transitions during finishing, especially for rhythm, atmosphere, and visual glue, but review whether they fit the film language rather than adding them by default.",
+      "evidence": [
+        "User observed strong practical usefulness in the blue-water-citypop-op project."
+      ],
+      "scope": "Finishing and editing workflow",
+      "status": "active",
+      "hard_rule": false,
+      "reliability": "medium",
+      "review_after": "2026-10-02"
+    },
+    {
+      "lesson_id": "blue-water-capcut-interpolation-text-jitter",
+      "project_slug": "blue-water-citypop-op",
+      "created_at": "2026-07-02",
+      "workflow_area": "editing_qa",
+      "original_claim": "不知道为什么，剪映智能补帧后的内容，尤其是文字，会抖动，比如原视频里的ai标识，被补帧后抖动的厉害，之前的项目没发现，也可能是镜头移动的原因",
+      "review_verdict": "valid_as_observed_risk_cause_unknown",
+      "claim": "CapCut/Jianying frame interpolation may introduce visible jitter in text or marks, especially under camera movement.",
+      "recommendation": "Avoid or carefully QA intelligent interpolation on shots containing text, logos, UI marks, or fine high-contrast symbols. Export a short test before applying it to the whole edit.",
+      "evidence": [
+        "User observed severe jitter in the original AI mark after frame interpolation.",
+        "Cause is not confirmed and may depend on motion, source text, or interpolation method."
+      ],
+      "scope": "Frame interpolation QA",
+      "status": "active",
+      "hard_rule": false,
+      "reliability": "medium",
+      "review_after": "2026-09-02"
+    },
+    {
+      "lesson_id": "blue-water-moving-object-guides-attention",
+      "project_slug": "blue-water-citypop-op",
+      "created_at": "2026-07-02",
+      "workflow_area": "directing",
+      "original_claim": "导演技巧上，镜头中物体的移动带动视线的思考很重要",
+      "review_verdict": "correct",
+      "claim": "Movement inside the frame is a primary way to guide viewer attention and thought.",
+      "recommendation": "When designing shots, identify what moving object or body action pulls the eye, where it leads attention, and how that motion motivates the next composition or cut.",
+      "evidence": [
+        "blue-water-citypop-op director semantic v2 corrected a continuous left-to-right running phrase after recognizing movement continuity as the real shot function."
+      ],
+      "scope": "Directing, blocking, shot design, and semantic segmentation",
+      "status": "active",
+      "hard_rule": false,
+      "reliability": "high",
+      "review_after": "2026-10-02"
+    },
+    {
+      "lesson_id": "reference003-director-meaning-over-technical-cuts",
+      "project_slug": "blue-water-citypop-op",
+      "created_at": "2026-07-02",
+      "workflow_area": "segmentation",
+      "original_claim": "Project closure lesson",
+      "review_verdict": "correct",
+      "claim": "Director meaning outranks technical cuts.",
+      "recommendation": "Maintain separate director semantic and technical hard-cut layers. Use the director layer for production-minded packaging and the technical layer for audit and repair.",
+      "evidence": [
+        "Final package contains 15-unit director semantic v2 and 36-unit technical hard-cut versions.",
+        "User feedback rejected over-fragmented technical segmentation."
+      ],
+      "scope": "AIGC video remake packaging and shot segmentation",
+      "status": "active",
+      "hard_rule": false,
+      "reliability": "high",
+      "review_after": "2026-10-02"
+    },
+    {
+      "lesson_id": "reference003-upload-keyframes-target-style-only",
+      "project_slug": "blue-water-citypop-op",
+      "created_at": "2026-07-02",
+      "workflow_area": "packaging",
+      "original_claim": "Project closure lesson",
+      "review_verdict": "correct",
+      "claim": "Default upload keyframe folders should contain approved target-style generated keyframes only.",
+      "recommendation": "Keep official/original frames, source screenshots, and unapproved generated candidates in reference-only or audit-only folders.",
+      "evidence": [
+        "R7 preview failure was traced to mixed official/R5/R7 image sources.",
+        "Final QA verified upload keyframes are R5 target-style generated anchors only."
+      ],
+      "scope": "External AIGC video upload packages",
+      "status": "active",
+      "hard_rule": false,
+      "reliability": "high",
+      "review_after": "2026-10-02"
+    },
+    {
+      "lesson_id": "global-image-to-video-sfx-only-no-music-hard-rule",
+      "project_slug": "global",
+      "created_at": "2026-07-04",
+      "workflow_area": "video_prompt_packaging",
+      "original_claim": "所有的图片的aigc视频提示词都要标注只要音效不要音乐，写在硬性规则里，所有项目通用",
+      "review_verdict": "accepted_after_scoping",
+      "claim": "Every image-to-video / AIGC video generation prompt must explicitly request sound effects or ambience only and no music/BGM.",
+      "recommendation": "For every AIGC image-to-video prompt, add a hard audio rule: sound effects / ambience only; no music, no BGM, no soundtrack. Treat final edit music as a separate post-production track unless the user explicitly overrides this rule for a specific project.",
+      "evidence": [
+        "User set this as a global hard rule on 2026-07-04.",
+        "AIGC clip generators can otherwise introduce unwanted music or make audio assumptions that reduce edit control."
+      ],
+      "scope": "All AIGC Film projects; image-to-video and video-generation prompt packaging. This does not ban separate final-edit music tracks.",
+      "status": "active",
+      "hard_rule": true,
+      "reliability": "high",
+      "review_after": "2026-10-04"
+    },
+    {
+      "lesson_id": "global-aigc-prompts-bilingual-cn-en",
+      "project_slug": "global",
+      "created_at": "2026-07-08",
+      "workflow_area": "prompt_packaging",
+      "original_claim": "以后提示词给我中英双语版本的，尤其是生成视频的提示词",
+      "review_verdict": "accepted_as_director_packaging_preference",
+      "claim": "AIGC prompt deliverables should include bilingual Chinese and English versions, especially video-generation prompts.",
+      "recommendation": "For every production prompt package, provide Chinese + English prompt text. Video-generation prompts must be bilingual by default, with matching structure and intent across both languages. Keep technical model-facing English available, but include a clear Chinese version for review, direction, and iteration.",
+      "evidence": [
+        "User set this as a forward-looking prompt packaging preference on 2026-07-08.",
+        "Bilingual prompts improve director review while preserving English technical specificity for image/video models."
+      ],
+      "scope": "All AIGC Film projects and prompt packages, especially image-to-video and video-generation prompt deliverables.",
+      "status": "active",
+      "hard_rule": false,
+      "reliability": "high",
+      "review_after": "2026-10-08"
+    },
+    {
+      "lesson_id": "global-aigc-one-take-start-hard-end-loose-blender-reference",
+      "project_slug": "dragon-house-black-green-ink-wash-title-21x9",
+      "created_at": "2026-07-04",
+      "workflow_area": "video_prompt_packaging",
+      "original_claim": "9s opening should use the first frame as a hard lock, the end frame can be only a reference, and the Blender video should carry the one-take motion so AIGC generation does not shake.",
+      "review_verdict": "correct_after_scoping",
+      "claim": "For AIGC one-take shots driven by start/end keyframes plus Blender reference, hard-lock the start frame and use the end frame as a final-reveal destination when exact matching would destabilize the video.",
+      "recommendation": "Write AIGC prompts so the start frame is the exact first-frame visual target, the Blender video is the primary camera/motion/spatial reference, and the end frame is a loose final destination unless the brief explicitly demands pixel-exact last-frame matching.",
+      "evidence": [
+        "The dragon-house opening 9s prompt had to prioritize one-take stability and camera continuity over exact end-frame replication.",
+        "Exact end-frame pressure can encourage jitter, morphing, and fake jumps in AIGC video models."
+      ],
+      "scope": "AIGC Film one-take video prompts using first/last keyframes and Blender or whitebox motion references",
+      "status": "active",
+      "hard_rule": false,
+      "reliability": "high",
+      "review_after": "2026-10-04"
+    },
+    {
+      "lesson_id": "global-title-sequence-one-take-camera-displacement",
+      "project_slug": "dragon-house-black-green-ink-wash-title-21x9",
+      "created_at": "2026-07-04",
+      "workflow_area": "previs_spatial_control",
+      "original_claim": "The opening 9s design felt too static because it was a locked-off building-rise process; the desired Game-of-Thrones-title feeling requires camera movement, wider geography, and scene change.",
+      "review_verdict": "correct",
+      "claim": "Title-sequence or map-mechanism one-takes need a real camera journey, not only objects rising in place.",
+      "recommendation": "For opening/title/map-mechanism shots, design a route with foreground start, lateral/forward travel, parallax through multiple spatial layers, scale escalation, and a final wide/aerial reveal before generating stills or Blender motion reference.",
+      "evidence": [
+        "Director rejected the first opening approach as too much like a static building rising from a flat surface.",
+        "The approved v2 direction used low traveling start, black bloodline canals, raised map nodes, and a crane-up aerial reveal."
+      ],
+      "scope": "AIGC Film opening titles, map mechanisms, title-sequence one-takes, and Blender motion-reference briefs",
+      "status": "active",
+      "hard_rule": false,
+      "reliability": "high",
+      "review_after": "2026-10-04"
+    },
+    {
+      "lesson_id": "global-blender-python314-percent-help-escape",
+      "project_slug": "dragon-house-black-green-ink-wash-title-21x9",
+      "created_at": "2026-07-04",
+      "workflow_area": "tooling",
+      "original_claim": "The Blender video environment kept failing because encode_frames.py had an argparse help string containing frame_%04d.png under Python 3.14.",
+      "review_verdict": "correct",
+      "claim": "Python 3.14 argparse can fail on unescaped printf tokens in help strings.",
+      "recommendation": "In scripts that use argparse help text containing printf-style frame patterns, write help examples as `frame_%%04d.png` while keeping the actual default pattern as `frame_%04d.png`.",
+      "evidence": [
+        "During the dragon-house Blender encode step, `encode_frames.py --help` failed with `ValueError: badly formed help string` before FFmpeg ran.",
+        "Escaping the help text percent sign fixed parser setup while preserving the actual FFmpeg input pattern."
+      ],
+      "scope": "Codex/Blender/video helper scripts using argparse and ffmpeg-style frame sequence patterns",
+      "status": "active",
+      "hard_rule": false,
+      "reliability": "high",
+      "review_after": "2026-10-04"
+    },
+    {
+      "lesson_id": "global-story-dialogue-gate-before-production",
+      "project_slug": "global",
+      "created_at": "2026-07-04",
+      "workflow_area": "story_development",
+      "original_claim": "所有剧情类的项目 都从剧情 台词 开始 剧情过了才能继续推进剩下的",
+      "review_verdict": "accepted_as_director_workflow_rule",
+      "claim": "All narrative/story-driven projects must start with story structure and dialogue approval before moving to prompts, boards, generation packages, or asset production.",
+      "recommendation": "For narrative AIGC film work, create and confirm story spine, scene beats, and dialogue lock first. Do not generate image prompts, video prompts, idea_board, batch packages, images, or videos until the user/director has passed the story/dialogue gate.",
+      "evidence": [
+        "User set this as a global workflow rule on 2026-07-04.",
+        "The deity-convenience-store-night-shift-2min project shifted from v5 to v6 story authority, making prior production packages unsafe to continue before story confirmation."
+      ],
+      "scope": "All story-driven AIGC Film projects and other narrative projects where plot/dialogue determines production.",
+      "status": "active",
+      "hard_rule": true,
+      "reliability": "high",
+      "review_after": "2026-10-04"
+    },
+    {
+      "lesson_id": "global-project-type-routing-before-aigc-film-start",
+      "project_slug": "global",
+      "created_at": "2026-07-04",
+      "workflow_area": "project_intake",
+      "original_claim": "目前分三类项目 剧情类项目（强剧情导向 一定要过剧情台词，根据剧情和台词设计画面）音乐mv类项目（弱剧情导向，大概有个故事线就可以）视频复刻向（完全复刻先有视频，会跳过剧情这一步直接给你视频你来用之前的工具分析），以后开新项目要先自己分类或者问我",
+      "review_verdict": "accepted_as_director_workflow_rule",
+      "claim": "Before starting a new AIGC Film project, classify it as story-driven, music-MV, or video-replication; if classification is unclear, ask the user before choosing the workflow.",
+      "recommendation": "At new-project intake, route by type: (1) story-driven projects require story structure and dialogue approval before visual design, prompts, boards, packages, or generation; (2) music-MV projects are weak-story and only need an approximate story/emotional line before visual/music rhythm development; (3) video-replication projects start from the provided existing video and skip story development, using the video-analysis/remake tooling directly. If the user has not made the type clear, classify from the brief and state the classification, or ask when ambiguity affects workflow.",
+      "evidence": [
+        "User set the three project categories and routing rule on 2026-07-04.",
+        "The deity-convenience-store-night-shift-2min project demonstrated why story-driven projects must pause production until story/dialogue is confirmed."
+      ],
+      "scope": "All new AIGC Film project intake and restart decisions.",
+      "status": "active",
+      "hard_rule": true,
+      "reliability": "high",
+      "review_after": "2026-10-04"
+    },
+    {
+      "lesson_id": "global-interior-shots-require-blender-whitebox-camera-reference",
+      "project_slug": "global",
+      "created_at": "2026-07-04",
+      "workflow_area": "previs_spatial_control",
+      "original_claim": "所有店内的拍摄都要先用已经渲染好的blender白模进行机位摆拍➕参考，起码提供一个大概的位置和空间统一性",
+      "review_verdict": "accepted_as_director_workflow_rule",
+      "claim": "All interior shop/location shots must use already rendered Blender whitebox frames for camera blocking and spatial reference before image generation.",
+      "recommendation": "Before generating any interior AIGC image, map the shot to one or more rendered Blender whitebox stills or motion references. Prompts and packages must state the whitebox reference and camera/blocking intent so generated frames preserve approximate position, sightlines, counter/door/shrine relationships, and spatial continuity. Do not rely on text prompts alone for interior spatial layout.",
+      "evidence": [
+        "User set this as a global production rule on 2026-07-04.",
+        "The deity-convenience-store-night-shift-2min project already has rendered Blender whitebox stills under 06_blender/offerings_shop_space_v1/renders/stills."
+      ],
+      "scope": "All AIGC Film projects with interior store/room/location shots, especially recurring spaces.",
+      "status": "active",
+      "hard_rule": true,
+      "reliability": "high",
+      "review_after": "2026-10-04"
+    },
+    {
+      "lesson_id": "global-story-hook-visual-stoploss-hard-rule",
+      "project_slug": "global",
+      "created_at": "2026-07-05",
+      "workflow_area": "project_initiation",
+      "original_claim": "及时止损：如果一开始的地基和视觉没打好，后面做的一切都是徒劳的。立项时要不断确认故事看点在哪里、主要卖点在哪里，至少有一两个足够突出的卖点；美术风格是否独特、精美、有质感而不是 AI 感十足；空间、道具、人物设定是否稳定到不穿帮。《请神》的卖点应是现实和古灵精怪的视觉冲击，以及现实社会情况的隐喻。",
+      "review_verdict": "accepted_as_hard_rule_after_scoping",
+      "claim": "Every new AIGC film project must pass a story-hook, selling-point, visual-lookdev, and continuity stop-loss challenge before setting chapters, prompts, image generation, or batch production.",
+      "recommendation": "At project intake, explicitly state the audience hook, primary selling point, at least one or two standout hooks, the visual collision/lookdev promise, the social or emotional metaphor when relevant, and whether character, prop, scene, and spatial locks can remain stable across repeated shots. If these answers are weak, challenge the premise and reframe, shrink, or park the project before spending generation effort.",
+      "evidence": [
+        "User set this as a critical reusable rule on 2026-07-05 after reviewing the qingshen workflow risk.",
+        "The qingshen project clarified that its strongest hooks are not merely deities entering a shop, but the visual collision of a realistic decaying shop with mischievous folk gods, plus a metaphor about young people, old stores, rent pressure, livelihood, and returning faith.",
+        "User emphasized that when the story foundation or visual foundation is weak, continuing production creates waste rather than progress."
+      ],
+      "scope": "All new AIGC Film project initiation and restarts, especially story-driven projects before setting chapter, lookdev, image prompts, or batch generation.",
+      "status": "active",
+      "hard_rule": true,
+      "reliability": "high",
+      "review_after": "2026-10-05"
+    },
+    {
+      "lesson_id": "global-director-override-active-branch-hard-rule",
+      "project_slug": "buy-dreamer",
+      "created_at": "2026-07-12",
+      "workflow_area": "story_and_delivery_global",
+      "original_claim": "项目中多次出现导演最新修改已替换角色、结尾或道具，但旧图片、旧提示词、旧Board分支仍继续生成或进入交付。",
+      "review_verdict": "accepted_as_global_workflow_hard_rule",
+      "claim": "An explicit director change that adds/removes a character or replaces an ending, transformation state, prop concept, or sequence structure must invalidate every dependent asset and prompt in the previous narrative branch before production resumes.",
+      "recommendation": "Stop dependent work immediately; record director_override plus a narrow supersession label; update the authoritative script, active branch marker, character/prop ledger, Board, prompts and handoff; preserve old outputs only as historical evidence; exclude them from active references, callbacks and delivery. Validate that every packaged asset belongs to one active branch.",
+      "evidence": [
+        "buy-dreamer changed from a female rescue ending to a male-only ending, but the older E/F Board and images initially remained active and conflicted with new generations.",
+        "A six-shot girlfriend encouragement sequence passed image QA but was later explicitly removed; keeping it in the current package would have violated the newest director instruction.",
+        "The project retrospective documents repeated waste caused by treating branch changes as local prompt patches: projects/buy-dreamer/10_qa/PROJECT_RETROSPECTIVE_20260712.md."
+      ],
+      "scope": "All AIGC Film story, storyboard, generation, packaging and Pipeline Hub return workflows when director feedback changes narrative authority.",
+      "status": "active",
+      "hard_rule": true,
+      "reliability": "high",
+      "review_after": "2027-01-12"
+    },
+    {
+      "lesson_id": "buy-dreamer-prop-plausibility-before-symbolism",
+      "project_slug": "buy-dreamer",
+      "created_at": "2026-07-12",
+      "workflow_area": "prop_design_and_continuity",
+      "original_claim": "修补裂琴用了大裂痕、黄铜片和缺弦，技术上清楚但导演认为非常虚假，要求改成结构正常、只有边角磕碰的普通旧木吉他。",
+      "review_verdict": "accepted_as_active_method_with_narrow_scope",
+      "claim": "Story symbolism must not override a recurring prop's physical plausibility, function and approved state.",
+      "recommendation": "Define a prop_state_id with function, base geometry, material, required parts, wear level and explicitly authorized damage before generation. Prefer ordinary wear to cracks, patches, missing parts or glowing damage. Regenerate prop_design_fake or symbolism_overload failures instead of denoising them.",
+      "evidence": [
+        "The repaired five-string guitar passed surface QA but was rejected by the director as visually fake.",
+        "The replacement intact six-string old guitar with only edge nicks and varnish wear matched the director request and passed image QA.",
+        "Earlier buy-dreamer attempt KF15G also introduced an unlocked microphone, showing that prop continuity failures recur beyond one image."
+      ],
+      "scope": "AIGC Film recurring and story-critical props, especially damage, repair, aging, missing parts and symbolic transformation.",
+      "status": "active",
+      "hard_rule": false,
+      "reliability": "high",
+      "review_after": "2026-10-12"
+    },
+    {
+      "lesson_id": "global-exact-title-text-and-sequence-gate",
+      "project_slug": "buy-dreamer",
+      "created_at": "2026-07-12",
+      "workflow_area": "title_logo_typography",
+      "original_claim": "图像模型生成《概率交易所》片名时出现伪字；改成确定性中文合成后文字正确，但导演又指出Logo出现需要一系列分镜，单张终帧不够。",
+      "review_verdict": "accepted_as_global_method_supported_by_multiple_title_projects",
+      "claim": "Exact title typography and a title's on-screen appearance are separate production gates: the glyphs must be verified exactly, and an appearance request must be designed as a timed sequence rather than only a terminal logo still.",
+      "recommendation": "Generate a clean no-text visual plate, composite high-risk exact text deterministically when possible, verify every glyph/order, and keep the wordmark separable. When the title/logo must appear, design duration, appearance mechanism, ordered keyframes, transitions, final hold and a numbered storyboard sheet under one shot ID.",
+      "evidence": [
+        "The first generated Probability Exchange title card contained malformed pseudo-Chinese and was rejected.",
+        "A no-text plate plus deterministic Chinese typography produced the correct five-character title.",
+        "The director rejected the single final logo as incomplete because the appearance needed a storyboard sequence.",
+        "The existing title-sequence lesson global-title-sequence-one-take-camera-displacement independently shows that title work requires designed temporal movement, not a static terminal image."
+      ],
+      "scope": "All AIGC Film titles, logos, wordmarks, signs and exact-text graphics; especially Chinese typography and animated title appearances.",
+      "status": "active",
+      "hard_rule": false,
+      "reliability": "high",
+      "review_after": "2026-10-12"
+    }
+  ]
+}

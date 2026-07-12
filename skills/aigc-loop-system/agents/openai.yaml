@@ -1,0 +1,4 @@
+interface:
+  display_name: "AIGC Loop System"
+  short_description: "Run feedback loops for AIGC film production."
+  default_prompt: "Use the AIGC loop system to create, evaluate, record, and iterate production attempts."

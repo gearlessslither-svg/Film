@@ -1,0 +1,4 @@
+interface:
+  display_name: "AIGC Production Hard Rules"
+  short_description: "Dynamic cross-project gates for film prompts and generation"
+  default_prompt: "Use $aigc-production-hard-rules to create production-ready AIGC film text, image, and video prompts."
