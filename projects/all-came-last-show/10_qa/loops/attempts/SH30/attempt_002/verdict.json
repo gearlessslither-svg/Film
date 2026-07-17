@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "asset_id": "SH30",
+  "attempt": "attempt_002",
+  "reviewed_at": "2026-07-17T11:34:06+08:00",
+  "verdict": "pass",
+  "failure_labels": [],
+  "scores": {
+    "prompt_compliance": "4.7",
+    "style_coherence": "4.6",
+    "anatomy_integrity": "4.6",
+    "scale_plausibility": "4.8"
+  },
+  "feedback": "Internal hard-QA pass: six tiny irregular retreating silhouettes replace the lineup; forbidden factory stacks are gone; empty stage, practical scale, no smoke/instruments/clothing, and DFT low-noise language hold. Director aesthetic review pending.",
+  "must_change": [],
+  "may_keep": [
+    "Keep the asymmetric empty-stage composition, blue curtain, old-gold bulbs, sparse retreating silhouettes, and nonindustrial town roofs."
+  ]
+}

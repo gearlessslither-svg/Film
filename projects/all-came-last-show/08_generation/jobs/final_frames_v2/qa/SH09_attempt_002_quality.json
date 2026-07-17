@@ -1,0 +1,28 @@
+{
+  "profile": "general",
+  "count": 1,
+  "counts": {
+    "pass": 1,
+    "warn": 0,
+    "fail": 0
+  },
+  "records": [
+    {
+      "path": "Film/projects/all-came-last-show/08_generation/jobs/final_frames_v2/outputs/SH09_attempt_002.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 1.527,
+        "residual_mean": 2.72,
+        "residual_p95": 10,
+        "edge_density": 11.907
+      },
+      "reasons": []
+    }
+  ]
+}

@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "batch_id": "SH01_SH13",
+  "project": "all-came-last-show",
+  "frame_spec": "1915x821 PNG, 21:9",
+  "hard_gate_policy": "Only frames passing scale, species/action diversity, anatomy/prop logic, and DFT style/noise gates may be selected.",
+  "items": [
+    {
+      "item_id": "SH01",
+      "status": "pass",
+      "selected_output": "08_generation/jobs/final_frames_v2/selected/SH01.png",
+      "scale": "pass: 45–60m chimney, multi-storey factory, houses, streets and tiny distant workers form a coherent hierarchy; no animal approaches building size.",
+      "species_action": "pass: no readable foreground cast by design; sparse distant worker points occupy different roads and intervals without a cat crowd or repeated hero.",
+      "anatomy_props": "pass: distant figures remain simple grounded silhouettes; roads, buildings, windows and chimney are structurally coherent; chimney is intact and smokeless.",
+      "style_noise": "pass: DFT worn-paper matte-gouache language, restrained faded palette, controlled large shapes and low-noise sky/terrain.",
+      "notes": "Reused historical KEEP establishing anchor; internal semantic pass, director review pending; exact 1915x821."
+    },
+    {
+      "item_id": "SH02",
+      "status": "pass",
+      "selected_output": "08_generation/jobs/final_frames_v2/selected/SH02.png",
+      "scale": "pass: factory mass and arched industrial door dominate; elephant has visible clearance; high windows, yard gate and ground markings anchor perspective.",
+      "species_action": "pass: exactly one old dog, sheep, rabbit, elephant and donkey; crossing gate, waiting, checking clock/card, exiting door and approaching ramp are distinct phases; no cats.",
+      "anatomy_props": "pass: feet contact the yard, card grips and elephant trunk/tusks are credible, with no extra limbs or intersecting bodies.",
+      "style_noise": "pass: muted brick, navy and gray-blue DFT matte-gouache treatment; readable silhouettes and automated clarity QA pass.",
+      "notes": "Selected attempt_001; exact 1915x821."
+    },
+    {
+      "item_id": "SH03",
+      "status": "pass",
+      "selected_output": "08_generation/jobs/final_frames_v2/selected/SH03.png",
+      "scale": "pass: shoe/hoof/foot sizes, trouser hems, painted line and shared floor plane remain internally proportional.",
+      "species_action": "pass: dog foot, sheep hoof, rabbit foot and elephant foot are all distinct and captured at four different weight-transfer phases; no cat duplication.",
+      "anatomy_props": "pass: grounded feet, believable bending and heel/toe/hoof contact; no human-foot substitution or extra digits.",
+      "style_noise": "pass: flat DFT forms and restrained floor texture; automated clarity QA pass with no sharpening or muddy microdetail.",
+      "notes": "Selected attempt_001; exact 1915x821."
+    },
+    {
+      "item_id": "SH04",
+      "status": "pass",
+      "selected_output": "08_generation/jobs/final_frames_v2/selected/SH04.png",
+      "scale": "pass: dog paw, blank card, sheep hoof and punch machine share a coherent close-up working scale.",
+      "species_action": "pass: exactly one dog paw feeds the card while exactly one waiting sheep hoof holds a separate blank card; no duplicated background character.",
+      "anatomy_props": "pass: simplified paw/hoof grips remain species-appropriate; card enters the slot without clipping or impossible fingers.",
+      "style_noise": "pass: repaired attempt uses cleaner DFT matte shapes and limited wear; no pseudo-text and automated clarity QA pass.",
+      "notes": "Selected attempt_002 after rejecting attempt_001 for duplicate sheep and noisy style drift; exact 1915x821."
+    },
+    {
+      "item_id": "SH05",
+      "status": "pass",
+      "selected_output": "08_generation/jobs/final_frames_v2/selected/SH05.png",
+      "scale": "pass: huge factory door and high windows remain larger than every worker; elephant has clear headroom and depth scaling is explained by ground perspective.",
+      "species_action": "pass: exactly one Abai cat, dog, sheep, rabbit, elephant, donkey, bear and fox across three depth layers; wait, offset step, single-card raise, cap adjustment, lateral Abai step, stoop, broad stand and side-look are distinct.",
+      "anatomy_props": "pass: only rabbit holds one blank card; all other paws/hooves are empty and grounded; Abai has one fully charcoal tail and no extra limbs.",
+      "style_noise": "pass: DFT faded brick/navy matte palette, coherent silhouettes and automated clarity QA pass.",
+      "notes": "Selected attempt_002 after rejecting attempt_001 for group_action_repetition, horizontal line-up and Abai tail drift; exact 1915x821."
+    },
+    {
+      "item_id": "SH06",
+      "status": "pass",
+      "selected_output": "08_generation/jobs/final_frames_v2/selected/SH06.png",
+      "scale": "pass: monumental wheels, rails, high windows and hall structure intentionally dwarf but do not miniaturize Abai; feet and rail plane establish real industrial scale.",
+      "species_action": "pass: exactly one readable character, Abai, by shot design; no second cat or background cast duplication.",
+      "anatomy_props": "pass: Abai remains bipedal in full navy workwear, empty paws and grounded feet; machine belts and wheels have coherent support.",
+      "style_noise": "pass: project-locked DFT industrial matte-gouache frame with controlled low-frequency paper texture and clean focal separation.",
+      "notes": "Reused historical KEEP anchor; internal semantic pass, director review pending; exact 1915x821."
+    },
+    {
+      "item_id": "SH07",
+      "status": "pass",
+      "selected_output": "08_generation/jobs/final_frames_v2/selected/SH07.png",
+      "scale": "pass: wheel, belt, gauge and surrounding housing preserve the SH06 machine-family dimensions and believable mechanical relationships.",
+      "species_action": "pass: no characters by design; no accidental cat, animal or duplicated body generated.",
+      "anatomy_props": "pass: belt/wheel/gauge connections, gravity and limited settling dust are physically legible; no floating parts or smoke.",
+      "style_noise": "pass: restrained DFT mechanical insert, clean dark planes, limited dust and automated clarity QA pass.",
+      "notes": "Selected attempt_001; exact 1915x821."
+    },
+    {
+      "item_id": "SH08",
+      "status": "pass",
+      "selected_output": "08_generation/jobs/final_frames_v2/selected/SH08.png",
+      "scale": "pass: complete factory door, high windows and yard plane remain larger than the cast; elephant moves through with headroom and depth remains coherent.",
+      "species_action": "pass: exactly eight species, one each; rabbit already out, dog crosses threshold, sheep yields, bear starts slowly, fox hugs wall, donkey takes a long step, elephant remains last inside, and only Abai pauses to look back.",
+      "anatomy_props": "pass: walking contacts, tails, work cards and clothing are grounded without body intersections; Abai has one charcoal tail and stays bipedal.",
+      "style_noise": "pass: coherent DFT exit flow, faded workwear/brick palette and automated clarity QA pass.",
+      "notes": "Selected attempt_001; exact 1915x821."
+    },
+    {
+      "item_id": "SH09",
+      "status": "pass",
+      "selected_output": "08_generation/jobs/final_frames_v2/selected/SH09.png",
+      "scale": "pass: elephant-sized entry, locker banks, bench, high/low hooks and aisle are functional; bear's seated feet reach the floor and rabbit targets low hooks.",
+      "species_action": "pass: exactly one elephant, dog, sheep, bear, donkey, rabbit, Abai and fox; pause at door, open locker, remove blank card, sit, walk aisle, walk to low hooks, enter/look to locker and mirror-observe are distinct.",
+      "anatomy_props": "pass: all eight remain bipedal in workwear; locker grip, seated weight and mirror reflection are coherent; no undressing or extra physical fox.",
+      "style_noise": "pass: DFT locker-room matte palette and automated clarity QA pass; all signs, labels and pseudo-text removed.",
+      "notes": "Selected attempt_002 after removing EXIT/locker text artifacts and correcting Abai's tail to root-to-tip charcoal; exact 1915x821."
+    },
+    {
+      "item_id": "SH10",
+      "status": "pass",
+      "selected_output": "08_generation/jobs/final_frames_v2/selected/SH10.png",
+      "scale": "pass: tall room, lockers, hooks, benches and elephant doorway preserve functional multi-species scale; seated bear and low rabbit occupy believable levels.",
+      "species_action": "pass: eight species each perform a different first-transition action: sheep removes cap, rabbit hangs one jacket, bear removes one boot, Abai opens one lower button, dog turns one cuff, donkey unties one shoe, elephant loosens one strap, fox pauses at mirror.",
+      "anatomy_props": "pass: bipedal bodies, garment grips, boot/shoelace contacts and mirror logic are readable; no instruments, trays or cups.",
+      "style_noise": "pass: internally accepted pilot preserves DFT matte-gouache style, muted locker-room color and controlled texture.",
+      "notes": "Reused internally accepted pilot attempt_001; director review pending; exact 1915x821."
+    },
+    {
+      "item_id": "SH11",
+      "status": "pass",
+      "selected_output": "08_generation/jobs/final_frames_v2/selected/SH11.png",
+      "scale": "pass: sheep forelimb, folded navy jacket, bench and low hook maintain ordinary garment/room proportions.",
+      "species_action": "pass: foreground sheep presses one folded garment while background rabbit hangs another; two species and two storage actions are distinct, with no cat.",
+      "anatomy_props": "pass: sheep uses simplified hoof pressure without human fingers; rabbit remains bipedal in plain underlayer and the garment hangs under gravity.",
+      "style_noise": "pass: repaired attempt has clean DFT cloth masses, limited fiber detail and automated clarity QA pass.",
+      "notes": "Selected attempt_002 after rejecting attempt_001 for narrative-state mismatch/full uniforms; exact 1915x821."
+    },
+    {
+      "item_id": "SH12",
+      "status": "pass",
+      "selected_output": "08_generation/jobs/final_frames_v2/selected/SH12.png",
+      "scale": "pass: sheep foreground, central Abai, background dog, lockers, bench and hooks form coherent three-layer room scale.",
+      "species_action": "pass: exactly one soft-focus sheep frame, one central Abai removing workwear and one old dog revealing an ordinary healed shoulder scar; no duplicated cat or synchronized action.",
+      "anatomy_props": "pass: foreground sheep has no human hands; Abai remains bipedal with broad continuous saddle patch and one charcoal tail; dog scar is non-graphic and anatomically placed.",
+      "style_noise": "pass: repaired DFT matte-gouache frame, restrained hair detail and automated clarity QA pass.",
+      "notes": "Selected attempt_002 after correcting white tail/narrow stripe and removing sheep's human-like hands; exact 1915x821."
+    },
+    {
+      "item_id": "SH13",
+      "status": "pass",
+      "selected_output": "08_generation/jobs/final_frames_v2/selected/SH13.png",
+      "scale": "pass: room height, lockers, bench, doorway and elephant/other cast sizes remain functional; seated donkey and low rabbit retain grounded body scale.",
+      "species_action": "pass: exactly eight species and eight finishing actions—elephant one-shoulder coat, Abai lower vest button, sheep side clasp, donkey one shoelace, dog one sleeve, bear back adjuster, rabbit side waist, fox scarf at mirror.",
+      "anatomy_props": "pass: all remain bipedal in distinct private dress; garment grips and shoelace contact are credible; no instruments, tray, cups, duplicate reflection or extra limbs; Abai tail is charcoal.",
+      "style_noise": "pass: faded private-dress colors remain matte and restrained in the DFT medium; automated clarity QA pass.",
+      "notes": "Semantic attempt_001 passed; attempt_002 performed dimension-only normalization to exact 1915x821 and is the selected deliverable."
+    }
+  ]
+}

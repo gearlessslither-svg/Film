@@ -1,0 +1,27 @@
+# 《所有人都来了》项目交接
+
+- 当前项目：`all-came-last-show`，活动分支 `DFT_MASTERPLAN_WILD_RETURN_V4`。
+- 最新导演改写：演出结束后，动物脱去华服，发现工装已经丢失；所有角色从两足拟人工人转为彻底四足野生动物，离开破败城镇、各奔荒野与新生。结尾苍凉但不是毁灭。
+- 音乐方向：Oasis《The Masterplan》约 2 分钟剪辑版；故事暂定 120 秒，具体音乐切点待实际音频验证。
+- 阿白身份硬锁：三张真实猫照片 + `05_asset_bible/approved/ABAI_DUAL_STATE_SHEET_V2_APPROVED.png`。前两状态已批准；新增第三状态 `ABAI_WILD_RETURN_PHOTOLOCK`，必须回到照片对应的四足长毛白猫。
+- 画风硬锁：`04_lookdev/references/DFT_DIRECTOR_REFERENCE.png` 的旧纸蛋彩／哑光水粉、深青赭金、平面空间、安静荒诞；整体亮暖一档，禁止写实、3D、日漫、恐怖变形。
+- 活动故事：`03_story/STORY_V2_MASTERPLAN_WILD_RETURN.md`。活动转换账本：`05_asset_bible/TRANSFORMATION_STATE_LEDGER_V1.md`。
+- 旧分支：V1 的“拟人状态互换小物后离开”结尾已废止；旧写实绘本、旧黑毛撮／肋纹阿白均只能作失败证据。配角双状态板按最新“人设已全部完成”指令仅保留脸型、毛色、体型和两足服装参考；其中的乐器陈列、托盘、状态缺失和排排站构图仍属失败证据，活动范围见 `05_asset_bible/SUPPORTING_CAST_IDENTITY_LOCK_V2.md`。
+- 已完成：阿白照片身份版双状态板导演通过；配角 A 首版因缺野生状态且乐器密集被否决；配角 B 首版因熊工厂状态提前拿托盘被否决；B 返修在导演改写时已中止。
+- 活动 loop：`ABAI_DUAL_STATE_SHEET_V1/attempt_002` pass；`SUPPORTING_CAST_A_V1/attempt_001` reject（`director_override`, `ending_replaced`, `character_state_missing`, `prop_spacing`）；`SUPPORTING_CAST_B_V1/attempt_001` reject（`prop_state_mismatch`, `continuity_drift`）。
+- 故事 V2 与约 120 秒时长已通过。导演新增流程要求：故事大纲后先出场景设定清单，并补充远景、俯瞰、街道、城镇和舞蹈大厅覆盖。
+- 导演进一步修正规则：人设仍须单独完成；只有反复换机位且物理空间影响叙事的简单主场景才做“场景设定＋白模型”；快速过渡场景只锁风格一致，不要求物理空间完全一致。原 26 项场景图清单因颗粒度过细已废止。
+- 导演确认现有人设已经全部完成，不再生成或补画人设板。阿白四足结尾直接使用三张猫照片；配角以 `SUPPORTING_CAST_IDENTITY_LOCK_V2.md` 锁定既有身份和服装，结尾回到对应物种的自然四足形态。
+- `07_shots/FINAL_IMAGE_PLAN_21X9_V1.md` 已废止为完整覆盖清单。导演复核确认 15 张只能算视觉锚点，不能支撑 120 秒；该文件与旧图仅保留为历史证据。
+- 已生成：`KS21_01` 表面 QA 通过、待导演判定；`KS21_02` attempt_001 因全猫群像否决，attempt_002 已修正为多物种并表面 QA 通过、待导演判定；`KS21_03` attempt_001 因烟囱冒烟否决，attempt_002 因城镇末日废墟化否决。
+- 当前批次已生成：`ENV-01` 更衣室设定 attempt_001 因写实数字概念图漂移被拒，attempt_002 已通过表面与空间 QA、待导演判定；`ENV-02` 广场／舞蹈大厅设定 attempt_001 已通过表面、无烟烟囱与轴线 QA、待导演判定。
+- 白模：`ENV-01_WHITEBOX_3VIEWS_attempt_002.png` 与 `ENV-02_WHITEBOX_3VIEWS_attempt_003.png` 已完成相机遮挡修正，待导演判定。
+- 15 图导演退回初审：`10_qa/FINAL_ANCHOR_SET_V1_DIRECTOR_REVIEW_20260717.md`。当时结论为 `KEEP 4 / REVISE 3 / REPLACE 8`；但 `FIN-010` 后续在 V2 终轮整套语义审计中又因群像动作雷同和衣箱实例重复被淘汰。活动成片最终只复用 `FIN-001/003/012B` 三个历史锚点。原 15/15 自动 QA 只证明尺寸和表面指标，不证明叙事覆盖、尺度或群像动作。
+- 活动审批文件：`07_shots/SHOT_COVERAGE_120S_V2.md`，准确覆盖 00:00–02:00，共 38 个剪辑镜头、42 张最终关键帧，平均 3.16 秒／镜。42 张均为成片叙事图，不是场景设定图；多锚点只用于烟囱、三阶段变形和阿白结尾。
+- 新活动硬锁：`05_asset_bible/SCALE_LEDGER_V1.md` 与 `07_shots/GROUP_ACTION_LEDGER_120S_V2.md`。所有建筑群像必须证明角色、门窗、楼层、家具与景深比例；所有群像必须分配不同动作动词和相位，只有工厂队列、烟囱倒塌瞬间、发现空钩后的短暂停顿允许有意同步。
+- 全局硬规则与经验库已新增三道门禁：`Timeline Coverage And Keyframe Sufficiency`、`Character–Environment Scale Plausibility`、`Group Performance And Action Diversity`。失败标签已写入 loop：`runtime_undercoverage`、`character_environment_scale_mismatch`、`group_action_repetition` 等。
+- 最新执行结果：用户要求的 `38 镜／42 帧` 生产候选已全部完成；准确覆盖 120 秒，全部为 1915×821、21:9 PNG。该完成状态不等于用户已逐张批准，仍保持 `director_review_pending`。
+- 试片与整套进度：`SH10` 多物种更衣群像、`SH18` 城镇十字路口俯瞰以及其余 40 帧均通过自动表面检查和内部语义检查；总联系表终轮联审见 `10_qa/FINAL_42_CONTACT_SHEET_REVIEW.md`。
+- 当前生产：三段生产提示词包已落盘；42 张活动候选已全部进入 `selected/`，其中只复用 `SH01/SH06/SH38_KF01` 三张旧锚点，`SH33` 已由新 `attempt_002` 取代。合并质检结果为表面 42 pass / 0 warn / 0 fail、语义 42 pass / 0 fail，提示词与叙事状态合同均为 `ok: true`。
+- 最终交付包：`11_delivery/all_came_last_show_v2/ALL_CAME_2MIN_COMPLETE_V2.zip`；内含 42 图、三段图像与 AIGC 视频提示词、idea board、故事和账本、总联系表／多锚点板、循环证据及 QA。当前 SHA-256 以同目录 `PACKAGE_SHA256.txt` 为准；每次交付内容更新后必须重新打包和复核。
+- 禁止自动放行：不得把任何 V1 锚点自动晋升为导演批准终稿；任何群像全画面只能有一个阿白、一个狐狸、一个大象等既定角色实例，其他居民保持多物种；建筑／动物失真比例、群像复制动作、状态越界、恐怖变形或全猫化均为硬失败，必须返修。

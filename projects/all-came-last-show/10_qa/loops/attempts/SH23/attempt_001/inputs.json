@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "asset_id": "SH23",
+  "stage": "keyframe_image",
+  "attempt": "attempt_001",
+  "created_at": "2026-07-17T12:07:17+08:00",
+  "sources": [
+    "08_generation/jobs/supporting_cast_v1/outputs/SUPPORTING_CAST_A_V1_attempt_001.png",
+    "08_generation/jobs/environment_settings_v1/outputs/ENV-02_SQUARE_DANCEHALL_SETTING_attempt_001.png",
+    "08_generation/jobs/environment_whiteboxes_v1/outputs/ENV-02_WHITEBOX_3VIEWS_attempt_003.png"
+  ],
+  "output_path": "08_generation/jobs/final_frames_v2/outputs/SH23_attempt_001.png",
+  "notes": "asymmetric fox-dog dance phase keyframe"
+}

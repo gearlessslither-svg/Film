@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "asset_id": "SH36",
+  "attempt": "attempt_001",
+  "reviewed_at": "2026-07-17T12:12:45+08:00",
+  "verdict": "pass",
+  "failure_labels": [],
+  "scores": {
+    "prompt_compliance": "4.7",
+    "style_coherence": "4.8",
+    "anatomy_integrity": "4.8",
+    "scale_plausibility": "4.8"
+  },
+  "feedback": "Internal hard-QA pass: exactly eight unique true quadrupeds leave in staggered phases; rabbit is already outside, fox crosses, Abai remains mid-back, elephant is last and clearly smaller than the oversized doorway. Clothes/case remain inside, no biped/clothing residue, and town architecture dwarfs small animals. Director aesthetic review pending.",
+  "must_change": [],
+  "may_keep": [
+    "Keep the low threshold camera, grey-gold exterior, real-scale street/door, staggered species sequence, and abandoned interior objects."
+  ]
+}

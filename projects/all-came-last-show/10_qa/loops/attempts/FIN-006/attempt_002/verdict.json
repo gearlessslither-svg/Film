@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "asset_id": "FIN-006",
+  "attempt": "attempt_002",
+  "reviewed_at": "2026-07-17T10:30:55+08:00",
+  "verdict": "reject",
+  "failure_labels": [
+    "character_environment_scale_mismatch",
+    "architectural_scale_collapse",
+    "perspective_scale_inconsistency"
+  ],
+  "scores": {},
+  "feedback": "同景深门窗小于动物，人物方向也不像向灯光汇聚。",
+  "must_change": [
+    "按SH18尺度账本和四路汇聚方向重出。"
+  ],
+  "may_keep": []
+}

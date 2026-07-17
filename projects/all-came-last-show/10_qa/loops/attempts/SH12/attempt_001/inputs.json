@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "asset_id": "SH12",
+  "stage": "keyframe_image",
+  "attempt": "attempt_001",
+  "created_at": "2026-07-17T11:26:49+08:00",
+  "sources": [
+    "05_asset_bible/approved/ABAI_DUAL_STATE_SHEET_V2_APPROVED.png"
+  ],
+  "output_path": "08_generation/jobs/final_frames_v2/outputs/SH12_attempt_001.png",
+  "notes": "V2 final batch; exact SH12 identity-reveal prompt; DFT + Abai photo/approved + cast A + SH10; 21:9."
+}

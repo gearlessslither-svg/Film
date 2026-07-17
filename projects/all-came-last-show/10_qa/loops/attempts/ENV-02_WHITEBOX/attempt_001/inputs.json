@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "asset_id": "ENV-02_WHITEBOX",
+  "stage": "spatial_previs",
+  "attempt": "attempt_001",
+  "created_at": "2026-07-17T04:04:33+08:00",
+  "sources": [
+    "08_generation/jobs/environment_settings_v1/outputs/ENV-02_SQUARE_DANCEHALL_SETTING_attempt_001.png"
+  ],
+  "output_path": "08_generation/jobs/environment_whiteboxes_v1/outputs/ENV-02_WHITEBOX_3VIEWS_attempt_003.png",
+  "notes": "Three-view spatial lock after camera repair"
+}

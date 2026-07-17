@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "asset_id": "ENV-01_LOCKER_ROOM_SETTING",
+  "attempt": "attempt_001",
+  "reviewed_at": "2026-07-17T03:53:08+08:00",
+  "verdict": "reject",
+  "failure_labels": [
+    "style_drift",
+    "photoreal_concept_art_drift"
+  ],
+  "scores": {},
+  "feedback": "Surface QA passes, but the scene reads as realistic digital concept art instead of the director's flat DFT old-paper tempera fairy-tale language.",
+  "must_change": [
+    "Flatten perspective and depth, simplify architecture into large graphic shapes, remove realistic material shading and cinematic volumetrics, use deep teal and ochre matte blocks with quiet surreal asymmetry."
+  ],
+  "may_keep": [
+    "Locker-wall, two central benches, high windows and right-rear exit spatial layout."
+  ]
+}

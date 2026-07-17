@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "asset_id": "SH21",
+  "stage": "keyframe_image",
+  "attempt": "attempt_002",
+  "created_at": "2026-07-17T12:02:32+08:00",
+  "sources": [
+    "08_generation/jobs/final_frames_v2/outputs/SH21_attempt_001.png",
+    "05_asset_bible/approved/ABAI_DUAL_STATE_SHEET_V2_APPROVED.png"
+  ],
+  "output_path": "08_generation/jobs/final_frames_v2/outputs/SH21_attempt_002.png",
+  "notes": "controlled one-identity-anchor repair: restore Abai natural crown patch only"
+}

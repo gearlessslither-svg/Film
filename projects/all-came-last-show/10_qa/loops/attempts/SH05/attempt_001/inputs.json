@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "asset_id": "SH05",
+  "stage": "keyframe_image",
+  "attempt": "attempt_001",
+  "created_at": "2026-07-17T11:39:49+08:00",
+  "sources": [
+    "04_lookdev/references/DFT_DIRECTOR_REFERENCE.png",
+    "05_asset_bible/approved/ABAI_DUAL_STATE_SHEET_V2_APPROVED.png",
+    "08_generation/jobs/supporting_cast_v1/outputs/SUPPORTING_CAST_A_V1_attempt_001.png",
+    "08_generation/jobs/supporting_cast_v1/outputs/SUPPORTING_CAST_B_V1_attempt_001.png"
+  ],
+  "output_path": "08_generation/jobs/final_frames_v2/outputs/SH05_attempt_001.png",
+  "notes": "V2 SH05 final frame; eight unique species, staggered queue micro-actions, factory-door scale lock, 21:9."
+}

@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "asset_id": "SH35_KF03",
+  "attempt": "attempt_001",
+  "reviewed_at": "2026-07-17T12:08:33+08:00",
+  "verdict": "pass",
+  "failure_labels": [],
+  "scores": {
+    "prompt_compliance": "4.8",
+    "style_coherence": "4.8",
+    "anatomy_integrity": "4.8",
+    "scale_plausibility": "4.7"
+  },
+  "feedback": "Internal hard-QA pass: exactly eight unique true quadruped species, no clothing or anthropomorphic residue; Abai matches the photo-lock markings and remains cat-sized, rabbit is smallest, elephant largest, other scale tiers are plausible. Eight actions differ and all garments/case remain abandoned. Director aesthetic review pending.",
+  "must_change": [],
+  "may_keep": [
+    "Keep the completed wild anatomy, real scale hierarchy, left-exit intent, abandoned garments/case, and continuous DFT room axis."
+  ]
+}

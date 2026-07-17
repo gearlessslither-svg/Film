@@ -1,0 +1,64 @@
+schema_version: 1
+project: "all-came-last-show"
+active_branch: "DFT_MASTERPLAN_WILD_RETURN_V4"
+score_scale: "0-5"
+hard_fail_threshold: 2
+pass_threshold: 4
+
+project_contract:
+  runtime_seconds: 120
+  edit_shot_count: 38
+  keyframe_count: 42
+  frame_spec: "21:9"
+  review_frames: "first, middle and final frame of every generated clip, plus transition checkpoints for SH28, SH35 and SH38"
+
+hard_categories:
+  source_style_fidelity: "First, middle and final frames remain in the exact selected-keyframe DFT old-paper tempera / matte-gouache language, including edge treatment, palette, lighting logic, flattened depth, paper-texture scale and controlled low-noise detail."
+  identity_and_species_stability: "Abai's photo-locked white long-haired identity and markings remain stable. Each declared animal stays its own species with one traceable body and no duplicate principal, morphing face, recolored substitute or all-cat drift."
+  narrative_state_continuity: "Wardrobe, prop ownership, biped/quadruped anatomy and transformation phase match the clip's timeline_phase and character_state_ids from first through final frame. Only SH35 crosses the body-state boundary."
+  scale_and_physical_plausibility: "Animals remain grounded and correctly scaled against buildings, doors, windows, benches, lockers and instruments throughout motion. Perspective shrinkage, contact, shadows, clearance and load bearing remain coherent; no accidental miniature architecture or toy props appear."
+  group_performance_diversity: "Readable group members preserve distinct action phases, gaze, body rhythm, paw/hand use and screen paths. Motion does not collapse differentiated keyframe blocking into cloned gestures or uniform timing."
+  timeline_and_action_compliance: "The visible action, camera, lighting and final settle follow every time-coded prompt beat; the clip does not freeze into one repeated motion, skip a cause/effect beat or invent a new event."
+  camera_coherence: "Camera height, axis, lens feel, movement, framing, focus and exposure remain controlled with no accidental cut, teleport, roll, wobble or architecture drift."
+  multi_keyframe_transition_integrity: "SH28 preserves intact-to-controlled-lean chimney order; SH35 preserves unclad biped-to-staggered-transition-to-natural-quadruped order without horror; SH38 preserves look-back-to-rightward-run order with one Abai and a stable town/wilderness axis."
+  anatomy_prop_and_contact_integrity: "Limbs, tails, trunks, paws, instruments, garments, case count, reflections, ground contact and body-part ownership remain traceable and physically plausible in motion."
+  surface_and_temporal_cleanliness: "No flicker, edge boiling, texture crawl, random speckle, muddy micro-detail, sharpened halo, JPEG artifact, ghost trail or pseudo-text appears."
+  edit_usefulness: "The clip has a stable first frame, readable middle change and usable decelerated or held endpoint that can cut into the exact 120-second / 38-shot edit."
+  audio_rule: "Generated audio is limited to ambience and SFX; no embedded music, BGM, soundtrack, singing or dialogue competes with the post-production music edit."
+
+required_evidence:
+  - "selected source image and item_id"
+  - "production video prompt and declared duration"
+  - "first-frame comparison"
+  - "middle-frame comparison"
+  - "final-frame comparison"
+  - "state, scale and group-action review where applicable"
+  - "numbered multi-keyframe sheet review for SH28, SH35 or SH38"
+  - "human or director verdict"
+
+failure_labels:
+  - source_style_drift
+  - identity_redraw
+  - species_morph
+  - duplicate_character_instance
+  - narrative_state_mismatch
+  - premature_state_transition
+  - transformation_phase_flattening
+  - character_environment_scale_mismatch
+  - perspective_scale_inconsistency
+  - physical_contact_impossible
+  - group_action_repetition
+  - performance_clone
+  - timeline_collapse
+  - action_unreadable
+  - accidental_cut
+  - camera_drift
+  - keyframe_order_break
+  - anatomy_fail
+  - prop_state_mismatch
+  - flicker
+  - texture_crawl
+  - noisy_microdetail
+  - unusable_endpoint
+  - audio_rule_violation
+

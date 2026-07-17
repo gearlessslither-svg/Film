@@ -1,0 +1,29 @@
+# Director Review
+
+Verdict: `reject`
+Reviewed at: 2026-07-17T10:24:38+08:00
+
+## Failure Labels
+
+- `runtime_undercoverage`
+- `missing_intermediate_beat`
+- `hero_frame_overload`
+- `character_environment_scale_mismatch`
+- `architectural_scale_collapse`
+- `perspective_scale_inconsistency`
+- `group_action_repetition`
+- `performance_clone`
+- `transformation_phase_flattening`
+- `duplicate_character_instance`
+
+## Feedback
+
+导演确认：15张仅是视觉锚点，不能支撑120秒；部分建筑比同平面动物还小；穿脱衣与变形群像动作雷同。
+
+## Must Change
+
+- 先审批38镜42帧的完整时间覆盖；全部镜头绑定尺度账本和群像动作账本；4张保留、3张修订、8张替换，禁止继续按V1批量生成。
+
+## May Keep
+
+- FIN-001、FIN-003、FIN-010、FIN-012B仅按2–5秒明确镜头用途保留候选。

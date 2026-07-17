@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "asset_id": "SH05",
+  "stage": "keyframe_image",
+  "attempt": "attempt_002",
+  "created_at": "2026-07-17T11:43:29+08:00",
+  "sources": [
+    "08_generation/jobs/final_frames_v2/outputs/SH05_attempt_001.png"
+  ],
+  "output_path": "08_generation/jobs/final_frames_v2/outputs/SH05_attempt_002.png",
+  "notes": "Recompose eight-species queue into depth layers and unique phases; fix full dark Abai tail."
+}

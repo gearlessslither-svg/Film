@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "asset_id": "SH23",
+  "attempt": "attempt_001",
+  "reviewed_at": "2026-07-17T12:07:17+08:00",
+  "verdict": "pass",
+  "failure_labels": [],
+  "scores": {},
+  "feedback": "通过：画面仅一狐一狗，无猫、第三舞伴、乐器或杯盘；狐狸已交叉落足转出且尾巴滞后，老狗在远后方后重心半步停住，动作相位、朝向与剪影明显不同，未牵手未镜像。四肢和单尾可追踪、脚地接触可信，舞厅建筑尺度远大于角色，DFT哑光低噪风格稳定。",
+  "must_change": [],
+  "may_keep": []
+}

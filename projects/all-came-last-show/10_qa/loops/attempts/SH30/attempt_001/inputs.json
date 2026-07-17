@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "asset_id": "SH30",
+  "stage": "final_keyframe",
+  "attempt": "attempt_001",
+  "created_at": "2026-07-17T11:31:21+08:00",
+  "sources": [
+    "04_lookdev/references/DFT_DIRECTOR_REFERENCE.png",
+    "08_generation/jobs/environment_whiteboxes_v1/outputs/ENV-02_WHITEBOX_3VIEWS_attempt_003.png",
+    "08_generation/jobs/final_frames_v2/selected/SH29.png"
+  ],
+  "output_path": "08_generation/jobs/final_frames_v2/outputs/SH30_attempt_001.png",
+  "notes": "SH30 attempt 001: empty-stage aftermath insert; hard-check background silhouette count/blocking and exterior continuity."
+}

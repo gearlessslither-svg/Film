@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "asset_id": "FIN-003",
+  "attempt": "attempt_001",
+  "reviewed_at": "2026-07-17T10:30:55+08:00",
+  "verdict": "hold",
+  "failure_labels": [],
+  "scores": {},
+  "feedback": "保留为3秒机器大厅锚点；透视与工业尺度成立。",
+  "must_change": [
+    "不得单图承担停机、下班与离厂全过程。"
+  ],
+  "may_keep": []
+}

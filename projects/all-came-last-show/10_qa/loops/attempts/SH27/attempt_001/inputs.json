@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "asset_id": "SH27",
+  "stage": "final_keyframe",
+  "attempt": "attempt_001",
+  "created_at": "2026-07-17T11:06:13+08:00",
+  "sources": [
+    "04_lookdev/references/DFT_DIRECTOR_REFERENCE.png"
+  ],
+  "output_path": "08_generation/jobs/final_frames_v2/outputs/SH27_attempt_001.png",
+  "notes": "active branch DFT_MASTERPLAN_WILD_RETURN_V4; references limited by SUPPORTING_CAST_IDENTITY_LOCK_V2"
+}

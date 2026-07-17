@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "asset_id": "SH34",
+  "attempt": "attempt_001",
+  "reviewed_at": "2026-07-17T11:52:48+08:00",
+  "verdict": "pass",
+  "failure_labels": [],
+  "scores": {
+    "prompt_compliance": "4.9",
+    "style_coherence": "4.6",
+    "anatomy_integrity": "4.7",
+    "scale_plausibility": "4.7"
+  },
+  "feedback": "Internal hard-QA pass: exactly eight unique species perform eight immediately distinct clothing actions (sleeve, vest button, fold coat, draw scarf, shoe, boot, shawl, shoulder-shirt); all remain fur-covered upright bipeds, no body transition, closed case stays separate, and room scale/style are coherent. Director aesthetic review pending.",
+  "must_change": [],
+  "may_keep": [
+    "Keep the differentiated action silhouettes, staggered heights, room continuity, neatly separated garments, and dignified non-horror tone."
+  ]
+}

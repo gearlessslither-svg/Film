@@ -1,0 +1,45 @@
+{
+  "profile": "general",
+  "count": 2,
+  "counts": {
+    "pass": 2,
+    "warn": 0,
+    "fail": 0
+  },
+  "records": [
+    {
+      "path": "projects/all-came-last-show/08_generation/jobs/final_frames_v2/outputs/SH10_attempt_001.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 1.943,
+        "residual_mean": 3.426,
+        "residual_p95": 11,
+        "edge_density": 14.771
+      },
+      "reasons": []
+    },
+    {
+      "path": "projects/all-came-last-show/08_generation/jobs/final_frames_v2/outputs/SH18_attempt_001.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 1.734,
+        "residual_mean": 2.47,
+        "residual_p95": 7,
+        "edge_density": 10.993
+      },
+      "reasons": []
+    }
+  ]
+}

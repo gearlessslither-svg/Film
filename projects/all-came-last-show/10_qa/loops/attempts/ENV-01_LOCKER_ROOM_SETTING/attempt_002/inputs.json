@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "asset_id": "ENV-01_LOCKER_ROOM_SETTING",
+  "stage": "environment_lookdev",
+  "attempt": "attempt_002",
+  "created_at": "2026-07-17T03:55:04+08:00",
+  "sources": [
+    "04_lookdev/references/DFT_DIRECTOR_REFERENCE.png"
+  ],
+  "output_path": "08_generation/jobs/environment_settings_v1/outputs/ENV-01_LOCKER_ROOM_SETTING_attempt_002.png",
+  "notes": "Style-patched pilot"
+}

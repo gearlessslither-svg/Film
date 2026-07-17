@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "asset_id": "ENV-02_WHITEBOX",
+  "attempt": "attempt_001",
+  "reviewed_at": "2026-07-17T04:04:33+08:00",
+  "verdict": "hold",
+  "failure_labels": [],
+  "scores": {},
+  "feedback": "Master and overhead geography pass; hall reverse is readable after camera repair. Awaiting director approval.",
+  "must_change": [],
+  "may_keep": [
+    "Offset stage, hall opening, balcony, table, square circulation and chimney direction."
+  ]
+}

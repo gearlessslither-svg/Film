@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "asset_id": "SH24",
+  "stage": "keyframe_image",
+  "attempt": "attempt_002",
+  "created_at": "2026-07-17T12:13:54+08:00",
+  "sources": [
+    "08_generation/jobs/final_frames_v2/outputs/SH24_attempt_001.png"
+  ],
+  "output_path": "08_generation/jobs/final_frames_v2/outputs/SH24_attempt_002.png",
+  "notes": "targeted background-crowd removal; retain exact six foreground species/actions"
+}

@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "asset_id": "FIN-005",
+  "attempt": "attempt_001",
+  "reviewed_at": "2026-07-17T05:06:14+08:00",
+  "verdict": "reject",
+  "failure_labels": [
+    "narrative_state_mismatch"
+  ],
+  "scores": {},
+  "feedback": "Elephant drifted back into dark-blue workwear during private-dress phase.",
+  "must_change": [
+    "Correct the declared narrative state before continuing."
+  ],
+  "may_keep": []
+}

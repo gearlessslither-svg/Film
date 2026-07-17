@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "asset_id": "SH29",
+  "attempt": "attempt_001",
+  "reviewed_at": "2026-07-17T11:23:08+08:00",
+  "verdict": "reject",
+  "failure_labels": [
+    "continuity_drift",
+    "unlocked_smoke"
+  ],
+  "scores": {},
+  "feedback": "Hard semantic reject despite surface QA pass: a visible smoke plume appears from a chimney through the hall door, contradicting the stopped factory/no-smoke continuity. Cast diversity, action staggering, anatomy, scale and composition may be kept.",
+  "must_change": [
+    "Remove every smoke/steam plume from the background chimney; keep all characters, poses, hall geometry, crop, lighting and DFT style unchanged."
+  ],
+  "may_keep": [
+    "eight distinct species, staggered reactions, hall scale, composition, lighting"
+  ]
+}

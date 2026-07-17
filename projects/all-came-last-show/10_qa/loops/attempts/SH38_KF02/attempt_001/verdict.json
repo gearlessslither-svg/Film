@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "asset_id": "SH38_KF02",
+  "attempt": "attempt_001",
+  "reviewed_at": "2026-07-17T12:22:39+08:00",
+  "verdict": "pass",
+  "failure_labels": [],
+  "scores": {
+    "prompt_compliance": "4.8",
+    "style_coherence": "4.9",
+    "anatomy_integrity": "4.7",
+    "scale_plausibility": "4.8"
+  },
+  "feedback": "Internal hard-QA pass: same single photo-locked Abai, same left-back town/right-front dawn landscape and low axis; four-limb feline run is readable, crown/saddle/dark tail remain continuous, cat stays far below architecture scale, and no duplicate/ghost trail or style drift appears. Director aesthetic review pending.",
+  "must_change": [],
+  "may_keep": [
+    "Keep the same-screen-direction rightward run, town-left/dawn-right continuity, natural low gait, fixed fur markings and restrained ending light."
+  ]
+}

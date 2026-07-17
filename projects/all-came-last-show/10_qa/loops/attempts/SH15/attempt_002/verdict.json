@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "asset_id": "SH15",
+  "attempt": "attempt_002",
+  "reviewed_at": "2026-07-17T11:20:04+08:00",
+  "verdict": "reject",
+  "failure_labels": [
+    "identity_redraw"
+  ],
+  "scores": {},
+  "feedback": "帽子已移除且群像保持，但阿白照片锁的非对称灰黑天然头顶斑一并被抹去，身份锚缺失。",
+  "must_change": [
+    "只在阿白头顶恢复照片对应的非对称烟灰至炭灰天然毛斑；不得形成帽檐，其他像素级内容保持。"
+  ],
+  "may_keep": [
+    "六物种、错峰动作、门洞尺度、唯一琴、构图和DFT风格"
+  ]
+}

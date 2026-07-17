@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "asset_id": "SH30",
+  "stage": "final_keyframe",
+  "attempt": "attempt_002",
+  "created_at": "2026-07-17T11:33:52+08:00",
+  "sources": [
+    "08_generation/jobs/final_frames_v2/outputs/SH30_attempt_001.png",
+    "04_lookdev/references/DFT_DIRECTOR_REFERENCE.png"
+  ],
+  "output_path": "08_generation/jobs/final_frames_v2/outputs/SH30_attempt_002.png",
+  "notes": "SH30 attempt 002: targeted repair removes lineup and forbidden industrial stacks while preserving the stage insert."
+}

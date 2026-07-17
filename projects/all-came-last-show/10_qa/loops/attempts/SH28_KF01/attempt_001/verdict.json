@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "asset_id": "SH28_KF01",
+  "attempt": "attempt_001",
+  "reviewed_at": "2026-07-17T11:16:09+08:00",
+  "verdict": "pass",
+  "failure_labels": [],
+  "scores": {
+    "prompt_compliance": "4.8",
+    "style_coherence": "4.5",
+    "scale_plausibility": "4.8"
+  },
+  "feedback": "Internal hard-QA pass: intact smoke-free 45–60m chimney reads above real town floors; fixed telephoto axis, safe left fall space, non-apocalyptic DFT treatment, surface QA pass. Center crop/resample normalized to 1915x821 without changing story content. Director review pending.",
+  "must_change": [],
+  "may_keep": [
+    "chimney scale, no-smoke state, skyline, negative space, string-light foreground"
+  ]
+}

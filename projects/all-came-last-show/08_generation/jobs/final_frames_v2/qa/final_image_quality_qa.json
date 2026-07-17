@@ -1,0 +1,725 @@
+{
+  "profile": "general",
+  "count": 42,
+  "counts": {
+    "pass": 42,
+    "warn": 0,
+    "fail": 0
+  },
+  "records": [
+    {
+      "path": "projects/all-came-last-show/08_generation/jobs/final_frames_v2/selected/SH01.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 1.987,
+        "residual_mean": 3.16,
+        "residual_p95": 10,
+        "edge_density": 13.453
+      },
+      "reasons": []
+    },
+    {
+      "path": "projects/all-came-last-show/08_generation/jobs/final_frames_v2/selected/SH02.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 2.199,
+        "residual_mean": 3.974,
+        "residual_p95": 12,
+        "edge_density": 16.759
+      },
+      "reasons": []
+    },
+    {
+      "path": "projects/all-came-last-show/08_generation/jobs/final_frames_v2/selected/SH03.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 2.173,
+        "residual_mean": 4.267,
+        "residual_p95": 13,
+        "edge_density": 18.197
+      },
+      "reasons": []
+    },
+    {
+      "path": "projects/all-came-last-show/08_generation/jobs/final_frames_v2/selected/SH04.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 2.001,
+        "residual_mean": 3.681,
+        "residual_p95": 11,
+        "edge_density": 15.781
+      },
+      "reasons": []
+    },
+    {
+      "path": "projects/all-came-last-show/08_generation/jobs/final_frames_v2/selected/SH05.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 2.232,
+        "residual_mean": 3.827,
+        "residual_p95": 11,
+        "edge_density": 16.221
+      },
+      "reasons": []
+    },
+    {
+      "path": "projects/all-came-last-show/08_generation/jobs/final_frames_v2/selected/SH06.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 1.512,
+        "residual_mean": 2.343,
+        "residual_p95": 8,
+        "edge_density": 10.038
+      },
+      "reasons": []
+    },
+    {
+      "path": "projects/all-came-last-show/08_generation/jobs/final_frames_v2/selected/SH07.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 1.332,
+        "residual_mean": 2.541,
+        "residual_p95": 9,
+        "edge_density": 11.0
+      },
+      "reasons": []
+    },
+    {
+      "path": "projects/all-came-last-show/08_generation/jobs/final_frames_v2/selected/SH08.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 2.274,
+        "residual_mean": 3.964,
+        "residual_p95": 11,
+        "edge_density": 16.703
+      },
+      "reasons": []
+    },
+    {
+      "path": "projects/all-came-last-show/08_generation/jobs/final_frames_v2/selected/SH09.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 1.527,
+        "residual_mean": 2.72,
+        "residual_p95": 10,
+        "edge_density": 11.907
+      },
+      "reasons": []
+    },
+    {
+      "path": "projects/all-came-last-show/08_generation/jobs/final_frames_v2/selected/SH10.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 1.943,
+        "residual_mean": 3.426,
+        "residual_p95": 11,
+        "edge_density": 14.771
+      },
+      "reasons": []
+    },
+    {
+      "path": "projects/all-came-last-show/08_generation/jobs/final_frames_v2/selected/SH11.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 1.317,
+        "residual_mean": 2.445,
+        "residual_p95": 9,
+        "edge_density": 10.41
+      },
+      "reasons": []
+    },
+    {
+      "path": "projects/all-came-last-show/08_generation/jobs/final_frames_v2/selected/SH12.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 1.632,
+        "residual_mean": 2.904,
+        "residual_p95": 10,
+        "edge_density": 12.417
+      },
+      "reasons": []
+    },
+    {
+      "path": "projects/all-came-last-show/08_generation/jobs/final_frames_v2/selected/SH13.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 2.175,
+        "residual_mean": 3.962,
+        "residual_p95": 13,
+        "edge_density": 16.451
+      },
+      "reasons": []
+    },
+    {
+      "path": "projects/all-came-last-show/08_generation/jobs/final_frames_v2/selected/SH14.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 1.736,
+        "residual_mean": 3.453,
+        "residual_p95": 11,
+        "edge_density": 14.744
+      },
+      "reasons": []
+    },
+    {
+      "path": "projects/all-came-last-show/08_generation/jobs/final_frames_v2/selected/SH15.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 1.451,
+        "residual_mean": 2.822,
+        "residual_p95": 10,
+        "edge_density": 11.943
+      },
+      "reasons": []
+    },
+    {
+      "path": "projects/all-came-last-show/08_generation/jobs/final_frames_v2/selected/SH16.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 1.905,
+        "residual_mean": 2.839,
+        "residual_p95": 8,
+        "edge_density": 12.201
+      },
+      "reasons": []
+    },
+    {
+      "path": "projects/all-came-last-show/08_generation/jobs/final_frames_v2/selected/SH17.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 2.051,
+        "residual_mean": 3.584,
+        "residual_p95": 11,
+        "edge_density": 15.397
+      },
+      "reasons": []
+    },
+    {
+      "path": "projects/all-came-last-show/08_generation/jobs/final_frames_v2/selected/SH18.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 1.734,
+        "residual_mean": 2.47,
+        "residual_p95": 7,
+        "edge_density": 10.993
+      },
+      "reasons": []
+    },
+    {
+      "path": "projects/all-came-last-show/08_generation/jobs/final_frames_v2/selected/SH19.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 2.293,
+        "residual_mean": 3.663,
+        "residual_p95": 10,
+        "edge_density": 15.543
+      },
+      "reasons": []
+    },
+    {
+      "path": "projects/all-came-last-show/08_generation/jobs/final_frames_v2/selected/SH20.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 1.597,
+        "residual_mean": 2.658,
+        "residual_p95": 9,
+        "edge_density": 11.289
+      },
+      "reasons": []
+    },
+    {
+      "path": "projects/all-came-last-show/08_generation/jobs/final_frames_v2/selected/SH21.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 1.924,
+        "residual_mean": 3.123,
+        "residual_p95": 10,
+        "edge_density": 13.218
+      },
+      "reasons": []
+    },
+    {
+      "path": "projects/all-came-last-show/08_generation/jobs/final_frames_v2/selected/SH22.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 1.182,
+        "residual_mean": 2.012,
+        "residual_p95": 8,
+        "edge_density": 8.49
+      },
+      "reasons": []
+    },
+    {
+      "path": "projects/all-came-last-show/08_generation/jobs/final_frames_v2/selected/SH23.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 1.709,
+        "residual_mean": 2.819,
+        "residual_p95": 9,
+        "edge_density": 12.495
+      },
+      "reasons": []
+    },
+    {
+      "path": "projects/all-came-last-show/08_generation/jobs/final_frames_v2/selected/SH24.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 1.592,
+        "residual_mean": 2.554,
+        "residual_p95": 9,
+        "edge_density": 10.931
+      },
+      "reasons": []
+    },
+    {
+      "path": "projects/all-came-last-show/08_generation/jobs/final_frames_v2/selected/SH25.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 1.793,
+        "residual_mean": 2.763,
+        "residual_p95": 8,
+        "edge_density": 12.249
+      },
+      "reasons": []
+    },
+    {
+      "path": "projects/all-came-last-show/08_generation/jobs/final_frames_v2/selected/SH26.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 2.172,
+        "residual_mean": 3.883,
+        "residual_p95": 11,
+        "edge_density": 16.484
+      },
+      "reasons": []
+    },
+    {
+      "path": "projects/all-came-last-show/08_generation/jobs/final_frames_v2/selected/SH27.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 2.07,
+        "residual_mean": 3.542,
+        "residual_p95": 11,
+        "edge_density": 14.982
+      },
+      "reasons": []
+    },
+    {
+      "path": "projects/all-came-last-show/08_generation/jobs/final_frames_v2/selected/SH28_KF01.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 1.755,
+        "residual_mean": 2.345,
+        "residual_p95": 7,
+        "edge_density": 10.091
+      },
+      "reasons": []
+    },
+    {
+      "path": "projects/all-came-last-show/08_generation/jobs/final_frames_v2/selected/SH28_KF02.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 1.686,
+        "residual_mean": 2.236,
+        "residual_p95": 6,
+        "edge_density": 9.707
+      },
+      "reasons": []
+    },
+    {
+      "path": "projects/all-came-last-show/08_generation/jobs/final_frames_v2/selected/SH29.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 1.891,
+        "residual_mean": 3.412,
+        "residual_p95": 11,
+        "edge_density": 14.5
+      },
+      "reasons": []
+    },
+    {
+      "path": "projects/all-came-last-show/08_generation/jobs/final_frames_v2/selected/SH30.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 1.084,
+        "residual_mean": 1.756,
+        "residual_p95": 7,
+        "edge_density": 8.0
+      },
+      "reasons": []
+    },
+    {
+      "path": "projects/all-came-last-show/08_generation/jobs/final_frames_v2/selected/SH31.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 1.968,
+        "residual_mean": 3.097,
+        "residual_p95": 9,
+        "edge_density": 13.608
+      },
+      "reasons": []
+    },
+    {
+      "path": "projects/all-came-last-show/08_generation/jobs/final_frames_v2/selected/SH32.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 1.593,
+        "residual_mean": 2.913,
+        "residual_p95": 10,
+        "edge_density": 12.606
+      },
+      "reasons": []
+    },
+    {
+      "path": "projects/all-came-last-show/08_generation/jobs/final_frames_v2/selected/SH33.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 1.81,
+        "residual_mean": 3.298,
+        "residual_p95": 11,
+        "edge_density": 14.17
+      },
+      "reasons": []
+    },
+    {
+      "path": "projects/all-came-last-show/08_generation/jobs/final_frames_v2/selected/SH34.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 1.503,
+        "residual_mean": 2.534,
+        "residual_p95": 10,
+        "edge_density": 10.961
+      },
+      "reasons": []
+    },
+    {
+      "path": "projects/all-came-last-show/08_generation/jobs/final_frames_v2/selected/SH35_KF01.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 1.306,
+        "residual_mean": 2.075,
+        "residual_p95": 8,
+        "edge_density": 9.239
+      },
+      "reasons": []
+    },
+    {
+      "path": "projects/all-came-last-show/08_generation/jobs/final_frames_v2/selected/SH35_KF02.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 1.257,
+        "residual_mean": 1.91,
+        "residual_p95": 7,
+        "edge_density": 8.758
+      },
+      "reasons": []
+    },
+    {
+      "path": "projects/all-came-last-show/08_generation/jobs/final_frames_v2/selected/SH35_KF03.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 1.509,
+        "residual_mean": 2.176,
+        "residual_p95": 8,
+        "edge_density": 9.798
+      },
+      "reasons": []
+    },
+    {
+      "path": "projects/all-came-last-show/08_generation/jobs/final_frames_v2/selected/SH36.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 1.744,
+        "residual_mean": 2.792,
+        "residual_p95": 9,
+        "edge_density": 12.199
+      },
+      "reasons": []
+    },
+    {
+      "path": "projects/all-came-last-show/08_generation/jobs/final_frames_v2/selected/SH37.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 2.82,
+        "residual_mean": 4.185,
+        "residual_p95": 11,
+        "edge_density": 17.008
+      },
+      "reasons": []
+    },
+    {
+      "path": "projects/all-came-last-show/08_generation/jobs/final_frames_v2/selected/SH38_KF01.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 1.952,
+        "residual_mean": 3.486,
+        "residual_p95": 11,
+        "edge_density": 14.684
+      },
+      "reasons": []
+    },
+    {
+      "path": "projects/all-came-last-show/08_generation/jobs/final_frames_v2/selected/SH38_KF02.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 1.926,
+        "residual_mean": 3.539,
+        "residual_p95": 11,
+        "edge_density": 14.902
+      },
+      "reasons": []
+    }
+  ]
+}

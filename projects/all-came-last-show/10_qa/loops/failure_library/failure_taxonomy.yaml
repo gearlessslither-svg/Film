@@ -1,0 +1,12 @@
+schema_version: 1
+failure_labels:
+  style_mixing_fail: "Uncontrolled mix of visual languages."
+  face_collapse: "Primary face or expression breaks."
+  dirty_frame: "Too many small props, symbols, confetti, or noisy micro-detail."
+  subject_lost: "Main subject is not the first read."
+  overprompted_object_parade: "Dream/style language became literal object clutter."
+  noisy_microdetail: "Random speckle, fake detail, crunchy edges, or muddy texture."
+  text_artifact: "Pseudo-text, logos, or sign clutter distracts."
+  anatomy_fail: "Hands, limbs, or pose break unintentionally."
+  continuity_drift: "Identity, costume, prop, or setting lock drifts."
+  prompt_drift: "Output follows decorative words but misses the actual shot goal."

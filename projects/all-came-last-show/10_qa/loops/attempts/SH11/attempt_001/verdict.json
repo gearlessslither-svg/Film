@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "asset_id": "SH11",
+  "attempt": "attempt_001",
+  "reviewed_at": "2026-07-17T11:22:10+08:00",
+  "verdict": "reject",
+  "failure_labels": [
+    "narrative_state_mismatch",
+    "prompt_drift"
+  ],
+  "scores": {},
+  "feedback": "硬失败：羊与背景兔仍穿完整带口袋深蓝工装，同时又折叠/挂另一件工装，违背第一次脱衣阶段和本镜角色状态。折叠抓握、凳钩尺度、两种动作可保留。",
+  "must_change": [
+    "前景只保留从画外进入的灰白羊毛前臂与蹄爪，不出现仍穿工装的躯干；背景兔改为灰米毛头/前臂与朴素奶白内层，不再穿深蓝工装；深蓝只存在于凳上折衣与钩上衣物。"
+  ],
+  "may_keep": [
+    "折叠工装、长凳、低钩、景深和前后两种动作构图。"
+  ]
+}

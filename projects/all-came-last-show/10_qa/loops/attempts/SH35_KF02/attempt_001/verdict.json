@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "asset_id": "SH35_KF02",
+  "attempt": "attempt_001",
+  "reviewed_at": "2026-07-17T12:03:53+08:00",
+  "verdict": "pass",
+  "failure_labels": [],
+  "scores": {
+    "prompt_compliance": "4.8",
+    "style_coherence": "4.8",
+    "anatomy_integrity": "4.7",
+    "scale_plausibility": "4.6"
+  },
+  "feedback": "Internal hard-QA pass: same room/cast and prop positions continue from KF01; eight species occupy clearly staggered transition phases, Abai has asymmetric one-paw contact, rabbit is most advanced, and no horror/magic/exposed anatomy/extra limbs appears. Clothing and case remain separate. Director aesthetic review pending.",
+  "must_change": [],
+  "may_keep": [
+    "Keep exact camera axis, cast screen positions, calm expressions, differentiated completion levels, and clean floor contacts into KF03."
+  ]
+}

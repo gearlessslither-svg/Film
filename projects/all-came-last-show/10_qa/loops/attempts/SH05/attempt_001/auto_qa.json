@@ -1,0 +1,28 @@
+{
+  "profile": "cinematic",
+  "count": 1,
+  "counts": {
+    "pass": 1,
+    "warn": 0,
+    "fail": 0
+  },
+  "records": [
+    {
+      "path": "/Users/jaychoupp/Story/Film/projects/all-came-last-show/08_generation/jobs/final_frames_v2/outputs/SH05_attempt_001.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "cinematic",
+      "size": [
+        1914,
+        822
+      ],
+      "metrics": {
+        "flat_noise": 2.276,
+        "residual_mean": 4.122,
+        "residual_p95": 12,
+        "edge_density": 17.812
+      },
+      "reasons": []
+    }
+  ]
+}

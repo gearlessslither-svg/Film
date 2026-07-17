@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "asset_id": "SH15",
+  "stage": "keyframe_image",
+  "attempt": "attempt_004",
+  "created_at": "2026-07-17T11:27:02+08:00",
+  "sources": [
+    "08_generation/jobs/final_frames_v2/outputs/SH15_attempt_003.png"
+  ],
+  "output_path": "08_generation/jobs/final_frames_v2/outputs/SH15_attempt_004.png",
+  "notes": "targeted identity edit: natural asymmetric crown fur patch only"
+}

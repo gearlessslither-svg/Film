@@ -1,0 +1,9 @@
+[NARRATIVE_TIME] 107–110s, second transformation anchor.
+[CHARACTER_STATE_LOCK] Same identities transitioning from biped to natural species anatomy; no clothing or props remain on bodies.
+[STATE_TRANSITION_RULE] Authorized transformation moment: center of gravity moves forward, forelimbs touch floor and become weight-bearing front legs; species identity stays stable. No pain or horror.
+[SUBJECT_AND_ACTION] Show only three clear transition subjects in the foreground: Abai, fox and donkey. They are NOT fully quadruped yet. Their rear legs remain bent and weight-bearing beneath a still slightly upright torso, while both forelimbs have just reached the floor for the first time. Hips remain higher than shoulders; heads and species identities are calm and stable; the pose reads as a controlled move from kneeling/crouching biped to four-point support. Elephant, sheep, dog, rabbit and bear appear only as small separated background silhouettes performing the same halfway lowering action. The image feels like animals remembering an older posture, not mutating.
+[CAMERA_AND_COMPOSITION] 21:9 low side-on medium-wide at bench height, 40mm feel. Abai, fox and donkey have three non-overlapping profiles across the lower half; every rear leg and forelimb contact is readable. Clothing piles and closed instrument cases remain safely on benches behind.
+[LIGHTING] Soft cold window light outlines backs; warm practical nearly extinguished.
+[SPACE_AND_CONTINUITY] Exact ENV-01 geometry; every body has readable limb ownership and support.
+[INTENTIONAL_REALITY_EXCEPTIONS] Approved gentle anatomical transition only, bounded to this frame.
+[NEGATIVE] no fully quadruped final pose, no ordinary animals simply walking or stretching, no body horror, no bones breaking, no melting, no human hands, no extra limbs, no fused bodies, no centaurs, no half-clothed forms, no pain, blood or panic, no extra cats.

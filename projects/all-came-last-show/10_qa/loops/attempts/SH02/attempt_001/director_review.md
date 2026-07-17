@@ -1,0 +1,17 @@
+# Director Review
+
+Verdict: `pass`
+Reviewed at: 2026-07-17T11:39:23+08:00
+
+## Failure Labels
+
+
+## Feedback
+
+硬门禁通过：厂房与门洞明显大于角色且象可自然通过；狗、羊、兔、象、驴五物种唯一，分处跨门、静候、抬爪打卡、出门、沿坡接近五相位；抓牌、脚地接触与肢体成立；DFT哑光旧纸、低噪且无猫群。
+
+## Must Change
+
+
+## May Keep
+

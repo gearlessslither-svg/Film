@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "asset_id": "FIN-001",
+  "attempt": "attempt_001",
+  "reviewed_at": "2026-07-17T10:30:55+08:00",
+  "verdict": "hold",
+  "failure_labels": [],
+  "scores": {},
+  "feedback": "保留为3–5秒城镇地理锚点；不得继续承担10秒段落。",
+  "must_change": [
+    "导演确认V2覆盖后再决定是否直接复用。"
+  ],
+  "may_keep": []
+}

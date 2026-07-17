@@ -1,0 +1,37 @@
+schema_version: 1
+score_scale: "0-5"
+hard_fail_threshold: 2
+pass_threshold: 4
+hard_categories:
+  subject_prominence: "Main subject reads first at thumbnail size."
+  style_coherence: "One stable visual language; no uncontrolled style collage."
+  face_anatomy_integrity: "Primary faces, hands, limbs, and expressions are intentional."
+  composition_cleanliness: "Large foreground/midground/background shapes are readable."
+  detail_density_control: "Ornament is concentrated on hero subject and one support device."
+  prompt_compliance: "Requested subject, setting, action, and constraints remain intact."
+  character_environment_scale: "Characters, doors, windows, storeys, furniture and props share a credible ground plane and usable scale unless a declared exception applies."
+  species_identity_and_diversity: "The declared multi-species cast remains distinct; no all-cat drift, duplicate principal or recolored-species substitution."
+  group_action_diversity: "Readable ensemble members have distinct action verbs, phases, gaze, hand/paw use and body rhythm unless synchronization is explicitly scripted."
+  narrative_state_continuity: "Wardrobe, biped/quadruped anatomy, props and transformation phase match the shot's ledger binding."
+failure_labels:
+  - style_mixing_fail
+  - face_collapse
+  - dirty_frame
+  - subject_lost
+  - overprompted_object_parade
+  - noisy_microdetail
+  - text_artifact
+  - anatomy_fail
+  - continuity_drift
+  - prompt_drift
+  - runtime_undercoverage
+  - missing_intermediate_beat
+  - character_environment_scale_mismatch
+  - architectural_scale_collapse
+  - perspective_scale_inconsistency
+  - species_diversity_lost
+  - duplicate_character_instance
+  - group_action_repetition
+  - performance_clone
+  - narrative_state_mismatch
+  - transformation_phase_flattening

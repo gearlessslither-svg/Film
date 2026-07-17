@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "asset_id": "ABAI_DUAL_STATE_SHEET_V1",
+  "attempt": "attempt_002",
+  "reviewed_at": "2026-07-17T02:51:20+08:00",
+  "verdict": "pass",
+  "failure_labels": [],
+  "scores": {},
+  "feedback": "导演确认：很好。批准照片身份版阿白双状态人设板，记入正式人设版。",
+  "must_change": [
+    "无；后续所有阿白镜头必须使用本照片身份版与已批准双状态板。"
+  ],
+  "may_keep": []
+}

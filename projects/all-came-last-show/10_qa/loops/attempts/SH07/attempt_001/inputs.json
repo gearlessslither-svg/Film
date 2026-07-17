@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "asset_id": "SH07",
+  "stage": "keyframe_image",
+  "attempt": "attempt_001",
+  "created_at": "2026-07-17T11:16:02+08:00",
+  "sources": [
+    "08_generation/jobs/final_frames_v2/selected/SH06.png"
+  ],
+  "output_path": "08_generation/jobs/final_frames_v2/outputs/SH07_attempt_001.png",
+  "notes": "V2 final batch; exact SH07 image prompt; SH06 machine continuity + DFT style; 21:9."
+}

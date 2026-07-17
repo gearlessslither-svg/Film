@@ -1,0 +1,28 @@
+{
+  "profile": "cinematic",
+  "count": 1,
+  "counts": {
+    "pass": 1,
+    "warn": 0,
+    "fail": 0
+  },
+  "records": [
+    {
+      "path": "/Users/jaychoupp/Story/Film/projects/all-came-last-show/08_generation/jobs/final_frames_v1/selected/FIN-011B.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "cinematic",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 1.739,
+        "residual_mean": 3.101,
+        "residual_p95": 10,
+        "edge_density": 13.483
+      },
+      "reasons": []
+    }
+  ]
+}

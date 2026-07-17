@@ -1,0 +1,87 @@
+{
+  "schema_version": "1.0",
+  "project": "all-came-last-show",
+  "active_branch": "DFT_MASTERPLAN_WILD_RETURN_V4",
+  "character_states": {
+    "FACTORY_BIPED_UNIFORM": {
+      "timeline_phase": "FACTORY_LAST_SHIFT",
+      "body": "两足拟人动物工人，物种身份稳定",
+      "wardrobe": "统一深蓝旧棉工装，按物种体型放码",
+      "forbidden": ["华服", "四足野生状态", "乐器密集陈列", "工装外的人类裸肤"]
+    },
+    "FIRST_WARDROBE_TRANSITION": {
+      "timeline_phase": "FIRST_WARDROBE_TRANSITION",
+      "body": "身体始终两足，仅脱下、折叠或挂起工装",
+      "wardrobe": "工装移除进行中，私人华服尚未完整穿好",
+      "forbidden": ["四足化", "身体恐怖", "华服已完整表演态", "乐器与身体融合"]
+    },
+    "PERFORMANCE_BIPED_PRIVATE_DRESS": {
+      "timeline_phase": "AFTER_CHANGING_BEFORE_FAREWELL",
+      "body": "保持同一个体的两足拟人结构",
+      "wardrobe": "私人华服；SH34 可处于普通脱衣过程但身体仍两足",
+      "forbidden": ["工装混穿", "提前四足", "重复物种", "人手"]
+    },
+    "UNCLAD_BIPED_BOUNDARY": {
+      "timeline_phase": "TRANSFORMATION_BOUNDARY_START",
+      "body": "无衣但完整两足，毛皮覆盖，尚未四足承重",
+      "wardrobe": "华服与闭合琴盒已和身体分离",
+      "forbidden": ["四足落地", "残留衣袖", "人类裸肤或性征", "恐怖变形"]
+    },
+    "WILD_RETURN_TRANSITION_KF02": {
+      "timeline_phase": "TRANSFORMATION_IN_PROGRESS",
+      "body": "仅存在于SH35连续镜头的错峰重心前移过渡相位",
+      "wardrobe": "无衣；衣物与乐器留在环境中且不参与转换",
+      "forbidden": ["痛苦", "身体恐怖", "所有物种同相位", "额外肢体", "衣物融入身体"]
+    },
+    "WILD_RETURN_QUADRUPED": {
+      "timeline_phase": "AFTER_FINAL_PERFORMANCE_WILD_DEPARTURE",
+      "body": "完全真实物种四足结构、步态与承重关系",
+      "wardrobe": "无衣、无鞋、无乐器、无可抓握人形前爪",
+      "forbidden": ["重新直立", "拟人肩线", "残留服装", "物种漂移", "照片写实媒介"]
+    }
+  },
+  "shot_bindings": {
+    "SH01": {"timeline_phase": "FACTORY_LAST_SHIFT", "character_state_ids": ["FACTORY_BIPED_UNIFORM"], "state_transition_rule": "保持两足工装；本镜不进入华服或四足。"},
+    "SH02": {"timeline_phase": "FACTORY_LAST_SHIFT", "character_state_ids": ["FACTORY_BIPED_UNIFORM"], "state_transition_rule": "保持两足工装；本镜不进入华服或四足。"},
+    "SH03": {"timeline_phase": "FACTORY_LAST_SHIFT", "character_state_ids": ["FACTORY_BIPED_UNIFORM"], "state_transition_rule": "保持两足工装；本镜不进入华服或四足。"},
+    "SH04": {"timeline_phase": "FACTORY_LAST_SHIFT", "character_state_ids": ["FACTORY_BIPED_UNIFORM"], "state_transition_rule": "保持两足工装；本镜不进入华服或四足。"},
+    "SH05": {"timeline_phase": "FACTORY_LAST_SHIFT", "character_state_ids": ["FACTORY_BIPED_UNIFORM"], "state_transition_rule": "保持两足工装；本镜不进入华服或四足。"},
+    "SH06": {"timeline_phase": "FACTORY_LAST_SHIFT", "character_state_ids": ["FACTORY_BIPED_UNIFORM"], "state_transition_rule": "保持两足工装；本镜不进入华服或四足。"},
+    "SH07": {"timeline_phase": "FACTORY_LAST_SHIFT", "character_state_ids": ["FACTORY_BIPED_UNIFORM"], "state_transition_rule": "保持两足工装；本镜不进入华服或四足。"},
+    "SH08": {"timeline_phase": "FACTORY_LAST_SHIFT", "character_state_ids": ["FACTORY_BIPED_UNIFORM"], "state_transition_rule": "保持两足工装；本镜不进入华服或四足。"},
+    "SH09": {"timeline_phase": "FACTORY_LAST_SHIFT", "character_state_ids": ["FACTORY_BIPED_UNIFORM"], "state_transition_rule": "保持两足工装；本镜不进入华服或四足。"},
+    "SH10": {"timeline_phase": "FIRST_WARDROBE_TRANSITION", "character_state_ids": ["FIRST_WARDROBE_TRANSITION"], "state_transition_rule": "仅第一次服装转换；身体保持两足；野生转换禁止提前。"},
+    "SH11": {"timeline_phase": "FIRST_WARDROBE_TRANSITION", "character_state_ids": ["FIRST_WARDROBE_TRANSITION"], "state_transition_rule": "仅第一次服装转换；身体保持两足；野生转换禁止提前。"},
+    "SH12": {"timeline_phase": "FIRST_WARDROBE_TRANSITION", "character_state_ids": ["FIRST_WARDROBE_TRANSITION"], "state_transition_rule": "仅第一次服装转换；身体保持两足；野生转换禁止提前。"},
+    "SH13": {"timeline_phase": "AFTER_CHANGING_BEFORE_FAREWELL", "character_state_ids": ["PERFORMANCE_BIPED_PRIVATE_DRESS"], "state_transition_rule": "保持两足私人华服状态；最终四足转换仅在SH35。"},
+    "SH14": {"timeline_phase": "AFTER_CHANGING_BEFORE_FAREWELL", "character_state_ids": ["PERFORMANCE_BIPED_PRIVATE_DRESS"], "state_transition_rule": "保持两足私人华服状态；最终四足转换仅在SH35。"},
+    "SH15": {"timeline_phase": "AFTER_CHANGING_BEFORE_FAREWELL", "character_state_ids": ["PERFORMANCE_BIPED_PRIVATE_DRESS"], "state_transition_rule": "保持两足私人华服状态；最终四足转换仅在SH35。"},
+    "SH16": {"timeline_phase": "AFTER_CHANGING_BEFORE_FAREWELL", "character_state_ids": ["PERFORMANCE_BIPED_PRIVATE_DRESS"], "state_transition_rule": "保持两足私人华服状态；最终四足转换仅在SH35。"},
+    "SH17": {"timeline_phase": "AFTER_CHANGING_BEFORE_FAREWELL", "character_state_ids": ["PERFORMANCE_BIPED_PRIVATE_DRESS"], "state_transition_rule": "保持两足私人华服状态；最终四足转换仅在SH35。"},
+    "SH18": {"timeline_phase": "AFTER_CHANGING_BEFORE_FAREWELL", "character_state_ids": ["PERFORMANCE_BIPED_PRIVATE_DRESS"], "state_transition_rule": "保持两足私人华服状态；最终四足转换仅在SH35。"},
+    "SH19": {"timeline_phase": "AFTER_CHANGING_BEFORE_FAREWELL", "character_state_ids": ["PERFORMANCE_BIPED_PRIVATE_DRESS"], "state_transition_rule": "保持两足私人华服状态；最终四足转换仅在SH35。"},
+    "SH20": {"timeline_phase": "AFTER_CHANGING_BEFORE_FAREWELL", "character_state_ids": ["PERFORMANCE_BIPED_PRIVATE_DRESS"], "state_transition_rule": "保持两足私人华服状态；最终四足转换仅在SH35。"},
+    "SH21": {"timeline_phase": "AFTER_CHANGING_BEFORE_FAREWELL", "character_state_ids": ["PERFORMANCE_BIPED_PRIVATE_DRESS"], "state_transition_rule": "保持两足私人华服状态；最终四足转换仅在SH35。"},
+    "SH22": {"timeline_phase": "AFTER_CHANGING_BEFORE_FAREWELL", "character_state_ids": ["PERFORMANCE_BIPED_PRIVATE_DRESS"], "state_transition_rule": "保持两足私人华服状态；最终四足转换仅在SH35。"},
+    "SH23": {"timeline_phase": "AFTER_CHANGING_BEFORE_FAREWELL", "character_state_ids": ["PERFORMANCE_BIPED_PRIVATE_DRESS"], "state_transition_rule": "保持两足私人华服状态；最终四足转换仅在SH35。"},
+    "SH24": {"timeline_phase": "AFTER_CHANGING_BEFORE_FAREWELL", "character_state_ids": ["PERFORMANCE_BIPED_PRIVATE_DRESS"], "state_transition_rule": "保持两足私人华服状态；最终四足转换仅在SH35。"},
+    "SH25": {"timeline_phase": "AFTER_CHANGING_BEFORE_FAREWELL", "character_state_ids": ["PERFORMANCE_BIPED_PRIVATE_DRESS"], "state_transition_rule": "保持两足私人华服状态；最终四足转换仅在SH35。"},
+    "SH26": {"timeline_phase": "AFTER_CHANGING_BEFORE_FAREWELL", "character_state_ids": ["PERFORMANCE_BIPED_PRIVATE_DRESS"], "state_transition_rule": "保持两足私人华服状态；最终四足转换仅在SH35。"},
+    "SH27": {"timeline_phase": "AFTER_CHANGING_BEFORE_FAREWELL", "character_state_ids": ["PERFORMANCE_BIPED_PRIVATE_DRESS"], "state_transition_rule": "保持两足私人华服状态；最终四足转换仅在SH35。"},
+    "SH28_KF01": {"timeline_phase": "AFTER_CHANGING_BEFORE_FAREWELL", "character_state_ids": ["PERFORMANCE_BIPED_PRIVATE_DRESS"], "state_transition_rule": "仅烟囱开始变化；动物仍保持两足私人华服状态。"},
+    "SH28_KF02": {"timeline_phase": "AFTER_CHANGING_BEFORE_FAREWELL", "character_state_ids": ["PERFORMANCE_BIPED_PRIVATE_DRESS"], "state_transition_rule": "仅烟囱继续受控倾斜；动物仍保持两足私人华服状态。"},
+    "SH29": {"timeline_phase": "AFTER_CHANGING_BEFORE_FAREWELL", "character_state_ids": ["PERFORMANCE_BIPED_PRIVATE_DRESS"], "state_transition_rule": "保持两足私人华服状态；群体反应必须错峰。"},
+    "SH30": {"timeline_phase": "AFTER_CHANGING_BEFORE_FAREWELL", "character_state_ids": ["PERFORMANCE_BIPED_PRIVATE_DRESS"], "state_transition_rule": "人物退为远景静影；身体状态不转换。"},
+    "SH31": {"timeline_phase": "AFTER_CHANGING_BEFORE_FAREWELL", "character_state_ids": ["PERFORMANCE_BIPED_PRIVATE_DRESS"], "state_transition_rule": "保持两足华服返回；不得提前脱衣或四足化。"},
+    "SH32": {"timeline_phase": "AFTER_CHANGING_BEFORE_FAREWELL", "character_state_ids": ["PERFORMANCE_BIPED_PRIVATE_DRESS"], "state_transition_rule": "保持两足华服进入更衣室；不得提前四足化。"},
+    "SH33": {"timeline_phase": "AFTER_CHANGING_BEFORE_FAREWELL", "character_state_ids": ["PERFORMANCE_BIPED_PRIVATE_DRESS"], "state_transition_rule": "空钩揭示时全体仍为两足华服；只允许错峰微反应。"},
+    "SH34": {"timeline_phase": "AFTER_CHANGING_BEFORE_FAREWELL", "character_state_ids": ["PERFORMANCE_BIPED_PRIVATE_DRESS"], "state_transition_rule": "只脱下华服，身体仍保持两足；四足转换尚未开始。"},
+    "SH35_KF01": {"timeline_phase": "TRANSFORMATION_BOUNDARY_START", "character_state_ids": ["UNCLAD_BIPED_BOUNDARY"], "state_transition_rule": "华服已脱，身体仍两足；只从此锚点单向进入KF02。"},
+    "SH35_KF02": {"timeline_phase": "TRANSFORMATION_IN_PROGRESS", "character_state_ids": ["WILD_RETURN_TRANSITION_KF02"], "state_transition_rule": "仅SH35内部从两足向四足错峰推进；无痛苦、无恐怖。"},
+    "SH35_KF03": {"timeline_phase": "AFTER_FINAL_PERFORMANCE_WILD_DEPARTURE", "character_state_ids": ["WILD_RETURN_QUADRUPED"], "state_transition_rule": "转换已经完成；四足无衣状态从此不可逆。"},
+    "SH36": {"timeline_phase": "AFTER_FINAL_PERFORMANCE_WILD_DEPARTURE", "character_state_ids": ["WILD_RETURN_QUADRUPED"], "state_transition_rule": "保持完整四足无衣状态；禁止重新直立。"},
+    "SH37": {"timeline_phase": "AFTER_FINAL_PERFORMANCE_WILD_DEPARTURE", "character_state_ids": ["WILD_RETURN_QUADRUPED"], "state_transition_rule": "保持完整四足无衣状态；按物种分路离镇。"},
+    "SH38_KF01": {"timeline_phase": "AFTER_FINAL_PERFORMANCE_WILD_DEPARTURE", "character_state_ids": ["WILD_RETURN_QUADRUPED"], "state_transition_rule": "阿白保持照片身份的四足无衣状态；只回望，不重新直立。"},
+    "SH38_KF02": {"timeline_phase": "AFTER_FINAL_PERFORMANCE_WILD_DEPARTURE", "character_state_ids": ["WILD_RETURN_QUADRUPED"], "state_transition_rule": "阿白保持照片身份的四足无衣状态并跑向晨光。"}
+  }
+}

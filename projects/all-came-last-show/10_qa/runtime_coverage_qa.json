@@ -1,0 +1,285 @@
+{
+  "ok": true,
+  "runtime_seconds": 120,
+  "shot_count": 38,
+  "keyframe_count": 42,
+  "mean_shot_duration_seconds": 3.158,
+  "median_shot_duration_seconds": 3.0,
+  "longest_shot_seconds": 5,
+  "longest_single_source_hold_seconds": 4,
+  "multi_keyframe_shots": {
+    "SH28": 2,
+    "SH35": 3,
+    "SH38": 2
+  },
+  "require_images": true,
+  "errors": [],
+  "shots": [
+    {
+      "shot_id": "SH01",
+      "start": 0,
+      "end": 4,
+      "duration": 4,
+      "sources": 1
+    },
+    {
+      "shot_id": "SH02",
+      "start": 4,
+      "end": 7,
+      "duration": 3,
+      "sources": 1
+    },
+    {
+      "shot_id": "SH03",
+      "start": 7,
+      "end": 10,
+      "duration": 3,
+      "sources": 1
+    },
+    {
+      "shot_id": "SH04",
+      "start": 10,
+      "end": 13,
+      "duration": 3,
+      "sources": 1
+    },
+    {
+      "shot_id": "SH05",
+      "start": 13,
+      "end": 16,
+      "duration": 3,
+      "sources": 1
+    },
+    {
+      "shot_id": "SH06",
+      "start": 16,
+      "end": 19,
+      "duration": 3,
+      "sources": 1
+    },
+    {
+      "shot_id": "SH07",
+      "start": 19,
+      "end": 21,
+      "duration": 2,
+      "sources": 1
+    },
+    {
+      "shot_id": "SH08",
+      "start": 21,
+      "end": 24,
+      "duration": 3,
+      "sources": 1
+    },
+    {
+      "shot_id": "SH09",
+      "start": 24,
+      "end": 28,
+      "duration": 4,
+      "sources": 1
+    },
+    {
+      "shot_id": "SH10",
+      "start": 28,
+      "end": 32,
+      "duration": 4,
+      "sources": 1
+    },
+    {
+      "shot_id": "SH11",
+      "start": 32,
+      "end": 35,
+      "duration": 3,
+      "sources": 1
+    },
+    {
+      "shot_id": "SH12",
+      "start": 35,
+      "end": 38,
+      "duration": 3,
+      "sources": 1
+    },
+    {
+      "shot_id": "SH13",
+      "start": 38,
+      "end": 42,
+      "duration": 4,
+      "sources": 1
+    },
+    {
+      "shot_id": "SH14",
+      "start": 42,
+      "end": 46,
+      "duration": 4,
+      "sources": 1
+    },
+    {
+      "shot_id": "SH15",
+      "start": 46,
+      "end": 50,
+      "duration": 4,
+      "sources": 1
+    },
+    {
+      "shot_id": "SH16",
+      "start": 50,
+      "end": 53,
+      "duration": 3,
+      "sources": 1
+    },
+    {
+      "shot_id": "SH17",
+      "start": 53,
+      "end": 56,
+      "duration": 3,
+      "sources": 1
+    },
+    {
+      "shot_id": "SH18",
+      "start": 56,
+      "end": 59,
+      "duration": 3,
+      "sources": 1
+    },
+    {
+      "shot_id": "SH19",
+      "start": 59,
+      "end": 62,
+      "duration": 3,
+      "sources": 1
+    },
+    {
+      "shot_id": "SH20",
+      "start": 62,
+      "end": 66,
+      "duration": 4,
+      "sources": 1
+    },
+    {
+      "shot_id": "SH21",
+      "start": 66,
+      "end": 69,
+      "duration": 3,
+      "sources": 1
+    },
+    {
+      "shot_id": "SH22",
+      "start": 69,
+      "end": 72,
+      "duration": 3,
+      "sources": 1
+    },
+    {
+      "shot_id": "SH23",
+      "start": 72,
+      "end": 75,
+      "duration": 3,
+      "sources": 1
+    },
+    {
+      "shot_id": "SH24",
+      "start": 75,
+      "end": 78,
+      "duration": 3,
+      "sources": 1
+    },
+    {
+      "shot_id": "SH25",
+      "start": 78,
+      "end": 81,
+      "duration": 3,
+      "sources": 1
+    },
+    {
+      "shot_id": "SH26",
+      "start": 81,
+      "end": 84,
+      "duration": 3,
+      "sources": 1
+    },
+    {
+      "shot_id": "SH27",
+      "start": 84,
+      "end": 88,
+      "duration": 4,
+      "sources": 1
+    },
+    {
+      "shot_id": "SH28",
+      "start": 88,
+      "end": 91,
+      "duration": 3,
+      "sources": 2
+    },
+    {
+      "shot_id": "SH29",
+      "start": 91,
+      "end": 94,
+      "duration": 3,
+      "sources": 1
+    },
+    {
+      "shot_id": "SH30",
+      "start": 94,
+      "end": 96,
+      "duration": 2,
+      "sources": 1
+    },
+    {
+      "shot_id": "SH31",
+      "start": 96,
+      "end": 99,
+      "duration": 3,
+      "sources": 1
+    },
+    {
+      "shot_id": "SH32",
+      "start": 99,
+      "end": 102,
+      "duration": 3,
+      "sources": 1
+    },
+    {
+      "shot_id": "SH33",
+      "start": 102,
+      "end": 104,
+      "duration": 2,
+      "sources": 1
+    },
+    {
+      "shot_id": "SH34",
+      "start": 104,
+      "end": 107,
+      "duration": 3,
+      "sources": 1
+    },
+    {
+      "shot_id": "SH35",
+      "start": 107,
+      "end": 112,
+      "duration": 5,
+      "sources": 3
+    },
+    {
+      "shot_id": "SH36",
+      "start": 112,
+      "end": 115,
+      "duration": 3,
+      "sources": 1
+    },
+    {
+      "shot_id": "SH37",
+      "start": 115,
+      "end": 117,
+      "duration": 2,
+      "sources": 1
+    },
+    {
+      "shot_id": "SH38",
+      "start": 117,
+      "end": 120,
+      "duration": 3,
+      "sources": 2
+    }
+  ]
+}

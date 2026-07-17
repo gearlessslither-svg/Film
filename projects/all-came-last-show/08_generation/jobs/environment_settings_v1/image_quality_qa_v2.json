@@ -1,0 +1,45 @@
+{
+  "profile": "general",
+  "count": 2,
+  "counts": {
+    "pass": 2,
+    "warn": 0,
+    "fail": 0
+  },
+  "records": [
+    {
+      "path": "/Users/jaychoupp/Story/Film/projects/all-came-last-show/08_generation/jobs/environment_settings_v1/outputs/ENV-01_LOCKER_ROOM_SETTING_attempt_001.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1914,
+        822
+      ],
+      "metrics": {
+        "flat_noise": 1.32,
+        "residual_mean": 2.287,
+        "residual_p95": 8,
+        "edge_density": 10.409
+      },
+      "reasons": []
+    },
+    {
+      "path": "/Users/jaychoupp/Story/Film/projects/all-came-last-show/08_generation/jobs/environment_settings_v1/outputs/ENV-01_LOCKER_ROOM_SETTING_attempt_002.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 1.621,
+        "residual_mean": 2.9,
+        "residual_p95": 10,
+        "edge_density": 12.682
+      },
+      "reasons": []
+    }
+  ]
+}

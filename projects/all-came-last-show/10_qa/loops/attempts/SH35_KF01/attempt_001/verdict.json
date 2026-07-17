@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "asset_id": "SH35_KF01",
+  "attempt": "attempt_001",
+  "reviewed_at": "2026-07-17T11:57:12+08:00",
+  "verdict": "reject",
+  "failure_labels": [
+    "group_action_repetition",
+    "state_transition_mismatch",
+    "transformation_phase_flattening"
+  ],
+  "scores": {
+    "prompt_compliance": "3.5",
+    "style_coherence": "4.7",
+    "anatomy_integrity": "4.7",
+    "scale_plausibility": "4.7"
+  },
+  "feedback": "Hard semantic failure at the boundary anchor: the unclad biped state is safe and anatomically clean, but elephant trunk does not reach the floor, donkey knees remain straight, and sheep/Abai preparation phases read too neutral, weakening the required eight distinct transition starts.",
+  "must_change": [
+    "Preserve exact room, eight identities, clothes/case, biped anatomy and style. Make only the pre-transition poses clearer: Abai forward lean, sheep one shoulder lower, donkey knees visibly pre-bent, elephant trunk tip touching floor while forelimbs remain off-floor; keep rabbit crouch, bear bench support, dog lowered paw and fox one-side reach."
+  ],
+  "may_keep": []
+}

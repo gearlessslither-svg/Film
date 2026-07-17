@@ -1,0 +1,78 @@
+schema_version: 1
+project: "all-came-last-show"
+active_branch: "DFT_MASTERPLAN_WILD_RETURN_V4"
+score_scale: "0-5"
+hard_fail_threshold: 2
+pass_threshold: 4
+
+delivery_contract:
+  runtime_seconds: 120
+  edit_shot_count: 38
+  keyframe_count: 42
+  frame_width: 1915
+  frame_height: 821
+  frame_format: "PNG"
+  aspect_ratio: "21:9"
+  multi_keyframe_shots:
+    SH28: 2
+    SH35: 3
+    SH38: 2
+  director_approval_status: "pending until explicit final aesthetic acceptance"
+
+hard_categories:
+  exact_frame_inventory: "The selected directory, manifest and ZIP contain exactly the declared 42 chronological item IDs with no missing, extra or duplicate image; all files are readable 1915x821 PNGs."
+  runtime_and_edit_coverage: "runtime_coverage_qa passes with require_images=true, exactly 120 seconds, 38 edit shots, 42 keyframes, no gap or overlap, and credible source loads."
+  prompt_and_state_contracts: "The idea board contains 42 ordered rows; prompt_contract_qa and narrative_state_contract_qa pass; every row maps to its image prompt, video prompt, timeline_phase, character_state_ids and selected image."
+  style_and_semantic_qa: "All 42 selected frames pass surface QA and final semantic QA for DFT style, identity, anatomy, species diversity, narrative state, scale, group action, props and text artifacts. Automatic surface pass never replaces the recorded semantic and human review."
+  scale_and_group_regression: "The chronological contact sheet proves that architecture remains larger and usable, town views include real-scale perspective, the ensemble remains multi-species, and dressing, reaction, performance and transformation beats do not collapse into cloned gestures."
+  multi_keyframe_packaging: "SH28, SH35 and SH38 retain every individual source frame plus a separate, correctly ordered and visibly numbered storyboard sheet whose panel count matches the ledger."
+  active_branch_purity: "Every packaged image, prompt, board row and ledger belongs to DFT_MASTERPLAN_WILD_RETURN_V4. Superseded V1 endings, all-cat crowd images, smoke/apocalypse drift and rejected identity/state attempts remain evidence only and never enter active references or images/."
+  reproducibility_and_source_mapping: "The package includes the three prompt files, idea_board, story, state/scale/group ledgers, QA reports and loop ledger; the Git project retains approved identity/style references and all attempt evidence needed to resume or repair."
+  manifest_hash_integrity: "manifest.json records path, dimensions, byte size and SHA-256 for all 42 images; every manifest hash matches both the selected source and ZIP member."
+  archive_integrity: "The ZIP opens without CRC errors, contains no duplicate entry, includes exactly 42 images and all declared prompts/storyboards/QA files, and PACKAGE_SHA256.txt matches the final archive bytes."
+  contact_sheet_review: "ALL_42_CHRONOLOGICAL_CONTACT_SHEET.png exists and a final human review records scale, species, action, composition, state and DFT-style findings before delivery is called internally complete."
+  approval_truthfulness: "selected means internally passing production candidate, not director-approved. README, manifest, board and handoff keep director approval pending until the user explicitly accepts the final set."
+  git_delivery: "The intended project files and LFS assets are staged without unrelated workspace changes, committed, pushed to the declared remote branch and verified against the remote commit hash."
+
+required_files:
+  - "08_generation/jobs/final_frames_v2/selected/<42 exact PNG files>"
+  - "08_generation/jobs/final_frames_v2/storyboard_sheets/ALL_42_CHRONOLOGICAL_CONTACT_SHEET.png"
+  - "08_generation/jobs/final_frames_v2/storyboard_sheets/SH28_NUMBERED_SHEET.png"
+  - "08_generation/jobs/final_frames_v2/storyboard_sheets/SH35_NUMBERED_SHEET.png"
+  - "08_generation/jobs/final_frames_v2/storyboard_sheets/SH38_NUMBERED_SHEET.png"
+  - "07_shots/prompt_packages_v2/SH01_SH13_PRODUCTION_PROMPTS.md"
+  - "07_shots/prompt_packages_v2/SH14_SH26_PRODUCTION_PROMPTS.md"
+  - "07_shots/prompt_packages_v2/SH27_SH38_PRODUCTION_PROMPTS.md"
+  - "03_story/idea_board/idea_board.json"
+  - "10_qa/runtime_coverage_qa.json"
+  - "10_qa/prompt_contract_qa.json"
+  - "10_qa/narrative_state_contract_qa.json"
+  - "08_generation/jobs/final_frames_v2/qa/final_image_quality_qa.json"
+  - "08_generation/jobs/final_frames_v2/qa/final_semantic_qa.json"
+  - "10_qa/FINAL_42_CONTACT_SHEET_REVIEW.md"
+  - "11_delivery/all_came_last_show_v2/manifest.json"
+  - "11_delivery/all_came_last_show_v2/ALL_CAME_2MIN_COMPLETE_V2.zip"
+  - "11_delivery/all_came_last_show_v2/PACKAGE_SHA256.txt"
+
+failure_labels:
+  - frame_inventory_mismatch
+  - image_dimension_mismatch
+  - runtime_undercoverage
+  - missing_intermediate_beat
+  - prompt_contract_fail
+  - narrative_state_contract_fail
+  - surface_qa_fail
+  - semantic_qa_fail
+  - character_environment_scale_mismatch
+  - species_diversity_lost
+  - group_action_repetition
+  - multi_keyframe_sheet_missing
+  - active_branch_leak
+  - source_mapping_missing
+  - manifest_hash_mismatch
+  - archive_crc_fail
+  - package_checksum_mismatch
+  - contact_sheet_review_missing
+  - approval_status_overclaim
+  - git_delivery_unverified
+

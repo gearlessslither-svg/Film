@@ -1,6 +1,6 @@
 {
   "schema_version": "aigc_film_project_memory_v1",
-  "updated_at": "2026-07-12",
+  "updated_at": "2026-07-17",
   "conflict_policy": {
     "resolution_order": [
       "current director feedback",
@@ -534,6 +534,86 @@
       "hard_rule": false,
       "reliability": "high",
       "review_after": "2026-10-12"
+    },
+    {
+      "lesson_id": "global-story-outline-then-setting-list-camera-coverage",
+      "project_slug": "all-came-last-show",
+      "created_at": "2026-07-17",
+      "workflow_area": "story_to_lookdev_planning",
+      "original_claim": "确定故事大纲后，先出设定清单；关键场景不能只盯着工厂和舞蹈大厅，还要按剧本覆盖街道、城镇、远景和俯瞰镜头。",
+      "review_verdict": "accepted_as_global_hard_rule_after_director_confirmation_and_scoping",
+      "claim": "After a narrative outline is approved, a story-driven AIGC film must obtain director approval for a compact, script-grounded image plan before formal generation. Character designs remain separate identity/state assets, while environment requirements should normally be resolved inside final production frames instead of becoming a large set of polished setting images.",
+      "recommendation": "Give character sheets, final frames and genuinely necessary support assets stable IDs, story phase, purpose, aspect ratio, camera family, dependencies and approval status. Use a dedicated environment design plus whitebox only when a recurring scene has multiple camera positions and physical layout affects blocking or continuity. For brief transitions and montage locations, lock style, era, weather and narrative landmarks without demanding exact physical-space continuity. Include wide/extreme-wide, aerial/high-angle, street and town coverage when the script requires it, approve efficient batches before generation, and reapprove affected items after story or design changes.",
+      "evidence": [
+        "In all-came-last-show, early lookdev concentrated on the factory and central-square performance while missing town streets, overall geography, distant views and high-angle coverage.",
+        "The director explicitly requested a setting-list-first workflow after the story outline and required all added locations and camera coverage to remain grounded in the script.",
+        "The director then rejected a 26-image setting inventory as inefficient, clarified that character sheets still require separate design, and limited environment setting plus whitebox work to recurring multi-angle spaces whose physical layout matters; fast transitions require style continuity rather than exact spatial continuity."
+      ],
+      "scope": "All story-driven AIGC Film projects after outline approval and before environment lookdev, key-scene design or keyframe batch generation.",
+      "status": "active",
+      "hard_rule": true,
+      "reliability": "high",
+      "review_after": "2026-10-17"
+    },
+    {
+      "lesson_id": "global-character-environment-scale-plausibility-gate",
+      "project_slug": "all-came-last-show",
+      "created_at": "2026-07-17",
+      "workflow_area": "image_generation_scale_and_perspective",
+      "original_claim": "有时候动物和建筑物的比例不对，房子比动物还小；这类比例问题除了特殊设计，都需要放入硬规则质检。",
+      "review_verdict": "accepted_as_global_hard_rule_with_declared-intentional-exception",
+      "claim": "Character, architecture, furniture, vehicle and prop scale must remain physically plausible and perspective-consistent unless a precise intentional scale distortion is approved for the affected shots.",
+      "recommendation": "Create a scale ledger before generation, bind every shot to character/species and architectural anchors, and inspect ground plane, doorway/window/stair/furniture/prop relationships plus perspective shrinkage. Reject accidental miniature buildings, unusable doors, toy-like props and contradictory character sizes; a stylized fairy-tale look alone does not waive scale plausibility.",
+      "evidence": [
+        "The director identified frames in the all-came-last-show 15-image anchor set where buildings read smaller than the animals.",
+        "The existing surface QA reported 15/15 pass, showing that clarity and technical-image checks did not detect world-scale collapse.",
+        "The director explicitly required scale plausibility to become a reusable hard-rule QA gate, with exceptions only for intentional design."
+      ],
+      "scope": "All AIGC Film image prompts, setting images, storyboards, keyframes, image-to-video sources and final image QA across realistic and stylized projects.",
+      "status": "active",
+      "hard_rule": true,
+      "reliability": "high",
+      "review_after": "2027-01-17"
+    },
+    {
+      "lesson_id": "global-runtime-coverage-keyframe-sufficiency-gate",
+      "project_slug": "all-came-last-show",
+      "created_at": "2026-07-17",
+      "workflow_area": "storyboard_runtime_coverage",
+      "original_claim": "2分钟版本缺少很多中间关键分镜，仅仅靠这几张图无法支撑完整成片。",
+      "review_verdict": "accepted_as_global-hard-rule-with-dynamic-shot-count",
+      "claim": "A visual-anchor set is not a complete production storyboard until a gap-free runtime ledger proves that every action, reaction, spatial bridge and state boundary has sufficient shots or ordered keyframes.",
+      "recommendation": "Before image generation, cover the exact runtime with shot IDs, timecodes, duration rationale, visible beat, transition, state and source-image load. Derive shot/keyframe count dynamically rather than imposing one quota. Reject sparse anchors, overloaded hero frames, unsupported long holds and missing intermediate actions even when individual images pass aesthetic QA.",
+      "evidence": [
+        "The all-came-last-show V1 production plan assigned only 15 images across 120 seconds, with several single frames expected to cover 8-15 seconds and multiple sequential actions.",
+        "The director judged the set unable to support the two-minute edit because key intermediate shots were absent.",
+        "The failure was not visible in per-image QA; it only appeared when reviewing narrative coverage across the full runtime."
+      ],
+      "scope": "All story-driven AIGC Film storyboard, keyframe, image-to-video planning, generation and delivery workflows with a declared runtime.",
+      "status": "active",
+      "hard_rule": true,
+      "reliability": "high",
+      "review_after": "2027-01-17"
+    },
+    {
+      "lesson_id": "global-group-performance-action-diversity-gate",
+      "project_slug": "all-came-last-show",
+      "created_at": "2026-07-17",
+      "workflow_area": "group_blocking_and_performance",
+      "original_claim": "一张图内好多动作过于雷同，比如穿衣服、脱衣服时所有角色都在做同一个动作。",
+      "review_verdict": "accepted_as_global-hard-rule-with-explicit-synchronization-exception",
+      "claim": "A group shot must assign differentiated actions, timing phases, gaze and body rhythm to its readable characters; duplicated ensemble gestures fail unless synchronization is explicitly scripted.",
+      "recommendation": "Build a per-character group-action ledger before prompting. Distribute action verbs and phases across screen layers, include purposeful reactions and stillness, and break dressing, undressing, labor or celebration into different micro-actions. Reject copied poses, identical eye lines and uniform timing as group_action_repetition or performance_clone.",
+      "evidence": [
+        "Several all-came-last-show group frames represented dressing or undressing with the ensemble performing nearly the same gesture at the same time.",
+        "The director identified this as a visual and dramatic problem independent of composition and surface quality.",
+        "The story requires distinct animal personalities, so cloned blocking also weakens character differentiation."
+      ],
+      "scope": "All AIGC Film group shots, crowds, ensembles, labor, ritual, dressing/undressing, performance and transformation scenes.",
+      "status": "active",
+      "hard_rule": true,
+      "reliability": "high",
+      "review_after": "2027-01-17"
     }
   ]
 }

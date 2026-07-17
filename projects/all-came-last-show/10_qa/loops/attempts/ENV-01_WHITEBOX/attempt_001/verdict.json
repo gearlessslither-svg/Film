@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "asset_id": "ENV-01_WHITEBOX",
+  "attempt": "attempt_001",
+  "reviewed_at": "2026-07-17T04:04:33+08:00",
+  "verdict": "hold",
+  "failure_labels": [],
+  "scores": {},
+  "feedback": "Master, overhead and interior reverse views are readable; awaiting director approval.",
+  "must_change": [],
+  "may_keep": [
+    "Locker wall, twin benches, high windows, side exit."
+  ]
+}

@@ -1,0 +1,20 @@
+# Director Review
+
+Verdict: `hold`
+Reviewed at: 2026-07-17T10:24:56+08:00
+
+## Failure Labels
+
+- `director_review_pending`
+
+## Feedback
+
+内部覆盖核验：00:00–02:00无缺口；38镜42帧；烟囱、变形、结尾使用多锚点；尺度与群像动作账本已建立。等待导演确认颗粒度和旧图取舍后才能生成。
+
+## Must Change
+
+- 导演如调整镜头颗粒度、旧图复用或动作分工，先更新三份活动账本并重新审批。
+
+## May Keep
+
+- 现有四张KEEP只作为明确短镜头候选，未自动晋升为最终成片。

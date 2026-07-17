@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "asset_id": "ENV-02_SQUARE_DANCEHALL_SETTING",
+  "stage": "environment_lookdev",
+  "attempt": "attempt_001",
+  "created_at": "2026-07-17T04:04:09+08:00",
+  "sources": [
+    "04_lookdev/references/DFT_DIRECTOR_REFERENCE.png"
+  ],
+  "output_path": "08_generation/jobs/environment_settings_v1/outputs/ENV-02_SQUARE_DANCEHALL_SETTING_attempt_001.png",
+  "notes": "Approved-batch environment pilot"
+}

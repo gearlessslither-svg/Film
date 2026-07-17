@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "asset_id": "SH35_KF01",
+  "attempt": "attempt_002",
+  "reviewed_at": "2026-07-17T12:00:38+08:00",
+  "verdict": "pass",
+  "failure_labels": [],
+  "scores": {
+    "prompt_compliance": "4.8",
+    "style_coherence": "4.7",
+    "anatomy_integrity": "4.8",
+    "scale_plausibility": "4.7"
+  },
+  "feedback": "Internal hard-QA pass: exactly eight unique unclad fur-covered bipeds remain anatomically safe; Abai leans, rabbit crouches, bear supports on bench, elephant trunk alone touches floor, dog/fox paws stagger, sheep lowers one side, donkey pre-bends. Clothes and case stay separate; no horror or early quadruped. Director aesthetic review pending.",
+  "must_change": [],
+  "may_keep": [
+    "Keep this camera/room/cast layout as the exact SH35 continuity base and preserve all eight differentiated starting phases into KF02."
+  ]
+}

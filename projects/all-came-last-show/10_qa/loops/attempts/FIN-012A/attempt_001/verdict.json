@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "asset_id": "FIN-012A",
+  "attempt": "attempt_001",
+  "reviewed_at": "2026-07-17T10:30:56+08:00",
+  "verdict": "reject",
+  "failure_labels": [
+    "character_environment_scale_mismatch",
+    "architectural_scale_collapse",
+    "perspective_scale_inconsistency",
+    "duplicate_character_instance"
+  ],
+  "scores": {},
+  "feedback": "动物与镇缘整栋房屋接近或更大，纵深关系失效，另有重复狐狸。",
+  "must_change": [
+    "按SH37真实航拍尺度重出，动物成为小而可辨的运动点。"
+  ],
+  "may_keep": []
+}

@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "asset_id": "SH28_KF02",
+  "stage": "final_keyframe",
+  "attempt": "attempt_001",
+  "created_at": "2026-07-17T11:18:11+08:00",
+  "sources": [
+    "08_generation/jobs/final_frames_v2/selected/SH28_KF01.png"
+  ],
+  "output_path": "08_generation/jobs/final_frames_v2/outputs/SH28_KF02_attempt_001.png",
+  "notes": "SH28 anchor 02/02; same shot controlled left fall, intact chimney, root dust only"
+}

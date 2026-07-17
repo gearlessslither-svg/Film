@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "asset_id": "SH29",
+  "stage": "final_keyframe",
+  "attempt": "attempt_002",
+  "created_at": "2026-07-17T11:26:03+08:00",
+  "sources": [
+    "08_generation/jobs/final_frames_v2/outputs/SH29_attempt_001.png"
+  ],
+  "output_path": "08_generation/jobs/final_frames_v2/outputs/SH29_attempt_002.png",
+  "notes": "attempt 002 targeted semantic patch: remove all background chimney smoke, preserve cast/blocking"
+}

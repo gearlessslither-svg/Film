@@ -1,0 +1,270 @@
+{
+  "profile": "general",
+  "count": 15,
+  "counts": {
+    "pass": 15,
+    "warn": 0,
+    "fail": 0
+  },
+  "records": [
+    {
+      "path": "/Users/jaychoupp/Story/Film/projects/all-came-last-show/08_generation/jobs/final_frames_v1/selected/FIN-001.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 1.987,
+        "residual_mean": 3.16,
+        "residual_p95": 10,
+        "edge_density": 13.453
+      },
+      "reasons": []
+    },
+    {
+      "path": "/Users/jaychoupp/Story/Film/projects/all-came-last-show/08_generation/jobs/final_frames_v1/selected/FIN-002.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 2.44,
+        "residual_mean": 3.834,
+        "residual_p95": 11,
+        "edge_density": 16.195
+      },
+      "reasons": []
+    },
+    {
+      "path": "/Users/jaychoupp/Story/Film/projects/all-came-last-show/08_generation/jobs/final_frames_v1/selected/FIN-003.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 1.512,
+        "residual_mean": 2.343,
+        "residual_p95": 8,
+        "edge_density": 10.038
+      },
+      "reasons": []
+    },
+    {
+      "path": "/Users/jaychoupp/Story/Film/projects/all-came-last-show/08_generation/jobs/final_frames_v1/selected/FIN-004.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 1.85,
+        "residual_mean": 3.871,
+        "residual_p95": 14,
+        "edge_density": 16.286
+      },
+      "reasons": [
+        "high-frequency residual p95 elevated (14)"
+      ]
+    },
+    {
+      "path": "/Users/jaychoupp/Story/Film/projects/all-came-last-show/08_generation/jobs/final_frames_v1/selected/FIN-005.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 1.913,
+        "residual_mean": 3.865,
+        "residual_p95": 14,
+        "edge_density": 16.116
+      },
+      "reasons": [
+        "high-frequency residual p95 elevated (14)"
+      ]
+    },
+    {
+      "path": "/Users/jaychoupp/Story/Film/projects/all-came-last-show/08_generation/jobs/final_frames_v1/selected/FIN-006.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 1.913,
+        "residual_mean": 3.184,
+        "residual_p95": 10,
+        "edge_density": 13.639
+      },
+      "reasons": []
+    },
+    {
+      "path": "/Users/jaychoupp/Story/Film/projects/all-came-last-show/08_generation/jobs/final_frames_v1/selected/FIN-007.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 2.585,
+        "residual_mean": 4.462,
+        "residual_p95": 13,
+        "edge_density": 18.632
+      },
+      "reasons": []
+    },
+    {
+      "path": "/Users/jaychoupp/Story/Film/projects/all-came-last-show/08_generation/jobs/final_frames_v1/selected/FIN-008.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 1.674,
+        "residual_mean": 3.022,
+        "residual_p95": 10,
+        "edge_density": 12.866
+      },
+      "reasons": []
+    },
+    {
+      "path": "/Users/jaychoupp/Story/Film/projects/all-came-last-show/08_generation/jobs/final_frames_v1/selected/FIN-009.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 1.662,
+        "residual_mean": 2.6,
+        "residual_p95": 8,
+        "edge_density": 11.29
+      },
+      "reasons": []
+    },
+    {
+      "path": "/Users/jaychoupp/Story/Film/projects/all-came-last-show/08_generation/jobs/final_frames_v1/selected/FIN-010.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 1.586,
+        "residual_mean": 3.029,
+        "residual_p95": 10,
+        "edge_density": 13.012
+      },
+      "reasons": []
+    },
+    {
+      "path": "/Users/jaychoupp/Story/Film/projects/all-came-last-show/08_generation/jobs/final_frames_v1/selected/FIN-011A.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 1.824,
+        "residual_mean": 3.737,
+        "residual_p95": 13,
+        "edge_density": 15.918
+      },
+      "reasons": []
+    },
+    {
+      "path": "/Users/jaychoupp/Story/Film/projects/all-came-last-show/08_generation/jobs/final_frames_v1/selected/FIN-011B.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 1.739,
+        "residual_mean": 3.101,
+        "residual_p95": 10,
+        "edge_density": 13.483
+      },
+      "reasons": []
+    },
+    {
+      "path": "/Users/jaychoupp/Story/Film/projects/all-came-last-show/08_generation/jobs/final_frames_v1/selected/FIN-011C.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 1.838,
+        "residual_mean": 3.2,
+        "residual_p95": 10,
+        "edge_density": 13.847
+      },
+      "reasons": []
+    },
+    {
+      "path": "/Users/jaychoupp/Story/Film/projects/all-came-last-show/08_generation/jobs/final_frames_v1/selected/FIN-012A.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 2.324,
+        "residual_mean": 3.75,
+        "residual_p95": 10,
+        "edge_density": 15.827
+      },
+      "reasons": []
+    },
+    {
+      "path": "/Users/jaychoupp/Story/Film/projects/all-came-last-show/08_generation/jobs/final_frames_v1/selected/FIN-012B.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 1.952,
+        "residual_mean": 3.486,
+        "residual_p95": 11,
+        "edge_density": 14.684
+      },
+      "reasons": []
+    }
+  ]
+}

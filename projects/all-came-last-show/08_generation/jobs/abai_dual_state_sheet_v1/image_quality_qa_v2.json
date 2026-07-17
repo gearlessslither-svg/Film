@@ -1,0 +1,47 @@
+{
+  "profile": "general",
+  "count": 2,
+  "counts": {
+    "pass": 2,
+    "warn": 0,
+    "fail": 0
+  },
+  "records": [
+    {
+      "path": "/Users/jaychoupp/Story/Film/projects/all-came-last-show/08_generation/jobs/abai_dual_state_sheet_v1/outputs/ABAI_DUAL_STATE_SHEET_V1_attempt_001.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        941,
+        1672
+      ],
+      "metrics": {
+        "flat_noise": 1.909,
+        "residual_mean": 3.949,
+        "residual_p95": 14,
+        "edge_density": 16.802
+      },
+      "reasons": [
+        "high-frequency residual p95 elevated (14)"
+      ]
+    },
+    {
+      "path": "/Users/jaychoupp/Story/Film/projects/all-came-last-show/08_generation/jobs/abai_dual_state_sheet_v1/outputs/ABAI_DUAL_STATE_SHEET_V2_PHOTOLOCK_attempt_002.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        941,
+        1672
+      ],
+      "metrics": {
+        "flat_noise": 1.857,
+        "residual_mean": 3.655,
+        "residual_p95": 13,
+        "edge_density": 15.361
+      },
+      "reasons": []
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "asset_id": "SH28_KF02",
+  "attempt": "attempt_001",
+  "reviewed_at": "2026-07-17T11:18:22+08:00",
+  "verdict": "pass",
+  "failure_labels": [],
+  "scores": {
+    "prompt_compliance": "4.7",
+    "style_coherence": "4.6",
+    "scale_plausibility": "4.8"
+  },
+  "feedback": "Internal hard-QA pass: same telephoto town and scale family, intact chimney leans left toward empty industrial space, no smoke/fire/explosion or architectural collapse, low restrained base disturbance, surface QA pass. Director review pending.",
+  "must_change": [],
+  "may_keep": [
+    "left-fall direction, rigid chimney geometry, skyline continuity, non-apocalyptic mood"
+  ]
+}

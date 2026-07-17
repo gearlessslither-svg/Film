@@ -1,0 +1,223 @@
+{
+  "schema_version": 1,
+  "batch_id": "SH27_SH38",
+  "project": "all-came-last-show",
+  "branch": "DFT_MASTERPLAN_WILD_RETURN_V4",
+  "frame_spec": "1915x821 PNG, 21:9",
+  "hard_gate_policy": "Only frames passing scale, species/action diversity, anatomy/prop logic, narrative-state continuity, and DFT style/noise gates may be selected.",
+  "prompt_contract": {
+    "shots": 12,
+    "image_prompts": 16,
+    "video_prompts": 12,
+    "narrative_time_fields": 28,
+    "character_state_lock_fields": 28,
+    "state_transition_rule_fields": 28,
+    "timeline_intervals": 46,
+    "timeline_intervals_with_ascii_colon_performance_and_camera": 46,
+    "multi_keyframe_storyboard_sheets": [
+      "08_generation/jobs/final_frames_v2/storyboard_sheets/SH28_NUMBERED_SHEET.png",
+      "08_generation/jobs/final_frames_v2/storyboard_sheets/SH35_NUMBERED_SHEET.png",
+      "08_generation/jobs/final_frames_v2/storyboard_sheets/SH38_NUMBERED_SHEET.png"
+    ],
+    "validation": "pass"
+  },
+  "summary": {
+    "items": 16,
+    "pass": 16,
+    "fail": 0
+  },
+  "items": [
+    {
+      "item_id": "SH27",
+      "status": "pass",
+      "selected_output": "08_generation/jobs/final_frames_v2/selected/SH27.png",
+      "selected_attempt": "attempt_001",
+      "scale": "pass: hall volume, high door, stage and furniture remain functional around the elephant; no architecture is smaller than an animal.",
+      "species_action": "pass: seven unique readable species including the only Abai cat occupy distinct performance/reaction poses and depth layers, with no recolored-cat substitution or lineup.",
+      "anatomy_props": "pass: biped bodies, paws/hooves/tails and assigned performance props remain traceable; no duplicate main character or fused anatomy.",
+      "state_transition": "pass: all readable characters remain PERFORMANCE_BIPED_PRIVATE_DRESS; no undressing, quadruped posture or premature transformation.",
+      "style_noise": "pass: DFT old-paper tempera/matte-gouache, controlled warm/cool hall lighting, clear large shapes and cinematic automated clarity QA pass.",
+      "notes": "Selected attempt_001; exact 1915x821. Internal hard QA passed; director aesthetic review remains separate."
+    },
+    {
+      "item_id": "SH28_KF01",
+      "status": "pass",
+      "selected_output": "08_generation/jobs/final_frames_v2/selected/SH28_KF01.png",
+      "selected_attempt": "attempt_001",
+      "scale": "pass: the intact chimney reads approximately 45–60m against multiple real town floors and roofs; no miniature building relation.",
+      "species_action": "pass: no readable animal or duplicate character is introduced; the environmental beat remains isolated.",
+      "anatomy_props": "pass: upright chimney, roofline and town geometry are structurally coherent; no smoke, flame, debris or invented instrument prop.",
+      "state_transition": "pass: environmental start anchor only; no character-state change and no disaster state is introduced.",
+      "style_noise": "pass: clean DFT telephoto town silhouette, restrained old-paper texture and automated clarity QA pass.",
+      "notes": "Anchor 01 of SH28; exact 1915x821. Continuity checked against anchor 02 in SH28_NUMBERED_SHEET.png."
+    },
+    {
+      "item_id": "SH28_KF02",
+      "status": "pass",
+      "selected_output": "08_generation/jobs/final_frames_v2/selected/SH28_KF02.png",
+      "selected_attempt": "attempt_001",
+      "scale": "pass: same chimney/town scale as KF01; the leaning stack remains far taller than surrounding roofs and is not miniaturized.",
+      "species_action": "pass: no readable animal or duplicate character is introduced.",
+      "anatomy_props": "pass: the same intact chimney leans left about 25–35 degrees with coherent base and silhouette; no explosion, smoke, flame or duplicated structure.",
+      "state_transition": "pass: environmental motion only; same-axis 01→02 fall direction is continuous and contains no character-state event.",
+      "style_noise": "pass: same DFT palette, telephoto compression, lighting and low-noise surface as KF01; automated clarity QA pass.",
+      "notes": "Anchor 02 of SH28; exact 1915x821. Original panels were combined without regeneration in SH28_NUMBERED_SHEET.png."
+    },
+    {
+      "item_id": "SH29",
+      "status": "pass",
+      "selected_output": "08_generation/jobs/final_frames_v2/selected/SH29.png",
+      "selected_attempt": "attempt_002",
+      "scale": "pass: hall, doorway and visible town remain larger than all characters, including the elephant; perspective depth is credible.",
+      "species_action": "pass: exactly eight unique species show staggered reactions, different sightlines and different body phases rather than one cloned response.",
+      "anatomy_props": "pass: limbs and garment silhouettes remain readable; no prop duplication or fused doorway body.",
+      "state_transition": "pass: ensemble stays PERFORMANCE_BIPED_PRIVATE_DRESS and only reacts to the disturbance; no undressing or four-foot return.",
+      "style_noise": "pass: DFT matte hall/town continuity and automated clarity QA pass; forbidden chimney smoke was removed.",
+      "notes": "Selected attempt_002 after attempt_001 failed continuity for a visible smoke plume; exact 1915x821."
+    },
+    {
+      "item_id": "SH30",
+      "status": "pass",
+      "selected_output": "08_generation/jobs/final_frames_v2/selected/SH30.png",
+      "selected_attempt": "attempt_002",
+      "scale": "pass: practical stage lip, chair, bulbs, cable, hall door and six tiny retreating silhouettes retain believable use scale.",
+      "species_action": "pass: no readable foreground group; at most six tiny varied silhouettes are irregularly spaced and do not form a queue or duplicate a species identity.",
+      "anatomy_props": "pass: empty stage, curtain, bulbs and chair remain intact; no instrument, clothing pile, smoke, factory chimney or collapse appears.",
+      "state_transition": "pass: only physical lamp/cloth/dust settling is implied; distant figures remain unreadable biped private-dress silhouettes.",
+      "style_noise": "pass: restrained DFT object insert, clean negative space and automated clarity QA pass.",
+      "notes": "Selected attempt_002 after attempt_001 failed for a sixteen-figure lineup and forbidden industrial stacks; exact 1915x821."
+    },
+    {
+      "item_id": "SH31",
+      "status": "pass",
+      "selected_output": "08_generation/jobs/final_frames_v2/selected/SH31.png",
+      "selected_attempt": "attempt_002",
+      "scale": "pass: real one/two-storey houses, doors, lamps and street remain many times larger than the cast; elephant stays below eaves.",
+      "species_action": "pass: exactly one fox, rabbit, sheep, donkey, elephant, dog, bear and Abai; cross-step, shawl hold, suspender adjust, back-listen, case carry and delayed walk read as distinct beats.",
+      "anatomy_props": "pass: bear alone carries the single closed case while Abai remains empty-pawed; all limbs, tails and walking contacts are traceable.",
+      "state_transition": "pass: all eight remain PERFORMANCE_BIPED_PRIVATE_DRESS; Abai is last and no clothing loss or quadruped pose begins.",
+      "style_noise": "pass: DFT blue-grey/old-gold empty-street matte-gouache language and automated clarity QA pass.",
+      "notes": "Selected attempt_002 after attempt_001 flattened most actions into the same walk and misplaced Abai ahead of the bear; exact 1915x821."
+    },
+    {
+      "item_id": "SH32",
+      "status": "pass",
+      "selected_output": "08_generation/jobs/final_frames_v2/selected/SH32.png",
+      "selected_attempt": "attempt_001",
+      "scale": "pass: tall changing room, oversized doorway, cabinets, bench and hook wall remain functional; elephant is fully readable below the lintel.",
+      "species_action": "pass: exactly eight unique species occupy staggered entry phases—rabbit first, Abai behind, bear crossing, dog signaling, elephant outside and three different approach depths.",
+      "anatomy_props": "pass: one closed case remains with bear; doorway occlusion, paws/hooves and empty hooks/cabinets are coherent with no mirror clone.",
+      "state_transition": "pass: all characters remain PERFORMANCE_BIPED_PRIVATE_DRESS; only entry, stop and eye-line changes occur.",
+      "style_noise": "pass: DFT cool interior/weak warm-door continuity, clean large shapes and automated clarity QA pass.",
+      "notes": "Selected attempt_001; exact 1915x821."
+    },
+    {
+      "item_id": "SH33",
+      "status": "pass",
+      "selected_output": "08_generation/jobs/final_frames_v2/selected/SH33.png",
+      "selected_attempt": "attempt_002",
+      "scale": "pass: high hook wall, tall empty cabinets, badge slots and 0.50m bench remain usable; elephant has clearance and rabbit fits below the bench.",
+      "species_action": "pass: eight unique species perform eight distinct micro-reactions—Abai touches hook, rabbit checks under bench, dog sits, elephant opens cabinet, donkey checks slot, sheep grips shawl, bear lowers case and fox observes through one traceable reflection.",
+      "anatomy_props": "pass: exactly one closed case exists and belongs to bear's two-paw setdown; elephant is empty-handed; the mirror shows the same traceable fox, not an extra instance.",
+      "state_transition": "pass: all remain PERFORMANCE_BIPED_PRIVATE_DRESS; discovery reactions only, with no undressing or early four-foot anatomy.",
+      "style_noise": "pass: empty hooks/cabinets dominate a clean DFT matte interior; automated clarity QA pass and no pseudo-text.",
+      "notes": "Selected attempt_002 after the reused legacy frame failed group_action_repetition, performance_clone, prop_duplication and continuity_drift; exact 1915x821."
+    },
+    {
+      "item_id": "SH34",
+      "status": "pass",
+      "selected_output": "08_generation/jobs/final_frames_v2/selected/SH34.png",
+      "selected_attempt": "attempt_001",
+      "scale": "pass: room, bench, lockers, clothing sizes and elephant clearance remain coherent; furniture is not miniature.",
+      "species_action": "pass: eight unique species perform eight different clothing verbs and heights—sleeve, vest button, coat fold, scarf draw, shoe, boot, shawl and one-shoulder shirt.",
+      "anatomy_props": "pass: all bodies remain fur-covered bipeds with clean garment contact; clothing and the single closed case stay separate from anatomy.",
+      "state_transition": "pass: only clothing moves from bodies toward bench; no forelimb floor weight, quadruped structure or horror transformation begins.",
+      "style_noise": "pass: dignified DFT matte undressing tableau, restrained cloth/fur detail and automated clarity QA pass.",
+      "notes": "Selected attempt_001; exact 1915x821."
+    },
+    {
+      "item_id": "SH35_KF01",
+      "status": "pass",
+      "selected_output": "08_generation/jobs/final_frames_v2/selected/SH35_KF01.png",
+      "selected_attempt": "attempt_002",
+      "scale": "pass: unchanged room/furniture scale supports the upright elephant through rabbit hierarchy; all feet and bench contacts are credible.",
+      "species_action": "pass: eight species have eight distinct start phases—Abai lean, rabbit crouch, bear bench support, elephant trunk-tip contact, dog lowered paw, fox reach, sheep one-side drop and donkey pre-bend.",
+      "anatomy_props": "pass: all are fur-covered unclad bipeds; elephant trunk alone reaches floor, no front limb bears floor weight, and garments/case remain separate.",
+      "state_transition": "pass: exact UNCLAD_BIPED_BOUNDARY start; no quadruped anatomy or horror residue appears before the authorized transition interval.",
+      "style_noise": "pass: same DFT room/light as SH34, clean large fur silhouettes and automated clarity QA pass.",
+      "notes": "Anchor 01 of SH35; selected attempt_002 after attempt_001 failed transformation_phase_flattening. Exact 1915x821; continuity checked in SH35_NUMBERED_SHEET.png."
+    },
+    {
+      "item_id": "SH35_KF02",
+      "status": "pass",
+      "selected_output": "08_generation/jobs/final_frames_v2/selected/SH35_KF02.png",
+      "selected_attempt": "attempt_001",
+      "scale": "pass: body mass remains continuous while heights fall; elephant stays largest, rabbit most advanced/smallest, and room/furniture do not morph.",
+      "species_action": "pass: eight species occupy deliberately unequal completion phases with asymmetric contacts rather than a shared kneel or identical height.",
+      "anatomy_props": "pass: every body retains exactly four eventual limbs with clean ground contacts; no extra/fused limb, human wrist, exposed anatomy, magic effect or prop fusion.",
+      "state_transition": "pass: unique WILD_RETURN_TRANSITION_KF02 lies only between KF01 and KF03 and progresses one way without clothing return or full-state flattening.",
+      "style_noise": "pass: calm non-horror DFT anatomical rebalancing, no glow/smoke/particles, and automated clarity QA pass.",
+      "notes": "Anchor 02 of SH35; selected attempt_001, exact 1915x821. Same room/camera/cast positions remain continuous in SH35_NUMBERED_SHEET.png."
+    },
+    {
+      "item_id": "SH35_KF03",
+      "status": "pass",
+      "selected_output": "08_generation/jobs/final_frames_v2/selected/SH35_KF03.png",
+      "selected_attempt": "attempt_001",
+      "scale": "pass: real wild hierarchy is readable—rabbit/Abai smallest, fox/dog/sheep middle, donkey/bear larger and elephant largest below room scale.",
+      "species_action": "pass: exactly one natural rabbit, Abai cat, fox, dog, sheep, donkey, bear and elephant perform eight different exit-oriented behaviors.",
+      "anatomy_props": "pass: all eight have true species-correct quadruped structure, clean paws/hooves and no clothing, collar, grasping paw or anthropomorphic shoulder; clothes/case remain abandoned.",
+      "state_transition": "pass: WILD_RETURN_QUADRUPED is complete and permanent; no intermediate anatomy or horror trace remains.",
+      "style_noise": "pass: exact DFT continuation from KF01/KF02, controlled matte animal masses and automated clarity QA pass.",
+      "notes": "Anchor 03 of SH35; selected attempt_001, exact 1915x821. Numbered sheet confirms one-axis 01→02→03 state continuity."
+    },
+    {
+      "item_id": "SH36",
+      "status": "pass",
+      "selected_output": "08_generation/jobs/final_frames_v2/selected/SH36.png",
+      "selected_attempt": "attempt_001",
+      "scale": "pass: oversized industrial doorway and real street buildings dominate the cast; rabbit/cat remain tiny and elephant remains largest with clear passage.",
+      "species_action": "pass: exactly eight unique quadruped species leave at staggered phases—rabbit outside, fox crossing, dog listening, sheep/donkey split, bear slow, Abai mid-back and elephant last.",
+      "anatomy_props": "pass: species-correct four-foot anatomy and shadows remain readable; no animal wears/carries anything or steps on the abandoned garments/case.",
+      "state_transition": "pass: WILD_RETURN_QUADRUPED remains permanently locked with no biped return or body change.",
+      "style_noise": "pass: DFT cool-interior/grey-gold-street threshold language and automated clarity QA pass.",
+      "notes": "Selected attempt_001; exact 1915x821."
+    },
+    {
+      "item_id": "SH37",
+      "status": "pass",
+      "selected_output": "08_generation/jobs/final_frames_v2/selected/SH37.png",
+      "selected_attempt": "attempt_001",
+      "scale": "pass: 80–120m aerial view keeps all animals far smaller than real house footprints, roads and terrain; even the elephant is clearly below building scale.",
+      "species_action": "pass: eight unique animal marks choose different grass, scrub, forest, riverbed and branch routes; no common direction, duplicate icon or perfect radial spacing.",
+      "anatomy_props": "pass: simplified aerial silhouettes retain species cues without clothing, props, biped pose or cat substitution.",
+      "state_transition": "pass: all remain permanent WILD_RETURN_QUADRUPED; only ecological path separation occurs.",
+      "style_noise": "pass: DFT aerial fable-map perspective, clear landform masses and automated clarity QA pass without sand-noise field.",
+      "notes": "Selected attempt_001; exact 1915x821. Abai remains a tiny near-town pause for SH38."
+    },
+    {
+      "item_id": "SH38_KF01",
+      "status": "pass",
+      "selected_output": "08_generation/jobs/final_frames_v2/selected/SH38_KF01.png",
+      "selected_attempt": "reused_existing",
+      "scale": "pass: the single real house-cat remains far below left-back town windows, eaves, lamp and chimney scale; no miniature architecture.",
+      "species_action": "pass: one photo-locked Abai only, standing on four paws and looking back; no second cat or background animal.",
+      "anatomy_props": "pass: true four-foot cat anatomy, grey-green eyes, natural crown/saddle markings and dark plumed tail are readable; no clothing, collar, instrument or extra limb.",
+      "state_transition": "pass: permanent WILD_RETURN_QUADRUPED; same-shot start has town left/back and dawn wilderness right/front, with no new body state.",
+      "style_noise": "pass: DFT melancholic low-angle dawn, controlled old-paper surface and clean large landscape masses.",
+      "notes": "Reused selected anchor re-inspected under current hard gates; exact 1915x821. Anchor 01 of SH38; continuity checked in SH38_NUMBERED_SHEET.png."
+    },
+    {
+      "item_id": "SH38_KF02",
+      "status": "pass",
+      "selected_output": "08_generation/jobs/final_frames_v2/selected/SH38_KF02.png",
+      "selected_attempt": "attempt_001",
+      "scale": "pass: Abai remains a real cat and slightly farther into the landscape while town architecture stays many times larger.",
+      "species_action": "pass: the same single Abai performs a natural low right/front run toward dawn; no second cat, animal companion or ghost trail.",
+      "anatomy_props": "pass: one body, four attributable feline limbs and one continuous dark tail are readable; crown/saddle markings stay fixed, with no smear hiding anatomy.",
+      "state_transition": "pass: same WILD_RETURN_QUADRUPED body turns/runs only; town-left/dawn-right axis and 01→02 identity remain continuous without mirroring or teleportation.",
+      "style_noise": "pass: exact KF01 DFT landscape/light continuity, restrained dawn lift and automated clarity QA pass.",
+      "notes": "Anchor 02 of SH38; selected attempt_001, exact 1915x821. Prompt/video direction was corrected to the approved town-left/dawn-right keyframes."
+    }
+  ]
+}

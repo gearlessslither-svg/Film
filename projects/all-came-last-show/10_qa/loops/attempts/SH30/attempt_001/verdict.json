@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "asset_id": "SH30",
+  "attempt": "attempt_001",
+  "reviewed_at": "2026-07-17T11:31:34+08:00",
+  "verdict": "reject",
+  "failure_labels": [
+    "group_action_repetition",
+    "environment_state_mismatch",
+    "continuity_drift"
+  ],
+  "scores": {
+    "prompt_compliance": "2.9",
+    "style_coherence": "4.5",
+    "anatomy_integrity": "4.4",
+    "scale_plausibility": "4.6"
+  },
+  "feedback": "Hard semantic failure: background contains an orderly row of roughly sixteen readable biped silhouettes, violating the sparse unreadable varied-height non-lineup lock; industrial chimney silhouettes also appear through the doorway although the distant factory is forbidden in this insert.",
+  "must_change": [
+    "Reduce background to at most six tiny, irregularly spaced, varied silhouettes with broken orientations and no lineup; replace exterior chimney stacks with simple nonindustrial town roof silhouettes. Preserve stage, curtain, bulbs, chair frame, palette, lighting, and scale."
+  ],
+  "may_keep": []
+}

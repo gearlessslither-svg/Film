@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "asset_id": "FIN-010",
+  "attempt": "attempt_001",
+  "reviewed_at": "2026-07-17T10:30:56+08:00",
+  "verdict": "hold",
+  "failure_labels": [],
+  "scores": {},
+  "feedback": "空钩揭示与家具尺度可保留为2秒主镜头；集体短暂停顿有叙事理由。",
+  "must_change": [
+    "个人反应必须由SH33动作分工和后续镜头补足。"
+  ],
+  "may_keep": []
+}

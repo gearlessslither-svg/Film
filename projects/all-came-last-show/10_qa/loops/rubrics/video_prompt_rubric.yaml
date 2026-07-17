@@ -1,0 +1,70 @@
+schema_version: 1
+project: "all-came-last-show"
+active_branch: "DFT_MASTERPLAN_WILD_RETURN_V4"
+score_scale: "0-5"
+hard_fail_threshold: 2
+pass_threshold: 4
+
+project_contract:
+  runtime_seconds: 120
+  edit_shot_count: 38
+  keyframe_count: 42
+  frame_spec: "21:9 / 1915x821 PNG"
+  source_method: "approved keyframe to AIGC video, edited to the 120-second master sequence"
+  music_rule: "Oasis The Masterplan is added only in post-production; generated clips contain ambience and SFX only."
+
+hard_categories:
+  source_style_inheritance: "Every prompt treats its selected input keyframe as immutable visual authority and preserves the DFT old-paper tempera / matte-gouache medium, restrained deep teal-ochre palette, naive fine outlines, flattened but readable depth, controlled paper texture, clean large shapes and low-noise surface. It explicitly forbids photoreal, plastic 3D, game-render, commercial-anime and generic model-default redraw."
+  gap_free_timeline: "The timeline starts at 0.0s, reaches the exact declared endpoint without gaps or overlaps, and ends on a usable decelerated or held edit frame. Duration follows the shot ledger rather than a fixed five-second default."
+  performance_and_cinematography: "Every timeline interval contains both visible performance/blocking/eye-line/prop change and cinematography: camera height, side, axis, lens feel, distance, movement, composition, focus, exposure and motivated light. Unchanged values are explicitly held."
+  narrative_state_lock: "The prompt binds the correct timeline_phase and character_state_ids. Factory uniform, private dress, unclad biped transition and permanent wild quadruped states may change only at the declared boundary; no premature clothing, body-state or prop transition is allowed."
+  identity_and_species_lock: "Abai keeps the supplied photo-locked white long-haired cat identity and markings. Group shots preserve the declared distinct species and never spread Abai's cat identity to the ensemble, duplicate a principal species or invent a recolored substitute."
+  scale_and_spatial_continuity: "Architecture, doors, windows, storeys, benches, lockers, instruments and animals remain usable and perspective-consistent under SCALE_LEDGER_V1. DFT depth flattening never authorizes miniature houses, toy props, unusable elephant clearances or changing scale without depth evidence."
+  group_action_diversity: "Readable ensemble members keep the distinct action verbs, phases, gaze targets, paw/hand use, body rhythm and screen layers assigned by GROUP_ACTION_LEDGER_120S_V2. Synchronization is allowed only in the explicitly scripted factory-order or shared-impact moments."
+  multi_keyframe_single_shot: "SH28, SH35 and SH38 use their numbered source order and one continuous shot axis. The prompt references every keyframe in order and specifies continuous transitions without invented cuts, identity redraw, environment reset or omitted anchor."
+  motion_feasibility: "One shot carries only its declared action and camera idea. Complex crowd, transformation or spatial movement is split or anchored rather than hidden inside vague motion language."
+  audio_rule: "Only project-appropriate ambience and SFX are requested. No generated music, BGM, soundtrack, singing or dialogue is present; The Masterplan remains an editorial reference only."
+
+required_fields:
+  - STYLE_FINGERPRINT
+  - STYLE_INHERITANCE_HARD_LOCK
+  - STYLE_NEGATIVE
+  - NARRATIVE_TIME
+  - CHARACTER_STATE_LOCK
+  - STATE_TRANSITION_RULE
+  - DURATION
+  - DURATION_RATIONALE
+  - TIMELINE
+  - CONTINUITY_LOCKS
+  - NEGATIVE
+  - AUDIO
+
+required_evidence:
+  - "source item_id and selected image path"
+  - "SHOT_COVERAGE_120S_V2 duration binding"
+  - "CHARACTER_STATE_LEDGER_V2 state binding"
+  - "SCALE_LEDGER_V1 anchors for architecture or props"
+  - "GROUP_ACTION_LEDGER_120S_V2 entry for readable groups"
+  - "numbered storyboard sheet for SH28, SH35 or SH38"
+
+failure_labels:
+  - source_style_drift
+  - model_default_redraw
+  - timeline_gap
+  - timeline_overlap
+  - duration_unfit
+  - performance_missing
+  - cinematography_missing
+  - narrative_state_mismatch
+  - premature_state_transition
+  - identity_redraw
+  - species_diversity_lost
+  - character_environment_scale_mismatch
+  - perspective_scale_inconsistency
+  - group_action_repetition
+  - performance_clone
+  - keyframe_sequence_missing
+  - anchor_transition_break
+  - motion_unfeasible
+  - audio_rule_missing
+

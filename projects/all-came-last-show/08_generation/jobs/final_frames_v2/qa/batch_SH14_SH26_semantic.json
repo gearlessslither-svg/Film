@@ -1,0 +1,164 @@
+{
+  "schema_version": 1,
+  "batch_id": "SH14_SH26",
+  "project": "all-came-last-show",
+  "frame_spec": "1915x821 PNG, 21:9",
+  "hard_gate_policy": "Only frames passing scale, species/action diversity, anatomy/prop logic, and DFT style/noise gates may be selected.",
+  "prompt_contract": {
+    "shots": 13,
+    "image_prompts": 13,
+    "video_prompts": 13,
+    "narrative_time_fields": 26,
+    "character_state_lock_fields": 26,
+    "state_transition_rule_fields": 26,
+    "timeline_intervals": 52,
+    "timeline_intervals_with_performance_and_camera": 52,
+    "active_state_id": "PERFORMANCE_BIPED_PRIVATE_DRESS",
+    "validation": "pass"
+  },
+  "items": [
+    {
+      "item_id": "SH14",
+      "status": "pass",
+      "selected_output": "08_generation/jobs/final_frames_v2/selected/SH14.png",
+      "selected_attempt": "attempt_002",
+      "scale": "pass: adult locker-room door, windows, locker bank, bench and violin case remain coherently larger/smaller than Abai at their real use scale; no miniature architecture.",
+      "species_action": "pass: exactly one readable animal, photo-locked Abai, seated alone and opening the case; no supporting cast or duplicate cat.",
+      "anatomy_props": "pass: two paws, two legs and one tail are traceable; one low-angle partly opened case contains exactly one structurally readable violin and one bow, with paw/lid contact intact.",
+      "style_noise": "pass: DFT old-paper tempera/matte-gouache medium, controlled locker-room planes, crisp focal detail and low-noise background; no pseudo-text.",
+      "notes": "Selected attempt_002 after rejecting attempt_001 for an over-open case lid; exact 1915x821."
+    },
+    {
+      "item_id": "SH15",
+      "status": "pass",
+      "selected_output": "08_generation/jobs/final_frames_v2/selected/SH15.png",
+      "selected_attempt": "attempt_004",
+      "scale": "pass: elephant-sized exit has generous head/shoulder clearance; lockers, benches and room height stay functional for the full mixed-size cast.",
+      "species_action": "pass: exactly one Abai cat, rabbit, sheep, old dog, elephant and fox; six exit/preparation phases differ in posture, direction, height and eye line rather than repeating one clothing action.",
+      "anatomy_props": "pass: Abai has the natural irregular crown patch rather than a cap, holds the only violin and bow, and all six bodies/limbs remain distinct and grounded with no prop duplication.",
+      "style_noise": "pass: DFT matte private-dress palette, restrained old-paper texture, readable silhouettes and no visible text/noise artifact.",
+      "notes": "Selected attempt_004 as a controlled single-identity-anchor repair for Abai's natural crown patch. Attempts_001-003 remain rejected evidence and were not selected or chained. Exact 1915x821."
+    },
+    {
+      "item_id": "SH16",
+      "status": "pass",
+      "selected_output": "08_generation/jobs/final_frames_v2/selected/SH16.png",
+      "selected_attempt": "attempt_001",
+      "scale": "pass: two-storey brick houses, doors, windows, roofs, street width and distant hall all dominate the single fox at believable town scale.",
+      "species_action": "pass: exactly one fox, half-stepping out while holding the door and looking toward the distant hall; no cat, crowd or repeated pose.",
+      "anatomy_props": "pass: fox limbs, paws, feet and one tail are traceable; door-hand contact and threshold weight transfer are credible, with no carried prop.",
+      "style_noise": "pass: DFT blue-hour brick-town matte-gouache language, clean large shapes, controlled paper grain and low-noise empty street.",
+      "notes": "Selected attempt_001; dimension-only final normalization, exact 1915x821."
+    },
+    {
+      "item_id": "SH17",
+      "status": "pass",
+      "selected_output": "08_generation/jobs/final_frames_v2/selected/SH17.png",
+      "selected_attempt": "attempt_002",
+      "scale": "pass: shelter roof, bench, signpost, street and buildings provide adult-scale anchors; the elephant fits under the canopy with comfortable clearance.",
+      "species_action": "pass: exactly one elephant calmly adjusts one sleeve under the shelter; no cat, duplicate elephant or background animal.",
+      "anatomy_props": "pass: trunk, tusks, paws, feet and sleeve contact are coherent; blank weathered lower sign panel replaces the rejected pseudo-text.",
+      "style_noise": "pass: DFT matte blue-hour palette, soft warm practical light and restrained clean surface detail with no illegible lettering.",
+      "notes": "Selected attempt_002 after rejecting attempt_001 for lower-panel text artifact; exact 1915x821."
+    },
+    {
+      "item_id": "SH18",
+      "status": "pass",
+      "selected_output": "08_generation/jobs/final_frames_v2/selected/SH18.png",
+      "selected_attempt": "attempt_001",
+      "scale": "pass: high aerial view keeps all animals much smaller than same-plane doors, floors, roads, shelter and the distant hall; no readability enlargement.",
+      "species_action": "pass: exactly one elephant, bear, fox, Abai and rabbit converge from five different road vectors at offset stride phases; no duplicate species or formation line.",
+      "anatomy_props": "pass: silhouettes, single tails, feet and travel directions remain readable; Abai carries one closed violin case without extra instrument or limb.",
+      "style_noise": "pass: coherent DFT aerial town rendering with muted deep teal/brick palette, uncluttered road planes and controlled low-frequency paper texture.",
+      "notes": "Existing approved selected attempt_001 retained without regeneration; exact 1915x821."
+    },
+    {
+      "item_id": "SH19",
+      "status": "pass",
+      "selected_output": "08_generation/jobs/final_frames_v2/selected/SH19.png",
+      "selected_attempt": "attempt_001",
+      "scale": "pass: street, lamps, doors and multi-storey brick buildings remain far larger than the five travellers; foreground/background size follows perspective.",
+      "species_action": "pass: exactly one fox, sheep, elephant, old dog and rabbit, with five different stride lengths and footfall phases; no cat and no synchronized march.",
+      "anatomy_props": "pass: leg ownership, feet, tails and grounded shadows are traceable; no intersecting bodies, human shoes or carried props.",
+      "style_noise": "pass: DFT old-paper matte-gouache street language, readable back silhouettes, restrained texture and no text/noise artifact.",
+      "notes": "Selected attempt_001; dimension-only final normalization, exact 1915x821."
+    },
+    {
+      "item_id": "SH20",
+      "status": "pass",
+      "selected_output": "08_generation/jobs/final_frames_v2/selected/SH20.png",
+      "selected_attempt": "attempt_003",
+      "scale": "pass: hall volume, tall elephant-clear entrance, adult long table, chairs and raised stage establish believable mixed-species performance scale.",
+      "species_action": "pass: exactly seven non-cat species, one each dog, fox, donkey, elephant, bear, sheep and rabbit; bass playing, two different dance phases, entry, cup placement, bread cutting and stool carrying are distinct.",
+      "anatomy_props": "pass: all limbs remain readable; exactly one upright bass belongs to the dog, sheep uses bread/knife, bear handles cups and rabbit holds one stool without fused props.",
+      "style_noise": "pass: DFT warm-brick/deep-teal matte fairy-tale medium, clean depth layers and no visible pseudo-text or high-frequency noise.",
+      "notes": "Selected attempt_003 after attempt_001 duplicated the sheep and attempt_002 removed the required sheep; dimension-only final normalization, exact 1915x821."
+    },
+    {
+      "item_id": "SH21",
+      "status": "pass",
+      "selected_output": "08_generation/jobs/final_frames_v2/selected/SH21.png",
+      "selected_attempt": "attempt_002",
+      "scale": "pass: Abai, rabbit, sheep, dog, bear and elephant retain ordered body sizes; the hall entrance remains wider/taller than the elephant and architecture dominates the cast.",
+      "species_action": "pass: exactly one Abai cat, rabbit, sheep, elephant, bear and old dog; late half-step, side-step, glance, continued walk, chair turn and back-facing stage attention are six different actions.",
+      "anatomy_props": "pass: Abai's natural gray-black crown patch, green eyes, dark tail and performance dress are locked; one low-held violin and one bow only, with no extra limbs or instrument.",
+      "style_noise": "pass: DFT matte old-paper hall language, restrained warm/cool contrast, clear silhouettes and no pseudo-text.",
+      "notes": "Selected attempt_002 after a controlled one-identity-anchor repair restored Abai's crown marking; dimension-only final normalization, exact 1915x821."
+    },
+    {
+      "item_id": "SH22",
+      "status": "pass",
+      "selected_output": "08_generation/jobs/final_frames_v2/selected/SH22.png",
+      "selected_attempt": "attempt_001",
+      "scale": "pass: standard violin-to-shoulder ratio, body proportions, floor, balcony and tall hall remain coherent; Abai does not approach architectural scale.",
+      "species_action": "pass: exactly one readable animal, photo-locked Abai, performs the first-bow contact; only one distant non-cat color block is intentionally identity-unreadable.",
+      "anatomy_props": "pass: natural crown patch, green-gray eyes, pink nose and dark tail remain visible; one violin and one bow have readable strings, bridge, pegs and credible paw/neck/chin contact.",
+      "style_noise": "pass: DFT close-performance matte-gouache image, clean focal detail, restrained background and no text or sharpening artifact.",
+      "notes": "Selected attempt_001; dimension-only final normalization, exact 1915x821."
+    },
+    {
+      "item_id": "SH23",
+      "status": "pass",
+      "selected_output": "08_generation/jobs/final_frames_v2/selected/SH23.png",
+      "selected_attempt": "attempt_001",
+      "scale": "pass: stage edge, doors, windows, lamps and dance-floor area stay much larger than the fox and dog; ground contact establishes shared scale.",
+      "species_action": "pass: exactly one fox and one old dog, no cat or third partner; fox crosses into a turn while the separated dog holds a rear-weighted half-step, with no hand contact or mirror pose.",
+      "anatomy_props": "pass: four limbs and one tail per animal remain traceable, feet contact the floor and paws stay animal-like; no instrument, glass, tray or extra prop.",
+      "style_noise": "pass: muted DFT blue/ochre matte-gouache treatment, strong asymmetric silhouettes and low-noise negative space.",
+      "notes": "Selected attempt_001; exact 1915x821."
+    },
+    {
+      "item_id": "SH24",
+      "status": "pass",
+      "selected_output": "08_generation/jobs/final_frames_v2/selected/SH24.png",
+      "selected_attempt": "attempt_002",
+      "scale": "pass: adult long table, chairs, doorway and empty hall remain functional; elephant, bear and smaller rabbit retain believable relative size without miniature furniture.",
+      "species_action": "pass: exactly one bear, sheep, old dog, elephant, fox and rabbit, with no background figure or cat; pouring, bread passing, listening, table steadying, empty-paw smiling and napkin pickup are six distinct actions.",
+      "anatomy_props": "pass: one bottle pours into one empty cup, one bread piece and one fallen napkin have clear owners; no tray/instrument, body-table fusion or extra limbs.",
+      "style_noise": "pass: DFT warm-table/deep-teal matte-gouache language, clean empty background and no crowd-shaped or text-shaped artifact.",
+      "notes": "Selected attempt_002 after removing every background animal from attempt_001; dimension-only final normalization, exact 1915x821."
+    },
+    {
+      "item_id": "SH25",
+      "status": "pass",
+      "selected_output": "08_generation/jobs/final_frames_v2/selected/SH25.png",
+      "selected_attempt": "attempt_001",
+      "scale": "pass: second-floor railing, full dance floor, 0.65m stage, adult long table and tall hall form a coherent hierarchy; the elephant is largest in the cast yet remains far smaller than the room.",
+      "species_action": "pass: exactly one fox, old dog, donkey, rabbit, sheep, elephant and bear, with no cat; spin, rear-weighted pause, heavy side-step, short crossing steps, off-beat hoof clap, shoulder/trunk sway and seated single-foot beat are seven distinct phases.",
+      "anatomy_props": "pass: feet, short ground shadows, one trunk, hooves, paws and tails have clear ownership and weight; no extra limbs, instrument, cup or tray.",
+      "style_noise": "pass: DFT old-paper matte-gouache overhead language, sparse rhythmic silhouettes, controlled architectural planes and automated clarity QA pass.",
+      "notes": "Cross-batch support generation; selected attempt_001, exact 1915x821."
+    },
+    {
+      "item_id": "SH26",
+      "status": "pass",
+      "selected_output": "08_generation/jobs/final_frames_v2/selected/SH26.png",
+      "selected_attempt": "attempt_001",
+      "scale": "pass: foreground donkey foot stays below 35% of frame height, rabbit remains smallest and elephant feet widest; stage edge, table legs and floorboards preserve adult hall scale.",
+      "species_action": "pass: exactly one donkey, rabbit, elephant, old dog and sheep, with no cat; heavy lateral landing, light short step, stable elephant shift/low trunk swing, dog heel turn and sheep half-step retreat are five different directions and phases.",
+      "anatomy_props": "pass: every leg has clear body ownership, biped structure and contact shadow; a single elephant trunk remains separate from others, with no human foot, fused hoof, extra limb, instrument, cup or tray.",
+      "style_noise": "pass: DFT low-floor old-paper matte-gouache language, readable motion edges, controlled floor texture and automated clarity QA pass.",
+      "notes": "Cross-batch support generation; selected attempt_001, exact 1915x821."
+    }
+  ]
+}

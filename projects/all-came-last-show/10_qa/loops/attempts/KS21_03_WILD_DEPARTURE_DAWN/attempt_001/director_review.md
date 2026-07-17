@@ -1,0 +1,20 @@
+# Director Review
+
+Verdict: `reject`
+Reviewed at: 2026-07-17T03:16:10+08:00
+
+## Failure Labels
+
+- `continuity_drift`
+- `environment_state_mismatch`
+
+## Feedback
+
+构图与物种状态基本成立，但终局城镇烟囱仍在冒烟，像仍在生产，违背工厂停摆、拆除后空城的结尾状态。
+
+## Must Change
+
+- 所有烟囱必须冷却无烟；镇内除一盏最后的灯外全部熄灭，强化空城与荒野新生。
+
+## May Keep
+

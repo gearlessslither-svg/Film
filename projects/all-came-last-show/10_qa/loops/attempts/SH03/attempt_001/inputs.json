@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "asset_id": "SH03",
+  "stage": "keyframe_image",
+  "attempt": "attempt_001",
+  "created_at": "2026-07-17T11:06:33+08:00",
+  "sources": [
+    "04_lookdev/references/DFT_DIRECTOR_REFERENCE.png"
+  ],
+  "output_path": "08_generation/jobs/final_frames_v2/outputs/SH03_attempt_001.png",
+  "notes": "V2 final batch; exact SH03 image prompt; DFT style + supporting identity refs; 21:9."
+}

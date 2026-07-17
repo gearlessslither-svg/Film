@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "asset_id": "SH33",
+  "attempt": "attempt_002",
+  "reviewed_at": "2026-07-17T12:34:58+08:00",
+  "verdict": "pass",
+  "failure_labels": [],
+  "scores": {
+    "prompt_compliance": "4.9",
+    "style_coherence": "4.7",
+    "anatomy_integrity": "4.7",
+    "scale_plausibility": "4.8"
+  },
+  "feedback": "Internal hard-QA pass: exactly eight unique species perform eight distinct micro-reactions—Abai hook touch, rabbit under-bench check, elephant cabinet open, dog seated, donkey badge-slot check, traceable single fox mirror reflection, sheep shawl hold, bear two-paw setdown. Exactly one closed case exists and elephant is empty-handed; empty hooks/cabinets and real room scale dominate. Director aesthetic review pending.",
+  "must_change": [],
+  "may_keep": [
+    "Keep the eight distinct height/action/eye-line beats, one geometrically traceable fox reflection, sole bear-handled case, and broad empty-hook negative space."
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "asset_id": "SH10",
+  "stage": "keyframe_image",
+  "attempt": "attempt_001",
+  "created_at": "2026-07-17T10:43:34+08:00",
+  "sources": [
+    "04_lookdev/references/DFT_DIRECTOR_REFERENCE.png"
+  ],
+  "output_path": "08_generation/jobs/final_frames_v2/outputs/SH10_attempt_001.png",
+  "notes": "V2 high-risk pilot before batch resume."
+}

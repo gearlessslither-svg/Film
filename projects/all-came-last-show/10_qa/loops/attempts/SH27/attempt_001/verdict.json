@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "asset_id": "SH27",
+  "attempt": "attempt_001",
+  "reviewed_at": "2026-07-17T11:06:46+08:00",
+  "verdict": "pass",
+  "failure_labels": [],
+  "scores": {
+    "prompt_compliance": "4.4",
+    "style_coherence": "4.5",
+    "anatomy_integrity": "4.1",
+    "scale_plausibility": "4.7"
+  },
+  "feedback": "Internal hard-QA pass: unique multi-species cast, differentiated actions, usable hall scale for elephant, DFT matte-gouache coherence, correct biped performance phase, no horror or duplicate main species; surface QA pass. Director aesthetic review remains pending.",
+  "must_change": [],
+  "may_keep": [
+    "composition, species separation, hall scale, action staggering, lighting hierarchy"
+  ]
+}

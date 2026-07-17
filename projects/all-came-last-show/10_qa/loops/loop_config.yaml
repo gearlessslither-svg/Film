@@ -1,0 +1,87 @@
+schema_version: 1
+project_profile:
+  project_type: "music_mv"
+  style_family: "old_paper_tempera_dft_fairy_tale"
+  workflow_family: "image_set_to_video"
+  medium: "old_paper_tempera_keyframes_and_aigc_video"
+  primary_success_metric: "story_continuity_aesthetic_rhythm"
+  allowed_complexity: "high"
+  director_review_required: true
+  human_feedback_required_at:
+    - style_lock
+    - pilot_pass
+    - batch_resume_after_reject
+    - final_acceptance
+loop_policy:
+  max_attempts_per_asset: 3
+  require_director_review_for_batch_resume: true
+  stop_batch_on_reject: true
+  imported_lessons_start_as_hypotheses: true
+  require_scope_check_before_rule_promotion: true
+  never_apply_aesthetic_rules_globally_without_human_confirmation: true
+learning_scope_policy:
+  default_scope: "project_local"
+  allowed_scopes:
+    - project_local
+    - style_family
+    - workflow_family
+    - tool_specific
+    - pipeline_stage
+    - global_method
+  promotion_test:
+    - "Is this repeated evidence or one director taste note?"
+    - "Would the opposite rule be correct in another style or workflow?"
+    - "What is the narrowest safe scope that prevents the failure?"
+    - "Can the rule be tested in future attempts?"
+compatibility_check:
+  compare_before_importing_rules:
+    - project_type
+    - style_family
+    - workflow_family
+    - medium
+    - generation_tool
+    - pipeline_stage
+    - audience_intent
+    - allowed_complexity
+  incompatible_rule_behavior: "treat_as_hypothesis_not_rule"
+workflow_adapters:
+  music_mv:
+    primary_gates:
+      - lookdev_loop
+      - keyframe_loop
+      - video_prompt_loop
+      - edit_delivery_loop
+    rubric_bias: "emotion_visual_rhythm"
+  story_film:
+    primary_gates:
+      - topic_loop
+      - setting_lock_loop
+      - keyframe_loop
+      - video_output_loop
+      - edit_delivery_loop
+    rubric_bias: "continuity_story_readability"
+  lookdev_set:
+    primary_gates:
+      - style_pilot_loop
+      - contact_sheet_review
+    rubric_bias: "aesthetic_identity"
+  video_reference_remake:
+    primary_gates:
+      - reference_analysis_loop
+      - promoted_frame_loop
+      - video_unit_loop
+    rubric_bias: "timing_camera_motion_match"
+  tool_test:
+    primary_gates:
+      - hypothesis_loop
+      - measured_output_loop
+    rubric_bias: "reproducibility"
+global_generation_rules:
+  - "One dominant subject must read first at thumbnail size."
+  - "Use one stable visual language."
+  - "Use one concrete setting and one transition/transformation device."
+  - "Do not use full-frame object clutter as a substitute for film language."
+  - "Concentrate ornament on the hero subject and one support device."
+  - "Every shot must bind to the 120-second coverage ledger and carry only its declared action load."
+  - "Every architecture shot must pass the project scale ledger; DFT flattening does not waive physical scale."
+  - "Every group shot must pass the per-character action ledger unless synchronization is explicitly scripted."

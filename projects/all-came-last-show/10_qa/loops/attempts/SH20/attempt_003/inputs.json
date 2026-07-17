@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "asset_id": "SH20",
+  "stage": "keyframe_image",
+  "attempt": "attempt_003",
+  "created_at": "2026-07-17T11:55:27+08:00",
+  "sources": [
+    "08_generation/jobs/final_frames_v2/outputs/SH20_attempt_002.png"
+  ],
+  "output_path": "08_generation/jobs/final_frames_v2/outputs/SH20_attempt_003.png",
+  "notes": "attempt limit repair: restore exactly one sheep while retaining six other distinct species"
+}

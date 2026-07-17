@@ -1,0 +1,28 @@
+{
+  "profile": "cinematic",
+  "count": 1,
+  "counts": {
+    "pass": 1,
+    "warn": 0,
+    "fail": 0
+  },
+  "records": [
+    {
+      "path": "/Users/jaychoupp/Story/Film/projects/all-came-last-show/08_generation/jobs/key_scenes_21x9_v1/outputs/KS21_02_SQUARE_LAST_PERFORMANCE_attempt_001.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "cinematic",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 1.885,
+        "residual_mean": 3.12,
+        "residual_p95": 10,
+        "edge_density": 13.345
+      },
+      "reasons": []
+    }
+  ]
+}

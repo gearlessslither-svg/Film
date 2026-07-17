@@ -1,0 +1,1 @@
+08_generation/jobs/environment_whiteboxes_v1/outputs/ENV-01_WHITEBOX_3VIEWS_attempt_002.png

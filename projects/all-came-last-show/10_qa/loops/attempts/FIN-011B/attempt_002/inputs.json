@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "asset_id": "FIN-011B",
+  "stage": "final_frame",
+  "attempt": "attempt_002",
+  "created_at": "2026-07-17T05:06:14+08:00",
+  "sources": [],
+  "output_path": "08_generation/jobs/final_frames_v1/outputs/FIN-011B_WEIGHT_SHIFT_attempt_002_clothing_fix_needed.png",
+  "notes": "Recorded semantic failure"
+}

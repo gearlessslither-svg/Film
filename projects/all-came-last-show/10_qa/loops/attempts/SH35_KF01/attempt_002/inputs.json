@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "asset_id": "SH35_KF01",
+  "stage": "final_keyframe",
+  "attempt": "attempt_002",
+  "created_at": "2026-07-17T12:00:22+08:00",
+  "sources": [
+    "08_generation/jobs/final_frames_v2/outputs/SH35_KF01_attempt_001.png",
+    "04_lookdev/references/DFT_DIRECTOR_REFERENCE.png",
+    "05_asset_bible/approved/ABAI_DUAL_STATE_SHEET_V2_APPROVED.png"
+  ],
+  "output_path": "08_generation/jobs/final_frames_v2/outputs/SH35_KF01_attempt_002.png",
+  "notes": "SH35 KF01 attempt 002: corrected eight distinct pre-transition phases while preserving unclad biped boundary."
+}

@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "asset_id": "SH37",
+  "stage": "final_keyframe",
+  "attempt": "attempt_001",
+  "created_at": "2026-07-17T12:16:06+08:00",
+  "sources": [
+    "04_lookdev/references/DFT_DIRECTOR_REFERENCE.png",
+    "08_generation/jobs/final_frames_v2/selected/SH36.png",
+    "05_asset_bible/references/abai_photo_lock/IMG_3885.JPG"
+  ],
+  "output_path": "08_generation/jobs/final_frames_v2/outputs/SH37_attempt_001.png",
+  "notes": "SH37 attempt 001: 80–120m aerial split, real town/animal scale, eight ecological routes."
+}

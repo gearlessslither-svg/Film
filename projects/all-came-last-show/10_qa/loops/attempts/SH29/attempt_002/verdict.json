@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "asset_id": "SH29",
+  "attempt": "attempt_002",
+  "reviewed_at": "2026-07-17T11:27:33+08:00",
+  "verdict": "pass",
+  "failure_labels": [],
+  "scores": {
+    "prompt_compliance": "4.7",
+    "style_coherence": "4.6",
+    "anatomy_integrity": "4.5",
+    "scale_plausibility": "4.7"
+  },
+  "feedback": "Internal hard-QA pass: forbidden smoke removed; eight distinct species retain differentiated reaction beats, believable hall scale, correct biped performance state, coherent DFT storybook texture. Director aesthetic review pending.",
+  "must_change": [],
+  "may_keep": [
+    "Keep the staggered ensemble blocking, open-door town view, and differentiated sightlines."
+  ]
+}

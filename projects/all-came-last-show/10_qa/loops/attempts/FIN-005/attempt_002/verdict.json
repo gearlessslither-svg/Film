@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "asset_id": "FIN-005",
+  "attempt": "attempt_002",
+  "reviewed_at": "2026-07-17T10:30:55+08:00",
+  "verdict": "reject",
+  "failure_labels": [
+    "group_action_repetition",
+    "performance_clone"
+  ],
+  "scores": {},
+  "feedback": "多数角色同时在胸前系扣或整理领口。",
+  "must_change": [
+    "按SH13动作账本错开穿衣动作，另把阿白开琴盒拆到SH14。"
+  ],
+  "may_keep": []
+}

@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "asset_id": "SH13",
+  "attempt": "attempt_002",
+  "reviewed_at": "2026-07-17T12:09:48+08:00",
+  "verdict": "pass",
+  "failure_labels": [],
+  "scores": {},
+  "feedback": "精确尺寸硬门禁通过：1915×821；仅做机械尺寸规整，八物种八动作、比例、解剖、服装、阿白身份与DFT低噪语义内容保持不变。",
+  "must_change": [],
+  "may_keep": []
+}

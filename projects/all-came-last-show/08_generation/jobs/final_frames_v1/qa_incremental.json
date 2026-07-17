@@ -1,0 +1,202 @@
+{
+  "profile": "general",
+  "count": 11,
+  "counts": {
+    "pass": 11,
+    "warn": 0,
+    "fail": 0
+  },
+  "records": [
+    {
+      "path": "/Users/jaychoupp/Story/Film/projects/all-came-last-show/08_generation/jobs/final_frames_v1/outputs/FIN-001_TOWN_AERIAL_attempt_001.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 1.987,
+        "residual_mean": 3.16,
+        "residual_p95": 10,
+        "edge_density": 13.453
+      },
+      "reasons": []
+    },
+    {
+      "path": "/Users/jaychoupp/Story/Film/projects/all-came-last-show/08_generation/jobs/final_frames_v1/outputs/FIN-002_FACTORY_QUEUE_from_KS21_01.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 2.44,
+        "residual_mean": 3.834,
+        "residual_p95": 11,
+        "edge_density": 16.195
+      },
+      "reasons": []
+    },
+    {
+      "path": "/Users/jaychoupp/Story/Film/projects/all-came-last-show/08_generation/jobs/final_frames_v1/outputs/FIN-003_MACHINE_HALL_attempt_001.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 1.512,
+        "residual_mean": 2.343,
+        "residual_p95": 8,
+        "edge_density": 10.038
+      },
+      "reasons": []
+    },
+    {
+      "path": "/Users/jaychoupp/Story/Film/projects/all-came-last-show/08_generation/jobs/final_frames_v1/outputs/FIN-004_FIRST_UNDRESS_attempt_001.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 1.85,
+        "residual_mean": 3.871,
+        "residual_p95": 14,
+        "edge_density": 16.286
+      },
+      "reasons": [
+        "high-frequency residual p95 elevated (14)"
+      ]
+    },
+    {
+      "path": "/Users/jaychoupp/Story/Film/projects/all-came-last-show/08_generation/jobs/final_frames_v1/outputs/FIN-005_PRIVATE_DRESS_attempt_001_rejected_state.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 1.903,
+        "residual_mean": 3.76,
+        "residual_p95": 13,
+        "edge_density": 15.892
+      },
+      "reasons": []
+    },
+    {
+      "path": "/Users/jaychoupp/Story/Film/projects/all-came-last-show/08_generation/jobs/final_frames_v1/outputs/FIN-005_PRIVATE_DRESS_attempt_002.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 1.913,
+        "residual_mean": 3.865,
+        "residual_p95": 14,
+        "edge_density": 16.116
+      },
+      "reasons": [
+        "high-frequency residual p95 elevated (14)"
+      ]
+    },
+    {
+      "path": "/Users/jaychoupp/Story/Film/projects/all-came-last-show/08_generation/jobs/final_frames_v1/outputs/FIN-006_TOWN_CROSSROADS_attempt_001_rejected_state.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 2.118,
+        "residual_mean": 3.609,
+        "residual_p95": 11,
+        "edge_density": 15.15
+      },
+      "reasons": []
+    },
+    {
+      "path": "/Users/jaychoupp/Story/Film/projects/all-came-last-show/08_generation/jobs/final_frames_v1/outputs/FIN-006_TOWN_CROSSROADS_attempt_002.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 1.913,
+        "residual_mean": 3.184,
+        "residual_p95": 10,
+        "edge_density": 13.639
+      },
+      "reasons": []
+    },
+    {
+      "path": "/Users/jaychoupp/Story/Film/projects/all-came-last-show/08_generation/jobs/final_frames_v1/outputs/FIN-007_SQUARE_PERFORMANCE_from_KS21_02_attempt_002.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 2.585,
+        "residual_mean": 4.462,
+        "residual_p95": 13,
+        "edge_density": 18.632
+      },
+      "reasons": []
+    },
+    {
+      "path": "/Users/jaychoupp/Story/Film/projects/all-came-last-show/08_generation/jobs/final_frames_v1/outputs/FIN-008_DANCE_HALL_OVERHEAD_attempt_001.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 1.674,
+        "residual_mean": 3.022,
+        "residual_p95": 10,
+        "edge_density": 12.866
+      },
+      "reasons": []
+    },
+    {
+      "path": "/Users/jaychoupp/Story/Film/projects/all-came-last-show/08_generation/jobs/final_frames_v1/outputs/FIN-009_CHIMNEY_FALL_attempt_001.png",
+      "status": "pass",
+      "recommendation": "accept",
+      "profile": "general",
+      "size": [
+        1915,
+        821
+      ],
+      "metrics": {
+        "flat_noise": 1.662,
+        "residual_mean": 2.6,
+        "residual_p95": 8,
+        "edge_density": 11.29
+      },
+      "reasons": []
+    }
+  ]
+}

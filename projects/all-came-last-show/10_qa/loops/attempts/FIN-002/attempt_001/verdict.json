@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "asset_id": "FIN-002",
+  "attempt": "attempt_001",
+  "reviewed_at": "2026-07-17T10:30:55+08:00",
+  "verdict": "revise",
+  "failure_labels": [
+    "character_environment_scale_mismatch"
+  ],
+  "scores": {},
+  "feedback": "队列同步可保留，但大型物种通行尺度未被证明。",
+  "must_change": [
+    "扩大并证明厂门净空，按尺度账本重出。"
+  ],
+  "may_keep": []
+}

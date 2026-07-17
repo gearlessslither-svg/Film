@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "asset_id": "SH36",
+  "stage": "final_keyframe",
+  "attempt": "attempt_001",
+  "created_at": "2026-07-17T12:12:30+08:00",
+  "sources": [
+    "04_lookdev/references/DFT_DIRECTOR_REFERENCE.png",
+    "08_generation/jobs/final_frames_v2/selected/SH35_KF03.png",
+    "05_asset_bible/references/abai_photo_lock/IMG_3885.JPG",
+    "08_generation/jobs/environment_whiteboxes_v1/outputs/ENV-01_WHITEBOX_3VIEWS_attempt_002.png"
+  ],
+  "output_path": "08_generation/jobs/final_frames_v2/outputs/SH36_attempt_001.png",
+  "notes": "SH36 attempt 001: staggered wild quadruped exit; rabbit first, elephant last, clothes/case remain."
+}

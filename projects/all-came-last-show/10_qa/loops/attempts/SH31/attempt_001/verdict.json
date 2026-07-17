@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "asset_id": "SH31",
+  "attempt": "attempt_001",
+  "reviewed_at": "2026-07-17T11:38:52+08:00",
+  "verdict": "reject",
+  "failure_labels": [
+    "group_action_repetition",
+    "continuity_drift",
+    "anatomy_prop_error"
+  ],
+  "scores": {
+    "prompt_compliance": "3.0",
+    "style_coherence": "4.5",
+    "anatomy_integrity": "3.7",
+    "scale_plausibility": "4.8"
+  },
+  "feedback": "Hard semantic failure: although the eight species and building scale are good, the ensemble reads mainly as the same walking action; Abai is not the last/nearest departing figure, and the bear does not visibly support the only closed case with both paws.",
+  "must_change": [
+    "Preserve the street, architecture, species identities, wardrobe, palette and depth. Make Abai the nearest/later-departing middle-right figure with empty paws; move bear one layer ahead and show both paws clearly supporting the horizontal closed case; strengthen dog head-turn, sheep shawl-hold and donkey suspender-adjust so eight beats read distinctly without a row."
+  ],
+  "may_keep": []
+}

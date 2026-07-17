@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "asset_id": "LOOKDEV_V1",
+  "stage": "lookdev_image",
+  "attempt": "attempt_001",
+  "created_at": "2026-07-17T02:28:15+08:00",
+  "sources": [],
+  "output_path": "08_generation/jobs/lookdev_v1_rejected/outputs/LOOKDEV_V1_REJECTED.png",
+  "notes": "旧写实绘本方向，保留为失败证据"
+}

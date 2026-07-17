@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "asset_id": "SH12",
+  "attempt": "attempt_001",
+  "reviewed_at": "2026-07-17T11:30:26+08:00",
+  "verdict": "reject",
+  "failure_labels": [
+    "identity_redraw",
+    "anatomy_fail",
+    "reference_state_leak"
+  ],
+  "scores": {},
+  "feedback": "硬失败：阿白尾巴大部被画成白色，违反照片身份的整条深灰蓬松尾；背部鞍状斑过窄像单条纹；前景羊双手接近裸露人类五指。三层构图、狗肩旧伤与更衣室可保留。",
+  "must_change": [
+    "把阿白尾巴从根到尖改为深灰/炭灰蓬松尾；把背部斑改为边缘自然、从背部延续至后躯的一整块较宽鞍状斑，非竖条；删除前景羊双手和衣物动作，只留柔焦羊头、角根与灰白卷毛框边。"
+  ],
+  "may_keep": [
+    "羊—阿白—老狗三层景深、阿白转身脱衣、狗肩普通愈合旧伤、室内轴线。"
+  ]
+}

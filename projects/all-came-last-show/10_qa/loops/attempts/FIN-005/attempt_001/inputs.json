@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "asset_id": "FIN-005",
+  "stage": "final_frame",
+  "attempt": "attempt_001",
+  "created_at": "2026-07-17T05:06:14+08:00",
+  "sources": [],
+  "output_path": "08_generation/jobs/final_frames_v1/outputs/FIN-005_PRIVATE_DRESS_attempt_001_rejected_state.png",
+  "notes": "Recorded semantic failure"
+}

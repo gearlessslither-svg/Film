@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "asset_id": "SH04",
+  "stage": "keyframe_image",
+  "attempt": "attempt_002",
+  "created_at": "2026-07-17T11:13:48+08:00",
+  "sources": [
+    "08_generation/jobs/final_frames_v2/outputs/SH04_attempt_001.png"
+  ],
+  "output_path": "08_generation/jobs/final_frames_v2/outputs/SH04_attempt_002.png",
+  "notes": "Targeted repair: remove duplicated background sheep, flatten DFT style, reduce microdetail; preserve blank card machine contact."
+}

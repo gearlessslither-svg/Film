@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "asset_id": "SH15",
+  "attempt": "attempt_003",
+  "reviewed_at": "2026-07-17T11:23:37+08:00",
+  "verdict": "reject",
+  "failure_labels": [
+    "identity_redraw"
+  ],
+  "scores": {},
+  "feedback": "第二次局部编辑仍未恢复阿白非对称灰黑天然头顶斑；其余内容保持正确。",
+  "must_change": [
+    "扩大并明确天然灰黑毛斑至头顶约三分之一，沿毛流、边缘不规则、无帽檐。"
+  ],
+  "may_keep": [
+    "除阿白头顶毛色外全部内容"
+  ]
+}
