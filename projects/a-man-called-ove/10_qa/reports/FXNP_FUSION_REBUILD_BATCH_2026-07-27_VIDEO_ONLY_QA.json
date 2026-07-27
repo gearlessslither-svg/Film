@@ -1,0 +1,23 @@
+{
+  "project": "a-man-called-ove",
+  "batch": "OVE_ALL_REMAINING_EFFECTS_BATCH_001",
+  "delivery_folder": "09_edit/book_video/NEW_PIPELINE_ALL_EFFECTS_REVIEW_2026-07-27_FUSION_REBUILD_VIDEO_ONLY",
+  "delivery_folder_rule": "exactly seven MP4 review files; no JSON, images, source frames, project files, failures or layer proofs reside inside",
+  "technical_qa": {
+    "file_count": 7,
+    "codec": "H.264 yuv420p",
+    "canvas": "2520x1080",
+    "fps": 24,
+    "result": "pass"
+  },
+  "deliverables": [
+    {"file": "01_FXNP-02_GLASS_MEMORY_STATIC_FALLBACK.mp4", "status": "static_fallback_after_semantic_failure"},
+    {"file": "02_FXNP-03_ARCHITECTURE_STATIC_FALLBACK.mp4", "status": "static_fallback_after_multiplane_hard_failure"},
+    {"file": "03_FXNP-04_THRESHOLD_APERTURE_FUSION.mp4", "status": "native_fusion_candidate"},
+    {"file": "04_FXNP-05_TEMPORAL_CAR_PANELS_FUSION.mp4", "status": "native_fusion_candidate"},
+    {"file": "05_FXNP-06_PRACTICAL_LIGHTS_FUSION.mp4", "status": "native_fusion_candidate"},
+    {"file": "06_FXNP-07_SEASONAL_COMMUNITY_FUSION.mp4", "status": "native_fusion_candidate"},
+    {"file": "07_FXNP-08_COMMUNITY_ASSEMBLY_STATIC_CANDIDATE.mp4", "status": "static_candidate_after_matte_seam_hard_failure"}
+  ],
+  "director_status": "one unified review pending; no individual candidate is marked director-approved"
+}
